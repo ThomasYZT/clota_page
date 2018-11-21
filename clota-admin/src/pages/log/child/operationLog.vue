@@ -3,7 +3,8 @@
 <template>
     <div class="operation-log">
         <!--筛选表头-->
-        <filter-head :log-type="logType" @fresh-data="getFilterInfo">
+        <filter-head :log-type="logType"
+                     @fresh-data="getFilterInfo">
         </filter-head>
         <table-com
             v-if="logType !== ''"
@@ -24,7 +25,7 @@
     import filterHead from './operationLogChild/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {operationLogHead,saasLogHead} from './operationLogConfig';
+    import { operationLogHead,saasLogHead } from './operationLogConfig';
     import ajax from '@/api/index.js';
     export default {
         components : {
@@ -32,7 +33,7 @@
             filterHead,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表格数据
                 tableData : [],
@@ -44,17 +45,17 @@
                 //筛选条件
                 filterData : {},
                 pageSize : 10,
-                pageNo :1
-            }
+                pageNo : 1
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取日志类型
              */
             getLogData () {
-                if(this.logType === 'operate'){
+                if (this.logType === 'operate') {
                    this.maintainBackgroundOPLog('maintainBackgroundOPLog');
-                }else if(this.logType === 'sass'){
+                } else if (this.logType === 'sass') {
                     this.maintainBackgroundOPLog('saaSPlatformOPLog');
                 }
             },
@@ -67,10 +68,10 @@
                     pageSize : this.pageSize,
                     page : this.pageNo,
                 },this.filterData)).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.totalCount = Number(res.data.totalRecord);
                         this.tableData = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                         this.$Message.error(res.message || this.$t('dataError'));
@@ -87,11 +88,11 @@
             },
         },
         watch : {
-            '$route':{
+            '$route' : {
                 handler (newVal,oldVal) {
-                    if(newVal && newVal.meta){
+                    if (newVal && newVal.meta) {
                         this.logType = newVal.meta.subMenuType;
-                        if(oldVal){
+                        if (oldVal) {
                             this.getLogData();
                         }
                     }
@@ -99,19 +100,19 @@
                 immediate : true
             }
         },
-        computed :{
+        computed : {
             //表头配置
             columns () {
-                if(this.logType === 'operate'){
+                if (this.logType === 'operate') {
                     return operationLogHead;
-                }else if(this.logType === 'sass'){
+                } else if (this.logType === 'sass') {
                     return saasLogHead;
-                }else{
+                } else {
                     return [];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

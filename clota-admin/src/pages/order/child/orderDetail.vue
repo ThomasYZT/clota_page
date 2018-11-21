@@ -90,7 +90,7 @@
     import guidCom from './orderDetailChild/guide.vue';
     import driverCom from './orderDetailChild/driver.vue';
     export default {
-        components :{
+        components : {
             breadCrumbHead,
             orderInfo,
             productInfo,
@@ -102,42 +102,42 @@
             guidCom,
             driverCom
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('order'),
-                        router: {
-                            name: 'order'
+                        name : this.$t('order'),
+                        router : {
+                            name : 'order'
                         }
                     }
                 ],
                 //订单类型
                 orderType : 'team'
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
              */
             getParams (params) {
-                if(params.orderType){
+                if (params.orderType) {
                     this.orderType = params.orderType;
-                }else{
+                } else {
                     this.$router.push({
                         name : 'order'
                     });
                 }
             }
         },
-        beforeRouteEnter(to,from,next) {
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

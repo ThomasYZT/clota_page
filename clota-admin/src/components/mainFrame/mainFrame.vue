@@ -19,23 +19,23 @@
 <script>
     import mainHeader from './mainHeader';
     import loading from '@/components/loading/loading.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             mainHeader,
             loading
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {},
+        methods : {},
         computed : {
             ...mapGetters({
                 isLoading : 'isLoading'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

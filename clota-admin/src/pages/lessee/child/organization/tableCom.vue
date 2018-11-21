@@ -101,41 +101,41 @@
 </template>
 
 <script>
-    import {configVariable} from '../../../../assets/js/constVariable';
+    import { configVariable } from '../../../../assets/js/constVariable';
     export default {
-        props: {
+        props : {
             //表格数据
-            'table-data': {
-                type: Array,
-                default() {
+            'table-data' : {
+                type : Array,
+                default () {
                     return [];
                 }
             },
-            'column-data': {
-                type: [Object, Array],
-                default() {
+            'column-data' : {
+                type : [Object, Array],
+                default () {
                     return {};
                 }
             },
             //表头信息
-            'title': {
-                type: String,
-                default: ''
+            'title' : {
+                type : String,
+                default : ''
             },
             //是否开启选择
-            'column-check': {
-                type: Boolean,
-                default: false
+            'column-check' : {
+                type : Boolean,
+                default : false
             },
             //是否展开默认值
-            'is-pack-up': {
-                type: Boolean,
-                default: false
+            'is-pack-up' : {
+                type : Boolean,
+                default : false
             },
             //是否显示分页
             'show-page' : {
-                type: Boolean,
-                default: false
+                type : Boolean,
+                default : false
             },
             //总条数
             'total' : {
@@ -144,28 +144,28 @@
             },
             //是否显示占位符
             'show-table-bar' : {
-                type: Boolean,
-                default: true
+                type : Boolean,
+                default : true
             }
         },
-        data() {
+        data () {
             return {
                 //是否展开
-                isPackUpLoad: this.isPackUp,
+                isPackUpLoad : this.isPackUp,
                 //每页大小配置
-                pageSizeConfig: configVariable.pageSizeConfig,
+                pageSizeConfig : configVariable.pageSizeConfig,
                 //每页大小
-                pageSize: configVariable.pageDefaultSize,
+                pageSize : configVariable.pageDefaultSize,
                 //当前页码
-                pageNo: 1
-            }
+                pageNo : 1
+            };
         },
-        methods: {
+        methods : {
             /**
              * 行点击事件
              * @param data
              */
-            classDetailLink(data) {
+            classDetailLink (data) {
                 this.$emit('row-click', data);
             },
             /**
@@ -207,11 +207,11 @@
              * 获取下拉筛选条件,排除重复选项
              * @param item
              */
-            getFilters(item) {
+            getFilters (item) {
                 let filters = [];
-                if(item.filters){
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(!filters.some(list => list.value ===  this.tableData[i][item.field])){
+                if (item.filters) {
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (!filters.some(list => list.value === this.tableData[i][item.field])) {
                             filters.push({
                                 text : this.tableData[i][item.field],
                                 value : this.tableData[i][item.field],
@@ -219,7 +219,7 @@
                         }
                     }
                     return filters;
-                }else{
+                } else {
                     return [];
                 }
             }
@@ -230,7 +230,7 @@
                 pageNo : this.pageNo,
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

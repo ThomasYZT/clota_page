@@ -53,20 +53,20 @@
 <script>
 
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/api/index';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
         },
-        data() {
+        data () {
 
             const validateMethod = {
                 // 输入内容不合规则
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
                         callback(new Error( this.$t('errorIrregular') ));
                     } else {
@@ -78,7 +78,7 @@
             //校验数字
             const validateNumber = (rule, value, callback) => {
                 if (value && !validator.isNumber(value)) {
-                    callback(new Error( this.$t('numError', {field: this.$t('channelCode')}) ));
+                    callback(new Error( this.$t('numError', { field : this.$t('channelCode') }) ));
                 } else {
                     callback();
                 }
@@ -86,59 +86,59 @@
 
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('channelInfo'),
-                        router: {
-                            name: 'channel'
+                        name : this.$t('channelInfo'),
+                        router : {
+                            name : 'channel'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //渠道名称
-                    channelName: '',
+                    channelName : '',
                     //渠道编号
-                    channelNo: '',
+                    channelNo : '',
                     //渠道是否启用
-                    status: '',
+                    status : '',
                 },
                 //表单校验规则
-                ruleValidate: {
+                ruleValidate : {
                     channelName : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('channelName')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('channelName'), length: 20}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('channelName') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('channelName'), length : 20 }), trigger : 'blur' },
                     ],
                     channelNo : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('channelCode')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { type: 'string', max: 8, message: this.$t('errorMaxLength', {field: this.$t('channelCode'), length: 8}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('channelCode') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { type : 'string', max : 8, message : this.$t('errorMaxLength', { field : this.$t('channelCode'), length : 8 }), trigger : 'blur' },
                     ]
                 },
                 //是否正在添加中
-                addLoading: false,
+                addLoading : false,
                 //操作类型
                 type : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存渠道数据
              */
-            save() {
+            save () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.addLoading = true;
                         let params = {
-                            channelName: this.formData.channelName,
-                            channelNo: this.formData.channelNo,
-                            status: this.formData.status ? 'normal' : 'invalid',
+                            channelName : this.formData.channelName,
+                            channelNo : this.formData.channelNo,
+                            status : this.formData.status ? 'normal' : 'invalid',
                         };
                         if (this.type === 'add') {
                             this.addChannel(params);
-                        }else {
+                        } else {
                             params.id = this.formData.id;
                             this.updateChannel(params);
                         }
@@ -148,12 +148,12 @@
             /**
              * 新增渠道
              */
-            addChannel( params ) {
+            addChannel ( params ) {
                 ajax.post('addChannel', params).then(res => {
                     this.addLoading = false;
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('addSuccess'));
-                        this.$router.push({ name: 'channel'});
+                        this.$router.push({ name : 'channel' });
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
                     }
@@ -163,12 +163,12 @@
              * 修改渠道
              * @param params
              */
-            updateChannel( params ) {
+            updateChannel ( params ) {
                 ajax.post('updateChannel', params).then(res => {
                     this.addLoading = false;
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('edit') + this.$t('success'));
-                        this.$router.push({ name: 'channel'});
+                        this.$router.push({ name : 'channel' });
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
                     }
@@ -177,9 +177,9 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$router.push({
-                    name: 'channel'
+                    name : 'channel'
                 });
             },
             /**
@@ -187,15 +187,15 @@
              * @param params
              */
             getParams (params) {
-                if(params.type) {
+                if (params.type) {
                     this.type = params.type;
-                    if(params.info){
+                    if (params.info) {
                         this.formData.id = params.info.id;
                         this.formData.channelName = params.info.channelName;
-                        this.formData.channelNo =  params.info.channelNo;
+                        this.formData.channelNo = params.info.channelNo;
                         this.formData.status = params.info.status === 'normal' ? true : false;
                     }
-                }else{
+                } else {
                     this.$router.push({
                         name : 'channel'
                     });
@@ -203,7 +203,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

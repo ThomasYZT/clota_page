@@ -224,11 +224,11 @@
 </template>
 
 <script>
-    import{orderChannels,orderType,formatsStatus,auditStatus,payStatus,cashierStatus,synchronizationStatus,refundStatus} from '@/assets/js/constVariable.js';
+    import { orderChannels,orderType,formatsStatus,auditStatus,payStatus,cashierStatus,synchronizationStatus,refundStatus } from '@/assets/js/constVariable.js';
     export default {
         props : {
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -257,10 +257,10 @@
                 orderCompany : [],
                 //租户列表
                 lessesList : [],
-            }
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

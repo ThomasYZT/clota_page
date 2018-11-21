@@ -35,22 +35,22 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['setting'],
-        data() {
+        props : ['setting'],
+        data () {
             return {
                 //复制数据，用于当前修改
-                copySettingData: {},
-            }
+                copySettingData : {},
+            };
         },
-        created() {
+        created () {
             this.copySettingData = defaultsDeep({}, this.setting);
         },
-        watch: {
+        watch : {
             setting : function (val) {
                 this.copySettingData = defaultsDeep({}, val);
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

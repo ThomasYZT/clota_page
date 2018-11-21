@@ -80,77 +80,77 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             cityPlugin
         },
-        data() {
+        data () {
             //校验选择的服务
             const validateServices = (rule,value,callback) => {
-              if(value && value.length > 0){
+              if (value && value.length > 0) {
                   callback();
-              }else{
-                  callback(this.$t('validateError.pleaseSelect',{msg : this.$t('serve')}));
+              } else {
+                  callback(this.$t('validateError.pleaseSelect',{ msg : this.$t('serve') }));
               }
             };
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('serverPackage'),
-                        router: {
-                            name: 'packageList'
+                        name : this.$t('serverPackage'),
+                        router : {
+                            name : 'packageList'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //套餐名称
-                    packageName: '',
+                    packageName : '',
                     //服务列表
-                    services: [],
+                    services : [],
                 },
                 //表单校验规则
-                ruleValidate: {
+                ruleValidate : {
                     packageName : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('packageName')}), trigger: 'blur'},
-                        {max : 30, message : this.$t('errorMaxLength', {field: this.$t('packageName'),length : 30}), trigger: 'blur'},
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('packageName') }), trigger : 'blur' },
+                        { max : 30, message : this.$t('errorMaxLength', { field : this.$t('packageName'),length : 30 }), trigger : 'blur' },
                     ],
                     services : [
-                        {required: true, validator :validateServices, trigger: 'blur'}
+                        { required : true, validator : validateServices, trigger : 'blur' }
                     ]
                 },
                 //是否正在添加中
-                addLoading: false,
+                addLoading : false,
                 //服务操作类型
                 type : '',
                 //服务列表
                 serviceList : [],
                 //套餐id
                 packageId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存新增数据
              */
-            save() {
+            save () {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        if(this.type === 'add'){
+                    if (valid) {
+                        if (this.type === 'add') {
                             this.addPackage();
-                        }else if(this.type === 'edit'){
+                        } else if (this.type === 'edit') {
                             this.updatePackage();
                         }
-                    }else{
+                    } else {
                         this.addLoading = false;
                     }
                 });
@@ -158,9 +158,9 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$router.push({
-                    name: 'packageList'
+                    name : 'packageList'
                 });
             },
             /**
@@ -168,13 +168,13 @@
              * @param params
              */
             getParams (params) {
-                if(params.type) {
+                if (params.type) {
                     this.type = params.type;
-                    this.packageId  = params.id;
-                    if(this.type === 'watch' || this.type === 'edit'){
+                    this.packageId = params.id;
+                    if (this.type === 'watch' || this.type === 'edit') {
                         this.queryPackageInfoById();
                     }
-                }else{
+                } else {
                     this.$router.push({
                         name : 'package'
                     });
@@ -189,13 +189,13 @@
                 ajax.post('queryServiceList',{
                     serviceStatus : 'normal'
                 }).then(res => {
-                    if(res.status === 200){
-                        this.serviceList =  res.data ? res.data : [];
-                    }else{
-                        this.serviceList =  [];
+                    if (res.status === 200) {
+                        this.serviceList = res.data ? res.data : [];
+                    } else {
+                        this.serviceList = [];
                     }
                 }).catch(err => {
-                    this.serviceList =  [];
+                    this.serviceList = [];
                 });
             },
             /**
@@ -204,14 +204,14 @@
             addPackage () {
                 ajax.post('addPackage',{
                     packageName : this.formData.packageName,
-                    serviceids  : this.formData.services.join(',')
+                    serviceids : this.formData.services.join(',')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('新增成功');
                         this.$router.push({
                             name : 'packageList'
                         });
-                    }else{
+                    } else {
                         this.$Message.error(res.message || '新增失败');
                     }
                 }).finally(() => {
@@ -225,14 +225,14 @@
                 ajax.post('updatePackage',{
                     id : this.packageId,
                     packageName : this.formData.packageName,
-                    serviceids  : this.formData.services.join(',')
+                    serviceids : this.formData.services.join(',')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('编辑成功');
                         this.$router.push({
                             name : 'packageList'
                         });
-                    }else{
+                    } else {
                         this.$Message.error(res.message || '编辑失败');
                     }
                 }).finally(() => {
@@ -242,14 +242,14 @@
             /**
              * 更具id获取单个套餐的详情
              */
-            queryPackageInfoById (){
+            queryPackageInfoById () {
                 ajax.post('queryPackageInfoById',{
                     id : this.packageId
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.formData.packageName = res.data.comboName;
                         this.formData.services = res.data.services ? res.data.services.map(item => item.id) : [];
-                    }else{
+                    } else {
                         this.formData.packageName = '';
                         this.formData.services = [];
                     }
@@ -259,26 +259,26 @@
         computed : {
             //当前路由名称
             localeRouteName () {
-                if(this.type === 'add') {
+                if (this.type === 'add') {
                     return this.$t('addPackakge');
-                }else if(this.type === 'edit'){
+                } else if (this.type === 'edit') {
                     return this.$t('editPackakge');
-                }else if(this.type === 'watch'){
+                } else if (this.type === 'watch') {
                     return this.$t('packageDetail');
-                }else{
+                } else {
                     return '';
                 }
             },
             //选择的服务格式化
             servicesChosed () {
-                if(this.formData && this.formData.services && this.formData.services){
+                if (this.formData && this.formData.services && this.formData.services) {
                     return this.formData.services.join(',');
-                }else{
+                } else {
                     return '';
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

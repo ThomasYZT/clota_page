@@ -69,14 +69,14 @@
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             topData,
             abnormalWarn,
             lesseePlace,
             serverList,
             rankList
         },
-        data() {
+        data () {
             return {
                 //数据统计时间
                 date : new Date(),
@@ -108,9 +108,9 @@
                     //服务器数量
                     serverCount : 0,
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取当前登录的用户数
              */
@@ -118,9 +118,9 @@
                 ajax.get('loginCount',{
                     date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.logCountData = res.data;
-                    }else{
+                    } else {
                         this.logCountData.contrastWithYesterday = '-';
                         this.logCountData.loginCount = '-';
                     }
@@ -136,9 +136,9 @@
                 ajax.get('orderCount',{
                     date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.travelOrderData = res.data;
-                    }else{
+                    } else {
                         this.logCountData.contrastWithYesterday = '-';
                         this.logCountData.orderCount = '-';
                     }
@@ -154,9 +154,9 @@
                 ajax.get('tenantCount',{
                     date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tenantCountData = res.data;
-                    }else{
+                    } else {
                         this.tenantCountData.contrastWithYesterday = '-';
                         this.tenantCountData.tenantCount = '-';
                     }
@@ -172,9 +172,9 @@
                 ajax.get('serverCount',{
                     date : this.date.format('yyyy-MM-dd 00:00:00')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.serverCountData = res.data;
-                    }else{
+                    } else {
                         this.serverCountData.contrastWithYesterday = '-';
                         this.serverCountData.serverCount = '-';
                     }
@@ -199,7 +199,7 @@
             this.getTenantCount();
             this.getServerCount();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

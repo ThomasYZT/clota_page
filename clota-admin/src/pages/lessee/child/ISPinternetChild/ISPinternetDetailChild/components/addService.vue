@@ -68,7 +68,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {openedServiceHead} from './openedServiceConfig';
+    import { openedServiceHead } from './openedServiceConfig';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -80,10 +80,10 @@
                 }
             }
         },
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //是否显示模态框
                 modalShow : false,
@@ -100,31 +100,31 @@
                 pageSize : 10,
                 pageNo : 1,
                 tableData : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === false){
+            visibleChange (type) {
+                if (type === false) {
                     this.handleSelectionChange([]);
                 }
             },
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.modalShow = false;
-                if(this.cancelCallback){
+                if (this.cancelCallback) {
                     this.cancelCallback();
                 }
             },
             /**
              * 确认新增
              */
-            confirm() {
+            confirm () {
                 this.openScenicServices();
             },
             /**
@@ -132,12 +132,12 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({confirmCallback = null,cancelCallback}) {
+            show ({ confirmCallback = null,cancelCallback }) {
                 this.modalShow = true;
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
             },
@@ -155,9 +155,9 @@
                 ajax.post('getOpenServices',{
                     orgId : this.sceneDetail.id
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data && res.data.orgServices ? res.data.orgServices : [];
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 });
@@ -171,10 +171,10 @@
                     serviceIds : this.selectedService.map(item => item.serviceId),
                     parentOrgId : this.sceneDetail.parentManage ? this.sceneDetail.parentManage.id : ''
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('开通成功');
                         this.$emit('fresh-service');
-                    }else{
+                    } else {
                         this.$Message.error('开通失败');
                     }
                 }).finally(() => {
@@ -188,7 +188,7 @@
                 return this.sceneDetail && !!this.sceneDetail.id && this.modalShow;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

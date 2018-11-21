@@ -45,13 +45,13 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        components: {},
+        components : {},
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -59,28 +59,28 @@
             };
 
             return {
-                visible: false,
+                visible : false,
                 //标题信息
                 title : '',
                 //表单数据
-                formData: {
-                    name: '',
+                formData : {
+                    name : '',
                 },
                 // 表单校验
-                ruleValidate: {
+                ruleValidate : {
                     name : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {msg: this.$t('provinceName')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('provinceName'), length: 10}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { msg : this.$t('provinceName') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('provinceName'), length : 10 }), trigger : 'blur' },
                     ],
                 },
                 //确认执行的回调函数
                 confirmCallback : null,
                 //取消执行的回调函数
                 cancelCallback : null,
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 显示 模态框
@@ -89,16 +89,16 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({data,title,confirmCallback = null,cancelCallback}) {
+            show ({ data,title,confirmCallback = null,cancelCallback }) {
                 this.visible = true;
                 this.title = title;
-                if(data){
+                if (data) {
                     this.formData = defaultsDeep({}, data);
                 }
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
             },
@@ -106,24 +106,24 @@
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
-                        if(this.confirmCallback){
+                    if (valid) {
+                        if (this.confirmCallback) {
                             this.confirmCallback( this.formData );
                             this.hide();
                         }
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
-                this.formData = { name: '' };
+                this.formData = { name : '' };
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

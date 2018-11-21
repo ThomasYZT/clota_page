@@ -30,39 +30,39 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import ajax from '@/api/index.js';
     export default {
-        data() {
+        data () {
             //校验新密码
             const validatePass = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
-                    if(value == this.formData.password){
+                    if (value == this.formData.password) {
                         callback('新密码不能与旧密码相同');
-                    }else if(reg.test(value)){
+                    } else if (reg.test(value)) {
                         callback();
-                    }else{
+                    } else {
                         callback(this.$t('passwordError'));
                     }
-                }else{
-                    callback(this.$t('validateError.pleaseInput',{msg : this.$t('password',{msg : this.$t('new')})}));
+                } else {
+                    callback(this.$t('validateError.pleaseInput',{ msg : this.$t('password',{ msg : this.$t('new') }) }));
                 }
             };
             //校验再次输入的密码
             const validateNpassAgain = (rule,value,callback) => {
-                if(value){
-                    if(value !== this.formData.newPassword){
-                        if(this.formData.newPassword){
+                if (value) {
+                    if (value !== this.formData.newPassword) {
+                        if (this.formData.newPassword) {
                             callback(this.$t('newPassError'));
-                        }else{
+                        } else {
                             this.$refs.formValidate.validateField('newPassword');
                             callback(this.$t('newPassError'));
                         }
-                    }else{
+                    } else {
                         callback();
                     }
-                }else{
+                } else {
                     callback(this.$t('passwordAgainInput'));
                 }
             };
@@ -76,37 +76,37 @@
                     //再次输入密码
                     newPasswordAgain : '',
                 },
-                loginName: '',
+                loginName : '',
                 //表单校验规则
                 ruleValidate : {
                     password : [
-                        {required : true,message : this.$t('validateError.pleaseInput',{msg : this.$t('password',{msg : this.$t('now')})}),trigger : 'blur'}
+                        { required : true,message : this.$t('validateError.pleaseInput',{ msg : this.$t('password',{ msg : this.$t('now') }) }),trigger : 'blur' }
                     ],
                     newPassword : [
-                        {required : true,validator : validatePass ,trigger :'blur'}
+                        { required : true,validator : validatePass ,trigger : 'blur' }
                     ],
                     newPasswordAgain : [
-                        {required : true,validator : validateNpassAgain ,trigger :'blur'}
+                        { required : true,validator : validateNpassAgain ,trigger : 'blur' }
                     ]
                 },
                 //是否在保存中
                 isSaving : false
-            }
+            };
         },
-        created(){
+        created () {
             this.getSysAccountByToken();
         },
-        methods: {
-            getSysAccountByToken(){
+        methods : {
+            getSysAccountByToken () {
                 return ajax.post('getSysAccountByToken',).then(res => {
-                    if(res.status == 200){
+                    if (res.status == 200) {
                         this.loginName = res.data.loginName;
                     }
                 });
             },
-            handleSubmit(){
+            handleSubmit () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.save();
                     }
                 });
@@ -116,20 +116,20 @@
              */
             async save () {
                 this.isSaving = true;
-                if(!this.loginName){
+                if (!this.loginName) {
                     await this.getSysAccountByToken();
                 }
-               let ChangePassword={
-                      loginName: this.loginName,
-                      oldPassword:this.formData.password,
-                      newPassword:this.formData.newPassword
-                 }
+               let ChangePassword = {
+                      loginName : this.loginName,
+                      oldPassword : this.formData.password,
+                      newPassword : this.formData.newPassword
+                 };
                  //console.log(ChangePassword)
                 ajax.post('modifyPassword',ChangePassword).then(res => {
-                    if(res.status == 200){
+                    if (res.status == 200) {
                         this.$Message.success('修改密码成功');
                         this.resetFormData();
-                    }else{
+                    } else {
                         this.$Message.error(res.message);
                     }
                 }).finally(res => {
@@ -147,12 +147,12 @@
              * 重置表单信息
              */
             resetFormData () {
-                for(let item in this.formData){
+                for (let item in this.formData) {
                     this.formData[item] = '';
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

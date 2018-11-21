@@ -31,20 +31,20 @@
 
 <script>
     export default {
-        props: {
+        props : {
         },
-        data() {
+        data () {
             //校验密码
             const validatePass = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
-                    if(reg.test(value)){
+                    if (reg.test(value)) {
                         callback();
-                    }else{
+                    } else {
                         callback(this.$t('passwordError'));
                     }
-                }else{
-                    callback(this.$t('validateError.pleaseInput',{msg : this.title}));
+                } else {
+                    callback(this.$t('validateError.pleaseInput',{ msg : this.title }));
                 }
             };
             return {
@@ -63,22 +63,22 @@
                 //校验规则
                 ruleValidate : {
                     passWord : [
-                        {required : true,validator : validatePass ,trigger :'blur'}
+                        { required : true,validator : validatePass ,trigger : 'blur' }
                     ]
                 },
                 //确认文本
                 confirmBtn : '',
                 //取消文本
                 cancelBtn : '',
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === false){
+            visibleChange (type) {
+                if (type === false) {
                     this.$refs.formRef.resetFields();
                     this.formData.passWord = '';
                 }
@@ -86,24 +86,24 @@
             /**
              * 取消删除
              */
-            cancel() {
+            cancel () {
                 this.hide();
             },
             /**
              * 确认删除
              */
-            confirm() {
-                if(this.$refs.formRef){
+            confirm () {
+                if (this.$refs.formRef) {
                     this.$refs.formRef.validate(valid => {
-                        if(valid) {
+                        if (valid) {
                             this.modalShow = false;
-                            if(this.confirmCallback){
+                            if (this.confirmCallback) {
                                 this.confirmCallback(this.formData.passWord);
                             }
                         }
                     });
-                }else{
-                    if(this.confirmCallback){
+                } else {
+                    if (this.confirmCallback) {
                         this.confirmCallback(this.formData.passWord);
                     }
                 }
@@ -114,15 +114,15 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({title,confirmCallback = null,cancelCallback,confirmBtn = this.$t('confirm'),cancelBtn = this.$t('cancel')}) {
+            show ({ title,confirmCallback = null,cancelCallback,confirmBtn = this.$t('confirm'),cancelBtn = this.$t('cancel') }) {
                 this.modalShow = true;
                 this.title = title;
                 this.confirmBtn = confirmBtn;
                 this.cancelBtn = cancelBtn;
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
             },
@@ -131,12 +131,12 @@
              */
             hide () {
                 this.modalShow = false;
-                if(this.cancelCallback){
+                if (this.cancelCallback) {
                     this.cancelCallback();
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

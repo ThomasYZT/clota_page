@@ -1,5 +1,6 @@
-
-
+@charset "UTF-8";
+@import 'variable';
+@import "mixins";
 .operate-info {
     @include table_operate();
 

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-    import {monthEnum} from '../../../../../../assets/js/constVariable';
+    import { monthEnum } from '../../../../../../assets/js/constVariable';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -73,7 +73,7 @@
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -82,20 +82,20 @@
                 },
                 //服务期限列表
                 monthEnum : monthEnum,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
             },
             /**
              * 取消保存
@@ -118,23 +118,23 @@
                     serviceIds : this.serviceList.map(item => item.serviceId),
                     extensionTime : this.formData.serverTime
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('延期成功');
                         this.$emit('fresh-data');
-                    }else{
+                    } else {
                         this.$Message.error('延期失败');
                     }
                 }).finally(() => {
                     this.$emit('input', false);
-                }) ;
+                });
             }
         },
         computed : {
             //服务延期后预计结束时间
             serviceDelayedInfo () {
                 let result = [];
-                if(this.serviceList && this.serviceList.length > 0){
-                    for(let i = 0, j = this.serviceList.length;i < j;i++){
+                if (this.serviceList && this.serviceList.length > 0) {
+                    for (let i = 0, j = this.serviceList.length; i < j; i++) {
                         result.push(Object.assign({
                              estimateEndtime : this.serviceList[i].endTime
                                 ? this.serviceList[i].endTime.replace(/-/g,'/').toDate().addMonths(this.formData.serverTime).format('yyyy-MM-dd hh:mm:ss')
@@ -145,7 +145,7 @@
                 return result;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

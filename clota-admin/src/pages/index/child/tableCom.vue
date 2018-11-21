@@ -84,42 +84,42 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         components : {
             noData,
         },
-        props: {
+        props : {
             //表格数据
-            'table-data': {
-                type: Array,
-                default() {
+            'table-data' : {
+                type : Array,
+                default () {
                     return [];
                 }
             },
             //表格高度
-            'table-height': {
-                type: String,
-                default: '50px'
+            'table-height' : {
+                type : String,
+                default : '50px'
             },
             //表头数据
-            'column-data': {
-                type: [Object, Array],
-                default() {
+            'column-data' : {
+                type : [Object, Array],
+                default () {
                     return {};
                 }
             },
             //激活的二级tap
-            'active-tap': {
-                type: String,
-                default: ''
+            'active-tap' : {
+                type : String,
+                default : ''
             },
             //行是否可点击
-            'row-click': {
-                type: Boolean,
-                default: false
+            'row-click' : {
+                type : Boolean,
+                default : false
             },
             //不固定表格高度
             'auto-height' : {
@@ -132,15 +132,15 @@
                 default : false
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 行点击事件
              * @param data
              */
-            classDetailLink(data) {
+            classDetailLink (data) {
                 this.$emit('row-click', data);
             },
             /**
@@ -151,9 +151,9 @@
                 this.$emit('selection-change',data);
             },
         },
-        computed: {
+        computed : {
             //表头配置
-            columnDataCs() {
+            columnDataCs () {
                 if (this.activeTap !== '') {
                     return this.columnData[this.activeTap];
                 } else {
@@ -161,9 +161,9 @@
                 }
             },
         },
-        filters: {
+        filters : {
             // 时间格式化过滤器
-            timeFormat(value, format = 'yyyy/MM/dd', emptyVal = '') {
+            timeFormat (value, format = 'yyyy/MM/dd', emptyVal = '') {
                 if (!value) {
                     return emptyVal;
                 } else if (value instanceof Date) {
@@ -173,11 +173,11 @@
                 } else if (typeof value === 'string') {
                     return value.toDate().format(format);
                 } else {
-                    return value
+                    return value;
                 }
             },
             //内容过滤器，如果内容为空或null，返回-
-            contentFilter(content) {
+            contentFilter (content) {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
@@ -185,7 +185,7 @@
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="less" scoped>

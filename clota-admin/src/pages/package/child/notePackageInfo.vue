@@ -47,14 +47,14 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {packageHead} from './notePackageConfig';
+    import { packageHead } from './notePackageConfig';
     import ajax from '@/api/index.js';
 
     export default {
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //总条数
                 totalCount : 0,
@@ -66,9 +66,9 @@
                 pageNo : 1,
                 //每页的条数
                 pageSize : 10
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 新建套餐
              */
@@ -101,10 +101,10 @@
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
                         this.totalCount = Number(res.data.totalRecord);
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -114,7 +114,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

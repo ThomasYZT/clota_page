@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import {companies} from './subCompanyConfig';
+    import { companies } from './subCompanyConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
     export default {
@@ -40,14 +40,14 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //下属公司表头配置
                 companies : companies,
@@ -58,10 +58,10 @@
                 //是否收起
                 isPackUp : true,
                 pageNo : 1,
-                pageSize :10
-            }
+                pageSize : 10
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询下属公司信息
              */
@@ -72,10 +72,10 @@
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                   if(res.status === 200){
+                   if (res.status === 200) {
                        this.tableData = res.data ? res.data.list : [];
                        this.totalCount = Number(res.data.totalRecord);
-                   }else{
+                   } else {
                        this.tableData = [];
                        this.totalCount = 0;
                    }
@@ -88,7 +88,7 @@
                 return this.searchParams && !!this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

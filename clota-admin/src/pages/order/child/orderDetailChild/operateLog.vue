@@ -28,7 +28,7 @@
         props : {
 
         },
-        data() {
+        data () {
             return {
                 //操作日志
                 operateLog : [
@@ -55,12 +55,12 @@
                 ],
                 //是否展开
                 isPackUpLoad : true
-            }
+            };
         },
-        methods: {
+        methods : {
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

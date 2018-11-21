@@ -44,14 +44,14 @@
 <script>
     import filterHead from './serviceOpenedRecordChild/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {serviceOpenHead} from './serviceOpenedRecordConfig';
+    import { serviceOpenHead } from './serviceOpenedRecordConfig';
     import ajax from '@/api/index.js';
     export default {
         components : {
             filterHead,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 serviceOpenHead : serviceOpenHead,
@@ -76,9 +76,9 @@
                     //类别
                     runStatus : ''
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取服务开通记录
              */
@@ -92,22 +92,22 @@
                     page : this.pageNo,
                     pageSize : this.pageSize,
                 };
-                if(this.formData.runStatus){
+                if (this.formData.runStatus) {
                     Object.assign(params,{
                         runStatus : this.formData.runStatus,
-                    })
+                    });
                 }
                 ajax.post('getServiceRecord',params).then(res => {
-                    if(res.status === 200){
-                        this.tableData = res.data.list  ? res.data.list : [];
-                        this.totalCount =  Number(res.data.totalRecord);
-                    }else{
+                    if (res.status === 200) {
+                        this.tableData = res.data.list ? res.data.list : [];
+                        this.totalCount = Number(res.data.totalRecord);
+                    } else {
                         this.tableData = [];
-                        this.totalCount  = 0;
+                        this.totalCount = 0;
                     }
                 }).catch(() => {
                     this.tableData = [];
-                    this.totalCount  = 0;
+                    this.totalCount = 0;
                 });
             },
             /**
@@ -118,12 +118,12 @@
                 this.formData.serviceId = formData.serviceId;
                 this.formData.orgId = formData.orgId;
                 this.formData.runStatus = formData.runStatus;
-                this.formData.startTime = formData.operateTime[0] ? new Date(formData.operateTime[0]).format('yyyy-MM-dd 00:00:00') : '' ;
-                this.formData.endTime = formData.operateTime[1] ? new Date(formData.operateTime[1]).format('yyyy-MM-dd 23:59:59') : '' ;
+                this.formData.startTime = formData.operateTime[0] ? new Date(formData.operateTime[0]).format('yyyy-MM-dd 00:00:00') : '';
+                this.formData.endTime = formData.operateTime[1] ? new Date(formData.operateTime[1]).format('yyyy-MM-dd 23:59:59') : '';
                 this.getServiceRecord();
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

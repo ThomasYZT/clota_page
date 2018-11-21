@@ -39,20 +39,20 @@
             breadCrumbHead,
             noData
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('serverList'),
-                        router: {
-                            name: 'server'
+                        name : this.$t('serverList'),
+                        router : {
+                            name : 'server'
                         }
                     },
                     {
-                        name: this.$t('deviceInfo'),
-                        router: {
-                            name: 'serverDetail'
+                        name : this.$t('deviceInfo'),
+                        router : {
+                            name : 'serverDetail'
                         }
                     }
                 ],
@@ -67,9 +67,9 @@
                     data : [],
                     legend : []
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询磁盘空间信息
              */
@@ -81,18 +81,18 @@
                     pageSize : 99999,
                     page : 1
                 }).then(res => {
-                    if(res.status === 200){
-                        if(res.data.list && res.data.list.length > 0){
+                    if (res.status === 200) {
+                        if (res.data.list && res.data.list.length > 0) {
                             let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
                             this.diskInfo.data = legendData.map(item => item.totalSpace - item.freeSpace);
                             this.diskInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
-                        }else{
+                        } else {
                             this.diskInfo = {
                                 data : [],
                                 legend : []
                             };
                         }
-                    }else{
+                    } else {
                         this.diskInfo = {
                             data : [],
                             legend : []
@@ -108,8 +108,8 @@
             /**
              * 获取路由数据
              */
-            getParams(params) {
-                if(params.ip){
+            getParams (params) {
+                if (params.ip) {
                     this.serverIp = params.ip;
                     this.logDate = [params.startTime,params.endTime];
                     this.serverName = params.serverName;
@@ -117,12 +117,12 @@
                 }
             }
         },
-        beforeRouteEnter(to,from,next) {
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

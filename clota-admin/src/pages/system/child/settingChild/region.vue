@@ -113,7 +113,7 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
-    import {regionHead} from './regionConfig';
+    import { regionHead } from './regionConfig';
     import ajax from '@/api/index';
     import editProvince from './editProvince.vue';
     import editCity from './editCity.vue';
@@ -127,54 +127,54 @@
             editCity,
             editArea,
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 regionHead : regionHead,
                 //区县列表的请求参数
-                areaListParams: {
+                areaListParams : {
                     //搜索的关键字
                     area : '',
-                    cityid: '',
-                    page: 1,
-                    pageSize: 10
+                    cityid : '',
+                    page : 1,
+                    pageSize : 10
                 },
                 //区县列表数据
-                tableData: [],
+                tableData : [],
                 //区县列表数据总数
-                total: 0,
+                total : 0,
                 //省份数据
-                provinceData: [],
+                provinceData : [],
                 //城市数据
-                cityData: [],
+                cityData : [],
                 //删除的信息
                 delUnits : {},
                 //当前操作数据(修改/停用/启用/删除)
-                operateData: {
-                    provinceid: '',
-                    cityid: '',
-                    areaid: '',
-                    province: '',
-                    city: '',
-                    area: '',
-                    id: '',
-                    remarks: '',
+                operateData : {
+                    provinceid : '',
+                    cityid : '',
+                    areaid : '',
+                    province : '',
+                    city : '',
+                    area : '',
+                    id : '',
+                    remarks : '',
                 },
                 //type (province/city/area)
-                type: 'province',
-            }
+                type : 'province',
+            };
         },
-        created() {
+        created () {
             //查询省份列表
             this.queryProvinceList();
         },
-        methods: {
+        methods : {
             /**
              * 查询省份列表
              */
-            queryProvinceList() {
+            queryProvinceList () {
                 ajax.post('provinceList', {}).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.provinceData = res.data || [];
                         this.operateData.province = res.data[0].province;
                         this.operateData.provinceid = res.data[0].provinceid;
@@ -187,16 +187,16 @@
             /**
              * 查询城市列表
              */
-            queryCityList( data, flag ) {
+            queryCityList ( data, flag ) {
                 ajax.post('cityList', {
-                    provinceid: data.provinceid
+                    provinceid : data.provinceid
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.cityData = res.data || [];
                         this.operateData.city = res.data[0].city;
                         this.operateData.cityid = res.data[0].cityid;
                         this.areaListParams.cityid = res.data[0].cityid;
-                        if(flag){
+                        if (flag) {
                             this.queryList();
                         }
                     } else {
@@ -207,9 +207,9 @@
             /**
              * 查询区县列表
              */
-            queryList() {
+            queryList () {
                 ajax.post('areaList', this.areaListParams).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list || [];
                         this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
                     } else {
@@ -244,9 +244,9 @@
                 this.$refs.addProModal.show({
                     title : '新增省份',
                     confirmCallback : ( data ) => {
-                        if(data){
+                        if (data) {
                             ajax.post('addProvince', {
-                                name: data.name
+                                name : data.name
                             }).then(res => {
                                 if (res.status === 200) {
                                     this.$Message.success(this.$t('success') + this.$t('add'));
@@ -269,13 +269,13 @@
                 data.name = data.province;
                 this.type = 'province';
                 this.$refs.addProModal.show({
-                    data: data,
+                    data : data,
                     title : '修改省份',
                     confirmCallback : ( params ) => {
-                        if(params){
+                        if (params) {
                             ajax.post('updateProvince', {
-                                provinceId: params.provinceid,
-                                name: params.name
+                                provinceId : params.provinceid,
+                                name : params.name
                             }).then(res => {
                                 if (res.status === 200) {
                                     this.$Message.success(this.$t('success') + this.$t('edit'));
@@ -293,7 +293,7 @@
              * 删除省份
              * @param data
              */
-            confirmDelProvince(event,data) {
+            confirmDelProvince (event,data) {
                 event.stopPropagation();
                 this.type = 'province';
                 this.delUnits = data;
@@ -306,9 +306,9 @@
             },
             deleteProvince ( data ) {
                 ajax.post('deleteProvince', {
-                    provinceId: data.provinceid
+                    provinceId : data.provinceid
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         //查询省份列表
                         this.queryProvinceList();
@@ -327,10 +327,10 @@
                 this.$refs.addCityModal.show({
                     title : '新增城市',
                     confirmCallback : ( data ) => {
-                        if(data){
+                        if (data) {
                             ajax.post('addCity', {
-                                provinceId: this.operateData.provinceid,
-                                name: data.name
+                                provinceId : this.operateData.provinceid,
+                                name : data.name
                             }).then(res => {
                                 if (res.status === 200) {
                                     this.$Message.success(this.$t('success') + this.$t('add'));
@@ -352,14 +352,14 @@
                 this.type = 'city';
                 data.name = data.city;
                 this.$refs.addCityModal.show({
-                    data: data,
+                    data : data,
                     title : '修改城市',
                     confirmCallback : ( params ) => {
-                        if(params){
+                        if (params) {
                             ajax.post('updateCity', {
-                                provinceId: params.provinceid,
-                                cityId: params.cityid,
-                                name: params.name
+                                provinceId : params.provinceid,
+                                cityId : params.cityid,
+                                name : params.name
                             }).then(res => {
                                 if (res.status === 200) {
                                     this.$Message.success(this.$t('success') + this.$t('edit'));
@@ -376,7 +376,7 @@
              * 删除城市
              * @param data
              */
-            confirmDelCity(event,data) {
+            confirmDelCity (event,data) {
                 event.stopPropagation();
                 this.type = 'city';
                 this.delUnits = data;
@@ -389,9 +389,9 @@
             },
             deleteCity ( data ) {
                 ajax.post('deleteCity', {
-                    cityId: data.cityid
+                    cityId : data.cityid
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         this.queryCityList(this.operateData, true);
                     } else {
@@ -409,12 +409,12 @@
                 this.$refs.addAreaModal.show({
                     title : '新增区县',
                     confirmCallback : ( data ) => {
-                        if(data){
+                        if (data) {
                             ajax.post('addArea', {
-                                cityId: this.operateData.cityid,
-                                id: data.id,
-                                remarks: data.remarks,
-                                name: data.name
+                                cityId : this.operateData.cityid,
+                                id : data.id,
+                                remarks : data.remarks,
+                                name : data.name
                             }).then(res => {
                                 if (res.status === 200) {
                                     this.$Message.success(this.$t('success') + this.$t('add'));
@@ -435,16 +435,16 @@
                 this.type = 'area';
                 data.name = data.area;
                 this.$refs.addAreaModal.show({
-                    data: data,
+                    data : data,
                     title : '修改区县',
                     confirmCallback : ( params ) => {
-                        if(params){
+                        if (params) {
                             ajax.post('updateArea', {
-                                areaId: params.areaid,
-                                cityId: params.cityid,
-                                id: params.id,
-                                remarks: params.remarks,
-                                name: params.name
+                                areaId : params.areaid,
+                                cityId : params.cityid,
+                                id : params.id,
+                                remarks : params.remarks,
+                                name : params.name
                             }).then(res => {
                                 if (res.status === 200) {
                                     this.$Message.success(this.$t('success') + this.$t('edit'));
@@ -461,7 +461,7 @@
              * 删除区县
              * @param data
              */
-            confirmDelArea(data) {
+            confirmDelArea (data) {
                 this.type = 'area';
                 this.delUnits = data;
                 this.$refs.delModal.show({
@@ -473,9 +473,9 @@
             },
             deleteArea ( data ) {
                 ajax.post('deleteArea', {
-                    areaId: data.areaid,
+                    areaId : data.areaid,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         this.queryList();
                     } else {
@@ -485,7 +485,7 @@
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

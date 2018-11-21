@@ -41,6 +41,10 @@
             <span style="" class="red-bale">本操作将同步删除本节点的全部下级节点，并不可撤销，</span>
             <span>是否继续删除？</span>
         </del-modal>
+        <!--删除节点失败原因显示-->
+        <confirm-modal v-model="confirmModalShow" title="提示">
+            当前删除节点或其子孙节点是其它节点的财务上级，不可删除，请重新设置财务上级后再删除
+        </confirm-modal>
         <!--新增节点模态框-->
         <add-modal v-model="addModalShow"
                    :node-detail="currentNode"
@@ -82,11 +86,11 @@
     import noData from '@/components/noDataTip/noData-tip';
 
     export default {
-        props: {
+        props : {
             //组织结构数据
-            'tree-data': {
-                type: Array,
-                default() {
+            'tree-data' : {
+                type : Array,
+                default () {
                     return [];
                 }
             },
@@ -99,11 +103,11 @@
             activeNode : {
                 type : Object,
                 default () {
-                    return  {};
+                    return {};
                 }
             }
         },
-        components: {
+        components : {
             delModal,
             addModal,
             addCompany,
@@ -111,47 +115,49 @@
             addCashier,
             noData
         },
-        data() {
+        data () {
             return {
                 //搜索关键字
-                keyWord: '',
+                keyWord : '',
                 //当前激活菜单
-                activeTap: 'manage',
+                activeTap : 'manage',
                 //添加节点模态框是否显示
-                addModalShow: false,
+                addModalShow : false,
                 //当前操作的节点
-                currentNode: {},
+                currentNode : {},
                 //是否显示添加公司的模态框
-                addCompanyModalShow: false,
+                addCompanyModalShow : false,
                 //是否显示添加景区的模态框
-                addSceneModalShow: false,
+                addSceneModalShow : false,
                 //是否显示添加款台的模态框
-                addCashierModalShow: false,
+                addCashierModalShow : false,
                 //新增的节点信息
-                addNodeDetail: {},
-                defaultProps: {
-                    children: 'chilrends'
+                addNodeDetail : {},
+                defaultProps : {
+                    children : 'chilrends'
                 },
-            }
+                //确认模态框是否显示
+                confirmModalShow : false
+            };
         },
-        methods: {
+        methods : {
             /**
              * 组织树render函数
              */
-            renderContent(h, {root, node, data}) {
-                if(data.id === this.activeNode.id){
+            renderContent (h, { root, node, data }) {
+                if (data.id === this.activeNode.id) {
                     this.$emit('update:activeNode',Object.assign(this.activeNode,{
                         pid : data.pid,
                     }));
                 }
                 // data.expand = true;
                 return h('div', {
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
                     },
-                    class: {
-                        'title-wrap': true,
+                    class : {
+                        'title-wrap' : true,
                         'active-node' : data.id === this.activeNode.id
                     },
                     on : {
@@ -167,28 +173,28 @@
                     }
                 }, [
                     h('span', {
-                        class: {
-                            'title-class': true
+                        class : {
+                            'title-class' : true
                         },
-                        directives: [
+                        directives : [
                             {
-                                name: 'w-title',
-                                value: data.name
+                                name : 'w-title',
+                                value : data.name
                             }
                         ],
                     }, data.name),
                     h('span', {
-                        class: {
-                            iconfont: 'true',
-                            'icon-delete': true,
+                        class : {
+                            iconfont : 'true',
+                            'icon-delete' : true,
                             //财务管理不允许删除节点
                             'hidden' : this.activeTap === 'economic' || data.pid === null
                         },
                         style : {
                             paddingRight : '5px',
                         },
-                        on: {
-                            click: (e) => {
+                        on : {
+                            click : (e) => {
                                 e.stopPropagation();
                                 this.currentNode = data;
                                 this.$refs.delModal.show({
@@ -201,9 +207,9 @@
                         }
                     }),
                     h('span', {
-                        class: {
-                            iconfont: 'true',
-                            'icon-add': true,
+                        class : {
+                            iconfont : 'true',
+                            'icon-add' : true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
@@ -212,21 +218,21 @@
                         style : {
                             paddingRight : '5px',
                         },
-                        on: {
-                            click: (e) => {
+                        on : {
+                            click : (e) => {
                                 e.stopPropagation();
                                 this.currentNode = data;
                                 this.addModalShow = true;
                             }
                         }
                     })
-                ])
+                ]);
             },
             /**
              * 选择切换tap
              * @param tap
              */
-            switchTap(tap) {
+            switchTap (tap) {
                 this.activeTap = tap;
                 this.keyWord = '';
                 this.$emit('update:activeNode',{});
@@ -236,21 +242,21 @@
              * 打开填写新增公司的信息的模态框
              * @param data
              */
-            addCompanyShow(data) {
+            addCompanyShow (data) {
                 this.addNodeDetail = data;
                 this.addCompanyModalShow = true;
             },
             /**
              * 重新获取组织结构数据
              */
-            getStructureData() {
+            getStructureData () {
                 this.$emit('fresh-org',this.activeNode);
             },
             /**
              * 打开填写新增景区的信息的模态框
              * @param data
              */
-            addScene(data) {
+            addScene (data) {
                 this.addNodeDetail = data;
                 this.addSceneModalShow = true;
             },
@@ -258,7 +264,7 @@
              * 打开填写新增款台的信息的模态框
              * @param data
              */
-            addCashier(data) {
+            addCashier (data) {
                 this.addNodeDetail = data;
                 this.addCashierModalShow = true;
             },
@@ -266,17 +272,17 @@
              * 新增部门
              * @param data
              */
-            addDepartment(data) {
+            addDepartment (data) {
                 ajax.post('addOrgInfo',{
                     rootId : this.rootId,
                     orgName : data.nodeName,
                     nodeType : 'department',
                     parentManageId : this.currentNode.id,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('新增成功');
                         this.getStructureData();
-                    }else{
+                    } else {
                         this.$Message.error('新增失败');
                     }
                 });
@@ -289,13 +295,17 @@
                 ajax.post('deleteNode',{
                     id : data.id
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('删除成功');
-                        this.$emit('switch-tap',this.activeTap);
-                    }else{
-                        this.$Message.error('删除失败');
+                        this.switchTap(this.activeTap);
+                    } else {
+                        if (res.message && res.message === '需要删除的节点中包含了其他节点的财务上级') {
+                            this.confirmModalShow = true;
+                        } else {
+                            this.$Message.error('删除失败');
+                        }
                     }
-                })
+                });
             },
             /**
              * 过滤节点方法
@@ -303,34 +313,34 @@
              * @param data
              * @returns {boolean}
              */
-            filterNode(value, data) {
+            filterNode (value, data) {
                 if (!value) return true;
                 return data && data.name && data.name.indexOf(value) !== -1;
             }
         },
         computed : {
             //公司树数据
-            companyData (){
-                if(Object.keys(this.treeData).length > 0){
+            companyData () {
+                if (Object.keys(this.treeData).length > 0) {
                     return this.treeData;
-                }else{
+                } else {
                     return [];
                 }
             },
             //根节点id
-            rootId (){
-                if(this.treeData && this.treeData.length > 0){
+            rootId () {
+                if (this.treeData && this.treeData.length > 0) {
                     return this.treeData[0].id;
-                }else{
+                } else {
                     return '';
                 }
             },
             //默认展开的节点
             defaultExpandedKeys () {
-                if(this.activeNode){
+                if (this.activeNode) {
                     return [this.activeNode.id];
-                }else{
-                    return []
+                } else {
+                    return [];
                 }
             }
         },
@@ -338,13 +348,13 @@
             //监视查询关键字，如果改变就进行查找
             keyWord (newVal,oldVal) {
                 this.$nextTick( () => {
-                    if(this.$refs.tree){
+                    if (this.$refs.tree) {
                         this.$refs.tree.filter(newVal);
                     }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

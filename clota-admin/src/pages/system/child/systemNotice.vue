@@ -78,35 +78,35 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {systemHead} from './systemNoticeConfig';
+    import { systemHead } from './systemNoticeConfig';
     import ajax from '@/api/index';
 
     export default {
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 systemHead : systemHead,
                 // 账户列表的请求参数
-                sysListParams: {
-                    page: 1,
-                    pageSize: 10
+                sysListParams : {
+                    page : 1,
+                    pageSize : 10
                 },
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 列表数据总数
-                total: 0,
-            }
+                total : 0,
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询账户信息列表
              */
-            queryList() {
+            queryList () {
                 ajax.post('noticeList', this.sysListParams).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list || [];
                         this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
                     } else {
@@ -132,8 +132,8 @@
              * @param data
              */
             stopNotice (data) {
-                if(data){
-                    this.switchNotice(data, 'invalid')
+                if (data) {
+                    this.switchNotice(data, 'invalid');
                 }
             },
             /**
@@ -141,8 +141,8 @@
              * @param data
              */
             openNotice (data) {
-                if(data){
-                    this.switchNotice(data, 'normal')
+                if (data) {
+                    this.switchNotice(data, 'normal');
                 }
             },
             /**
@@ -152,11 +152,11 @@
              */
             switchNotice ( data, state) {
                 ajax.post('switchNotice', {
-                    id: data.id,
-                    state: state
+                    id : data.id,
+                    state : state
                 }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success( this.$t('success')+ state === 'true' ?
+                    if (res.status === 200) {
+                        this.$Message.success( this.$t('success') + state === 'true' ?
                             this.$t('startUsing') :
                             this.$t('stopUsing') + data.title);
                         this.queryList();
@@ -192,7 +192,7 @@
                 });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -71,22 +71,22 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columns} from './serverListConfig';
+    import { columns } from './serverListConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //表头配置
-                columnData: columns,
-            }
+                columnData : columns,
+            };
         },
-        methods: {
+        methods : {
             /**
              * 跳转到服务器列表页面
              */
@@ -103,9 +103,9 @@
                     page : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 }).catch(() => {
@@ -113,7 +113,7 @@
                 });
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -41,65 +41,65 @@
 </template>
 
 <script>
-    import {nodeList} from '@/assets/js/constVariable.js';
+    import { nodeList } from '@/assets/js/constVariable.js';
 
     export default {
-        props: {
+        props : {
             //绑定的模态框是否显示的变量
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //节点详情
-            'node-detail': {
-                type: Object,
-                default() {
-                    return {}
+            'node-detail' : {
+                type : Object,
+                default () {
+                    return {};
                 }
             }
         },
-        data() {
+        data () {
             return {
-                formData: {
+                formData : {
                     //节点名称
-                    nodeName: '',
+                    nodeName : '',
                     //节点类型
-                    nodeType: ''
+                    nodeType : ''
                 },
                 //节点类型
-                nodeList: nodeList,
+                nodeList : nodeList,
                 //校验规则
-                ruleValidate: {
-                    nodeName: [
+                ruleValidate : {
+                    nodeName : [
                         {
-                            required: true,
-                            message: this.$t('validateError.pleaseInput', {msg: this.$t('nodeName')}),
-                            trigger: 'blur'
+                            required : true,
+                            message : this.$t('validateError.pleaseInput', { msg : this.$t('nodeName') }),
+                            trigger : 'blur'
                         },
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('nodeName'),length : 100})}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('nodeName'),length : 100 }) }
                     ],
-                    nodeType: [
+                    nodeType : [
                         {
-                            required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('nodeName')}),
-                            trigger: 'blur'
+                            required : true,
+                            message : this.$t('validateError.pleaseSelect', { msg : this.$t('nodeName') }),
+                            trigger : 'blur'
                         }
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
@@ -108,13 +108,13 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$emit('input', false);
             },
             /**
              * 确认新增
              */
-            confirm() {
+            confirm () {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         if (this.formData.nodeType === 'company') {
@@ -123,7 +123,7 @@
                             this.$emit('add-scene-modal-show', JSON.parse(JSON.stringify(this.formData)));
                         } else if (this.formData.nodeType === 'cashier') {
                             this.$emit('add-cashier-modal-show', JSON.parse(JSON.stringify(this.formData)));
-                        }else if(this.formData.nodeType === 'department'){
+                        } else if (this.formData.nodeType === 'department') {
                             //新增了部门
                             this.$emit('add-department',JSON.parse(JSON.stringify(this.formData)));
                         }
@@ -134,32 +134,32 @@
             /**
              * 初始化表单数据
              */
-            resetFormData() {
+            resetFormData () {
                 for (let item in this.formData) {
                     this.formData[item] = '';
                 }
             },
         },
-        computed: {
+        computed : {
             //可以选择的节点类型
             //公司或集团可以建立公司、景区、部门的子节点
             //景区可以建立景区、部门的子节点
             //部门不可创建子节点
-            nodeListCanChose() {
-                if(this.nodeDetail.data){
-                    if(this.nodeDetail.data.nodeType === 'company'){
+            nodeListCanChose () {
+                if (this.nodeDetail.data) {
+                    if (this.nodeDetail.data.nodeType === 'company') {
                         return this.nodeList.filter(item => item.label !== 'cashier');
-                    }else if(this.nodeDetail.data.nodeType === 'scenic' ){
+                    } else if (this.nodeDetail.data.nodeType === 'scenic' ) {
                         return this.nodeList.filter(item => item.label !== 'company');
-                    }else{
+                    } else {
                         return [];
                     }
-                }else{
+                } else {
                     return [];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

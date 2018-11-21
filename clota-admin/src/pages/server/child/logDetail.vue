@@ -11,7 +11,7 @@
                 <DatePicker type="daterange"
                             placement="bottom-end"
                             style="width: 280px"
-                            v-model="logDate" 
+                            v-model="logDate"
                             @on-change="dateChange">
                 </DatePicker>
             </div>
@@ -40,7 +40,7 @@
                         :page-sizes="pageSizeConfig"
                         :page-size="pageSize"
                         :layout="pageLayout"
-                        :total="totalCount" 
+                        :total="totalCount"
                         @size-change="sizeChange"
                         @current-change="pageNoChange">
                     </el-pagination>
@@ -58,25 +58,25 @@
     import ajax from '@/api/index.js';
     export default {
         mixins : [tableMixins],
-        components: {
+        components : {
             breadCrumbHead,
             areaCom,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('serverList'),
-                        router: {
-                            name: 'server'
+                        name : this.$t('serverList'),
+                        router : {
+                            name : 'server'
                         }
                     },
                     {
-                        name: this.$t('deviceInfo'),
-                        router: {
-                            name: 'serverDetail'
+                        name : this.$t('deviceInfo'),
+                        router : {
+                            name : 'serverDetail'
                         }
                     }
                 ],
@@ -85,19 +85,19 @@
                 //表头数据
                 columnData : [
                     {
-                        title: '日期',
-                        minWidth: 70,
-                        field: 'ctime'
+                        title : '日期',
+                        minWidth : 70,
+                        field : 'ctime'
                     },
                     {
-                        title: '时间',
-                        minWidth: 70,
-                        field: 'ctime'
+                        title : '时间',
+                        minWidth : 70,
+                        field : 'ctime'
                     },
                     {
-                        title: '文件大小 M',
-                        minWidth: 70,
-                        field: 'logSize'
+                        title : '文件大小 M',
+                        minWidth : 70,
+                        field : 'logSize'
                     },
                 ],
                 //表格数据
@@ -111,14 +111,14 @@
                     data : [],
                     legend : []
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
              /**
              * 获取路由数据
              */
-            getParams(params) {
-                if(params.ip){
+            getParams (params) {
+                if (params.ip) {
                     this.serverIp = params.ip;
                     this.serverName = params.serverName;
                     this.queryLog();
@@ -130,7 +130,7 @@
              * @param pageSize
              * @param pageNo
              */
-            queryLog(pageSize,pageNo) {
+            queryLog (pageSize,pageNo) {
                 ajax.post('queryLog',{
                     ip : this.serverIp,
                     startTime : this.logDate[0].format('yyyy-MM-dd'),
@@ -138,18 +138,18 @@
                     pageSize : pageSize ? pageSize : 9999,
                     page : pageNo ? pageNo : 1
                 }).then(res => {
-                    if(res.status === 200){
-                        if(res.data.list && res.data.list.length > 0){
+                    if (res.status === 200) {
+                        if (res.data.list && res.data.list.length > 0) {
                             let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
                             this.logInfo.data = legendData.map(item => item.logSize);
                             this.logInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
-                        }else{
+                        } else {
                             this.logInfo = {
                                 data : [],
                                 legend : []
                             };
                         }
-                    }else{
+                    } else {
                         this.logInfo = {
                             data : [],
                             legend : []
@@ -174,7 +174,7 @@
              * 每页大小改变
              * @param pageNo
              */
-            pageNoChange(pageNo) {
+            pageNoChange (pageNo) {
                 this.pageNo = pageNo;
                 this.queryLogTableData();
             },
@@ -189,15 +189,15 @@
                     pageSize : this.pageSize,
                     page : this.pageNo
                 }).then(res => {
-                    if(res.status === 200){
-                        if(res.data.list && res.data.list.length > 0){
+                    if (res.status === 200) {
+                        if (res.data.list && res.data.list.length > 0) {
                             this.tableData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
                             this.totalCount = res.data.totalRecord;
-                        }else{
+                        } else {
                             this.tableData = [];
                             this.totalCount = 0;
                         }
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -211,12 +211,12 @@
             /**
              * 日期改变重新获取日志信息
              */
-            dateChange() {
+            dateChange () {
                 this.queryLogTableData();
                 this.queryLog();
             }
         },
-        beforeRouteEnter(to,from,next) {
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
@@ -233,7 +233,7 @@
                 return Number.isFinite(size) ? size : '-';
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -95,7 +95,7 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
-    import {channelHead} from './channelConfig';
+    import { channelHead } from './channelConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -103,12 +103,12 @@
             tableCom,
             delModal
         },
-        data() {
+        data () {
 
             const validateMethod = {
 
                 // 输入内容不合规则
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
                         callback(new Error( this.$t('errorIrregular') ));
                     } else {
@@ -122,29 +122,29 @@
                 //表格多选列表
                 rowSelect : [],
                 //列表的请求参数
-                channelListParams: {
+                channelListParams : {
                     //搜索的关键字
-                    channelName: '',
-                    page: 1,
-                    pageSize: 10
+                    channelName : '',
+                    page : 1,
+                    pageSize : 10
                 },
                 //表头配置
                 channelHead : channelHead,
                 //列表数据
-                tableData: [],
+                tableData : [],
                 //列表数据总数
-                total: 0,
+                total : 0,
                 //删除的信息
                 delUnits : {},
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询渠道信息列表
              */
-            queryList() {
+            queryList () {
                 ajax.post('channelList', this.channelListParams).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list || [];
                         this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
                     } else {
@@ -158,9 +158,9 @@
              * 查询列表，区分有无搜索文案查询
              */
             searchList () {
-                if(this.channelListParams.channelName){
+                if (this.channelListParams.channelName) {
                     this.channelByName();
-                } else{
+                } else {
                     this.queryList();
                 }
             },
@@ -169,7 +169,7 @@
              */
             channelByName () {
                 ajax.post('channelByName', this.channelListParams).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list || [];
                         this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
                     } else {
@@ -183,14 +183,14 @@
              * 触发选择行
              * @param data
              */
-            handleSelectionChange(data) {
+            handleSelectionChange (data) {
                 this.rowSelect = data;
             },
             /**
              * 删除行
              * @param data
              */
-            del(data) {
+            del (data) {
                 this.delUnits = data;
                 this.$refs.delModal.show({
                     title : this.$t('delete') + this.$t('channel'),
@@ -215,11 +215,11 @@
              * 删除渠道信息
              * @param data
              */
-            deleteChannel( data ) {
+            deleteChannel ( data ) {
                 ajax.post('deleteChannel',{
-                    ids: data
+                    ids : data
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         this.searchList();
                     } else {
@@ -233,8 +233,8 @@
             add () {
                 this.$router.push({
                     name : 'editChannel',
-                    params :{
-                        type :'add'
+                    params : {
+                        type : 'add'
                     }
                 });
             },
@@ -245,9 +245,9 @@
             edit (data) {
                 this.$router.push({
                     name : 'editChannel',
-                    params :{
-                        type :'edit',
-                        info: data
+                    params : {
+                        type : 'edit',
+                        info : data
                     }
                 });
             },
@@ -255,14 +255,14 @@
              * 禁用渠道信息
              * @param data
              */
-            disabledChannel(data){
+            disabledChannel (data) {
                 this.switchChannel(data, 'invalid');
             },
             /**
              * 启用渠道信息
              * @param data
              */
-            openChannel(data){
+            openChannel (data) {
                 this.switchChannel(data, 'normal');
             },
             /**
@@ -272,10 +272,10 @@
              */
             switchChannel ( data, status ) {
                 ajax.post('switchChannel',{
-                    id: data.id,
-                    status: status,
+                    id : data.id,
+                    status : status,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success( (status === 'normal' ? this.$t('startUsing') : this.$t('disabled'))
                             + this.$t('success') );
                         this.searchList();
@@ -286,7 +286,7 @@
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

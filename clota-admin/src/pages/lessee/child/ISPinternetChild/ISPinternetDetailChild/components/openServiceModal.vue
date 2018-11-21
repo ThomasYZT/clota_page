@@ -67,7 +67,7 @@
 </template>
 
 <script>
-    import {monthEnum} from '../../../../../../assets/js/constVariable';
+    import { monthEnum } from '../../../../../../assets/js/constVariable';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -94,13 +94,13 @@
                 }
             }
         },
-        data() {
+        data () {
             //校验选择的服务
             const validateService = (rule,value,callback) => {
-                if(value && value.length > 0){
+                if (value && value.length > 0) {
                     callback();
-                }else{
-                    callback(this.$t('validateError.pleaseSelect',{msg : this.$t('serverTime')}));
+                } else {
+                    callback(this.$t('validateError.pleaseSelect',{ msg : this.$t('serverTime') }));
                 }
             };
             return {
@@ -118,7 +118,7 @@
                 //表单校验规则
                 ruleValidate : {
                     servers : [
-                        {required : true,validator : validateService ,trigger : 'change'}
+                        { required : true,validator : validateService ,trigger : 'change' }
                     ]
                 },
                 //服务期限列表
@@ -127,24 +127,24 @@
                 serverList : [],
                 //套餐列表
                 packageList : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                     this.getSysServiceCombos();
                     this.getServerList();
-                }else{
+                } else {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
                 }
@@ -160,7 +160,7 @@
              */
             save () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.openServer();
                     }
                 });
@@ -176,39 +176,39 @@
                     startTime : new Date(startTime).format('yyyy-MM-dd 00:00:00'),
                     endTime : new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd 23:59:59'),
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('开通成功');
                         this.$emit('fresh-data');
-                    }else{
+                    } else {
                         this.$Message.error('开通失败');
                     }
                 }).finally(() => {
                     this.$emit('input', false);
-                })
+                });
             },
             /**
              * 获取服务列表
              */
             getServerList () {
                 ajax.post('getServices').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.serverList = res.data ? res.data : [];
-                        if(this.openedServiceId){
-                            for(let i = 0,j = this.serverList.length;i < j;i++){
-                                if(this.serverList[i].id === this.openedServiceId){
+                        if (this.openedServiceId) {
+                            for (let i = 0,j = this.serverList.length; i < j; i++) {
+                                if (this.serverList[i].id === this.openedServiceId) {
                                     this.formData.servers = [this.serverList[i].id];
                                     break;
                                 }
                             }
                         }
-                        for(let i = 0,j = this.serverList.length;i < j;i++){
-                            if(this.serverList[i].id in this.openedServicesObj){
+                        for (let i = 0,j = this.serverList.length; i < j; i++) {
+                            if (this.serverList[i].id in this.openedServicesObj) {
                                 this.$set(this.serverList[i],'disabled',true);
-                            }else{
+                            } else {
                                 this.$set(this.serverList[i],'disabled',false);
                             }
                         }
-                    }else{
+                    } else {
                         this.serverList = [];
                     }
                 });
@@ -227,24 +227,24 @@
              */
             getSysServiceCombos () {
                 ajax.post('getSysServiceCombos').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.packageList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.packageList = [];
                     }
-                })
+                });
             },
             /**
              * 更改选择的套餐
              */
             packageChange (data) {
-                if(data){
+                if (data) {
                     this.formData.servers = [];
-                    for(let i = 0,j = this.packageList.length;i < j;i++){
-                        if(this.packageList[i].id === data){
-                            if(this.packageList[i].services && this.packageList[i].services.length > 0){
-                                for(let a = 0,b = this.packageList[i].services.length;a < b;a++){
-                                    if(!(this.packageList[i].services[a].id in this.openedServicesObj)){
+                    for (let i = 0,j = this.packageList.length; i < j; i++) {
+                        if (this.packageList[i].id === data) {
+                            if (this.packageList[i].services && this.packageList[i].services.length > 0) {
+                                for (let a = 0,b = this.packageList[i].services.length; a < b; a++) {
+                                    if (!(this.packageList[i].services[a].id in this.openedServicesObj)) {
                                         this.formData.servers.push(this.packageList[i].services[a].id);
                                     }
                                 }
@@ -271,24 +271,24 @@
              */
             serverEndTime () {
                 let startTime = this.formData.startTime.valueOf();
-                if(this.formData.startTime){
+                if (this.formData.startTime) {
                     return new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd');
-                }else{
+                } else {
                     return '--';
                 }
             },
             //已开通服务对象
-            openedServicesObj() {
+            openedServicesObj () {
                 let obj = {};
-                if(this.openedServices && this.openedServices.length > 0){
-                    for(let i = 0,j = this.openedServices.length;i < j;i++){
+                if (this.openedServices && this.openedServices.length > 0) {
+                    for (let i = 0,j = this.openedServices.length; i < j; i++) {
                         obj[this.openedServices[i].serviceId] = true;
                     }
                 }
                 return obj;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -51,34 +51,34 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columns} from './cooperaChannelOrgConfig';
+    import { columns } from './cooperaChannelOrgConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //关键字查询
                 keyWord : '',
                 //表头数据
-                columnData: columns,
+                columnData : columns,
                 //过滤类型
-                filterType: 'audit',
+                filterType : 'audit',
                 //过滤列表
-                filterList: [
+                filterList : [
                     {
-                        label: 'readyDeal',
-                        value: 'audit'
+                        label : 'readyDeal',
+                        value : 'audit'
                     },
                     {
-                        label: 'auditTrue',
-                        value: 'success'
+                        label : 'auditTrue',
+                        value : 'success'
                     },
                     {
-                        label: 'auditFalse',
-                        value: 'reject'
+                        label : 'auditFalse',
+                        value : 'reject'
                     }
                 ],
                 pageNo : 1,
@@ -88,14 +88,14 @@
                 tableData : [],
                 //待审核个数
                 auditNumber : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 过滤表格
              * @param value
              */
-            filterTable(value) {
+            filterTable (value) {
                 this.filterType = value;
                 this.queryList();
             },
@@ -103,7 +103,7 @@
              * 跳转到详情
              * @param data
              */
-            toDetail(data) {
+            toDetail (data) {
                 this.$router.push({
                     name : 'cooperaChannelPerDetail',
                     params : {
@@ -123,11 +123,11 @@
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.pageInfo.list ? res.data.pageInfo.list : [];
                         this.totalCount = Number(res.data.pageInfo.totalRecord);
                         this.auditNumber = res.data.auditNumber;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                         this.auditNumber = '';
@@ -135,7 +135,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

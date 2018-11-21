@@ -200,7 +200,7 @@
 </template>
 
 <script>
-    import {openedServiceHead} from './openedServiceConfig';
+    import { openedServiceHead } from './openedServiceConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import openServiceModal from './openServiceModal';
     import serviceDelayModal from './serviceDelayModal.vue';
@@ -212,20 +212,20 @@
             //当前查看已开通服务的结构类型，可以为景区和公司，默认为公司
             type : {
                 type : String,
-                default: 'company'
+                default : 'company'
             },
             //表格查询参数
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //景区详情
             'scene-detail' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //是否默认展开
@@ -241,7 +241,7 @@
             delModal,
             addService
         },
-        data() {
+        data () {
             return {
                 //选择的服务
                 selectedService : [],
@@ -263,9 +263,9 @@
                 pageSize : 10,
                 //需要开通的服务id
                 openedServiceId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 选择的服务数据改变
              * @param data
@@ -291,10 +291,10 @@
                     serviceIds : serviceIds,
                     runStatus : 'invalid'
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('暂停成功');
                         this.queryList();
-                    }else{
+                    } else {
                         this.$Message.error('暂停失败');
                     }
                 });
@@ -309,10 +309,10 @@
                     serviceIds : serviceIds,
                     runStatus : 'normal'
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('恢复成功');
                         this.queryList();
-                    }else{
+                    } else {
                         this.$Message.error('恢复失败');
                     }
                 });
@@ -352,7 +352,7 @@
             orgAddService () {
                 this.$refs.addService.show({
                     confirmCallback (data) {
-                        console.log(data)
+                        console.log(data);
                     }
                 });
             },
@@ -365,10 +365,10 @@
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data ? res.data.list : [];
                         this.totalCount = Number(res.data.totalRecord);
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -383,10 +383,10 @@
                     orgId : this.searchParams.id,
                     serviceIds : serviceIds
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('删除成功');
                         this.queryList();
-                    }else{
+                    } else {
                         this.$Message.error('删除失败');
                     }
                 });
@@ -417,17 +417,17 @@
         watch : {
             //默认展开的初始值
             isDefaultPackUp : {
-                handler (newVal){
-                    if(newVal === true){
+                handler (newVal) {
+                    if (newVal === true) {
                         this.isPackUp = true;
-                    }else{
+                    } else {
                         this.isPackUp = false;
                     }
                 },
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

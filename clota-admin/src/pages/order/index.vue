@@ -128,14 +128,14 @@
     import filterHead from './child/filterHead';
     import tableCom from '../index/child/tableCom';
     import tableMixins from '../lessee/tableMixins';
-    import {orderHead} from './orderConfig';
+    import { orderHead } from './orderConfig';
     export default {
         mixins : [tableMixins],
         components : {
             filterHead,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //订单列表表头
                 orderHead : orderHead,
@@ -147,9 +147,9 @@
                         orderType : 'custom'
                     },
                 ]
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 跳转到订单详情
              * @param data
@@ -163,7 +163,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

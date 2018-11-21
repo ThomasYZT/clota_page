@@ -58,17 +58,17 @@
 </template>
 
 <script>
-    import{operateType} from '@/assets/js/constVariable.js';
+    import { operateType } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     export default {
         props : {
             //日志类型
-            'log-type':{
+            'log-type' : {
                 type : String,
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -83,51 +83,51 @@
                 },
                 //操作类型
                 operateType : [],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取有值的路由信息
              */
             getFormdata () {
                 let returnObj = {};
                 //因为saas平台操作日志和运维平台操作日志的筛选条件不同，所以这里要区别对待
-                if(this.logType === 'operate'){
-                    for(let item in this.formData){
-                        if(item === 'date'){
-                            if(this.formData['date'] &&
+                if (this.logType === 'operate') {
+                    for (let item in this.formData) {
+                        if (item === 'date') {
+                            if (this.formData['date'] &&
                                 this.formData['date'].length === 2 &&
                                 this.formData['date'][0] &&
-                                this.formData['date'][1]){
+                                this.formData['date'][1]) {
                                 returnObj['sysLogStartDate'] = this.formData['date'][0].format('yyyy-MM-dd 00:00:00');
                                 returnObj['sysLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 23:59:59');
                             }
-                        }else{
-                            if(this.formData[item]){
+                        } else {
+                            if (this.formData[item]) {
                                 returnObj[item] = this.formData[item];
                             }
                         }
                     }
-                }else{
-                    for(let item in this.formData){
-                        if(item === 'date'){
-                            if(this.formData['date'] &&
+                } else {
+                    for (let item in this.formData) {
+                        if (item === 'date') {
+                            if (this.formData['date'] &&
                                 this.formData['date'].length === 2 &&
                                 this.formData['date'][0] &&
-                                this.formData['date'][1]){
+                                this.formData['date'][1]) {
                                 returnObj['saasLogStartDate'] = this.formData['date'][0].format('yyyy-MM-dd 00:00:00');
                                 returnObj['saasLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 23:59:59');
                             }
-                        }else if(item === 'sysOperationScene'){
-                            if(this.formData[item]){
+                        } else if (item === 'sysOperationScene') {
+                            if (this.formData[item]) {
                                 returnObj['operationScene'] = this.formData['sysOperationScene'];
                             }
-                        }else if(item === 'sysTargetName'){
-                            if(this.formData[item]){
+                        } else if (item === 'sysTargetName') {
+                            if (this.formData[item]) {
                                 returnObj['targetName'] = this.formData['sysTargetName'];
                             }
-                        }else{
-                            if(this.formData[item]){
+                        } else {
+                            if (this.formData[item]) {
                                 returnObj[item] = this.formData[item];
                             }
                         }
@@ -156,9 +156,9 @@
              */
             querySelectOpScene () {
                 ajax.post('selectOpScene').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.operateType = res.data ? res.data : [];
-                    }else {
+                    } else {
                         this.operateType = [];
                     }
                 });
@@ -168,9 +168,9 @@
              */
             selectSaaSOpScene () {
                 ajax.post('selectSaaSOpScene').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.operateType = res.data ? res.data : [];
-                    }else {
+                    } else {
                         this.operateType = [];
                     }
                 });
@@ -180,16 +180,16 @@
             //日志类型改变，重新获取操作类型
             logType : {
                 handler (newVal,oldVal) {
-                    if(newVal === 'operate'){
+                    if (newVal === 'operate') {
                         this.querySelectOpScene();
-                    }else if(newVal === 'sass'){
+                    } else if (newVal === 'sass') {
                         this.selectSaaSOpScene();
                     }
                 },
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

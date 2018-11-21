@@ -73,34 +73,34 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columns} from './cooperaChannelPerConfig';
+    import { columns } from './cooperaChannelPerConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //查询关键字
                 keyWord : '',
                 //表头数据
-                columnData: columns,
+                columnData : columns,
                 //过滤类型
-                filterType: 'audit',
+                filterType : 'audit',
                 //过滤列表
-                filterList: [
+                filterList : [
                     {
-                        label: 'auditStatus.waitAudit',
-                        value: 'audit'
+                        label : 'auditStatus.waitAudit',
+                        value : 'audit'
                     },
                     {
-                        label: 'auditStatus.audited',
-                        value: 'success'
+                        label : 'auditStatus.audited',
+                        value : 'success'
                     },
                     {
-                        label: 'auditStatus.rejected',
-                        value: 'reject'
+                        label : 'auditStatus.rejected',
+                        value : 'reject'
                     }
                 ],
                 pageNo : 1,
@@ -110,14 +110,14 @@
                 tableData : [],
                 //待审核个数
                 auditNumber : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 过滤表格
              * @param value
              */
-            filterTable(value) {
+            filterTable (value) {
                 this.filterType = value;
                 this.queryList();
             },
@@ -125,7 +125,7 @@
              * 跳转到详情
              * @param data
              */
-            toDetail(data) {
+            toDetail (data) {
                 this.$router.push({
                     name : 'cooperaChannelPerDetail',
                     params : {
@@ -145,11 +145,11 @@
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.pageInfo.list ? res.data.pageInfo.list : [];
                         this.totalCount = Number(res.data.pageInfo.totalRecord);
                         this.auditNumber = res.data.auditNumber;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                         this.auditNumber = '';
@@ -157,13 +157,13 @@
                 });
             }
         },
-        computed: {
+        computed : {
             //表格表头数据
-            columnDataInfo() {
+            columnDataInfo () {
                 return this.columnData[this.filterType];
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

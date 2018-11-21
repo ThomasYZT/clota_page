@@ -12,7 +12,7 @@
     import vueEcharts from '@/components/vueEcharts/ECharts.vue';
 
     export default {
-        props: {
+        props : {
             //饼图数据
             'pie-data' : {
                 type : Object,
@@ -21,20 +21,20 @@
                 }
             }
         },
-        components: {
+        components : {
             vueEcharts
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {},
-        computed: {
+        methods : {},
+        computed : {
             //饼图配置
-            pieOptions() {
+            pieOptions () {
                 return getPieConfig(this.pieData.legend, this.pieData.data);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

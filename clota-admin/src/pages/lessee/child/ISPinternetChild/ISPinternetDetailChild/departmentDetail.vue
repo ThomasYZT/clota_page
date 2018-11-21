@@ -77,7 +77,7 @@
         components : {
             employeeTable
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formDataCopy : {},
@@ -87,13 +87,13 @@
                 //校验规则
                 ruleValidate : {
                     orgName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('depName')}),trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('depName'),length : 100})}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('depName') }),trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('depName'),length : 100 }) }
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 开始编辑
              */
@@ -119,11 +119,11 @@
                     status : this.formDataCopy.isStart ? 'open' : 'close',
                     orgName : this.formDataCopy.orgName
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('修改成功');
                         this.$emit('fresh-org',this.activeNode);
                         this.getDepDetail();
-                    }else{
+                    } else {
                         this.$Message.error('修改失败');
                     }
                 });
@@ -135,9 +135,9 @@
                 ajax.post('getServiceProvider',{
                     id : this.activeNode.id
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.formData = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.formData = {};
                     }
                 });
@@ -153,7 +153,7 @@
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

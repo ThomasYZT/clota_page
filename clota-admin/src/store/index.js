@@ -2,10 +2,10 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import i18n from '../assets/lang/lang.config';
 import defaultsDeep from 'lodash/defaultsDeep';
-import router,{resetRouter} from '../router/index';
+import router,{ resetRouter } from '../router/index';
 import routerClect from '../router/activeRoutes';
 import ajax from '@/api/index.js';
-import {getFourRoute, getNoSubMenuRoute} from '../router/constRouter';
+import { getFourRoute, getNoSubMenuRoute } from '../router/constRouter';
 
 Vue.use(Vuex);
 
@@ -19,28 +19,28 @@ const childDeepClone = (childrenList, data) => {
             if (router.children) {
                 let children = childDeepClone(router.children, data);
                 //配置没有匹配到路由的重定向页面
-                children.push(getFourRoute({menuName: '404', lightMenu: router.meta._name, _name: router.meta._name}));
+                children.push(getFourRoute({ menuName : '404', lightMenu : router.meta._name, _name : router.meta._name }));
                 if (children.length > 1) {
                     //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
                     children.push({
-                        path: '',
-                        redirect: {
+                        path : '',
+                        redirect : {
                             name : children[0].name ? children[0].name : children[0].meat._name
                         }
                     });
                     router['children'] = children;
                 } else {
                     router['children'] = [getNoSubMenuRoute({
-                        menuName: 'noSubMenu',
-                        lightMenu: router.meta._name,
-                        _name: router.meta._name
+                        menuName : 'noSubMenu',
+                        lightMenu : router.meta._name,
+                        _name : router.meta._name
                     })];
                 }
             } else if (!router.children && !router.name) {
                 router['children'] = [getNoSubMenuRoute({
-                    menuName: 'noSubMenu',
-                    lightMenu: router.meta._name,
-                    _name: router.meta._name
+                    menuName : 'noSubMenu',
+                    lightMenu : router.meta._name,
+                    _name : router.meta._name
                 })];
             }
             children.push(router);
@@ -50,13 +50,13 @@ const childDeepClone = (childrenList, data) => {
 };
 
 export default new Vuex.Store({
-    state: {
+    state : {
         //当前选择的语言
-        lang: i18n.locale,
+        lang : i18n.locale,
         //权限信息
-        permissionInfo: null,
+        permissionInfo : null,
         //生成的路由信息
-        routerInfo: null,
+        routerInfo : null,
         //用户信息
         userInfo : {},
         //页面是否显示加载中
@@ -64,19 +64,19 @@ export default new Vuex.Store({
         //当前正在加载中的接口个数
         promisings : 0,
     },
-    getters: {
+    getters : {
         //当前语言状态
-        lang: state => {
+        lang : state => {
             let lang = localStorage.getItem('lang');
             state.lang = lang ? lang : state.lang;
             return state.lang;
         },
         //一级菜单权限信息
-        permissionInfo: state => {
+        permissionInfo : state => {
             return state.permissionInfo;
         },
         //生成的路由信息
-        routerInfo: state => {
+        routerInfo : state => {
             return state.routerInfo;
         },
         //用户信息
@@ -88,9 +88,9 @@ export default new Vuex.Store({
             return state.isLoading;
         },
     },
-    mutations: {
+    mutations : {
         //设置用户权限
-        updatePermissionInfo(state, data) {
+        updatePermissionInfo (state, data) {
             state.permissionInfo = data;
         },
         //设置用户信息
@@ -102,32 +102,32 @@ export default new Vuex.Store({
             state.routerInfo = routerInfo;
         },
         //改变是否加载中的状态
-        changeLoadingStatus (state,loading){
+        changeLoadingStatus (state,loading) {
             state.isLoading = loading;
         },
         //更改请求中接口的个数
-        changePromisings (state,type){
-            if(type === 'add'){
+        changePromisings (state,type) {
+            if (type === 'add') {
                 state.promisings++;
-            }else if(type === 'del'){
+            } else if (type === 'del') {
                 state.promisings--;
             }
-            if(state.promisings > 0){
+            if (state.promisings > 0) {
                 state.isLoading = true;
-            }else{
+            } else {
                 setTimeout(() => {
                     state.isLoading = false;
                 },200);
             }
         },
     },
-    actions: {
+    actions : {
         //获取用户权限信息
-        getUserRight(store, route) {
+        getUserRight (store, route) {
             ajax.get('getPrivileges').then(res => {
-                if(res.status === 200){
+                if (res.status === 200) {
 
-                }else{
+                } else {
 
                 }
             }).catch(err => {
@@ -135,16 +135,16 @@ export default new Vuex.Store({
             });
             return new Promise((resolve, reject) => {
                 let data = {
-                    'index': 'allow',
-                    'lessee': 'allow',
-                    'server': 'allow',
-                    'order': 'allow',
-                    'system': 'allow',
-                    'package': 'allow',
-                    'log': 'allow',
+                    'index' : 'allow',
+                    'lessee' : 'allow',
+                    'server' : 'allow',
+                    'order' : 'allow',
+                    'system' : 'allow',
+                    'package' : 'allow',
+                    'log' : 'allow',
                 };
                 let routers = childDeepClone(routerClect, data);
-                routers.push(getFourRoute({menuName: 'notFound', lightMenu: '', _name: ''}));
+                routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
                 //重新设置路由信息
                 resetRouter(routers);
                 store.commit('updatePermissionInfo',data);
@@ -179,11 +179,11 @@ export default new Vuex.Store({
         //获取用户信息
         getUserInfo (store) {
             return new Promise((resolve,reject) => {
-                if(ajax.getToken()){
+                if (ajax.getToken()) {
                     let data = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
                     store.commit('updateUserInfo',data);
                     resolve(data);
-                }else{
+                } else {
                     reject();
                 }
             }).then((data) => {

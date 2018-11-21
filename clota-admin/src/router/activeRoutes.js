@@ -24,4 +24,4 @@ export default {
     ...logRoute,
     ...systemRoute,
     ...packageRoute
-}
+};

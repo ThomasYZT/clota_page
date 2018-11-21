@@ -64,31 +64,31 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
             cityPlugin
         },
-        data() {
+        data () {
             //校验数量
             const validateNumber = (rule, value, callback) => {
                 if (value) {
                     common.validateInteger(value).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t('number'),length : 10}));
-                        }else{
-                            callback(this.$t(err,{field : this.$t('number')}));
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t(err,{ field : this.$t('number'),length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t('number') }));
                         }
                     });
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('number')}))
+                    callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('number') }));
                 }
             };
             //校验价格
@@ -97,77 +97,77 @@
                     common.validateMoney(value,0,4).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            callback(this.$t('errorMaxLength',{field : this.$t('price'),length : 10}));
-                        }else{
-                            callback(this.$t(err,{field : this.$t('price')}));
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t('errorMaxLength',{ field : this.$t('price'),length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t('price') }));
                         }
                     });
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('price')}))
+                    callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('price') }));
                 }
             };
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'notePackage',
-                        router: {
-                            name: 'notePackageInfo'
+                        name : 'notePackage',
+                        router : {
+                            name : 'notePackageInfo'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //套餐名称
-                    packageName: '',
+                    packageName : '',
                     //短信服务商
-                    smsProvider: '',
+                    smsProvider : '',
                     //价格
-                    price: '',
+                    price : '',
                     //数量
                     number : ''
                 },
                 //表单校验规则
-                ruleValidate: {
+                ruleValidate : {
                     packageName : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('packageName')}), trigger: 'blur'},
-                        {max : 20, message : this.$t('errorMaxLength', {field : this.$t('packageName'),length : 20}), trigger: 'blur'},
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('packageName') }), trigger : 'blur' },
+                        { max : 20, message : this.$t('errorMaxLength', { field : this.$t('packageName'),length : 20 }), trigger : 'blur' },
                     ],
                     smsProvider : [
-                        {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('smsProvider')}), trigger: 'change'},
+                        { required : true, message : this.$t('validateError.pleaseSelect', { 'msg' : this.$t('smsProvider') }), trigger : 'change' },
                     ],
-                    price: [
-                        {required: true, validator: validatePrice, trigger: 'blur'},
+                    price : [
+                        { required : true, validator : validatePrice, trigger : 'blur' },
                     ],
                     number : [
-                        {required: true, validator: validateNumber, trigger: 'blur'},
+                        { required : true, validator : validateNumber, trigger : 'blur' },
                     ]
                 },
                 //短信供应商列表
-                smsProviderList: [],
+                smsProviderList : [],
                 //是否正在添加中
-                addLoading: false,
+                addLoading : false,
                 //账号操作类型
                 type : '',
                 //短信套餐id
                 smsPackageId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存新增套餐数据
              */
-            save() {
+            save () {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        if(this.type === 'add'){
+                    if (valid) {
+                        if (this.type === 'add') {
                             this.addSmsPackage();
-                        }else if(this.type === 'edit'){
+                        } else if (this.type === 'edit') {
                             this.updateSmsPackage();
                         }
-                    }else{
+                    } else {
                         this.addLoading = false;
                     }
                 });
@@ -175,9 +175,9 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$router.push({
-                    name: 'notePackageInfo'
+                    name : 'notePackageInfo'
                 });
             },
             /**
@@ -185,14 +185,14 @@
              * @param params
              */
             getParams (params) {
-                if(params.type) {
+                if (params.type) {
                     this.type = params.type;
                     this.smsPackageId = params.id;
-                    if(this.type === 'edit'){
+                    if (this.type === 'edit') {
                         this.getSmsPackage();
                     }
                     this.getSmsProviderList();
-                }else{
+                } else {
                     this.$router.push({
                         name : 'notePackageInfo'
                     });
@@ -208,12 +208,12 @@
                     price : this.formData.price,
                     smsCount : this.formData.number,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('新增成功');
                         this.$router.push({
                             name : 'notePackageInfo'
                         });
-                    }else{
+                    } else {
                         this.$Message.error('新增失败');
                     }
                 }).finally(() => {
@@ -231,12 +231,12 @@
                     price : this.formData.price,
                     smsCount : this.formData.number,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('编辑成功');
                         this.$router.push({
                             name : 'notePackageInfo'
                         });
-                    }else{
+                    } else {
                         this.$Message.error('编辑失败');
                     }
                 }).finally(() => {
@@ -250,18 +250,18 @@
                 ajax.post('getSmsPackage',{
                     id : this.smsPackageId
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.formData.packageName = res.data.packageName;
                         this.formData.smsProvider = res.data.provider;
                         this.formData.price = res.data.price;
                         this.formData.number = res.data.smsCount;
-                    }else{
+                    } else {
                         this.formData.packageName = '';
                         this.formData.smsProvider = '';
                         this.formData.price = '';
                         this.formData.number = '';
                     }
-                })
+                });
             },
             /**
              * 获取短信供应商列表
@@ -271,20 +271,20 @@
                     page : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.smsProviderList = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.smsProviderList = [];
                     }
-                })
+                });
             }
         },
-        beforeRouteEnter(to,fromm,next){
+        beforeRouteEnter (to,fromm,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

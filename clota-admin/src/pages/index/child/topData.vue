@@ -22,21 +22,21 @@
 <script>
     import common from '@/assets/js/common.js';
     export default {
-        props: {
+        props : {
             //指标名字
-            'label-name': {
-                type: String,
-                default: ''
+            'label-name' : {
+                type : String,
+                default : ''
             },
             //指标数量
-            'label-num': {
-                type: [Number,String],
-                default: 0
+            'label-num' : {
+                type : [Number,String],
+                default : 0
             },
             //指标同比率
-            'label-rate': {
-                type: [String, Number],
-                default: ''
+            'label-rate' : {
+                type : [String, Number],
+                default : ''
             },
             //配图
             'icon' : {
@@ -46,18 +46,18 @@
                 }
             },
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 获取同比增长率
              * @param val
              */
             getRate (val) {
-                if(common.isNotEmpty(val)){
+                if (common.isNotEmpty(val)) {
                     return Number(val).toFixed(2);
-                }else{
+                } else {
                     return '';
                 }
             }
@@ -65,20 +65,20 @@
         computed : {
             //同比上周，当前指标是上升，还是下降
             labelCurve () {
-                if(this.labelRate === '-'){
+                if (this.labelRate === '-') {
                     return '-';
-                }else{
-                    if(this.labelRate > 1){
-                        return  'up';
-                    }else if(this.labelRate < 1){
+                } else {
+                    if (this.labelRate > 1) {
+                        return 'up';
+                    } else if (this.labelRate < 1) {
                         return 'down';
-                    }else{
+                    } else {
                         return '';
                     }
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -87,8 +87,10 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="管理账号：" :label-width="150">
-                        <span class="info-val" v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''">
+                        <span class="info-val" >
+                            <span class="account-name" v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''">
                              {{companyDetail.managerAccount ? companyDetail.managerAccount.loginName : '' | contentFilter}}
+                            </span>
                             <span class="reset-pass" @click="resetPass">重置密码</span>
                         </span>
                     </FormItem>
@@ -154,13 +156,20 @@
             <i-row>
                 <i-col span="12">
                     <FormItem :prop="(activeNode && activeNode.pid) ? 'parentManageId' : ''" label="管理上级：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.pid">
-                            <Option v-for="item in superiorList"
-                                :value="item.id"
-                                :key="item.id">
-                                {{ item.orgName }}
-                            </Option>
-                        </Select>
+                        <!--<Select v-model.trim="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.pid">-->
+                            <!--<Option v-for="item in superiorList"-->
+                                <!--:value="item.id"-->
+                                <!--:key="item.id">-->
+                                <!--{{ item.orgName }}-->
+                            <!--</Option>-->
+                        <!--</Select>-->
+                        <select-tree v-if="type === 'edit' && activeNode && activeNode.pid"
+                                     v-model="formDataCopy.parentManageId"
+                                     :disabled-node-ids="[activeNode.id]"
+                                     :disabled="activeNode && activeNode.level === 1"
+                                     :tree="superiorList"
+                                     style="width: 100%;">
+                        </select-tree>
                         <span class="info-val" v-else v-w-title="companyDetail.parentManage ? companyDetail.parentManage.orgName : ''">
                             {{companyDetail.parentManage ? companyDetail.parentManage.orgName : '' | contentFilter}}
                         </span>
@@ -168,13 +177,20 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem :prop="(activeNode && activeNode.pid) ? 'parentEconomicId' : ''" label="财务上级：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">
-                            <Option v-for="item in fianceSuperiorList"
-                                    :value="item.id"
-                                    :key="item.id">
-                                {{ item.orgName }}
-                            </Option>
-                        </Select>
+                        <!--<Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">-->
+                            <!--<Option v-for="item in fianceSuperiorList"-->
+                                    <!--:value="item.id"-->
+                                    <!--:key="item.id">-->
+                                <!--{{ item.orgName }}-->
+                            <!--</Option>-->
+                        <!--</Select>-->
+                        <select-tree v-if="type === 'edit' && activeNode && activeNode.pid"
+                                     v-model="formDataCopy.parentEconomicId"
+                                     :disabled-node-ids="[activeNode.id]"
+                                     :disabled="activeNode && activeNode.level === 1"
+                                     :tree="fianceSuperiorList"
+                                     style="width: 100%;">
+                        </select-tree>
                         <span class="info-val" v-else v-w-title="companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : ''">
                             {{companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : '' | contentFilter}}
                         </span>
@@ -293,7 +309,7 @@
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import editModal from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
 
     export default {
         props : {
@@ -305,7 +321,7 @@
                }
             },
         },
-        components: {
+        components : {
             tableCom,
             employeeTable,
             noteTable,
@@ -316,28 +332,28 @@
             cityPlugin,
             editModal
         },
-        data() {
+        data () {
             //校验邮箱
             const validateEmail = (rule,value,callback) => {
-                if(value){
-                    if(validator.isEmail(value)){
+                if (value) {
+                    if (validator.isEmail(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('formalError',{field : this.$t('email')}));
+                    } else {
+                        callback(this.$t('formalError',{ field : this.$t('email') }));
                     }
-                }else{
-                    callback(this.$t('inputField',{field : this.$t('email')}));
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('email') }));
                 }
             };
             //校验手机号
             const validatePhone = (rule,value,callback) => {
-                if(value){
-                    if(validator.isTelephone(value)){
+                if (value) {
+                    if (validator.isMobile(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('formalError',{field : this.$t('phone')}));
+                    } else {
+                        callback(this.$t('formalError',{ field : this.$t('phone') }));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
@@ -358,43 +374,43 @@
                 companyDetail : {},
                 ruleValidate : {
                     orgName : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('companyBgName'),length : 100}),trigger : 'blur'},
-                        {required : true,message : this.$t('inputField',{field : this.$t('companyBgName')}),trigger : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('companyBgName'),length : 100 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
                     ],
                     checkinCode : [
-                        {min : 2,max : 8,message : this.$t('rangeBitError',{field : this.$t('enterpriseCode'),length : 8,min : 1,max :10}),trigger : 'blur'},
+                        { min : 2,max : 8,message : this.$t('rangeBitError',{ field : this.$t('enterpriseCode'),length : 8,min : 1,max : 10 }),trigger : 'blur' },
                     ],
                     smsProvider : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('smsProvider')}),trigger : 'blur'}
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('smsProvider') }),trigger : 'blur' }
                     ],
                     email : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('email')}),trigger : 'blur'},
-                        {validator : validateEmail,trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
+                        { validator : validateEmail,trigger : 'blur' }
                     ],
                     linkName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('person')}),trigger : 'blur'},
-                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'},
+                        { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' },
                     ],
                     address : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'},
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' },
                     ],
                     telephone : [
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('phone'),length : 20}),trigger : 'blur'},
-                        {validator : validatePhone ,trigger : 'blur'}
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' },
+                        { validator : validatePhone ,trigger : 'blur' }
                     ],
                     tex : [
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'},
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),trigger : 'blur' },
                     ],
                     parentManageId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('superior')}),trigger : 'blur'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('superior') }),trigger : 'blur' },
                     ],
                     parentEconomicId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('fianceSuperior')}),trigger : 'blur'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 取消编辑
              */
@@ -407,7 +423,7 @@
              */
             saveEdit () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.type = 'watch';
                         ajax.post('updateOrgInfo',{
                             id : this.formDataCopy.id,
@@ -427,14 +443,14 @@
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                         }).then(res => {
-                            if(res.status === 200){
+                            if (res.status === 200) {
                                 this.$Message.success('修改成功');
                                 this.getCompanyDetail();
                                 //修改了节点的名字，需要刷新左侧的组织树
-                                if(this.formDataCopy.orgName !== this.companyDetail.orgName){
+                                if (this.formDataCopy.orgName !== this.companyDetail.orgName) {
                                     this.freshOrg();
                                 }
-                            }else{
+                            } else {
                                 this.$Message.error('修改失败');
                             }
                         });
@@ -451,7 +467,7 @@
                     parentManageId : this.companyDetail.parentManage ? this.companyDetail.parentManage.id : '',
                     parentEconomicId : this.companyDetail.parentEconomic ? this.companyDetail.parentEconomic.id : '',
                     email : this.companyDetail.managerAccount ? this.companyDetail.managerAccount.email : '',
-                }  , this.companyDetail);
+                } , this.companyDetail);
 
                 this.type = 'edit';
             },
@@ -470,14 +486,14 @@
              * 确认重置密码
              * @param pass
              */
-            confimChangePass (pass){
+            confimChangePass (pass) {
                 ajax.post('resetPassword',{
                     id : this.activeNode.id,
                     password : pass
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('重置成功');
-                    }else{
+                    } else {
                         this.$Message.error(res.message || '重置失败');
                     }
                 }).finally(() => {
@@ -491,9 +507,9 @@
                 ajax.post('getServiceProvider',{
                     id : this.activeNode.id,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.companyDetail = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.companyDetail = {};
                     }
                 });
@@ -506,9 +522,9 @@
                     page : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.smsSuppilerList = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.smsSuppilerList = [];
                     }
                 }).catch(() => {
@@ -520,9 +536,9 @@
              */
             querySysAccoutList () {
                 ajax.post('querySysAccoutList').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.serviceStaffList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.serviceStaffList = [];
                     }
                 }).catch(err => {
@@ -540,23 +556,23 @@
              * @param data
              */
             changeCity (data) {
-                if(this.formDataCopy.sysProvinces){
+                if (this.formDataCopy.sysProvinces) {
                     this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
-                }else{
+                } else {
                     this.formDataCopy.sysProvinces = {
                         provinceid : data.province ? data.province.provinceid : ''
                     };
                 }
-                if(this.formDataCopy.sysCities){
+                if (this.formDataCopy.sysCities) {
                     this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
-                }else{
+                } else {
                     this.formDataCopy.sysCities = {
                         cityid : data.city ? data.city.cityid : ''
                     };
                 }
-                if(this.formDataCopy.sysAreas){
+                if (this.formDataCopy.sysAreas) {
                     this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
-                }else{
+                } else {
                     this.formDataCopy.sysAreas = {
                         areaid : data.area ? data.area.areaid : ''
                     };
@@ -569,10 +585,10 @@
                 ajax.post('getParentManages',{
                     id : this.activeNode.id,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.superiorList = res.data.parentManages ? res.data.parentManages.filter(item => item.id !== this.activeNode.id) : [];
                         this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics.filter(item => item.id !== this.activeNode.id) : [];
-                    }else{
+                    } else {
                         this.superiorList = [];
                         this.fianceSuperiorList = [];
                     }
@@ -584,30 +600,30 @@
             this.querySysAccoutList();
             this.getParentManages();
         },
-        computed  : {
+        computed : {
             //公司详细地址
             companyPlace () {
                 let place = '';
-                if(this.companyDetail && this.companyDetail.sysProvinces){
+                if (this.companyDetail && this.companyDetail.sysProvinces) {
                     place += this.companyDetail.sysProvinces.province;
                 }
-                if(this.companyDetail && this.companyDetail.sysCities){
+                if (this.companyDetail && this.companyDetail.sysCities) {
                     place += this.companyDetail.sysCities.city;
                 }
-                if(this.companyDetail && this.companyDetail.sysAreas){
+                if (this.companyDetail && this.companyDetail.sysAreas) {
                     place += this.companyDetail.sysAreas.area;
                 }
                 return place;
             },
             //默认选中的所在地信息
             defaultAddress () {
-                if(this.companyDetail && Object.keys(this.companyDetail).length > 0){
+                if (this.companyDetail && Object.keys(this.companyDetail).length > 0) {
                     return {
                         province : this.companyDetail.sysProvinces,
                         city : this.companyDetail.sysCities,
                         area : this.companyDetail.sysAreas,
-                    }
-                }else{
+                    };
+                } else {
                     return false;
                 }
             }
@@ -622,7 +638,7 @@
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -729,7 +745,6 @@
         .reset-pass{
             color: $color_0082D5;
             font-size: $font_size_12px;
-            margin-left: 10px;
             display: inline-block;
             cursor: pointer;
         }
@@ -756,6 +771,14 @@
             display: inline-block;
             width: 100%;
             color: $color_666;
+
+            .account-name{
+                display: inline-block;
+                max-width: calc(100% - 140px);
+                @include overflow_tip();
+                vertical-align: middle;
+                margin-right: 10px;
+            }
         }
     }
 

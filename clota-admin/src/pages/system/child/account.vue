@@ -90,7 +90,7 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {accountHead} from './accountConfig';
+    import { accountHead } from './accountConfig';
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index';
 
@@ -99,37 +99,37 @@
             tableCom,
             delModal
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 accountHead : accountHead,
                 // 账户列表的请求参数
-                accListParams: {
-                    page: 1,
-                    pageSize: 10
+                accListParams : {
+                    page : 1,
+                    pageSize : 10
                 },
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 列表数据总数
-                total: 0,
+                total : 0,
                 //角色筛选列表
-                roleList: [],
+                roleList : [],
                 //当前操作数据(修改/停用/启用/删除)
-                operateData: {},
-            }
+                operateData : {},
+            };
         },
-        created() {
+        created () {
             //查询角色列表
             this.queryRoleList();
         },
-        methods: {
+        methods : {
 
             /**
              * 查询角色列表
              */
-            queryRoleList() {
+            queryRoleList () {
                 ajax.post('roleList', {}).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.roleList = res.data || [];
                     } else {
                         this.roleList = [];
@@ -140,9 +140,9 @@
             /**
              * 查询账户信息列表
              */
-            queryList() {
+            queryList () {
                 ajax.post('userList', this.accListParams).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list || [];
                         this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
                     } else {
@@ -153,7 +153,7 @@
                 });
             },
             //角色筛选
-            filterRole(value, row) {
+            filterRole (value, row) {
                 return row.roleName === value;
             },
             /**
@@ -172,8 +172,8 @@
              * @param data
              */
             stopAccount (data) {
-                if(data){
-                    this.switchUser(data, 'false')
+                if (data) {
+                    this.switchUser(data, 'false');
                 }
             },
             /**
@@ -181,8 +181,8 @@
              * @param data
              */
             openAccount (data) {
-                if(data){
-                    this.switchUser(data, 'true')
+                if (data) {
+                    this.switchUser(data, 'true');
                 }
             },
             /**
@@ -192,13 +192,13 @@
              */
             switchUser ( data, flag) {
                 ajax.post('switchAccount', {
-                    id: data.id,
-                    flag: flag
+                    id : data.id,
+                    flag : flag
                 }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success( this.$t('success')+ flag === 'true' ?
+                    if (res.status === 200) {
+                        this.$Message.success( this.$t('success') + flag === 'true' ?
                             this.$t('startUsing') :
-                            this.$t('stopUsing') + this.$t('accountName')+'：'+ data.loginName);
+                            this.$t('stopUsing') + this.$t('accountName') + '：' + data.loginName);
                         this.queryList();
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
@@ -222,12 +222,12 @@
              * 删除账号
              * @param data
              */
-            deleteUser( data ) {
+            deleteUser ( data ) {
                 ajax.post('deleteUser',{
-                    id: data.id
+                    id : data.id
                 }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success(this.$t('success') + this.$t('delete') + this.$t('accountName')+'：'+ data.loginName);
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('success') + this.$t('delete') + this.$t('accountName') + '：' + data.loginName);
                         this.queryList();
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
@@ -243,12 +243,12 @@
                     name : 'addAccount',
                     params : {
                         type : 'edit',
-                        info: data
+                        info : data
                     }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

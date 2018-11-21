@@ -25,7 +25,7 @@
             baseInfo,
             changePass
         },
-        data() {
+        data () {
             return {
                 //操作列表
                 tapsList : [
@@ -40,9 +40,9 @@
                 ],
                 //当前激活的tap标签
                 filterType : 'baseInfo'
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 激活当前点击的button
              * @param value
@@ -51,7 +51,7 @@
                 this.filterType = value;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

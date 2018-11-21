@@ -8,24 +8,24 @@
  * subMenuType 二级菜单标志，值唯一，标识为二级菜单
  */
 export default {
-    index: {
-        path: '/index',
-        name: 'index',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/index/index.vue'),
-        meta: {
-            _name: 'index',
-            menuName: 'index',
-            lightMenu: 'index',
+    index : {
+        path : '/index',
+        name : 'index',
+        component : () => import(/* webpackChunkName: "index" */ '../../pages/index/index.vue'),
+        meta : {
+            _name : 'index',
+            menuName : 'index',
+            lightMenu : 'index',
         }
     },
-    rankDetail: {
-        path: '/index/rankDetail',
-        name: 'rankDetail',
-        component: () => import(/* webpackChunkName: "index" */ '../../pages/index/child/rankList/index.vue'),
-        meta: {
-            _name: 'index',
-            menuName: 'index',
-            lightMenu: 'index',
+    rankDetail : {
+        path : '/index/rankDetail',
+        name : 'rankDetail',
+        component : () => import(/* webpackChunkName: "index" */ '../../pages/index/child/rankList/index.vue'),
+        meta : {
+            _name : 'index',
+            menuName : 'index',
+            lightMenu : 'index',
         }
     }
-}
+};

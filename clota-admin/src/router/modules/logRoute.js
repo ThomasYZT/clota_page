@@ -9,41 +9,41 @@
  */
 export default {
     //订单列表
-    logIndex: {
-        path: '/log',
-        component: () => import(/* webpackChunkName: "log" */ '../../pages/log/index.vue'),
-        meta: {
-            _name: 'log',
-            menuName: 'log',
-            lightMenu: 'log',
+    logIndex : {
+        path : '/log',
+        component : () => import(/* webpackChunkName: "log" */ '../../pages/log/index.vue'),
+        meta : {
+            _name : 'log',
+            menuName : 'log',
+            lightMenu : 'log',
         },
         children : {
             //运维后台操作日志
             operationLog : {
-                path: '/log/operationLog',
-                name: 'operationLog',
-                component: () => import(/* webpackChunkName: "log" */ '../../pages/log/child/operationLog.vue'),
-                meta: {
-                    _name: 'log',
-                    menuName: 'operationLog',
-                    lightMenu: 'log',
+                path : '/log/operationLog',
+                name : 'operationLog',
+                component : () => import(/* webpackChunkName: "log" */ '../../pages/log/child/operationLog.vue'),
+                meta : {
+                    _name : 'log',
+                    menuName : 'operationLog',
+                    lightMenu : 'log',
                     showInMenu : true,
                     subMenuType : 'operate'
                 },
             },
             //sass平台操作日志
             sassLog : {
-                path: '/log/sassLog',
-                name: 'sassLog',
-                component: () => import(/* webpackChunkName: "log" */ '../../pages/log/child/operationLog.vue'),
-                meta: {
-                    _name: 'log',
-                    menuName: 'sassLog',
-                    lightMenu: 'log',
+                path : '/log/sassLog',
+                name : 'sassLog',
+                component : () => import(/* webpackChunkName: "log" */ '../../pages/log/child/operationLog.vue'),
+                meta : {
+                    _name : 'log',
+                    menuName : 'sassLog',
+                    lightMenu : 'log',
                     showInMenu : true,
                     subMenuType : 'sass'
                 },
             }
         }
     },
-}
+};
