@@ -57,31 +57,31 @@
 
 <script>
     import tableCom from '../../../lessee/child/organization/tableCom';
-    import {comVerify,productVerify} from './verifyProConfig';
+    import { comVerify,productVerify } from './verifyProConfig';
     export default {
         props : {
             //订单类型
             'order-type' : {
                 type : String,
-                default :''
+                default : ''
             }
         },
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //表格数据
-                tableData: [
+                tableData : [
                     {
-                        aa: '2016-05-03',
-                        realName: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
+                        aa : '2016-05-03',
+                        realName : '王小虎',
+                        address : '上海市普陀区金沙江路 1518 弄'
                     },
                     {
-                        aa: '2016-05-03',
-                        realName: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
+                        aa : '2016-05-03',
+                        realName : '王小虎',
+                        address : '上海市普陀区金沙江路 1518 弄'
                     }
                 ],
                 //入园核销日志总数
@@ -90,15 +90,15 @@
                 verTotalCount : 100,
                 //是否展开表格
                 isPackUpLoad : true,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取入园核销日志
              * @param data
              */
             getComVerifyInfo (data) {
-                console.log(data)
+                console.log(data);
             },
             /**
              * 同步入园核销日志
@@ -110,27 +110,27 @@
         },
         computed : {
             //入园核销表头
-            comVerify (){
-                if(this.orderType === 'custom'){
+            comVerify () {
+                if (this.orderType === 'custom') {
                     return comVerify;
-                }else if(this.orderType === 'team'){
+                } else if (this.orderType === 'team') {
                     return comVerify.slice(0,3);
-                }else{
+                } else {
                     return [];
                 }
             },
             //项目核销表头
             productVerify () {
-                if(this.orderType === 'custom'){
+                if (this.orderType === 'custom') {
                     return productVerify;
-                }else if(this.orderType === 'team'){
+                } else if (this.orderType === 'team') {
                     return productVerify.slice(0,3);
-                }else{
+                } else {
                     return [];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

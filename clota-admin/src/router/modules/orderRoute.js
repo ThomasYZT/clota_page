@@ -9,25 +9,25 @@
  */
 export default {
     //订单列表
-    orderIndex: {
-        path: '/order',
-        name: 'order',
-        component: () => import(/* webpackChunkName: "order" */ '../../pages/order/index.vue'),
-        meta: {
-            _name: 'order',
-            menuName: 'order',
-            lightMenu: 'order',
+    orderIndex : {
+        path : '/order',
+        name : 'order',
+        component : () => import(/* webpackChunkName: "order" */ '../../pages/order/index.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
         }
     },
     //订单详情
     orderDetail : {
-        path: '/orderDetail',
-        name: 'orderDetail',
-        component: () => import(/* webpackChunkName: "order" */ '../../pages/order/child/orderDetail.vue'),
-        meta: {
-            _name: 'order',
-            menuName: 'order',
-            lightMenu: 'order',
+        path : '/orderDetail',
+        name : 'orderDetail',
+        component : () => import(/* webpackChunkName: "order" */ '../../pages/order/child/orderDetail.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
         }
     }
-}
+};

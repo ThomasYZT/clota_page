@@ -108,4 +108,4 @@ export default {
     'switchChannel' : 'channel/switch.json',
 
 
-}
+};

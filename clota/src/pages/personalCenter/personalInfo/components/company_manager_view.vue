@@ -5,57 +5,57 @@
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('loginName')}}：</span>{{accountInfo.loginName}}
+                        <span class="field-name">{{$t('loginName')}}：</span>{{accountInfo.loginName | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('Offlineverificationcode')}}：</span>{{accountInfo.checkinCode}}
+                        <span class="field-name">{{$t('Offlineverificationcode')}}：</span>{{accountInfo.checkinCode | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('telephone')}}：</span>{{accountInfo.telephone}}
+                        <span class="field-name">{{$t('telephone')}}：</span>{{accountInfo.telephone | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('location')}}：</span>{{accountInfo.provinceName}} {{accountInfo.cityName}} {{accountInfo.districtName}}
+                        <span class="field-name">{{$t('location')}}：</span>{{accountInfo.provinceName | contentFilter}} {{accountInfo.cityName | contentFilter}} {{accountInfo.districtName | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('smsProvider')}}：</span>{{accountInfo.smsProvider}}
+                        <span class="field-name">{{$t('smsProvider')}}：</span>{{accountInfo.smsProvider | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('superior')}}：</span>{{accountInfo.parentManage}}
-                    </li>
-                </ul>
-            </Col>
-            <Col span="8">
-                <ul>
-                    <li>
-                        <span class="field-name">{{$t('company') + 'ID'}}：</span>{{accountInfo.id ? accountInfo.id : '无'}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('Universaldistributioninvitationcode')}}：</span>{{accountInfo.saleCode}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('fax')}}：</span>{{accountInfo.tex}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('detailAddr')}}：</span>{{accountInfo.address}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('SMSallowance')}}：</span>{{accountInfo.smsAmount}}
-                    </li>
-                    <li>
-                        <span class="field-name">{{$t('fianceSuperior')}}：</span>{{accountInfo.parentFinanc}}
+                        <span class="field-name">{{$t('superior')}}：</span>{{accountInfo.parentManage | contentFilter}}
                     </li>
                 </ul>
             </Col>
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('companyCode')}}：</span>{{accountInfo.nodeCode}}
+                        <span class="field-name">{{$t('company') + 'ID'}}：</span>{{accountInfo.id | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('email')}}：</span>{{accountInfo.email}}
+                        <span class="field-name">{{$t('Universaldistributioninvitationcode')}}：</span>{{accountInfo.saleCode | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('acceptServer')}}：</span>{{accountInfo.serviceUser}}
+                        <span class="field-name">{{$t('fax')}}：</span>{{accountInfo.tex | contentFilter}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('detailAddr')}}：</span>{{accountInfo.address | contentFilter}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('SMSallowance')}}：</span>{{accountInfo.smsAmount | contentFilter}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('fianceSuperior')}}：</span>{{accountInfo.parentFinanc | contentFilter}}
+                    </li>
+                </ul>
+            </Col>
+            <Col span="8">
+                <ul>
+                    <li>
+                        <span class="field-name">{{$t('companyCode')}}：</span>{{accountInfo.nodeCode | contentFilter}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('email')}}：</span>{{accountInfo.email | contentFilter}}
+                    </li>
+                    <li>
+                        <span class="field-name">{{$t('acceptServer')}}：</span>{{accountInfo.serviceUser | contentFilter}}
                     </li>
                 </ul>
             </Col>
@@ -74,7 +74,16 @@
     data() {
       return {}
     },
-    methods: {}
+    methods: {},
+      computed : {
+          //地区信息
+          districtInfo () {
+              if (this.accountInfo && Object.keys(this.accountInfo).length > 0) {
+                    return this.accountInfo.provinceName + this.accountInfo.cityName + this.accountInfo.districtName;
+              }
+              return '';
+          }
+      }
   }
 </script>
 

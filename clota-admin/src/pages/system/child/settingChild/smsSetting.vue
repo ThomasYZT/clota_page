@@ -44,35 +44,35 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['setting'],
+        props : ['setting'],
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //表头数据
-                columnData: [
+                columnData : [
                     {
-                        title: 'smsProviderName',
-                        minWidth: 100,
-                        field: 'smsProviderName'
+                        title : 'smsProviderName',
+                        minWidth : 100,
+                        field : 'smsProviderName'
                     },
                 ],
                 //表格数据
-                tableData: [{ smsProviderName: '' }],
+                tableData : [{ smsProviderName : '' }],
                 //复制数据，用于当前修改
-                copySettingData: {},
-            }
+                copySettingData : {},
+            };
         },
-        created() {
+        created () {
             this.copySettingData = defaultsDeep({}, this.setting);
         },
-        watch: {
+        watch : {
             setting : function (val) {
                 this.copySettingData = defaultsDeep({}, val);
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -16,31 +16,6 @@
                         @click="queryList" >查找</Button>
             </div>
         </div>
-        <!--<table-com-->
-            <!--:table-data="tableData"-->
-            <!--:table-height="tableHeight"-->
-            <!--:column-data="columnData"-->
-            <!--:row-click="false">-->
-            <!--<el-table-column-->
-                <!--label="操作"-->
-                <!--:width="120">-->
-                <!--<template slot-scope="scoped">-->
-                    <!--<ul class="operate-info">-->
-                        <!--<li class="operate-list" @click="toISPinternetDetail">查看</li>-->
-                        <!--<li class="operate-list disabled" @click="disabledLess(scoped.row)">禁用</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-        <!--</table-com>-->
-        <!--<div class="page-area" v-if="tableData.length > 0">-->
-            <!--<el-pagination-->
-                <!--:current-page="pageNo"-->
-                <!--:page-sizes="pageSizeConfig"-->
-                <!--:page-size="pageSize"-->
-                <!--layout="total, sizes, prev, pager, next, jumper"-->
-                <!--:total="40">-->
-            <!--</el-pagination>-->
-        <!--</div>-->
 
         <table-com
             :column-data="columnData"
@@ -92,32 +67,34 @@
                 </template>
             </el-table-column>
         </table-com>
-        <!--<disabled-less v-model="disabledLessModalShow"-->
-                       <!--:less-detail="currentRow"-->
-                       <!--@confirm-disabled="confirmDisabled">-->
-        <!--</disabled-less>-->
+        <!--确认修改租户状态提示框-->
+        <change-less-status v-model="disabledLessModalShow"
+                           :less-detail="currentRow"
+                           :operate-type="operateType"
+                           @confirm-disabled="confirmChangeStatus">
+        </change-less-status>
     </div>
 </template>
 
 <script>
-    import {columns} from './ISPinternetConfig';
+    import { columns } from './ISPinternetConfig';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import disabledLess from './ISPinternetChild/disabledLess';
+    import changeLessStatus from './ISPinternetChild/disabledLess';
     import ajax from '@/api/index';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
             tableCom,
-            disabledLess
+            changeLessStatus
         },
-        data() {
+        data () {
             return {
                 //关键字信息查询
                 keyWord : '',
                 //表头数据
-                columnData: columns,
+                columnData : columns,
                 //是否显示
                 disabledLessModalShow : false,
                 //当前操作的租户数据
@@ -126,25 +103,27 @@
                 pageSize : 10,
                 totalCount : 0,
                 //表格数据
-                tableData : []
-            }
+                tableData : [],
+                //禁用/启用操作类别
+                operateType : ''
+            };
         },
-        methods: {
+        methods : {
             /**
              * 新增租户
              */
-            addLess() {
+            addLess () {
                 this.$router.push({
-                    name: 'addLess'
+                    name : 'addLess'
                 });
             },
             /**
              * 查看服务提供商详情
-             * @param data
+             * @param{Object} data
              */
-            toISPinternetDetail(data) {
+            toISPinternetDetail (data) {
                 this.$router.push({
-                    name: 'ISPinternetDetail',
+                    name : 'ISPinternetDetail',
                     params : {
                         id : data.id,
                         activeNode : {
@@ -156,28 +135,37 @@
             },
             /**
              * 禁用租户
-             * @param rowData 租户的数据
+             * @param{Object} rowData 租户的数据
              */
             disabledLess (rowData) {
-                // this.disabledLessModalShow = true;
-                // this.currentRow = rowData;
-                ajax.post('updateOrgInfoStatus',{
-                    id : rowData.id,
-                    status : 'close'
-                }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success('禁用成功');
-                        this.queryList();
-                    }else{
-                        this.$Message.error(res.message || '禁用失败');
-                    }
-                });
+                this.disabledLessModalShow = true;
+                this.currentRow = rowData;
+                this.operateType = 'close';
             },
             /**
-             * 确认禁用租户
+             * 确认禁用/启用租户
              */
-            confirmDisabled () {
-
+            confirmChangeStatus () {
+                this.disabledLessModalShow = false;
+                ajax.post('updateOrgInfoStatus',{
+                    id : this.currentRow.id,
+                    status : this.operateType
+                }).then(res => {
+                    if (res.status === 200) {
+                        if (this.operateType === 'close') {
+                            this.$Message.success('禁用成功');
+                        } else {
+                            this.$Message.success('启用成功');
+                        }
+                        this.queryList();
+                    } else {
+                        if (this.operateType === 'close') {
+                            this.$Message.error(res.message || '禁用失败');
+                        } else {
+                            this.$Message.error(res.message || '启用失败');
+                        }
+                    }
+                });
             },
             /**
              * 查询服务提供商信息
@@ -188,21 +176,21 @@
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
                         this.totalCount = Number(res.data.totalRecord);
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             },
             /**
              * 设置行样式
              * @param row
              */
-            rowClassName ({row}) {
-                if(row.viewStatue === 1){
+            rowClassName ({ row }) {
+                if (row.viewStatue === 1) {
                     return 'light-row';
                 }
             },
@@ -211,21 +199,13 @@
              * @param rowData
              */
             ableLess (rowData) {
-                ajax.post('updateOrgInfoStatus',{
-                    id : rowData.id,
-                    status : 'open'
-                }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success('启用成功');
-                        this.queryList();
-                    }else{
-                        this.$Message.error(res.message || '启用失败');
-                    }
-                });
+                this.disabledLessModalShow = true;
+                this.currentRow = rowData;
+                this.operateType = 'open';
             }
         },
-        computed: {}
-    }
+        computed : {}
+    };
 </script>
 
 <style lang="scss" scoped>

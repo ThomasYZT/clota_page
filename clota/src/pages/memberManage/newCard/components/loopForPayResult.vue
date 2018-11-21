@@ -36,8 +36,9 @@
                                    style="width: 280px"
                                    placeholder="扫码前，请获取焦点"
                                    @on-focus="setValidateStatus"
-                                   @keyup.native.stop.enter="startPay"/>
+                                   @on-enter="startPay"/>
                         </FormItem>
+                        <input type="text" style="display: none;">
                     </Form>
                 </div>
             </template>
@@ -207,6 +208,13 @@
              */
             setStage (stage) {
                 this.stage = stage;
+            },
+            /**
+             * 禁止提交事件
+             * @return {boolean}
+             */
+            submit () {
+                return false;
             }
         }
     };

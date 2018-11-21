@@ -15,13 +15,13 @@
 </template>
 
 <script>
-    import {driverHead} from './driverConfig.js';
+    import { driverHead } from './driverConfig.js';
     import tableCom from '../../../lessee/child/organization/tableCom';
     export default {
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //司机信息表头配置
                 driverHead : driverHead,
@@ -42,9 +42,9 @@
                 ],
                 //导游总数
                 totalCount : 100,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取下属景区信息
              */
@@ -55,7 +55,7 @@
         created () {
             this.getSubCompany();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

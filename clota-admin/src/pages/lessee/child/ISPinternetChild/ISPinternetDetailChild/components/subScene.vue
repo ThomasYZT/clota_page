@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import {region} from './subSceneConfig';
+    import { region } from './subSceneConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
     export default {
@@ -43,11 +43,11 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
-        data() {
+        data () {
             return {
                 //下属景区表头配置
                 region : region,
@@ -58,10 +58,10 @@
                 //是否收起
                 isPackUp : true,
                 pageNo : 1,
-                pageSize :10
-            }
+                pageSize : 10
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询下属景区信息
              */
@@ -72,10 +72,10 @@
                     id : this.searchParams.id,
                     nodeType : 'scenic'
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data ? res.data.list : [];
                         this.totalCount = Number(res.data.totalRecord);
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -88,7 +88,7 @@
                 return this.searchParams && this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -58,48 +58,48 @@
     import tableCom from '../../index/child/tableCom';
     import tableMixins from '../../lessee/tableMixins';
     import loading from '@/components/loading/loading.vue';
-    import {columns} from './systemAlarmConfig';
+    import { columns } from './systemAlarmConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        mixins: [tableMixins],
-        components: {
+        mixins : [tableMixins],
+        components : {
             breadCrumbHead,
             tableCom,
             loading
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('serverList'),
-                        router: {
-                            name: 'server'
+                        name : this.$t('serverList'),
+                        router : {
+                            name : 'server'
                         }
                     },
                     {
-                        name: this.$t('deviceInfo'),
-                        router: {
-                            name: 'serverDetail'
+                        name : this.$t('deviceInfo'),
+                        router : {
+                            name : 'serverDetail'
                         }
                     }
                 ],
                 //选择的日期
-                timeselect: new Date(),
+                timeselect : new Date(),
                 //是否在加载中
-                isLoading: false,
+                isLoading : false,
                 //表头配置
-                columnData: columns,
+                columnData : columns,
                 //容器去除不包含表格的高度
-                spaceOffset: 209,
+                spaceOffset : 209,
                 //服务器ip
                 serverIp : '',
                 //系统警报列表
                 tableData : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询系统报警事件
              */
@@ -110,10 +110,10 @@
                     page : this.pageNo,
                     ctime : this.timeselect.format('yyyy-MM-dd')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
                         this.totalCount = res.data.totalRecord;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -128,8 +128,8 @@
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
-                if(params.ip){
+            getParams (params) {
+                if (params.ip) {
                     this.serverIp = params.ip;
                     this.queryMoreWarningData();
                 }
@@ -146,17 +146,17 @@
              * 每页大小改变
              * @param pageNo
              */
-            pageNoChange(pageNo) {
+            pageNoChange (pageNo) {
                 this.pageNo = pageNo;
                 this.queryMoreWarningData();
             }
         },
-        beforeRouteEnter(to,from,next) {
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

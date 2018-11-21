@@ -11,55 +11,55 @@ Vue.use(Router);
 
 //生成新路由的方法
 const createRouter = () => new Router({
-    routes: [
+    routes : [
         //登录
         {
-            path: '/login',
-            name: 'login',
-            component: () => import(/* webpackChunkName: "login" */ '../pages/login/index.vue'),
-            meta: {
-                noFrame: true
+            path : '/login',
+            name : 'login',
+            component : () => import(/* webpackChunkName: "login" */ '../pages/login/index.vue'),
+            meta : {
+                noFrame : true
             }
         },
         //个人中心
         {
-            path: '/person',
-            name: 'person',
-            component: () => import(/* webpackChunkName: "login" */ '../pages/personalCenter/index.vue'),
+            path : '/person',
+            name : 'person',
+            component : () => import(/* webpackChunkName: "login" */ '../pages/personalCenter/index.vue'),
         },
         {
-            path: '',
+            path : '',
             //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
             //如果是没有获取到用户信息，那么就直接跳转到登录页面
-            redirect: to => {
-                if(Object.keys(store.getters.userInfo).length > 0){
-                    if(store.getters.routerInfo.length > 0){
+            redirect : to => {
+                if (Object.keys(store.getters.userInfo).length > 0) {
+                    if (store.getters.routerInfo.length > 0) {
                         return {
                             path : store.getters.routerInfo[0].path
-                        }
+                        };
                     }
-                }else{
+                } else {
                     return {
                         name : 'login'
-                    }
+                    };
                 }
             }
         },
         {
-            path: '/',
+            path : '/',
             //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
             //如果是没有获取到用户信息，那么就直接跳转到登录页面
-            redirect: to => {
-                if(Object.keys(store.getters.userInfo).length > 0){
-                    if(store.getters.routerInfo.length > 0){
+            redirect : to => {
+                if (Object.keys(store.getters.userInfo).length > 0) {
+                    if (store.getters.routerInfo.length > 0) {
                         return {
                             path : store.getters.routerInfo[0].path
-                        }
+                        };
                     }
-                }else{
+                } else {
                     return {
                         name : 'login'
-                    }
+                    };
                 }
             }
         },
@@ -68,7 +68,7 @@ const createRouter = () => new Router({
         return {
             x : 0,
             y : 0
-        }
+        };
     }
 });
 

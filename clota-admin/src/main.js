@@ -1,10 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import "babel-polyfill"
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-import store from './store'
+import "babel-polyfill";
+import Vue from 'vue';
+import App from './App';
+import router from './router';
+import store from './store';
 import ajax from '@/api/index.js';
 //es6垫片（包含了es5）
 import 'core-js/es6';
@@ -17,9 +17,10 @@ import 'klwk-ui/src/lib/css/index.scss';
 import './assets/theme/elementTheme/index.scss';
 import './assets/scss/_iconfont.scss';
 import './assets/css/iconfont.css';
+import './assets/scss/_common.scss';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
-import plugin from './assets/js/plugin'
+import plugin from './assets/js/plugin';
 
 Vue.use(plugin);
 Vue.config.productionTip = false;
@@ -37,24 +38,24 @@ router.beforeEach((to, from, next) => {
                 next();
             } else {
                 store.dispatch('getUserRight', to).then((router) => {
-                    next({ ...to, replace: true })
+                    next({ ...to, replace : true });
                 }).catch(() => {
                     next({
-                        name: 'login'
+                        name : 'login'
                     });
                 });
             }
         } else {
             //判断是否本地有存储token，有的话，直接重新获取用户信息
-            if(ajax.getToken()){
+            if (ajax.getToken()) {
                 store.dispatch('getUserInfo').then(route => {
                     next({
-                        path: to.path
+                        path : to.path
                     });
                 });
-            }else{
+            } else {
                 next({
-                    name: 'login'
+                    name : 'login'
                 });
             }
         }
@@ -63,10 +64,10 @@ router.beforeEach((to, from, next) => {
 
 /* eslint-disable no-new */
 new Vue({
-    el: '#app',
-    render: (h) => h(App),
+    el : '#app',
+    render : (h) => h(App),
     router,
     i18n,
     store,
-    components: {App},
+    components : { App },
 });

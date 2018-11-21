@@ -52,12 +52,12 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
 
     export default {
-        data() {
+        data () {
             return {
                 //二级菜单是否显示标志结合
                 menuShowList : [],
@@ -72,16 +72,16 @@
                         label : this.$t('logout')
                     }
                 ]
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 跳转到对应的菜单
              * @param data
              */
-            toTopMenu(data) {
-                if(data.children && data.children.length > 0) return false;
-                this.$router.push({path: data.path},() => {
+            toTopMenu (data) {
+                if (data.children && data.children.length > 0) return false;
+                this.$router.push({ path : data.path },() => {
                     sessionStorage.clear();
                 });
             },
@@ -90,7 +90,7 @@
              * @param data
              */
             toSubMenu (data,i) {
-                this.$router.push({path: data.path},() => {
+                this.$router.push({ path : data.path },() => {
                     sessionStorage.clear();
                 });
                 this.$set(this.menuShowList,i,false);
@@ -99,7 +99,7 @@
              * 显示菜单
              * @param i
              */
-            showMenu(i) {
+            showMenu (i) {
                 this.$set(this.menuShowList,i,true);
             },
             /**
@@ -120,22 +120,22 @@
              * @param name
              */
             menuChange (name) {
-                if(name === 'logout'){
+                if (name === 'logout') {
                     this.logOut();
-                }else if(name === 'personalCenter'){
+                } else if (name === 'personalCenter') {
                     this.$router.push({
                         name : 'person'
                     });
                 }
             }
         },
-        computed: {
+        computed : {
             ...mapGetters({
-                routerInfo: 'routerInfo',
+                routerInfo : 'routerInfo',
                 userInfo : 'userInfo'
             }),
             //当前激活的菜单
-            activeMenu() {
+            activeMenu () {
                 if (this.$route && this.$route.meta) {
                     return this.$route.meta.lightMenu;
                 } else {
@@ -143,32 +143,32 @@
                 }
             },
             //菜单列表，排除挂靠在其它路由下的路由
-            menuList() {
+            menuList () {
                 let routerInfo = defaultsDeep([],this.routerInfo);
                 if (routerInfo) {
                     return routerInfo.filter(item => {
                         //判断是否需要显示二级菜单
-                        if(item.children && item.children.length > 0){
+                        if (item.children && item.children.length > 0) {
                             let children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
                             item.children = children;
-                        }else{
+                        } else {
                             item.children = [];
                         }
                         item.showSubMenu = false;
                         //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
                         if (item.name) {
                             return item.name === item.meta._name;
-                        }else{
+                        } else {
                             //没有路由名字的都是一级路由，需要显示菜单
-                            return  item.path !== '*'
+                            return item.path !== '*';
                         }
-                    })
+                    });
                 } else {
                     return [];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

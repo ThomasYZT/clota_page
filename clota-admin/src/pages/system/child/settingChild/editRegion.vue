@@ -83,66 +83,66 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import provinceList from '@/components/kCityPicker/dicts/provinces.json';
-    import cityList from '@/components/kCityPicker/dicts/citys.json'
-    import countyList from '@/components/kCityPicker/dicts/areas.json'
+    import cityList from '@/components/kCityPicker/dicts/citys.json';
+    import countyList from '@/components/kCityPicker/dicts/areas.json';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('regionInfo'),
-                        router: {
-                            name: 'region'
+                        name : this.$t('regionInfo'),
+                        router : {
+                            name : 'region'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //省
-                    province: '',
+                    province : '',
                     //市
-                    city: '',
+                    city : '',
                     //是否启用
-                    isUsing: '',
+                    isUsing : '',
                     //县/区
-                    county: '',
+                    county : '',
                     //备注
-                    remark: '',
+                    remark : '',
                 },
                 //表单校验规则
-                ruleValidate: {
+                ruleValidate : {
                     province : [
-                        {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('province')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('account'), length: 20}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseSelect', { 'msg' : this.$t('province') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('account'), length : 20 }), trigger : 'blur' },
                     ],
                     city : [
-                        {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('city')}), trigger: 'blur'},
+                        { required : true, message : this.$t('validateError.pleaseSelect', { 'msg' : this.$t('city') }), trigger : 'blur' },
                     ],
                     county : [
-                        {required: true, message : this.$t('validateError.pleaseSelect', {'msg': this.$t('county')}), trigger: 'blur'},
+                        { required : true, message : this.$t('validateError.pleaseSelect', { 'msg' : this.$t('county') }), trigger : 'blur' },
                     ]
                 },
                 //是否正在添加中
-                addLoading: false,
+                addLoading : false,
                 //操作类型
                 type : '',
                 //省列表
                 provinceList : provinceList,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存新增单位数据
              */
-            save() {
+            save () {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
                     this.addLoading = false;
@@ -151,9 +151,9 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$router.push({
-                    name: 'region'
+                    name : 'region'
                 });
             },
             /**
@@ -161,9 +161,9 @@
              * @param params
              */
             getParams (params) {
-                if(params.type) {
+                if (params.type) {
                     this.type = params.type;
-                }else{
+                } else {
                     this.$router.push({
                         name : 'region'
                     });
@@ -177,7 +177,7 @@
                 this.formData.county = '';
             }
         },
-        beforeRouteEnter(to,fromm,next){
+        beforeRouteEnter (to,fromm,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
@@ -192,7 +192,7 @@
                 return countyList.filter(item => item.provinceCode === this.formData.province && item.cityCode === this.formData.city);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

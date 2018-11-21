@@ -34,47 +34,47 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import ajax from '@/api/index.js';
     export default {
-        data() {
+        data () {
             //校验姓名格式
             const validateName = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     let nameStr = String(name);
-                    if(nameStr.length > 20){
+                    if (nameStr.length > 20) {
                         callback(this.$t('validateError.lengthError',{
-                            name  : this.$t('name'),
+                            name : this.$t('name'),
                             length : 20
                         }));
-                    }else{
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('validateError.pleaseInput',{msg : this.$t('name')}));
+                } else {
+                    callback(this.$t('validateError.pleaseInput',{ msg : this.$t('name') }));
                 }
             };
             //校验联系电话
             const validatePhone = (rule,value,callback) => {
-                if(value){
-                    if(validator.isMobile(value) ||  validator.isTelephone(value)){
+                if (value) {
+                    if (validator.isMobile(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('validateError.formatError',{field : this.$t('phone')}));
+                    } else {
+                        callback(this.$t('validateError.formatError',{ field : this.$t('phone') }));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
             //校验邮箱
             const validateMail = (rule,value,callback) => {
-                if(value){
-                    if(validator.isEmail(value)){
+                if (value) {
+                    if (validator.isEmail(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('validateError.formatError',{field : this.$t('mail')}));
+                    } else {
+                        callback(this.$t('validateError.formatError',{ field : this.$t('mail') }));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
@@ -93,35 +93,35 @@
                     roleId : '',
                     //角色
                     roles : '',
-                    id:''
+                    id : ''
                 },
-                loginName: '',
+                loginName : '',
                 //表单校验规则
                 ruleValidate : {
                     name : [
-                        {required : true,validator : validateName ,trigger : 'blur'}
+                        { required : true,validator : validateName ,trigger : 'blur' }
                     ],
                     phone : [
-                        {required : true,validator : validatePhone ,trigger : 'blur'}
+                        { required : true,validator : validatePhone ,trigger : 'blur' }
                     ],
                     mail : [
-                        {required : false,validator : validateMail ,trigger : 'blur'}
+                        { required : false,validator : validateMail ,trigger : 'blur' }
                     ]
                 },
                 //是否在保存中
                 isSaving : false
-            }
+            };
         },
-         created(){
+         created () {
             this.getSysAccountByToken();
         },
-        methods: {
+        methods : {
             /**
              * 保存基本信息
              */
-               getSysAccountByToken(){
+               getSysAccountByToken () {
                 return ajax.post('getSysAccountByToken',).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.formData.id = res.data.id;
                         this.formData.account = res.data.loginName;
                         this.formData.name = res.data.nickName;
@@ -132,27 +132,27 @@
                     }
                 });
             },
-            handleSubmit(){
+            handleSubmit () {
                  this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.save();
                     }
                 });
             },
             save () {
                 this.isSaving = true;
-                let AccountInformation={
-                      id:this.formData.id,
-                      nickName:this.formData.name,
-                      phone:this.formData.phone,
-                      email:this.formData.mail,
-                      roleId:this.formData.roleId
+                let AccountInformation = {
+                      id : this.formData.id,
+                      nickName : this.formData.name,
+                      phone : this.formData.phone,
+                      email : this.formData.mail,
+                      roleId : this.formData.roleId
                  };
                  ajax.post('updateAccountInfo',AccountInformation).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('修改基本信息成功');
                         this.resetFormData();
-                    }else{
+                    } else {
                         this.$Message.error(res.message || '修改基本信息失败');
                     }
                 }).finally(() => {
@@ -166,7 +166,7 @@
 
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

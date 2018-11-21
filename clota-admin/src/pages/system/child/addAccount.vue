@@ -81,21 +81,21 @@
 <script>
 
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import ajax from '@/api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
         },
-        data() {
+        data () {
 
             const validateMethod = {
 
                 // 输入内容不合规则
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
                         callback(new Error( this.$t('errorIrregular') ));
                     } else {
@@ -108,13 +108,13 @@
             //校验联系电话
             const validateMobile = (rule, value, callback) => {
                 if (value) {
-                    if (validator.isMobile(value) || validator.isTelephone(value)) {
+                    if (validator.isMobile(value)) {
                         callback();
                     } else {
-                        callback(this.$t('formalError', {field: this.$t('phone')}));
+                        callback(this.$t('formalError', { field : this.$t('phone') }));
                     }
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('phone')}));
+                    callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('phone') }));
                 }
             };
             //校验电子邮箱
@@ -123,83 +123,83 @@
                     if (validator.isEmail(value)) {
                         callback();
                     } else {
-                        callback(this.$t('formalError', {field: this.$t('email')}));
+                        callback(this.$t('formalError', { field : this.$t('email') }));
                     }
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('email')}))
+                    callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('email') }));
                 }
             };
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('accountName'),
-                        router: {
-                            name: 'account'
+                        name : this.$t('accountName'),
+                        router : {
+                            name : 'account'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //账号
-                    loginName: '',
+                    loginName : '',
                     //名字
-                    nickName: '',
+                    nickName : '',
                     //联系电话
-                    phone: '',
+                    phone : '',
                     //邮箱
-                    email: '',
+                    email : '',
                     //角色
-                    roleId: '',
+                    roleId : '',
                 },
                 //表单校验规则
-                ruleValidate: {
+                ruleValidate : {
                     loginName : [
-                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('account')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('account'), length: 20}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('account') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('account'), length : 20 }), trigger : 'blur' },
                     ],
                     nickName : [
-                        { required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('name')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 20}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('name') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('name'), length : 20 }), trigger : 'blur' },
                     ],
-                    email: [
-                        { required: true, validator: validatmail, trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 100, message: this.$t('errorMaxLength', {field: this.$t('mail'), length: 100}), trigger: 'blur' },
+                    email : [
+                        { required : true, validator : validatmail, trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 100, message : this.$t('errorMaxLength', { field : this.$t('mail'), length : 100 }), trigger : 'blur' },
                     ],
                     phone : [
-                        { required: true, validator: validateMobile, trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('mobile'), length: 20}), trigger: 'blur' },
+                        { required : true, validator : validateMobile, trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('mobile'), length : 20 }), trigger : 'blur' },
                     ],
-                    roleId: [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('role')}), trigger: 'change'},
+                    roleId : [
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('role') }), trigger : 'change' },
                     ],
                 },
                 //角色列表
-                roleList: [],
+                roleList : [],
                 //是否正在添加中
-                addLoading: false,
+                addLoading : false,
                 //账号操作类型
                 type : '',
                 //是否重置密码
-                reset: false,
-            }
+                reset : false,
+            };
         },
-        created(){
+        created () {
             //查询角色列表
             this.queryRoleList();
         },
-        methods: {
+        methods : {
 
             /**
              * 查询角色列表
              */
-            queryRoleList() {
+            queryRoleList () {
                 ajax.post('roleList', {}).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.roleList = res.data || [];
                     } else {
                         this.roleList = [];
@@ -210,22 +210,22 @@
             /**
              * 保存新增账户数据
              */
-            save() {
+            save () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.addLoading = true;
                         if (this.type === 'add') {
-                            console.log(this.formData)
+                            console.log(this.formData);
                             this.addUser(this.formData);
-                        }else {
-                            var params = {
-                                id: this.formData.id,
-                                nickName: this.formData.nickName,
-                                phone: this.formData.phone,
-                                email: this.formData.email,
-                                roleId: this.formData.roleId,
+                        } else {
+                            let params = {
+                                id : this.formData.id,
+                                nickName : this.formData.nickName,
+                                phone : this.formData.phone,
+                                email : this.formData.email,
+                                roleId : this.formData.roleId,
                             };
-                            console.log(params)
+                            console.log(params);
                             this.updateUser(params);
                         }
                     }
@@ -234,12 +234,12 @@
             /**
              * 新增账户
              */
-            addUser( params ) {
+            addUser ( params ) {
                 ajax.post('addUser', params).then(res => {
                     this.addLoading = false;
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('addSuccess'));
-                        this.$router.push({ name: 'account'});
+                        this.$router.push({ name : 'account' });
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
                     }
@@ -249,12 +249,12 @@
              * 修改账户
              * @param params
              */
-            updateUser( params ) {
+            updateUser ( params ) {
                 ajax.post('updateUser', params).then(res => {
                     this.addLoading = false;
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('edit') + this.$t('success'));
-                        this.$router.push({ name: 'account'});
+                        this.$router.push({ name : 'account' });
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
                     }
@@ -265,9 +265,9 @@
              */
             resetPassword () {
                 ajax.post('resetPassword', {
-                    id: this.formData.id,
+                    id : this.formData.id,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.reset = true;
                         this.$Message.success(this.$t('resetPass') + this.$t('success'));
                     } else {
@@ -279,9 +279,9 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$router.push({
-                    name: 'account'
+                    name : 'account'
                 });
             },
             /**
@@ -289,17 +289,17 @@
              * @param params
              */
             getParams (params) {
-                if(params.type) {
+                if (params.type) {
                     this.type = params.type;
-                    this.formData = params.info ? params.info : { loginName: '',nickName: '',phone: '',email: '',roleId: '' };
-                }else{
+                    this.formData = params.info ? params.info : { loginName : '',nickName : '',phone : '',email : '',roleId : '' };
+                } else {
                     this.$router.push({
                         name : 'account'
                     });
                 }
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

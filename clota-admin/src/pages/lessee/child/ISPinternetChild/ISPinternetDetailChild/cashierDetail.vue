@@ -72,7 +72,7 @@
                 }
             },
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formDataCopy : {},
@@ -105,10 +105,10 @@
                     }
                 ],
                 //款台详情
-                cashierDetail :{}
-            }
+                cashierDetail : {}
+            };
         },
-        methods: {
+        methods : {
             /**
              * 开始编辑
              */
@@ -137,9 +137,9 @@
                 ajax.post('getServiceProvider',{
                     id : this.activeNode.id,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.cashierDetail = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.cashierDetail = {};
                     }
                 });
@@ -155,7 +155,7 @@
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

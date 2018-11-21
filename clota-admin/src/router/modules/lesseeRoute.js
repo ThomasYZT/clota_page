@@ -9,81 +9,81 @@
  */
 export default {
     //租户菜单
-    lessee: {
-        path: '/lessee',
-        component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/index.vue'),
-        meta: {
-            _name: 'lessee',
-            menuName: 'lessee',
-            lightMenu: 'lessee',
+    lessee : {
+        path : '/lessee',
+        component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/index.vue'),
+        meta : {
+            _name : 'lessee',
+            menuName : 'lessee',
+            lightMenu : 'lessee',
         },
-        children: {
+        children : {
             //服务提供商
-            ISPinternet: {
-                path: 'ISPinternet',
-                name: 'ISPinternet',
-                component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternet'),
-                meta: {
-                    _name: 'lessee',
-                    menuName: 'lessee',
-                    lightMenu: 'lessee',
+            ISPinternet : {
+                path : 'ISPinternet',
+                name : 'ISPinternet',
+                component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternet'),
+                meta : {
+                    _name : 'lessee',
+                    menuName : 'lessee',
+                    lightMenu : 'lessee',
                 },
             },
             //合作渠道（机构）
-            cooperaChannelOrg: {
-                path: 'cooperaChannelOrg',
-                name: 'cooperaChannelOrg',
-                component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelOrg'),
-                meta: {
-                    _name: 'lessee',
-                    menuName: 'lessee',
-                    lightMenu: 'lessee',
+            cooperaChannelOrg : {
+                path : 'cooperaChannelOrg',
+                name : 'cooperaChannelOrg',
+                component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelOrg'),
+                meta : {
+                    _name : 'lessee',
+                    menuName : 'lessee',
+                    lightMenu : 'lessee',
                 },
             },
             //合作渠道（个人）
-            cooperaChannelPer: {
-                path: 'cooperaChannelPer',
-                name: 'cooperaChannelPer',
-                component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelPer'),
-                meta: {
-                    _name: 'lessee',
-                    menuName: 'lessee',
-                    lightMenu: 'lessee',
+            cooperaChannelPer : {
+                path : 'cooperaChannelPer',
+                name : 'cooperaChannelPer',
+                component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelPer'),
+                meta : {
+                    _name : 'lessee',
+                    menuName : 'lessee',
+                    lightMenu : 'lessee',
                 },
             },
         }
     },
     //新增租户
-    addLess: {
-        path: '/ISPinternet/addLess',
-        name: 'addLess',
-        component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/addLess.vue'),
-        meta: {
-            _name: 'lessee',
-            menuName: 'lessee',
-            lightMenu: 'lessee',
+    addLess : {
+        path : '/ISPinternet/addLess',
+        name : 'addLess',
+        component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/addLess.vue'),
+        meta : {
+            _name : 'lessee',
+            menuName : 'lessee',
+            lightMenu : 'lessee',
         },
     },
     //服务提供商详情
-    ISPinternet: {
-        path: '/ISPinternet/detail',
-        name: 'ISPinternetDetail',
-        component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
-        meta: {
-            _name: 'lessee',
-            menuName: 'lessee',
-            lightMenu: 'lessee',
+    ISPinternet : {
+        path : '/ISPinternet/detail',
+        name : 'ISPinternetDetail',
+        component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
+        meta : {
+            _name : 'lessee',
+            menuName : 'lessee',
+            lightMenu : 'lessee',
         },
     },
     // //合作渠道（个人）详情
-    cooperaChannelPerDetail: {
-        path: '/cooperaChannelPer/detail',
-        name: 'cooperaChannelPerDetail',
-        component: () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelChild/index.vue'),
-        meta: {
-            _name: 'lessee',
-            menuName: 'lessee',
-            lightMenu: 'lessee',
+    cooperaChannelPerDetail : {
+        path : '/cooperaChannelPer/detail',
+        name : 'cooperaChannelPerDetail',
+        component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelChild/index.vue'),
+        meta : {
+            _name : 'lessee',
+            menuName : 'lessee',
+            lightMenu : 'lessee',
         },
     },
-}
+};

@@ -52,7 +52,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row.status)}}
+                            {{$t('partner.' + scope.row.status)}}
                         </template>
                     </el-table-column>
                 </table-com>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-    import {paratner} from './partnerConfig';
+    import { paratner } from './partnerConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
     export default {
@@ -71,14 +71,14 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //合作伙伴表头配置
                 paratner : paratner,
@@ -90,9 +90,9 @@
                 pageSize : 10,
                 //合作伙伴列表是否收起
                 isPackUp : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取合作伙伴信息
              */
@@ -100,9 +100,9 @@
                 ajax.post('getScenicPartners',{
                     id : this.searchParams.id
                 }).then(res => {
-                   if(res.status === 200) {
+                   if (res.status === 200) {
                        this.tableData = res.data ? res.data : [];
-                   }else{
+                   } else {
                        this.tableData = [];
                    }
                 });
@@ -114,7 +114,7 @@
                 return this.searchParams && this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

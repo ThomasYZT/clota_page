@@ -61,7 +61,7 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="ghost" 
+            <Button type="ghost"
                 class="ivu-btn-90px"
                 @click="cancel">取消</Button>
             <Button type="primary"
@@ -72,105 +72,105 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
-    import {cashierType} from '@/assets/js/constVariable.js';
+    import { cashierType } from '@/assets/js/constVariable.js';
 
     export default {
-        components: {
+        components : {
             cityPlugin
         },
-        props: {
+        props : {
             //绑定的模态框是否显示的变量
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //选择的父节点详情
-            'chosed-node-detail': {
-                type: Object,
-                default() {
-                    return {}
+            'chosed-node-detail' : {
+                type : Object,
+                default () {
+                    return {};
                 }
             },
             //新增的节点详情
-            'added-node-detail': {
-                type: Object,
-                default() {
-                    return {}
+            'added-node-detail' : {
+                type : Object,
+                default () {
+                    return {};
                 }
             }
         },
-        data() {
+        data () {
             //校验服务器名称
             const validateServerName = (rule, value, callback) => {
                 callback();
             };
             return {
                 //表单数据
-                formData: {
+                formData : {
                     //款台类型
-                    cashierType: '',
+                    cashierType : '',
                     //所属核销设备分组
-                    cashierTypeGroup: [],
+                    cashierTypeGroup : [],
                     //服务器名称
-                    serverName: '',
+                    serverName : '',
                     //短信供应商
-                    smsProvider: '',
+                    smsProvider : '',
                     //所属销售渠道分组
-                    saleTypeGroup: '',
+                    saleTypeGroup : '',
                 },
                 //表单校验规则
-                ruleValidate: {
-                    cashierType: [
+                ruleValidate : {
+                    cashierType : [
                         {
-                            required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('fianceSuperior')}),
-                            trigger: 'change'
+                            required : true,
+                            message : this.$t('validateError.pleaseSelect', { msg : this.$t('fianceSuperior') }),
+                            trigger : 'change'
                         },
                     ],
-                    serverName: [
-                        {required: true, validator: validateServerName, trigger: 'blur'},
+                    serverName : [
+                        { required : true, validator : validateServerName, trigger : 'blur' },
                     ],
-                    smsProvider: [
+                    smsProvider : [
                         {
-                            required: true,
-                            message: this.$t('validateError.pleaseSelect', {msg: this.$t('smsProvider')}),
-                            trigger: 'change'
+                            required : true,
+                            message : this.$t('validateError.pleaseSelect', { msg : this.$t('smsProvider') }),
+                            trigger : 'change'
                         },
                     ]
                 },
                 //款台类型
-                cashierTypeList: cashierType,
+                cashierTypeList : cashierType,
                 //所属核销设备分组列表
-                cashierTypeGroupList: [],
+                cashierTypeGroupList : [],
                 //所属销售渠道分组
-                saleTypeGroupList: [],
-            }
+                saleTypeGroupList : [],
+            };
         },
-        watch: {
+        watch : {
             //监听选择的父节点信息
-            'chosedNodeDetail': {
-                handler(newVal, oldVal) {
+            'chosedNodeDetail' : {
+                handler (newVal, oldVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
                         this.formData.fianceSuperior = newVal.title;
                     }
                 },
-                immediate: true
+                immediate : true
             }
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
@@ -179,7 +179,7 @@
             /**
              * 保存新增租户数据
              */
-            save() {
+            save () {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         this.addCompany();
@@ -189,7 +189,7 @@
             /**
              * 初始化表单数据
              */
-            resetFormData() {
+            resetFormData () {
                 for (let item in this.formData) {
                     this.formData[item] = '';
                 }
@@ -197,7 +197,7 @@
             /**
              * 调用新增公司的接口
              */
-            addCompany() {
+            addCompany () {
                 this.$emit('fresh-structure-data');
                 this.$emit('input', false);
             },
@@ -206,7 +206,7 @@
              * @param data
              */
             cashierTypeChange (data) {
-                console.log(data)
+                console.log(data);
             },
             /**
              * 取消新增
@@ -218,22 +218,22 @@
         computed : {
             //是否显示所属核销设备分组
             showCashierTypeGroup () {
-                if(this.formData.cashierType){
+                if (this.formData.cashierType) {
                     return this.formData.cashierType === 'verifyCashierType' || this.formData.cashierType === 'verifySaleAndCashierType';
-                }else{
+                } else {
                     return true;
                 }
             },
             //是否显示所属销售渠道分组
             showSaleTypeGroup () {
-                if(this.formData.cashierType){
+                if (this.formData.cashierType) {
                     return this.formData.cashierType === 'verifySaleType' || this.formData.cashierType === 'verifySaleAndCashierType';
-                }else{
+                } else {
                     return true;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

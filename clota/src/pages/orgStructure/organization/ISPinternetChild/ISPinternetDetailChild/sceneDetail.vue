@@ -38,7 +38,7 @@
                         <span class="iconfont icon-edit"></span>
                         {{$t('modify')}}
                     </span>
-                    <span :class="{'started' :sceneDetail.status === 'open' ,'not-started' : sceneDetail.status === 'close'}">
+                    <span :class="{'started' :sceneDetail.status === 'open' ,'not-started' : sceneDetail.status !== 'open'}">
                         {{$t(sceneDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                     </span>
                 </template>

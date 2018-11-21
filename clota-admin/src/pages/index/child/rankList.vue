@@ -63,23 +63,23 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columns} from './rankListConfig';
+    import { columns } from './rankListConfig';
     import ajax from '@/api/index.js';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
 
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
-                columnData: columns,
+                columnData : columns,
                 //表格数据
-                tableData: [],
-            }
+                tableData : [],
+            };
         },
-        methods: {
+        methods : {
             /**
              * 跳转到排行榜详情
              */
@@ -96,13 +96,13 @@
                     page : 1,
                     pageSize : 5
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
-                    }else{
-                        this.tableData =  [];
+                    } else {
+                        this.tableData = [];
                     }
                 }).catch(err => {
-                    this.tableData =  [];
+                    this.tableData = [];
                 });
             },
             /**
@@ -110,14 +110,14 @@
              * @param rate
              */
             getIndex (rate) {
-                if(validator.isNumber(rate)){
+                if (validator.isNumber(rate)) {
                     return Number(rate).toFixed(2) + '%';
-                }else{
+                } else {
                     return '-';
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

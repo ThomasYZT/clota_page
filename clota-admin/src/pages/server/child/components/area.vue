@@ -15,11 +15,11 @@
         components : {
             vueEcharts
         },
-        data() {
+        data () {
             return {
                 //重置面积图定时器
                 timer : ''
-            }
+            };
         },
         props : {
             //y轴名称
@@ -31,22 +31,22 @@
             'series-data' : {
                 type : Array,
                 default () {
-                    return []
+                    return [];
                 }
             },
             //图标和数据
             'legend-data' : {
                 type : Array,
                 default () {
-                    return []
+                    return [];
                 }
             }
         },
-        methods: {},
-        computed: {
+        methods : {},
+        computed : {
             //面积图配置
-            areaOptions() {
-                if(this.timer){
+            areaOptions () {
+                if (this.timer) {
                     clearTimeout(this.timer);
                 }
                 this.timer = setTimeout(() => {
@@ -57,7 +57,7 @@
                 return getPieConfig( this.legendData,this.seriesData,this.yYxisName);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

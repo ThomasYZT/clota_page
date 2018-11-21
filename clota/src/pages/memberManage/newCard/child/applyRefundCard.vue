@@ -224,6 +224,8 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('refundedCard') }));
                         this.listCardsByMemberId();
+                    } else if (res.code === 'M018') {
+                        this.$Message.error('该会员卡已使用，不可退卡');
                     } else {
                         this.listCardsByMemberId();
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('refundedCard') }));

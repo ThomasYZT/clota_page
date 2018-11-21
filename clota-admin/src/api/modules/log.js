@@ -9,4 +9,4 @@ export default {
     'selectOpScene' : 'oPLog/selectOpScene.json',
     //sass操作类型列表
     'selectSaaSOpScene' : 'oPLog/selectSaaSOpScene.json',
-}
+};

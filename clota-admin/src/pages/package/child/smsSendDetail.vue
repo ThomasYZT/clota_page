@@ -76,36 +76,36 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             cityPlugin
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('smsSendRecord'),
-                        router: {
-                            name: 'smsSendRecord'
+                        name : this.$t('smsSendRecord'),
+                        router : {
+                            name : 'smsSendRecord'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //订单编号
-                    orderCode: '',
+                    orderCode : '',
                     //租户
-                    lessee: '',
+                    lessee : '',
                     //手机号
-                    mobile: '',
+                    mobile : '',
                     //条数
                     strips : '',
                     //短信供应商
@@ -118,18 +118,18 @@
                 },
                 //短信发送记录id
                 smsId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
              */
             getParams (params) {
-                if(params.id){
+                if (params.id) {
                     this.smsId = params.id;
                     this.getSmsDetail();
-                }else{
+                } else {
                     this.$router.push({
                         name : 'smsSendRecord'
                     });
@@ -142,7 +142,7 @@
                 ajax.post('getSmsDetail',{
                     id : this.smsId
                 }).then(res =>{
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.formData.orderCode = res.data.orderNo;
                         this.formData.lessee = res.data.orgName;
                         this.formData.mobile = res.data.target;
@@ -151,7 +151,7 @@
                         this.formData.sendStatus = res.data.status;
                         this.formData.smsContent = res.data.content;
                         this.formData.strips = res.data.amount;
-                    }else{
+                    } else {
                         this.formData.orderCode = '';
                         this.formData.lessee = '';
                         this.formData.mobile = '';
@@ -164,7 +164,7 @@
                 });
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

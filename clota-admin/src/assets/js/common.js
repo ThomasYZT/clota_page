@@ -8,16 +8,16 @@ import store from '../../store/index';
 import ajax from '../../api/index';
 import Vue from 'vue';
 import i18n from '../lang/lang.config';
-import {validator } from 'klwk-ui';
+import { validator } from 'klwk-ui';
 
 export default {
 
     /**
      * 退出登录(清空本地记录)
      */
-    loginOut() {
+    loginOut () {
         ajax.post('logout').then(res => {
-            if(res.status === 200){
+            if (res.status === 200) {
                 localStorage.removeItem('token');
                 router.push({
                     name : 'login'
@@ -26,7 +26,7 @@ export default {
                     store.commit('updateUserInfo',{});
                     store.commit('updateRouteInfo',null);
                 });
-            }else{
+            } else {
                 Vue.prototype.$Message.error(i18n.messages[i18n.locale]['logoutError']);
             }
         });
@@ -49,25 +49,25 @@ export default {
     /**
      * 获取用户信息
      */
-    getUserInfo() {
+    getUserInfo () {
         let userInfo = JSON.parse(localStorage.getItem('userInfo'));
         let empInfo = userInfo && userInfo.empInfo ? userInfo.empInfo : {};
         let roleType = userInfo && userInfo.roleType ? userInfo.roleType : 'perf_subordinate';
         let defaultCompany = userInfo && userInfo.companys ? userInfo.companys.find(attr => {
-            return attr.id == userInfo.empInfo.companyId
+            return attr.id == userInfo.empInfo.companyId;
         }) : '';
         return {
             userInfo,
             empInfo,
             roleType,
             defaultCompany
-        }
+        };
     },
 
     /**
      * 无模块或菜单功能权限时默认跳转页面
      */
-    goToDefaultPage() {
+    goToDefaultPage () {
 
 
     },
@@ -77,8 +77,8 @@ export default {
      * @param fileName
      * @returns {*}
      */
-    getFileType(fileName) {
-        var extName = fileName.substr(fileName.lastIndexOf(".") + 1);
+    getFileType (fileName) {
+        let extName = fileName.substr(fileName.lastIndexOf(".") + 1);
         switch (extName) {
             case "txt":
                 return 'txt';
@@ -114,19 +114,19 @@ export default {
      * @param fileName
      * @returns {*}
      */
-    getFileTypeIcon(fileName) {
-        var fileType = this.getFileType(fileName);
-        var fileTypeIcon = {
-            txt: 'icon-txt',
-            rar: 'icon-rar',
-            zip: 'icon-zip',
-            doc: 'icon-word',
-            ppt: 'icon-ppt',
-            xls: 'icon-excel',
-            pdf: 'icon-pdf',
-            img: 'icon-pic',
-            unKnown: 'icon-other-file',
-        }
+    getFileTypeIcon (fileName) {
+        let fileType = this.getFileType(fileName);
+        let fileTypeIcon = {
+            txt : 'icon-txt',
+            rar : 'icon-rar',
+            zip : 'icon-zip',
+            doc : 'icon-word',
+            ppt : 'icon-ppt',
+            xls : 'icon-excel',
+            pdf : 'icon-pdf',
+            img : 'icon-pic',
+            unKnown : 'icon-other-file',
+        };
         return fileTypeIcon[fileType];
     },
 
@@ -135,10 +135,10 @@ export default {
      * @param value
      * @returns {boolean}
      */
-    isNotEmpty(value){
-        if(value !== '' && value !== undefined && value !== null){
+    isNotEmpty (value) {
+        if (value !== '' && value !== undefined && value !== null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     },
@@ -148,61 +148,61 @@ export default {
      */
     validateMoney (value,minLength = 0,maxLength = 10,reg = '') {
         return new Promise((resolve,reject) => {
-            if(this.isNotEmpty(value)){
-                if(validator.isNumber(value)){
-                    if(value < 0){
+            if (this.isNotEmpty(value)) {
+                if (validator.isNumber(value)) {
+                    if (value < 0) {
                         reject('fieldTypeError');
                     }
-                    let  numStr = String(value);
+                    let numStr = String(value);
                     //有小数
-                    if(numStr.indexOf('.') !== -1){
+                    if (numStr.indexOf('.') !== -1) {
                         let numSplit = numStr.split('.');
                         //小数位位数为0
-                        if(numSplit[1].length === 0){
+                        if (numSplit[1].length === 0) {
                             reject('errorFormat');
-                        }else if(numSplit[1].length > 2){//小数位数字大于2
+                        } else if (numSplit[1].length > 2) {//小数位数字大于2
                             reject('decimalError');
-                        }else{
-                            if(numSplit[0].length > maxLength){
+                        } else {
+                            if (numSplit[0].length > maxLength) {
                                 reject('errorMaxLength');
-                            }else if(numStr.length < minLength){
+                            } else if (numStr.length < minLength) {
                                 reject('errorMinLength');
-                            }else{
+                            } else {
                                 //使用自定义正则表达式，校验金额
-                                if(reg){
-                                    if(reg.test(value)){
+                                if (reg) {
+                                    if (reg.test(value)) {
                                         resolve();
-                                    }else{
+                                    } else {
                                         reject('regErr');
                                     }
-                                }else{
+                                } else {
                                     resolve();
                                 }
                             }
                         }
-                    }else{
+                    } else {
                         //校验整数是否超过范围
-                        if(numStr.length > maxLength){
+                        if (numStr.length > maxLength) {
                             reject('errorMaxLength');
-                        }else if(numStr.length < minLength){
+                        } else if (numStr.length < minLength) {
                             reject('errorMinLength');
-                        }else{
+                        } else {
                             //使用自定义正则表达式，校验金额
-                            if(reg){
-                                if(reg.test(value)){
+                            if (reg) {
+                                if (reg.test(value)) {
                                     resolve();
-                                }else{
+                                } else {
                                     reject('regErr');
                                 }
-                            }else{
+                            } else {
                                 resolve();
                             }
                         }
                     }
-                }else{
+                } else {
                     reject('numError');
                 }
-            }else{
+            } else {
                 reject('inputField');
             }
         });
@@ -214,38 +214,38 @@ export default {
      * @param minLength
      * @param maxLength
      */
-    validateInteger (value,reg,minLength = 0,maxLength = 10){
+    validateInteger (value,reg,minLength = 0,maxLength = 10) {
         return new Promise((resolve,reject) => {
-            if(this.isNotEmpty(value)){
-                if(validator.isNumber(value)){
-                    let  numStr = String(value);
-                    if(value < 0){
+            if (this.isNotEmpty(value)) {
+                if (validator.isNumber(value)) {
+                    let numStr = String(value);
+                    if (value < 0) {
                         reject('fieldTypeError');
                     }
-                    if(numStr.length < minLength){
+                    if (numStr.length < minLength) {
                         reject('errorMinLength');
-                    }else if(numStr.length > maxLength){
+                    } else if (numStr.length > maxLength) {
                         reject('errorMaxLength');
-                    }else{
-                        if(Number.parseInt(value) === Number.parseFloat(value)){
+                    } else {
+                        if (Number.parseInt(value) === Number.parseFloat(value)) {
                             //使用自定义正则表达式
-                            if(reg){
-                                if(reg.test(value)){
+                            if (reg) {
+                                if (reg.test(value)) {
                                     resolve();
-                                }else{
+                                } else {
                                     reject('regErr');
                                 }
-                            }else{
+                            } else {
                                 resolve();
                             }
-                        }else{
+                        } else {
                             reject('integetError');
                         }
                     }
-                }else{
+                } else {
                     reject('integetError');
                 }
-            }else{
+            } else {
                 reject('inputField');
             }
             // if(this.isNotEmpty(value) && validator.isNumber(value)){
@@ -255,4 +255,4 @@ export default {
             // }
         });
     }
-}
+};

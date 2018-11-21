@@ -9,135 +9,135 @@
  */
 export default {
     //系统主页
-    systemIndex: {
-        path: '/system',
-        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/index.vue'),
-        meta: {
-            _name: 'system',
-            menuName: 'system',
-            lightMenu: 'system',
+    systemIndex : {
+        path : '/system',
+        component : () => import(/* webpackChunkName: "system" */ '../../pages/system/index.vue'),
+        meta : {
+            _name : 'system',
+            menuName : 'system',
+            lightMenu : 'system',
         },
         children : {
             //账号管理
             account : {
-                path: '/system/account',
-                name: 'account',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/account.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'accountName',
-                    lightMenu: 'system',
+                path : '/system/account',
+                name : 'account',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/account.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'accountName',
+                    lightMenu : 'system',
                     showInMenu : true,
                     subMenuType : 'account'
                 },
             },
             //系统公告
             systemNotice : {
-                path: '/system/notice',
-                name: 'systemNotice',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/systemNotice.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'systemNotice',
-                    lightMenu: 'system',
+                path : '/system/notice',
+                name : 'systemNotice',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/systemNotice.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'systemNotice',
+                    lightMenu : 'system',
                     showInMenu : true,
                     subMenuType : 'notice'
                 },
             },
             //新增/编辑系统公告
             editSystemNotice : {
-                path: '/system/notice/edit',
-                name: 'editSystemNotice',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/editSystemNotice.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'editSystemNotice',
-                    lightMenu: 'system',
+                path : '/system/notice/edit',
+                name : 'editSystemNotice',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/editSystemNotice.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'editSystemNotice',
+                    lightMenu : 'system',
                     showInMenu : false,
                     subMenuType : 'notice'
                 },
             },
             //新增/编辑账号
             addAccount : {
-                path: '/system/account/edit',
-                name: 'addAccount',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/addAccount.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'addAccount',
-                    lightMenu: 'system',
+                path : '/system/account/edit',
+                name : 'addAccount',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/addAccount.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'addAccount',
+                    lightMenu : 'system',
                     subMenuType : 'account'
                 },
             },
             //设置
             setting : {
-                path: '/system/setting',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/setting.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'setting',
-                    lightMenu: 'system',
+                path : '/system/setting',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/setting.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'setting',
+                    lightMenu : 'system',
                     showInMenu : true,
                     subMenuType : 'setting'
                 },
                 children : {
                     //通用设置
                     customeSetting : {
-                        path: '/system/setting/customeSetting',
-                        name: 'customeSetting',
-                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/customSetting.vue'),
-                        meta: {
-                            _name: 'system',
-                            menuName: 'setting',
-                            lightMenu: 'system',
+                        path : '/system/setting/customeSetting',
+                        name : 'customeSetting',
+                        component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/customSetting.vue'),
+                        meta : {
+                            _name : 'system',
+                            menuName : 'setting',
+                            lightMenu : 'system',
                             subMenuType : 'setting'
                         },
                     },
                     //计量单位
                     measureUnit : {
-                        path: '/system/setting/measureUnit',
-                        name: 'measureUnit',
-                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/measureUnit.vue'),
-                        meta: {
-                            _name: 'system',
-                            menuName: 'setting',
-                            lightMenu: 'system',
+                        path : '/system/setting/measureUnit',
+                        name : 'measureUnit',
+                        component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/measureUnit.vue'),
+                        meta : {
+                            _name : 'system',
+                            menuName : 'setting',
+                            lightMenu : 'system',
                             subMenuType : 'setting'
                         },
                     },
                     //节假日信息
                     holiday : {
-                        path: '/system/setting/holiday',
-                        name: 'holiday',
-                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/holiday.vue'),
-                        meta: {
-                            _name: 'system',
-                            menuName: 'setting',
-                            lightMenu: 'system',
+                        path : '/system/setting/holiday',
+                        name : 'holiday',
+                        component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/holiday.vue'),
+                        meta : {
+                            _name : 'system',
+                            menuName : 'setting',
+                            lightMenu : 'system',
                             subMenuType : 'setting'
                         },
                     },
                     //渠道信息
                     channel : {
-                        path: '/system/setting/channel',
-                        name: 'channel',
-                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/channel.vue'),
-                        meta: {
-                            _name: 'system',
-                            menuName: 'setting',
-                            lightMenu: 'system',
+                        path : '/system/setting/channel',
+                        name : 'channel',
+                        component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/channel.vue'),
+                        meta : {
+                            _name : 'system',
+                            menuName : 'setting',
+                            lightMenu : 'system',
                             subMenuType : 'setting'
                         },
                     },
                     //地区信息
                     region : {
-                        path: '/system/setting/region',
-                        name: 'region',
-                        component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/region.vue'),
-                        meta: {
-                            _name: 'system',
-                            menuName: 'setting',
-                            lightMenu: 'system',
+                        path : '/system/setting/region',
+                        name : 'region',
+                        component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/region.vue'),
+                        meta : {
+                            _name : 'system',
+                            menuName : 'setting',
+                            lightMenu : 'system',
                             subMenuType : 'setting'
                         },
                     }
@@ -145,52 +145,52 @@ export default {
             },
             //新增/编辑计量单位
             editMeasureUnit : {
-                path: '/setting/measureUnit/edit',
-                name: 'editMeasureUnit',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editMeasureUnit.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'setting',
-                    lightMenu: 'system',
+                path : '/setting/measureUnit/edit',
+                name : 'editMeasureUnit',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editMeasureUnit.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'setting',
+                    lightMenu : 'system',
                     subMenuType : 'setting'
                 },
             },
             //新增/编辑节假日信息
             editHoliday : {
-                path: '/setting/holiday/edit',
-                name: 'editHoliday',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editHoliday.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'setting',
-                    lightMenu: 'system',
+                path : '/setting/holiday/edit',
+                name : 'editHoliday',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editHoliday.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'setting',
+                    lightMenu : 'system',
                     subMenuType : 'setting'
                 },
             },
             //新增/编辑渠道信息
             editChannel : {
-                path: '/setting/channel/edit',
-                name: 'editChannel',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editChannel.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'setting',
-                    lightMenu: 'system',
+                path : '/setting/channel/edit',
+                name : 'editChannel',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editChannel.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'setting',
+                    lightMenu : 'system',
                     subMenuType : 'setting'
                 },
             },
             //新增/编辑地区信息
             editRegion : {
-                path: '/setting/region/edit',
-                name: 'editRegion',
-                component: () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editRegion.vue'),
-                meta: {
-                    _name: 'system',
-                    menuName: 'setting',
-                    lightMenu: 'system',
+                path : '/setting/region/edit',
+                name : 'editRegion',
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editRegion.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'setting',
+                    lightMenu : 'system',
                     subMenuType : 'setting'
                 },
             }
         }
     },
-}
+};

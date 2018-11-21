@@ -153,8 +153,8 @@
                 this.addDetailStyle.minWidth = eleParentWidth / 3 + 'px';
                 if (index === 0) {
                     this.getMemberIncreaseDetail({
-                        startDate : new Date().addDays(-1).format('yyyy-MM-dd'),
-                        endDate : new Date().addDays(-1).format('yyyy-MM-dd'),
+                        startDate : new Date().format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
                     });
                 } else if (index === 1) {
                     this.getMemberIncreaseDetail({

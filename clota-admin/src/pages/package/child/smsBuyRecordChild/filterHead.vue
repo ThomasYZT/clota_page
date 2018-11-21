@@ -59,12 +59,12 @@
 </template>
 
 <script>
-    import{serviceOperateType} from '@/assets/js/constVariable.js';
+    import { serviceOperateType } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     export default {
         props : {
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -81,9 +81,9 @@
                 lesseeList : [],
                 //套餐列表
                 packageList : []
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 查询短信套餐列表
@@ -93,12 +93,12 @@
                     page : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.packageList = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.packageList = [];
                     }
-                })
+                });
             },
             /**
              * 搜索数据
@@ -120,9 +120,9 @@
              */
             listServiceProvider () {
                 ajax.post('listServiceProvider').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.lesseeList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.lesseeList = [];
                     }
                 }).catch(err => {
@@ -134,7 +134,7 @@
             this.queryPackageList();
             this.listServiceProvider();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

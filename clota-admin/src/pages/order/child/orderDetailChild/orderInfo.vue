@@ -36,142 +36,142 @@
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
                 // orderHeadDetail : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取订单表头信息
              * @returns {*[]}
              */
             getOrderDetail (...rest) {
-                if(this.orderType === 'custom'){
+                if (this.orderType === 'custom') {
                     return [
                         [
                             {
-                                label :'订单编号',
+                                label : '订单编号',
                                 value : rest[0]
                             },
                             {
-                                label :'订单类型',
+                                label : '订单类型',
                                 value : rest[1]
                             },
                             {
-                                label :'下单时间',
+                                label : '下单时间',
                                 value : rest[2]
                             }
                         ],
                         [
                             {
-                                label :'所属景区',
+                                label : '所属景区',
                                 value : rest[3]
                             },
                             {
-                                label :'发售机构',
+                                label : '发售机构',
                                 value : rest[4]
                             },
                             {
-                                label :'下单渠道',
+                                label : '下单渠道',
                                 value : rest[5]
                             }
                         ],
                         [
                             {
-                                label :'下单企业',
+                                label : '下单企业',
                                 value : rest[6]
                             },
                             {
-                                label :'游玩日期',
+                                label : '游玩日期',
                                 value : rest[7]
                             },
                             {
-                                label :'订单金额',
+                                label : '订单金额',
                                 value : rest[8]
                             }
                         ],
                         [
                             {
-                                label :'购买数量',
+                                label : '购买数量',
                                 value : rest[9]
                             },
                             {
-                                label :'取票数量',
+                                label : '取票数量',
                                 value : rest[10]
                             }
                         ]
-                    ]
-                }else if(this.orderType === 'team'){
-                    return  [
+                    ];
+                } else if (this.orderType === 'team') {
+                    return [
                         [
                             {
-                                label :'订单编号',
+                                label : '订单编号',
                                 value : rest[0]
                             },
                             {
-                                label :'串码',
+                                label : '串码',
                                 value : rest[1]
                             },
                             {
-                                label :'订单类型',
+                                label : '订单类型',
                                 value : rest[2]
                             }
                         ],
                         [
                             {
-                                label :'审核状态',
+                                label : '审核状态',
                                 value : rest[3]
                             },
                             {
-                                label :'所属景区',
+                                label : '所属景区',
                                 value : rest[4]
                             },
                             {
-                                label :'发售机构',
+                                label : '发售机构',
                                 value : rest[5]
                             }
                         ],
                         [
                             {
-                                label :'下单渠道',
+                                label : '下单渠道',
                                 value : rest[6]
                             },
                             {
-                                label :'下单企业',
+                                label : '下单企业',
                                 value : rest[7]
                             },
                             {
-                                label :'游玩日期',
+                                label : '游玩日期',
                                 value : rest[8]
                             }
                         ],
                         [
                             {
-                                label :'订单金额',
+                                label : '订单金额',
                                 value : rest[9]
                             },
                             {
-                                label :'购买数量',
+                                label : '购买数量',
                                 value : rest[10]
                             },
                             {
-                                label :'取票数量',
+                                label : '取票数量',
                                 value : rest[10]
                             }
                         ]
-                    ]
-                }else{
+                    ];
+                } else {
                     return [];
                 }
             }
         },
         computed : {
             orderHeadDetail () {
-                return this.getOrderDetail(1,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3)
+                return this.getOrderDetail(1,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -241,7 +241,6 @@
                         }
                     }
                 }
-
 
 
                 .info-list1 {

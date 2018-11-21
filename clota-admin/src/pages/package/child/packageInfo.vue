@@ -54,7 +54,7 @@
 
     // import tableCom from '../../index/child/tableCom';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {packageHead} from './packageInfoConfig';
+    import { packageHead } from './packageInfoConfig';
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index.js';
 
@@ -63,7 +63,7 @@
             tableCom,
             delModal
         },
-        data() {
+        data () {
             return {
                 //总条数
                 totalCount : 0,
@@ -77,9 +77,9 @@
                 tableData : [],
                 //当前操作的数据
                 currendData : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 新建套餐
              */
@@ -138,10 +138,10 @@
                     page : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
                         this.totalCount = Number(res.data.totalRecord);
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -154,10 +154,10 @@
              * 获取套餐所包含的服务
              * @param rowData
              */
-            getPackageService(rowData) {
+            getPackageService (rowData) {
                 let serverName = [];
-                if(rowData.services && rowData.services.length > 0){
-                    for(let i = 0,j = rowData.services.length;i < j;i++){
+                if (rowData.services && rowData.services.length > 0) {
+                    for (let i = 0,j = rowData.services.length; i < j; i++) {
                         serverName.push(rowData.services[i]['serviceName']);
                     }
                 }
@@ -167,20 +167,20 @@
              * 删除套餐
              * @param id 套餐id
              */
-            confirmDel(id) {
+            confirmDel (id) {
                 ajax.post('deletePackage',{
                     id : id
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('删除成功');
                         this.queryList();
-                    }else{
+                    } else {
                         this.$Message.error(res.message || '删除失败');
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

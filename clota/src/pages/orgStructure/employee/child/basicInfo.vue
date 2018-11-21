@@ -383,21 +383,26 @@
             saveEmployee( param ){
                 var self = this;
                 // 如果是编辑员工且密码未被修改过，那就不需要MD5加密
-                if (self.oldPwd !== self.employee.password) {
-                    this.employee.password = MD5(this.employee.password).toString();
-                }
+                // if (self.oldPwd !== self.employee.password) {
+                //     this.employee.password = MD5(this.employee.password).toString();
+                // }
                 let privileges = this.$refs.privalige.getHandlerChosedPrivaliges();
                 // 生日日期格式化
                 this.employee.birthday = new Date(this.employee.birthday).format('yyyy-MM-dd');
 
                 ajax.post("addOrUpdateEmployee", Object.assign({
                     privileges : JSON.stringify(privileges),
-                },this.employee)).then(function (res) {
+                },{
+                    ...this.employee,
+                    password : self.oldPwd !== self.employee.password ? MD5(self.employee.password).toString() : self.employee.password
+                })).then(function (res) {
                     if(res.success){
                         self.$Message.success(self.isEdit ? self.$t('editEmployee')+self.$t('success') : self.$t('newEmployee')+self.$t('success'));
                         self.$router.push({name: 'generalEmployeeManager'});
+                    } else if (res.code === 'A010') {
+                        self.$Message.error(self.$t(res.code));
                     }else{
-                        self.$Message.error( res.message || this.$t('failureTip',{tip: this.$t('addOrUpdateEmployee')}) );
+                        self.$Message.error( self.$t('failureTip',{tip: self.$t('addOrUpdateEmployee')}) );
                     }
                 })
             },

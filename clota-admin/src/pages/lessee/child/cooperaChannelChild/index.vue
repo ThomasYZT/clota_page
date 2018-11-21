@@ -117,7 +117,7 @@
     import getFiledData from './channelConfig';
     import ajax from '@/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -125,47 +125,47 @@
             tableCom,
             editModal
         },
-        data() {
+        data () {
             //校验邮箱地址是否正确
             const validateEmail = (rule,value,callback) => {
-                if(value){
-                    if(validator.isEmail(value)){
+                if (value) {
+                    if (validator.isEmail(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('formalError',{field : this.$t('email')}));
+                    } else {
+                        callback(this.$t('formalError',{ field : this.$t('email') }));
                     }
-                }else{
-                    callback(this.$t('inputField',{field : this.$t('email')}));
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('email') }));
                 }
             };
             return {
                 //上级路由列表
-                beforeRouterList: [],
+                beforeRouterList : [],
                 //表格数据
                 partnerTableData : [],
                 //表头配置
                 columnData : [
                     {
-                        title: '序号',
-                        minWidth: 120,
-                        field: 'index'
+                        title : '序号',
+                        minWidth : 120,
+                        field : 'index'
                     },
                     {
-                        title: '合作伙伴名称',
-                        minWidth: 150,
-                        field: 'orgName'
+                        title : '合作伙伴名称',
+                        minWidth : 150,
+                        field : 'orgName'
                     },
                 ],
                 //表单校验规则
                 ruleValidate : {
                     passReason : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('rejectReason')}),trigger : 'blur'},
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('rejectReason'),length : 20}),trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('rejectReason') }),trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('rejectReason'),length : 20 }),trigger : 'blur' }
                     ],
                     email : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('email')}),trigger : 'blur'},
-                        {validator : validateEmail ,trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('email'),length : 100}),trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
+                        { validator : validateEmail ,trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' }
                     ]
                 },
                 //表单数据
@@ -181,16 +181,16 @@
                 channelType : '',
                 //个人渠道详情信息
                 cooperaPerDetail : {
-                    name :'',
+                    name : '',
                     info : []
                 },
                 //合作渠道id
                 channelId : '',
                 //审核状态
                 auditStatus : '',
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 审核通过
              */
@@ -200,7 +200,7 @@
                     confirmBtn : '审核通过',
                     confirmCallback : () => {
                         this.$refs.passForm.validate(valid => {
-                            if(valid){
+                            if (valid) {
                                 this.auditPartner({
                                     auditStatus : 'success',
                                     email : this.formData.email
@@ -222,7 +222,7 @@
                     confirmBtn : '驳回',
                     confirmCallback : (pass) => {
                         this.$refs.rejectForm.validate(valid => {
-                            if(valid){
+                            if (valid) {
                                 this.auditPartner({
                                     auditStatus : 'reject',
                                     reason : this.formData.passReason
@@ -240,31 +240,31 @@
              * @param params
              */
             getParams (params) {
-                if(params.type){
-                    this.channelId =  params.id;
-                    if(params.type === 'per'){
+                if (params.type) {
+                    this.channelId = params.id;
+                    if (params.type === 'per') {
                         this.channelType = 'per';
                         this.beforeRouterList = [
                             {
-                                name: this.$t('cooperaChannelPer'),
-                                router: {
-                                    name: 'cooperaChannelPer'
+                                name : this.$t('cooperaChannelPer'),
+                                router : {
+                                    name : 'cooperaChannelPer'
                                 }
                             }
-                        ]
-                    }else if(params.type === 'org'){
+                        ];
+                    } else if (params.type === 'org') {
                         this.channelType = 'org';
                         this.beforeRouterList = [
                             {
-                                name: this.$t('cooperaChannelOrg'),
-                                router: {
-                                    name: 'cooperaChannelOrg'
+                                name : this.$t('cooperaChannelOrg'),
+                                router : {
+                                    name : 'cooperaChannelOrg'
                                 }
                             }
                         ];
                     }
                     this.getPartnerDetail();
-                }else{
+                } else {
                     this.$router.push({
                         name : 'ISPinternet'
                     });
@@ -277,10 +277,10 @@
                 ajax.post('getPartnerDetail',{
                     id : this.channelId
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.cooperaPerDetail.name = res.data.orgName;
                         //个人渠道信息
-                        if(this.channelType === 'per'){
+                        if (this.channelType === 'per') {
                             this.cooperaPerDetail.info = getFiledData(
                                 this.channelType,
                                 res.data.certificateNumber,
@@ -296,7 +296,7 @@
                                 res.data.updateUser,
                                 res.data.description,
                                 res.data.attach);
-                        }else{//机构渠道信息
+                        } else {//机构渠道信息
                             this.cooperaPerDetail.info = getFiledData(
                                 this.channelType,
                                 res.data.linkName,
@@ -315,7 +315,7 @@
                                 res.data.attach);
                         }
                         this.auditStatus = res.data.auditStatus;
-                    }else{
+                    } else {
                         this.cooperaPerDetail.name = '';
                         this.auditStatus = '';
                     }
@@ -328,13 +328,13 @@
                 ajax.post('getChannelPartners',{
                     id : this.channelId
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.partnerTableData = res.data.channelParentListVos ? res.data.channelParentListVos : [];
                         this.totalCount = res.data.parentNumber;
-                    }else{
+                    } else {
                         this.totalCount = 0;
                     }
-                })
+                });
             },
             /**
              * 审核渠道
@@ -344,17 +344,17 @@
                 ajax.post('auditPartner',Object.assign({
                     id : this.channelId
                 },params)).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('审核成功');
                         this.getPartnerDetail();
                         this.getChannelPartners();
-                    }else{
+                    } else {
                         this.$Message.error('审核失败');
                     }
                 }).finally(() => {
                     this.$refs.passModal.hide();
                     this.$refs.rejectModal.hide();
-                })
+                });
             }
         },
         computed : {
@@ -363,7 +363,7 @@
                 return this.auditStatus === 'audit';
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -481,7 +481,6 @@
                             }
                         }
                     }
-
 
 
                     .info-list1 {

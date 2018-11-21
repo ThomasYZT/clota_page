@@ -48,14 +48,14 @@
 <script>
     import filterHead from './smsBuyRecordChild/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {smsBuyHead} from './smsBuyRecordConfig';
+    import { smsBuyHead } from './smsBuyRecordConfig';
     import ajax from '@/api/index.js';
     export default {
         components : {
             filterHead,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 smsBuyHead : smsBuyHead,
@@ -71,18 +71,18 @@
                 filterData : {
                     startTime : '',
                     endTime : '',
-                    smsPackageId :'',
+                    smsPackageId : '',
                     orgId : ''
                 },
                 //共购买的短信条数
                 smsTotal : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取短信购买记录
              */
-            getSmsBuyRecord() {
+            getSmsBuyRecord () {
                 ajax.post('purchaseRecordList',{
                     orgId : this.filterData.orgId,
                     smsPackageId : this.filterData.smsPackageId,
@@ -91,13 +91,13 @@
                     page : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
-                        this.totalCount =  Number(res.data.totalRecord);
+                        this.totalCount = Number(res.data.totalRecord);
                         this.smsTotal = res.data.other.totals;
-                    }else{
+                    } else {
                         this.tableData = [];
-                        this.totalCount =  0;
+                        this.totalCount = 0;
                         this.smsTotal = '';
                     }
                 });
@@ -109,12 +109,12 @@
             searchData (filterData) {
                 this.filterData.smsPackageId = filterData.smsPackageId;
                 this.filterData.orgId = filterData.orgId;
-                this.filterData.startTime = filterData.purchaseTime[0] ? new Date(filterData.purchaseTime[0]).format('yyyy-MM-dd 00:00:00') : '' ;
-                this.filterData.endTime = filterData.purchaseTime[1] ? new Date(filterData.purchaseTime[1]).format('yyyy-MM-dd 23:59:59') : '' ;
+                this.filterData.startTime = filterData.purchaseTime[0] ? new Date(filterData.purchaseTime[0]).format('yyyy-MM-dd 00:00:00') : '';
+                this.filterData.endTime = filterData.purchaseTime[1] ? new Date(filterData.purchaseTime[1]).format('yyyy-MM-dd 23:59:59') : '';
                 this.getSmsBuyRecord();
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

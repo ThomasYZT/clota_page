@@ -1,22 +1,22 @@
 let raf = null;
 
-function requestAnimationFrame(callback) {
+function requestAnimationFrame (callback) {
     if (!raf) {
         raf = (
             window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
             function (callback) {
-                return setTimeout(callback, 16)
+                return setTimeout(callback, 16);
             }
         ).bind(window);
     }
-    return raf(callback)
+    return raf(callback);
 }
 
 let caf = null;
 
-function cancelAnimationFrame(id) {
+function cancelAnimationFrame (id) {
     if (!caf) {
         caf = (
             window.cancelAnimationFrame ||
@@ -31,8 +31,8 @@ function cancelAnimationFrame(id) {
     caf(id);
 }
 
-function createStyles(styleText) {
-    var style = document.createElement('style');
+function createStyles (styleText) {
+    let style = document.createElement('style');
     style.type = 'text/css';
 
     if (style.styleSheet) {
@@ -41,48 +41,48 @@ function createStyles(styleText) {
         style.appendChild(document.createTextNode(styleText));
     }
     (document.querySelector('head') || document.body).appendChild(style);
-    return style
+    return style;
 }
 
-function createElement(tagName, props = {}) {
+function createElement (tagName, props = {}) {
     let elem = document.createElement(tagName);
     Object.keys(props).forEach(key => {
         elem[key] = props[key];
     });
-    return elem
+    return elem;
 }
 
-function getRenderInfo(elem) {
+function getRenderInfo (elem) {
     if (!document.documentElement.contains(elem)) {
         return {
-            detached: true,
-            rendered: false
-        }
+            detached : true,
+            rendered : false
+        };
     }
 
     let current = elem;
     while (current !== document) {
         if (getComputedStyle(current).display === 'none') {
             return {
-                detached: false,
-                rendered: false
-            }
+                detached : false,
+                rendered : false
+            };
         }
         current = current.parentNode;
     }
 
     return {
-        detached: false,
-        rendered: true
-    }
+        detached : false,
+        rendered : true
+    };
 }
 
-var css = ".resize-triggers{visibility:hidden;opacity:0}.resize-contract-trigger,.resize-contract-trigger:before,.resize-expand-trigger,.resize-triggers{content:\"\";position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden}.resize-contract-trigger,.resize-expand-trigger{background:#eee;overflow:auto}.resize-contract-trigger:before{width:200%;height:200%}";
+let css = ".resize-triggers{visibility:hidden;opacity:0}.resize-contract-trigger,.resize-contract-trigger:before,.resize-expand-trigger,.resize-triggers{content:\"\";position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden}.resize-contract-trigger,.resize-expand-trigger{background:#eee;overflow:auto}.resize-contract-trigger:before{width:200%;height:200%}";
 
 let total = 0;
 let style = null;
 
-function addListener(elem, callback) {
+function addListener (elem, callback) {
     if (!elem.__resize_mutation_handler__) {
         elem.__resize_mutation_handler__ = handleMutation.bind(elem);
     }
@@ -95,19 +95,19 @@ function addListener(elem, callback) {
             let ro = new ResizeObserver(() => {
                 if (!elem.__resize_observer_triggered__) {
                     elem.__resize_observer_triggered__ = true;
-                    return
+                    return;
                 }
                 runCallbacks(elem);
             });
 
             // initially display none won't trigger ResizeObserver callback
-            let {detached, rendered} = getRenderInfo(elem);
+            let { detached, rendered } = getRenderInfo(elem);
             elem.__resize_observer_triggered__ = detached === false && rendered === false;
             elem.__resize_observer__ = ro;
             ro.observe(elem);
         } else if (elem.attachEvent && elem.addEventListener) {
             // targeting IE9/10
-            elem.__resize_legacy_resize_handler__ = function handleLegacyResize() {
+            elem.__resize_legacy_resize_handler__ = function handleLegacyResize () {
                 runCallbacks(elem);
             };
             elem.attachEvent('onresize', elem.__resize_legacy_resize_handler__);
@@ -122,10 +122,10 @@ function addListener(elem, callback) {
             if (window.MutationObserver) {
                 let mo = new MutationObserver(elem.__resize_mutation_handler__);
                 mo.observe(document, {
-                    attributes: true,
-                    childList: true,
-                    characterData: true,
-                    subtree: true
+                    attributes : true,
+                    childList : true,
+                    characterData : true,
+                    subtree : true
                 });
                 elem.__resize_mutation_observer__ = mo;
             }
@@ -136,12 +136,12 @@ function addListener(elem, callback) {
     total++;
 }
 
-function removeListener(elem, callback) {
+function removeListener (elem, callback) {
     // targeting IE9/10
     if (elem.detachEvent && elem.removeEventListener) {
         elem.detachEvent('onresize', elem.__resize_legacy_resize_handler__);
         document.removeEventListener('DOMSubtreeModified', elem.__resize_mutation_handler__);
-        return
+        return;
     }
 
     let listeners = elem.__resize_listeners__;
@@ -169,21 +169,21 @@ function removeListener(elem, callback) {
     }
 }
 
-function getUpdatedSize(elem) {
-    let {width, height} = elem.__resize_last__;
-    let {offsetWidth, offsetHeight} = elem;
+function getUpdatedSize (elem) {
+    let { width, height } = elem.__resize_last__;
+    let { offsetWidth, offsetHeight } = elem;
     if (offsetWidth !== width || offsetHeight !== height) {
         return {
-            width: offsetWidth,
-            height: offsetHeight
-        }
+            width : offsetWidth,
+            height : offsetHeight
+        };
     }
-    return null
+    return null;
 }
 
-function handleMutation() {
+function handleMutation () {
     // `this` denotes the scrolling element
-    let {rendered, detached} = getRenderInfo(this);
+    let { rendered, detached } = getRenderInfo(this);
     if (rendered !== this.__resize_rendered__) {
         if (!detached && this.__resize_triggers__) {
             resetTriggers(this);
@@ -194,7 +194,7 @@ function handleMutation() {
     }
 }
 
-function handleScroll() {
+function handleScroll () {
     // `this` denotes the scrolling element
     resetTriggers(this);
     if (this.__resize_raf__) {
@@ -209,13 +209,13 @@ function handleScroll() {
     });
 }
 
-function runCallbacks(elem) {
+function runCallbacks (elem) {
     elem.__resize_listeners__.forEach(callback => {
         callback.call(elem);
     });
 }
 
-function initTriggers(elem) {
+function initTriggers (elem) {
     let position = getComputedStyle(elem).position;
     if (position === 'static') {
         elem.style.position = 'relative';
@@ -225,14 +225,14 @@ function initTriggers(elem) {
     elem.__resize_last__ = {};
 
     let triggers = createElement('div', {
-        className: 'resize-triggers'
+        className : 'resize-triggers'
     });
     let expand = createElement('div', {
-        className: 'resize-expand-trigger'
+        className : 'resize-expand-trigger'
     });
     let expandChild = createElement('div');
     let contract = createElement('div', {
-        className: 'resize-contract-trigger'
+        className : 'resize-contract-trigger'
     });
     expand.appendChild(expandChild);
     triggers.appendChild(expand);
@@ -250,17 +250,17 @@ function initTriggers(elem) {
     elem.addEventListener('scroll', handleScroll, true);
 
     elem.__resize_last__ = {
-        width: elem.offsetWidth,
-        height: elem.offsetHeight
+        width : elem.offsetWidth,
+        height : elem.offsetHeight
     };
 }
 
-function resetTriggers(elem) {
-    let {expand, expandChild, contract} = elem.__resize_triggers__;
+function resetTriggers (elem) {
+    let { expand, expandChild, contract } = elem.__resize_triggers__;
 
     // batch read
-    let {scrollWidth: csw, scrollHeight: csh} = contract;
-    let {offsetWidth: eow, offsetHeight: eoh, scrollWidth: esw, scrollHeight: esh} = expand;
+    let { scrollWidth : csw, scrollHeight : csh } = contract;
+    let { offsetWidth : eow, offsetHeight : eoh, scrollWidth : esw, scrollHeight : esh } = expand;
 
     // batch write
     contract.scrollLeft = csw;
@@ -271,4 +271,4 @@ function resetTriggers(elem) {
     expand.scrollTop = esh;
 }
 
-export {addListener, removeListener};
+export { addListener, removeListener };

@@ -70,12 +70,12 @@
 </template>
 
 <script>
-    import{serviceOperateType} from '@/assets/js/constVariable.js';
+    import { serviceOperateType } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     export default {
         props : {
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -94,9 +94,9 @@
                 lesseeList : [],
                 //服务列表
                 servicesList : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取服务列表
              */
@@ -104,9 +104,9 @@
                 ajax.post('queryServiceList',{
                     serviceStatus : 'normal'
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.servicesList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.servicesList = [];
                     }
                 }).catch(() => {
@@ -134,9 +134,9 @@
              */
             listServiceProvider () {
                 ajax.post('listServiceProvider').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.lesseeList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.lesseeList = [];
                     }
                 }).catch(err => {
@@ -148,7 +148,7 @@
             this.queryServiceList();
             this.listServiceProvider();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

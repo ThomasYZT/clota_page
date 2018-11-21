@@ -35,13 +35,13 @@
 </template>
 
 <script>
-    import {touristHead} from './touristConfig';
+    import { touristHead } from './touristConfig';
     import tableCom from '../../../lessee/child/organization/tableCom';
     import operateModal from './touristChild/operateModal';
     export default {
-        props :{
+        props : {
             //订单类型
-            'order-type': {
+            'order-type' : {
                 type : String,
                 default : ''
             }
@@ -50,7 +50,7 @@
             tableCom,
             operateModal
         },
-        data() {
+        data () {
             return {
                 //表格数据
                 tableData : [
@@ -73,9 +73,9 @@
                 operateModalShow : false,
                 //操作类型
                 operateType : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取下属景区信息
              */
@@ -112,16 +112,16 @@
         computed : {
             //游客信息表头配置
             touristHead () {
-                if(this.orderType === 'custom'){
+                if (this.orderType === 'custom') {
                     return touristHead;
-                }else if(this.orderType === 'team'){
+                } else if (this.orderType === 'team') {
                     return touristHead.slice(0,4);
-                }else{
+                } else {
                     return [];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

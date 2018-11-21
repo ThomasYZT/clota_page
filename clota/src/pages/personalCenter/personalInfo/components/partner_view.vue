@@ -6,36 +6,36 @@
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('name')}}：</span>{{accountInfo.orgName}}
+                        <span class="field-name">{{$t('name')}}：</span>{{accountInfo.orgName | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('loginName')}}：</span>{{accountInfo.loginName}}
+                        <span class="field-name">{{$t('loginName')}}：</span>{{accountInfo.loginName | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('phone')}}：</span>{{accountInfo.telephone}}
+                        <span class="field-name">{{$t('phone')}}：</span>{{accountInfo.telephone | contentFilter}}
                     </li>
                     <li>
                         <span class="field-name">{{$t('location')}}：</span>
-                        {{accountInfo.provinceName}}  {{accountInfo.cityName}} {{accountInfo.districtName}}
+                        {{districtInfo | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('remark')}}：</span>{{accountInfo.description}}
+                        <span class="field-name">{{$t('remark')}}：</span>{{accountInfo.description | contentFilter}}
                     </li>
                 </ul>
             </Col>
             <Col span="8">
                 <ul>
                     <li>
-                        <span class="field-name">{{$t('gender')}}：</span>{{accountInfo.sex === 'male' ? $t('male') : $t('female')}}
+                        <span class="field-name">{{$t('gender')}}：</span>{{$t(accountInfo.sex)}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('identityNo')}}：</span>{{accountInfo.certificateNumber}}
+                        <span class="field-name">{{$t('identityNo')}}：</span>{{accountInfo.certificateNumber | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('email')}}：</span>{{accountInfo.email}}
+                        <span class="field-name">{{$t('email')}}：</span>{{accountInfo.email | contentFilter}}
                     </li>
                     <li>
-                        <span class="field-name">{{$t('detailAddr')}}：</span>{{accountInfo.address}}
+                        <span class="field-name">{{$t('detailAddr')}}：</span>{{accountInfo.address | contentFilter}}
                     </li>
                 </ul>
             </Col>
@@ -43,7 +43,7 @@
                 <ul>
                     <li>
                         <span class="field-name">{{$t('identity')+$t('attach')}}：</span>
-                        <img v-for="item in JSON.parse(accountInfo.attach)" :src="item" alt="">
+                        <img v-for="item in JSON.parse(accountInfo.attach)" :key=item :src="item" alt="">
                     </li>
                     <li>
                         <span class="field-name">{{$t('channalType')}}：</span>{{$t('distributionUnit')}}
@@ -112,7 +112,16 @@
       data() {
           return {}
       },
-      methods: {}
+      methods: {},
+      computed : {
+          //地区信息
+          districtInfo () {
+              if (this.accountInfo && Object.keys(this.accountInfo).length > 0) {
+                  return this.accountInfo.provinceName + this.accountInfo.cityName + this.accountInfo.districtName;
+              }
+              return '';
+          }
+      }
   }
 </script>
 

@@ -2,7 +2,6 @@
  * 项目公用插件
  * Created by Sasha on 2018/6/1.
  */
-import Vue from 'vue';
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
 import TableColumn from 'element-ui/lib/table-column';
@@ -41,6 +40,14 @@ import {
     Upload
 } from 'iview';
 
+//自定义全局组件
+import confirmModal from '../../components/confirmModal/index';
+import selectTree from '../../components/selectTree/index';
+
+
+// 引入公用样式，指令及方法等
+import klwkUi from 'klwk-ui';
+
 
 // 按需引入 Echarts 图表
 require('echarts/lib/chart/line');
@@ -48,15 +55,11 @@ require('echarts/lib/chart/pie');
 require('echarts/lib/component/title');
 require('echarts/lib/component/tooltip');
 
-
-// 引入公用样式，指令及方法等
-import klwkUi from 'klwk-ui';
-
 let plugin = {};
 plugin.install = function (Vue, options) {
 
     // element-ui按需引入
-    // Vue.use(Scrollbar);
+    Vue.use(Scrollbar);
     Vue.use(Table);
     Vue.use(TableColumn);
     Vue.use(Pagination);
@@ -106,16 +109,20 @@ plugin.install = function (Vue, options) {
     Vue.component('Upload',Upload);
     Vue.prototype.$Message = Message;
 
+    //自定义全局组件
+    Vue.component('confirmModal',confirmModal);
+    Vue.component('selectTree',selectTree);
+
     // 公用样式，指令及方法
     Vue.use(klwkUi);
 
 
     // 注入全局变量
     Vue.mixin({
-        components: {},
-        filters: {
+        components : {},
+        filters : {
             // 时间格式化过滤器
-            timeFormat(value, format = 'yyyy/MM/dd', emptyVal = '') {
+            timeFormat (value, format = 'yyyy/MM/dd', emptyVal = '') {
                 if (!value) {
                     return emptyVal;
                 } else if (value instanceof Date) {
@@ -126,11 +133,11 @@ plugin.install = function (Vue, options) {
                     value = value.replace(/-/g,'/');
                     return value.toDate().format(format);
                 } else {
-                    return value
+                    return value;
                 }
             },
             //内容过滤器，如果内容为空或null，返回-
-            contentFilter(content) {
+            contentFilter (content) {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
@@ -138,7 +145,7 @@ plugin.install = function (Vue, options) {
                 }
             },
             //货比格式化
-            moneyFilter(content) {
+            moneyFilter (content) {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
@@ -146,14 +153,14 @@ plugin.install = function (Vue, options) {
                 }
             }
         },
-        created() {
+        created () {
             //修改iview message全局配置
             this.$Message.config({
-                duration: 3
+                duration : 3
             });
 
         }
-    })
+    });
 
 };
 

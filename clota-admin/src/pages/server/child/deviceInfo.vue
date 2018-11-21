@@ -92,18 +92,18 @@
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
             timeAlong
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('serverList'),
-                        router: {
-                            name: 'server'
+                        name : this.$t('serverList'),
+                        router : {
+                            name : 'server'
                         }
                     }
                 ],
@@ -115,15 +115,15 @@
                 serverDetail : {},
                 //报警事件列表
                 warnInfoList : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查看系统报警详情
              */
-            toSystemAlarmDetail() {
+            toSystemAlarmDetail () {
                 this.$router.push({
-                    name: 'systemAlarm',
+                    name : 'systemAlarm',
                     params : {
                         ip : this.serverIp
                     }
@@ -133,8 +133,8 @@
              * 获取路由信息
              * @param params
              */
-            getParams(params) {
-                if(params.id){
+            getParams (params) {
+                if (params.id) {
                     this.serverId = params.id;
                     this.serverIp = params.ip;
                     this.queryServerwarningData();
@@ -148,9 +148,9 @@
                 ajax.post('queryServerwarningData',{
                     id : this.serverId
                 }).then(res => {
-                    if(res.status === 200){
-                        this.serverDetail  = res.data;
-                    }else{
+                    if (res.status === 200) {
+                        this.serverDetail = res.data;
+                    } else {
                         this.serverDetail = {};
                     }
                 }).catch(err => {
@@ -166,9 +166,9 @@
                     pageSize : 10,
                     page : 1,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.warnInfoList = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.warnInfoList = [];
                     }
                 }).catch(err => {
@@ -176,12 +176,12 @@
                 });
             }
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -73,7 +73,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {employee,depEmployee} from '../departmentConfig';
+    import { employee,depEmployee } from '../departmentConfig';
     import delModal from '@/components/delModal/index.vue';
     import changePass from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
@@ -88,7 +88,7 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //是否默认展开
@@ -102,12 +102,12 @@
             delModal,
             changePass
         },
-        data() {
+        data () {
             return {
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //表头数据
-                employeeColumn : this.type === 'department' ?  depEmployee : employee ,
+                employeeColumn : this.type === 'department' ? depEmployee : employee ,
                 //选中的员工
                 selectedEmployee : [],
                 //员工总数
@@ -118,9 +118,9 @@
                 employeeNumber : '',
                 //是否展开
                 isPackUp : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 选择的员工数据改变
              * @param data
@@ -186,14 +186,14 @@
              * 确认删除员工
              * @param ids
              */
-            confirmDelete (ids){
+            confirmDelete (ids) {
                 ajax.post('deleteEmployees',{
                     ids : ids
                 }).then(res => {
-                   if(res.status === 200){
+                   if (res.status === 200) {
                        this.$Message.success('删除成功');
                        this.getEmployees();
-                   }else{
+                   } else {
                        this.$Message.error('删除失败');
                    }
                 });
@@ -203,14 +203,14 @@
              * @param pass
              * @param employee
              */
-            confirmChangePass(pass,employee) {
+            confirmChangePass (pass,employee) {
                 ajax.post('updatePassword',{
                     ids : employee.map(item => item.id),
                     password : pass
                 }).then(res => {
-                   if(res.status === 200){
+                   if (res.status === 200) {
                        this.$Message.success('修改成功');
-                   }else{
+                   } else {
                        this.$Message.error('修改失败');
                    }
                 }).finally(() => {
@@ -224,10 +224,10 @@
                 ajax.post('getEmployees',{
                     id : this.searchParams.id
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
                         this.employeeNumber = res.data.employeeNumber;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.employeeNumber = '';
                     }
@@ -243,17 +243,17 @@
         watch : {
             //默认展开的初始值
             isDefaultPackUp : {
-                handler (newVal){
-                    if(newVal === true){
+                handler (newVal) {
+                    if (newVal === true) {
                         this.isPackUp = true;
-                    }else{
+                    } else {
                         this.isPackUp = false;
                     }
                 },
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

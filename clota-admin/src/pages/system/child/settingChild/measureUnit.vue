@@ -99,7 +99,7 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {unitHead} from './measureUnitConfig';
+    import { unitHead } from './measureUnitConfig';
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index';
 
@@ -108,32 +108,32 @@
             tableCom,
             delModal
         },
-        data() {
+        data () {
             return {
                 //表格数据
                 tableData : [],
                 //表头配置
                 unitHead : unitHead,
                 //列表的请求参数
-                unitListParams: {
-                    page: 1,
-                    pageSize: 10
+                unitListParams : {
+                    page : 1,
+                    pageSize : 10
                 },
                 //总共条数
-                total :100,
+                total : 100,
                 //当前选中的行数据
                 rowSelect : [],
                 //删除数据
                 delUnits : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询账户信息列表
              */
-            queryList() {
+            queryList () {
                 ajax.post('unitList', this.unitListParams).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list || [];
                         this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
                     } else {
@@ -154,14 +154,14 @@
              * 禁用单位
              * @param data
              */
-            disabledUnit(data){
+            disabledUnit (data) {
                 this.switchUnit(data, 'invalid');
             },
             /**
              * 启用单位
              * @param data
              */
-            openUnit(data){
+            openUnit (data) {
                 this.switchUnit(data, 'normal');
             },
             /**
@@ -171,10 +171,10 @@
              */
             switchUnit ( data, status ) {
                 ajax.post('switchUnit',{
-                    id: data.id,
-                    status: status,
+                    id : data.id,
+                    status : status,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success( (status === 'normal' ? this.$t('startUsing') : this.$t('disabled'))
                             + this.$t('success') );
                         this.queryList();
@@ -212,11 +212,11 @@
              * 删除单位
              * @param data
              */
-            deleteUnit( data ) {
+            deleteUnit ( data ) {
                 ajax.post('deleteUnit',{
-                    ids: data
+                    ids : data
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         this.queryList();
                     } else {
@@ -227,7 +227,7 @@
             /**
              * 新增单位拟
              */
-            addUnit() {
+            addUnit () {
                 this.$router.push({
                     name : 'editMeasureUnit',
                     params : {
@@ -239,17 +239,17 @@
              * 编辑账号
              * @param data
              */
-            editUnit(data) {
+            editUnit (data) {
                 this.$router.push({
                     name : 'editMeasureUnit',
                     params : {
                         type : 'edit',
-                        info: data
+                        info : data
                     }
                 });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

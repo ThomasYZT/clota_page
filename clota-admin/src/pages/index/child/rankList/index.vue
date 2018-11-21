@@ -55,30 +55,30 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columns} from './rankConfig.js';
+    import { columns } from './rankConfig.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import ajax from '@/api/index.js';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
 
     export default {
         components : {
             tableCom,
             breadCrumbHead
         },
-        data() {
+        data () {
             return {
                 //查询的日期
                 selectDate : new Date(),
                 //表头配置
-                columns :columns,
+                columns : columns,
                 //总共条数
                 totalCount : 0,
                   //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'index',
-                        router: {
-                            name: 'index'
+                        name : 'index',
+                        router : {
+                            name : 'index'
                         }
                     }
                 ],
@@ -86,9 +86,9 @@
                 tableData : [],
                 pageNo : 1,
                 pageSize : 10,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取排行榜
              */
@@ -98,15 +98,15 @@
                     pageSize : this.pageSize,
                     date : this.selectDate.format('yyyy-MM-dd HH:mm:ss')
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.totalCount = res.data.totalRecord;
                         this.tableData = res.data.list ? res.data.list : [];
-                    }else{
-                        this.tableData =  [];
+                    } else {
+                        this.tableData = [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
-                    this.tableData =  [];
+                    this.tableData = [];
                     this.totalCount = 0;
                 });
             },
@@ -115,9 +115,9 @@
              * @param rate
              */
             getIndex (rate) {
-                if(validator.isNumber(rate)){
+                if (validator.isNumber(rate)) {
                     return Number(Number(rate) * 100).toFixed(2) + '%';
-                }else{
+                } else {
                     return '-';
                 }
             },
@@ -133,7 +133,7 @@
              * 页码改变
              * @param pageNo
              */
-            pageNoChange(pageNo) {
+            pageNoChange (pageNo) {
                 this.pageNo = pageNo;
                 this.getOrderRankingList();
             }
@@ -141,7 +141,7 @@
         created () {
             this.getOrderRankingList();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

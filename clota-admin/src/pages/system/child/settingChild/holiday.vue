@@ -100,7 +100,7 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
-    import {holidayHead} from './holidayConfig';
+    import { holidayHead } from './holidayConfig';
     import ajax from '@/api/index';
 
     export default {
@@ -108,34 +108,34 @@
             tableCom,
             delModal
         },
-        data() {
+        data () {
             return {
                 //表格多选列表
                 rowSelect : [],
                 //列表的请求参数
-                holidayListParams: {
+                holidayListParams : {
                     //搜索的关键字
-                    holidayName: '',
-                    page: 1,
-                    pageSize: 10
+                    holidayName : '',
+                    page : 1,
+                    pageSize : 10
                 },
                 //表头配置
                 holidayHead : holidayHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 列表数据总数
-                total: 0,
+                total : 0,
                 //删除的信息
                 delUnits : {},
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询账户信息列表
              */
-            queryList() {
+            queryList () {
                 ajax.post('holidayList', this.holidayListParams).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data.list || [];
                         this.total = res.data.totalRecord ? parseInt(res.data.totalRecord) : 0;
                     } else {
@@ -151,8 +151,8 @@
             add () {
                 this.$router.push({
                     name : 'editHoliday',
-                    params :{
-                        type :'add'
+                    params : {
+                        type : 'add'
                     }
                 });
             },
@@ -160,7 +160,7 @@
              * 触发选择行
              * @param data
              */
-            handleSelectionChange(data) {
+            handleSelectionChange (data) {
                 this.rowSelect = data;
             },
             /**
@@ -179,7 +179,7 @@
              * 删除单行
              * @param data
              */
-            del(data) {
+            del (data) {
                 this.delUnits = data;
                 this.$refs.delModal.show({
                     title : this.$t('delete') + this.$t('holiday'),
@@ -192,11 +192,11 @@
              * 删除节假日
              * @param data
              */
-            deleteHoliday( data ) {
+            deleteHoliday ( data ) {
                 ajax.post('deleteHoliday',{
-                    ids: data
+                    ids : data
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('success') + this.$t('delete'));
                         this.queryList();
                     } else {
@@ -211,15 +211,15 @@
             edit (data) {
                 this.$router.push({
                     name : 'editHoliday',
-                    params :{
-                        type :'edit',
-                        info: data
+                    params : {
+                        type : 'edit',
+                        info : data
                     }
                 });
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

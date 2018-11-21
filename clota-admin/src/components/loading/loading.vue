@@ -1,76 +1,229 @@
 <template>
-    <div class="loader">
-        <div class="container">
-            <h1></h1>
-            <span></span>
-            <span></span>
-            <span></span>
+    <div class="loader-container">
+        <div class='loader'>
+            <div class='loader_overlay'></div>
+            <div class='loader_cogs'>
+                <div class='loader_cogs__top'>
+                    <div class='top_part'></div>
+                    <div class='top_part'></div>
+                    <div class='top_part'></div>
+                    <div class='top_hole'></div>
+                </div>
+                <div class='loader_cogs__left'>
+                    <div class='left_part'></div>
+                    <div class='left_part'></div>
+                    <div class='left_part'></div>
+                    <div class='left_hole'></div>
+                </div>
+                <div class='loader_cogs__bottom'>
+                    <div class='bottom_part'></div>
+                    <div class='bottom_part'></div>
+                    <div class='bottom_part'></div>
+                    <div class='bottom_hole'></div>
+                </div>
+                <p>loading</p>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['visible'],
-    }
+        props : ['visible'],
+    };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .loader{
+
+    .loader-container{
         @include absolute_pos(absolute,0,0,0,0);
         background: rgba($color_fff,0.6);
         z-index: 9999;
+    }
+    body .loader {
+        height: 250px;
+        margin: auto;
+        width: 400px;
+        z-index:10;
+        @include center_center();
+        overflow: hidden;
+    }
+    body .loader_overlay {
+        width: 150px;
+        height: 150px;
+        background: transparent;
+        box-shadow: 0px 0px 0px 1000px rgba(255, 255, 255, 0.67), 0px 0px 19px 0px rgba(0, 0, 0, 0.16) inset;
+        border-radius: 100%;
+        z-index: -1;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    body .loader_cogs {
+        z-index: -2;
+        width: 100px;
+        height: 100px;
+        top: -120px !important;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    body .loader_cogs__top {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        transform-origin: 50px 50px;
+        animation: rotate 10s infinite linear;
+    }
+    body .loader_cogs__top div:nth-of-type(1) {
+        transform: rotate(30deg);
+    }
+    body .loader_cogs__top div:nth-of-type(2) {
+        transform: rotate(60deg);
+    }
+    body .loader_cogs__top div:nth-of-type(3) {
+        transform: rotate(90deg);
+    }
+    body .loader_cogs__top div.top_part {
+        width: 100px;
+        border-radius: 10px;
+        position: absolute;
+        height: 100px;
+        background: #f98db9;
+    }
+    body .loader_cogs__top div.top_hole {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        background: white;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    body .loader_cogs__left {
+        position: relative;
+        width: 80px;
+        -webkit-transform: rotate(16deg);
+        transform: rotate(16deg);
+        top: 28px;
+        -webkit-transform-origin: 40px 40px;
+        transform-origin: 40px 40px;
+        -webkit-animation: rotate_left 10s .1s infinite reverse linear;
+        animation: rotate_left 10s .1s infinite reverse linear;
+        left: -24px;
+        height: 80px;
+    }
+    body .loader_cogs__left div:nth-of-type(1) {
+        -webkit-transform: rotate(30deg);
+        transform: rotate(30deg);
+    }
+    body .loader_cogs__left div:nth-of-type(2) {
+        -webkit-transform: rotate(60deg);
+        transform: rotate(60deg);
+    }
+    body .loader_cogs__left div:nth-of-type(3) {
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+    body .loader_cogs__left div.left_part {
+        width: 80px;
+        border-radius: 6px;
+        position: absolute;
+        height: 80px;
+        background: #97ddff;
+    }
+    body .loader_cogs__left div.left_hole {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        background: white;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    body .loader_cogs__bottom {
+        position: relative;
+        width: 60px;
+        top: -65px;
+        transform-origin: 30px 30px;
+        animation: rotate_left 10.2s .4s infinite linear;
+        transform: rotate(4deg);
+        left: 79px;
+        height: 60px;
+    }
+    body .loader_cogs__bottom div:nth-of-type(1) {
+        transform: rotate(30deg);
+    }
+    body .loader_cogs__bottom div:nth-of-type(2) {
+        transform: rotate(60deg);
+    }
+    body .loader_cogs__bottom div:nth-of-type(3) {
+        transform: rotate(90deg);
+    }
+    body .loader_cogs__bottom div.bottom_part {
+        width: 60px;
+        border-radius: 5px;
+        position: absolute;
+        height: 60px;
+        background: #ffcd66;
+    }
+    body .loader_cogs__bottom div.bottom_hole {
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        background: white;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
 
-        .container{
-            @include center_center();
+    /* Animations */
+    @-webkit-keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
         }
     }
-    h1{
-        font-family: 'Actor', sans-serif;
-        color:#FFF;
-        font-size:16px;
-        letter-spacing:1px;
-        font-weight:200;
-        text-align:center;
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-    .loader span{
-        width:16px;
-        height:16px;
-        border-radius:50%;
-        display:inline-block;
-        position:absolute;
-        left:50%;
-        margin-left:-10px;
-        -webkit-animation:3s infinite linear;
-        -moz-animation:3s infinite linear;
-        -o-animation:3s infinite linear;
-
+    @keyframes rotate_left {
+        from {
+            transform: rotate(16deg);
+        }
+        to {
+            transform: rotate(376deg);
+        }
     }
-
-
-    .loader span:nth-child(2){
-        width: 10px;
-        height: 10px;
-        background:#ee4141;
-        -webkit-animation:kiri 1.2s infinite linear;
-        -moz-animation:kiri 1.2s infinite linear;
-        -o-animation:kiri 1.2s infinite linear;
-
-    }
-    .loader span:nth-child(3){
-        width: 10px;
-        height: 10px;
-        background:#636363;
-        z-index:100;
-    }
-    .loader span:nth-child(4){
-        width: 10px;
-        height: 10px;
-        background:#2f70df;
-        -webkit-animation:kanan 1.2s infinite linear;
-        -moz-animation:kanan 1.2s infinite linear;
-        -o-animation:kanan 1.2s infinite linear;
+    @keyframes rotate_right {
+        from {
+            transform: rotate(4deg);
+        }
+        to {
+            transform: rotate(364deg);
+        }
     }
 
 </style>

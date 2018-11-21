@@ -70,70 +70,70 @@
 
 <script>
     export default {
-        props: {
+        props : {
             //绑定的模态框是否显示的变量
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //操作类型
-            'operate-type': {
-                type: String,
+            'operate-type' : {
+                type : String,
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普'
+                tableData : [{
+                    date : '2016-05-02',
+                    name : '王小虎',
+                    address : '上海市普'
                 }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市普'
+                    date : '2016-05-04',
+                    name : '王小虎',
+                    address : '上海市普'
                 }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    address: '上海市普'
+                    date : '2016-05-01',
+                    name : '王小虎',
+                    address : '上海市普'
                 }, {
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普'
+                    date : '2016-05-03',
+                    name : '王小虎',
+                    address : '上海市普'
                 }],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
 
             },
             /**
              * 取消
              */
-            cancel() {
+            cancel () {
                 this.$emit('input', false);
             },
             /**
              * 确认
              */
-            confirm() {
+            confirm () {
                 this.$emit('input', false);
             }
         },
-        computed :{
+        computed : {
             //表头配置
             columnData () {
-                if(this.operateType === 'returnTicket'){
+                if (this.operateType === 'returnTicket') {
                     return [
                         {
                             title : '产品名称',
@@ -150,8 +150,8 @@
                             field : 'price',
                             minWidth : 80
                         }
-                    ]
-                }else{
+                    ];
+                } else {
                     return [
                         {
                             title : '产品名称',
@@ -168,11 +168,11 @@
                             field : 'number',
                             minWidth : 60
                         },
-                    ]
+                    ];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

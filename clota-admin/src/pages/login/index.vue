@@ -14,14 +14,14 @@
                 <!--账号-->
                 <FormItem prop="account" class="input-with-icon">
                     <span class="iconfont icon-person"></span>
-                    <Input v-model="formData.account"
+                    <Input v-model.trim="formData.account"
                            style="width: 368px;height: 40px;"
                            :placeholder="$t('account')"/>
                 </FormItem>
                 <!--密码-->
                 <FormItem prop="password" class="input-with-icon">
                     <span class="iconfont icon-reset-pass"></span>
-                    <Input v-model="formData.password"
+                    <Input v-model.trim="formData.password"
                            type="password"
                            style="width: 368px"
                            :placeholder="$t('password',{msg : ''})"/>
@@ -29,7 +29,7 @@
                 <!--验证码-->
                 <FormItem prop="verifyCode" class="password input-with-icon verify-code">
                     <span class="iconfont icon-person "></span>
-                    <Input v-model="formData.verifyCode"
+                    <Input v-model.trim="formData.verifyCode"
                            style="width: 368px"
                            :placeholder="$t('verifyCode')"/>
                     <img class="verify-img"
@@ -59,33 +59,33 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import {commonFunc} from 'klwk-ui';
+    import { commonFunc } from 'klwk-ui';
     export default {
-        data() {
+        data () {
             return {
                 //表单校验规则
-                rules: {
-                    account: [
-                        {required: true, message: this.$t('accountInputError'), trigger: 'blur'}
+                rules : {
+                    account : [
+                        { required : true, message : this.$t('accountInputError'), trigger : 'blur' }
                     ],
-                    password: [
-                        {required: true, message: this.$t('passwordInputError'), trigger: 'blur'}
+                    password : [
+                        { required : true, message : this.$t('passwordInputError'), trigger : 'blur' }
                     ],
-                    verifyCode: [
-                        {required: true, message: this.$t('verifyCodedInputError'), trigger: 'blur'}
+                    verifyCode : [
+                        { required : true, message : this.$t('verifyCodedInputError'), trigger : 'blur' }
                     ]
                 },
                 //表单数据
-                formData: {
+                formData : {
                     //账户
-                    account: '',
+                    account : '',
                     //密码
-                    password: '',
+                    password : '',
                     //验证码
-                    verifyCode: ''
+                    verifyCode : ''
                 },
                 //是否显示错误信息
-                showErrMessage: false,
+                showErrMessage : false,
                 //错误信息
                 errMessage : '',
                 //登陆中
@@ -95,52 +95,52 @@
                 //验证码地址
                 verifyCode : '',
                 //验证码key
-                verifyKey: '',
-            }
+                verifyKey : '',
+            };
         },
-        methods: {
+        methods : {
             /**
              * 登录
              */
-            login() {
+            login () {
                 commonFunc.delCookie('Account');
                 this.logging = true;
                 this.showErrMessage = false;
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.saveAccount();
                         ajax.post('login', {
                             loginName : this.formData.account,
                             password : this.formData.password,
                             validateCode : this.formData.verifyCode
                         }, {
-                            headers: {
+                            headers : {
                                 validateKey : this.verifyKey,
                             }
                         }).then(res => {
-                            if(res.status === 200){
+                            if (res.status === 200) {
                                 localStorage.setItem('token',res.data.token);
                                 localStorage.setItem('userInfo',JSON.stringify({
                                     name : this.formData.account
                                 }));
                                 this.$store.dispatch('getUserInfo').then(route => {
                                     this.$router.push({
-                                        name: route.name
+                                        name : route.name
                                     });
                                 });
-                            }else if(res.message === 'User is already login!'){
+                            } else if (res.message === 'User is already login!') {
                                 this.errMessage = 'loginError.hasLogined';
                                 this.showErrMessage = true;
                                 this.changeCode();
-                            }else if(res.message === 'Validate code error!'){
+                            } else if (res.message === 'Validate code error!') {
                                 this.errMessage = 'loginError.verifyCodeError';
                                 this.showErrMessage = true;
                                 this.changeCode();
-                            }else if(res.message === 'Loginname or password error!'){
+                            } else if (res.message === 'Loginname or password error!') {
                                 this.errMessage = 'accountOPassError';
                                 this.showErrMessage = true;
                                 this.changeCode();
-                            }else{
+                            } else {
                                 this.errMessage = res.message || 'loginError.accountError';
                                 this.showErrMessage = true;
                                 this.changeCode();
@@ -151,7 +151,7 @@
                         }).finally(() =>{
                             this.logging = false;
                         });
-                    }else{
+                    } else {
                         this.logging = false;
                     }
                 });
@@ -172,20 +172,28 @@
              * 记住账号
              */
             saveAccount () {
-                localStorage.setItem('account',this.formData.account);
+                if (this.rememberAccount) {
+                    localStorage.setItem('account',this.formData.account);
+                    localStorage.setItem('rememberAccount','true');
+                } else {
+                    localStorage.removeItem('account');
+                }
             }
         },
         created () {
-            if(localStorage.getItem('account')){
+            if (localStorage.getItem('account')) {
                 this.formData.account = localStorage.getItem('account');
             }
+            if (localStorage.getItem('rememberAccount') === 'true') {
+                this.rememberAccount = true;
+            }
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm=> {
                 vm.changeCode();
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

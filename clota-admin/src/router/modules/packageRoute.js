@@ -9,118 +9,118 @@
  */
 export default {
     //服务菜单主页
-    packageIndex: {
-        path: '/service',
-        component: () => import(/* webpackChunkName: "package" */ '../../pages/package/index.vue'),
-        meta: {
-            _name: 'package',
-            menuName: 'serve',
-            lightMenu: 'package',
+    packageIndex : {
+        path : '/service',
+        component : () => import(/* webpackChunkName: "package" */ '../../pages/package/index.vue'),
+        meta : {
+            _name : 'package',
+            menuName : 'serve',
+            lightMenu : 'package',
         },
         children : {
             //服务套餐
             packageList : {
-                path: '/service/list',
-                name: 'packageList',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/packageInfo.vue'),
-                meta: {
-                    _name: 'package',
-                    menuName: 'serverPackage',
-                    lightMenu: 'package',
+                path : '/service/list',
+                name : 'packageList',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/packageInfo.vue'),
+                meta : {
+                    _name : 'package',
+                    menuName : 'serverPackage',
+                    lightMenu : 'package',
                     showInMenu : true,
                     subMenuType : 'packageList'
                 },
             },
             //新增/编辑账号
             editPackage : {
-                path: '/service/edit',
-                name: 'editPackage',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editPackage.vue'),
-                meta: {
-                    _name: 'package',
-                    menuName: 'serverPackage',
-                    lightMenu: 'package',
+                path : '/service/edit',
+                name : 'editPackage',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editPackage.vue'),
+                meta : {
+                    _name : 'package',
+                    menuName : 'serverPackage',
+                    lightMenu : 'package',
                     showInMenu : false,
                     subMenuType : 'packageList'
                 },
             },
             //短信套餐列表
             notePackageInfo : {
-                path: '/service/notePackage/list',
-                name: 'notePackageInfo',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/notePackageInfo.vue'),
-                meta: {
-                    _name: 'package',
-                    menuName: 'notePackage',
-                    lightMenu: 'package',
+                path : '/service/notePackage/list',
+                name : 'notePackageInfo',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/notePackageInfo.vue'),
+                meta : {
+                    _name : 'package',
+                    menuName : 'notePackage',
+                    lightMenu : 'package',
                     showInMenu : true,
                     subMenuType : 'notePackage'
                 },
             },
             //新建/编辑短信套餐
             editNotePackageInfo : {
-                path: '/service/notePackage/edit',
-                name: 'editnotePackage',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editNotePackage.vue'),
-                meta: {
-                    _name: 'package',
-                    lightMenu: 'package',
+                path : '/service/notePackage/edit',
+                name : 'editnotePackage',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editNotePackage.vue'),
+                meta : {
+                    _name : 'package',
+                    lightMenu : 'package',
                     showInMenu : false,
                     subMenuType : 'notePackage'
                 },
             },
             //服务开通记录
             serviceOpenedRecord : {
-                path: '/service/opendRecord',
-                name: 'serviceOpendRecord',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/serviceOpenedRecord.vue'),
-                meta: {
-                    _name: 'package',
-                    menuName: 'serviceOpenRecord',
-                    lightMenu: 'package',
+                path : '/service/opendRecord',
+                name : 'serviceOpendRecord',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/serviceOpenedRecord.vue'),
+                meta : {
+                    _name : 'package',
+                    menuName : 'serviceOpenRecord',
+                    lightMenu : 'package',
                     showInMenu : true,
                     subMenuType : 'serviceOpendRecord'
                 },
             },
             //短信购买记录
             smsBuyRecord : {
-                path: '/service/smsBuyRecord',
-                name: 'smsBuyRecord',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsBuyRecord.vue'),
-                meta: {
-                    _name: 'package',
-                    menuName: 'smsBuyRecord',
-                    lightMenu: 'package',
+                path : '/service/smsBuyRecord',
+                name : 'smsBuyRecord',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsBuyRecord.vue'),
+                meta : {
+                    _name : 'package',
+                    menuName : 'smsBuyRecord',
+                    lightMenu : 'package',
                     showInMenu : true,
                     subMenuType : 'smsBuyRecord'
                 },
             },
             //短信发送记录
             smsSendRecord : {
-                path: '/service/smsSendRecord',
-                name: 'smsSendRecord',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendRecord.vue'),
-                meta: {
-                    _name: 'package',
-                    menuName: 'smsSendRecord',
-                    lightMenu: 'package',
+                path : '/service/smsSendRecord',
+                name : 'smsSendRecord',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendRecord.vue'),
+                meta : {
+                    _name : 'package',
+                    menuName : 'smsSendRecord',
+                    lightMenu : 'package',
                     showInMenu : true,
                     subMenuType : 'smsSendRecord'
                 },
             },
             //短信发送详情
             smsSendDetail : {
-                path: '/service/smsSendRecord/detail',
-                name: 'smsSendRecordDetail',
-                component: () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendDetail.vue'),
-                meta: {
-                    _name: 'package',
-                    menuName: '',
-                    lightMenu: 'package',
+                path : '/service/smsSendRecord/detail',
+                name : 'smsSendRecordDetail',
+                component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendDetail.vue'),
+                meta : {
+                    _name : 'package',
+                    menuName : '',
+                    lightMenu : 'package',
                     showInMenu : false,
                     subMenuType : 'smsSendRecord'
                 },
             },
         }
     },
-}
+};

@@ -25,37 +25,37 @@
 
 <script>
     export default {
-        data() {
+        data () {
             return {
                 //tap列表
-                tapList: [
+                tapList : [
                     {
-                        name: 'ISPinternet',
-                        label: this.$t('ISPinternet')
+                        name : 'ISPinternet',
+                        label : this.$t('ISPinternet')
                     },
                     {
-                        name: 'cooperaChannelOrg',
-                        label: this.$t('cooperaChannelOrg')
+                        name : 'cooperaChannelOrg',
+                        label : this.$t('cooperaChannelOrg')
                     },
                     {
-                        name: 'cooperaChannelPer',
-                        label: this.$t('cooperaChannelPer')
+                        name : 'cooperaChannelPer',
+                        label : this.$t('cooperaChannelPer')
                     }
                 ]
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 左侧菜单改变
              * @param name 菜单名称
              */
-            menuSelect(name) {
-                this.$router.push({name: name});
+            menuSelect (name) {
+                this.$router.push({ name : name });
             }
         },
-        computed: {
+        computed : {
             //当前激活的左侧菜单
-            activeName() {
+            activeName () {
                 if (this.$route && this.$route.name) {
                     return this.$route.name;
                 } else {
@@ -63,7 +63,7 @@
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

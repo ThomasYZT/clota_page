@@ -104,7 +104,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {buyColumns,sendColumns} from './noteConfig';
+    import { buyColumns,sendColumns } from './noteConfig';
     import noteDetail from './noteDetail';
     import ajax from '@/api/index.js';
     export default {
@@ -113,7 +113,7 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
@@ -121,7 +121,7 @@
             tableCom,
             noteDetail
         },
-        data() {
+        data () {
             return {
                 //购买短信表头
                 buyColumns : buyColumns,
@@ -151,9 +151,9 @@
                 smsSurplusTotal : '',
                 //短信发送数量
                 sendSmsTotals : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查看短信发送记录
              * @param data
@@ -171,14 +171,14 @@
                     pageNo : this.smsBuyRecordPageNo,
                     pageSize : this.smsBuyRecordPageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.smsBuyRecord = res.data.list ? res.data.list : [];
                         this.smsBuyTotal = res.data.otherData ? res.data.otherData.totals : '';
-                    }else{
+                    } else {
                         this.smsBuyRecord = [];
                         this.smsBuyTotal = '';
                     }
-                })
+                });
             },
             /**
              * 获取短信发送记录
@@ -189,16 +189,16 @@
                     pageNo : this.smsBuyRecordPageNo,
                     pageSize : this.smsBuyRecordPageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.smsSendRecord = res.data.list ? res.data.list : [];
                         this.smsSurplusTotal = res.data.otherData ? res.data.otherData.smsSurplusTotal : '';
                         this.sendSmsTotals = res.data.otherData ? res.data.otherData.sendSmsTotals : '';
-                    }else{
+                    } else {
                         this.smsSendRecord = [];
                         this.smsSurplusTotal = '';
                         this.sendSmsTotals = '';
                     }
-                })
+                });
             }
         },
         computed : {
@@ -207,7 +207,7 @@
                 return this.searchParams && this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

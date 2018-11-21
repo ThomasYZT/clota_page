@@ -61,7 +61,7 @@
 <script>
     import filterHead from './smsSendRecordChild/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {smsSendRecord} from './smsSendRecordConfig';
+    import { smsSendRecord } from './smsSendRecordConfig';
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';
 
@@ -70,7 +70,7 @@
             filterHead,
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 smsSendRecord : smsSendRecord,
@@ -101,14 +101,14 @@
                     //短信供应商
                     provider : ''
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查看发送短信详情
              * @param data
              */
-            watchDetail(data) {
+            watchDetail (data) {
                 this.$router.push({
                     name : 'smsSendRecordDetail',
                     params : {
@@ -132,17 +132,17 @@
                     pageSize : this.pageSize,
                 };
                 let realParam = {};
-                for(let item in params){
-                    if(common.isNotEmpty(params[item])){
+                for (let item in params) {
+                    if (common.isNotEmpty(params[item])) {
                         realParam[item] = params[item];
                     }
                 }
                 ajax.post('getSmsSendRecord',realParam).then(res => {
-                   if(res.status === 200){
+                   if (res.status === 200) {
                        this.tableData = res.data.list ? res.data.list : [];
                        this.totalCount = Number(res.data.totalRecord);
                        this.totalSend = res.data.other.sendSmsTotals;
-                   } else{
+                   } else {
                        this.tableData = [];
                        this.totalCount = 0;
                        this.totalSend = '';
@@ -153,7 +153,7 @@
              * 获取路由参数
              * @param params
              */
-            getParams(params){
+            getParams (params) {
                 this.getSmsSendRecord();
             },
             /**
@@ -166,17 +166,17 @@
                 this.filterData.phone = filterData.phone;
                 this.filterData.status = filterData.status;
                 this.filterData.orderNo = filterData.orderNo;
-                this.filterData.startTime = filterData.sendTime[0] ? new Date(filterData.sendTime[0]).format('yyyy-MM-dd 00:00:00') : '' ;
-                this.filterData.endTime = filterData.sendTime[1] ? new Date(filterData.sendTime[1]).format('yyyy-MM-dd 23:59:59') : '' ;
+                this.filterData.startTime = filterData.sendTime[0] ? new Date(filterData.sendTime[0]).format('yyyy-MM-dd 00:00:00') : '';
+                this.filterData.endTime = filterData.sendTime[1] ? new Date(filterData.sendTime[1]).format('yyyy-MM-dd 23:59:59') : '';
                 this.getSmsSendRecord();
             }
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

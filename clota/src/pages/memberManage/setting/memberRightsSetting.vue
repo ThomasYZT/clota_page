@@ -12,6 +12,8 @@
 				:border="true"
 				:show-pagination="true"
 				:total-count="totalCount"
+                :page-no-d.sync="pageNo"
+                :page-size-d.sync="pageSize"
 				:ofset-height="150"
 				@query-data="queryList">
 				<el-table-column

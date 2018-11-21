@@ -24,45 +24,45 @@
 
 <script>
     export default {
-        data() {
+        data () {
             return {
                 //tap列表
-                tapList: [
+                tapList : [
                     {
-                        name: 'customeSetting',
-                        label: this.$t('customeSetting')
+                        name : 'customeSetting',
+                        label : this.$t('customeSetting')
                     },
                     {
-                        name: 'region',
-                        label: this.$t('regionInfo')
+                        name : 'region',
+                        label : this.$t('regionInfo')
                     },
                     {
-                        name: 'measureUnit',
-                        label: this.$t('measureUnit')
+                        name : 'measureUnit',
+                        label : this.$t('measureUnit')
                     },
                     {
-                        name: 'holiday',
-                        label: this.$t('holidayInfo')
+                        name : 'holiday',
+                        label : this.$t('holidayInfo')
                     },
                     {
-                        name: 'channel',
-                        label: this.$t('channelInfo')
+                        name : 'channel',
+                        label : this.$t('channelInfo')
                     }
                 ]
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 左侧菜单改变
              * @param name 菜单名称
              */
-            menuSelect(name) {
-                this.$router.push({name: name});
+            menuSelect (name) {
+                this.$router.push({ name : name });
             }
         },
-        computed: {
+        computed : {
             //当前激活的左侧菜单
-            activeName() {
+            activeName () {
                 if (this.$route && this.$route.name) {
                     return this.$route.name;
                 } else {
@@ -70,7 +70,7 @@
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

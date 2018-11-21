@@ -2,23 +2,24 @@
 
 <template>
     <Modal
-        title="Title"
         :mask-closable="false"
         :value="value"
         @input="changeValue"
+        :width="420"
         @on-visible-change="visibleChange"
         class="del-node"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <!--<span class="title" v-w-title="$t('delete') + nodeDetail.title">{{$t('delete')}}{{nodeDetail.title}}</span>-->
-            <span class="title"
-                  v-w-title="$t('disabled') + lessDetail.name">
-                {{$t('disabled')}}{{lessDetail.name}}
+            <span class="title">
+                {{$t('提示')}}
             </span>
         </div>
         <div class="warn-info">
             <Icon type="ios-help-circle"/>
-            <span class="red-label">{{$t('affirm')}}{{$t('disabled')}}{{lessDetail.name}}?</span>
+            <span class="normal-label" v-if="operateType === 'close'">{{$t('您正在禁用')}}</span>
+            <span class="normal-label" v-else>{{$t('您正在启用')}}</span>
+            <span class="red-label" v-w-title="lessDetail.orgName">{{lessDetail.orgName}}</span>
+            <span class="normal-label">{{$t('，是否继续?')}}</span>
         </div>
         <div slot="footer">
             <Button type="error"
@@ -32,62 +33,63 @@
 
 <script>
     export default {
-        props: {
+        props : {
             //绑定的模态框是否显示的变量
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //租户详情
-            'less-detail': {
-                type: Object,
-                default() {
-                    return {}
+            'less-detail' : {
+                type : Object,
+                default () {
+                    return {};
                 }
+            },
+            //当前操作类型
+            'operate-type' : {
+                type : String,
+                default : ''
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
 
             },
             /**
              * 取消禁用
              */
-            cancel() {
+            cancel () {
                 this.$emit('input', false);
             },
             /**
              * 确认禁用
              */
-            confirm() {
+            confirm () {
                 this.$emit('input', true);
                 this.$emit('confirm-disabled');
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
     .del-node {
-        & /deep/ .ivu-modal {
-            width: 600px !important;
-            height: 380px;
-        }
 
         .target-class {
             height: 23px;
@@ -115,7 +117,7 @@
         & /deep/ .ivu-modal-body {
             padding: 0;
             position: relative;
-            @include block_outline($height: 270px);
+            @include block_outline($height: 160px);
         }
 
         /deep/ .ivu-modal-footer {
@@ -127,9 +129,12 @@
             font-size: $font_size_14px;
             color: $color_333;
             text-align: left;
+            flex-direction: row;
 
             .red-label {
                 color: $color_err;
+                max-width: 200px;
+                @include overflow_tip();
             }
         }
     }

@@ -88,7 +88,7 @@
 </template>
 
 <script>
-    import {partMentHead} from './subDepartmentConfig';
+    import { partMentHead } from './subDepartmentConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
     import editModal from '@/components/editModal/index.vue';
@@ -99,7 +99,7 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
@@ -108,7 +108,7 @@
             delModal,
             editModal
         },
-        data() {
+        data () {
             return {
                 //下属部门表头配置
                 partMentHead : partMentHead,
@@ -129,13 +129,13 @@
                 //校验规则
                 ruleValidate : {
                     depName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('depName')}),trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('depName')}),trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('depName') }),trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('depName') }),trigger : 'blur' }
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 批量删除部门
              */
@@ -178,7 +178,7 @@
                     title : this.$t('changeDepName'),
                     confirmCallback : () => {
                         this.$refs.formRef.validate(valid => {
-                            if(valid) {
+                            if (valid) {
                                 this.confirmChangeDep(this.formData.depName,data);
                             }
                         });
@@ -195,11 +195,11 @@
                     id : rowData.id,
                     orgName : name
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('修改成功');
                         this.$emit('org-change');
                         this.queryList();
-                    }else{
+                    } else {
                         this.$Message.error(res.message || '修改失败');
                     }
                 }).finally(() => {
@@ -211,7 +211,7 @@
              * @param filters
              */
             handleFilter (filters) {
-                this.tableData = this.tableData.slice(0,2)
+                this.tableData = this.tableData.slice(0,2);
             },
             /**
              * 查询下属部门信息
@@ -223,10 +223,10 @@
                     page : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.tableData = res.data ? res.data.list : [];
                         this.totalCount = Number(res.data.totalRecord);
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -240,11 +240,11 @@
                 ajax.post('deleteDepartments',{
                     ids : ids
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.$Message.success('删除成功');
                         this.$emit('org-change');
                         this.queryList();
-                    }else{
+                    } else {
                         this.$Message.error('删除失败');
                     }
                 });
@@ -256,7 +256,7 @@
                 return this.searchParams && this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

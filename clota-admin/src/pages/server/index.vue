@@ -78,17 +78,17 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columns} from './serverConfig';
+    import { columns } from './serverConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
-                columnData: columns,
+                columnData : columns,
                 //表格数据
                 tableData : [],
                 //页码
@@ -97,16 +97,16 @@
                 pageSize : 10,
                 //总条数
                 totalCount : 0
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查看设备详情
              * @param rowData 行数据
              */
-            toDetail(rowData) {
+            toDetail (rowData) {
                 this.$router.push({
-                    name: 'serverDetail',
+                    name : 'serverDetail',
                     params : {
                         id : rowData.id,
                         ip : rowData.ip,
@@ -116,9 +116,9 @@
             /**
              * 添加服务器
              */
-            addServer() {
+            addServer () {
                 this.$router.push({
-                    name: 'addServer'
+                    name : 'addServer'
                 });
             },
             /**
@@ -129,10 +129,10 @@
                     page : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.totalCount = Number(res.data.totalRecord);
                         this.tableData = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.totalCount = 0;
                         this.tableData = [];
                     }
@@ -145,7 +145,7 @@
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
+            getParams (params) {
                 this.queryAllServerMsg();
             },
             /**
@@ -160,17 +160,17 @@
              * 每页大小改变
              * @param pageNo
              */
-            pageNoChange(pageNo) {
+            pageNoChange (pageNo) {
                 this.pageNo = pageNo;
                 this.queryAllServerMsg();
             }
         },
-        beforeRouteEnter(to,from,next) {
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

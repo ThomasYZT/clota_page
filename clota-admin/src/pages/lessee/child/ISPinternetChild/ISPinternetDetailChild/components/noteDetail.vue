@@ -79,27 +79,27 @@
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //短信详情
                 noteDetail : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                     this.getNodeDetail();
-                }else{
+                } else {
                     this.noteDetail = {};
                 }
             },
@@ -112,19 +112,19 @@
             /**
              * 获取短信详情
              */
-            getNodeDetail (){
+            getNodeDetail () {
                 ajax.post('getSmsConsumeRecordDetails',{
                     id : this.noteId
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.noteDetail = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.noteDetail = {};
                     }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

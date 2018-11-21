@@ -15,13 +15,13 @@
 </template>
 
 <script>
-    import {refundTicketHead} from './refundTickConfig';
+    import { refundTicketHead } from './refundTickConfig';
     import tableCom from '../../../lessee/child/organization/tableCom';
     export default {
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //退票信息表头配置
                 refundTicketHead : refundTicketHead,
@@ -42,9 +42,9 @@
                 ],
                 //下属景区总数
                 totalCount : 100,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取下属景区信息
              */
@@ -55,7 +55,7 @@
         created () {
             this.getSubCompany();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -60,17 +60,17 @@
 
 <script>
 
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['operateData'],
+        props : ['operateData'],
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -80,48 +80,48 @@
             //校验数字
             const validateNumber = (rule, value, callback) => {
                 if (value && !validator.isNumber(value)) {
-                    callback(new Error( this.$t('numError', {field: this.$t('channelCode')}) ));
+                    callback(new Error( this.$t('numError', { field : this.$t('channelCode') }) ));
                 } else {
                     callback();
                 }
             };
 
             return {
-                visible: false,
+                visible : false,
                 //标题信息
                 title : '',
                 //表单数据
-                formData: {
-                    name: '',
-                    id: '',
-                    remarks: '',
+                formData : {
+                    name : '',
+                    id : '',
+                    remarks : '',
                 },
                 // 表单校验
-                ruleValidate: {
+                ruleValidate : {
                     name : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {msg: this.$t('areaName')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 10, message: this.$t('errorMaxLength', {field: this.$t('areaName'), length: 10}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { msg : this.$t('areaName') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('areaName'), length : 10 }), trigger : 'blur' },
                     ],
                     id : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('areaNo')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { type: 'string', max: 8, message: this.$t('errorMaxLength', {field: this.$t('areaNo'), length: 8}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('areaNo') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { type : 'string', max : 8, message : this.$t('errorMaxLength', { field : this.$t('areaNo'), length : 8 }), trigger : 'blur' },
                     ],
                     remarks : [
-                        {required: true, message : this.$t('validateError.pleaseInput', {'msg': this.$t('areaRemark')}), trigger: 'blur'},
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { type: 'string', max: 100, message: this.$t('errorMaxLength', {field: this.$t('areaRemark'), length: 100}), trigger: 'blur' },
+                        { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('areaRemark') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { type : 'string', max : 100, message : this.$t('errorMaxLength', { field : this.$t('areaRemark'), length : 100 }), trigger : 'blur' },
                     ],
                 },
                 //确认执行的回调函数
                 confirmCallback : null,
                 //取消执行的回调函数
                 cancelCallback : null,
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 显示 模态框
@@ -130,16 +130,16 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({data,title,confirmCallback = null,cancelCallback}) {
+            show ({ data,title,confirmCallback = null,cancelCallback }) {
                 this.visible = true;
                 this.title = title;
-                if(data){
+                if (data) {
                     this.formData = defaultsDeep({}, data);
                 }
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
             },
@@ -147,24 +147,24 @@
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
-                        if(this.confirmCallback){
+                    if (valid) {
+                        if (this.confirmCallback) {
                             this.confirmCallback( this.formData );
                             this.hide();
                         }
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
-                this.formData = { name: '' };
+                this.formData = { name : '' };
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

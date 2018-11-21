@@ -8,17 +8,17 @@
 <script type="text/ecmascript-6">
 
     export default {
-        components: {},
-        data() {
-            return {}
+        components : {},
+        data () {
+            return {};
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {}
+        watch : {},
+        methods : {}
     };
 </script>
 

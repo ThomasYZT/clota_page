@@ -85,12 +85,12 @@
 </template>
 
 <script>
-    import{sendStatusList} from '@/assets/js/constVariable.js';
+    import { sendStatusList } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     export default {
         props : {
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -113,17 +113,17 @@
                 lesseeList : [],
                 //短信服务商
                 smsProviderList : [],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取所有租户信息
              */
             listServiceProvider () {
                 ajax.post('listServiceProvider').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.lesseeList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.lesseeList = [];
                     }
                 }).catch(err => {
@@ -138,9 +138,9 @@
                     page : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.smsProviderList = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.smsProviderList = [];
                     }
                 }).catch(err => {
@@ -170,7 +170,7 @@
             this.listServiceProvider();
             this.getSmsProviderList();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

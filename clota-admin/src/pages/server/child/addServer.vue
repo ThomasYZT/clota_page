@@ -99,134 +99,134 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
-    import {listenRateEnum, systemTypeList} from '@/assets/js/constVariable.js';
+    import { validator } from 'klwk-ui';
+    import { listenRateEnum, systemTypeList } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import {isIpv4,isIpv6} from '../../../assets/js/constVariable';
+    import { isIpv4,isIpv6 } from '../../../assets/js/constVariable';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead
         },
-        data() {
+        data () {
             //校验ip地址是否正确
             const validateIp = (rule,value,callback) => {
-                if(value){
-                    if(isIpv4(value) || isIpv6(value)){
+                if (value) {
+                    if (isIpv4(value) || isIpv6(value)) {
                         ajax.post('queryServerByIp',{
                             ip : value
                         }).then(res => {
-                            if(res.status === 200){
-                                if(!res.data){
+                            if (res.status === 200) {
+                                if (!res.data) {
                                     callback();
-                                }else{
-                                    callback(this.$t('fieldExist',{filed : this.$t('ipAddress')}));
+                                } else {
+                                    callback(this.$t('fieldExist',{ filed : this.$t('ipAddress') }));
                                 }
-                            }else{
-                                callback(this.$t('checkFail',{filed : this.$t('ipAddress')}) );
+                            } else {
+                                callback(this.$t('checkFail',{ filed : this.$t('ipAddress') }) );
                             }
-                        })
-                    }else{
-                        callback(this.$t('validateError.formatError', {field: this.$t('ipAddress')}));
+                        });
+                    } else {
+                        callback(this.$t('validateError.formatError', { field : this.$t('ipAddress') }));
                     }
-                }else{
-                    callback(this.$t('validateError.pleaseInput', {msg: this.$t('serverName')}));
+                } else {
+                    callback(this.$t('validateError.pleaseInput', { msg : this.$t('serverName') }));
                 }
             };
             //校验服务器名称是否重复
             const validateServerName = (rule,value,callback) => {
-                if(value){
+                if (value) {
                     ajax.post('queryServerByServerName',{
                         serverName : value
                     }).then(res => {
-                        if(res.status === 200){
-                            if(!res.data){
+                        if (res.status === 200) {
+                            if (!res.data) {
                                 callback();
-                            }else{
-                                    callback(this.$t('fieldExist',{filed : this.$t('serverName')}));
+                            } else {
+                                    callback(this.$t('fieldExist',{ filed : this.$t('serverName') }));
                             }
-                        }else{
-                            callback(this.$t('checkFail',{filed : this.$t('serverName')}) );
+                        } else {
+                            callback(this.$t('checkFail',{ filed : this.$t('serverName') }) );
                         }
                     });
-                }else{
-                    callback(this.$t('validateError.pleaseInput', {msg: this.$t('serverName')}));
+                } else {
+                    callback(this.$t('validateError.pleaseInput', { msg : this.$t('serverName') }));
                 }
             };
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('serverList'),
-                        router: {
-                            name: 'server'
+                        name : this.$t('serverList'),
+                        router : {
+                            name : 'server'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //服务器名称
-                    serverName: '',
+                    serverName : '',
                     //ip地址
-                    IPname: '',
+                    IPname : '',
                     //应用服务
-                    usingService: '',
+                    usingService : '',
                     //系统
-                    system: '',
+                    system : '',
                     //系统类型
-                    systemType: '',
+                    systemType : '',
                     //监控频率
-                    listenRate: '',
+                    listenRate : '',
                     //系统描述
-                    systemDesc: '',
+                    systemDesc : '',
                 },
                 //表单校验规则
-                ruleValidate: {
-                    serverName: [
+                ruleValidate : {
+                    serverName : [
                         {
-                            required: true,
+                            required : true,
                             validator : validateServerName,
-                            trigger: 'blur'
+                            trigger : 'blur'
                         },
                     ],
-                    IPname: [
+                    IPname : [
                         {
-                            required: true,
+                            required : true,
                             validator : validateIp,
-                            trigger: 'blur'
+                            trigger : 'blur'
                         },
                     ],
                     usingService : [
-                        {required : true,message :this.$t('validateError.pleaseInput', {msg: this.$t('usingService')}),trigger : 'blur' }
+                        { required : true,message : this.$t('validateError.pleaseInput', { msg : this.$t('usingService') }),trigger : 'blur' }
                     ],
                     system : [
-                        {required : true,message :this.$t('validateError.pleaseInput', {msg: this.$t('system')}),trigger : 'blur' }
+                        { required : true,message : this.$t('validateError.pleaseInput', { msg : this.$t('system') }),trigger : 'blur' }
                     ],
                     systemType : [
-                        {required : true,message :this.$t('validateError.pleaseSelect', {msg: this.$t('systemType')}),trigger : 'change' }
+                        { required : true,message : this.$t('validateError.pleaseSelect', { msg : this.$t('systemType') }),trigger : 'change' }
                     ],
                     listenRate : [
-                        {required : true,message :this.$t('validateError.pleaseSelect', {msg: this.$t('listenRate')}),trigger : 'change' }
+                        { required : true,message : this.$t('validateError.pleaseSelect', { msg : this.$t('listenRate') }),trigger : 'change' }
                     ]
                 },
                 //系统类型列表
-                systemTypeList: systemTypeList,
+                systemTypeList : systemTypeList,
                 //监控频率
-                listenRateEnum: listenRateEnum,
+                listenRateEnum : listenRateEnum,
                 //是否正在添加中
-                addLoading: false
-            }
+                addLoading : false
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存新增租户数据
              */
-            save() {
+            save () {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.addServerse();
-                    }else{
+                    } else {
                         this.addLoading = false;
                     }
                 });
@@ -234,9 +234,9 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$router.push({
-                    name: 'server'
+                    name : 'server'
                 });
             },
             /**
@@ -252,12 +252,12 @@
                     description : this.formData.systemDesc,
                     opSystme : this.formData.system,
                 }).then(res => {
-                   if(res.status === 200) {
+                   if (res.status === 200) {
                         this.$Message.success(this.$t('addSuccess'));
                         this.$router.push({
                             name : 'server'
                         });
-                   }else{
+                   } else {
                         this.$Message.error(res.message || this.$t('interfaceError'));
                    }
                 }).finally(() =>{
@@ -265,7 +265,7 @@
                 });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

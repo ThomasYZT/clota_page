@@ -47,7 +47,7 @@ import elUpload from 'element-ui/lib/upload';
 import elDialog from 'element-ui/lib/dialog';
 import elCollapse from 'element-ui/lib/collapse';
 import elCollapseItem from 'element-ui/lib/collapse-item';
-import Loading  from 'element-ui/lib/Loading';
+import Loading  from 'element-ui/lib/loading';
 
 
 // // 按需引入 Echarts 图表

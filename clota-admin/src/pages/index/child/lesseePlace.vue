@@ -17,10 +17,10 @@
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             pie
         },
-        data() {
+        data () {
             return {
                 //饼图数据
                 pieData : {
@@ -29,17 +29,17 @@
                 },
                 //饼图是否显示
                 pieShow : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取租户所在地数据
              */
             getTenantRegion () {
                 this.pieShow = false;
                 ajax.get('tenantRegion').then(res => {
-                    if(res.status === 200){
-                        if(res.data.regionList && res.data.regionList.length > 0){
+                    if (res.status === 200) {
+                        if (res.data.regionList && res.data.regionList.length > 0) {
                             let data = [];
                             let legend = [];
                             res.data.regionList.map(item => {
@@ -62,7 +62,7 @@
         created () {
             this.getTenantRegion();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

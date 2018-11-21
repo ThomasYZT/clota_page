@@ -82,15 +82,15 @@
                 default : ''
             }
         },
-        components: {
+        components : {
             annlar,
             noData,
             areaCom
         },
-        data() {
+        data () {
             return {
                 //当前激活的tap
-                activeTap: 'today',
+                activeTap : 'today',
                 //磁盘空间使用百分比
                 diskUsePer : '-',
                 //日志信息
@@ -98,14 +98,14 @@
                     data : [],
                     legend : []
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 选择tap
              * @param dayType
              */
-            choseDay(dayType) {
+            choseDay (dayType) {
                 this.activeTap = dayType;
                 this.queryMoreDiskSpaceDate();
             },
@@ -125,7 +125,7 @@
              * 跳转到磁盘监控详情
              */
             toDiskDetail () {
-                let date =  this.selectedDay();
+                let date = this.selectedDay();
                 this.$router.push({
                     name : 'diskDetail',
                     params : {
@@ -140,7 +140,7 @@
              * 查询磁盘空间信息
              */
             queryMoreDiskSpaceDate () {
-                let date =  this.selectedDay();
+                let date = this.selectedDay();
                 ajax.post('queryMoreDiskSpaceDate',{
                     ip : this.serverIp,
                     startTime : date.startTime,
@@ -148,13 +148,13 @@
                     pageSize : 10,
                     page : 1
                 }).then(res => {
-                    if(res.status === 200){
-                        if(res.data.list && res.data.list.length > 0){
+                    if (res.status === 200) {
+                        if (res.data.list && res.data.list.length > 0) {
                             this.diskUsePer = Number(Number((res.data.list[0].totalSpace - res.data.list[0].freeSpace) / res.data.list[0].totalSpace).toFixed());
-                        }else{
+                        } else {
                             this.diskUsePer = '-';
                         }
-                    }else{
+                    } else {
                         this.diskUsePer = '-';
                     }
                 }).catch(err => {
@@ -166,38 +166,38 @@
              */
             selectedDay () {
                 //今天
-                if(this.activeTap === 'today') {
+                if (this.activeTap === 'today') {
                     return {
                         startTime : new Date().format('yyyy-MM-dd'),
                         endTime : new Date().format('yyyy-MM-dd'),
-                    }
-                }else if(this.activeTap === 'yesterday'){//昨天
+                    };
+                } else if (this.activeTap === 'yesterday') {//昨天
                     return {
                         startTime : new Date().addDays(-1).format('yyyy-MM-dd'),
                         endTime : new Date().addDays(-1).format('yyyy-MM-dd'),
-                    }
-                }else if(this.activeTap === 'passedSevenDays'){//过去7天
+                    };
+                } else if (this.activeTap === 'passedSevenDays') {//过去7天
                     return {
                         startTime : new Date().addDays(-7).format('yyyy-MM-dd'),
                         endTime : new Date().format('yyyy-MM-dd'),
-                    }
-                }else if(this.activeTap === 'passedThirtyDays'){//过去30天
+                    };
+                } else if (this.activeTap === 'passedThirtyDays') {//过去30天
                     return {
                         startTime : new Date().addDays(-30).format('yyyy-MM-dd'),
                         endTime : new Date().format('yyyy-MM-dd'),
-                    }
-                }else{
+                    };
+                } else {
                     return {
                         startTime : '',
                         endTime : ''
-                    }
+                    };
                 }
             },
             /**
              * 查询日志信息
              */
-            queryLog() {
-                let date =  this.selectedDay();
+            queryLog () {
+                let date = this.selectedDay();
                 ajax.post('queryLog',{
                     ip : this.serverIp,
                     // startTime : date.startTime,
@@ -205,18 +205,18 @@
                     pageSize : 7,
                     page : 1
                 }).then(res => {
-                    if(res.status === 200){
-                        if(res.data.list && res.data.list.length > 0){
+                    if (res.status === 200) {
+                        if (res.data.list && res.data.list.length > 0) {
                             let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
                             this.logInfo.data = legendData.map(item => item.logSize);
                             this.logInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
-                        }else{
+                        } else {
                             this.logInfo = {
                                 data : [],
                                 legend : []
                             };
                         }
-                    }else{
+                    } else {
                         this.logInfo = {
                             data : [],
                             legend : []
@@ -236,7 +236,7 @@
         },
         computed : {
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

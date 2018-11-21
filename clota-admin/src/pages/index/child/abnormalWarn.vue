@@ -41,29 +41,29 @@
 </template>
 
 <script>
-    import {configVariable} from '../../../assets/js/constVariable';
+    import { configVariable } from '../../../assets/js/constVariable';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
-        components :{
+        components : {
             noData
         },
-        data() {
+        data () {
             return {
                 //总共条数
                 totalCount : 0,
                 //事件
                 warningList : [],
                 //每页大小配置
-                pageSizeConfig: configVariable.pageSizeConfig,
+                pageSizeConfig : configVariable.pageSizeConfig,
                 //每页大小
-                pageSize: configVariable.pageDefaultSize,
+                pageSize : configVariable.pageDefaultSize,
                 //当前页码
-                pageNo: 1,
-            }
+                pageNo : 1,
+            };
         },
-        methods: {
+        methods : {
             /**
              * 跳转详情
              * @param data
@@ -72,7 +72,7 @@
                 this.$router.push({
                     name : data,
                     params : {
-                        orderType :"team"
+                        orderType : "team"
                     }
                 });
             },
@@ -85,10 +85,10 @@
                     pageSize : this.pageSize,
                     warningType : '0'
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.totalCount = Number(res.data.totalRecord);
                         this.warningList = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.totalCount = 0;
                         this.warningList = [];
                     }
@@ -117,7 +117,7 @@
         created () {
             this.getExceptionAlarm();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

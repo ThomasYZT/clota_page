@@ -17,4 +17,4 @@ export default {
     'orderRankingList' : 'order/orderRankingList.json',
     //查询服务器信息
     'queryAllServerMsg' : 'servers/queryAllServerMsg.json',
-}
+};
