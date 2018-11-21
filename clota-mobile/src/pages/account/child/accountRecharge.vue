@@ -186,7 +186,8 @@
                     bizId : this.cardInfo.id,
                     channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.rechargeMoney,
-                    memberLevelId : this.cardInfo.levelId
+                    memberLevelId : this.cardInfo.levelId,
+                    redirectUrl : location.origin + '/payStatus'
                 }).then(res => {
                     if (res.success) {
                         this.payFormData = res.data ? res.data : {};
@@ -229,7 +230,8 @@
                     bizId : this.cardInfo.id,
                     channelId : 'weixin',
                     txnAmt : this.rechargeMoney,
-                    memberLevelId : this.cardInfo.levelId
+                    memberLevelId : this.cardInfo.levelId,
+                    redirectUrl : location.origin + '/payStatus'
                 }).then(res => {
                     if (res.success) {
                         //设置支付表单信息
