@@ -1,5 +1,6 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 const defaultConfig = {
+    color : [],
     title : {
         show : false
     },
@@ -10,12 +11,22 @@ const defaultConfig = {
         padding : [9, 12]
     },
     legend : {
+        orient : 'horizontal',
+        textStyle : {
+            color : '#999999'
+        },
+        bottom : 20,
+        pageButtonGap : 10,
+        lineHeight : 56,
+        itemGap : 18,
+        itemHeight : 17,
+        show : true,
         data : []
     },
     grid : {
         left : '3%',
         right : '4%',
-        bottom : '3%',
+        bottom : '10%',
         containLabel : true
     },
     toolbox : {
@@ -61,8 +72,9 @@ export const barSeries = {
 };
 
 
-export const getLineConfig = ({ legendData, seriesData, xAxisData, formatter }) => {
+export const getLineConfig = ({ color, legendData, seriesData, xAxisData, formatter }) => {
     return defaultsDeep({
+        color : color,
         legend : {
             data : legendData
         },

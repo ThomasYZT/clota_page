@@ -73,11 +73,13 @@
                     if (params && params.length > 0) {
                         let html = '<div class="chart-tooltip">';
                         let time = params[0].data.params.createdTime + ' ' + this.$t(common.getWeekDay(new Date(params[0].data.params.createdTime)));
-                        let statistics = '<p><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:#0055B8;"></span>' +
-                                         this.$t('online') + ' ' + (params[0] ? params[0].data.value : 0).toFixed(2) +
-                                         '</br><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:#FBC826";></span>' +
-                                         this.$t('offline') + ' ' + (params[1] ? params[1].data.value : 0).toFixed(2) + '</p>';
-                        html += time + statistics;
+                        html += time;
+                        params.forEach(item => {
+                            let spot = '<p><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' +
+                            item.color + '"></span>' + this.$t('online') + ' ' + (item ? item.data.value : 0).toFixed(2);
+
+                            html += spot;
+                        });
                         html += '</div>';
                         return html;
                     } else {
@@ -90,6 +92,7 @@
             //echart图标数据
             options () {
                 return getLineConfig({
+                    color : ['#0055B8','#FBC826'],
                     legendData : this.legendData,
                     seriesData : this.seriesData,
                     xAxisData : this.xAxisData,
@@ -130,16 +133,16 @@
                                         //组装seriesDat 每根曲线数据
                                         _dataOfSeries.push({
                                             value : item.quantity,
-                                            name : key,
+                                            name : this.$t(key),
                                             params : item
                                         });
                                     });
                                     isxAxis = true;
                                     //组装legend数据
                                     this.legendData.push({
-                                        name : key
+                                        name : this.$t(key)
                                     });
-                                    this.seriesData.push(defaultsDeep({ data : _dataOfSeries }, defaultSeries));
+                                    this.seriesData.push(defaultsDeep({ data : _dataOfSeries, name : this.$t(key) }, defaultSeries));
                                 }
                             }
                             this.countGroupBySource();

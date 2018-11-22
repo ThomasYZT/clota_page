@@ -92,6 +92,7 @@
             //echart图标数据
             options () {
                 return getLineConfig({
+                    color : ['#0055B8', '#FBC92B'],
                     legendData : this.legendData,
                     seriesData : this.seriesData,
                     xAxisData : this.xAxisData,
@@ -126,15 +127,15 @@
                                     //组装seriesDat 每根曲线数据
                                     _dataOfSeries.push({
                                         value : data[key][date],
-                                        name : key
+                                        name : this.$t('score_' + key),
                                     });
                                 }
 
                                 //组装legendData数据
                                 this.legendData.push({
-                                    name : key
+                                    name : this.$t('score_' + key)
                                 });
-                                this.seriesData.push(defaultsDeep({ data : _dataOfSeries }, defaultSeries));
+                                this.seriesData.push(defaultsDeep({ data : _dataOfSeries, name : this.$t('score_' + key) }, defaultSeries));
 
                             }
 

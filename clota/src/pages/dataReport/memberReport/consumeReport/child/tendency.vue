@@ -105,6 +105,7 @@
             //echart图标数据
             options () {
                 return getLineConfig({
+                    color : ['#0055B8','#FBC826'],
                     legendData : this.legendData,
                     seriesData : this.seriesData,
                     xAxisData : this.xAxisData,
@@ -154,14 +155,11 @@
                                         });
                                     });
                                     isxAxis = true;
-                                    //组装legend数据
-                                    this.legendData.push({
-                                        name : key
-                                    });
                                 }
                             }
-                            this.seriesData.push(defaultsDeep({ data : consumeAmountData }, defaultSeries));
-                            this.seriesData.push(defaultsDeep({ data : consumerNumData }, defaultSeries));
+                            this.seriesData.push(defaultsDeep({ data : consumeAmountData, name : this.$t('consumption') }, defaultSeries));
+                            this.seriesData.push(defaultsDeep({ data : consumerNumData, name : this.$t('consumePeopleNum') }, defaultSeries));
+                            this.legendData.push({ name : this.$t('consumption') }, { name : this.$t('consumePeopleNum') });
 
                         } else {
                             this.seriesData = [];

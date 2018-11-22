@@ -1756,4 +1756,8 @@ export default {
     'failureReason' : '失败原因',
     'sureToaddSmsAmount' : '确定增加短信数量',
     'stockInAndstockOutNum' : '入/出库数量',
+    'on_line' : '线上',
+    'off_line' : '线下',
+    'score_add' : '积分发放',
+    'score_reduce' : '积分消耗',
 }

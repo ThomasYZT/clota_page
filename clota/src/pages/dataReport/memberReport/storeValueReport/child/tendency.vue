@@ -105,6 +105,7 @@
             //echart图标数据
             options () {
                 return getLineConfig({
+                    color : ['#1890FF', '#FBC826', '#0FBAC5'],
                     legendData : this.legendData,
                     seriesData : this.seriesData,
                     xAxisData : this.xAxisData,
@@ -125,7 +126,7 @@
                 ajax.post('listRechargeByDate', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
                     endTime : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
-                    cardTypeId : this.filterData.memberType === 'all' ? '' : this.filterData.memberType,
+                    cardTypeId : this.filterData.cardType === 'all' ? '' : this.filterData.cardType,
                 }).then(res => {
                     if (res.success) {
                         if (res.data && Object.keys(res.data).length > 0) {
@@ -152,7 +153,7 @@
                                     this.legendData.push({
                                         name : key
                                     });
-                                    this.seriesData.push(defaultsDeep({ data : _dataOfSeries }, barSeries));
+                                    this.seriesData.push(defaultsDeep({ data : _dataOfSeries, name : key }, barSeries));
                                 }
                             }
                             this.sumCorpusRecharge();
