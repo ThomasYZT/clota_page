@@ -197,8 +197,8 @@
     @import '~@/assets/scss/base';
 
     .home {
-        height: 100%;
-        overflow: auto;
+        height: calc(100% - 50px);
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
         .person-img {
