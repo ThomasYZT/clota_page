@@ -15,6 +15,8 @@ import logRoute from './modules/logRoute';
 import systemRoute from './modules/systemRoute';
 //服务
 import packageRoute from './modules/packageRoute';
+//个人信息
+import personInfoRoute from './modules/personRoute';
 
 export default {
     ...orgStructureRouter,
@@ -23,5 +25,6 @@ export default {
     ...orderRoute,
     ...logRoute,
     ...systemRoute,
-    ...packageRoute
+    ...packageRoute,
+    ...personInfoRoute
 };
