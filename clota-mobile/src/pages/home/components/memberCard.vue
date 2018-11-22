@@ -223,11 +223,12 @@
                 display: flex;
                 height: 33px;
                 width: 100%;
-                display: flex;
 
                 div {
                     &.left {
                         flex: 1 0;
+                        display: flex;
+                        flex-direction: row;
                         .img-wrapper {
                             display: inline-block;
                             position: relative;
@@ -244,6 +245,7 @@
                                 top: 1.5px;
                                 width: 30px;
                                 height: 30px;
+                                display: inline-block;
                             }
                         }
 

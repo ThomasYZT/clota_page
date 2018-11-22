@@ -211,7 +211,7 @@
             position: relative;
             @include block_outline($height : 267px);
             background: get_url('integrateDetialBg.png');
-            background-size: 100%;
+            background-size: cover;
             text-align: center;
 
             .account-list-chose{
