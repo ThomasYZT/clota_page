@@ -230,6 +230,4 @@ export default {
     'chargeFailure' : '账户充值失败',
     'payAbnormal' : '支付异常',
     'accountOfStoreValue' : '储值账户'
-
-
 };

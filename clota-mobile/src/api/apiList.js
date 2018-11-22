@@ -36,8 +36,10 @@ const apiList = {
     checkCode : '/external/memberInfo/checkCode',
     //获取成长值
     getGrowthBalance : '/external/memberInfo/getGrowthBalance',
-    //查询所有证件类型
+    //查询所有证件类型（非登陆状态）
     queryDocuments : '/external/memberInfo/queryDocuments',
+    //查询所有证件类型（登陆状态）
+    queryDocument : '/external/memberInfo/queryDocument',
     //会员权益
     listMemberCardRate : '/external/memberInfo/listMemberCardRate',
     //上传头像

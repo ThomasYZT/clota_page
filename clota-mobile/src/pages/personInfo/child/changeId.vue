@@ -58,7 +58,7 @@
              * 查询所有的证件类型
              */
             queryDocuments () {
-                ajax.post('queryDocuments').then(res => {
+                ajax.post('queryDocument').then(res => {
                     if (res.success) {
                         this.idLists = res.data ? res.data.data.map(item => {
                             return {

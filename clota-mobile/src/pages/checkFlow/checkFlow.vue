@@ -108,12 +108,13 @@
                     pageSize : 200
                 }).then((res) => {
                     if (res.success) {
-                        this.accountList = res.data ? res.data.data.map((item) => {
-                            return {
-                                ...item,
-                                name : item.accountName,
-                                value : item.accountName
-                            };
+                        this.accountList = res.data ? res.data.data.filter((item, index, arr) => {
+                            let status = item.id !== '5' && item.id !== '6' && item.id !== '7' && item.id !== '8'
+                            if (status) {
+                                arr[index].name = item.accountName;
+                                arr[index].value = item.accountName;
+                            }
+                            return status;
                         }) : [];
                         this.chosedAccount[0] = this.accountList[0].name;
                         this.curAccountsId = this.accountList[0].id;
