@@ -1763,5 +1763,9 @@ export default {
     'exchange_goods_reduce' : '积分兑换商品',
     'unconfiguredAccount' : '你还未配置在线收款账户请联系客服',
     'collectionAccountInformation' : '收款账户信息',
-    'collectionAccountType' : '收款账户类型'
+    'collectionAccountType' : '收款账户类型',
+    'stopUsing' : '停用',
+    'startOnlineAccount' : '停用在线收款账户',
+    'stopOnlineAccount' : '启用在线收款账户',
+    'areYouSureAccount' : '确认{field}账户？',
 }

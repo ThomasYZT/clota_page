@@ -21,6 +21,7 @@ Vue.use(Router);
 
 //生成新路由的方法
 const createRouter = () => new Router({
+    mode : 'history',
     routes : [
         //登录页面路由
         {

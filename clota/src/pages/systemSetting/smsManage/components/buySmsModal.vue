@@ -141,7 +141,7 @@
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
-                    redirectUrl : location.origin + '/#/systemSetting/smsManage/payStatus'
+                    redirectUrl : location.origin + '/systemSetting/smsManage/payStatus'
                 }).then(res => {
                     if (res.success) {
                         this.$router.replace({

@@ -7,12 +7,12 @@
 <template>
     <!--系统设置--在线支付账户设置-->
     <div class="online-payment-setting">
-        <div class="title">{{$t('onlinePaymentSetting')}}</div><!--在线支付账户设置-->
+        <div class="title">{{$t('onlinePaymentSetting')}} <span class="tip" v-if="collectionAccList.length === 0">{{$t('unconfiguredAccount')}}</span></div><!--在线支付账户设置-->
 
         <template v-if="collectionAccList.length > 0">
-            <div class="add-account-wrap">
-                <Button type="primary" @click="addPaymentAccount('addAccount')">+ {{$t("addAccount")}}</Button>
-            </div>
+            <!--<div class="add-account-wrap">-->
+                <!--<Button type="primary" @click="addPaymentAccount('addAccount')">+ {{$t("addAccount")}}</Button>-->
+            <!--</div>-->
             <div class="account-info"
                  v-for="(item,i) in collectionAccList"
                  :key="i">
@@ -23,43 +23,65 @@
                     </div>
                     <div class="payment-list">
                         <div class="payment-name" v-w-title="item.paymentName">
-                            {{payTypeName[item.accountType]}}
+                            <!--{{payTypeName[item.accountType]}}-->
+                            {{$t('collectionAccountInformation')}}
                         </div>
                         <div class="payment-item">
-                            <span>{{'商户号：'}}</span>
-                            <div>{{item.merchantNumber}}</div>
+                            <span>{{$t('colonSetting', { key : $t('collectionAccountType') })}}</span>
+                            <div>
+                                {{$t('payType.' + item.accountType) | contentFilter}}
+                                <span class="using-btn" @click="operateSatus(item)">{{item.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')}}</span>
+                            </div>
                         </div>
                         <div class="payment-item">
-                            <span>{{'appID：'}}</span>
-                            <div>{{item.appId}}</div>
+                            <span>{{$t('colonSetting', { key : 'MerchantID' })}}</span>
+                            <div>{{item.merchantId | contentFilter}}</div>
                         </div>
                         <div class="payment-item">
-                            <span>{{'appKEY：'}}</span>
-                            <div>{{item.appKey}}</div>
+                            <span>{{$t('colonSetting', { key : 'partnerID' })}}</span>
+                            <div>{{item.partnerId | contentFilter}}</div>
                         </div>
-                        <div class="payment-item">
-                            <span>{{'appSECRET：'}}</span>
-                            <div>{{item.appSecret}}</div>
+                        <div class="payment-item using-status">
+                            <span class="start" v-if="item.useStatus === 'enabled'">{{$t('startingUse')}}</span>
+                            <span class="unstart" v-else>{{$t('unStarting')}}</span>
                         </div>
-                        <div class="payment-item">
-                            <span>{{$t('remark') + '：'}}</span>
-                            <div style="margin-left: 45px;">{{item.remark}}</div>
-                        </div>
+
+                        <!--<div class="payment-item">-->
+                            <!--<span>{{'商户号：'}}</span>-->
+                            <!--<div>{{item.merchantNumber | contentFilter}}</div>-->
+                        <!--</div>-->
+                        <!--<div class="payment-item">-->
+                            <!--<span>{{'appID：'}}</span>-->
+                            <!--<div>{{item.appId | contentFilter}}</div>-->
+                        <!--</div>-->
+                        <!--<div class="payment-item">-->
+                            <!--<span>{{'appKEY：'}}</span>-->
+                            <!--<div>{{item.appKey | contentFilter}}</div>-->
+                        <!--</div>-->
+                        <!--<div class="payment-item">-->
+                            <!--<span>{{'appSECRET：'}}</span>-->
+                            <!--<div>{{item.appSecret | contentFilter}}</div>-->
+                        <!--</div>-->
+                        <!--<div class="payment-item">-->
+                            <!--<span>{{$t('remark') + '：'}}</span>-->
+                            <!--<div style="margin-left: 45px;">{{item.remark | contentFilter}}</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
-                <ul class="account-operate">
-                    <li class="list" @click="addPaymentAccount('modifyAccount',item)">{{$t('edit')}}</li><!--编辑-->
-                    <li class="list" @click="delPaymentAccount(item)">{{$t('del')}}</li><!--删除-->
-                </ul>
+                <!--<ul class="account-operate">-->
+                    <!--<li class="list" @click="addPaymentAccount('modifyAccount',item)">{{$t('edit')}}</li>&lt;!&ndash;编辑&ndash;&gt;-->
+                    <!--<li class="list" @click="delPaymentAccount(item)">{{$t('del')}}</li>&lt;!&ndash;删除&ndash;&gt;-->
+                <!--</ul>-->
             </div>
         </template>
 
         <div class="no-data-wrap" v-if="collectionAccList.length < 1">
+
             <!--无数据组件-->
             <no-data ></no-data>
-            <Button type="primary"
-                    class="btn-add-new"
-                    @click="addPaymentAccount('addAccount')">+ {{$t("addAccount")}}</Button>
+            <!--<Button type="primary"-->
+                    <!--class="btn-add-new"-->
+                    <!--@click="addPaymentAccount('addAccount')">+ {{$t("addAccount")}}</Button>-->
         </div>
 
         <!--增加/修改账户Modal-->
@@ -74,6 +96,9 @@
             <span class="content-text">{{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{selectedPayType}}</span></span>
             <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
         </del-modal>
+
+        <!-- 停用/启用在线收款账户 -->
+        <operateAccountModal ref="operateAccountModal" @updateAccount="queryOnlineAccount"></operateAccountModal>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -82,10 +107,11 @@
     import delAccountModal from './components/delAccountModal.vue'
 
     import delModal from '@/components/delModal';
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
+    import operateAccountModal from './components/operateAccountModal'
 
     export default {
-        components: {noData, newAccountModal, delAccountModal, delModal},
+        components: {noData, newAccountModal, delAccountModal, delModal, operateAccountModal},
         props: {},
         data() {
             return {
@@ -95,10 +121,10 @@
                 modalTitle: '',
                 //当前选中删除的账户类型
                 selectedPayType: '',
-                payTypeName: {
-                    'alipay': '支付宝支付账户',
-                    'weixin': '微信支付账户'
-                },
+                // payTypeName: {
+                //     'alipay': '支付宝支付账户',
+                //     'weixin': '微信支付账户'
+                // },
                 //当前用户已拥有的账户类型list
                 hasPaytypeList: []
             }
@@ -164,6 +190,13 @@
                     }
                 })
             },
+            /**
+             * 改变收款账户状态
+             * @param {*} item
+             */
+            operateSatus (item) {
+                this.$refs.operateAccountModal.toggle(item)
+            }
         }
     };
 </script>
@@ -184,6 +217,12 @@
             font-size: $font_size_16px;
             color: $color_333;
             letter-spacing: 2.29px;
+
+            .tip {
+                font-size: $font_size_14px;
+                color: $color_999;
+                letter-spacing: 1px;
+            }
         }
 
         .add-account-wrap {
@@ -192,15 +231,12 @@
 
         .account-info{
             float: left;
-            @include block_outline(30%,263px);
+            @include block_outline(30%,200px);
             background: $color_fff;
             border: 1px solid $color_E9E9E9;
             border-radius: 2px;
             margin-bottom: 30px;
-
-            &:nth-of-type(2n){
-                margin: 0 5%;
-            }
+            margin-right: 5%;
 
             .account-detail{
                 @include block_outline($height : auto);
@@ -236,6 +272,25 @@
                         > span {
                             float: left;
                             color: $color_333;
+                        }
+
+                        .using-btn {
+                            color: $color_blue;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .payment-item.using-status {
+                        margin-top: 20px;
+                        span {
+                            font-size: 18px;
+                        }
+                        .start {
+                            color: $color_green;
+                        }
+
+                        .unstart {
+                            color: $color_gray;
                         }
                     }
                 }
@@ -279,6 +334,16 @@
                 top: 0;
                 left: 50%;
                 transform: translate3d(-50%, 100px, 0);
+            }
+        }
+
+        /deep/ .ivu-switch {
+            width: 50%;
+            .ivu-switch-inner {
+                width: 100%;
+                span {
+                    width: 80%;
+                }
             }
         }
 
