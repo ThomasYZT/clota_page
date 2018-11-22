@@ -8,17 +8,17 @@
                 <Row>
                     <Col span="6">
                     <FormItem label="订单编号">
-                        <Input v-model="formData.code" ></Input>
+                        <Input v-model.trim="formData.code" ></Input>
                     </FormItem>
                     </Col>
                     <Col span="6">
                     <FormItem label="串码">
-                        <Input v-model="formData.code" ></Input>
+                        <Input v-model.trim="formData.code" ></Input>
                     </FormItem>
                     </Col>
                     <Col span="6">
                     <FormItem label="产品名称">
-                        <Input v-model="formData.code" placeholder="请输入产品名称" ></Input>
+                        <Input v-model.trim="formData.code" placeholder="请输入产品名称" ></Input>
                     </FormItem>
                     </Col>
                     <Col span="6">
@@ -32,17 +32,17 @@
                 <Row>
                     <Col span="6">
                     <FormItem label="订单编号">
-                        <Input v-model="formData.code" ></Input>
+                        <Input v-model.trim="formData.code" ></Input>
                     </FormItem>
                     </Col>
                     <Col span="6">
                     <FormItem label="串码">
-                        <Input v-model="formData.code" ></Input>
+                        <Input v-model.trim="formData.code" ></Input>
                     </FormItem>
                     </Col>
                     <Col span="6">
                     <FormItem label="产品名称">
-                        <Input v-model="formData.code" placeholder="请输入产品名称" ></Input>
+                        <Input v-model.trim="formData.code" placeholder="请输入产品名称" ></Input>
                     </FormItem>
                     </Col>
                     <Col span="6">
@@ -215,7 +215,7 @@
             <Row>
                 <Col span="6">
                 <FormItem label="模糊查询">
-                   <Input v-model="formData.keyWord" placeholder="模糊查询" />
+                   <Input v-model.trim="formData.keyWord" placeholder="模糊查询" />
                 </FormItem>
                 </Col>
             </Row>

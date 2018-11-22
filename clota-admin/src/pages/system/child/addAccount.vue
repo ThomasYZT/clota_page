@@ -14,7 +14,7 @@
                   :label-width="100">
 
                 <template v-if="type === 'add'">
-                    <i-row class="yellow padding-bottom">默认密码为888888，请通知租户及时更改。</i-row>
+                    <i-row class="yellow padding-bottom">默认密码为888888，请通知用户及时更改。</i-row>
                 </template>
                 <template v-else>
                     <p v-if="reset" class="yellow"> 密码已重置为888888，请及时修改。</p>

@@ -38,6 +38,8 @@ const apiList = {
     getFirstMemberDate: '/member/getFirstMemberDate',
     //获取当前账户可用机构
     getManageOrgs: '/account/getManageOrgs',
+    //获取短信供应商列表
+    'getSmsProviderList' : '/sms/getSmsProviderList',
     //首页接口
     ...index,
     //会员信息接口

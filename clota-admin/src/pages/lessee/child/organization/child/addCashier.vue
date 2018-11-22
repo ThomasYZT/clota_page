@@ -19,7 +19,7 @@
                   :label-width="160">
                 <!--服务器名称-->
                 <FormItem :label="$t('serverName')" prop="serverName">
-                    <Input v-model="formData.serverName" style="width: 280px"/>
+                    <Input v-model.trim="formData.serverName" style="width: 280px"/>
                 </FormItem>
                 <div class="hint">服务器名称为景区编码+设备编码或内网IP地址，不可重复</div>
                 <!--款台类型-->

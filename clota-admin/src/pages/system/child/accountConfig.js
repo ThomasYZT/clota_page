@@ -4,7 +4,7 @@
 export const accountHead = [
     {
         title : 'accountName',
-        minWidth : 100,
+        minWidth : 150,
         field : 'loginName'
     },
     {
@@ -14,37 +14,37 @@ export const accountHead = [
     },
     {
         title : 'name',
-        minWidth : 100,
+        minWidth : 170,
         field : 'nickName'
     },
     {
         title : 'mobile',
-        minWidth : 100,
+        width : 140,
         field : 'phone'
     },
     {
         title : 'mail',
-        minWidth : 120,
+        minWidth : 230,
         field : 'email'
     },
     {
         title : 'state',
-        minWidth : 80,
+        width : 100,
         field : 'state'
     },
     {
         title : 'createTime',
-        minWidth : 100,
+        width : 190,
         field : 'createTime'
     },
     {
         title : 'lastUpdateTime',
-        minWidth : 100,
+        width : 190,
         field : 'updateTime'
     },
     {
         title : 'operate',
-        minWidth : 130,
+        width : 170,
         field : 'operate'
     },
 ];

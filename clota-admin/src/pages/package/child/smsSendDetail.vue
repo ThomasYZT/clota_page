@@ -14,13 +14,13 @@
                 <i-row>
                     <i-col span="11">
                         <!--订单编号-->
-                        <FormItem :label="$t('orderCode')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('orderCode')})">
                             <span class="form-value">{{formData.orderCode | contentFilter}}</span>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--租户-->
-                        <FormItem :label="$t('lessee')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('lessee')})">
                             <span class="form-value">{{formData.lessee | contentFilter}}</span>
                         </FormItem>
                     </i-col>
@@ -28,13 +28,13 @@
                 <i-row>
                     <i-col span="11">
                         <!--手机号-->
-                        <FormItem :label="$t('mobileNum')" >
+                        <FormItem :label="$t('colonSetting',{ key : $t('mobileNum')})">
                             <span class="form-value">{{formData.mobile | contentFilter}}</span>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--条数-->
-                        <FormItem :label="$t('strips')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('strips')})">
                             <span class="form-value">{{formData.strips | contentFilter}}</span>
                         </FormItem>
                     </i-col>
@@ -42,13 +42,13 @@
                 <i-row>
                     <i-col span="11">
                         <!--短信供应商-->
-                        <FormItem :label="$t('smsProvider')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('smsProvider')})">
                             <span class="form-value">{{formData.smsProvider | contentFilter}}</span>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--发送时间-->
-                        <FormItem :label="$t('sendTime')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('sendTime')})">
                             <span class="form-value">{{formData.sendTime | timeFormat('yyyy-MM-dd HH:mm:ss') | contentFilter}}</span>
                         </FormItem>
                     </i-col>
@@ -56,15 +56,15 @@
                 <i-row>
                     <i-col span="11">
                         <!--发送状态-->
-                        <FormItem :label="$t('sendStatus')">
-                            <span class="form-value">{{$t(formData.sendStatus) | contentFilter}}</span>
+                        <FormItem :label="$t('colonSetting',{ key : $t('sendStatus')})">
+                            <span class="form-value">{{$t( scope.row.status === 'success' ? 'success' : 'fail')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
                 <i-row>
                     <i-col span="22">
                         <!--短信内容-->
-                        <FormItem :label="$t('smsContent')">
+                        <FormItem :label="$t('colonSetting',{ key : $t('smsContent')})">
                             <span class="form-value sms-con">{{formData.smsContent | contentFilter}}</span>
                         </FormItem>
                     </i-col>

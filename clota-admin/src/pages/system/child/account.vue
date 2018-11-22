@@ -8,6 +8,7 @@
             </Button>
         </div>
         <table-com
+            border
             :ofsetHeight="118"
             :show-pagination="true"
             :column-data="accountHead"
@@ -15,7 +16,6 @@
             :total-count="total"
             :page-no-d.sync="accListParams.page"
             :page-size-d.sync="accListParams.pageSize"
-            :border="false"
             @query-data="queryList">
             <el-table-column
                 slot="columnloginName"
@@ -27,22 +27,22 @@
                 show-overflow-tooltip
                 slot-scope="row">
             </el-table-column>
-            <el-table-column
-                slot="columnroleName"
-                :label="row.title"
-                :prop="row.field"
-                :key="row.index"
-                :width="row.width"
-                :min-width="row.minWidth"
-                :filters="roleList"
-                :filter-method="filterRole"
-                filter-placement="bottom-end"
-                show-overflow-tooltip
-                slot-scope="row">
-                <template slot-scope="scoped">
-                    <span>{{ scoped.row.roleName | contentFilter }}</span>
-                </template>
-            </el-table-column>
+            <!--<el-table-column-->
+                <!--slot="columnroleName"-->
+                <!--:label="row.title"-->
+                <!--:prop="row.field"-->
+                <!--:key="row.index"-->
+                <!--:width="row.width"-->
+                <!--:min-width="row.minWidth"-->
+                <!--:filters="roleList"-->
+                <!--:filter-method="filterRole"-->
+                <!--filter-placement="bottom-end"-->
+                <!--show-overflow-tooltip-->
+                <!--slot-scope="row">-->
+                <!--<template slot-scope="scoped">-->
+                    <!--<span>{{ scoped.row.roleName | contentFilter }}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
             <el-table-column
                 slot="columnstate"
                 :label="row.title"
@@ -64,6 +64,7 @@
                 :width="row.width"
                 :min-width="row.minWidth"
                 show-overflow-tooltip
+                fixed="right"
                 slot-scope="row">
                 <template slot-scope="scoped">
                     <ul class="operate-info">
@@ -196,9 +197,9 @@
                     flag : flag
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$Message.success( this.$t('success') + flag === 'true' ?
-                            this.$t('startUsing') :
-                            this.$t('stopUsing') + this.$t('accountName') + '：' + data.loginName);
+                        this.$Message.success((flag === 'true' ?
+                            this.$t('startUsingPlease') :
+                            this.$t('stopUsingPlease')) + this.$t('accountName') + '：' + data.loginName);
                         this.queryList();
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));

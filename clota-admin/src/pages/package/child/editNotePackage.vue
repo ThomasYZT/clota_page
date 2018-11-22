@@ -132,7 +132,7 @@
                 ruleValidate : {
                     packageName : [
                         { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('packageName') }), trigger : 'blur' },
-                        { max : 20, message : this.$t('errorMaxLength', { field : this.$t('packageName'),length : 20 }), trigger : 'blur' },
+                        { max : 50, message : this.$t('errorMaxLength', { field : this.$t('packageName'),length : 50 }), trigger : 'blur' },
                     ],
                     smsProvider : [
                         { required : true, message : this.$t('validateError.pleaseSelect', { 'msg' : this.$t('smsProvider') }), trigger : 'change' },

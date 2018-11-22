@@ -120,7 +120,7 @@
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.desc"
                                     :key="item.desc">
-                                {{ item.desc }}
+                                {{ item.provider }}
                             </Option>
                         </Select>
                     </FormItem>

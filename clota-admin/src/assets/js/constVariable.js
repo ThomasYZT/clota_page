@@ -361,7 +361,7 @@ export const sendStatusList = [
     },
     {
         label : 'fail',//失败
-        value : 'fail'
+        value : 'fail,doing,req_success,req_failure'
     },
 ];
 //校验是否是ipv4地址

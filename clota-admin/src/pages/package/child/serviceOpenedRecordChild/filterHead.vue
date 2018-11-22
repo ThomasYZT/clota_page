@@ -9,9 +9,14 @@
                 <i-col span="8">
                     <!--租户-->
                     <FormItem :label="$t('lessee')">
-                        <Select v-model="formData.orgId" :transfer="true">
+                        <Select v-model="formData.orgId"
+                                :transfer="true"
+                                filterable
+                                @on-change="search">
                             <Option v-for="item in lesseeList"
                                     :value="item.id"
+                                    class="text-overflow-tip"
+                                    v-w-title="item.orgName"
                                     :key="item.id">
                                 {{ item.orgName }}
                             </Option>
@@ -21,7 +26,10 @@
                 <i-col span="8">
                     <!--服务-->
                     <FormItem :label="$t('serviceName')">
-                        <Select v-model="formData.serviceId" :transfer="true">
+                        <Select v-model="formData.serviceId"
+                                :transfer="true"
+                                filterable
+                                @on-change="search">
                             <Option v-for="item in servicesList"
                                     :value="item.id"
                                     :key="item.id">
@@ -34,9 +42,11 @@
                     <!--操作时间-->
                     <FormItem :label="$t('operateTime')">
                         <DatePicker type="daterange"
+                                    :editable="false"
                                     v-model.trim="formData.operateTime"
                                     :transfer="true"
-                                    style="width: 100%;">
+                                    style="width: 100%;"
+                                    @on-change="search">
                         </DatePicker>
                     </FormItem>
                 </i-col>
@@ -45,7 +55,9 @@
                 <i-col span="8">
                     <!--类别-->
                     <FormItem label="类别">
-                        <Select v-model="formData.runStatus" :transfer="true">
+                        <Select v-model="formData.runStatus"
+                                :transfer="true"
+                                @on-change="search">
                             <Option v-for="item in serviceOperateType"
                                     :value="item.value"
                                     :key="item.value">
