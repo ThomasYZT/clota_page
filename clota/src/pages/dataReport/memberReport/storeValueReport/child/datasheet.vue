@@ -68,18 +68,19 @@
             :page-no-d.sync="filterData.pageNo"
             :page-size-d.sync="filterData.pageSize"
             @query-data="getData">
-            <!--<el-table-column-->
-                <!--slot="column7"-->
-                <!--slot-scope="row"-->
-                <!--:label="row.title"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<span v-if="scope.row.payType === 'weixin'">{{$t('payType.weixin')}}</span>-->
-                    <!--<span v-else-if="scope.row.payType === 'alipay'">{{$t('payType.alipay')}}</span>-->
-                    <!--<span v-else>{{$t('payType.cash')}}</span>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                slot="column8"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.paymentType === 'weixin'">{{$t('payType.weixin')}}</span>
+                    <span v-else-if="scope.row.paymentType === 'alipay'">{{$t('payType.alipay')}}</span>
+                    <span v-else-if="scope.row.paymentType === 'cash'">{{$t('payType.cash')}}</span>
+                    <span v-else>-</span>
+                </template>
+            </el-table-column>
         </table-com>
     </div>
 </template>

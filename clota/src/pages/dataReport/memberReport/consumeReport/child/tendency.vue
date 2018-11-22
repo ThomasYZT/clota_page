@@ -136,7 +136,7 @@
                             let isxAxis = false;
                             for (let key in data) {
                                 if (data[key] && data[key].length > 0) {
-                                    data[key].forEach(item => {
+                                    data[key].forEach( item => {
                                         //组装xAxisData 横坐标时间数据
                                         if (!isxAxis) {
                                             this.xAxisData.push(item.date);
@@ -151,7 +151,7 @@
                                             value : item.consumerNum,
                                             name : 'consumePeopleNum',
                                             params : item
-                                        })
+                                        });
                                     });
                                     isxAxis = true;
                                     //组装legend数据

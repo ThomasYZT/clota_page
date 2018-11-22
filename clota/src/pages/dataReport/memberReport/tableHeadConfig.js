@@ -179,7 +179,7 @@ export const memberStoreValueHead = [
     {
         title : 'rechargeType',
         minWidth : 100,
-        field : 'payType'
+        field : 'paymentType'
     }
 ];
 

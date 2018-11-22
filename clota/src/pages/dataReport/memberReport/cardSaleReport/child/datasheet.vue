@@ -84,7 +84,8 @@
                 <template slot-scope="scope">
                     <span v-if="scope.row.payType === 'weixin'">{{$t('payType.weixin')}}</span>
                     <span v-else-if="scope.row.payType === 'alipay'">{{$t('payType.alipay')}}</span>
-                    <span v-else>{{$t('payType.cash')}}</span>
+                    <span v-else-if="scope.row.payType === 'cash'">{{$t('payType.cash')}}</span>
+                    <span v-else>-</span>
                 </template>
             </el-table-column>
         </table-com>
