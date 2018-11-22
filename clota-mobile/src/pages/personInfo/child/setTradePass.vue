@@ -39,10 +39,10 @@
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -51,38 +51,38 @@
                 //手机号码
                 originPhone : '',
                 //倒计时间
-                time: 60,
+                time : 60,
                 //是否获取验证码
-                isGetCode: false,
+                isGetCode : false,
                 //是否开始计时
-                isCountStart: false
-            }
+                isCountStart : false
+            };
         },
-        methods: {
+        methods : {
             /**
              * 跳转到 下一步
              */
             nextStep () {
                 this.validateCode().then(() => {
-                    return  ajax.post('checkCode',{
+                    return ajax.post('checkCode',{
                         phoneNum : this.originPhone,
                         code : this.formData.validCode,
                         type : 'member_mod_trade_password'
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             return Promise.resolve();
-                        }else{
-                            if(res.code === 'A005'){
+                        } else {
+                            if (res.code === 'A005') {
                                 this.$vux.toast.show({
-                                    text: this.$t('A005'),
+                                    text : this.$t('A005'),
                                     type : 'text'
-                                })
-                            }else{
+                                });
+                            } else {
                                 setTimeout(() =>{
                                     this.$vux.toast.show({
-                                        text: this.$t('A003'),
+                                        text : this.$t('A003'),
                                         type : 'text'
-                                    })
+                                    });
                                 },500);
                             }
                             return Promise.reject();
@@ -102,10 +102,10 @@
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
-                if(params && params.mobile){
+            getParams (params) {
+                if (params && params.mobile) {
                     this.originPhone = params.mobile;
-                }else{
+                } else {
                     this.$router.push({
                         name : 'personInfo'
                     });
@@ -116,26 +116,26 @@
              */
             getValidCode () {
                 //先验证是否在60s倒计时内
-                if(!this.isGetCode) {
+                if (!this.isGetCode) {
                     ajax.post('getCode',{
                         phoneNum : this.originPhone,
                         type : 'member_mod_trade_password',
                         companyCode : this.companyCode
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             this.isGetCode = true;
                             this.isCountStart = true;
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('operateSuc',{msg : this.$t('send')})
-                                })
+                                    text : this.$t('operateSuc',{ msg : this.$t('send') })
+                                });
                             },500);
-                        }else{
+                        } else {
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    text : this.$t('operateFail',{ msg : this.$t('send') }),
                                     type : 'cancel'
-                                })
+                                });
                             },500);
                         }
                     });
@@ -145,7 +145,7 @@
             /**
              *  倒计时结束
              */
-            countFinish() {
+            countFinish () {
                 this.time = 60;
                 this.isGetCode = false;
                 this.isCountStart = false;
@@ -155,14 +155,14 @@
              */
             validateCode () {
                 return new Promise((resolve,reject) => {
-                    if(this.formData && !this.formData.validCode) {
+                    if (this.formData && !this.formData.validCode) {
                         this.$vux.toast.show({
-                            text: this.$t('pleaseInput',{field : this.$t('validCode')}),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('pleaseInput',{ field : this.$t('validCode') }),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -173,7 +173,7 @@
                 companyCode : 'companyCode'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -185,7 +185,6 @@
         background: rgba(242,243,244,1);
 
         .area{
-            padding-top: 26px;
             @include block_outline($height : 100%);
             background: $color_fff;
 
@@ -240,10 +239,8 @@
                 left: 0;
             }
         }
-
-        .valid-class /deep/ .weui-input{
-            padding-right: 10px;
-            box-sizing: border-box;
+        /deep/ .weui-cell__bd.weui-cell__primary {
+            padding-right: 20px;
         }
 
         /deep/ .vux-x-input:nth-last-of-type(1){
