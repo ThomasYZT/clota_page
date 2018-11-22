@@ -21,7 +21,7 @@
             :column-data="columns"
             :table-data="tableData"
             :border="true"
-            :ofset-height="200"
+            :height="500"
             :table-com-min-height="250"
             @query-data="queryList"
             @selection-change="selectedChange">
