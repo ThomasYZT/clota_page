@@ -124,6 +124,7 @@ export default {
     operateFail : '{msg}失败',
     send : '发送',
     pleaseInput : '请输入{field}',
+    inputField : '请输入{field}',
     freshComplete : '刷新完成',
     inputPassAgain : '请再次输入密码',
     modify : '修改',
