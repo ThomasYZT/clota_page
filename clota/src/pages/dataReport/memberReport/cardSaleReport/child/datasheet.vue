@@ -229,6 +229,8 @@
                     if (newVal.length > 0) {
                         this.filterData.memberType = newVal[0].value;
                         this.queryLevelsByCardType();
+                    } else {
+                        this.filterData.memberType = '';
                     }
                 },
                 immediate : true

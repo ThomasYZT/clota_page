@@ -31,12 +31,3 @@ export const getNoSubMenuRoute = ({ menuName, lightMenu, _name }) => {
         },
     };
 };
-
-//个人中心页面
-export const personCom =
-//个人中心
-{
-    path : '/person',
-    name : 'person',
-    component : () => import(/* webpackChunkName: "login" */ '../pages/personalCenter/index.vue'),
-};

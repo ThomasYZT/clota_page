@@ -99,13 +99,15 @@
                 //表单校验规则
                 ruleValidate : {
                     name : [
-                        { required : true,validator : validateName ,trigger : 'blur' }
+                        { required : true,validator : validateName ,trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('name'), length : 20 }), trigger : 'blur' },
                     ],
                     phone : [
                         { required : true,validator : validatePhone ,trigger : 'blur' }
                     ],
                     mail : [
-                        { required : false,validator : validateMail ,trigger : 'blur' }
+                        { required : false,validator : validateMail ,trigger : 'blur' },
+                        { type : 'string', max : 100, message : this.$t('errorMaxLength', { field : this.$t('mail'), length : 100 }), trigger : 'blur' },
                     ]
                 },
                 //是否在保存中
@@ -117,11 +119,11 @@
         },
         methods : {
             /**
-             * 保存基本信息
+             * 获取账号信息
              */
                getSysAccountByToken () {
-                return ajax.post('getSysAccountByToken',).then(res => {
-                    if (res.status === 200) {
+                ajax.post('getSysAccountByToken',).then(res => {
+                    if (res.status === 200 && res.data && Object.keys(res.data).length > 0) {
                         this.formData.id = res.data.id;
                         this.formData.account = res.data.loginName;
                         this.formData.name = res.data.nickName;
@@ -129,9 +131,20 @@
                         this.formData.mail = res.data.email;
                         this.formData.roleId = res.data.roleId;
                         this.formData.roles = res.data.roleName;
+                    } else {
+                        this.formData.id = '';
+                        this.formData.account = '';
+                        this.formData.name = '';
+                        this.formData.phone = '';
+                        this.formData.mail = '';
+                        this.formData.roleId = '';
+                        this.formData.roles = '';
                     }
                 });
             },
+            /**
+             * 保存修改的信息
+             */
             handleSubmit () {
                  this.$refs.formValidate.validate(valid => {
                     if (valid) {
@@ -139,19 +152,20 @@
                     }
                 });
             },
+            /**
+             * 保存信息到后台
+             */
             save () {
                 this.isSaving = true;
-                let AccountInformation = {
-                      id : this.formData.id,
-                      nickName : this.formData.name,
-                      phone : this.formData.phone,
-                      email : this.formData.mail,
-                      roleId : this.formData.roleId
-                 };
-                 ajax.post('updateAccountInfo',AccountInformation).then(res => {
+                 ajax.post('updateAccountInfo',{
+                     id : this.formData.id,
+                     nickName : this.formData.name,
+                     phone : this.formData.phone,
+                     email : this.formData.mail,
+                     roleId : this.formData.roleId
+                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('修改基本信息成功');
-                        this.resetFormData();
                     } else {
                         this.$Message.error(res.message || '修改基本信息失败');
                     }
@@ -159,12 +173,6 @@
                      this.isSaving = false;
                  });
             },
-            /**
-             * 保存信息到后台
-             */
-            saveInfo () {
-
-            }
         }
     };
 </script>

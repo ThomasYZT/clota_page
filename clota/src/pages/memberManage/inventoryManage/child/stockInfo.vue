@@ -223,7 +223,6 @@
                     //进入详情页默认显示入库记录
                     this.queryPagedStockChangeRecord({ type : 'in' });
                 } else {
-                    this.detail = {};
                     this.$router.push({
                         name : 'goodsManage'
                     })
