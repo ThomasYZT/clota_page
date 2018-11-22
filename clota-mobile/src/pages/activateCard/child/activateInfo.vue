@@ -148,7 +148,7 @@
                     //验证码
                     code : '',
                     //公司编码
-                    companyCode : this.companyCode,
+                    companyCode : '',
                     //微信openid
                     wxOpenId : '',
                     //实体卡id
@@ -313,6 +313,7 @@
              * 激活会员卡
              */
             activationMemberCard () {
+                this.formData.companyCode = this.companyCode;
                 ajax.post('activationMemberCard', {
                     ...this.formData,
                 }).then(res => {
@@ -333,7 +334,18 @@
                         //激活成功跳转到主页
                         this.$router.replace({ name : 'home' });
                     } else {
-                        this.$vux.toast.text(this.$t('activateFailure'));
+                        if (res.code === 'A004') {
+                            this.$vux.toast.show({
+                                type : 'cancel',
+                                text : this.$t(res.code),
+                            });
+                        } else {
+                            this.$vux.toast.show({
+                                type : 'cancel',
+                                text : this.$t('activateFailure')
+                            });
+                        }
+
                     }
                 });
             },
