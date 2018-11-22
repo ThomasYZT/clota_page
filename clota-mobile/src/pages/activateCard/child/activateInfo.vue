@@ -322,21 +322,12 @@
                     ...this.formData,
                 }).then(res => {
                     if (res.success) {
-                        //存储token信息
-                        localStorage.setItem('token', res.data.token);
-                        //存储用户信息
-                        localStorage.setItem('userInfo', JSON.stringify(res.data));
-                        //更新用户信息
-                        this.updateUserInfo();
-                        //更新登陆状态
-                        this.updateLoginStatus();
+                        this.dataToLogin(res)
                         //提示注册成功
                         this.$vux.toast.show({
                             type : 'success',
                             text : this.$t('registSuccess')
                         });
-                        //激活成功跳转到主页
-                        this.$router.replace({ name : 'home' });
                     } else {
                         if (res.code === 'A004') {
                             this.$vux.toast.show({
@@ -401,7 +392,9 @@
                 //存储用户信息
                 localStorage.setItem('userInfo', JSON.stringify(res.data));
                 //更新用户信息
-                this.$store.commit('updateUserInfo');
+                this.updateUserInfo();
+                //更新登陆状态
+                this.updateLoginStatus();
                 //获取用卡列表信息
                 this.getCardList();
             },
@@ -435,8 +428,8 @@
                         localStorage.setItem('cardInfo', JSON.stringify(this.memberCardList.length > 0 ? this.memberCardList[0] : {}));
                         this.updateCardInfoList();
                         this.updateCardInfo();
-                        //登陆跳转到主页
-                        this.$router.push({ name : 'home' });
+                        //激活成功跳转到主页
+                        this.$router.replace({ name : 'home' });
                     } else {
                         localStorage.setItem('cardInfoList', '[]');
                         localStorage.setItem('cardInfo', '{}');
