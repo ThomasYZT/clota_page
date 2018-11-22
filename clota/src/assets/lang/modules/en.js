@@ -1760,4 +1760,5 @@ export default {
     'off_line' : '线下',
     'score_add' : '积分发放',
     'score_reduce' : '积分消耗',
+    'exchange_goods_reduce' : '积分兑换商品',
 }
