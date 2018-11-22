@@ -65,7 +65,7 @@ export default {
                         //系统设置--短信管理--购买短信
                         path : '/systemSetting/smsManage/buySms',
                         name : 'buySms',
-                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/buySms.vue'),
+                        component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/buySms.vue'),
                         meta : {
                             menuName : 'buySms', //lang.config.js 里面的语言键值
                             _name : 'sms-buy',
@@ -77,7 +77,7 @@ export default {
                         //系统设置--短信管理--短信模板
                         path : '/systemSetting/smsManage/smsTemplate',
                         name : 'smsTemplate',
-                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/smsTemplate.vue'),
+                        component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/smsTemplate.vue'),
                         meta : {
                             menuName : 'smsTemplate', //lang.config.js 里面的语言键值
                             _name : 'sms-template',
@@ -89,7 +89,7 @@ export default {
                         //系统设置--短信管理--短信模板
                         path : '/systemSetting/smsManage/smsBuyRecord',
                         name : 'buyRecord',
-                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/systemSetting/smsManage/smsBuyRecord.vue'),
+                        component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/smsBuyRecord.vue'),
                         meta : {
                             menuName : 'buyRecord', //lang.config.js 里面的语言键值
                             _name : 'sms-template',
@@ -101,7 +101,7 @@ export default {
                         //系统设置--短信管理--短信支付
                         path : '/systemSetting/smsManage/smsPay',
                         name : 'smsPay',
-                        component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/systemSetting/smsManage/child/smsPay.vue'),
+                        component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/child/smsPay.vue'),
                         meta : {
                             menuName : 'smsPay', //lang.config.js 里面的语言键值
                             _name : 'sms-template',
@@ -112,7 +112,7 @@ export default {
                         //系统设置--短信管理--支付结果页
                         path : '/systemSetting/smsManage/payStatus',
                         name : 'payStatus',
-                        component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/systemSetting/smsManage/child/payStatus.vue'),
+                        component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/child/payStatus.vue'),
                         meta : {
                             menuName : 'payStatus', //lang.config.js 里面的语言键值
                             _name : 'sms-template',
@@ -123,7 +123,7 @@ export default {
                         //系统设置--短信管理--新增短信模板
                         path : '/systemSetting/smsManage/addSmsTpl',
                         name : 'addSmsTemplate',
-                        component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/systemSetting/smsManage/child/addSmsTemplate.vue'),
+                        component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/child/addSmsTemplate.vue'),
                         meta : {
                             menuName : 'smsTemplate', //lang.config.js 里面的语言键值
                             _name : 'sms-template',

@@ -223,8 +223,8 @@
                     deptScoreRate : formData.scoreRate,
                     remark : formData.remark,
                     isActivity : this.isActivity,
-                    startTime : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']).format('yyyy-MM-dd') : '',
-                    endTime : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']).format('yyyy-MM-dd') : '' ,
+                    startTime : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']).format('yyyy-MM-dd 00:00:00') : '',
+                    endTime : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']).format('yyyy-MM-dd 23:59:59') : '' ,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
