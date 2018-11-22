@@ -29,6 +29,7 @@
     import labelItem from './components/labelItem';
     import memberCard from './components/memberCard';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import ajax from '../../api/index'
     export default {
         components : {
             labelItem,
@@ -112,7 +113,9 @@
             return {
                 labelList : labelList,
                 //当前卡索引
-                cardIndex : 0
+                cardIndex : 0,
+                //会员卡列表数据
+                memberCardList : [],
             };
         },
         computed : {
@@ -179,9 +182,39 @@
 
                     }
                 }
+            },
+            /**
+             * 获取会员卡列表
+             */
+            getCardList () {
+                //获取会员卡列表
+                ajax.post('queryMemberCardList', {
+                    memberId : this.userInfo.memberId
+                }).then(res => {
+                    if (res.success) {
+                        //存储卡列表数据
+                        this.memberCardList = res.data ? res.data : [];
+                        //存储会员卡/会员卡列表数据
+                        localStorage.setItem('cardInfoList', JSON.stringify(this.memberCardList));
+                        localStorage.setItem('cardInfo', JSON.stringify(this.memberCardList.length > 0 ? this.memberCardList[0] : {}));
+                        this.updateCardInfoList();
+                        this.updateCardInfo();
+                    } else {
+                        localStorage.setItem('cardInfoList', '[]');
+                        localStorage.setItem('cardInfo', '{}');
+                        this.updateCardInfoList();
+                        this.updateCardInfo();
+                        this.$vux.toast.text(this.$t('getDataFailure'));
+                        this.$router.push({
+                            name : 'mobileLogin'
+                        })
+                    }
+                })
             }
         },
         created () {
+            //获取会员卡列表数据
+            this.getCardList();
             //设置菜单数据
             this.setCell();
         },

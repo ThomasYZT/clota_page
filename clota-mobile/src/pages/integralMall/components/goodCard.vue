@@ -10,7 +10,7 @@
 
         <div class="content-wrapper">
             <p class="good-name">{{info.name | contentFilter}}</p>
-            <span class="price">{{$t('marketPrice')}} : {{info.marketPrice | moneyFilter}}</span>
+            <span class="price">{{$t('marketPrice')}} : {{info.marketPrice | moneyFilter | contentFilter}}</span>
             <p class="score">{{info.requiredCredits | contentFilter}}<span>{{$t('score')}}</span></p>
         </div>
     </div>

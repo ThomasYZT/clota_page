@@ -8,13 +8,13 @@
             <p class="good-name">{{info.goodsName}}</p>
             <template v-if="info.drawStatus === 'true'">
                 <span class="price">{{$t('exchangeScore')}}: {{info.changeCredit | contentFilter}}</span>
-                <p class="code">{{$t('exchangeCode')}}: {{info.exchangeSecurities}}</p>
-                <p class="time">{{$t('exchangeTime')}}: {{info.createdTime}}</p>
-                <p class="time">{{$t('getTime')}}: {{info.drawTime}}</p>
+                <p class="code">{{$t('exchangeCode')}}: {{info.exchangeSecurities | contentFilter}}</p>
+                <p class="time">{{$t('exchangeTime')}}: {{info.createdTime | contentFilter}}</p>
+                <p class="time">{{$t('getTime')}}: {{info.drawTime | contentFilter}}</p>
             </template>
             <template v-else>
-                <span class="price">{{$t('totalPrice')}}: {{info.marketPrice}}</span>
-                <p class="code">{{$t('exchangeCode')}}: {{info.exchangeSecurities}}</p>
+                <span class="price">{{$t('totalPrice')}}: {{info.marketPrice | moneyFilter | contentFilter}}</span>
+                <p class="code">{{$t('exchangeCode')}}: {{info.exchangeSecurities | contentFilter}}</p>
             </template>
         </div>
         <div class="right-board">

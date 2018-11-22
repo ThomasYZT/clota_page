@@ -446,7 +446,7 @@
                         endTime;
                     startTime = this.formData.effDate.split(' ')[0];
                     endTime = this.formData.expDate.split(' ')[0];
-                    return startTime + ' - ' + endTime;
+                    return startTime + '/' + endTime;
                 } else {
                     return '-'
                 }
