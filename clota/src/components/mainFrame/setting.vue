@@ -17,12 +17,16 @@
         </div>
         <div class="lang-wrap">
             <div class="lang-list">
-                <div class="chinese"
-                     :class="{active : lang === 'zh-CN'}"
-                     @click="changeLang('zh-CN')">中文</div>
-                <div class="english"
-                     :class="{active : lang === 'en'}"
-                     @click="changeLang('en')">English</div>
+                <!--<div class="chinese"-->
+                     <!--:class="{active : lang === 'zh-CN'}"-->
+                     <!--@click="changeLang('zh-CN')">中文</div>-->
+                <div class="chinese disabled"
+                     :class="{active : lang === 'zh-CN'}">中文</div>
+                <div class="english disabled"
+                     :class="{active : lang === 'en'}">English</div>
+                <!--<div class="english"-->
+                     <!--:class="{active : lang === 'en'}"-->
+                     <!--@click="changeLang('en')">English</div>-->
                 <div class="label"
                      :style="{left : lang === 'zh-CN' ? '0px' : '100px'}"></div>
             </div>
@@ -184,6 +188,11 @@
                     line-height: 30px;
                     cursor: pointer;
                     transition: all 0.5s;
+
+                    &.disabled{
+                        color: $color_gray;
+                        cursor: not-allowed;
+                    }
 
                     &.active{
                         color: $color_fff;
