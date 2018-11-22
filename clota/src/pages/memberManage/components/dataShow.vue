@@ -15,21 +15,21 @@
 
             <div class="detail">
                 <div class="detail-item"
-                     @mouseenter="showIncreaseDetail(0)"
+                     @mouseover="showIncreaseDetail(0)"
                      @mouseout="addDetailShow = false">
                     <div>{{todayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_today")}}</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item"
-                     @mouseenter="showIncreaseDetail(1)"
+                     @mouseover="showIncreaseDetail(1)"
                      @mouseout="addDetailShow = false">
                     <div>{{yesterdayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_yesterday")}}</div>
                 </div>
                 <div class="split-line"></div>
                 <div class="detail-item"
-                     @mouseenter="showIncreaseDetail(2)"
+                     @mouseover="showIncreaseDetail(2)"
                      @mouseout="addDetailShow = false">
                     <div>{{monthMemberIncreeaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_this_month")}}</div>

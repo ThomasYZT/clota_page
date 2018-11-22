@@ -126,10 +126,11 @@
                         <div class="operate"><span class="pointer"  @click="viewCardDetail('myOrder')">{{$t('checkOrderInfo')}}</span></div>
                     </div>
                     <!--卡包信息-->
-                    <div class="content-info">
-                        <div class="title">{{$t("cardPkgInfo")}}</div>
-                        <div class="operate"><span class="pointer"  @click="viewCardDetail('infoCard')">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>
-                    </div>
+                    <!--会员3期暂时去掉-->
+                    <!--<div class="content-info">-->
+                        <!--<div class="title">{{$t("cardPkgInfo")}}</div>-->
+                        <!--<div class="operate"><span class="pointer"  @click="viewCardDetail('infoCard')">{{`${ $t("check") }${ $t("cardPkgInfo") }`}}</span></div>-->
+                    <!--</div>-->
                     <!--享受积分、折扣率信息-->
                     <div class="content-info">
                         <div class="title">{{$t("会员权益")}}</div>

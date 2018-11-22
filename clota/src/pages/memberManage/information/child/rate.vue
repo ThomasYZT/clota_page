@@ -36,117 +36,86 @@
                 </ul>
             </div>
             <div class="general-discount-title">会员积分权益说明</div>
-            <div class="table-wrap" :class="{'width-500' : lang === 'zh-CN' , 'width-660' : lang === 'en'}">
-                <div class="title-wrap">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
-                <table-com
-                    :column-data="cardColumnData"
-                    :table-data="cardData"
-                    :border="false"
-                    :auto-height="true"
-                    :table-com-min-height="250">
-                    <el-table-column
-                        slot="column0"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{ scoped.row.scoreRate }} : 1</span>
-                        </template>
-                    </el-table-column>
-                </table-com>
-            </div>
+            <div class="rights-wrap">
+                <div class="table-wrap" :class="{'width-500' : lang === 'zh-CN' , 'width-660' : lang === 'en'}">
+                    <div class="title-normal">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
+                    <table-com
+                        :column-data="cardColumnData"
+                        :table-data="cardData"
+                        :border="false"
+                        :auto-height="true"
+                        :table-com-min-height="250">
+                        <el-table-column
+                            slot="column0"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                            <template slot-scope="scoped">
+                                <span>{{ scoped.row.scoreRate }} : 1</span>
+                            </template>
+                        </el-table-column>
+                    </table-com>
+                </div>
 
-            <div class="table-wrap width-660">
-                <div class="title-wrap">{{$t('enjoyCouponByShop')}}</div><!--按店铺享受积分、折扣率信息-->
-                <table-com
-                    :column-data="storeColumnData"
-                    :table-data="storeData"
-                    :border="false"
-                    :auto-height="true"
-                    :table-com-min-height="250">
-                    <el-table-column
-                        slot="column0"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{ scoped.row.orgName || '-' }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column1"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{ scoped.row.deptScoreRate }} : 1</span>
-                        </template>
-                    </el-table-column>
-                </table-com>
-            </div>
+                <div class="table-wrap width-660">
+                    <div class="title-normal">{{$t('enjoyCouponByShop')}}</div><!--按店铺享受积分、折扣率信息-->
+                    <table-com
+                        :column-data="storeColumnData"
+                        :table-data="storeData"
+                        :border="false"
+                        :auto-height="true"
+                        :table-com-min-height="250">
+                        <el-table-column
+                            slot="column1"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                            <template slot-scope="scoped">
+                                <span>{{ scoped.row.deptScoreRate }} : 1</span>
+                            </template>
+                        </el-table-column>
+                    </table-com>
+                </div>
 
-            <div class="table-wrap width-1100">
-                <div class="title-wrap">{{$t('enjoyCouponByProduct')}}</div><!--按产品享受积分、折扣率信息-->
-                <table-com
-                    :column-data="productColumnData"
-                    :table-data="productData"
-                    :table-com-min-height="250"
-                    :border="false"
-                    :auto-height="true">
-                    <el-table-column
-                        slot="column0"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{ scoped.row.orgName || '-' }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column1"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{ scoped.row.typeName || '-' }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column2"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
-                            <span>{{ scoped.row.prodScoreRate }} : 1</span>
-                        </template>
-                    </el-table-column>
-                </table-com>
+                <div class="table-wrap width-1100">
+                    <div class="title-normal">{{$t('enjoyCouponByProduct')}}</div><!--按产品享受积分、折扣率信息-->
+                    <table-com
+                        :column-data="productColumnData"
+                        :table-data="productData"
+                        :table-com-min-height="250"
+                        :border="false"
+                        :auto-height="true">
+                        <el-table-column
+                            slot="column2"
+                            :label="row.title"
+                            :prop="row.field"
+                            :key="row.index"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip
+                            slot-scope="row">
+                            <template slot-scope="scoped">
+                                <span>{{ scoped.row.prodScoreRate }} : 1</span>
+                            </template>
+                        </el-table-column>
+                    </table-com>
+                </div>
             </div>
-
+            <template v-if="activityCanShow">
+                <div class="general-discount-title">特定活动积分折扣权益说明</div>
+                <special-activity-info :activity-card-data="activityCardData"
+                                       :activity-store-data="activityStoreData"
+                                       :activity-product-data="activityProductData">
+                </special-activity-info>
+            </template>
         </div>
 
     </div>
@@ -159,12 +128,14 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { mapGetters } from 'vuex';
+    import specialActivityInfo from './specialActivityInfo';
 
     export default {
         mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             tableCom,
+            specialActivityInfo
         },
         computed : {
             ...mapGetters({
@@ -177,6 +148,12 @@
                     result = JSON.parse(this.memberInfo.rights);
                 }
                 return result.filter(item => item.isEnable);
+            },
+            //特殊活动积分折扣率是否需要显示
+            activityCanShow () {
+                return (this.activityCardData && this.activityCardData.length > 0)
+                        || (this.activityStoreData && this.activityStoreData.length > 0)
+                        || (this.activityProductData && this.activityProductData.length > 0);
             }
         },
         data () {
@@ -200,6 +177,8 @@
                 detail : {},
                 //会员卡的积分折扣率
                 cardData : [],
+                //特定活动会员卡的积分折扣率
+                activityCardData : [],
                 cardColumnData : [
                     {
                         title : 'integralScale', // 积分率
@@ -216,6 +195,8 @@
                 ],
                 //店铺的积分折扣率
                 storeData : [],
+                //特定活动店铺的积分折扣率
+                activityStoreData : [],
                 storeColumnData : [
                     {
                         title : 'shop', // 店铺
@@ -236,6 +217,8 @@
                 ],
                 //产品的积分折扣率
                 productData : [],
+                //特定活动产品的积分折扣率
+                activityProductData : [],
                 productColumnData : [
                     {
                         title : 'shop',
@@ -272,13 +255,21 @@
                 }).then(res => {
                     if (res.success) {
                         if (res.data) {
-                            let discountInfo = res.data ? res.data.common : {};
-                            this.memberInfo = discountInfo.levelModel;
-                            this.cardData = discountInfo.memberVos;
-                            this.storeData = discountInfo.storeVos;
-                            for (let key in discountInfo.productMap) {
-                                discountInfo.productMap[key].forEach( item => {
+                            let commonDiscountInfo = res.data ? res.data.common : {};
+                            let activityDiscountInfo = res.data ? res.data.activity : {};
+                            this.memberInfo = commonDiscountInfo.levelModel;
+                            this.cardData = commonDiscountInfo.memberVos;
+                            this.activityCardData = activityDiscountInfo.memberVos;
+                            this.storeData = commonDiscountInfo.storeVos;
+                            this.activityStoreData = activityDiscountInfo.storeVos;
+                            for (let key in commonDiscountInfo.productMap) {
+                                commonDiscountInfo.productMap[key].forEach( item => {
                                     this.productData.push(item);
+                                });
+                            }
+                            for (let key in commonDiscountInfo.productMap) {
+                                activityDiscountInfo.productMap[key].forEach( item => {
+                                    this.activityProductData.push(item);
                                 });
                             }
                         }
@@ -338,7 +329,17 @@
                 margin-bottom: 15px;
             }
 
-            .table-wrap{
+            .rights-wrap{
+                padding: 0 10px;
+            }
+
+            /deep/ .title-normal{
+                font-size: $font_size_14px;
+                color: $color_666;
+                margin-bottom: 5px;
+            }
+
+            /deep/ .table-wrap{
                 margin-bottom: 25px;
                 &.width-500{
                     width: 500px;
