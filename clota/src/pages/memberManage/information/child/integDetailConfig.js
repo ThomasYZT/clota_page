@@ -68,4 +68,8 @@ export const integraType = [
         name : 'expire_score', // 手动改积分账户
         value : 'expire_score',
     },
+    {
+        name : 'exchange_goods_reduce', // 积分兑换商品
+        value : 'exchange_goods',
+    },
 ];

@@ -35,7 +35,7 @@
                     </template>
                 </ul>
             </div>
-
+            <div class="general-discount-title">会员积分权益说明</div>
             <div class="table-wrap" :class="{'width-500' : lang === 'zh-CN' , 'width-660' : lang === 'en'}">
                 <div class="title-wrap">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
                 <table-com
@@ -272,11 +272,12 @@
                 }).then(res => {
                     if (res.success) {
                         if (res.data) {
-                            this.memberInfo = res.data ? res.data.levelModel : {};
-                            this.cardData = res.data ? res.data.memberVos : [];
-                            this.storeData = res.data ? res.data.storeVos : [];
-                            for (let key in res.data.productMap) {
-                                res.data.productMap[key].forEach( item => {
+                            let discountInfo = res.data ? res.data.common : {};
+                            this.memberInfo = discountInfo.levelModel;
+                            this.cardData = discountInfo.memberVos;
+                            this.storeData = discountInfo.storeVos;
+                            for (let key in discountInfo.productMap) {
+                                discountInfo.productMap[key].forEach( item => {
                                     this.productData.push(item);
                                 });
                             }
@@ -330,6 +331,12 @@
 
         .rate-content{
             padding: 20px 30px;
+
+            .general-discount-title{
+                font-size: $font_size_16px;
+                color: $color_333;
+                margin-bottom: 15px;
+            }
 
             .table-wrap{
                 margin-bottom: 25px;
