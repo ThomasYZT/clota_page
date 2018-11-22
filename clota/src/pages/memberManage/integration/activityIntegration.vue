@@ -159,8 +159,8 @@
                     scoreRate : formData.scoreRate,
                     remark : formData.remark,
                     isActivity : true,
-                    startTime : formData.startTime ? formData.startTime.format('yyyy-MM-dd') : '',
-                    endTime : formData.endTime ? formData.endTime.format('yyyy-MM-dd') : '' ,
+                    startTime : formData.startTime ? formData.startTime.format('yyyy-MM-dd 00:00:00') : '',
+                    endTime : formData.endTime ? formData.endTime.format('yyyy-MM-dd 23:59:59') : '' ,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
