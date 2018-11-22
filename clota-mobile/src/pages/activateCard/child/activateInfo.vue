@@ -154,18 +154,22 @@
                     //实体卡id
                     id : ''
                 },
+                memberCardList : []
             };
         },
         computed : {
             ...mapGetters({
                 lang : 'lang',
                 companyCode : 'companyCode',
+                userInfo : 'userInfo'
             })
         },
         methods : {
             ...mapMutations([
                 'updateUserInfo',
-                'updateLoginStatus'
+                'updateLoginStatus',
+                'updateCardInfoList',
+                'updateCardInfo',
             ]),
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
@@ -398,8 +402,8 @@
                 localStorage.setItem('userInfo', JSON.stringify(res.data));
                 //更新用户信息
                 this.$store.commit('updateUserInfo');
-                //登陆跳转到主页
-                this.$router.push({ name : 'home' });
+                //获取用卡列表信息
+                this.getCardList();
             },
             /**
              *  证件类型改变
@@ -414,6 +418,33 @@
              */
             sexChange (data) {
                 this.formData.gender = data ? data[0] : '';
+            },
+            /**
+             * 获取会员卡列表
+             */
+            getCardList () {
+                //获取会员卡列表
+                ajax.post('queryMemberCardList', {
+                    memberId : this.userInfo.memberId
+                }).then(res => {
+                    if (res.success) {
+                        //存储卡列表数据
+                        this.memberCardList = res.data ? res.data : [];
+                        //存储会员卡/会员卡列表数据
+                        localStorage.setItem('cardInfoList', JSON.stringify(this.memberCardList));
+                        localStorage.setItem('cardInfo', JSON.stringify(this.memberCardList.length > 0 ? this.memberCardList[0] : {}));
+                        this.updateCardInfoList();
+                        this.updateCardInfo();
+                        //登陆跳转到主页
+                        this.$router.push({ name : 'home' });
+                    } else {
+                        localStorage.setItem('cardInfoList', '[]');
+                        localStorage.setItem('cardInfo', '{}');
+                        this.updateCardInfoList();
+                        this.updateCardInfo();
+                        this.$vux.toast.text(this.$t('getDataFailure'));
+                    }
+                })
             }
         }
     };
