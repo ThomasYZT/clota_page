@@ -18,12 +18,12 @@
                     </div>
                     <div class="asset-info">{{item.accountBalance | moneyFilter}}</div>
                     <div class="asset-tip">{{$t('allAssets')}}</div>
-                    <div class="account-type">
+                    <div class="account-type" :class="{'auto-width' : accountList[accountShow].accountDefineId === '4'}">
                         <div class="account-priciple-left">
                             <div class="money-num">{{item.corpusBalance | moneyFilter}}</div>
                             <div class="money-label">{{$t('rechargeMoney')}}</div>
                         </div>
-                        <div class="account-donate-left">
+                        <div class="account-donate-left" v-if="accountList[accountShow].accountDefineId !== '4'">
                             <div class="money-num">{{item.donateBalance | moneyFilter}}</div>
                             <div class="money-label">{{$t('donateMoney')}}</div>
                         </div>
@@ -40,7 +40,7 @@
                     <div class="money-num">{{OwnerCardAccount.corpusBalance | moneyFilter}}</div>
                     <div class="money-label">{{$t('rechargeMoney')}}</div>
                 </div>
-                <div class="account-donate-left">
+                <div class="account-donate-left" >
                     <div class="money-num">{{OwnerCardAccount.donateBalance | moneyFilter}}</div>
                     <div class="money-label">{{$t('donateMoney')}}</div>
                 </div>
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <div v-if="this.accountList.length > 0 && this.accountList[accountShow].accountDefineId === '1'"
+        <div v-if="accountList.length > 0 && accountList[accountShow].accountDefineId === '1'"
              class="btn-area"
              :class="{'owner-btn' : isOwnerCard}">
             <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
@@ -283,6 +283,13 @@
                     border-right: 1px solid rgba($color_fff,0.2);
                 }
 
+            }
+
+            .auto-width {
+                .account-priciple-left {
+                    @include block_outline(100%,60px);
+                    border: none;
+                }
             }
 
             .account-detail-wrapper {
