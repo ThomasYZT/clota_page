@@ -5,11 +5,11 @@
 <template>
     <div class="sms-buy-record">
         <div class="head-info">
-            <span class="label"></span>
-            <span class="value"></span>
+            <span class="label">{{$t('totalBuy')}}</span>
+            <span class="value">{{totalSym + $t('item')}}</span>
         </div>
         <tableCom
-            :ofset-height="204"
+            :ofset-height="110"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -78,6 +78,8 @@
                 },
                 tableData : [],
                 totalCount : 0,
+                //总共购买短信条数
+                totalSym : 0
             }
         },
         computed : {
@@ -94,10 +96,12 @@
                     ...this.filterData,
                     orgId : this.manageOrgs.id
                 }).then(res => {
-                    if (res.success) {
-                        this.tableData = res.data ? res.data.data : [];
-                        this.totalCount = res.data ? res.data.totalRow : 0;
+                    if (res.success && res.data) {
+                        this.totalSym = res.data.totalCount ? res.data.totalCount : 0;
+                        this.tableData = res.data.list ? res.data.list : [];
+                        this.totalCount = res.data.list ? res.data.list.totalRow : 0;
                     } else {
+                        this.totalSym = 0;
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -119,6 +123,17 @@
 
     .sms-buy-record {
         height: 100%;
+
+        .head-info {
+            margin: 10px 20px;
+            height: 50px;
+            width: 100%;
+            line-height: 50px;
+
+            .label {
+                margin-right: 5px;
+            }
+        }
     }
 
     .doing {
