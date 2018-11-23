@@ -39,7 +39,7 @@
                             <div class="avator">
                                 <img class="avator-class" src="../../assets/images/icon-avator.png" alt="">
                             </div>
-                            {{userInfo.name}}
+                            <div class="account-name">{{userInfo.name}}</div>
                         </template>
                         <MenuItem v-for="(item,i) in accountOperations"
                                   :name="item.name"
@@ -191,7 +191,7 @@
 
         .menu-info {
             float: left;
-            @include block_outline(unquote('calc(100% - 360px)'));
+            @include block_outline(unquote('calc(100% - 400px)'));
             text-align: center;
 
             .menu-list {
@@ -278,16 +278,14 @@
         }
 
         .operation {
-            float: left;
-            @include block_outline(160px);
+            float: right;
+            @include block_outline(auto);
 
             .menu-li {
                 display: inline-block;
                 position: relative;
-                padding-left: 40px;
-                padding-top: 15px;
-                padding-bottom: 15px;
-                @include block_outline(160px, 100%);
+                padding: 15px 20px 15px 40px;
+                @include block_outline(auto, 100%);
 
                 .avator {
                     @include block_outline(30px, 30px);
@@ -298,6 +296,13 @@
                         @include block_outline($is_block: false);
                         border-radius: 30px;
                     }
+                }
+
+                .account-name{
+                    @include overflow_tip();
+                    max-width: 90px;
+                    display: inline-block;
+                    vertical-align: middle;
                 }
 
                 /deep/ .ivu-menu {

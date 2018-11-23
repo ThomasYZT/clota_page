@@ -24,7 +24,7 @@ export default {
     //获取公司、景区、部门的详细信息
     'getServiceProvider' : 'tenant/getServiceProvider.json',
     //重置账号密码
-    'resetPassword' : 'tenant/resetPassword.json',
+    'resetPwd' : 'tenant/resetPwd.json',
     //批量重密码
     'updatePassword' : 'tenant/updatePassword.json',
     //删除节点
@@ -65,4 +65,6 @@ export default {
     'openScenicServices' : 'tenant/openScenicServices.json',
     //指定景区删除服务
     'deleteServices' : 'tenant/deleteServices.json',
+    //查询款台信息
+    'getTableData' : 'tenant/table.json',
 };

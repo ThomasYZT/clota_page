@@ -138,10 +138,9 @@
                         slot="columnoperate"
                         slot-scope="row"
                         :label="row.title"
-                        :width="row.width"
+                        :width="operateColumnWidth"
                         show-overflow-tooltip
-                        fixed="right"
-                        :min-width="row.minWidth">
+                        fixed="right">
                         <template slot-scope="scoped">
                             <template v-if="type === 'company'">
                                 <ul class="operate-info">
@@ -412,6 +411,10 @@
             //表格是否显示
             tableShow () {
                 return this.searchParams && this.searchParams.id;
+            },
+            //操作列宽度
+            operateColumnWidth () {
+                return this.type === 'scene' ? 70 : 160;
             }
         },
         watch : {

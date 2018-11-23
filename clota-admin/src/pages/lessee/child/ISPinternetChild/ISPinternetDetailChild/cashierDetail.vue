@@ -5,18 +5,18 @@
         <Form ref="formValidate"
               :model="formDataCopy"
               :class="{'form-edit' : type === 'edit','form-watch' : type === 'watch'}"
-              label-position="left"
+              label-position="right"
               inline>
             <div class="com-name">
                 <span class="name"
-                      v-w-title="formData.cashierName">
-                    {{cashierDetail.orgName | contentFilter}}
+                      v-w-title="formData.tableName">
+                    {{cashierDetail.tableName | contentFilter}}
                 </span>
             </div>
             <i-row>
                 <i-col span="12">
                     <FormItem label="款台名称：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.orgName">{{cashierDetail.orgName | contentFilter}}</span>
+                        <span class="info-val" v-w-title="cashierDetail.tableName">{{cashierDetail.tableName | contentFilter}}</span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
@@ -39,19 +39,19 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="款台类型：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                        <span class="info-val" v-w-title="$t('tableType.' + cashierDetail.tableType)">{{$t('tableType.' + cashierDetail.tableType) | contentFilter}}</span>
                     </FormItem>
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="12">
-                    <FormItem label="所属核销设备分组：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                <i-col span="12" v-if="checkGroupShow">
+                    <FormItem label="所属核销设备分组：" :label-width="150" >
+                        <span class="info-val" v-w-title="cashierDetail.checkGroupName">{{cashierDetail.checkGroupName ? cashierDetail.checkGroupName : $t('noGroup') | contentFilter}}</span>
                     </FormItem>
                 </i-col>
-                <i-col span="12">
-                    <FormItem label="所属销售渠道分组：" :label-width="150">
-                        <span class="info-val" v-w-title="cashierDetail.id">{{cashierDetail.id | contentFilter}}</span>
+                <i-col span="12" v-if="saleGroupShow">
+                    <FormItem label="所属销售渠道分组：" :label-width="150" >
+                        <span class="info-val" v-w-title="cashierDetail.saleGroupName">{{cashierDetail.saleGroupName ? cashierDetail.saleGroupName : $t('noGroup') | contentFilter}}</span>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -134,7 +134,7 @@
              * 获取款台详情
              */
             getCashierDetail () {
-                ajax.post('getServiceProvider',{
+                ajax.post('getTableData',{
                     id : this.activeNode.id,
                 }).then(res => {
                     if (res.status === 200) {
@@ -153,6 +153,16 @@
                 },
                 deep : true,
                 immediate : true
+            }
+        },
+        computed : {
+            //是否显示核销设备分组
+            checkGroupShow () {
+                return this.cashierDetail && (this.cashierDetail.tableType === 'check' || this.cashierDetail.tableType === 'combine');
+            },
+            //是否显示销售设备分组
+            saleGroupShow () {
+                return this.cashierDetail && (this.cashierDetail.tableType === 'sale' || this.cashierDetail.tableType === 'combine');
             }
         }
     };

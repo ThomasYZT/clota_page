@@ -41,7 +41,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{scope.$index + 1}}
+                            {{ (pageNo - 1) * pageSize + scope.$index + 1}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -98,12 +98,16 @@
              */
             queryList () {
                 ajax.post('getScenicPartners',{
-                    id : this.searchParams.id
+                    id : this.searchParams.id,
+                    page : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                    if (res.status === 200) {
-                       this.tableData = res.data ? res.data : [];
+                       this.tableData = res.data ? res.data.list : [];
+                       this.totalCount = res.data ? Number(res.data.totalRecord) : '';
                    } else {
                        this.tableData = [];
+                       this.totalCount = '';
                    }
                 });
             }

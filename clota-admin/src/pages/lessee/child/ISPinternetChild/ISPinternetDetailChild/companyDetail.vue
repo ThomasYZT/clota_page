@@ -163,15 +163,15 @@
                                 <!--{{ item.orgName }}-->
                             <!--</Option>-->
                         <!--</Select>-->
-                        <select-tree v-if="type === 'edit' && activeNode && activeNode.pid"
+                        <select-tree v-if="type === 'edit' && activeNode && activeNode.pid && activeNode.pid !== '0'"
                                      v-model="formDataCopy.parentManageId"
                                      :disabled-node-ids="[activeNode.id]"
                                      :disabled="activeNode && activeNode.level === 1"
                                      :tree="superiorList"
                                      style="width: 100%;">
                         </select-tree>
-                        <span class="info-val" v-else v-w-title="companyDetail.parentManage ? companyDetail.parentManage.orgName : ''">
-                            {{companyDetail.parentManage ? companyDetail.parentManage.orgName : '' | contentFilter}}
+                        <span class="info-val" v-else v-w-title="parentManageName">
+                            {{parentManageName | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -184,15 +184,15 @@
                                 <!--{{ item.orgName }}-->
                             <!--</Option>-->
                         <!--</Select>-->
-                        <select-tree v-if="type === 'edit' && activeNode && activeNode.pid"
+                        <select-tree v-if="type === 'edit' && activeNode && activeNode.pid && activeNode.pid !== '0'"
                                      v-model="formDataCopy.parentEconomicId"
                                      :disabled-node-ids="[activeNode.id]"
                                      :disabled="activeNode && activeNode.level === 1"
                                      :tree="fianceSuperiorList"
                                      style="width: 100%;">
                         </select-tree>
-                        <span class="info-val" v-else v-w-title="companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : ''">
-                            {{companyDetail.parentEconomic ? companyDetail.parentEconomic.orgName : '' | contentFilter}}
+                        <span class="info-val" v-else v-w-title="parentEconomicName">
+                            {{parentEconomicName | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -378,7 +378,7 @@
                         { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
                     ],
                     checkinCode : [
-                        { min : 2,max : 8,message : this.$t('rangeBitError',{ field : this.$t('enterpriseCode'),length : 8,min : 1,max : 10 }),trigger : 'blur' },
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
                     ],
                     smsProvider : [
                         { required : true,message : this.$t('selectField',{ msg : this.$t('smsProvider') }),trigger : 'blur' }
@@ -450,6 +450,14 @@
                                 if (this.formDataCopy.orgName !== this.companyDetail.orgName) {
                                     this.freshOrg();
                                 }
+                                //修改了管理上级，需要刷新左侧的组织树
+                                if (this.formDataCopy.parentManageId !== this.companyDetail.parentManageId) {
+                                    this.freshOrg();
+                                }
+                                //修改了财务上级，需要刷新左侧的组织树
+                                if (this.formDataCopy.parentEconomicId !== this.companyDetail.parentEconomicId) {
+                                    this.freshOrg();
+                                }
                             } else {
                                 this.$Message.error('修改失败');
                             }
@@ -487,9 +495,8 @@
              * @param pass
              */
             confimChangePass (pass) {
-                ajax.post('resetPassword',{
+                ajax.post('resetPwd',{
                     id : this.activeNode.id,
-                    password : pass
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('重置成功');
@@ -626,6 +633,30 @@
                 } else {
                     return false;
                 }
+            },
+            //管理上级名称
+            parentManageName () {
+                if (this.companyDetail && this.companyDetail.parentManage) {
+                    if (this.activeNode && this.activeNode.pid && this.activeNode.pid !== '0') {
+                        return this.companyDetail.parentManage.orgName;
+                    } else {
+                        return '';
+                    }
+                } else {
+                    return '';
+                }
+            },
+            //财务上级名称
+            parentEconomicName () {
+                if (this.companyDetail && this.companyDetail.parentEconomic) {
+                    if (this.activeNode && this.activeNode.pid && this.activeNode.pid !== '0') {
+                        return this.companyDetail.parentEconomic.orgName;
+                    } else {
+                        return '';
+                    }
+                } else {
+                    return '';
+                }
             }
         },
         watch : {
@@ -653,6 +684,7 @@
         .form-watch{
             /deep/ .ivu-form-item{
                 margin-bottom: 0;
+                width: 100%;
             }
             /deep/ .ivu-form-item-required .ivu-form-item-label:before{
                 display: none;
@@ -773,7 +805,6 @@
             color: $color_666;
 
             .account-name{
-                display: inline-block;
                 max-width: calc(100% - 140px);
                 @include overflow_tip();
                 vertical-align: middle;
@@ -785,5 +816,6 @@
     .edit-modal-tip-word{
         @include block_outline(100%,auto);
         padding: 20px;
+        word-break: break-all;
     }
 </style>

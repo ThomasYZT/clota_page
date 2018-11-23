@@ -283,6 +283,13 @@
                     ],
                     companyCode : [
                         { max : 8,message : this.$t('errorMaxLength',{ field : this.$t('enterpriseCode'),length : 8 }),trigger : 'blur' }
+                    ],
+                    fax : [
+                        {
+                            max : 20,
+                            message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),
+                            trigger : 'blur'
+                        }
                     ]
                 },
                 // //集团列表

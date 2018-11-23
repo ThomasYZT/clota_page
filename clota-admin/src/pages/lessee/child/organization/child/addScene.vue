@@ -100,10 +100,10 @@
         <div slot="footer">
             <Button type="ghost"
                 class="ivu-btn-90px"
-                @click="cancel">取消</Button>
+                @click="save('close')">保存，暂不启用</Button>
             <Button type="primary"
                 class="ivu-btn-90px"
-                @click="save">保存</Button>
+                @click="save('open')">保存，立即启用</Button>
         </div>
     </Modal>
 </template>
@@ -224,7 +224,9 @@
                     //地点
                     place : '',
                     //联系人
-                    person : ''
+                    person : '',
+                    //受理客服
+                    service : ''
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -287,17 +289,19 @@
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
                 } else {
+                    this.getSysAccountByToken();
                     this.getParentManages();
                     this.queryServiceList();
                 }
             },
             /**
              * 保存新增租户数据
+             * @params{string} status 保存节点的状态
              */
-            save () {
+            save (status) {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        this.addCompany();
+                        this.addCompany(status);
                     }
                 });
             },
@@ -311,8 +315,9 @@
             },
             /**
              * 调用新增公司的接口
+             * @params{string} status 保存节点的状态
              */
-            addCompany () {
+            addCompany (status) {
                 ajax.post('addOrgInfo',{
                     rootId : this.rootId,
                     orgName : this.addedNodeDetail.nodeName,
@@ -328,7 +333,8 @@
                     address : this.formData.address,
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.manageSuperior,
-                    nodeType : 'scenic'
+                    nodeType : 'scenic',
+                    status : status
                 }).then(res => {
                     if (res.status === 200) {
                         this.$emit('fresh-structure-data');
@@ -390,6 +396,18 @@
             queryAccountExist () {
                 return ajax.post('queryAccountExist',{
                     loginName : this.formData.controlAccount
+                });
+            },
+            /**
+             * 获取当前登录的用户信息
+             */
+            getSysAccountByToken () {
+                ajax.post('getSysAccountByToken').then(res => {
+                    if (res.status === 200) {
+                        this.formData.service = res.data.id ? res.data.id : '';
+                    } else {
+                        this.formData.service = '';
+                    }
                 });
             },
         },

@@ -188,7 +188,7 @@
                             iconfont : 'true',
                             'icon-delete' : true,
                             //财务管理不允许删除节点
-                            'hidden' : this.activeTap === 'economic' || data.pid === null
+                            'hidden' : this.activeTap === 'economic' || data.pid === '0'
                         },
                         style : {
                             paddingRight : '5px',
@@ -278,6 +278,7 @@
                     orgName : data.nodeName,
                     nodeType : 'department',
                     parentManageId : this.currentNode.id,
+                    status : data.status
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('新增成功');
