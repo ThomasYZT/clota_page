@@ -74,11 +74,12 @@
                     memberId : this.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
-                        this.memberCardList = res.data && res.data.length > 0 ? [res.data.map((item) => {
-                            return {
-                                value : item.id,
-                                name : item.levelDesc
-                            };
+                        this.memberCardList = res.data && res.data.length > 0 ? [res.data.filter((item, index, arr) => {
+                            if (item.cardTypeId !== '1') {
+                                arr[index].value = item.id;
+                                arr[index].name = item.levelDesc;
+                            }
+                            return item.cardTypeId !== '1';
                         })] : [];
                     } else {
                         this.memberCardList = [];
