@@ -27,7 +27,10 @@ export default new Vuex.Store({
         //用户是否登陆
         isLogin : false,
         //公司id
-        companyCode : '1045244656750825472'
+        companyCode : '124',
+        //companyCode : '1045244656750825472',
+        //companyCode : '1037976274619994114' //肖邦景区
+        //companyCode : '121321' //信鸥互联 测试环境
     },
     getters : {
         //当前语言状态
