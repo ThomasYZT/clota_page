@@ -19,7 +19,7 @@
                 <span class="label">{{$t('memberType')}}</span>
                 <Select v-model="filterData.memberType"
                         :placeholder="$t('selectField', { msg : $t('memberType') })"
-                        @on-change="queryLevelsByCardType"
+                        @on-change="queryLevelsByCardType('change')"
                         style="width:160px">
                     <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
                         {{ item.label }}
@@ -61,7 +61,7 @@
             :border="true"
             :show-pagination="true"
             :total-count="totalCount"
-            :ofset-height="204"
+            :ofset-height="220"
             :page-no-d.sync="filterData.pageNo"
             :page-size-d.sync="filterData.pageSize"
             @query-data="getData">
@@ -194,7 +194,7 @@
             /**
              * 获取卡级别列表数据
              */
-            queryLevelsByCardType () {
+            queryLevelsByCardType (type) {
                 this.filterData.memberLevel = 'all';
                 this.memberLevellist = [
                     {
@@ -221,6 +221,9 @@
                         ];
                     }
                 });
+                if (type) {
+                    this.getData();
+                }
             }
         },
         watch : {
