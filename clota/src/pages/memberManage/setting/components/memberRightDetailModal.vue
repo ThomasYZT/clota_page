@@ -77,9 +77,11 @@
                                     @on-change="selectChange($event, item)"
                                     style="width: 100px;">
                                 <Option :value="item.id"
+                                        class="overflow-tip-list"
                                         v-for="(item,index) in scenicList"
+                                        v-w-title="item.productName"
                                         :key="index">
-                                    {{item.name}}
+                                    {{item.productName}}
                                 </Option>
                             </Select>
                         </FormItem>
