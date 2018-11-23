@@ -22,7 +22,7 @@ import '@/assets/scss/_common.scss';
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin';
 
-require('./assets/util/vconsole');
+//require('./assets/util/vconsole');
 
 Vue.use(plugin);
 Vue.config.productionTip = true;
