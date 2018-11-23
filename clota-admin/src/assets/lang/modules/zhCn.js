@@ -364,6 +364,13 @@ export default {
     'tableType.combine' : '核销/销售一体款台',
     'scopeLimit' : '请输入2～8位公司编码',
     'noGroup' : '未分组',
+    'systemStatus.doing' : '进行中',
+    'systemStatus.success' : '成功',
+    'systemStatus.fail' : '失败',
+    'systemStatus.abnormal' : '异常',
+    'payStatus.doing' : '支付中',
+    'payStatus.success' : '成功',
+    'payStatus.fail' : '失败',
 
 
 };

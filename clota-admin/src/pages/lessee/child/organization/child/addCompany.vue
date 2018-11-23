@@ -87,7 +87,7 @@
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->
-                <FormItem :label="$t('address')">
+                <FormItem :label="$t('address')" prop="address">
                     <Input v-model.trim="formData.address" type="textarea" style="width: 280px"/>
                 </FormItem>
             </Form>
@@ -232,9 +232,15 @@
                     ],
                     controlAccount : [
                         { required : true, validator : validateControlAccount, trigger : 'blur' },
+                        {
+                            max : 20,
+                            message : this.$t('errorMaxLength',{ field : this.$t('管理账号'),length : 20 }),
+                            trigger : 'blur'
+                        }
                     ],
                     mail : [
                         { required : true, validator : validateMail, trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('mail'),length : 100 }),trigger : 'blur' }
                     ],
                     smsProvider : [
                         {
@@ -244,11 +250,15 @@
                         },
                     ],
                     person : [
-                        { required : true,message : this.$t('validateError.pleaseInput',{ msg : this.$t('person') }) }
+                        { required : true,message : this.$t('validateError.pleaseInput',{ msg : this.$t('person') }) },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' }
                     ],
                     companyCode : [
                         { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
-                    ]
+                    ],
+                    address : [
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
+                    ],
                 },
                 //短信供应商列表
                 smsProviderList : [],
