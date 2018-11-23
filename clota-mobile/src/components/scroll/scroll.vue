@@ -5,7 +5,8 @@
 <template>
     <div class="flex-box">
         <div class="scroll">
-            <div ref="wrapper" class="list-wrapper">
+            <div ref="wrapper" class="list-wrapper"
+                 :class="{ 'no-data-wrap' : data.length < 1 }">
                 <div class="scroll-content">
                     <div ref="listWrapper">
                         <slot>
@@ -365,6 +366,12 @@
                     border-radius: 1px;
                     transform: rotate(0deg);// fix 子元素超出边框圆角部分不隐藏的问题
                     background: #F4F6F9;
+
+                    &.no-data-wrap{
+                        background: url('../../assets/images/icon-no-data.svg') no-repeat;
+                        background-position: center center;
+                        background-size: 150px 150px;
+                    }
 
                     .scroll-content {
                         position: relative;

@@ -9,10 +9,10 @@
 
             <div class="btn-wrap">
                 <!--新增会员类别-->
-                <Button type="primary"
-                        :disabled="tableData.length > 11"
-                        @click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>
-                <span class="tips">{{$t('最多新增12个会员类别')}}</span><!--最多新增12个会员类别-->
+                <!--<Button type="primary"-->
+                        <!--:disabled="tableData.length > 11"-->
+                        <!--@click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>-->
+                <!--<span class="tips">{{$t('最多新增12个会员类别')}}</span>&lt;!&ndash;最多新增12个会员类别&ndash;&gt;-->
             </div>
             <div class="table-wrap">
                 <table-com

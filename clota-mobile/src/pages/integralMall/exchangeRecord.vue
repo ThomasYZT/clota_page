@@ -181,7 +181,7 @@
             }
         }
         /deep/ .vux-swiper-item{
-            height: 100%;
+            /*height: 100%;*/
 
         }
 

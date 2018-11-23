@@ -55,7 +55,7 @@
         border: 1px solid #E9E9E9;
         border-radius: 3px 3px 0 0;
         margin-bottom: 20px;
-        overflow: auto;
+        overflow: hidden;
 
         &.split-class{
             width: calc(50% - 15px);
