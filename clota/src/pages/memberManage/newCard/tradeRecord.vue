@@ -127,8 +127,8 @@
 				:min-width="row.minWidth">
 				<template slot-scope="scope">
 					<ul class="operate-list">
-						<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('reOpenCard')}}</li>
-						<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('reReissueCard')}}</li>
+						<!--<li v-if="canReOpenCard(scope.row)" @click="reOpenCard(scope.row)">{{$t('reOpenCard')}}</li>-->
+						<!--<li v-if="canReFundCard(scope.row)" @click="reFundCard(scope.row)">{{$t('reReissueCard')}}</li>-->
                         <!--未知状态以及正在进行中的支付状态需要重新查询结果-->
 						<li v-if="scope.row.txnStatus === 'unknown' || scope.row.txnStatus === 'doing'"
                             @click="searchPayResult(scope.row)">{{$t('searchPayResult')}}</li>

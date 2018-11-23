@@ -43,41 +43,41 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
-        components: {breadCrumbHead},
-        props: {},
-        mixins: [lifeCycleMixins],
-        data() {
+        components : { breadCrumbHead },
+        props : {},
+        mixins : [lifeCycleMixins],
+        data () {
             return {
                 //面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'memberSetting',   // 基础设置
-                        router: {
-                            name: 'memberSetting'
+                        name : 'memberSetting', // 基础设置
+                        router : {
+                            name : 'memberSetting'
                         },
                     },
                 ],
                 // 是否编辑协议标记
-                editFlag: false,
+                editFlag : false,
                 // 协议内容
-                protocol: {
-                    id: '',
-                    paymentAgreement: ''
+                protocol : {
+                    id : '',
+                    paymentAgreement : ''
                 },
-                isLoading: false,
+                isLoading : false,
 
-            }
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
 
             // 隐藏编辑状态
-            hide() {
+            hide () {
                 this.editFlag = false;
             },
             /**
@@ -85,7 +85,7 @@
              * @param params
              */
             getParams (params) {
-                if(params && params.id){
+                if (params && 'paymentAgreement' in params && 'id' in params) {
                     Object.assign(this.protocol, params);
                 } else {
                     this.$router.push({
@@ -95,14 +95,14 @@
             },
 
             // 保存支付协议的设置
-            saveProtocol() {
+            saveProtocol () {
                 this.isLoading = true;
                 ajax.post('basicSet', this.protocol).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('save')}));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('save') }));
                         this.hide();
                     } else {
-                        this.$Message.error(res.message ? res.message : this.$t('failureTip', {tip: this.$t('save')}));
+                        this.$Message.error(res.message ? res.message : this.$t('failureTip', { tip : this.$t('save') }));
                     }
                 }).finally(() => {
                     this.isLoading = false;
