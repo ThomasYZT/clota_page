@@ -30,6 +30,14 @@
                     </Option>
                 </Select>
             </FormItem>
+            <FormItem :label="$t('是否启用')"
+                      prop="status"
+                      v-if="formData.nodeType === 'department'">
+                <RadioGroup v-model="formData.status">
+                    <Radio label="open">立即启用</Radio>
+                    <Radio label="close">暂不启用</Radio>
+                </RadioGroup>
+            </FormItem>
         </Form>
         <div slot="footer">
             <Button type="primary"
@@ -64,7 +72,9 @@
                     //节点名称
                     nodeName : '',
                     //节点类型
-                    nodeType : ''
+                    nodeType : '',
+                    //节点状态
+                    status : 'open'
                 },
                 //节点类型
                 nodeList : nodeList,
@@ -83,6 +93,13 @@
                             required : true,
                             message : this.$t('validateError.pleaseSelect', { msg : this.$t('nodeName') }),
                             trigger : 'blur'
+                        }
+                    ],
+                    status : [
+                        {
+                            required : true,
+                            trigger : 'change',
+                            message : this.$t('validateError.pleaseSelect', { msg : this.$t('是否启用') }),
                         }
                     ]
                 }
@@ -196,18 +213,14 @@
             padding: 0;
             position: relative;
             @include block_outline($height: 230px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         /deep/ .ivu-modal-footer {
             text-align: center;
-        }
-
-        /*/deep/ .ivu-form-item {*/
-            /*justify-content: center;*/
-        /*}*/
-
-        /deep/ .ivu-form{
-            @include center_center();
         }
 
     }

@@ -13,7 +13,7 @@
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
                 <div class="employee-account">
-                    员工账号数：{{employeeNumber | contentFilter}}
+                    员工账号数：{{totalCount | contentFilter}}
                     <Button type="primary"
                             :disabled="selectedEmployee.length < 1"
                             @click="resetPassSelectEmployee">重置密码</Button>
@@ -77,6 +77,7 @@
     import delModal from '@/components/delModal/index.vue';
     import changePass from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
+    import MD5 from 'crypto-js/md5';
     export default {
         props : {
             //当前查看员工数据的结构类型，分为部门和非部门，默认为非部门
@@ -114,8 +115,6 @@
                 totalCount : 0,
                 pageNo : 1,
                 pageSize : 10,
-                //员工总数
-                employeeNumber : '',
                 //是否展开
                 isPackUp : false
             };
@@ -206,12 +205,14 @@
             confirmChangePass (pass,employee) {
                 ajax.post('updatePassword',{
                     ids : employee.map(item => item.id),
+                    // password : MD5(pass).toString()
                     password : pass
                 }).then(res => {
                    if (res.status === 200) {
-                       this.$Message.success('修改成功');
+                       this.$Message.success('重置密码成功');
+                       this.getEmployees();
                    } else {
-                       this.$Message.error('修改失败');
+                       this.$Message.error('重置密码失败');
                    }
                 }).finally(() => {
                     this.$refs.changePass.hide();
@@ -222,14 +223,16 @@
              */
             getEmployees () {
                 ajax.post('getEmployees',{
-                    id : this.searchParams.id
+                    id : this.searchParams.id,
+                    page : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                     if (res.status === 200) {
-                        this.tableData = res.data.list ? res.data.list : [];
-                        this.employeeNumber = res.data.employeeNumber;
+                        this.tableData = res.data ? res.data.list : [];
+                        this.totalCount = res.data ? Number(res.data.totalRecord) : '';
                     } else {
                         this.tableData = [];
-                        this.employeeNumber = '';
+                        this.totalCount = '';
                     }
                 });
             }

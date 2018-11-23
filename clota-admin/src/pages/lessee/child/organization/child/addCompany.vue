@@ -77,7 +77,7 @@
                     <Input v-model="formData.fax" style="width: 280px"/>
                 </FormItem>
                 <!--公司编码-->
-                <FormItem :label="$t('enterpriseCode') + '(' + $t('offlineVerify') + ')'">
+                <FormItem :label="$t('enterpriseCode') + '(' + $t('offlineVerify') + ')'" prop="companyCode">
                     <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                 </FormItem>
                 <div class="hint">用于与线下系统对接</div>
@@ -95,10 +95,10 @@
         <div slot="footer">
             <Button type="ghost"
                 class="ivu-btn-90px"
-                @click="save('invalid')">保存，暂不启用</Button>
+                @click="save('close')">保存，暂不启用</Button>
             <Button type="primary"
                 class="ivu-btn-90px"
-                @click="save('valid')">保存，立即启用</Button>
+                @click="save('open')">保存，立即启用</Button>
         </div>
     </Modal>
 </template>
@@ -156,7 +156,7 @@
                         callback('管理账号已存在');
                     });
                 } else {
-                    callback(this.$t('inputField', { msg : this.$t('controlAccount') }));
+                    callback(this.$t('inputField', { field : this.$t('controlAccount') }));
                 }
             };
             //校验电子邮箱
@@ -174,22 +174,10 @@
             //校验联系电话
             const validatePhone = (rule, value, callback) => {
                 if (value) {
-                    if (validator.isMobile(value) || validator.isTelephone(value)) {
-                        callback();
-                    } else {
-                        callback(this.$t('validateError.phoneError'));
-                    }
-                } else {
-                    callback();
-                }
-            };
-            //校验传真
-            const validateFax = (rule, value, callback) => {
-                if (value) {
                     if (validator.isMobile(value)) {
                         callback();
                     } else {
-                        callback(this.$t('validateError.formatError', { field : this.$t('fax') }));
+                        callback(this.$t('validateError.phoneError'));
                     }
                 } else {
                     callback();
@@ -220,6 +208,8 @@
                     place : {},
                     //联系人
                     person : '',
+                    //受理客服
+                    service : ''
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -227,7 +217,11 @@
                         { validator : validatePhone, trigger : 'blur' },
                     ],
                     fax : [
-                        { validator : validateFax, trigger : 'blur' },
+                        {
+                            max : 20,
+                            message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),
+                            trigger : 'blur'
+                        }
                     ],
                     fianceSuperior : [
                         {
@@ -251,6 +245,9 @@
                     ],
                     person : [
                         { required : true,message : this.$t('validateError.pleaseInput',{ msg : this.$t('person') }) }
+                    ],
+                    companyCode : [
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
                     ]
                 },
                 //短信供应商列表
@@ -291,6 +288,7 @@
                 } else {
                     this.getParentManages();
                     this.querySmsProviderList();
+                    this.getSysAccountByToken();
                     this.formData.fianceSuperior = this.chosedNodeDetail.id;
                     this.formData.manageSuperior = this.chosedNodeDetail.id;
                 }
@@ -408,6 +406,18 @@
                     loginName : this.formData.controlAccount
                 });
             },
+            /**
+             * 获取当前登录的用户信息
+             */
+            getSysAccountByToken () {
+                ajax.post('getSysAccountByToken').then(res => {
+                    if (res.status === 200) {
+                        this.formData.service = res.data.id ? res.data.id : '';
+                    } else {
+                        this.formData.service = '';
+                    }
+                });
+            },
         },
         computed : {
             //选择的地区信息
@@ -480,7 +490,7 @@
         }
 
         .hint {
-            text-indent: 150px;
+            text-indent: 36px;
             margin-top: -12px;
             margin-bottom: 10px;
             font-size: $font_size_14px;

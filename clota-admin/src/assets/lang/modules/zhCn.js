@@ -359,6 +359,11 @@ export default {
     'partner.valid' : '有效',
     'partner.invalid' : '无效',
     'colonSetting' : '{key}：',
+    'tableType.check' : '核销款台',
+    'tableType.sale' : '销售款台',
+    'tableType.combine' : '核销/销售一体款台',
+    'scopeLimit' : '请输入2～8位公司编码',
+    'noGroup' : '未分组',
 
 
 };

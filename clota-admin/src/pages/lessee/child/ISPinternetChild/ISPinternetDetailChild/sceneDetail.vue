@@ -263,6 +263,10 @@
         </partner>
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
+            <div class="edit-modal-tip-word">
+                您正在重置管理员{{sceneDetail.managerAccount ? sceneDetail.managerAccount.loginName : ''}}的登录密码，
+                我们将以邮件形式将新密码发送到以下邮箱，请注意查收：{{sceneDetail.managerAccount ? sceneDetail.managerAccount.email : ''}}
+            </div>
         </edit-modal>
     </div>
 </template>
@@ -344,7 +348,7 @@
                         { required : true,message : this.$t('inputField',{ field : this.$t('scenicName') }),trigger : 'blur' }
                     ],
                     checkinCode : [
-                        { min : 2,max : 8,message : this.$t('rangeBitError',{ field : this.$t('enterpriseCode'),length : 8,min : 1,max : 8 }),trigger : 'blur' },
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
                     ],
                     email : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
@@ -408,7 +412,16 @@
                             if (res.status === 200) {
                                 this.$Message.success('修改成功');
                                 this.getSceneDetail();
+                                //修改了景区名称，需要刷新左侧组织树
                                 if (this.formDataCopy.orgName !== this.sceneDetail.orgName) {
+                                    this.freshOrg();
+                                }
+                                //修改了管理上级，需要刷新左侧的组织树
+                                if (this.formDataCopy.parentManageId !== this.companyDetail.parentManageId) {
+                                    this.freshOrg();
+                                }
+                                //修改了财务上级，需要刷新左侧的组织树
+                                if (this.formDataCopy.parentEconomicId !== this.companyDetail.parentEconomicId) {
                                     this.freshOrg();
                                 }
                             } else {
@@ -436,9 +449,8 @@
              * @param pass
              */
             confimChangePass (pass) {
-                ajax.post('resetPassword',{
-                    id : this.activeNode.id,
-                    password : pass
+                ajax.post('resetPwd',{
+                    id : this.sceneDetail.managerAccount ? this.sceneDetail.managerAccount.id : '',
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('重置成功');
@@ -604,7 +616,7 @@
         .form-edit{
             /deep/ .ivu-form-item{
                 width: calc(100% - 25px);
-                margin-bottom: 4px;
+                margin-bottom: 14px;
             }
 
             /deep/ .ivu-form-item-error-tip{
@@ -707,7 +719,6 @@
             color: $color_666;
 
             .account-name{
-                display: inline-block;
                 max-width: calc(100% - 140px);
                 @include overflow_tip();
                 vertical-align: middle;
@@ -726,5 +737,10 @@
             font-size: $font_size_14px;
             color: $color_606266;
         }
+    }
+    .edit-modal-tip-word{
+        @include block_outline(100%,auto);
+        padding: 20px;
+        word-break: break-all;
     }
 </style>
