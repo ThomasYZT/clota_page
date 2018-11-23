@@ -86,13 +86,13 @@ export default {
                         },
                     },
                     smsBuyRecord : {
-                        //系统设置--短信管理--短信模板
+                        //系统设置--短信管理--短信购买记录
                         path : '/systemSetting/smsManage/smsBuyRecord',
                         name : 'buyRecord',
                         component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/smsBuyRecord.vue'),
                         meta : {
                             menuName : 'buyRecord', //lang.config.js 里面的语言键值
-                            _name : 'sms-template',
+                            _name : 'sms-buy-record',
                             rightPath : topMenuName + '.' + 'buyRecord',
                             isMenu : true
                         },
