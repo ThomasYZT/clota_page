@@ -82,7 +82,7 @@
                     <Input v-model.trim="formData.fax" style="width: 280px"/>
                 </FormItem>
                 <!--公司编码-->
-                <FormItem :label="$t('companyCode') + '(' + $t('offlineVerify') + ')'">
+                <FormItem :label="$t('companyCode') + '(' + $t('offlineVerify') + ')'" prop="companyCode">
                     <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                 </FormItem>
                 <div class="hint">用于与线下系统对接</div>
@@ -92,7 +92,7 @@
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->
-                <FormItem :label="$t('address')">
+                <FormItem :label="$t('address')" prop="address">
                     <Input v-model="formData.address" type="textarea" style="width: 280px"/>
                 </FormItem>
             </Form>
@@ -161,7 +161,7 @@
                         callback('管理账号已存在');
                     });
                 } else {
-                    callback(this.$t('inputField', { msg : this.$t('controlAccount') }));
+                    callback(this.$t('inputField', { field : this.$t('controlAccount') }));
                 }
             };
             //校验电子邮箱
@@ -183,18 +183,6 @@
                         callback();
                     } else {
                         callback(this.$t('validateError.phoneError'));
-                    }
-                } else {
-                    callback();
-                }
-            };
-            //校验传真
-            const validateFax = (rule, value, callback) => {
-                if (value) {
-                    if (validator.isMobile(value) || validator.isTelephone(value)) {
-                        callback();
-                    } else {
-                        callback(this.$t('validateError.formatError', { field : this.$t('fax') }));
                     }
                 } else {
                     callback();
@@ -230,11 +218,18 @@
                 },
                 //表单校验规则
                 ruleValidate : {
+                    companyCode : [
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
+                    ],
                     phone : [
                         { validator : validatePhone, trigger : 'blur' },
                     ],
                     fax : [
-                        { validator : validateFax, trigger : 'blur' },
+                        {
+                            max : 20,
+                            message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),
+                            trigger : 'blur'
+                        }
                     ],
                     fianceSuperior : [
                         {
@@ -245,12 +240,22 @@
                     ],
                     controlAccount : [
                         { required : true, validator : validateControlAccount, trigger : 'blur' },
+                        {
+                            max : 20,
+                            message : this.$t('errorMaxLength',{ field : this.$t('管理账号'),length : 20 }),
+                            trigger : 'blur'
+                        }
                     ],
                     mail : [
                         { required : true, validator : validateMail, trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('mail'),length : 100 }),trigger : 'blur' }
                     ],
                     person : [
                         { required : true,message : this.$t('validateError.pleaseInput', { msg : this.$t('person') }), trigger : 'blur' },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' }
+                    ],
+                    address : [
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
                     ],
                 },
                 //财务上级列表
@@ -482,7 +487,7 @@
         }
 
         .hint {
-            text-indent: 150px;
+            text-indent: 17px;
             margin-top: -12px;
             margin-bottom: 10px;
             font-size: $font_size_14px;
@@ -503,13 +508,10 @@
                     position: relative;
 
                     .ivu-form-item-error-tip {
-                        width: 110px;
                         position: absolute;
-                        top: 7px;
-                        right: -110px;
                         left: auto;
                         line-height: 1;
-                        padding: 6px 0 0 5px;
+                        padding: 3px 0 0 5px;
                         color: #ed3f14;
                     }
                 }

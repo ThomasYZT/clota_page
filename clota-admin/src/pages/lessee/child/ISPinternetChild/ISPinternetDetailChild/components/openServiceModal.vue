@@ -172,7 +172,8 @@
                 let startTime = this.formData.startTime.valueOf();
                 ajax.post('addServices',{
                     orgId : this.orgId,
-                    serviceIds : this.formData.servers,
+                    // serviceIds : this.formData.servers,
+                    serviceIds : this.serverList.filter(item => this.formData.servers.includes(item.id) && !item.disabled ),
                     startTime : new Date(startTime).format('yyyy-MM-dd 00:00:00'),
                     endTime : new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd 23:59:59'),
                 }).then(res => {
@@ -200,12 +201,15 @@
                                     break;
                                 }
                             }
-                        }
-                        for (let i = 0,j = this.serverList.length; i < j; i++) {
-                            if (this.serverList[i].id in this.openedServicesObj) {
-                                this.$set(this.serverList[i],'disabled',true);
-                            } else {
-                                this.$set(this.serverList[i],'disabled',false);
+                        } else {
+                            this.formData.servers = [];
+                            for (let i = 0,j = this.serverList.length; i < j; i++) {
+                                if (this.serverList[i].id in this.openedServicesObj) {
+                                    this.$set(this.serverList[i],'disabled',true);
+                                    this.formData.servers.push(this.serverList[i]['id']);
+                                } else {
+                                    this.$set(this.serverList[i],'disabled',false);
+                                }
                             }
                         }
                     } else {
@@ -298,6 +302,14 @@
         & /deep/ .ivu-modal {
             width: 600px !important;
             min-height: 410px;
+        }
+
+        /deep/ .ivu-radio-group-item{
+            color: #666666 !important;
+        }
+
+        /deep/ .ivu-checkbox-group-item{
+            font-size: $font_size_14px;
         }
 
         .target-class {

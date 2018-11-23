@@ -27,7 +27,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row['price'] | moneyFilter}}
+                        {{scope.row['price'] | moneyFilter | contentFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -37,7 +37,27 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row['totalPrice'] | moneyFilter}}
+                        {{scope.row['totalPrice'] | moneyFilter | contentFilter}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="columnpayStatus"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{$t('payStatus.' + scope.row.status)}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="columnstatus"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{$t('systemStatus.' + scope.row.status)}}
                     </template>
                 </el-table-column>
             </table-com>

@@ -25,13 +25,23 @@ export const smsBuyHead = [
     },
     {
         title : '套餐短息数量',
-        minWidth : 120,
+        minWidth : 140,
         field : 'smsCount'
     },
     {
         title : '购买数量',
         minWidth : 100,
         field : 'packageCount'
+    },
+    {
+        title : '支付状态',
+        minWidth : 100,
+        field : 'payStatus'
+    },
+    {
+        title : '系统状态',
+        minWidth : 100,
+        field : 'status'
     },
     {
         title : '购买短信总数',
