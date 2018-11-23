@@ -95,7 +95,8 @@
         },
         computed : {
             ...mapGetters([
-                'userInfo'
+                'userInfo',
+                'cardInfo'
             ])
         },
         methods : {
@@ -107,15 +108,28 @@
                     pageNo : 1,
                     pageSize : 200
                 }).then((res) => {
-                    if (res.success) {
-                        this.accountList = res.data ? res.data.data.filter((item, index, arr) => {
-                            let status = item.id !== '5' && item.id !== '6' && item.id !== '7' && item.id !== '8'
-                            if (status) {
-                                arr[index].name = item.accountName;
-                                arr[index].value = item.accountName;
-                            }
-                            return status;
-                        }) : [];
+                    if (res.success && res.data) {
+                        //业主卡返回全部账户类型
+                        if (this.cardInfo.cardTypeId === "1") {
+                            this.accountList = res.data.data.map(item => {
+                                    return {
+                                        ...item,
+                                        name : item.accountName,
+                                        value : item.accountName,
+                                    };
+                            });
+                        } else {
+                        //非业主卡返回部分账户类型
+                            this.accountList = res.data.data.filter((item, index, arr) => {
+                                let status = item.id !== '5' && item.id !== '6' && item.id !== '7' && item.id !== '8'
+                                if (status) {
+                                    arr[index].name = item.accountName;
+                                    arr[index].value = item.accountName;
+                                }
+                                return status;
+                            });
+                        }
+
                         this.chosedAccount[0] = this.accountList[0].name;
                         this.curAccountsId = this.accountList[0].id;
                     } else {

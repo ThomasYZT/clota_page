@@ -84,6 +84,8 @@ const apiList = {
     syncPayTransactionResult : '/external/pay/syncPayTransactionResult',
     //撤销交易
     revocation : '/api/external/pay/revocation',
+    //获取支付账户
+    queryOnlinePayAccount : '/external/account/queryOnlinePayAccount',
 };
 
 export default apiList;
