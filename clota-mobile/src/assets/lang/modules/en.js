@@ -225,6 +225,7 @@ export default {
     'pleaseBackToWX' : '请返回微信',
     'chargeFailure' : '账户充值失败',
     'payAbnormal' : '支付异常',
-    'accountOfStoreValue' : '储值账户'
+    'accountOfStoreValue' : '储值账户',
+    'userHasNoCard' : '用户暂无会员卡',
 
 };

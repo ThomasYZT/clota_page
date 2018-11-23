@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import i18n from '../assets/lang/lang.config';
+import ajax from '../api/index';
 
 Vue.use(Vuex);
 
@@ -112,39 +113,59 @@ export default new Vuex.Store({
         /**
          * 更新用户信息
          */
-        updateUserInfo ( state ) {
-            //获取保存到本地的用户信息
-            let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
-            if (userInfo && Object.keys(userInfo).length > 0) {
-                state.userInfo = userInfo;
+        updateUserInfo ( state, newUserInfo ) {
+            //更新本地、vuex用户信息
+            if (newUserInfo) {
+                state.userInfo = newUserInfo;
+                localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+            //获取保存到本地的用户信息，更新vuex
             } else {
-                state.userInfo = {};
+                let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+                if (userInfo && Object.keys(userInfo).length > 0) {
+                    state.userInfo = userInfo;
+                } else {
+                    state.userInfo = {};
+                }
             }
         },
         /**
          * 更新会员卡信息
          * @param state
          */
-        updateCardInfo ( state ) {
-            //获取保存到本地的会用卡信息
-            let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-            if (cardInfo && Object.keys(cardInfo).length > 0) {
-                state.cardInfo = cardInfo;
+        updateCardInfo ( state, newCardInfo ) {
+            if (newCardInfo && Object.keys(newCardInfo).length > 0) {
+                //设置当前会员卡信息
+                state.cardInfo = newCardInfo;
+                localStorage.setItem('cardInfo', JSON.stringify(newCardInfo));
             } else {
-                state.cardInfo = {};
+                let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
+                if (cardInfo && Object.keys(cardInfo).length > 0) {
+                    //更新vuex当前会用卡信息
+                    state.cardInfo = cardInfo;
+                } else {
+                    //初始设置本地、vuex当前会员卡信息
+                    state.cardInfo = state.cardInfoList[0];
+                    localStorage.setItem('cardInfo', JSON.stringify(state.cardInfo));
+                }
             }
         },
         /**
          * 更新会员卡列表信息
          * @param state
          */
-        updateCardInfoList ( state ) {
-            //获取保存到本地的会用卡列表信息
-            let cardInfoList = localStorage.getItem('cardInfoList') ? JSON.parse(localStorage.getItem('cardInfoList')) : {};
-            if (cardInfoList && Object.keys(cardInfoList).length > 0) {
-                state.cardInfoList = cardInfoList;
+        updateCardInfoList ( state, newCardInfoList ) {
+            if (newCardInfoList && Object.keys(newCardInfoList).length > 0) {
+                //设置本地、vuex卡列表信息
+                state.cardInfoList = newCardInfoList;
+                localStorage.setItem('cardInfoList', JSON.stringify(newCardInfoList));
             } else {
-                state.cardInfoList = {};
+                //更新vuex卡列表信息
+                let cardInfoList = localStorage.getItem('cardInfoList') ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
+                if (cardInfoList && Object.keys(cardInfoList).length > 0) {
+                    state.cardInfoList = cardInfoList;
+                } else {
+                    state.cardInfoList = {};
+                }
             }
         },
         /**
@@ -171,5 +192,43 @@ export default new Vuex.Store({
         }
     },
     actions : {
+        //获取会员卡列表
+        getCardListInfo ({ state, commit, dispatch }) {
+            return new Promise((resolve, reject) => {
+                ajax.post('queryMemberCardList', {
+                    memberId : state.userInfo.memberId
+                }).then(res => {
+                    if (res.success) {
+                        let memberCardList = res.data ? res.data : [];
+                        if (memberCardList.length > 0) {
+                            //存储卡列表数据
+                            commit('updateCardInfoList', memberCardList);
+                            commit('updateCardInfo');
+                            resolve();
+                        } else {
+                            //会员卡列表数据为空
+                            commit('updateCardInfoList', []);
+                            commit('updateCardInfo', {});
+                            dispatch('showToast', 'userHasNoCard');
+                            reject();
+                        }
+                    } else {
+                        commit('updateCardInfoList', []);
+                        commit('updateCardInfo', {});
+                        dispatch('showToast', 'getDataFailure');
+                        reject();
+                    }
+                });
+            })
+        }
+    },
+    /**
+     * vuex错误提示信息
+     * @param store
+     * @param msg
+     */
+    showToast (store, msg) {
+        Vue.prototype.$vux.toast.text(i18n.messages[i18n.locale][msg]);
     }
 });
+

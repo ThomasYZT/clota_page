@@ -100,7 +100,7 @@
     import ajax from '../../../api/index';
     import { genderEnum } from '@/assets/js/constVariable.js';
     import { validator } from 'klwk-ui';
-    import { mapGetters, mapMutations } from 'vuex';
+    import { mapGetters, mapMutations, mapActions } from 'vuex';
     import lifeCycleMixins from '../../../mixins/lifeCycleMixins';
     export default {
         components : {},
@@ -170,6 +170,9 @@
                 'updateLoginStatus',
                 'updateCardInfoList',
                 'updateCardInfo',
+            ]),
+            ...mapActions([
+                'getCardListInfo'
             ]),
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
@@ -389,10 +392,8 @@
             dataToLogin (res) {
                 //存储token信息
                 localStorage.setItem('token', res.data.token);
-                //存储用户信息
-                localStorage.setItem('userInfo', JSON.stringify(res.data));
-                //更新用户信息
-                this.updateUserInfo();
+                //存储本地、vuex用户信息
+                this.updateUserInfo(res.data);
                 //更新登陆状态
                 this.updateLoginStatus();
                 //获取用卡列表信息
@@ -417,27 +418,11 @@
              */
             getCardList () {
                 //获取会员卡列表
-                ajax.post('queryMemberCardList', {
-                    memberId : this.userInfo.memberId
-                }).then(res => {
-                    if (res.success) {
-                        //存储卡列表数据
-                        this.memberCardList = res.data ? res.data : [];
-                        //存储会员卡/会员卡列表数据
-                        localStorage.setItem('cardInfoList', JSON.stringify(this.memberCardList));
-                        localStorage.setItem('cardInfo', JSON.stringify(this.memberCardList.length > 0 ? this.memberCardList[0] : {}));
-                        this.updateCardInfoList();
-                        this.updateCardInfo();
-                        //激活成功跳转到主页
-                        this.$router.replace({ name : 'home' });
-                    } else {
-                        localStorage.setItem('cardInfoList', '[]');
-                        localStorage.setItem('cardInfo', '{}');
-                        this.updateCardInfoList();
-                        this.updateCardInfo();
-                        this.$vux.toast.text(this.$t('getDataFailure'));
-                    }
-                })
+                this.getCardListInfo().then(() => {
+                    this.$router.push({ name : 'home' });
+                }).catch(() => {
+                    this.$router.push({ name : 'mobileLogin' });
+                });
             }
         }
     };

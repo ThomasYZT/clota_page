@@ -22,28 +22,39 @@ import '@/assets/scss/_common.scss';
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin';
 
+require('./assets/util/vconsole');
 
 Vue.use(plugin);
 Vue.config.productionTip = true;
 
 router.beforeEach((to, from, next) => {
-    //判断是否保存了用户信息和token，如果没有保存需要重新登录
-    if (to.name === 'mobileLogin' || to.name === 'activateCard' || to.name === 'activateInfo' || to.name === 'h5Pay' || to.name === 'payStatus'/* || to.name === 'mobileRegister'*/) {
+    //无操作的路由
+    if (
+        to.name === 'mobileLogin' //会员登陆
+        || to.name === 'activateCard' //激活会员卡
+        || to.name === 'activateInfo' //填写激活会员卡信息
+        || to.name === 'h5Pay' //c端支付
+        || to.name === 'payStatus' //c端支付结果
+        /* || to.name === 'mobileRegister'*/
+    ) {
         next();
-    } else {
-        //获取保存到本地的用户信息、卡列表信息、当前选择的卡信息
-        let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
-        let cardInfoList = localStorage.getItem('cardInfoList') ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
-        let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-        userInfo = defaultsDeep({cardId : cardInfo.id}, userInfo);
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-        let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
 
-        if (token && userInfo && Object.keys(userInfo).length > 0 && cardInfoList && cardInfoList.length > 0 && cardInfo && Object.keys(cardInfo).length > 0) {
+    //判断是否保存了用户信息和token，如果没有保存需要重新登录
+    } else {
+        //获取保存到本地的用户信息、当前选择的卡信息
+        let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+        let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+        let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
+
+        if (token && userInfo && Object.keys(userInfo).length > 0 && cardInfo && Object.keys(cardInfo).length > 0) {
             //若本地数据存在、更新vuex数据，防止刷新页面数据丢失
-            store.commit('updateCardInfo');
-            store.commit('updateCardInfoList');
             store.commit('updateUserInfo');
+            //接口更新卡列表信息，更新vuex数据
+            store.dispatch('getCardListInfo').catch(() => {
+                next({
+                    name : 'mobileLogin'
+                });
+            });
             next();
         } else {
             //若本地数据不存在，跳至登陆页
