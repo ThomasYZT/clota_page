@@ -10,15 +10,17 @@
         <div class="content">
 
             <div class="btn-wrap">
-                <Button type="primary"
-                        :disabled="tableData.length > 11"
-                        @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
+                <template v-if="cardTypeId !== '1'">
+                    <Button type="primary"
+                            :disabled="tableData.length > 11"
+                            @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
 
-                <!--会员3期暂时去掉-->
-                <!--<Button type="primary"-->
-                        <!--:disabled="tableData.length > 0"-->
-                        <!--@click="showRuleModal">{{$t('promotionSetting')}}</Button>&lt;!&ndash;晋级设置&ndash;&gt;-->
-                <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
+                    <!--会员3期暂时去掉-->
+                    <!--<Button type="primary"-->
+                    <!--:disabled="tableData.length > 0"-->
+                    <!--@click="showRuleModal">{{$t('promotionSetting')}}</Button>&lt;!&ndash;晋级设置&ndash;&gt;-->
+                    <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
+                </template>
             </div>
             <div class="table-wrap">
                 <table-com

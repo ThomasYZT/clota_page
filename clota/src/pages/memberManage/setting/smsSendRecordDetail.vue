@@ -213,7 +213,7 @@
 			 */
 			reSendSms () {
 				ajax.post('reSendSms',{
-					queueIds : JSON.stringify(this.selectedSmsRecord.map(item => item.id))
+					queueIds : this.selectedSmsRecord.map(item => item.id).join(',')
 				}).then(res => {
 					if (res.success) {
 						this.$Message.success(this.$t('successTip',{ tip : this.$t('sending') }));

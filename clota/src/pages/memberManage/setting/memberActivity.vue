@@ -19,7 +19,7 @@
 							 style="width: 480px" >
 					</i-input>
 				</FormItem>
-				<FormItem label="会员卡级别：" prop="sendRange">
+				<FormItem label="会员卡：" prop="sendRange">
 					<Select v-model="formData.sendRange"
 							multiple
 							style="width: 480px"
@@ -27,7 +27,7 @@
 						<Option :value="item.id"
 								v-for="item in memberLevels"
 								:key="item.id">
-							{{$t(item.levelDesc)}}
+							{{$t(item.typeName)}}-{{$t(item.levelDesc)}}
 						</Option>
 					</Select>
 				</FormItem>

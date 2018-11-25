@@ -2,12 +2,12 @@
 
 export const columnData = [
     {
-        title : '会员卡类别编码', // 会员卡类别编码
+        title : '会员卡类型编码', // 会员卡类型编码
         minWidth : 200,
         field : 'typeCode'
     },
     {
-        title : '会员卡类别名称', // 会员卡类别名称
+        title : '会员卡类型名称', // 会员卡类型名称
         minWidth : 140,
         field : 'typeName'
     },

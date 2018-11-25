@@ -34,10 +34,11 @@
                         <template slot-scope="scoped">
                             <ul class="operate-list">
                                 <li class="blue-label" @click.stop="showEditMemberModal(scoped.row)">{{$t('modify')}}</li>
-                                <li class="red-label"
-                                    @click.stop="delMemberLevel($event,scoped.row)">
-                                    {{$t('del')}}
-                                </li>
+                                <!--会员3期暂时去掉-->
+                                <!--<li class="red-label"-->
+                                    <!--@click.stop="delMemberLevel($event,scoped.row)">-->
+                                    <!--{{$t('del')}}-->
+                                <!--</li>-->
                             </ul>
                         </template>
                     </el-table-column>

@@ -17,7 +17,7 @@
 				:ofset-height="150"
 				@query-data="queryList">
 				<el-table-column
-					slot="column2"
+					slot="column3"
 					show-overflow-tooltip
 					slot-scope="row"
 					:label="row.title"
@@ -60,6 +60,11 @@
 						minWidth : 100,
 						field : 'id'
 					},
+                    {
+                        title : '会员卡类型',
+                        minWidth : 100,
+                        field : 'typeName'
+                    },
 					{
 						title : '级别名称',
 						minWidth : 100,
