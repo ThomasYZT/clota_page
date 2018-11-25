@@ -48,9 +48,9 @@
             <!-- 累计消费 -->
             <span class="label">{{$t('colonSetting', { key: $t('totalConsume') })}}</span><span class="data">{{totalConsume | moneyFilter | contentFilter}}</span>
             <!-- 累计交易笔数 -->
-            <span class="label">{{$t('colonSetting', { key: $t('totalTradeQuantity') })}}</span><span class="data">{{totalTradeQuantity | moneyFilter | contentFilter}}</span>
+            <span class="label">{{$t('colonSetting', { key: $t('totalTradeQuantity') })}}</span><span class="data">{{totalTradeQuantity | contentFilter}}</span>
             <!-- 累计消费人数 -->
-            <span class="label">{{$t('colonSetting', { key: $t('totalConsumePeople') })}}</span><span class="data">{{totalConsumePeople | moneyFilter | contentFilter}}</span>
+            <span class="label">{{$t('colonSetting', { key: $t('totalConsumePeople') })}}</span><span class="data">{{totalConsumePeople | contentFilter}}</span>
         </div>
 
         <table-com
