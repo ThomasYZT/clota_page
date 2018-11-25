@@ -7,68 +7,55 @@
             :router-name="routerName">
         </header-tabs>
         <div class="content">
-            <div class="title">{{$t('选择会员卡')}}</div>
-            <table-com
-                key="memTableCom"
-                ref="memTableCom"
-                :column-data="memColumnData"
-                :table-data="memTableData"
-                :border="true"
-                :auto-height="true"
-                :table-com-min-height="280">
-                <el-table-column
-                    slot="column0"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scoped">
-                        <Radio :value="scoped.row.id === chosedMemCard"
-                               style="margin-right: 0"
-                               @input="chosedMemCard = scoped.row.id"
-                               @on-change="cardTypeChosedChange(scoped.row.id)">
-                        </Radio>
-                    </template>
-                </el-table-column>
-            </table-com>
-            <div class="title">{{$t('memberChannelChoose')}}</div>
-            <table-com
-                key="tableCom"
-                ref="tableCom"
-                :column-data="columns"
-                :table-data="tableData"
-                :border="true"
-                :page-no-d.sync="pageNo"
-                :show-pagination="true"
-                :page-size-d.sync="pageSize"
-                :total-count="totalCount"
-                :auto-height="true"
-                :table-com-min-height="280"
-                @query-data="queryList"
-                @selection-change="channelChange">
-                <el-table-column
-                    slot="column0"
-                    slot-scope="row"
-                    :selectable="selectable"
-                    :label="row.title"
-                    type="selection"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                </el-table-column>
-            </table-com>
-            <div class="title">{{$t('memberAreaChoose')}}</div>
-            <el-tree :data="companyData"
-                     node-key="id"
-                     ref="tree"
-                     :default-expand-all="true"
-                     show-checkbox
-                     :check-strictly="true"
-                     :props="defaultProps"
-                     :expand-on-click-node="false"
-                     v-if="companyData.length > 0"
-                     @check="treeChecked"
-                     :render-content="renderContent">
-            </el-tree>
+            <ul class="cardtype-area">
+                <li class="card-type-list"
+                    v-for="(item,index) in memTableData"
+                    :class="{ 'active' : chosedMemCard === item.id }"
+                    @click="cardTypeChosedChange(item.id)"
+                    :key="index">
+                    {{item.content}}
+                </li>
+            </ul>
+            <div class="channel-area">
+                <div class="title">{{$t('memberChannelChoose')}}</div>
+                <table-com
+                    key="tableCom"
+                    ref="tableCom"
+                    :column-data="columns"
+                    :table-data="tableData"
+                    :border="true"
+                    :page-no-d.sync="pageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="pageSize"
+                    :total-count="totalCount"
+                    :auto-height="true"
+                    :table-com-min-height="280"
+                    @query-data="queryList"
+                    @selection-change="channelChange">
+                    <el-table-column
+                        slot="column0"
+                        slot-scope="row"
+                        :selectable="selectable"
+                        :label="row.title"
+                        type="selection"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                    </el-table-column>
+                </table-com>
+                <div class="title">{{$t('memberAreaChoose')}}</div>
+                <el-tree :data="companyData"
+                         node-key="id"
+                         ref="tree"
+                         :default-expand-all="true"
+                         show-checkbox
+                         :check-strictly="true"
+                         :props="defaultProps"
+                         :expand-on-click-node="false"
+                         v-if="companyData.length > 0"
+                         @check="treeChecked"
+                         :render-content="renderContent">
+                </el-tree>
+            </div>
         </div>
         <div class="btn-area">
             <Button type="primary" @click="saveSetting">{{$t("save")}}</Button>
@@ -112,8 +99,6 @@
                 memberLevelsData : {},
                 //选择的会员卡信息
                 chosedMemCard : '',
-                //会员卡表头配置
-                memColumnData : memCardHead,
                 //会员卡级别对应的可用渠道和可用景区
                 cardCategoryChosedInfo : {}
             };
@@ -310,6 +295,7 @@
              * @param rowDataid
              */
             cardTypeChosedChange (rowDataid) {
+                this.chosedMemCard = rowDataid;
                 if ( !(rowDataid in this.cardCategoryChosedInfo) ) {
                     this.cardCategoryChosedInfo[rowDataid] = {
                         channel : [],
@@ -407,6 +393,36 @@
             height: calc(100% - 126px);
             overflow: auto;
             padding: 25px 60px;
+
+            .cardtype-area{
+                @include block_outline(322px);
+                background: #fbfcfe;
+                float: left;
+                overflow-y: auto;
+                overflow-x: hidden;
+
+                .card-type-list{
+                    @include block_outline($height : 50px);
+                    font-size: $font_size_14px;
+                    color: $color_666;
+                    line-height: 50px;
+                    padding: 0 20px;
+                    cursor: pointer;
+
+                    &.active{
+                        background: $color_fff;
+                        border: 1px solid #BBC5D5;
+                        border-right: 0;
+                    }
+                }
+            }
+
+            .channel-area{
+                @include block_outline(unquote('calc(100% - 322px)'));
+                float: left;
+                padding-left: 30px;
+                overflow: auto;
+            }
 
             .title{
                 font-size: $font_size_16px;

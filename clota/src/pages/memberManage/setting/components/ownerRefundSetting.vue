@@ -6,17 +6,18 @@
         <Form ref="formInline"
               :label-width="60">
             <template v-for="(item,index) in formData">
-                <FormItem prop="percent"
-                          :key="index"
-                          :label="$t(item['accountTypeName'])"
-                          :rules="{ required : true,validator : validatePercent, trigger : 'blur',data : item['refundScale'] }">
-                    <i-input type="text"
-                           :value="item['refundScale']"
-                           style="width : 100px;"
-                             @on-change="changePercent($event,index)">
-                        <span slot="append">%</span>
-                    </i-input>
-                </FormItem>
+                <i-col span='12' :key="index">
+                    <FormItem prop="percent"
+                              :label="$t(item['accountTypeName'])"
+                              :rules="{ required : true,validator : validatePercent, trigger : 'blur',data : item['refundScale'] }">
+                        <i-input type="text"
+                                 :value="item['refundScale']"
+                                 style="width : 100px;"
+                                 @on-change="changePercent($event,index)">
+                            <span slot="append">%</span>
+                        </i-input>
+                    </FormItem>
+                </i-col>
             </template>
         </Form>
     </div>
@@ -121,6 +122,11 @@
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .owner-account-percent{
+
+        /deep/ .ivu-form{
+            overflow: hidden;
+            width: 343px;
+        }
 
         /deep/ .ivu-form-item-content{
             width: auto!important;
