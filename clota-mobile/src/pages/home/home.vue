@@ -6,8 +6,8 @@
   <div class="home"
        v-show="!isLoading">
       <swiper ref="swiper"
-              height="205px"
               :class="{'no-spot': this.cardInfoList.length === 1}"
+              class="home-swiper"
               v-model="cardIndex"
               @on-index-change="swiperChange"
               dots-position="center">
@@ -245,6 +245,17 @@
         /deep/ .no-spot {
             .vux-indicator {
                 display: none;
+            }
+        }
+
+        .home-swiper {
+            height: 210px;
+            /deep/ .vux-swiper-item {
+                height: 200px;
+            }
+
+            /deep/ .vux-swiper {
+                height: 200px !important;
             }
         }
     }
