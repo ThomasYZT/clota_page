@@ -140,6 +140,9 @@ export default new Vuex.Store({
             if (newCardInfo && Object.keys(newCardInfo).length > 0) {
                 //设置当前会员卡信息
                 state.cardInfo = newCardInfo;
+                state.commit('updateUserInfo',Object.assign({
+                    cardId : newCardInfo.id
+                },state.getters.userInfo));
                 localStorage.setItem('cardInfo', JSON.stringify(newCardInfo));
             } else {
                 let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
@@ -200,7 +203,7 @@ export default new Vuex.Store({
         getCardListInfo ({ state, commit, dispatch }) {
             return new Promise((resolve, reject) => {
                 ajax.post('queryMemberCardList', {
-                    memberId : state.userInfo.memberId
+                    memberId : state.getters.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
                         let memberCardList = res.data ? res.data : [];
