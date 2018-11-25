@@ -33,6 +33,7 @@
     import { validator } from 'klwk-ui';
     import ajax from '../../api/index';
     import lifeCycleMixins from '../../mixins/lifeCycleMixins';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -43,11 +44,17 @@
                     //实体卡卡面号
                     faceNum : '',
                     //涂层密码
-                    password : ''
+                    password : '',
+                    companyCode : '',
                 },
                 //微信openid
                 openId : '',
             };
+        },
+        computed : {
+            ...mapGetters([
+                'companyCode'
+            ])
         },
         methods : {
             /**
@@ -71,6 +78,7 @@
              * 查询实体卡信息
              */
             queryEntityCard () {
+                this.activateInfo.companyCode = this.companyCode;
                 ajax.post('queryEntityCardByFaceNumAndPassword', this.activateInfo).then(res => {
                     if (res.success) {
                         this.cardInfo = res.data ? res.data : {};
@@ -87,6 +95,11 @@
                         } else {
                             this.$vux.toast.text(this.$t('getCardInfoFailure'));
                         }
+                        this.activateInfo = {
+                            faceNum : '',
+                            password : '',
+                            companyCode : '',
+                        };
                     }
                 });
             },
