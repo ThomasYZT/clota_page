@@ -65,7 +65,7 @@
                 //实际到账金额
                 actualMoney : '',
                 //充值金额
-                rechargeMoney : '0.01',
+                rechargeMoney : '',
                 //账户类型id
                 accountTypeId : '',
                 //赠送金额
