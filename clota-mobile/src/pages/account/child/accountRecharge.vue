@@ -48,20 +48,9 @@
         data () {
             return {
                 //可选中支付方式
-                commonList : [
-                    {
-                        icon : require('../../../assets/images/icon-wx-pay.svg'),
-                        key : 'wx',
-                        value : this.$t('wxPay')
-                    },
-                    {
-                        icon : require('../../../assets/images/icon-ali-pay.svg'),
-                        key : 'ali',
-                        value : this.$t('aliPay')
-                    },
-                ],
+                commonList : [],
                 //支付方式
-                payType : 'wx',
+                payType : '',
                 //实际到账金额
                 actualMoney : '',
                 //充值金额
@@ -194,9 +183,11 @@
                             }
                         }) : [];
                         this.chosedAccount = this.commonList[0];
+                        this.payType = this.commonList[0].key;
                     } else {
                         this.commonList = [];
                         this.chosedAccount = {};
+                        this.payType =  '';
                     }
                 })
             },
