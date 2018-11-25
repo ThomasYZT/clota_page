@@ -170,7 +170,7 @@
              */
             getData () {
                 ajax.post('listMemberCardRate', {
-                    cardId : this.userInfo.cardId
+                    cardId : this.cardInfo.id,
                 }).then((res) => {
                     //console.log(res.data)
                     if (res.success) {

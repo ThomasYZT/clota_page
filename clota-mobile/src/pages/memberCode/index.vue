@@ -137,8 +137,8 @@
              */
             getAccountInfo () {
                 ajax.post('listCardAccountInfo',{
-                    cardId : this.userInfo.cardId,
-                    memberId : this.userInfo.memberId
+                    cardId : this.cardInfo.id,
+                    memberId : this.userInfo.memberIdf
                 }).then(res => {
                     if(res.success){
                         this.accountList = res.data ? res.data.map((item,index) => {
@@ -203,7 +203,8 @@
                 return {};
             },
             ...mapGetters({
-                userInfo : 'userInfo'
+                userInfo : 'userInfo',
+                cardInfo : 'cardInfo'
             })
         },
         beforeRouteEnter(to,from,next){

@@ -155,7 +155,7 @@
              */
             getMemberDetail () {
                 ajax.post('queryMemberCardDetail',{
-                    cardId : this.userInfo.cardId
+                    cardId : this.cardInfo.id
                 }).then(res => {
                     if (res.success) {
                         this.$set(this,'formData',res.data ? Object.assign(this.formData,{
@@ -289,7 +289,7 @@
              */
             getGrowthBalance () {
                 ajax.post('getGrowthBalance',{
-                    cardId : this.userInfo.cardId
+                    cardId : this.cardInfo.id
                 }).then(res => {
                     if (res.success) {
                         this.$set(this.formData,'growth',res.data ? res.data.accountBalance : '');
@@ -425,7 +425,8 @@
         },
         computed : {
             ...mapGetters({
-                userInfo : 'userInfo'
+                userInfo : 'userInfo',
+                cardInfo : 'cardInfo',
             }),
             //证件号码
             idNum () {

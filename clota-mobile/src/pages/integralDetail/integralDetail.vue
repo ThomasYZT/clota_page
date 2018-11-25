@@ -81,7 +81,7 @@
                 ajax.post('queryOrgAccountChange', {
                     accountTypeIds : '2',
                     operType : '',
-                    cardId : this.userInfo.cardId,
+                    cardId : this.cardInfo.id,
                     ...this.pageSetting
                 }).then((res) => {
                     if (res.success) {
@@ -159,6 +159,7 @@
         computed : {
             ...mapGetters([
                 'userInfo',
+                'cardInfo',
             ])
         },
         created () {
