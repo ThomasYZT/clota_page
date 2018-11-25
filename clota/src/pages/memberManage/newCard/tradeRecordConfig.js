@@ -17,7 +17,12 @@ export const tradeRecordHead = [
         field : 'txnReqTime'
     },
     {
-        title : 'selectCardAttribution', // 会员卡信息
+        title : 'memberCardType', // 会员卡类型
+        minWidth : 150,
+        field : 'cardTypeName'
+    },
+    {
+        title : 'memberCardLevel', // 会员卡级别
         minWidth : 150,
         field : 'cardLevelName'
     },

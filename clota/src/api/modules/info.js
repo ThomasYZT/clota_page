@@ -93,6 +93,8 @@ export default {
     'queryHouseMoneyEditRecord' : '/member/queryHouseMoneyEditRecord',
     //查看新增详情
     'getIncreaseMemberCountDetail' : '/member/getIncreaseMemberCountDetail',
+    //撤销交易
+    'revocation' : '/pay/revocation',
 
 
     /***********************************会员积分***********************************/

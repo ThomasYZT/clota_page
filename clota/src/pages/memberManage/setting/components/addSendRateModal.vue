@@ -58,6 +58,7 @@
                     ref="ruleMultiTablePlug"
                     :table-com-min-height="320"
                     :column-data="columnData"
+                    :height="370"
                     :table-data="tableData"
                     @selection-change="handleSelectionChange"
                     :border="false">
@@ -70,6 +71,18 @@
                         :min-width="row.minWidth"
                         type="selection"
                         slot-scope="row">
+                    </el-table-column>
+                    <el-table-column
+                        slot="column1"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        slot-scope="row">
+                        <template slot-scope="scope">
+                            {{scope.row.typeName}}-{{scope.row.levelDesc}}
+                        </template>
                     </el-table-column>
                 </table-com>
             </div>

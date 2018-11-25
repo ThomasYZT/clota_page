@@ -122,6 +122,8 @@
                     status : this.formDataCopy.isStart ? 'open' : 'close',
                     orgName : this.formDataCopy.orgName,
                     nodeType : this.formDataCopy.nodeType,
+                    parentEconomicId : this.formDataCopy.parentEconomicId,
+                    parentManageId : this.formDataCopy.parentManageId,
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));

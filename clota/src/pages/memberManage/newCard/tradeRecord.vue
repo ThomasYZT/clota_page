@@ -64,7 +64,7 @@
 				</template>
 			</el-table-column>
 			<el-table-column
-				slot="column4"
+				slot="column5"
 				:label="row.title"
 				:prop="row.field"
 				:key="row.index"
@@ -77,7 +77,7 @@
 				</template>
 			</el-table-column>
 			<el-table-column
-				slot="column5"
+				slot="column6"
 				:label="row.title"
 				:prop="row.field"
 				:key="row.index"
@@ -90,7 +90,7 @@
 				</template>
 			</el-table-column>
 			<el-table-column
-				slot="column6"
+				slot="column7"
 				:label="row.title"
 				:prop="row.field"
 				:key="row.index"
@@ -103,7 +103,7 @@
 				</template>
 			</el-table-column>
 			<el-table-column
-				slot="column7"
+				slot="column8"
 				:label="row.title"
 				:prop="row.field"
 				:key="row.index"
@@ -118,7 +118,7 @@
 				</template>
 			</el-table-column>
 			<el-table-column
-				slot="column9"
+				slot="column10"
 				slot-scope="row"
 				show-overflow-tooltip
 				:label="row.title"

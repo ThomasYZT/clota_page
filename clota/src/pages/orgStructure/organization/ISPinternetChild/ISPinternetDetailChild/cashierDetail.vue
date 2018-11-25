@@ -16,7 +16,7 @@
                     </span>
                 <template v-if="type === 'watch'">
                     <span class="edit"
-                          v-if="'modifyNode' in permissionInfo"
+                          v-if=" 'modifyNode' in permissionInfo"
                           @click="edit">
                         <span class="iconfont icon-edit"></span>
                         {{$t('modify')}}

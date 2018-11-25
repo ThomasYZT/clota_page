@@ -26,6 +26,19 @@
                         {{$t(`${scoped.row.integrate}积分兑换${scoped.row.money}元`)}}
                     </template>
                 </el-table-column>
+                <!--最多抵扣单笔订单金额-->
+                <el-table-column
+                    slot="column4"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :resizable="false"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scoped">
+                        {{scoped.row.highProportion | contentFilter}}%
+                    </template>
+                </el-table-column>
                 <!--是否启用-->
                 <el-table-column
                     slot="column5"

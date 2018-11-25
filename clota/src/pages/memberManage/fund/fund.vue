@@ -89,7 +89,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column6"
+                slot="column7"
                 show-overflow-tooltip
                 :label="row.title"
                 :prop="row.field"
@@ -102,7 +102,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column7"
+                slot="column8"
                 show-overflow-tooltip
                 :label="row.title"
                 :prop="row.field"
