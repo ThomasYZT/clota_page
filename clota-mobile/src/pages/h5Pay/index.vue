@@ -89,10 +89,9 @@
             getParams () {
                 //微信
                 if (this.isWeixin()) {
-                    this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
-
                     //微信内，公众号支付
                     if (this.payFormData.paymentTypeId === 'wx') {
+                        this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
                         //删除路由缓存数据
                         localStorage.removeItem('payStatus');
                         this.$nextTick(() => {
@@ -101,6 +100,7 @@
 
                     //微信内支付宝支付，显示其他浏览器打开
                     } else {
+                        this.payFormData = querystring.parse(location.href.split('?')[1]);
                         this.isShowImg = true;
                         //开始轮询支付状态及支付结果
                         this.intervalId = setInterval(() => {

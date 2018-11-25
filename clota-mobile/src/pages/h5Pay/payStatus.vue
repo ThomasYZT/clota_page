@@ -65,15 +65,13 @@
 
                     if (data && data.RespCode === '00') {
                         this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
+
                         //调用内部系统充值接口
                         this.rechargeAccount();
                     } else {
                         this.$vux.toast.text(this.$t('payFailure'));
                         this.isSuccess = false;
                     }
-                    //支付结果同步
-                    //this.syncPayTransactionResult(data);
-
                 }
             },
             /**

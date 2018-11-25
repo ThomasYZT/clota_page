@@ -73,7 +73,9 @@
                 //账户名称
                 accountTypeName : '',
                 //支付接口参数对象
-                payFormData : {}
+                payFormData : {},
+                //选择的支付方式
+                chosedAccount : {}
             };
         },
         computed : {
@@ -113,6 +115,7 @@
                     this.accountTypeName = params.accountName;
                     this.accounId = params.accounId
                     this.setTitle();
+                    this.queryOnlinePayAccount();
                 } else {
                     this.$router.push({
                         name : 'account'
@@ -121,9 +124,12 @@
             },
             /**
              * 充值类型改变
+             * @param {*} data
              */
-            rechageTypechange () {
-
+            rechageTypechange (data) {
+                this.chosedAccount = this.commonList.find(item => {
+                    return item.key === data;
+                });
             },
             /**
              * 校验充值金额
@@ -165,6 +171,36 @@
                 }
             },
             /**
+             *  获取在线支付方式列表
+             */
+            queryOnlinePayAccount () {
+                ajax.post('queryOnlinePayAccount').then(res => {
+                    if (res.success) {
+                        this.commonList = res.data && res.data.length > 0 ? res.data.map((item) => {
+                            if (item.accountType === 'weixin') {
+                                return {
+                                    icon : require('../../../assets/images/icon-wx-pay.svg'),
+                                    key : 'wx',
+                                    value : this.$t('wxPay'),
+                                    param : item
+                                }
+                            } else if (item.accountType === 'alipay') {
+                                return {
+                                    icon : require('../../../assets/images/icon-ali-pay.svg'),
+                                    key : 'ali',
+                                    value : this.$t('aliPay'),
+                                    param : item
+                                }
+                            }
+                        }) : [];
+                        this.chosedAccount = this.commonList[0];
+                    } else {
+                        this.commonList = [];
+                        this.chosedAccount = {};
+                    }
+                })
+            },
+            /**
              * 判断是否在微信浏览器
              */
             isWeixin () {
@@ -187,7 +223,7 @@
                     channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : location.origin + '/payStatus'
+                    redirectUrl : encodeURI(location.origin + '/payStatus')
                 }).then(res => {
                     if (res.success) {
                         this.payFormData = res.data ? res.data : {};
@@ -206,7 +242,7 @@
                             '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
                             '&merchantId=' + this.payFormData.merchantId +
                             '&txnAmt=' + this.payFormData.txnAmt +
-                            '&redirectUrl=' + escape(this.payFormData.redirectUrl) +
+                            '&redirectUrl=' + this.payFormData.redirectUrl +
                             '&txnShortDesc=' + this.payFormData.txnShortDesc +
                             '&sign=' + this.payFormData.sign +
                             '&currencyCode=' + this.payFormData.currencyCode +
@@ -231,7 +267,7 @@
                     channelId : 'weixin',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : location.origin + '/payStatus'
+                    redirectUrl : encodeURI(location.origin + '/payStatus')
                 }).then(res => {
                     if (res.success) {
                         //设置支付表单信息
@@ -243,8 +279,8 @@
                         this.payFormData.accountTypeId = this.accountTypeId;
                         this.payFormData.remark = '';
                         this.payFormData.amount = this.payFormData.txnAmt;
-
-                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData))
+                        this.payFormData.redirectUrl = this.payFormData.redirectUrl;
+                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
                         location.href = location.origin + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
