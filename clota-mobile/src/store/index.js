@@ -211,7 +211,7 @@ export default new Vuex.Store({
                         if (memberCardList.length > 0) {
                             //存储卡列表数据
                             commit('updateCardInfoList', memberCardList);
-                            commit('updateCardInfo', memberCardList[0]);
+                            commit('updateCardInfo');
                             resolve();
                         } else {
                             //会员卡列表数据为空
