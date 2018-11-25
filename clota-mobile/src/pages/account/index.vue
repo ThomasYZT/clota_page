@@ -153,7 +153,7 @@
              */
             listCardAccountInfo () {
                 ajax.post('listCardAccountInfo',{
-                    cardId : this.userInfo.cardId,
+                    cardId : this.cardInfo.id,
                     memberId : this.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
@@ -174,7 +174,7 @@
              */
             getOwnerCardAccountInfo () {
                 ajax.post('queryCardAccountInfo', {
-                    cardId : this.userInfo.cardId,
+                    cardId : this.cardInfo.id,
                 }).then(res => {
                     if (res.success) {
                         this.OwnerCardAccount = res.data ? res.data : [];
