@@ -208,6 +208,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.dataToLogin(res);
+                        localStorage.clear();
                     } else {
                         //错误信息为空，表示获取到了用户信息
                         if (!res.errcode) {
