@@ -192,6 +192,19 @@
             } else {
                 this.listCardAccountInfo();
             }
+        },
+        mounted () {
+            //监听微信物理返回
+            let state = {
+                title : "title",
+                url : "#"
+            };
+            history.pushState(state, "title", "#");
+            window.addEventListener("popstate", (e) => {
+                this.$router.push({
+                    name : 'home'
+                })
+            }, false);
         }
     };
 </script>
