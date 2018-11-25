@@ -250,7 +250,7 @@
     import entityCardInfo from '../components/entityCardInfo.vue';
     import setPasswordModal from '../components/setPasswordModal';
     import confirmMemberInfo from '../components/confirmDetailModal';
-    import loopForPayResult from '../components/loopForPayResult';
+    import loopForPayResult from '../../../../components/loopForPayResult/loopForPayResult';
 
     export default {
         components : {

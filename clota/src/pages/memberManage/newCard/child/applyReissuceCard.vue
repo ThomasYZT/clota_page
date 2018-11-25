@@ -114,7 +114,7 @@
     import entityCardInfo from '../components/entityCardInfo';
     import ajax from '@/api/index.js';
     import confirmMemberInfo from '../components/confirmDetailModal';
-    import loopForPayResult from '../components/loopForPayResult';
+    import loopForPayResult from '../../../../components/loopForPayResult/loopForPayResult';
     import confirmModal from '@/components/delModal/index.vue';
 
 	export default {

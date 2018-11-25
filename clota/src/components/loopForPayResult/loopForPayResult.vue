@@ -15,7 +15,7 @@
             <template v-if="stage === 'search'">
                 <div class="trading-title">交易正在进行中…</div>
                 <div class="scan-img">
-                    <img src="../../../../assets/images/icon-wait-pay.svg" alt="">
+                    <img src="../../assets/images/icon-wait-pay.svg" alt="">
                 </div>
                 <div class="cancel-area">
                     <Button type="ghost" @click="revocation">取消交易</Button>
@@ -25,7 +25,7 @@
             <template v-else-if="stage === 'scan'">
                 <div class="wait-scan">等待扫码中…</div>
                 <div class="scan-img">
-                    <img src="../../../../assets/images/icon-scan.svg" alt="">
+                    <img src="../../assets/images/icon-scan.svg" alt="">
                 </div>
                 <div class="input-area">
                     <Form ref="formValidate"
@@ -45,10 +45,10 @@
                     </Form>
                 </div>
             </template>
-            <!--支付结果未知-->
+            <!--取消支付-->
             <template v-else-if="stage === 'cancel'">
                 <div class="open-card-suc-img">
-                    <img src="../../../../assets/images/icon-open-card-fail.svg" alt="">
+                    <img src="../../assets/images/icon-open-card-fail.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
                     交易已取消！
@@ -57,10 +57,22 @@
                     <!--可前往<span class="trade-record" @click="toTradeRecrod"> 在线交易记录 </span>继续查询支付结果-->
                 <!--</div>-->
             </template>
+            <!--支付结果未知-->
+            <template v-else-if="stage === 'unknown'">
+                <div class="open-card-suc-img">
+                    <img src="../../assets/images/icon-open-card-fail.svg" alt="">
+                </div>
+                <div class="open-card-suc-label">
+                    交易结果未知！
+                </div>
+                <div class="to-for-detail">
+                可前往<span class="trade-record" @click="toTradeRecrod"> 在线交易记录 </span>继续查询支付结果
+                </div>
+            </template>
             <!--支付成功-->
             <template v-else-if="stage === 'fail'">
                 <div class="open-card-suc-img">
-                    <img src="../../../../assets/images/icon-open-card-fail.svg" alt="">
+                    <img src="../../assets/images/icon-open-card-fail.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
                     交易失败!
@@ -69,7 +81,7 @@
             <!--支付成功-->
             <template v-else-if="stage === 'success'">
                 <div class="open-card-suc-img">
-                    <img src="../../../../assets/images/icon-open-card-success.svg" alt="">
+                    <img src="../../assets/images/icon-open-card-success.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
                     交易成功!
@@ -189,7 +201,7 @@
                 this.timer = setInterval(() => {
                     if (this.loopSearchTime <= 0) {
                         clearInterval(this.timer);
-                        this.revocation();
+                        this.stage = 'unknown';
                     } else {
                         if (!this.searchIng) {
                             this.queryConsumeUpdateBiz();

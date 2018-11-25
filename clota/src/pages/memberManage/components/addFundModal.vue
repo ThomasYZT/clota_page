@@ -94,7 +94,7 @@
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
     import { mapGetters } from 'vuex';
-    import loopForPayResult from '../newCard/components/loopForPayResult';
+    import loopForPayResult from '../../../components/loopForPayResult/loopForPayResult';
 
     export default {
         props : ['payment-list','detail','card-info'],

@@ -131,7 +131,7 @@
     import { validator } from 'klwk-ui';
     import confirmMemberInfo from './components/confirmDetailModal';
     import { mapGetters } from 'vuex';
-    import loopForPayResult from './components/loopForPayResult';
+    import loopForPayResult from '../../../components/loopForPayResult/loopForPayResult';
 
     export default {
         components : {
