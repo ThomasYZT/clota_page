@@ -111,7 +111,7 @@
                         let time = params[0].data.params.createdTime + ' ' + this.$t(common.getWeekDay(new Date(params[0].data.params.createdTime)));
                         let statistics = '<p>' + this.$t('totalCount') + ' ' + params.reduce((total, cur) => {
                             return total + cur.data.value;
-                        }, 0).toFixed(2) + ' ' + this.$t('totalMoney') + ' ' + params.reduce((total, cur) => {
+                        }, 0).toFixed(0) + ' ' + this.$t('totalMoney') + ' ' + params.reduce((total, cur) => {
                             return total + cur.data.params.money;
                         }, 0).toFixed(2) + '</p>';
                         html += time + statistics;

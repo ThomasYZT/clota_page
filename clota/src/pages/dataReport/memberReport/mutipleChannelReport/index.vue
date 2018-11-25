@@ -15,9 +15,7 @@
         props : {
             cardType : {
                 type : String,
-                default () {
-                    return '';
-                }
+                default : ''
             }
         },
         components : {
