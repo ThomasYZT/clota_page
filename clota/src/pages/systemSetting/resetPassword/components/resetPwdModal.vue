@@ -6,6 +6,7 @@
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
+        @on-visible-change="visibleChange"
         @on-cancel="hide">
 
         <div class="modal-body">
@@ -69,7 +70,15 @@
                     }
                 },
             };
-
+            //校验密码是否符合规则
+            const validatePass = (rule,value,callback) => {
+                let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
+                if(!reg.test(value)) {
+                    callback(new Error( this.$t('errorPwdRule') ));
+                }else {
+                    callback()
+                }
+            };
             return {
                 visible: false,
                 //表单数据
@@ -79,6 +88,10 @@
                     password: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('newPassword')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        {
+                            validator : validatePass,
+                            trigger : 'blur'
+                        }
                     ],
                     rePassword: [
                         { required: true, message: this.$t('inputPasswordAgain'), trigger: 'blur' },
@@ -121,7 +134,11 @@
 
             // 确定
             confirm () {
-                this.resetPwd(this.formData);
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        this.resetPwd(this.formData);
+                    }
+                });
             },
 
             // 重置密码
@@ -137,6 +154,15 @@
                     }
                 });
             },
+            /**
+             * 模态框显示隐藏状态改变
+             * @param type
+             */
+            visibleChange (type) {
+                if (type === false) {
+                    this.$refs.formValidate.resetFields();
+                }
+            }
 
         },
     }
