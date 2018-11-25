@@ -99,9 +99,9 @@
         </transition>
         <!--删除服务模态框-->
         <del-modal ref="delModal">
-            <div class="del-tips">
-                <Icon type="help-circled"></Icon>
-                <span class="red-bale">{{$t('delServiceNotice')}}</span>
+            <div :class="$style.delTips">
+                <Icon :class="$style.icon" type="help-circled"></Icon>
+                <span :class="$style.redBale">{{$t('delServiceNotice')}}</span>
                 <span>{{$t('saveInTime')}}</span>
             </div>
         </del-modal>
@@ -334,17 +334,26 @@
             }
         }
 
-        @at-root .del-tips{
-            position: absolute;
-            padding: 0 76px 0 106px;
-            color: $color_333;
-            font-size: $font_size_14px;
 
-            .ivu-icon{
-                @include absolute_pos(absolute,$left : 88px,$top : 2px);
-                font-size: 15px;
-                color: #EB6751;
-            }
-        }
+    }
+</style>
+<style module lang="scss">
+    .delTips{
+        position: absolute;
+        padding: 0 76px 0 106px;
+        color: #333333;
+        font-size: 14px;
+    }
+
+    .icon{
+        position: absolute;
+        left: 88px;
+        top : 2px;
+        font-size: 15px;
+        color: #EB6751;
+    }
+
+    .redBale {
+        color: #ED3F14;
     }
 </style>
