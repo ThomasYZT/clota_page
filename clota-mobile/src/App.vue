@@ -177,7 +177,7 @@
                     }).then(res => {
                         if (res.success) {
                             this.$wechat.config({
-                                debug : true,
+                                //debug : true,
                                 appId : res.data.appId,
                                 timestamp : res.data.timestamp,
                                 nonceStr : res.data.nonceStr,
