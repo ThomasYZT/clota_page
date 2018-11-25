@@ -713,10 +713,7 @@
                 this.$router.push({
                     name : 'infoFund',
                     params : {
-                        fundDetail : {
-                            ...dealData,
-                            cardId : this.choosedCard.id
-                        }
+                        fundDetail : dealData
                     }
                 });
             },
@@ -726,10 +723,7 @@
                 this.$router.push({
                     name : 'infoInteg',
                     params : {
-                        integraDetail : {
-                            ...integraData,
-                            cardId : this.choosedCard.id
-                        }
+                        integraDetail : integraData
                     }
                 });
             },

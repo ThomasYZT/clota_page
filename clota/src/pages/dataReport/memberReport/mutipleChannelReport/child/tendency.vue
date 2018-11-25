@@ -77,7 +77,7 @@
                         html += time;
                         params.forEach(item => {
                             let spot = '<p><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' +
-                            item.color + '"></span>' + this.$t('online') + ' ' + (item ? item.data.value : 0).toFixed(2);
+                            item.color + '"></span>' + this.$t('online') + ' ' + (item ? item.data.value : 0).toFixed(0);
 
                             html += spot;
                         });
