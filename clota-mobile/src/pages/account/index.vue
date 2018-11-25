@@ -23,7 +23,7 @@
                             <div class="money-num">{{item.corpusBalance | moneyFilter}}</div>
                             <div class="money-label">{{$t('rechargeMoney')}}</div>
                         </div>
-                        <div class="account-donate-left" v-if="accountList[accountShow].accountDefineId !== '4'">
+                        <div class="account-donate-left" v-show="accountList[accountShow].accountDefineId !== '4'">
                             <div class="money-num">{{item.donateBalance | moneyFilter}}</div>
                             <div class="money-label">{{$t('donateMoney')}}</div>
                         </div>
