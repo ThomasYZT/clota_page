@@ -11,27 +11,27 @@
               :model="formData"
               :rules="ruleValidate"
               label-position="right"
-              :label-width="110">
+              :label-width="130">
 
             <i-row>
                 <i-col span="16" offset="4">
                     <!--商品名称-->
-                    <Form-item :label="$t('goodsName')">
+                    <Form-item :label="$t('colonSetting', { key : $t('goodsName') })">
                         <span>{{detail.name}}</span>
                     </Form-item>
 
                     <!--库存数量-->
-                    <Form-item :label="$t('stockNum')">
+                    <Form-item :label="$t('colonSetting', { key : $t('stockNum') })">
                         <span>{{detail.stockNum}}</span>
                     </Form-item>
 
                     <!--可兑换积分-->
-                    <Form-item :label="$t('convertibilityIntegral')" prop="requiredCredits">
+                    <Form-item :label="$t('colonSetting', { key : $t('convertibilityIntegral') })" prop="requiredCredits">
                         <Input v-model.trim="formData.requiredCredits" style="width:200px" :placeholder="$t('inputField', { field : $t('convertibilityIntegral') })"></Input>
                     </Form-item>
 
                     <!--库存状态-->
-                    <Form-item :label="$t('stockStatus')" prop="goodsStatus">
+                    <Form-item :label="$t('colonSetting', { key : $t('stockStatus') })" prop="goodsStatus">
                         <Select v-model.trim="formData.goodsStatus" style="width:200px">
                             <Option v-for="(item, index) in statuList" :value="item.value" :key="index">{{ $t(item.label) }}</Option>
                         </Select>

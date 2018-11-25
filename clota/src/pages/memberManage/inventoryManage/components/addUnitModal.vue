@@ -13,7 +13,7 @@
               :label-width="100">
             <i-row>
                 <i-col span="18" offset="4">
-                    <Form-item :label="$t('unitName')" prop="unitNames">
+                    <Form-item :label="$t('colonSetting', { key : $t('unitName') })" prop="unitNames">
                         <Input v-model.trim="formData.unitNames" :placeholder="$t('inputField', { field : $t('unitName') })" style="width: 200px"></Input>
                     </Form-item>
                 </i-col>

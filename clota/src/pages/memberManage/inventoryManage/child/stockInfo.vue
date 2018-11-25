@@ -4,170 +4,176 @@
 -->
 <template>
     <div class="stock-info">
+        <breadCrumbHead  :before-router-list="beforeRouterList"
+                         :locale-router="'stockDetail'"><!--商品管理-->>
 
-        <div class="title">
-            {{$t('goodInfo')}}
+        </breadCrumbHead>
 
-            <Button type="primary" class="right-btn" @click="addGood(detail)">{{$t('continueStockIn')}}</Button>
-        </div>
-        <div class="form-wrapper">
-            <Form label-position="left">
-                <i-row>
-                    <i-col span="6" class="col-wrapper">
-                        <!-- 产品名称 -->
-                        <Form-item :label="$t('goodsName')+':'">
-                            {{goodInfo.name}}
-                        </Form-item>
-                    </i-col>
-                    <i-col span="6">
-                        <!-- 入库数量 -->
-                        <Form-item :label="$t('stockNum')+':'">
-                            {{goodInfo.stockNum + goodInfo.undrawNum}}
-                        </Form-item>
-                    </i-col>
-                </i-row>
+        <div class="content">
+            <div class="title">
+                {{$t('goodInfo')}}
 
-                <i-row>
-                    <i-col span="6" class="col-wrapper">
-                        <!-- 采购价 -->
-                        <Form-item :label="$t('purchasePrice')+':'">
-                            {{goodInfo.purchasePrice}}
-                        </Form-item>
-                    </i-col>
-                    <i-col span="6">
-                        <!-- 市场价 -->
-                        <Form-item :label="$t('marketPrice')+':'">
-                            {{goodInfo.marketPrice}}
-                        </Form-item>
-                    </i-col>
-                </i-row>
+                <Button type="primary" class="right-btn" @click="addGood(detail)">{{$t('continueStockIn')}}</Button>
+            </div>
+            <div class="form-wrapper">
+                <Form label-position="left">
+                    <i-row>
+                        <i-col span="6" class="col-wrapper">
+                            <!-- 产品名称 -->
+                            <Form-item :label="$t('goodsName')+':'">
+                                {{goodInfo.name}}
+                            </Form-item>
+                        </i-col>
+                        <i-col span="6">
+                            <!-- 入库数量 -->
+                            <Form-item :label="$t('stockNum')+':'">
+                                {{goodInfo.stockNum + goodInfo.undrawNum}}
+                            </Form-item>
+                        </i-col>
+                    </i-row>
 
-                <!--<i-row>-->
+                    <i-row>
+                        <i-col span="6" class="col-wrapper">
+                            <!-- 采购价 -->
+                            <Form-item :label="$t('purchasePrice')+':'">
+                                {{goodInfo.purchasePrice}}
+                            </Form-item>
+                        </i-col>
+                        <i-col span="6">
+                            <!-- 市场价 -->
+                            <Form-item :label="$t('marketPrice')+':'">
+                                {{goodInfo.marketPrice}}
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+
+                    <!--<i-row>-->
                     <!--<i-col span="6" offset="1">-->
-                        <!--&lt;!&ndash; 采购人 &ndash;&gt;-->
-                        <!--<Form-item :label="$t('purchaser')+':'">-->
-                            <!--{{goodInfo.purchaser}}-->
-                        <!--</Form-item>-->
+                    <!--&lt;!&ndash; 采购人 &ndash;&gt;-->
+                    <!--<Form-item :label="$t('purchaser')+':'">-->
+                    <!--{{goodInfo.purchaser}}-->
+                    <!--</Form-item>-->
                     <!--</i-col>-->
                     <!--<i-col span="6">-->
-                        <!--&lt;!&ndash; 采购日期 &ndash;&gt;-->
-                        <!--<Form-item :label="$t('purchaseTime')+':'">-->
-                            <!--{{goodInfo.purchaseDate}}-->
-                        <!--</Form-item>-->
+                    <!--&lt;!&ndash; 采购日期 &ndash;&gt;-->
+                    <!--<Form-item :label="$t('purchaseTime')+':'">-->
+                    <!--{{goodInfo.purchaseDate}}-->
+                    <!--</Form-item>-->
                     <!--</i-col>-->
-                <!--</i-row>-->
+                    <!--</i-row>-->
 
-                <i-row>
-                    <i-col span="6" class="col-wrapper">
-                        <!-- 计量单位 -->
-                        <Form-item :label="$t('measurementUnit')+':'">
-                            {{goodInfo.unit}}
-                        </Form-item>
-                    </i-col>
-                    <i-col span="6">
-                        <Form-item :label="$t('historyInTotal')">
-                            {{goodInfo.total}}
-                        </Form-item>
-                    </i-col>
-                </i-row>
+                    <i-row>
+                        <i-col span="6" class="col-wrapper">
+                            <!-- 计量单位 -->
+                            <Form-item :label="$t('measurementUnit')+':'">
+                                {{goodInfo.unit}}
+                            </Form-item>
+                        </i-col>
+                        <i-col span="6">
+                            <Form-item :label="$t('historyInTotal')">
+                                {{goodInfo.total}}
+                            </Form-item>
+                        </i-col>
+                    </i-row>
 
-                <i-row>
-                    <i-col span="6" class="col-wrapper">
-                        <!-- 商品图片 -->
-                        <FormItem :label="$t('goodPic')+':'">
-                            <img :src="goodInfo.pics" alt="">
-                        </FormItem>
-                    </i-col>
-                    <i-col span="6">
-                        <!-- 异常管理 -->
-                        <FormItem :label="$t('abnormalManagement')+':'">
-                            <span class="edit-btn" @click="abnormalEdit">{{$t('edit')}}</span>
-                        </FormItem>
-                    </i-col>
-                </i-row>
+                    <i-row>
+                        <i-col span="6" class="col-wrapper">
+                            <!-- 商品图片 -->
+                            <FormItem :label="$t('goodPic')+':'">
+                                <img :src="goodInfo.pics" alt="">
+                            </FormItem>
+                        </i-col>
+                        <i-col span="6">
+                            <!-- 异常管理 -->
+                            <FormItem :label="$t('abnormalManagement')+':'">
+                                <span class="edit-btn" @click="abnormalEdit">{{$t('edit')}}</span>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
 
-                <i-row>
-                    <i-col span="16" class="col-wrapper">
-                        <!-- 备注 -->
-                        <Form-item :label="$t('remark')+':'">
-                            {{goodInfo.remark}}
-                        </Form-item>
-                    </i-col>
-                </i-row>
+                    <i-row>
+                        <i-col span="16" class="col-wrapper">
+                            <!-- 备注 -->
+                            <Form-item :label="$t('remark')+':'">
+                                {{goodInfo.remark}}
+                            </Form-item>
+                        </i-col>
+                    </i-row>
 
-                <i-row>
-                    <i-col span="16" class="col-wrapper">
-                        <!-- 商品描述 -->
-                        <Form-item :label="$t('goodsDesc')+':'">
-                            {{goodInfo.goodsDesc}}
-                        </Form-item>
-                    </i-col>
-                </i-row>
-            </Form>
+                    <i-row>
+                        <i-col span="16" class="col-wrapper">
+                            <!-- 商品描述 -->
+                            <Form-item :label="$t('goodsDesc')+':'">
+                                {{goodInfo.goodsDesc}}
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                </Form>
+            </div>
+
+            <!-- 库存变动记录 -->
+            <div class="title">{{$t('goodInfo')}}</div>
+            <i-row>
+                <i-col span="23" class="col-wrapper">
+                    <Tabs value="in" @on-click="tabChange">
+                        <!-- 商品入库记录 -->
+                        <TabPane :label="$t('CommodityInRecord')" name="in">
+                            <div class="table-wrapper">
+                                <tableCom :column-data="inBoundHead"
+                                          :auto-height="true"
+                                          :table-com-min-height="200"
+                                          :table-data="tableData"
+                                          :border="true"
+                                          :show-pagination="true"
+                                          :total-count="totalCount"
+                                          :page-no-d.sync="queryParams.pageNo"
+                                          :page-size-d.sync="queryParams.pageSize"></tableCom>
+                            </div>
+                        </TabPane>
+                        <!-- 商品出库记录 -->
+                        <TabPane :label="$t('CommodityOutRecord')" name="out">
+                            <div class="table-wrapper">
+                                <tableCom :column-data="outBoundHead"
+                                          :auto-height="true"
+                                          :table-com-min-height="200"
+                                          :table-data="tableData"
+                                          :border="true"
+                                          :show-pagination="true"
+                                          :total-count="totalCount"
+                                          :page-no-d.sync="queryParams.pageNo"
+                                          :page-size-d.sync="queryParams.pageSize">
+                                    <!-- 领取状态 -->
+                                    <el-table-column
+                                        slot="column6"
+                                        slot-scope="row"
+                                        :label="row.title"
+                                        :width="row.width"
+                                        :min-width="row.minWidth">
+                                        <template slot-scope="scope">
+                                            {{ scope.row.drawStatus === 'true' ? $t('alreadyReceived') : $t('unconverted')}}
+                                        </template>
+                                    </el-table-column>
+                                </tableCom>
+                            </div>
+                        </TabPane>
+                        <!-- 商品异常管理 -->
+                        <TabPane :label="$t('CommodityAbnormalManagement')" name="abnormal">
+                            <div class="table-wrapper">
+                                <tableCom :column-data="abnormalHead"
+                                          :auto-height="true"
+                                          :table-com-min-height="200"
+                                          :table-data="tableData"
+                                          :border="true"
+                                          :show-pagination="true"
+                                          :total-count="totalCount"
+                                          :page-no-d.sync="queryParams.pageNo"
+                                          :page-size-d.sync="queryParams.pageSize"></tableCom>
+                            </div>
+                        </TabPane>
+                    </Tabs>
+                </i-col>
+            </i-row>
         </div>
-
-        <!-- 库存变动记录 -->
-        <div class="title">{{$t('goodInfo')}}</div>
-        <i-row>
-            <i-col span="23" class="col-wrapper">
-                <Tabs value="in" @on-click="tabChange">
-                    <!-- 商品入库记录 -->
-                    <TabPane :label="$t('CommodityInRecord')" name="in">
-                        <div class="table-wrapper">
-                            <tableCom :column-data="inBoundHead"
-                                      :auto-height="true"
-                                      :table-com-min-height="200"
-                                      :table-data="tableData"
-                                      :border="true"
-                                      :show-pagination="true"
-                                      :total-count="totalCount"
-                                      :page-no-d.sync="queryParams.pageNo"
-                                      :page-size-d.sync="queryParams.pageSize"></tableCom>
-                        </div>
-                    </TabPane>
-                    <!-- 商品出库记录 -->
-                    <TabPane :label="$t('CommodityOutRecord')" name="out">
-                        <div class="table-wrapper">
-                            <tableCom :column-data="outBoundHead"
-                                      :auto-height="true"
-                                      :table-com-min-height="200"
-                                      :table-data="tableData"
-                                      :border="true"
-                                      :show-pagination="true"
-                                      :total-count="totalCount"
-                                      :page-no-d.sync="queryParams.pageNo"
-                                      :page-size-d.sync="queryParams.pageSize">
-                                <!-- 领取状态 -->
-                                <el-table-column
-                                    slot="column6"
-                                    slot-scope="row"
-                                    :label="row.title"
-                                    :width="row.width"
-                                    :min-width="row.minWidth">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.drawStatus === 'true' ? $t('alreadyReceived') : $t('unconverted')}}
-                                    </template>
-                                </el-table-column>
-                            </tableCom>
-                        </div>
-                    </TabPane>
-                    <!-- 商品异常管理 -->
-                    <TabPane :label="$t('CommodityAbnormalManagement')" name="abnormal">
-                        <div class="table-wrapper">
-                            <tableCom :column-data="abnormalHead"
-                                      :auto-height="true"
-                                      :table-com-min-height="200"
-                                      :table-data="tableData"
-                                      :border="true"
-                                      :show-pagination="true"
-                                      :total-count="totalCount"
-                                      :page-no-d.sync="queryParams.pageNo"
-                                      :page-size-d.sync="queryParams.pageSize"></tableCom>
-                        </div>
-                    </TabPane>
-                </Tabs>
-            </i-col>
-        </i-row>
 
         <abnormalManageModal ref="abnormalManageModal" @editSuccess="queryGoodsInfo"></abnormalManageModal>
     </div>
@@ -179,14 +185,25 @@
     import ajax from '../../../../api/index';
     import { inBoundHead, outBoundHead, abnormalHead } from './tableConfig';
     import abnormalManageModal from '../components/abnormalManageModal';
+    import breadCrumbHead from '../../../../components/breadCrumbHead/index'
     export default {
         mixins : [lifeCycleMixins],
         components : {
             tableCom,
-            abnormalManageModal
+            abnormalManageModal,
+            breadCrumbHead
         },
         data () {
             return {
+                //上级路由列表
+                beforeRouterList : [
+                    {
+                        name : 'goodsManage', //商品管理
+                        router : {
+                            name : 'goodsManage'
+                        }
+                    }
+                ],
                 //路由数据信息
                 detail : {},
                 //商品信息
@@ -294,7 +311,10 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .stock-info {
-        padding: 0 20px;
+        .content {
+            padding: 30px 52px;
+        }
+
         .form-wrapper {
             margin-top: 10px;
             img {
@@ -307,17 +327,8 @@
             padding: 11px 0 0 0;
             @include block_outline($height : 41px);
             font-size: $font_size_16px;
+            font-weight: bold;
             color: $color_333;
-
-            &::before{
-                content : '';
-                @include block_outline(absolute,2px);
-                @include block_outline(4px,16px);
-                background: $color_blue;
-                display: inline-block;
-                margin-right: 14px;
-                vertical-align: middle;
-            }
 
             .right-btn {
                 position: absolute;
@@ -336,11 +347,14 @@
         }
 
         .col-wrapper {
-            margin-left: 20px;
             .table-wrapper {
                 min-height: 200px;
                 margin-bottom: 30px;
             }
+        }
+
+        /deep/ .ivu-form-item-label {
+            padding-left: 0;
         }
 
         .edit-btn {

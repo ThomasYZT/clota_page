@@ -26,14 +26,14 @@
               :label-width="100">
             <i-row>
                 <i-col span="10" offset="7">
-                    <Form-item :label="$t('goodInfo')+':'">
+                    <Form-item :label="$t('colonSetting', { key : $t('goodInfo') })">
                         <span>{{exchangeInfo.goodsName}}</span>
                     </Form-item>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="10" offset="7">
-                    <Form-item :label="$t('changerInfo')+':'">
+                    <Form-item :label="$t('colonSetting', { key : $t('changerInfo') })">
                         <span>{{exchangeInfo.memberName}}</span>
                     </Form-item>
                 </i-col>

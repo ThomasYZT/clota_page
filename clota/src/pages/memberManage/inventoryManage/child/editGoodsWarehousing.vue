@@ -392,5 +392,29 @@
                 width: 100%;
             }
         }
+
+        /deep/ .el-upload--picture-card {
+            border: 1px solid #D8D8D8;
+            height: 80px;
+            width: 80px;
+            line-height: 80px;
+        }
+
+        /deep/ .el-upload-list__item-actions {
+            height: 80px;
+            width: 80px;
+            line-height: 80px;
+        }
+
+        /deep/ .el-upload-list__item {
+            height: 80px;
+            width: 80px;
+            line-height: 80px;
+            img {
+                height: 80px;
+                width: 80px;
+                line-height: 80px;
+            }
+        }
     }
 </style>

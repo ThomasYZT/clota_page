@@ -4,21 +4,8 @@
 -->
 <template>
     <div class="container">
-        <!-- 工具栏 -->
-        <tool-box :toolNum="3">
-            <div slot="tool0" class="button-tool">
-                <!-- 上架 -->
-                <Button class="ivu-btn-90px" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>
-                <!-- 下架 -->
-                <Button class="ivu-btn-90px" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>
-                <!-- 领取商品 -->
-                <Button class="ivu-btn-90px" type="primary" @click="getGoods()">{{$t('GetTheGoods')}}</Button>
-            </div>
-            <div slot="tool1">
-                <div class="placeholder"></div>
-            </div>
-
-            <div slot="tool2" class="button-tool">
+        <i-row>
+            <i-col span="8">
                 <!-- 搜索框 -->
                 <Input class="input-field"
                        search
@@ -28,6 +15,20 @@
                        :placeholder="$t('inputSpecificForSearch', { field : $t('goodsName') })"
                        @on-search="getListData"
                        @on-enter="getListData"/>
+            </i-col>
+        </i-row>
+        <!-- 工具栏 -->
+        <tool-box :toolNum="2">
+            <div slot="tool0" class="button-tool">
+                <!-- 上架 -->
+                <Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>
+                <!-- 下架 -->
+                <Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>
+                <!-- 领取商品 -->
+                <Button class="ivu-btn-90px tool-btn" type="primary" @click="getGoods()">{{$t('GetTheGoods')}}</Button>
+            </div>
+            <div slot="tool1">
+                <div class="placeholder"></div>
             </div>
         </tool-box>
 
@@ -36,6 +37,7 @@
             <tableCom :column-data="tableColumn"
                       :table-data="tableData"
                       :border="true"
+                      :ofsetHeight="170"
                       :show-pagination="true"
                       :column-check="true"
                       :total-count="totalCount"
@@ -77,6 +79,7 @@
         <del-modal ref="delModal">
             <div class="content-text"><i class="iconfont icon-warn"></i>
                 <span v-if="delModalType === 'down'">{{$t('isSureDownGoods')}}？</span><span v-else>{{$t('isSureUpGoods')}}</span>
+                <span class="warn">{{$t('operationIrrevocable')}}</span><span>{{$t('WhetherToContinue')}}</span>
             </div>
         </del-modal>
 
@@ -258,15 +261,17 @@
         background: $color-fff;
         border-radius: 4px;
 
+        /deep/ .input-field {
+            width: 350px;
+            float: right;
+            padding-left: 23px;
+            margin-top: 9px;
+        }
+
         .button-tool {
             text-align: left;
             .tool-btn {
-                margin: 0 20px;
-            }
-
-            /deep/ .input-field {
-                width: 350px;
-                float: right;
+                margin: 0 10px 0 0;
             }
         }
 
@@ -300,14 +305,27 @@
             width: 10px;
             height: 10px;
         }
+    }
 
+    /deep/ .content-text {
+        width: 240px;
+        margin: auto 15px;
 
-        /deep/ .content-text {
-            margin: 0 15px;
+        i {
+            color: #F3AD4C;
+        }
+    }
 
-            i {
-                color: $color_red !important;
-            }
+    /deep/ .ivu-modal-body {
+        .warn {
+            color: $color_red;
+        }
+    }
+
+    /deep/ .ivu-modal-footer {
+        .ivu-btn-error {
+            background-color: $color_blue;
+            border-color: $color_blue;
         }
     }
 </style>

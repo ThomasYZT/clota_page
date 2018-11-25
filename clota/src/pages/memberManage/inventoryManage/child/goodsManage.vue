@@ -4,19 +4,8 @@
 -->
 <template>
     <div class="goods-manage">
-        <!-- 工具栏 -->
-        <tool-box :toolNum="3">
-            <div slot="tool0" class="button-tool">
-                <!-- 新增商品入库 -->
-                <Button class="tool-btn left" type="primary" @click="addGood({type : 'add'})">{{$t('NewGoodsWarehousing')}}</Button>
-                <!-- 导出 -->
-                <a class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>
-            </div>
-            <div slot="tool1">
-                <div class="placeholder"></div>
-            </div>
-
-            <div slot="tool2" class="button-tool">
+        <i-row>
+            <i-col span="8">
                 <!-- 搜索框 -->
                 <Input class="input-field"
                        search
@@ -26,6 +15,18 @@
                        :placeholder="$t('inputSpecificForSearch', { field : $t('goodsName') })"
                        @on-search="getListData"
                        @on-enter="getListData"/>
+            </i-col>
+        </i-row>
+        <!-- 工具栏 -->
+        <tool-box :toolNum="2">
+            <div slot="tool0" class="button-tool">
+                <!-- 新增商品入库 -->
+                <Button class="tool-btn left" type="primary" @click="addGood({type : 'add'})">+ {{$t('NewGoodsWarehousing')}}</Button>
+                <!-- 导出 -->
+                <a class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>
+            </div>
+            <div slot="tool1">
+                <div class="placeholder"></div>
             </div>
         </tool-box>
 
@@ -33,6 +34,7 @@
         <div class="table-wrapper">
             <tableCom :column-data="tableColumn"
                       :table-data="tableData"
+                      :ofsetHeight="170"
                       :border="true"
                       :show-pagination="true"
                       :total-count="totalCount"
@@ -180,13 +182,15 @@ export default {
         .button-tool {
             text-align: left;
             .tool-btn {
-                margin: 0 20px;
+                margin-right: 10px;
             }
+        }
 
-            /deep/ .input-field {
-                width: 350px;
-                float: right;
-            }
+        /deep/ .input-field {
+            width: 350px;
+            float: right;
+            padding-left: 23px;
+            margin-top: 9px;
         }
 
         .table-wrapper {
