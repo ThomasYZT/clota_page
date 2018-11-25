@@ -132,7 +132,7 @@
              */
             updateTradePassword () {
                 ajax.post('updateTradePassword',{
-                    cardId : this.userInfo.cardId,
+                    cardId : this.cardInfo.id,
                     tradePassword : MD5(this.inputData.join('')).toString(),
                     phoneNum : this.phoneNum,
                     code : this.code,
@@ -268,6 +268,7 @@
             },
             ...mapGetters({
                 userInfo : 'userInfo',
+                cardInfo : 'cardInfo',
             }),
             //当前激活的ul
             activeLi (){

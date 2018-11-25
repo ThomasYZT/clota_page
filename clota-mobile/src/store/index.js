@@ -50,6 +50,10 @@ export default new Vuex.Store({
         },
         //会员卡信息
         cardInfo : state => {
+            let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
+            if (cardInfo && Object.keys(cardInfo).length > 0) {
+                state.cardInfo = cardInfo;
+            }
             return state.cardInfo;
         },
         //会员卡列表信息
@@ -201,7 +205,6 @@ export default new Vuex.Store({
     actions : {
         //获取会员卡列表
         getCardListInfo ({ state, commit, dispatch }) {
-            console.log(this.getters.userInfo.memberId)
             return new Promise((resolve, reject) => {
                 ajax.post('queryMemberCardList', {
                     memberId : this.getters.userInfo.memberId

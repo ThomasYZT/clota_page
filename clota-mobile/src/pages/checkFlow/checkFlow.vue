@@ -146,7 +146,7 @@
                 ajax.post('queryOrgAccountChange', {
                     accountTypeIds : this.curAccountsId,
                     operType : '',
-                    cardId : this.userInfo.cardId,
+                    cardId : this.cardInfo.id,
                     ...this.pageSetting
                 }).then((res) => {
                     if (res.success) {

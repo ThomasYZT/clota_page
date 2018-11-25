@@ -126,7 +126,7 @@
              */
             queryMemberOrder () {
                 ajax.post('queryMemberOrder',{
-                    cardId : this.userInfo.cardId,
+                    cardId : this.cardInfo.id,
                     productType : this.activeTap,
                     ...this.pageSetting
                 }).then(res => {
@@ -187,7 +187,8 @@
         },
         computed : {
             ...mapGetters({
-                userInfo : 'userInfo'
+                userInfo : 'userInfo',
+                cardInfo : 'cardInfo',
             })
         },
         beforeRouteEnter (to,from,next) {
