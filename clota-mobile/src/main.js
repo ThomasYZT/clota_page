@@ -48,14 +48,15 @@ router.beforeEach((to, from, next) => {
 
         if (token && userInfo && Object.keys(userInfo).length > 0 && cardInfo && Object.keys(cardInfo).length > 0) {
             //若本地数据存在、更新vuex数据，防止刷新页面数据丢失
-            store.commit('updateUserInfo');
+            // store.commit('updateUserInfo');
             //接口更新卡列表信息，更新vuex数据
-            store.dispatch('getCardListInfo').catch(() => {
+            store.dispatch('getCardListInfo').then(res => {
+                next();
+            }).catch(() => {
                 next({
                     name : 'mobileLogin'
                 });
             });
-            next();
         } else {
             //若本地数据不存在，跳至登陆页
             next({
