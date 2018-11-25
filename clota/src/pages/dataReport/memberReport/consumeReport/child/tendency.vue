@@ -127,45 +127,43 @@
                     endDate : this.filterData.date ? this.filterData.date[1].format('yyyy-MM-dd') : '',
                     orgId : this.filterData.orgId === 'all' ? '' : this.filterData.orgId,
                 }).then(res => {
-                    if (res.success) {
-                        if (res.data && Object.keys(res.data).length > 0) {
-                            let data = res.data;
+                    if (res.success && res.data && Object.keys(res.data).length > 0) {
+                        let data = res.data;
 
-                            let consumeAmountData = [];
-                            let consumerNumData = [];
+                        let consumeAmountData = [];
+                        let consumerNumData = [];
 
-                            let isxAxis = false;
-                            for (let key in data) {
-                                if (data[key] && data[key].length > 0) {
-                                    data[key].forEach( item => {
-                                        //组装xAxisData 横坐标时间数据
-                                        if (!isxAxis) {
-                                            this.xAxisData.push(item.date);
-                                        }
-                                        //组装seriesData数据
-                                        consumeAmountData.push({
-                                            value : item.consumeAmount,
-                                            name : 'consumption',
-                                            params : item
-                                        });
-                                        consumerNumData.push({
-                                            value : item.consumerNum,
-                                            name : 'consumePeopleNum',
-                                            params : item
-                                        });
+                        let hasXAxis = false;
+                        for (let key in data) {
+                            if (data[key] && data[key].length > 0 && !hasXAxis) {
+                                for (let i = 0, len = data[key].length; i < len; i++) {
+                                    consumeAmountData.push({
+                                        value : data[key][i].consumeAmount,
+                                        name : 'consumption',
+                                        params : data[key][i]
                                     });
-                                    isxAxis = true;
+
+                                    consumerNumData.push({
+                                        value : data[key][i].consumerNum,
+                                        name : 'consumePeopleNum',
+                                        params : data[key][i]
+                                    });
+
+                                    this.xAxisData.push(data[key][i].date);
+                                }
+                                hasXAxis = true;
+                            } else {
+                                for (let i = 0, len = data[key].length; i < len; i++) {
+                                    consumeAmountData[i].value += data[key][i].consumeAmount;
+                                    consumeAmountData[i].params.consumeAmount += data[key][i].consumeAmount;
+                                    consumerNumData[i].value += data[key][i].consumerNum;
+                                    consumerNumData[i].params.consumerNum += data[key][i].consumerNum;
                                 }
                             }
-                            this.seriesData.push(defaultsDeep({ data : consumeAmountData, name : this.$t('consumption') }, defaultSeries));
-                            this.seriesData.push(defaultsDeep({ data : consumerNumData, name : this.$t('consumePeopleNum') }, defaultSeries));
-                            this.legendData.push({ name : this.$t('consumption') }, { name : this.$t('consumePeopleNum') });
-
-                        } else {
-                            this.seriesData = [];
-                            this.xAxisData = [];
-                            this.legendData = [];
                         }
+                        this.seriesData.push(defaultsDeep({ data : consumeAmountData, name : this.$t('consumption') }, defaultSeries));
+                        this.seriesData.push(defaultsDeep({ data : consumerNumData, name : this.$t('consumePeopleNum') }, defaultSeries));
+                        this.legendData.push({ name : this.$t('consumption') }, { name : this.$t('consumePeopleNum') });
                     } else {
                         this.seriesData = [];
                         this.xAxisData = [];

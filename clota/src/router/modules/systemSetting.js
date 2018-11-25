@@ -104,7 +104,7 @@ export default {
                         component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/systemSetting/smsManage/child/smsPay.vue'),
                         meta : {
                             menuName : 'smsPay', //lang.config.js 里面的语言键值
-                            _name : 'sms-template',
+                            _name : 'sms-buy',
                             rightPath : topMenuName + '.' + 'smsPay',
                         },
                     },
