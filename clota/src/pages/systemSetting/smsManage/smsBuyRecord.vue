@@ -9,7 +9,7 @@
             <span class="value">{{totalSym + $t('item')}}</span>
         </div>
         <tableCom
-            :ofset-height="110"
+            :ofset-height="130"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -18,6 +18,16 @@
             :page-size-d.sync="filterData.pageSize"
             :border="true"
             @query-data="getData">
+            <el-table-column
+                slot="column3"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t('payType.' + scope.row.payType)}}
+                </template>
+            </el-table-column>
             <el-table-column
                 slot="column4"
                 slot-scope="row"
@@ -98,8 +108,8 @@
                 }).then(res => {
                     if (res.success && res.data) {
                         this.totalSym = res.data.totalCount ? res.data.totalCount : 0;
-                        this.tableData = res.data.list ? res.data.list : [];
-                        this.totalCount = res.data.list ? res.data.list.totalRow : 0;
+                        this.tableData = res.data ? res.data.list.data : [];
+                        this.totalCount = res.data ? res.data.list.totalRow : 0;
                     } else {
                         this.totalSym = 0;
                         this.tableData = [];
@@ -125,8 +135,8 @@
         height: 100%;
 
         .head-info {
-            margin: 10px 20px;
-            height: 50px;
+            padding: 10px 20px;
+            height: 70px;
             width: 100%;
             line-height: 50px;
 
