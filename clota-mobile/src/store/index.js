@@ -42,6 +42,10 @@ export default new Vuex.Store({
         },
         //用户信息
         userInfo : state => {
+            let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+            if (!state.userInfo || Object.keys(state.userInfo).length < 1) {
+                state.userInfo = userInfo
+            }
             return state.userInfo;
         },
         //会员卡信息
@@ -218,6 +222,8 @@ export default new Vuex.Store({
                         dispatch('showToast', 'getDataFailure');
                         reject();
                     }
+                }).catch(() => {
+                    reject();
                 });
             })
         }
