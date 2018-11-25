@@ -90,7 +90,7 @@
                 //微信
                 if (this.isWeixin()) {
                     //微信内，公众号支付
-                    if (this.payFormData.paymentTypeId === 'wx') {
+                    if (this.payFormData.paymentTypeId === 'weixin') {
                         this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
                         //删除路由缓存数据
                         localStorage.removeItem('payStatus');
