@@ -70,6 +70,7 @@
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
+                show-overflow-tooltip
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span>{{scope.row.custName | contentFilter}} / {{scope.row.phoneNum | contentFilter}}</span>
@@ -82,10 +83,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.payType === 'weixin'">{{$t('payType.weixin')}}</span>
-                    <span v-else-if="scope.row.payType === 'alipay'">{{$t('payType.alipay')}}</span>
-                    <span v-else-if="scope.row.payType === 'cash'">{{$t('payType.cash')}}</span>
-                    <span v-else>-</span>
+                    {{scope.row.paymentType ? $t('payType.' + scope.row.payType) : '-'}}
                 </template>
             </el-table-column>
         </table-com>

@@ -254,8 +254,9 @@
 
         <!--新增储值modal-->
         <add-fund-modal ref="addFund"
+                        :card-info="choosedCard"
                         :payment-list="paymentData"
-                        :detail="memberBaseDetail"
+                        :detail="choosedCard"
                         @add-success="listCardAccountInfo(choosedCard)">
         </add-fund-modal>
 
@@ -709,7 +710,15 @@
 
             //储值账户--查看明细
             viewDeal (dealData) {
-                this.$router.push({ name : 'infoFund', params : { fundDetail : dealData } });
+                this.$router.push({
+                    name : 'infoFund',
+                    params : {
+                        fundDetail : {
+                            ...dealData,
+                            cardId : this.choosedCard.id
+                        }
+                    }
+                });
             },
 
             //积分账户--查看明细
@@ -717,7 +726,10 @@
                 this.$router.push({
                     name : 'infoInteg',
                     params : {
-                        integraDetail : integraData
+                        integraDetail : {
+                            ...integraData,
+                            cardId : this.choosedCard.id
+                        }
                     }
                 });
             },

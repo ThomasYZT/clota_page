@@ -153,10 +153,12 @@
                     newPassword: MD5(params.newPassword).toString()
                 }).then((res) =>{
                     if( res.success ) {
-                        this.$Message.success(this.$t('操作成功',{'tip' : this.$t('add')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('modify')}));
                         this.$refs.formValidate.resetFields();
+                    } else if (res.code === 'A011') {
+                        this.$Message.error(this.$t('原密码错误'));
                     } else {
-                        this.$Message.error(res.message || this.$t('操作失败',{'tip' : this.$t('add')}));
+                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('modify')}));
                     }
                 })
             }

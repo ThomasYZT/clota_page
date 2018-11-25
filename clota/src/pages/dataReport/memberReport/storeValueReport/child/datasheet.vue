@@ -64,7 +64,7 @@
             :border="true"
             :show-pagination="true"
             :total-count="totalCount"
-            :ofset-height="204"
+            :ofset-height="220"
             :page-no-d.sync="filterData.pageNo"
             :page-size-d.sync="filterData.pageSize"
             @query-data="getData">
@@ -75,10 +75,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.paymentType === 'weixin'">{{$t('payType.weixin')}}</span>
-                    <span v-else-if="scope.row.paymentType === 'alipay'">{{$t('payType.alipay')}}</span>
-                    <span v-else-if="scope.row.paymentType === 'cash'">{{$t('payType.cash')}}</span>
-                    <span v-else>-</span>
+                    {{scope.row.paymentType ? $t('payType.' + scope.row.paymentType) : '-'}}
                 </template>
             </el-table-column>
         </table-com>

@@ -18,6 +18,7 @@
                 <DatePicker v-model="filterData.date"
                             type="daterange"
                             :editable="false"
+                            transfer
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
                             @on-change="getData"

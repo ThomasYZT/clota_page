@@ -97,7 +97,7 @@
     import loopForPayResult from '../newCard/components/loopForPayResult';
 
     export default {
-        props : ['payment-list','detail'],
+        props : ['payment-list','detail','card-info'],
         components : {
             loopForPayResult
         },
@@ -201,12 +201,13 @@
 
             //新增储值
             addAmount ( code ) {
+                console.log(this.cardInfo.id)
                 ajax.post('addAmount', {
                     memberId : this.detail.id,
                     memberLevelId : this.detail.levelId,
                     // 会员3期暂时去掉
                     // cardId : this.detail.cardId,
-                    cardId : this.accountInfo.cardId,
+                    cardId : this.cardInfo.id,
                     amount : this.formData.amount,
                     // 会员3期暂时去掉
                     // paymentTypeId : this.formData.paymentTypeId,
@@ -243,7 +244,7 @@
 
             //充值时获取实际所得到的金额
             getRechargeActMoney ( params ) {
-                ajax.post('getRechargeActMoney', params).then(res => {
+                ajax.post('getRechargeActMoney', params,null,false).then(res => {
                     if ( res.success ) {
                        this.formData.totalAmount = res.data;
                     } else {
