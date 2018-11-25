@@ -4,7 +4,10 @@
 -->
 <template>
     <div class="edit-good-warehousing">
+        <breadCrumbHead  :before-router-list="beforeRouterList"
+                         :locale-router="'goodsStockIn'"><!--商品管理-->>
 
+        </breadCrumbHead>
         <div class="form-wrapper">
             <Form ref='formList'
                   :model="formData"
@@ -132,12 +135,14 @@
     import lifeCycleMixins from '../../../../mixins/lifeCycleMixins';
     import addUnitModal from '../components/addUnitModal';
     import common from '@/assets/js/common.js';
+    import breadCrumbHead from '../../../../components/breadCrumbHead/index'
 
     export default {
         mixins : [lifeCycleMixins],
         components : {
             ImgUploader,
-            addUnitModal
+            addUnitModal,
+            breadCrumbHead
         },
         data () {
             //校验是否为正整数
@@ -173,6 +178,15 @@
             };
 
             return {
+                //上级路由列表
+                beforeRouterList : [
+                    {
+                        name : 'goodsManage',  //商品管理
+                        router : {
+                            name : 'goodsManage'
+                        }
+                    }
+                ],
                 //表单数据
                 formData : {
                     //商品ID

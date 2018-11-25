@@ -1769,5 +1769,7 @@ export default {
     'stopOnlineAccount' : '启用在线收款账户',
     'areYouSureAccount' : '确认{field}账户？',
     'totalBuy' : '共购买',
-    'WhetherToContinue' : '是否继续？'
+    'WhetherToContinue' : '是否继续？',
+    'paying' : '支付中...',
+    'goodsStockIn' : '商品入库',
 }

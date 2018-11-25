@@ -21,7 +21,7 @@
                 <!-- 支付说明 -->
                 <input type="text" name="TxnAmt" v-model="payFormData.txnAmt">
                 <!--&lt;!&ndash; 支付结果回调地址 &ndash;&gt;-->
-                <input type="text" name="RedirectUrl" v-model="payFormData.redirectUrl">
+                <!--<input type="text" name="RedirectUrl" v-model="payFormData.redirectUrl">-->
                 <!-- 交易说明 -->
                 <input type="text" name="TxnShortDesc" v-model="payFormData.txnShortDesc">
                 <!-- 签名串 -->
