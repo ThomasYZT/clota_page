@@ -156,6 +156,7 @@
         </Form>
         <!--副卡-->
         <secondary-card :id-type="enumData.idType"
+                        :main-card-info="cardParam"
                         @set-vice-card-info="getViceCard"
                         ref="secondaryCard">
         </secondary-card>

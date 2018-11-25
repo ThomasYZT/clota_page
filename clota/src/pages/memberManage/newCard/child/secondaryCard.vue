@@ -188,7 +188,14 @@
         },
         props : {
             //证件类型列表
-            idType : Array
+            idType : Array,
+            //主卡信息
+            'main-card-info' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
         },
         data () {
             return {
@@ -236,7 +243,11 @@
             validatePhoneName (rule,value,callback) {
                 if (rule.data) {
                     if (validator.isMobile(rule.data)) {
-                        callback();
+                        if ( this.mainCardInfo.phoneNum === rule.data ) {
+                            callback('手机号码重复');
+                        } else {
+                            callback();
+                        }
                     } else {
                         callback(this.$t('errorFormat', { field : this.$t('phoneNum') }));
                     }
