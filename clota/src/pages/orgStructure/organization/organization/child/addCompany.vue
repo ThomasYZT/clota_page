@@ -535,6 +535,10 @@
             padding: 20px 0 5px 0;
             overflow: auto;
 
+            .icon-note{
+                color: #8C8C8C!important;
+            }
+
             /deep/ .ivu-form {
 
                 .ivu-form-item {
