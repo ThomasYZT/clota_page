@@ -17,6 +17,9 @@
                 <div class="scan-img">
                     <img src="../../../../assets/images/icon-wait-pay.svg" alt="">
                 </div>
+                <div class="cancel-area">
+                    <Button type="ghost" @click="revocation">取消交易</Button>
+                </div>
             </template>
             <!--等待扫码-->
             <template v-else-if="stage === 'scan'">
@@ -43,16 +46,16 @@
                 </div>
             </template>
             <!--支付结果未知-->
-            <template v-else-if="stage === 'unknown'">
+            <template v-else-if="stage === 'cancel'">
                 <div class="open-card-suc-img">
                     <img src="../../../../assets/images/icon-open-card-fail.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
-                    交易结果未知！
+                    交易已取消！
                 </div>
-                <div class="to-for-detail">
-                    可前往<span class="trade-record" @click="toTradeRecrod"> 在线交易记录 </span>继续查询支付结果
-                </div>
+                <!--<div class="to-for-detail">-->
+                    <!--可前往<span class="trade-record" @click="toTradeRecrod"> 在线交易记录 </span>继续查询支付结果-->
+                <!--</div>-->
             </template>
             <!--支付成功-->
             <template v-else-if="stage === 'fail'">
@@ -186,7 +189,7 @@
                 this.timer = setInterval(() => {
                     if (this.loopSearchTime <= 0) {
                         clearInterval(this.timer);
-                        this.stage = 'unknown';
+                        this.revocation();
                     } else {
                         if (!this.searchIng) {
                             this.queryConsumeUpdateBiz();
@@ -215,6 +218,20 @@
              */
             submit () {
                 return false;
+            },
+            /**
+             * 撤销交易
+             */
+            revocation () {
+                ajax.post('revocation',{
+                    transactionId : this.transactionId
+                }).then(res => {
+                    if (!res.success) {
+                        this.$Message.error('交易取消失败');
+                    } else {
+                        this.stage = 'cancel';
+                    }
+                });
             }
         }
     };
@@ -228,6 +245,10 @@
 
         .target-body{
             @include block_outline($height : 322px);
+
+            .cancel-area{
+                text-align: center;
+            }
 
             .wait-scan,
             .trading-title{
