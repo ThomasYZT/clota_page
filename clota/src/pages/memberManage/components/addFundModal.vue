@@ -201,7 +201,6 @@
 
             //新增储值
             addAmount ( code ) {
-                console.log(this.cardInfo.id)
                 ajax.post('addAmount', {
                     memberId : this.detail.id,
                     memberLevelId : this.detail.levelId,
@@ -238,6 +237,7 @@
                 let params = {
                     accountTypeId : this.accountInfo.accountDefineId,
                     amount : this.formData.amount,
+                    cardId : this.cardInfo.id,
                 };
                 this.getRechargeActMoney(params);
             },
