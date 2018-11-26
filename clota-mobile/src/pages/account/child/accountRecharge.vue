@@ -187,7 +187,7 @@
                     } else {
                         this.commonList = [];
                         this.chosedAccount = {};
-                        this.payType =  '';
+                        this.payType = '';
                     }
                 })
             },
