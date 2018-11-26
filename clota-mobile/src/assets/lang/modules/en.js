@@ -227,5 +227,7 @@ export default {
     'payAbnormal' : '支付异常',
     'accountOfStoreValue' : '储值账户',
     'userHasNoCard' : '用户暂无会员卡',
+    'enterSenicCode' : '入园码',
+    'scenicCode' : '入园二维码',
 
 };

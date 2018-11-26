@@ -282,9 +282,18 @@ const createRouter = () => new Router({
             meta : {
                 title : 'payStatus'
             }
+        },
+        //跳转入园二维码
+        {
+            path : '/scenicCode',
+            name : 'scenicCode',
+            component : () => import(/* webpackChunkName: "integralMall" */'../pages/scenicCode/index.vue'),
+            meta : {
+                title : 'scenicCode'
+            }
         }
     ],
-    scrollBehaviorHandler (to,from,savedPosition) {
+    scrollBehaviorHandler (to, from, savedPosition) {
         return {
             x : 0,
             y : 0

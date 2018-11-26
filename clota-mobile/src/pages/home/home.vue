@@ -29,7 +29,6 @@
     import { mapMutations, mapGetters } from 'vuex';
     import labelItem from './components/labelItem';
     import memberCard from './components/memberCard';
-    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         components : {
             labelItem,

@@ -33,7 +33,8 @@
                 </div>
                 <div class="card-info">
                     <div style="font-weight: bold">{{info.cardCode | formatCardCode}}</div>
-                    <div @click="toMemberCode">
+                    <div v-show="cardInfo.inCode" @click="toEnterScenicCode">
+                        <span>{{$t('enterSenicCode')}}</span>
                         <i class="iconfont icon-code"></i>
                         <i class="iconfont icon-arrow-right"></i>
                     </div>
@@ -71,7 +72,8 @@
         computed : {
             ...mapGetters({
                 isLoading : 'isLoading',
-                userInfo : 'userInfo'
+                userInfo : 'userInfo',
+                cardInfo : 'cardInfo'
             }),
             //vip卡类名
             memberVipCardClass () {
@@ -150,6 +152,14 @@
             showImg () {
                 this.isShowImg = true;
             },
+            /**
+             * 跳转入园二维码
+             */
+            toEnterScenicCode () {
+                this.$router.push({
+                    name : 'scenicCode'
+                })
+            }
         }
     };
 </script>
@@ -316,15 +326,20 @@
                     display: flex;
                     bottom: 0;
                     height: 19px;
+                    line-height: 19px;
                     width: 304.6px;
                     font-size: 14px;
 
                     div {
+                        text-align: left;
                         &:first-child {
-                            flex: 1;
+                            flex: 1 0;
                             white-space: nowrap;
                         }
                         &:last-child {
+                            flex: 1 0;
+                            height: 19px;
+                            line-height: 19px;
                             text-align: right;
                         }
                     }

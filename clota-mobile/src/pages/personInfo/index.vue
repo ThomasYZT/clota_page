@@ -76,6 +76,13 @@
                     <!--class="padding-right"-->
                     <!--:value="formData.growth">-->
                 <!--</cell>-->
+                <!-- 生日 -->
+                <cell
+                    :title="$t('birthday')"
+                    disabled
+                    class="padding-right"
+                    :value="memberBirthday">
+                </cell>
                 <!-- 实体卡卡号 -->
                 <cell
                     :title="$t('entityCardId')"
@@ -142,6 +149,7 @@
                     memberInfo : {
                         homeAddr : '',
                         //qq : ''
+                        birthDay : ''
                     },
                     effDate : '',
                     expDate : ''
@@ -450,6 +458,14 @@
                     return startTime + '/' + endTime;
                 } else {
                     return '-'
+                }
+            },
+            //会员生日
+            memberBirthday () {
+                if (this.formData.memberInfo && this.formData.memberInfo.birthDay) {
+                    return this.formData.memberInfo.birthDay.split(' ')[0];
+                } else {
+                    return '';
                 }
             }
         }
