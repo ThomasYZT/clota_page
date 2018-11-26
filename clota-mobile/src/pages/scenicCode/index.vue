@@ -97,6 +97,15 @@
                     this.$refs.previewer.show(0);
                 });
             },
+            /**
+             * 设置标题
+             */
+            setTitle () {
+                document.title = this.cardInfo.levelDesc + this.$t('enterSenicCode');
+            },
+        },
+        created () {
+            this.setTitle();
         }
     };
 </script>
