@@ -29,7 +29,11 @@ export default new Vuex.Store({
         //用户是否登陆
         isLogin : false,
         //公司id
-        companyCode : '10000059',
+        companyCode : '',
+        //错误码
+        errCode : '',
+        //判断当前是否在微信当中打开
+        isWeixin : null,
         //companyCode : '1045244656750825472',
         //companyCode : '1037976274619994114' //肖邦景区
         //companyCode : '121321' //信鸥互联 测试环境
@@ -78,11 +82,40 @@ export default new Vuex.Store({
         },
         //公司id
         companyCode : state => {
-            return state.companyCode;
+            let companyCode = '';
+            if (!state.companyCode) {
+                let url = location.href;
+                if (url.indexOf('?') !== -1) {
+                    let query = url.split("?")[1];
+                    let queryArr = query.split("&");
+                    queryArr.forEach(function (item) {
+                        let key = item.split("=")[0];
+                        let value = item.split("=")[1];
+                        if (key === 'companyCode') {
+                            companyCode = value;
+                        }
+                    });
+                    return companyCode;
+                } else {
+                    return companyCode;
+                }
+            }
         },
         //是否登陆
         isLogin : state => {
             return state.isLogin;
+        },
+        //错误码
+        errCode : state => {
+            return state.errCode;
+        },
+        //判断当前是否在微信中打开
+        isWeixin : state => {
+            if (state.isWeixin === null) {
+                let ua = navigator.userAgent.toLowerCase();
+                state.isWeixin = ua.indexOf('micromessenger') !== -1;
+            }
+            return state.isWeixin;
         }
     },
     mutations : {
@@ -121,14 +154,15 @@ export default new Vuex.Store({
         },
         /**
          * 更新用户信息
+         * @param{Object} state vuex中存储的信息
+         * @param{Object} newUserInfo 用户信息
          */
         updateUserInfo ( state, newUserInfo ) {
             //更新本地、vuex用户信息
-            if (newUserInfo) {
+            if (newUserInfo && Object.keys(newUserInfo).length > 0) {
                 state.userInfo = newUserInfo;
                 localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
-            //获取保存到本地的用户信息，更新vuex
-            } else {
+            } else {//获取保存到本地的用户信息，更新vuex
                 let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
                 if (userInfo && Object.keys(userInfo).length > 0) {
                     state.userInfo = userInfo;
@@ -196,10 +230,6 @@ export default new Vuex.Store({
         updateShowNetworkError (state,status) {
             state.showNetworkError = status;
         },
-        //更新公司编码
-        updateCompanyCode (state,companyCode) {
-            state.showNetworkError = companyCode;
-        }
     },
     actions : {
         //获取会员卡列表
@@ -235,12 +265,15 @@ export default new Vuex.Store({
         },
         /**
          * vuex错误提示信息
-         * @param store
-         * @param msg
+         * @param{Object} store
+         * @param{String} errCode 错误码
          */
-        showToast (store, msg) {
-            Vue.prototype.$vux.toast.text(i18n.messages[i18n.locale][msg]);
-        }
-    },
+        showToast (store, errCode) {
+            store.state.errCode = errCode;
+            setTimeout(() => {
+                store.state.errCode = '';
+            },100);
+        },
+    }
 });
 

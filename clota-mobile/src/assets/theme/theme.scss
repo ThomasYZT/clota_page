@@ -137,6 +137,15 @@ div.cell {
 .weui-toast{
     top: 50%!important;
     transform: translateX(-50%) translateY(-50%)!important;
+    width: auto!important;
+    padding: 0 10px;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.weui-toast__content{
+    width: max-content!important;
 }
 .weui-check__label{
     height: 50px!important;

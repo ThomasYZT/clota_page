@@ -47,7 +47,7 @@ export default {
     changePhone : 'Modify phone number',
     localePhone : 'Current mobile number',
     mobile : 'Phone',
-    validCode : 'Verification code',
+    validCode : 'code',
     getValidCode : 'Get verification code',
     pleaseInputMsg : 'Please enter',
     pleaseInputValidCode : 'Please enter verification code',

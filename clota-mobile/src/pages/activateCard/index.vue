@@ -7,7 +7,6 @@
         <!-- 实体卡卡面号 -->
         <x-input class="c-input"
                  :title="$t('memberCardCode')"
-                 keyboard="number"
                  text-align="right"
                  :placeholder="$t('pleaseInput',{field : $t('memberCardCode') })"
                  v-model.trim="activateInfo.faceNum"
@@ -16,7 +15,6 @@
         <!-- 涂层密码 -->
         <x-input class="c-input"
                  :title="$t('coatingpPassword')"
-                 keyboard="number"
                  text-align="right"
                  :placeholder="$t('pleaseInput',{field : $t('coatingpPassword') })"
                  v-model.trim="activateInfo.password"
@@ -81,11 +79,10 @@
                 this.activateInfo.companyCode = this.companyCode;
                 ajax.post('queryEntityCardByFaceNumAndPassword', this.activateInfo).then(res => {
                     if (res.success) {
-                        this.cardInfo = res.data ? res.data : {};
                         this.$router.push({
                             name : 'activateInfo',
                             params : {
-                                cardInfo : this.cardInfo,
+                                cardInfo : res.data ? res.data : {},
                                 openId : this.openId
                             }
                         });
@@ -105,7 +102,7 @@
             },
             /**
              * 获取路由参数
-             * @param params
+             * @param{Object} params 路由参数
              */
             getParams (params) {
                 if (params && params.openId) {

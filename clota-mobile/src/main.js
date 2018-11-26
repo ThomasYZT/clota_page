@@ -6,8 +6,6 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import store from './store';
-import defaultsDeep from 'lodash/defaultsDeep';
-import ajax from '@/api/index.js';
 //es6垫片（包含了es5）
 import 'core-js/es6';
 
@@ -21,8 +19,6 @@ import '@/assets/scss/_common.scss';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin';
-
-//require('./assets/util/vconsole');
 
 Vue.use(plugin);
 Vue.config.productionTip = true;
@@ -48,9 +44,8 @@ router.beforeEach((to, from, next) => {
 
         if (token && userInfo && Object.keys(userInfo).length > 0 && cardInfo && Object.keys(cardInfo).length > 0) {
             //若本地数据存在、更新vuex数据，防止刷新页面数据丢失
-            // store.commit('updateUserInfo');
             //接口更新卡列表信息，更新vuex数据
-            store.dispatch('getCardListInfo').then(res => {
+            store.dispatch('getCardListInfo').then(() => {
                 next();
             }).catch(() => {
                 next({
@@ -77,14 +72,12 @@ new Vue({
     i18n,
     store,
     components : { App },
-    computed : {
-        langCode () {
-            return store.state.lang;
-        }
-    },
 });
 
 
+//开启手机调试模式
+const VConsole = require('vconsole');
+new VConsole();
 //使用fundeBug实时监测代码运行错误，测试时开启,生成环境开启
 if (process.NODE_ENV === 'production') {
 
