@@ -61,7 +61,7 @@
                     <ButtonGroup class="card-list">
                         <Button v-for="(item,index) in memberCardList"
                                 :key="index"
-                                :type="choosedCard === item ? 'primary' : 'ghost'"
+                                :type="choosedCard.id === item.id ? 'primary' : 'ghost'"
                                 @click="choseCard(item)">
                             {{item.levelDesc}}{{(item.isMotherCard === 'false' && item.cardTypeId === '1') ? $t('bracketSetting',{ content : $t('副卡') }) : ''}}
                         </Button>
@@ -813,12 +813,18 @@
                         this.memberCardList = res.data ? res.data : [];
                         //默认给选择的会员第一个会员卡信息
                         if (this.memberCardList.length > 0) {
-                            this.choosedCard = this.memberCardList[0];
+                            this.choosedCard = {
+                                ...this.memberCardList[0],
+                                custName : this.memberBaseDetail.custName
+                            };
                         }
                         //如果从列表进入，需要指定查看会员下的哪个会员卡
                         for (let i = 0,j = this.memberCardList.length; i < j; i++) {
                             if (this.memberCardList[i]['id'] === this.memberInfo.cardId) {
-                                this.choosedCard = this.memberCardList[i];
+                                this.choosedCard = {
+                                    ...this.memberCardList[i],
+                                    custName : this.memberBaseDetail.custName
+                                };
                             }
                         }
                         //查询会员卡下的账户信息
@@ -834,7 +840,12 @@
              * @param{Object} item 会员卡信息
              */
             choseCard (item) {
-                this.choosedCard = item;
+                console.log(this.memberBaseDetail.custName)
+                this.choosedCard = Object.assign({
+                    ...item,
+                },{
+                    custName : this.memberBaseDetail.custName
+                });
                 //查询会员卡下的账户信息
                 this.listCardAccountInfo(this.choosedCard);
                 // this.updateStorgeInfo({
