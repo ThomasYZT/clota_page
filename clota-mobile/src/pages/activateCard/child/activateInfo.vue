@@ -45,7 +45,6 @@
                 <div slot="right-full-height"
                      class="validate"
                      :class="{active: isGetCode}"
-                     disabled="isGetCode"
                      @click="getCode">
                     <p>{{$t('getValidCode')}}{{countDown ? '(' + countDown/1000 + ')': ''}}</p>
                 </div>
@@ -57,7 +56,8 @@
                 :cancel-text="$t('cancel')"
                 :title="$t('birthday')"
                 :placeholder="$t('pleaseSelect',{field : $t('birthday') })"
-                v-model="formData.birthDay"></datetime>
+                v-model="formData.birthDay">
+            </datetime>
             <!-- 证件类型 -->
             <div>
                 <popup-picker :title="$t('cardType')"
@@ -66,7 +66,8 @@
                               v-model="certificationType"
                               class="c-input"
                               @on-change="certificationTypeChange"
-                              :placeholder="$t('pleaseSelect',{field : $t('cardType') })"></popup-picker>
+                              :placeholder="$t('pleaseSelect',{field : $t('cardType') })">
+                </popup-picker>
             </div>
             <!-- 证件号码 -->
             <x-input class="c-input"
@@ -85,12 +86,15 @@
                               v-model="gender"
                               class="c-input"
                               @on-change="sexChange"
-                              :placeholder="$t('pleaseChoose')"></popup-picker>
+                              :placeholder="$t('pleaseChoose')">
+                </popup-picker>
             </div>
 
             <!-- 下一步按钮 -->
             <x-button class="button"
-                      @click.native="validate()">{{$t('nextStep')}}</x-button>
+                      @click.native="validate()">
+                {{$t('nextStep')}}
+            </x-button>
         </template>
 
     </div>
@@ -176,7 +180,7 @@
             ]),
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
-             * @param callback
+             * @param{Function} callback 校验成功回调函数
              */
             phoneValidate (callback) {
                 if (this.formData.phoneNum === '') {
@@ -208,6 +212,7 @@
                                     type : 'cancel'
                                 });
                             } else {
+                                this.formData.code = '';
                                 this.timimg();
                                 this.isGetCode = true;
                                 this.$vux.toast.show({
@@ -420,8 +425,6 @@
                 //获取会员卡列表
                 this.getCardListInfo().then(() => {
                     this.$router.push({ name : 'home' });
-                }).catch(() => {
-                    this.$router.push({ name : 'mobileLogin' });
                 });
             }
         }

@@ -83,7 +83,7 @@ export default {
     register : '会员注册',
     memberLogin : '会员登录',
     login : '登录',
-    enterCode : '输入验证码',
+    enterCode : '请输入验证码',
     pleaseChoose : '请选择',
     getCard : '立即开卡',
     hasAccount : '已有账号，去登录',

@@ -213,7 +213,8 @@
                 lang : 'lang',
                 isLoading : 'isLoading',
                 showNetworkError : 'showNetworkError',
-                cardInfo : 'cardInfo'
+                cardInfo : 'cardInfo',
+                errCode : 'errCode',
             }),
             viewTransition () {
                 return 'vux-pop-in';
@@ -247,7 +248,17 @@
                 },
                 immediate : true
             },
+            //提示网路错误信息
             showNetworkError (newVal) {
+                if (newVal) {
+                    this.$vux.toast.show({
+                        text : this.$t(newVal),
+                        type : 'text',
+                    });
+                }
+            },
+            //监听错误信息，如果值发生变化，重新提示错误信息
+            errCode (newVal) {
                 if (newVal) {
                     this.$vux.toast.show({
                         text : this.$t(newVal),

@@ -25,7 +25,6 @@
             <div slot="right-full-height"
                  class="validate"
                  :class="{active: isGetCode}"
-                 disabled="isGetCode"
                  @click="getCode">
                 <p>{{$t('getValidCode')}}{{countDown ? '(' + countDown/1000 + ')': ''}}</p>
             </div>
@@ -42,7 +41,9 @@
         </div>
         <!-- 登陆按钮 -->
         <x-button class="button"
-                  @click.native="login()">{{$t('login')}}</x-button>
+                  @click.native="login()">
+            {{$t('login')}}
+        </x-button>
         <!-- 购买会员卡 -->
         <div class="entry-wrapper">
             <span @click="buyMemberCard">{{$t('buyMemberCard')}}</span>
@@ -60,10 +61,14 @@
             return {
                 //登陆信息
                 loginInfo : {
+                    //手机号
                     phoneNum : '',
+                    //验证码
                     vcode : ''
                 },
+                //当前是否正在获取验证码
                 isGetCode : false,
+                //定时器
                 timer : null,
                 //倒计时间
                 countDown : null,
@@ -75,8 +80,6 @@
             ...mapGetters({
                 lang : 'lang',
                 companyCode : 'companyCode',
-                userInfo : 'userInfo',
-                cardInfo : 'cardInfo'
             })
         },
         methods : {
@@ -108,6 +111,7 @@
                                     type : 'cancel'
                                 });
                             } else {
+                                this.loginInfo.vcode = '';
                                 this.timimg();
                                 this.isGetCode = true;
                                 this.$vux.toast.show({
@@ -131,8 +135,8 @@
                     }).then((res) => {
                         if (res.success) {
                             this.dataToLogin(res);
-                        } else if (res.toString() === 'Error: Network Error') {
-                            this.$vux.toast.text(this.$t('netNotGood'));
+                        } else if (res.code === '300') {
+                            this.$vux.toast.text(this.$t('operateFail',{ msg : this.$t('login') }));
                         } else {
                             this.$vux.toast.text(this.$t(res.code));
                         }
@@ -141,6 +145,7 @@
             },
             /**
              * 验证输入信息
+             * @param{Function} callback 校验成功的回调函数
              */
             validate (callback) {
                 //手机号验证 验证手机号不为空 且为 手机号格式
@@ -157,7 +162,7 @@
             },
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
-             * @param callback
+             * @param{Function} callback 回调函数
              */
             phoneValidate (callback) {
                 if (this.loginInfo.phoneNum === '') {
@@ -188,9 +193,8 @@
             },
             /**
              * 获取路由信息
-             * @param route
              */
-            getparms (route) {
+            getparms () {
                 let queryParams = this.getUrlString(location.href);
                 if (queryParams && queryParams.code) {
                     this.getOAuth2UserInfo(queryParams.code);
@@ -198,7 +202,7 @@
             },
             /**
              * 获取微信用户信息
-             * @param code
+             * @param{String} code 微信回调code
              */
             getOAuth2UserInfo (code) {
                 ajax.post('getOAuth2UserInfo',{
@@ -208,7 +212,6 @@
                 }).then(res => {
                     if (res.success) {
                         this.dataToLogin(res);
-                        localStorage.clear();
                     } else {
                         //错误信息为空，表示获取到了用户信息
                         if (!res.errcode) {
@@ -221,8 +224,8 @@
             },
             /**
              * 获取url的参数
-             * @param url
-             * @returns {Array}
+             * @param{String} url url地址
+             * @returns {Array} query参数
              */
             getUrlString (url) {
                 let obj = {};
@@ -239,9 +242,10 @@
             },
             /**
              * 处理登录数据
-             * @param res
+             * @param{Object} res 返回的用户信息
              */
             dataToLogin (res) {
+                localStorage.clear();
                 //存储token信息
                 localStorage.setItem('token', res.data.token);
                 //存储本地、vuex用户信息
@@ -271,7 +275,7 @@
                     params : {
                         openId : this.wxUserInfo.openId
                     }
-                })
+                });
             },
             /**
              * 前往购买会员卡
@@ -286,9 +290,7 @@
                 //获取会员卡列表
                 this.getCardListInfo().then(() => {
                     this.$router.push({ name : 'home' });
-                }).catch(() => {
-                    this.$router.push({ name : 'mobileLogin' });
-                })
+                });
             }
         },
         beforeRouteEnter (to,from,next) {
@@ -304,7 +306,7 @@
     $img_base_url : '../../assets/images/';
 
     .login {
-        padding: 10px;
+        padding: 10px 0;
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;

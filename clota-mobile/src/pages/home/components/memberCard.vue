@@ -99,7 +99,7 @@
                             cardType += 'four-level ';
                             break;
                         default:
-                            cardType += 'one-level ';
+                            cardType += 'four-level ';
                     }
                     return cardType;
                 } else if (this.info.cardTypeId === '3') {
@@ -124,7 +124,7 @@
              * @return {string}
              */
             formatCardCode (val) {
-                if (!val) return '';
+                if (!val) return '-';
                 val = val.toString();
                 return val.replace(/(.{4})/g,'$& ');
             }

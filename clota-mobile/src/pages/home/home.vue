@@ -13,12 +13,16 @@
               dots-position="center">
           <swiper-item v-for="(item, index) in cardInfoList"
                        :key="index">
-              <member-card :info="item"></member-card>
+              <member-card :info="item">
+              </member-card>
           </swiper-item>
       </swiper>
 
       <div class="nav">
-          <label-item v-for="(item, index) in labelList" :info.sync="item" :cardInfo="cardInfo" :key="index">
+          <label-item v-for="(item, index) in labelList"
+                      :info.sync="item"
+                      :cardInfo="cardInfo"
+                      :key="index">
           </label-item>
       </div>
 

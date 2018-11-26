@@ -83,6 +83,7 @@
                     ajax.post('getRechargeActMoney',{
                         accountTypeId : this.accountTypeId,
                         amount : this.rechargeMoney,
+                        cardId : this.cardInfo.id
                     }).then(res => {
                         if (res.success) {
                             this.actualMoney = res.data ? res.data.actMoney : '';
