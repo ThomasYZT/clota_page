@@ -75,7 +75,7 @@
                     {
                         src : this.$refs.barcode.$el.src,
                         w : 600,
-                        h : 240
+                        h : 300
                     }
                 ];
                 this.$nextTick(() =>{
@@ -134,6 +134,13 @@
                 width: 100% !important;
                 height: 100px !important;
             }
+        }
+    }
+
+    .img-pre-rotate {
+        /deep/ .pswp__img {
+            transform: rotate(90deg) !important;
+            padding: 20px !important;
         }
     }
 
