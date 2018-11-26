@@ -144,8 +144,6 @@
         methods : {
             ...mapMutations([
                 'updateCardInfo',
-                'updateCardInfoList',
-                'updateUserInfo'
             ]),
             /**
              *  会员卡切换
@@ -154,9 +152,6 @@
             swiperChange (index) {
                 //更新会员卡数据
                 this.updateCardInfo(this.cardInfoList[index]);
-                //更新个人信息
-                let userInfo = defaultsDeep({ cardId : this.cardInfo.id }, this.userInfo);
-                this.updateUserInfo(userInfo);
                 //设置菜单数据
                 this.setCell();
             },

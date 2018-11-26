@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import i18n from '../assets/lang/lang.config';
 import ajax from '../api/index';
+import defaultsDeep from 'lodash/defaultsDeep';
 
 Vue.use(Vuex);
 
@@ -144,10 +145,8 @@ export default new Vuex.Store({
             if (newCardInfo && Object.keys(newCardInfo).length > 0) {
                 //设置当前会员卡信息
                 state.cardInfo = newCardInfo;
-                this.commit('updateUserInfo',Object.assign({
-                    cardId : newCardInfo.id
-                },this.getters.userInfo));
                 localStorage.setItem('cardInfo', JSON.stringify(newCardInfo));
+                this.commit('updateUserInfo',defaultsDeep({ cardId : newCardInfo.id }, state.userInfo));
             } else {
                 let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
                 if (cardInfo && Object.keys(cardInfo).length > 0) {
@@ -233,15 +232,15 @@ export default new Vuex.Store({
                     reject();
                 });
             })
+        },
+        /**
+         * vuex错误提示信息
+         * @param store
+         * @param msg
+         */
+        showToast (store, msg) {
+            Vue.prototype.$vux.toast.text(i18n.messages[i18n.locale][msg]);
         }
     },
-    /**
-     * vuex错误提示信息
-     * @param store
-     * @param msg
-     */
-    showToast (store, msg) {
-        Vue.prototype.$vux.toast.text(i18n.messages[i18n.locale][msg]);
-    }
 });
 
