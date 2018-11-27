@@ -13,7 +13,7 @@
                     </div>
                     <span class="username" @click="toPersonInfo">
                       <span class="name">
-                      {{info.custName}}
+                      {{info.custName | contentFilter}}
                       </span>
                       <span class="iconfont icon-arrow"></span>
                   </span>
@@ -29,11 +29,11 @@
             <div class="bottom-info-wrapper">
 
                 <div class="company-info">
-                    <span>{{info.orgName}}</span>
+                    <span>{{info.orgName | contentFilter}}</span>
                 </div>
                 <div class="card-info">
                     <div style="font-weight: bold">{{info.cardCode | formatCardCode}}</div>
-                    <div v-show="cardInfo.inCode" @click="toEnterScenicCode">
+                    <div v-show="info.inCode" @click="toEnterScenicCode">
                         <span>{{$t('enterSenicCode')}}</span>
                         <i class="iconfont icon-code"></i>
                         <i class="iconfont icon-arrow-right"></i>
@@ -56,6 +56,7 @@
     import { mapGetters } from 'vuex';
     export default {
         props : {
+            //会员卡信息
             info : {
                 type : Object,
                 default () {
@@ -120,7 +121,7 @@
         filters : {
             /**
              * 格式化会员卡号
-             * @param val
+             * @param{String} val 会员卡号
              * @return {string}
              */
             formatCardCode (val) {
@@ -158,7 +159,7 @@
             toEnterScenicCode () {
                 this.$router.push({
                     name : 'scenicCode'
-                })
+                });
             }
         }
     };

@@ -190,13 +190,15 @@
                 }
             },
         },
-        created () {
-            //设置菜单数据
-            this.setCell();
-        },
         watch : {
-            cardInfo () {
-                this.setCell();
+            //切换了卡下面的子菜单也要更换
+            cardInfo : {
+                handler (newVal) {
+                    if (newVal && Object.keys(newVal).length > 0) {
+                        this.setCell();
+                    }
+                },
+                immediate : true
             }
         }
   };

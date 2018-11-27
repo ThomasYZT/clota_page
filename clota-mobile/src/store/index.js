@@ -173,7 +173,8 @@ export default new Vuex.Store({
         },
         /**
          * 更新会员卡信息
-         * @param state
+         * @param{Object} state
+         * @param{Object} newCardInfo 会员卡信息
          */
         updateCardInfo ( state, newCardInfo ) {
             if (newCardInfo && Object.keys(newCardInfo).length > 0) {
@@ -182,15 +183,8 @@ export default new Vuex.Store({
                 localStorage.setItem('cardInfo', JSON.stringify(newCardInfo));
                 this.commit('updateUserInfo',defaultsDeep({ cardId : newCardInfo.id }, state.userInfo));
             } else {
-                let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-                if (cardInfo && Object.keys(cardInfo).length > 0) {
-                    //更新vuex当前会用卡信息
-                    state.cardInfo = cardInfo;
-                } else {
-                    //初始设置本地、vuex当前会员卡信息
-                    state.cardInfo = state.cardInfoList[0];
-                    localStorage.setItem('cardInfo', JSON.stringify(state.cardInfo));
-                }
+                state.cardInfo = (state.cardInfoList && state.cardInfoList.length > 0) ? state.cardInfoList[0] : {};
+                localStorage.setItem('cardInfo', JSON.stringify(state.cardInfo));
             }
         },
         /**
