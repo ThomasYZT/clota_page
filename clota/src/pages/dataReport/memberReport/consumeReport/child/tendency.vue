@@ -152,7 +152,7 @@
                                     this.xAxisData.push(data[key][i].date);
                                 }
                                 hasXAxis = true;
-                            } else {
+                            } else if (data[key] && data[key].length > 0 && hasXAxis) {
                                 for (let i = 0, len = data[key].length; i < len; i++) {
                                     consumeAmountData[i].value += data[key][i].consumeAmount;
                                     consumeAmountData[i].params.consumeAmount += data[key][i].consumeAmount;

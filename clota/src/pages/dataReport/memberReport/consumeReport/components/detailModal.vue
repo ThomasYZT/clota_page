@@ -43,6 +43,10 @@
                 <!--</template>-->
             <!--</el-table-column>-->
         </table-com>
+
+        <div slot="footer" class="modal-footer">
+            <Button type="ghost" @click="toggle()" >{{$t("cancel")}}</Button>
+        </div>
     </Modal>
 </template>
 
@@ -118,11 +122,13 @@
         }
 
         .value {
+            margin-right: 20px;
             font-size: 18px;
             color: #22BB5F;
         }
 
         .info {
+            margin-right: 20px;
             font-size: 14px;
             color: #666666;
         }
