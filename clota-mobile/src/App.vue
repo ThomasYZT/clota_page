@@ -37,7 +37,6 @@
                 <!--&lt;!&ndash;<headNav v-if="showTopBanner"></headNav>&ndash;&gt;-->
                 <!--<transition name="fade">-->
                     <!--<router-view :key="hashKey" >-->
-
                     <!--</router-view>-->
                 <!--</transition>-->
             <!--</template>-->
@@ -150,7 +149,7 @@
             },
             /**
              * 选择语言
-             * @param lang 选择的语言
+             * @param{String} lang 选择的语言
              */
             preChangeLang (lang) {
                 this.langType = lang;
@@ -170,10 +169,10 @@
              * 获取微信配置
              */
             getWxConfig () {
-                if (this.is_weixn()) {
+                if (this.isWeixin) {
                     this.pageShow = true;
                     ajax.post('getWxConfig',{
-                        url : location.href.split('#')[0]
+                        url : window.location.origin
                     }).then(res => {
                         if (res.success) {
                             this.$wechat.config({
@@ -193,18 +192,6 @@
                 } else {
                     this.pageShow = false;
                 }
-            },
-            /**
-             * 判断是否在微信中
-             * @returns {boolean}
-             */
-            is_weixn () {
-                let ua = navigator.userAgent.toLowerCase();
-                if (ua.match(/MicroMessenger/i) == "micromessenger") {
-                    return true;
-                } else {
-                    return false;
-                }
             }
         },
         computed : {
@@ -215,10 +202,8 @@
                 showNetworkError : 'showNetworkError',
                 cardInfo : 'cardInfo',
                 errCode : 'errCode',
+                isWeixin : 'isWeixin'
             }),
-            viewTransition () {
-                return 'vux-pop-in';
-            }
         },
         created () {
             this.getWxConfig();
@@ -228,7 +213,7 @@
                 handler (newVal) {
                     this.actived = this.tabbarList.findIndex((i) => {
                         if (newVal.path === '/exchangeRecord') {
-                            return i.link === '/integralMall'
+                            return i.link === '/integralMall';
                         } else {
                             return i.link === newVal.path;
                         }

@@ -6,9 +6,9 @@
   <div class="home"
        v-show="!isLoading">
       <swiper ref="swiper"
-              :class="{'no-spot': this.cardInfoList.length === 1}"
+              :show-dots="cardInfoList.length > 0"
               class="home-swiper"
-              v-model="cardIndex"
+              :value="cardIndex"
               @on-index-change="swiperChange"
               dots-position="center">
           <swiper-item v-for="(item, index) in cardInfoList"
@@ -127,21 +127,17 @@
                 'cardInfoList'
             ]),
             //当前卡索引
-            cardIndex : {
-                get : function () {
-                    if (this.cardInfoList && this.cardInfoList.length > 0 && this.cardInfo && Object.keys(this.cardInfo).length !== 0) {
-                        for (let i = 0, len = this.cardInfoList.length; i < len; i++) {
-                            if (this.cardInfoList[i].id === this.cardInfo.id) {
-
-                                return i;
-                            }
+            cardIndex () {
+                if (this.cardInfoList && this.cardInfoList.length > 0 && this.cardInfo && Object.keys(this.cardInfo).length !== 0) {
+                    for (let i = 0, len = this.cardInfoList.length; i < len; i++) {
+                        if (this.cardInfoList[i].id === this.cardInfo.id) {
+                            return i;
                         }
-                        return 0;
-                    } else {
-                        return 0;
                     }
-                },
-                set : function () {}
+                    return 0;
+                } else {
+                    return 0;
+                }
             }
         },
         methods : {
@@ -150,7 +146,7 @@
             ]),
             /**
              *  会员卡切换
-             *  @param index
+             *  @param{Number} index
              */
             swiperChange (index) {
                 //更新会员卡数据
@@ -190,7 +186,6 @@
                         default :
                             this.labelList[i].info = '';
                             this.labelList[i].params = {};
-
                     }
                 }
             },
@@ -238,12 +233,6 @@
 
         /deep/ .vux-indicator {
             bottom: 0;
-        }
-
-        /deep/ .no-spot {
-            .vux-indicator {
-                display: none;
-            }
         }
 
         .home-swiper {

@@ -3,21 +3,6 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-// export default new Router({
-//     routes: [
-//         //登录页面路由
-//         {
-//             path: '/login',
-//             name: 'login',
-//             component: () => import(/* webpackChunkName: "login" */ '../pages/login/login.vue')
-//             , meta: {
-//                 noFrame: true
-//             }
-//         },
-//     ]
-// })
-
-
 //生成新路由的方法
 const createRouter = () => new Router({
     mode : 'history',
