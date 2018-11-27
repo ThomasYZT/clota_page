@@ -56,6 +56,7 @@
         </div>
 
         <table-com
+            v-if="cardTypeList.length !== 0"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -164,14 +165,16 @@
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data ? res.data.totalRow : 0;
-                        this.countCardAndSaleMoney()
+                        this.countCardAndSaleMoney();
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 });
             },
-            //统计会员卡数量和销售金额
+            /**
+             * 统计会员卡数量和销售金额
+             */
             countCardAndSaleMoney () {
                 ajax.post('countCardAndSaleMoney', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
@@ -191,6 +194,7 @@
             },
             /**
              * 获取卡级别列表数据
+             * @param {string} type
              */
             queryLevelsByCardType (type) {
                 this.filterData.memberLevel = 'all';
@@ -228,7 +232,6 @@
             cardTypeList : {
                 handler  (newVal) {
                     if (newVal.length > 0) {
-                        console.log(newVal)
                         this.filterData.memberType = newVal[0].value;
                         this.queryLevelsByCardType();
                     } else {

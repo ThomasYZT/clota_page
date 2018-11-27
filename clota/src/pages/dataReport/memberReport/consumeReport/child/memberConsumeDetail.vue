@@ -48,7 +48,9 @@
                                 <TimelineItem v-for="(item, index) in timeLineData"
                                               :key="index"
                                               color="blue">
-                                    {{item.createdTime  | contentFilter}} {{$t('packageCount')}} {{item.amount | moneyFilter | contentFilter}} , {{$t('unitPrice')}} {{item.price | moneyFilter | contentFilter}}
+                                    {{item.createdTime  | contentFilter}}
+                                    {{$t('packageCount')}} {{item.amount | moneyFilter | contentFilter}} ,
+                                    {{$t('unitPrice')}} {{item.price | moneyFilter | contentFilter}}
                                 </TimelineItem>
                             </Timeline>
                         </div>

@@ -54,6 +54,7 @@
         </div>
 
         <table-com
+            v-if="scenicList.length !== 0"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
