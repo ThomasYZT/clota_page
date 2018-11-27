@@ -1772,6 +1772,10 @@ export default {
     'WhetherToContinue' : '是否继续？',
     'paying' : '支付中...',
     'goodsStockIn' : '商品入库',
-    'universalMarketing' : '全民营销'
+    'universalMarketing' : '全民营销',
+    'posterInformation' : '海报信息',
+    'comprehensiveSetup' : '综合设置',
+    'marketingPositionSetting' : '营销地理位置设置',
+    'marketingTypeSetting' : '营销类别设置',
 
 }
