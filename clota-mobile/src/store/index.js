@@ -15,7 +15,7 @@ export default new Vuex.Store({
         //会员卡信息
         cardInfo : {},
         //会员卡列表信息
-        cardInfoList : {},
+        cardInfoList : [],
         //页面是否显示加载中
         isLoading : false,
         //当前正在加载中的接口个数
@@ -49,7 +49,7 @@ export default new Vuex.Store({
         userInfo : state => {
             let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
             if (!state.userInfo || Object.keys(state.userInfo).length < 1) {
-                state.userInfo = userInfo
+                state.userInfo = userInfo;
             }
             return state.userInfo;
         },
@@ -103,6 +103,12 @@ export default new Vuex.Store({
         },
         //是否登陆
         isLogin : state => {
+            let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+            if (userInfo && Object.keys(userInfo).length > 0) {
+                state.isLogin = true;
+            } else {
+                state.isLogin = false;
+            }
             return state.isLogin;
         },
         //错误码
@@ -190,6 +196,7 @@ export default new Vuex.Store({
         /**
          * 更新会员卡列表信息
          * @param state
+         * @param newCardInfoList
          */
         updateCardInfoList ( state, newCardInfoList ) {
             if (newCardInfoList && Object.keys(newCardInfoList).length > 0) {
@@ -197,25 +204,25 @@ export default new Vuex.Store({
                 state.cardInfoList = newCardInfoList;
                 localStorage.setItem('cardInfoList', JSON.stringify(newCardInfoList));
             } else {
-                //更新vuex卡列表信息
-                let cardInfoList = localStorage.getItem('cardInfoList') ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
-                if (cardInfoList && Object.keys(cardInfoList).length > 0) {
-                    state.cardInfoList = cardInfoList;
-                } else {
-                    state.cardInfoList = {};
-                }
+                state.cardInfoList = [];
+                localStorage.setItem('cardInfoList', JSON.stringify(state.cardInfoList));
             }
-        },
-        /**
-         * 更新登陆状态
-         * @param state
-         */
-        updateLoginStatus ( state ) {
-            let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
-            if (userInfo && Object.keys(userInfo).length > 0) {
-                state.isLogin = true;
+            //更新了卡列表信息后，需要更新当前选择的卡信息
+            let cardInfoList = state.cardInfoList;
+            if ( cardInfoList && cardInfoList.length > 0 ) {
+                if (this.getters.cardInfo && Object.keys(this.getters.cardInfo).length > 0 ) {
+                    for (let i = 0,j = cardInfoList.length; i < j; i++ ) {
+                        if (cardInfoList[i]['id'] === this.getters.cardInfo['id']) {
+                            this.commit('updateCardInfo',cardInfoList[i]);
+                            return;
+                        }
+                    }
+                    this.commit('updateCardInfo',cardInfoList[0]);
+                } else {
+                    this.commit('updateCardInfo',cardInfoList[0]);
+                }
             } else {
-                state.isLogin = false;
+                this.commit('updateCardInfo',{});
             }
         },
         /**
@@ -227,7 +234,7 @@ export default new Vuex.Store({
     },
     actions : {
         //获取会员卡列表
-        getCardListInfo ({ state, commit, dispatch }) {
+        getCardListInfo ({ commit, dispatch }) {
             return new Promise((resolve, reject) => {
                 ajax.post('queryMemberCardList', {
                     memberId : this.getters.userInfo.memberId
@@ -237,25 +244,22 @@ export default new Vuex.Store({
                         if (memberCardList.length > 0) {
                             //存储卡列表数据
                             commit('updateCardInfoList', memberCardList);
-                            commit('updateCardInfo');
                             resolve();
                         } else {
                             //会员卡列表数据为空
                             commit('updateCardInfoList', []);
-                            commit('updateCardInfo', {});
                             dispatch('showToast', 'userHasNoCard');
                             reject();
                         }
                     } else {
                         commit('updateCardInfoList', []);
-                        commit('updateCardInfo', {});
                         dispatch('showToast', 'getDataFailure');
                         reject();
                     }
                 }).catch(() => {
                     reject();
                 });
-            })
+            });
         },
         /**
          * vuex错误提示信息

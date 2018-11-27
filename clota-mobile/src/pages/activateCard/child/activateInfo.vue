@@ -171,7 +171,6 @@
         methods : {
             ...mapMutations([
                 'updateUserInfo',
-                'updateLoginStatus',
                 'updateCardInfoList',
                 'updateCardInfo',
             ]),

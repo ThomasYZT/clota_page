@@ -4,9 +4,9 @@
 -->
 <template>
   <div class="home"
-       v-show="!isLoading">
+       v-show="cardInfo && Object.keys(cardInfo).length > 0">
       <swiper ref="swiper"
-              :show-dots="cardInfoList.length > 0"
+              :show-dots="cardInfoList.length > 1"
               class="home-swiper"
               :value="cardIndex"
               @on-index-change="swiperChange"
