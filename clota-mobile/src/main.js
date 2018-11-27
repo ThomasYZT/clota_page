@@ -34,33 +34,29 @@ router.beforeEach((to, from, next) => {
         /* || to.name === 'mobileRegister'*/
     ) {
         next();
-
-    //判断是否保存了用户信息和token，如果没有保存需要重新登录
-    } else {
+    } else {//判断是否保存了用户信息和token，如果没有保存需要重新登录
         //获取保存到本地的用户信息、当前选择的卡信息
         let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
-        let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
-        let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-
-        if (token && userInfo && Object.keys(userInfo).length > 0 && cardInfo && Object.keys(cardInfo).length > 0) {
-            //若本地数据存在、更新vuex数据，防止刷新页面数据丢失
-            //接口更新卡列表信息，更新vuex数据
-            store.dispatch('getCardListInfo').then(() => {
+        if (token && store.getters.userInfo && Object.keys(store.getters.userInfo).length > 0) {
+            //判断vuex中是否保存了当前卡信息，如果没有保存则重新获取会员卡信息
+            if (store.getters.cardInfo && Object.keys(store.getters.cardInfo).length > 0 && store.getters.cardInfoList && store.getters.cardInfoList.length > 0) {
                 next();
-            }).catch(() => {
-                next({
-                    name : 'mobileLogin'
+            } else {
+                //接口更新卡列表信息，更新vuex数据
+                store.dispatch('getCardListInfo').then(() => {
+                    next();
+                }).catch(() => {
+                    next({
+                        name : 'mobileLogin'
+                    });
                 });
-            });
+            }
         } else {
-            //若本地数据不存在，跳至登陆页
             next({
                 name : 'mobileLogin'
             });
         }
     }
-    //跟新登陆状态
-    store.commit('updateLoginStatus');
 });
 
 
