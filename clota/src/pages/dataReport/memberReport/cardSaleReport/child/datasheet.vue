@@ -50,9 +50,9 @@
 
         <div class="statistics">
             <!-- 销售数量 -->
-            <span class="label">{{$t('colonSetting', { key: $t('salesQty') })}}</span><span class="data">{{saleQuantity}}</span>
+            <span class="label">{{$t('colonSetting', { key: $t('salesQty') })}}</span><span class="data">{{saleQuantity | contentFilter}}</span>
             <!-- 总计金额 -->
-            <span class="label">{{$t('colonSetting', { key: $t('addAll') })}}</span><span class="data">{{totalMoney}}</span>
+            <span class="label">{{$t('colonSetting', { key: $t('addAll') })}}</span><span class="data">{{totalMoney | moneyFilter | contentFilter}}</span>
         </div>
 
         <table-com
@@ -228,6 +228,7 @@
             cardTypeList : {
                 handler  (newVal) {
                     if (newVal.length > 0) {
+                        console.log(newVal)
                         this.filterData.memberType = newVal[0].value;
                         this.queryLevelsByCardType();
                     } else {
