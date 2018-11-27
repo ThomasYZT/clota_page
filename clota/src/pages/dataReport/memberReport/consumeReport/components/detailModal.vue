@@ -16,7 +16,7 @@
         </div>
 
         <div class="statistic">
-            <span class="label">{{$t('consumeMoneyTotal')}}</span> <span class="value">{{listItem.actAmount | contentFilter}} </span>
+            <span class="label">{{$t('consumeMoneyTotal')}}</span> <span class="value">{{listItem.actAmount | moneyFilter | contentFilter}} </span>
             <span class="label">{{$t('consumeTime')}}</span> <span class="info">| {{listItem.createdTime | contentFilter}}</span>
         </div>
 
