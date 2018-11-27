@@ -59,9 +59,11 @@
             },
             cardType : {
                 type : String,
-                default () {
-                    return '';
-                }
+                default : ''
+            },
+            selectButton : {
+                type : String,
+                default : 'tendency'
             }
         },
         components : {},
@@ -90,7 +92,6 @@
                         value : 'scoreReport',
                     }
                 ],
-                selectButton : 'tendency',
                 //会员类别下拉列表
                 cardTypeList : [
                     {
@@ -99,7 +100,7 @@
                     }
                 ],
                 //卡类型
-                cType : 'all'
+                cType : 'all',
             };
         },
         methods : {
@@ -115,8 +116,7 @@
              *  @param {string} type
              */
             selectChange (type) {
-                this.selectButton = type;
-                this.$emit('typeChange', type);
+                this.$emit('update:selectButton', type);
             },
             /**
              * 获取会员卡类型下拉列表数据
