@@ -18,7 +18,9 @@ import orderCenter from './modules/orderCenter';
 //报表中心
 import dataReport from './modules/dataReport';
 //全民营销
-import universalMarketing from './modules/universalMarketing'
+import universalMarketing from './modules/universalMarketing';
+//工作台
+import workbench from './modules/workbench';
 
 
 export default {
@@ -31,4 +33,5 @@ export default {
     ...orderCenter,
     ...dataReport,
     ...universalMarketing,
+    ...workbench,
 };
