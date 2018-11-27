@@ -11,7 +11,8 @@
 <script>
 
     export default {
-        components : {},
+        components : {
+        },
         data () {
             return {};
         },
@@ -21,4 +22,11 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .comprehensive-setup {
+        @include block_outline();
+        min-width: $content_min_width;
+        overflow: auto;
+        background: $color_fff;
+        border-radius : 4px;
+    }
 </style>

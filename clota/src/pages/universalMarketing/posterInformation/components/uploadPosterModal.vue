@@ -3,8 +3,21 @@
     作者：杨泽涛
 -->
 <template>
-    <Modal class="upload-poster-modal">
+    <Modal class="upload-poster-modal"
+           v-model="visible"
+           :title="$t('uploadPoster')"
+           class-name="vertical-center-modal"
+           width="600"
+           :mask-closable="false">
 
+        <div slot="footer" class="modal-footer">
+            <Button class="ivu-btn-90px"
+                    type="primary"
+                    @click="upload" >{{$t('save')}}</Button>
+            <Button class="ivu-btn-90px"
+                    type="ghost"
+                    @click="toggle" >{{$t("cancel")}}</Button>
+        </div>
     </Modal>
 </template>
 
@@ -13,9 +26,25 @@
     export default {
         components : {},
         data () {
-            return {};
+            return {
+                //是否显示模态框
+                visible : false,
+            };
         },
-        methods : {}
+        methods : {
+            /**
+             * 显示、隐藏模态框
+             */
+            toggle () {
+                this.visible = !this.visible;
+            },
+            /**
+             * 上传
+             */
+            upload () {
+
+            }
+        }
     };
 </script>
 

@@ -9,7 +9,7 @@
         营销产品管理
     </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
 
     export default {
         components : {},

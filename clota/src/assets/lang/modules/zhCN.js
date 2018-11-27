@@ -1780,4 +1780,7 @@ export default {
     'cashRecord' : '提现记录',
     'marketingProductManage' : '营销产品管理',
     'salesUserInfo' : '销售用户信息',
+    'uploadPoster' : '上传海报',
+    'posterName' : '海报名称',
+
 }

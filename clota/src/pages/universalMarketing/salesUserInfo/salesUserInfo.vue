@@ -9,7 +9,7 @@
         销售用户信息
     </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
 
     export default {
         components : {},
