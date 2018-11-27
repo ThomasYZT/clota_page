@@ -23,7 +23,58 @@ export default {
             isMenu : true
         },
         children : {
-
+            //海报信息
+            posterInformation : {
+                path : '/universalMarketing/posterInformation',
+                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/posterInformation/index.vue'),
+                name : 'posterInformation',
+                meta : {
+                    menuName : 'posterInformation', //lang.config.js 里面的语言键值
+                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'posterInformation',
+                    isMenu : true,
+                },
+            },
+            //综合设置
+            comprehensiveSetup : {
+                path : '/universalMarketing/comprehensiveSetup',
+                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/index.vue'),
+                name : 'comprehensiveSetup',
+                meta : {
+                    menuName : 'comprehensiveSetup', //lang.config.js 里面的语言键值
+                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'comprehensiveSetup',
+                    isMenu : true,
+                },
+                children : {
+                    //营销类别设置
+                    marketingTypeSetting : {
+                        path : '/universalMarketing/marketingTypeSetting',
+                        component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/index.vue'),
+                        name : 'marketingTypeSetting',
+                        meta : {
+                            menuName : 'marketingTypeSetting', //lang.config.js 里面的语言键值
+                            _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                            rightPath : topMenuName + '.' + 'marketingTypeSetting',
+                            isMenu : true,
+                        },
+                    },
+                    //营销地理位置设置
+                    marketingPositionSetting : {
+                        path : '/universalMarketing/marketingPositionSetting',
+                        component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/index.vue'),
+                        name : 'marketingPositionSetting',
+                        meta : {
+                            menuName : 'marketingPositionSetting', //lang.config.js 里面的语言键值
+                            _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                            rightPath : topMenuName + '.' + 'marketingPositionSetting',
+                            isMenu : true,
+                        },
+                    }
+                }
+            }
         }
     }
 }
