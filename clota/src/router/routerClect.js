@@ -17,6 +17,8 @@ import financeManageRouter from './modules/financeManage';
 import orderCenter from './modules/orderCenter';
 //报表中心
 import dataReport from './modules/dataReport';
+//全民营销
+import universalMarketing from './modules/universalMarketing'
 
 
 export default {
@@ -28,4 +30,5 @@ export default {
     ...financeManageRouter,
     ...orderCenter,
     ...dataReport,
+    ...universalMarketing,
 };

@@ -1772,5 +1772,6 @@ export default {
     'WhetherToContinue' : '是否继续？',
     'paying' : '支付中...',
     'goodsStockIn' : '商品入库',
+    'universalMarketing' : '全民营销'
 
 }
