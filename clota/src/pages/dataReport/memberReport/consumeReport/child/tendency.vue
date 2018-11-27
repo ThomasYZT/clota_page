@@ -90,7 +90,7 @@
                         params.forEach(item => {
                             let spot = '<span style="display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' +
                                         item.color + ';"></span> ';
-                            let account = this.$t(item.data.name) + ' ' + item.value.toFixed(2);
+                            let account = this.$t(item.data.name) + ' ' + (item.data.name === 'consumption' ? item.value.toFixed(2) : item.value);
                             html += '<p style="height:22px;line-height: 22px">' + spot + account + '</p>';
                         });
                         html += '</div>';
@@ -182,7 +182,8 @@
                                 if (key === 'consumeAmount') {
                                     this.headInfo.push({
                                         label : 'memberConsumeAmount',
-                                        value : res.data[key] ? res.data[key] : 0
+                                        value : res.data[key] ? res.data[key] : 0,
+                                        type : 'money'
                                     });
                                 } else if (key === 'consumerNum') {
                                     this.headInfo.push({
