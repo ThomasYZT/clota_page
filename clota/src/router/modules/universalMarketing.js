@@ -74,7 +74,46 @@ export default {
                         },
                     }
                 }
-            }
+            },
+            //提现记录
+            cashRecord : {
+                path : '/universalMarketing/cashRecord',
+                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/cashRecord/cashRecord.vue'),
+                name : 'cashRecord',
+                meta : {
+                    menuName : 'cashRecord', //lang.config.js 里面的语言键值
+                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'cashRecord',
+                    isMenu : true,
+                },
+            },
+            //营销产品管理
+            marketingProductManage : {
+                path : '/universalMarketing/marketingManage',
+                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/marketingManage/index.vue'),
+                name : 'marketingProductManage',
+                meta : {
+                    menuName : 'marketingProductManage', //lang.config.js 里面的语言键值
+                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'marketingProductManage',
+                    isMenu : true,
+                },
+            },
+            //销售用户信息
+            salesUserInfo : {
+                path : '/universalMarketing/salesUserInfo',
+                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/salesUserInfo/salesUserInfo.vue'),
+                name : 'salesUserInfo',
+                meta : {
+                    menuName : 'salesUserInfo', //lang.config.js 里面的语言键值
+                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'salesUserInfo',
+                    isMenu : true,
+                },
+            },
         }
     }
 }

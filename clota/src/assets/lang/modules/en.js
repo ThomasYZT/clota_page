@@ -1777,5 +1777,8 @@ export default {
     'comprehensiveSetup' : '综合设置',
     'marketingPositionSetting' : '营销地理位置设置',
     'marketingTypeSetting' : '营销类别设置',
+    'cashRecord' : '提现记录',
+    'marketingProductManage' : '营销产品管理',
+    'salesUserInfo' : '销售用户信息',
 
 }
