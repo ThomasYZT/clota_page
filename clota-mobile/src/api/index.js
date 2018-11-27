@@ -1,12 +1,12 @@
 /**
  * Created by Sasha on 2018/6/1.
  */
-import api from './apiList';
+import api from '../member/api/apiList';
 import axios from 'axios';
 import querystring from 'querystring';
 import config from '../config/index.js';
 import common from '../assets/js/common';
-import store from '../store/index';
+import store from '../member/store/index';
 import Vue from 'vue';
 
 

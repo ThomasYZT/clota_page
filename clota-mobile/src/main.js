@@ -4,8 +4,8 @@ import "babel-polyfill";
 import 'lib-flexible';
 import Vue from 'vue';
 import App from './App';
-import router from './router';
-import store from './store';
+import router from './router/index';
+import store from './store/index';
 //es6垫片（包含了es5）
 import 'core-js/es6';
 
@@ -22,47 +22,10 @@ import plugin from './assets/js/plugin';
 
 Vue.use(plugin);
 Vue.config.productionTip = true;
-
-router.beforeEach((to, from, next) => {
-    //无操作的路由
-    if (
-        to.name === 'mobileLogin' //会员登陆
-        || to.name === 'activateCard' //激活会员卡
-        || to.name === 'activateInfo' //填写激活会员卡信息
-        || to.name === 'h5Pay' //c端支付
-        || to.name === 'payStatus' //c端支付结果
-        /* || to.name === 'mobileRegister'*/
-    ) {
-        next();
-
-    //判断是否保存了用户信息和token，如果没有保存需要重新登录
-    } else {
-        //获取保存到本地的用户信息、当前选择的卡信息
-        let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
-        let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
-        let cardInfo = localStorage.getItem('cardInfo') ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-
-        if (token && userInfo && Object.keys(userInfo).length > 0 && cardInfo && Object.keys(cardInfo).length > 0) {
-            //若本地数据存在、更新vuex数据，防止刷新页面数据丢失
-            //接口更新卡列表信息，更新vuex数据
-            store.dispatch('getCardListInfo').then(() => {
-                next();
-            }).catch(() => {
-                next({
-                    name : 'mobileLogin'
-                });
-            });
-        } else {
-            //若本地数据不存在，跳至登陆页
-            next({
-                name : 'mobileLogin'
-            });
-        }
-    }
-    //跟新登陆状态
-    store.commit('updateLoginStatus');
-});
-
+//开启手机调试模式
+const VConsole = require('vconsole');
+/* eslint-disable no-new */
+new VConsole();
 
 /* eslint-disable no-new */
 new Vue({
@@ -74,10 +37,6 @@ new Vue({
     components : { App },
 });
 
-
-//开启手机调试模式
-const VConsole = require('vconsole');
-new VConsole();
 //使用fundeBug实时监测代码运行错误，测试时开启,生成环境开启
 if (process.NODE_ENV === 'production') {
 
