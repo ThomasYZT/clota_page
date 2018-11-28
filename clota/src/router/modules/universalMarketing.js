@@ -52,7 +52,7 @@ export default {
                     //营销类别设置
                     marketingTypeSetting : {
                         path : '/universalMarketing/marketingTypeSetting',
-                        component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/index.vue'),
+                        component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/marketingTypeSetting/index.vue'),
                         name : 'marketingTypeSetting',
                         meta : {
                             menuName : 'marketingTypeSetting', //lang.config.js 里面的语言键值
@@ -64,7 +64,7 @@ export default {
                     //营销地理位置设置
                     marketingPositionSetting : {
                         path : '/universalMarketing/marketingPositionSetting',
-                        component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/index.vue'),
+                        component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/marketingPositionSetting/index.vue'),
                         name : 'marketingPositionSetting',
                         meta : {
                             menuName : 'marketingPositionSetting', //lang.config.js 里面的语言键值

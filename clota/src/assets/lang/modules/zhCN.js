@@ -1782,5 +1782,19 @@ export default {
     'salesUserInfo' : '销售用户信息',
     'uploadPoster' : '上传海报',
     'posterName' : '海报名称',
-
+    'positionName' : '位置名称',
+    'longitude' : '经度',
+    'latitude' : '纬度',
+    'radiusWithUnit' : '半径带单位',
+    'levelID' : '等级ID',
+    'marketingLevelName' : '营销等级名称',
+    'marketingTypeName' : '营销类别名称',
+    'levelUpMoney' : '升级金额',
+    'addNewMarketingLevel' : '新增营销等级',
+    'addNewLngLat' : '新增经纬度',
+    'marketingLevel' : '营销等级',
+    'codeRegisterManage' : '二维码注册管理',
+    'cashSetting' : '提现设置',
+    'addNewMarketingType'  : '新增营销类别',
+    'uploadPicture' : '上传图片'
 }

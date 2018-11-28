@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="comprehensive-setup">
-
+        <router-view></router-view>
     </div>
 </template>
 
