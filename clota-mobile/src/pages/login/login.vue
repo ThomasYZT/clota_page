@@ -249,8 +249,6 @@
                 localStorage.setItem('token', res.data.token);
                 //存储本地、vuex用户信息
                 this.updateUserInfo(res.data);
-                //更新登陆状态
-                this.updateLoginStatus();
                 //获取用卡列表信息
                 this.getCardList();
             },
