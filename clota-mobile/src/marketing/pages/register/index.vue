@@ -43,7 +43,7 @@
                     idNum : ''
                 },
                 //当前注册的阶段
-                stage : '2'
+                stage : '1'
             };
         },
         methods : {
@@ -55,7 +55,7 @@
                 this.formData.phoneNum = formData.phoneNum;
                 this.formData.code = formData.code;
                 this.formData.password = formData.password;
-                this.stage = '2';
+                this.stage = '1';
             },
             /**
              * 注册
@@ -73,8 +73,13 @@
 
                 }).then(res => {
                     if (res.success) {
+                        this.$router.push({
+                            name : 'marketingRegisterSuc'
+                        });
+                    } else {
                         this.$vux.toast.show({
-                            text : this.$t('operateSuc',{ msg : this.$t('marketingRegister') })
+                            text : this.$t('operateFail',{ msg : this.$t('marketingRegister') }),
+                            type : 'cancel'
                         });
                     }
                 });

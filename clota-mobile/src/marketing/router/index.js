@@ -35,6 +35,14 @@ export const marketingRoutes = [
                 meta : {
                     title : '注册成功'
                 }
+            },
+            {
+                path : 'login',
+                name : 'marketingLogin',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/login/index.vue'),
+                meta : {
+                    title : 'login'
+                }
             }
         ]
     }

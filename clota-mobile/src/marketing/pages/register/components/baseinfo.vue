@@ -4,7 +4,7 @@
     <div class="base-info">
         <div class="head">
             <img class="img-head" src="../../../../assets/images/icon-no-data.svg" alt="">
-            <div class="register-tips">您正在注册 <span class="company-name">广州长隆飞鸟乐园</span> 的销售用户</div>
+            <div class="register-tips">您正在注册 <span class="company-name">{{companyName}}</span> 的销售用户</div>
             <div class="belong-type">
                 {{$t('colonSetting',{ key : '所属类别' })}}出租车
             </div>
@@ -47,7 +47,7 @@
         <x-button class="button"
                   @click.native="next">{{$t('下一步')}}</x-button>
         <div class="to-login">
-            {{$t('已有账号')}}<span class="login-label">去登陆</span>
+            {{$t('已有账号')}}<span class="login-label" @click="toLogin">去登陆</span>
         </div>
     </div>
 </template>
@@ -55,6 +55,7 @@
 <script>
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
 	export default {
 		data () {
 			return {
@@ -170,7 +171,20 @@
                         }
                     }
                 });
+            },
+            /**
+             * 跳转到登录页面
+             */
+            toLogin () {
+                this.$router.push({
+                    name : 'marketingLogin'
+                });
             }
+        },
+        computed : {
+            ...mapGetters({
+                companyName : 'companyName'
+            })
         }
 	};
 </script>
