@@ -271,9 +271,14 @@
                         this.payFormData.accountTypeId = this.accountTypeId;
                         this.payFormData.remark = '';
                         this.payFormData.amount = this.payFormData.txnAmt;
-                        this.payFormData.redirectUrl = this.payFormData.redirectUrl;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        location.href = location.origin + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
+                        this.$router.push({
+                            name : 'h5Pay',
+                            query : {
+                                payFormData : encodeURI(this.payFormData)
+                            }
+                        });
+                        // location.href = location.origin + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));
