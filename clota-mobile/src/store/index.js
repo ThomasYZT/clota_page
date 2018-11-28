@@ -49,7 +49,7 @@ export default new Vuex.Store({
         userInfo : state => {
             let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
             if (!state.userInfo || Object.keys(state.userInfo).length < 1) {
-                state.userInfo = userInfo
+                state.userInfo = userInfo;
             }
             return state.userInfo;
         },
@@ -261,7 +261,7 @@ export default new Vuex.Store({
                 }).catch(() => {
                     reject();
                 });
-            })
+            });
         },
         /**
          * vuex错误提示信息
