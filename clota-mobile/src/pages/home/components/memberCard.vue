@@ -5,6 +5,7 @@
 <template>
     <div class="member-card"
          :class="[memberVipCardClass]">
+        <div class="member-status" v-if="info.status === 'frozen'">已冻结</div>
         <div class="card-content">
             <div class="person-info">
                 <div class="left">
@@ -176,6 +177,16 @@
         border-radius: 13px;
         box-shadow: #A6AABE 0 5px 10px;
         background-size: 100% 100%;
+        overflow: hidden;
+
+        .member-status{
+            @include absolute_pos(absolute,$right : 0,$bottom : 0);
+            @include block_outline(120px,20px);
+            color: $color_err;
+            background: $color_fff;
+            text-align: center;
+            transform: rotate(-45deg) translate(35px,0px);
+        }
 
         //业主卡样式
         &.owner-card {

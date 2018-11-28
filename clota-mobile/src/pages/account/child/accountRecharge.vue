@@ -222,7 +222,32 @@
 
                         //设置支付表单信息
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        location.href = location.origin + '/h5Pay?memberId=' + this.userInfo.memberId +
+                        // this.$router.push({
+                        //     name : 'h5Pay',
+                        //     query : {
+                        //         memberId : this.userInfo.memberId,
+                        //         cardId : this.userInfo.id,
+                        //         accounId : this.accounId,
+                        //         paymentTypeId : this.payType,
+                        //         accountTypeId : this.accountTypeId,
+                        //         amount : this.payFormData.txnAmt,
+                        //         txnType : this.payFormData.txnType,
+                        //         partnerId : this.payFormData.partnerId,
+                        //         channelId : this.payFormData.channelId,
+                        //         merchantTxnNo : this.payFormData.merchantTxnNo,
+                        //         merchantId : this.payFormData.merchantId,
+                        //         txnAmt : this.payFormData.txnAmt,
+                        //         redirectUrl : this.payFormData.redirectUrl,
+                        //         txnShortDesc : this.payFormData.txnShortDesc,
+                        //         sign : this.payFormData.sign,
+                        //         currencyCode : this.payFormData.currencyCode,
+                        //         notifyUrl : escape(this.payFormData.notifyUrl),
+                        //         payWebUrl : escape(this.payFormData.payWebUrl),
+                        //         transactionId : this.payFormData.transactionId,
+                        //         token : ajax.getToken(),
+                        //     }
+                        // });
+                        location.href = location.origin + this.$router.options.base + '/h5Pay?memberId=' + this.userInfo.memberId +
                             '&cardId=' + this.cardInfo.id +
                             '&accounId=' + this.accounId +
                             '&paymentTypeId=' + this.payType +
@@ -272,13 +297,13 @@
                         this.payFormData.remark = '';
                         this.payFormData.amount = this.payFormData.txnAmt;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        this.$router.push({
-                            name : 'h5Pay',
-                            query : {
-                                payFormData : encodeURI(this.payFormData)
-                            }
-                        });
-                        // location.href = location.origin + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
+                        // this.$router.push({
+                        //     name : 'h5Pay',
+                        //     query : {
+                        //         payFormData : encodeURI(this.payFormData)
+                        //     }
+                        // });
+                        location.href = location.origin + this.$router.options.base + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));
