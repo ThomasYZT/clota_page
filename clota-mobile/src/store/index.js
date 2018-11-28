@@ -82,6 +82,7 @@ export default new Vuex.Store({
         },
         //公司id
         companyCode : state => {
+            return '10000059';
             let companyCode = '';
             if (!state.companyCode) {
                 let url = location.href;
