@@ -259,7 +259,7 @@
                     channelId : 'weixin',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : encodeURI(location.origin + '/payStatus')
+                    redirectUrl : this.getRedirectUrl()
                 }).then(res => {
                     if (res.success) {
                         //设置支付表单信息
@@ -284,6 +284,14 @@
                         this.$vux.toast.text(this.$t('payAbnormal'));
                     }
                 })
+            },
+            /**
+             * 获取支付回调地址
+             */
+            getRedirectUrl () {
+                let router = this.$router;
+                let base = router.options.base;
+                return encodeURI(location.origin + base + '/payStatus');
             }
         },
         mounted () {
