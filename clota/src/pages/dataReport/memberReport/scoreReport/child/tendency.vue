@@ -77,9 +77,9 @@
                         let html = '<div class="chart-tooltip">';
                         let time = (params[0].axisValue ? params[0].axisValue : '-') + ' ' + this.$t(common.getWeekDay(new Date(params[0].axisValue)));
                         let statistics = '<p><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' +
-                            params[0].color + '"></span>' + this.$t('pointAdd') + ' ' + (params[0] ? params[0].data.value : 0).toFixed(2) +
+                            params[0].color + '"></span>' + this.$t('pointAdd') + ' ' + (params[0] ? params[0].data.value : 0) +
                             '</br><span style="margin-right:10px;display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' +
-                            params[1].color + '";></span>' + this.$t('pointReduce') + ' ' + (params[1] ? params[1].data.value : 0).toFixed(2) + '</p>';
+                            params[1].color + '";></span>' + this.$t('pointReduce') + ' ' + (params[1] ? params[1].data.value : 0) + '</p>';
                         html += time + statistics;
                         html += '</div>';
                         return html;

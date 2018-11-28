@@ -181,7 +181,8 @@
                                 if (key === 'total') {
                                     this.headInfo.push({
                                         label : 'memberValueStoreTotal',
-                                        value : res.data[key] ? res.data[key] : 0
+                                        value : res.data[key] ? res.data[key] : 0,
+                                        type : 'money'
                                     });
                                 }
                             }
