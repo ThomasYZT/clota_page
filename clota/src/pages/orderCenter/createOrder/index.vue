@@ -12,6 +12,7 @@
                 @click="batchReserve">{{$t('batchReserve')}}</Button>
         </div>
         <table-com
+            v-if="queryParams.orderType !== ''"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -57,7 +58,7 @@
 <script>
     import filterHead from './child/filterHead';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './orderColumnConfig';
+    import { columnData } from './orderColumnConfig';
     import ajax from '@/api/index.js';
     import reserveModal from './child/reserveModal';
     export default {
@@ -66,18 +67,27 @@
             tableCom,
             reserveModal
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //筛选条件
                 queryParams : {
-                    pageNo :1,
-                    pageSize : 10
+                    pageNo : 1,
+                    pageSize : 10,
+                    playDate : '',
+                    orderType : '',
+                    saleOrgId : '',
+                    orderOrgId : '',
+                    type : '',
+                    productName : '',
+                    scenicOrgId : '',
+                    saleOrgName : '',
+                    orderOrgName : '',
                 },
                 //选择的产品
                 selectedProduct : [],
@@ -85,9 +95,9 @@
                 showReserveModal : false,
                 //选择的产品列表
                 productList : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询所有产品信息
              */
@@ -95,10 +105,10 @@
                 ajax.post('queryReserveProductList',{
                     ...this.queryParams
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -117,17 +127,17 @@
              * @param rowData
              */
             reserve (rowData) {
-                if(!this.queryParams.saleOrgId){
-                    this.$Message.warning(this.$t('selectField',{msg : this.$t('sellingOrg')}));
-                }else if(!this.queryParams.orderOrgId){
-                    this.$Message.warning(this.$t('selectField',{msg : this.$t('orderOrg')}));
-                }else{
+                if (!this.queryParams.saleOrgId) {
+                    this.$Message.warning(this.$t('selectField',{ msg : this.$t('sellingOrg') }));
+                } else if (!this.queryParams.orderOrgId) {
+                    this.$Message.warning(this.$t('selectField',{ msg : this.$t('orderOrg') }));
+                } else {
                     this.productList = [rowData].map(item =>{
                         return {
                             ...item,
                             playDate : this.queryParams.playDate,
                             num : 0,
-                        }
+                        };
                     });
                     this.showReserveModal = true;
                 }
@@ -137,7 +147,7 @@
              * @param data
              */
             handleSelectionChange (data) {
-                this.selectedProduct =  data;
+                this.selectedProduct = data;
             },
             /**
              * 手动触发查询
@@ -151,23 +161,23 @@
              * 批量预定
              */
             batchReserve () {
-                if(!this.queryParams.saleOrgId){
-                    this.$Message.warning(this.$t('selectField',{msg : this.$t('sellingOrg')}));
-                }else if(!this.queryParams.orderOrgId){
-                    this.$Message.warning(this.$t('selectField',{msg : this.$t('orderOrg')}));
-                }else{
+                if (!this.queryParams.saleOrgId) {
+                    this.$Message.warning(this.$t('selectField',{ msg : this.$t('sellingOrg') }));
+                } else if (!this.queryParams.orderOrgId) {
+                    this.$Message.warning(this.$t('selectField',{ msg : this.$t('orderOrg') }));
+                } else {
                     this.productList = this.selectedProduct.map(item =>{
                         return {
                             ...item,
                             playDate : this.queryParams.playDate,
                             num : 0,
-                        }
+                        };
                     });
                     this.showReserveModal = true;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
