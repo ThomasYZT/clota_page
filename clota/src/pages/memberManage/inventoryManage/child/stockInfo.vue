@@ -185,7 +185,7 @@
     import ajax from '../../../../api/index';
     import { inBoundHead, outBoundHead, abnormalHead } from './tableConfig';
     import abnormalManageModal from '../components/abnormalManageModal';
-    import breadCrumbHead from '../../../../components/breadCrumbHead/index'
+    import breadCrumbHead from '../../../../components/breadCrumbHead/index';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -242,7 +242,7 @@
                 } else {
                     this.$router.push({
                         name : 'goodsManage'
-                    })
+                    });
                 }
             },
             /**

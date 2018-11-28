@@ -34,6 +34,9 @@ export default {
                     rightPath : topMenuName + '.' + 'memberReport',
                     isMenu : true,
                 },
+                redirect : {
+                    name : 'cardSaleReport'
+                },
                 children : {
                     //数据中心--会员报表--会员卡销售报表
                     cardSaleReport : {

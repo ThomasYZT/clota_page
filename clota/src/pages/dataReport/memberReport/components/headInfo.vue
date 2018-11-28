@@ -5,8 +5,9 @@
 <template>
     <div class="head-info">
         <div class="info-box" v-for="(item, index) in info" :key="index">
-            <span class="value">{{item.value}}</span>
-            <span class="label">{{$t(item.label)}}</span>
+            <span v-if="item.type === 'money'" class="value">{{item.value | moneyFilter | contentFilter}}</span>
+            <span v-else class="value">{{item.value | contentFilter}}</span>
+            <span class="label">{{$t(item.label) | contentFilter}}</span>
         </div>
     </div>
 </template>

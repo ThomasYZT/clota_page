@@ -27,6 +27,44 @@ const VConsole = require('vconsole');
 /* eslint-disable no-new */
 new VConsole();
 
+router.beforeEach((to, from, next) => {
+    //无操作的路由
+    if (
+        to.name === 'mobileLogin' //会员登陆
+        || to.name === 'activateCard' //激活会员卡
+        || to.name === 'activateInfo' //填写激活会员卡信息
+        || to.name === 'h5Pay' //c端支付
+        || to.name === 'payStatus' //c端支付结果
+        /* || to.name === 'mobileRegister'*/
+    ) {
+        next();
+    } else {//判断是否保存了用户信息和token，如果没有保存需要重新登录
+        //获取保存到本地的用户信息、当前选择的卡信息
+        let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+        if (token && store.getters.userInfo && Object.keys(store.getters.userInfo).length > 0) {
+            //判断vuex中是否保存了当前卡信息，如果没有保存则重新获取会员卡信息
+            if (store.getters.cardInfo && Object.keys(store.getters.cardInfo).length > 0 && store.getters.cardInfoList && store.getters.cardInfoList.length > 0) {
+                next();
+            } else {
+                //接口更新卡列表信息，更新vuex数据
+                store.dispatch('getCardListInfo').then(() => {
+                    next();
+                }).catch(() => {
+                    next({
+                        name : 'mobileLogin'
+                    });
+                });
+            }
+        } else {
+            next({
+                name : 'mobileLogin'
+            });
+        }
+    }
+});
+
+>>>>>>> clota_v1.1.0
+
 /* eslint-disable no-new */
 new Vue({
     el : '#app',

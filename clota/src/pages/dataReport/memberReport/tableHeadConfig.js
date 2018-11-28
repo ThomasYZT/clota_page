@@ -116,7 +116,8 @@ export const consumeRecordHead = [
     {
         title : 'productSalePrice',
         minWidth : 100,
-        field : 'price'
+        field : 'price',
+        type : 'money'
     },
     {
         title : 'amount',
@@ -126,7 +127,8 @@ export const consumeRecordHead = [
     {
         title : 'consumeMoneyAdd',
         minWidth : 150,
-        field : 'consumeAmount'
+        field : 'consumeAmount',
+        type : 'money'
     },
 ];
 

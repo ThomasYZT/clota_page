@@ -112,7 +112,7 @@
                 //当前选择的语言类型
                 langType : '',
                 //页面是否显示
-                pageShow : false,
+                pageShow : true,
                 //是否显示顶部返回首页的图标
                 //showTopBanner: true
                 //底部导航栏

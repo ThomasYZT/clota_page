@@ -5,8 +5,8 @@
         <!-- 报表选择组件 -->
         <report-selector v-if="$route.name !== 'consumeRecord'"
                          @reportChange="routerChange"
-                         @typeChange="typeChange"
                          :filterable="filterable"
+                         :selectButton.sync="type"
                          :cardType.sync="cardType">
         </report-selector>
 
@@ -46,13 +46,6 @@
                 this.$router.push({
                     name : data
                 });
-            },
-            /**
-             * 选择数据表视图
-             * @param {string} type
-             */
-            typeChange (type) {
-                this.type = type;
             },
         },
     };

@@ -4,9 +4,9 @@
 -->
 <template>
   <div class="home"
-       v-show="!isLoading">
+       v-show="cardInfo && Object.keys(cardInfo).length > 0">
       <swiper ref="swiper"
-              :show-dots="cardInfoList.length > 0"
+              :show-dots="cardInfoList.length > 1"
               class="home-swiper"
               :value="cardIndex"
               @on-index-change="swiperChange"
@@ -190,13 +190,15 @@
                 }
             },
         },
-        created () {
-            //设置菜单数据
-            this.setCell();
-        },
         watch : {
-            cardInfo () {
-                this.setCell();
+            //切换了卡下面的子菜单也要更换
+            cardInfo : {
+                handler (newVal) {
+                    if (newVal && Object.keys(newVal).length > 0) {
+                        this.setCell();
+                    }
+                },
+                immediate : true
             }
         }
   };

@@ -59,6 +59,7 @@
         </div>
 
         <table-com
+            v-if="cardTypeList.length !== 0 && scenicList.length !== 0"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"

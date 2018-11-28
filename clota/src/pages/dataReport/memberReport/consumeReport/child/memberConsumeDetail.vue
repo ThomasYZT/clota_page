@@ -16,12 +16,13 @@
 
         <div class="statistic">
             <span class="label">{{$t('colonSetting', { key: $t('consumeMoneyTotal') })}}</span>
-            <span class="value">{{listItem.actAmount | contentFilter}} </span>
+            <span class="value">{{listItem.actAmount | moneyFilter | contentFilter}} </span>
             <span class="label">{{$t('colonSetting', { key: $t('consumeTime') })}}</span>
             <span class="info">| {{listItem.createdTime | contentFilter}}</span>
         </div>
 
         <table-com
+            v-if="Object.keys(listItem).length > 0"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -48,7 +49,9 @@
                                 <TimelineItem v-for="(item, index) in timeLineData"
                                               :key="index"
                                               color="blue">
-                                    {{item.createdTime  | contentFilter}} {{$t('packageCount')}} {{item.amount | moneyFilter | contentFilter}} , {{$t('unitPrice')}} {{item.price | moneyFilter | contentFilter}}
+                                    {{item.createdTime  | contentFilter}}
+                                    {{$t('packageCount')}} {{item.amount | moneyFilter | contentFilter}} ,
+                                    {{$t('unitPrice')}} {{item.price | moneyFilter | contentFilter}}
                                 </TimelineItem>
                             </Timeline>
                         </div>
@@ -99,7 +102,7 @@
                 //记录总条数
                 totalCount : 0,
                 //路由数据
-                listItem : [],
+                listItem : {},
                 //时间查看消费记录数据
                 timeLineData : [],
                 //是否显示tip

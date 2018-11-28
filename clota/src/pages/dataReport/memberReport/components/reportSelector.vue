@@ -6,13 +6,14 @@
     <div class="report-selector">
         <div class="select-wrapper">
             <span class="label">{{$t('report')}}</span>
+            <!-- 数据报表类型 -->
             <Select v-model="dataReport"
                     @on-change="reportChange"
                     style="width:280px">
                 <Option v-for="item in reportList"
                         show-name
                         :value="item.value"
-                        :key="item.value">{{ item.name }}</Option>
+                        :key="item.value">{{ $t(item.name) }}</Option>
             </Select>
 
             <!-- 会员类型下拉列表 -->
@@ -22,7 +23,9 @@
                         :placeholder="$t('selectField', { msg : $t('member-level') })"
                         @on-change="cardTypeChange"
                         style="width:160px">
-                    <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
+                    <Option v-for="item in cardTypeList"
+                            :value="item.value"
+                            :key="item.value">
                         {{ item.label === 'memberTypeAll' ? $t('memberTypeAll') : item.label }}
                     </Option>
                 </Select>
@@ -56,9 +59,11 @@
             },
             cardType : {
                 type : String,
-                default () {
-                    return '';
-                }
+                default : ''
+            },
+            selectButton : {
+                type : String,
+                default : 'tendency'
             }
         },
         components : {},
@@ -67,27 +72,26 @@
                 dataReport : this.$route.name,
                 reportList : [
                     {
-                        name : this.$t('cardSaleReport'),
+                        name : 'cardSaleReport',
                         value : 'cardSaleReport',
                     },
                     {
-                        name : this.$t('consumeReport'),
+                        name : 'consumeReport',
                         value : 'consumeReport',
                     },
                     {
-                        name : this.$t('storeValueReport'),
+                        name : 'storeValueReport',
                         value : 'storeValueReport',
                     },
                     {
-                        name : this.$t('mutipleChannelReport'),
+                        name : 'mutipleChannelReport',
                         value : 'mutipleChannelReport',
                     },
                     {
-                        name : this.$t('scoreReport'),
+                        name : 'scoreReport',
                         value : 'scoreReport',
                     }
                 ],
-                selectButton : 'tendency',
                 //会员类别下拉列表
                 cardTypeList : [
                     {
@@ -96,7 +100,7 @@
                     }
                 ],
                 //卡类型
-                cType : 'all'
+                cType : 'all',
             };
         },
         methods : {
@@ -112,15 +116,14 @@
              *  @param {string} type
              */
             selectChange (type) {
-                this.selectButton = type;
-                this.$emit('typeChange', type);
+                this.$emit('update:selectButton', type);
             },
             /**
              * 获取会员卡类型下拉列表数据
              */
             getMemberTypeList () {
                 ajax.post('queryCardTypeList').then(res => {
-                    if (res.success && res.data.length > 0) {
+                    if (res.success && res.data && res.data.length > 0) {
                         this.cardTypeList = this.cardTypeList.concat(res.data.map(item => {
                             return {
                                 value : item.id,
