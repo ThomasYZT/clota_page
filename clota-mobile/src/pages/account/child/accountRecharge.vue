@@ -215,7 +215,7 @@
                     channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : encodeURI(location.origin + '/payStatus')
+                    redirectUrl : this.getRedirectUrl()
                 }).then(res => {
                     if (res.success) {
                         this.payFormData = res.data ? res.data : {};
