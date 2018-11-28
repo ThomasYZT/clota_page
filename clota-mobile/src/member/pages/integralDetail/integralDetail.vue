@@ -9,23 +9,32 @@
           <p class="name">{{$t('integralDetail')}}</p>
       </div>
 
-      <div class="scroll-wrapper" v-if="infoList.length !== 0">
+      <div class="scroll-wrapper">
+          <!--<scroll ref="scroll"-->
+                  <!--:data="infoList"-->
+                  <!--:scrollbar="scrollbar"-->
+                  <!--:pullDownRefresh="pullDownRefreshObj"-->
+                  <!--:pullUpLoad="pullUpLoadObj"-->
+                  <!--@pullingDown="onPullingDown"-->
+                  <!--@pullingUp="onPullingUp">-->
+              <!--<score-item v-for="(item, index) in infoList"-->
+                          <!--:key="index"-->
+                          <!--:info="item">-->
+              <!--</score-item>-->
+          <!--</scroll>-->
           <scroll ref="scroll"
                   :data="infoList"
                   :scrollbar="scrollbar"
                   :pullDownRefresh="pullDownRefreshObj"
                   :pullUpLoad="pullUpLoadObj"
+                  :startY="parseInt(startY)"
                   @pullingDown="onPullingDown"
                   @pullingUp="onPullingUp">
               <score-item v-for="(item, index) in infoList"
                           :key="index"
                           :info="item">
-
               </score-item>
           </scroll>
-      </div>
-      <div class="no-data" v-else>
-          <img src="../../../assets/images/icon-no-data.svg" alt="">
       </div>
   </div>
 </template>
@@ -35,6 +44,7 @@
     import scoreItem from './components/scoreItem';
     import ajax from '../../../api/index';
     import { mapGetters } from 'vuex';
+    import Vue from 'vue';
 
     export default {
         components : {
@@ -57,6 +67,7 @@
                     //设置加载和加载中显示的文字
                     txt : 'freshComplete'
                 },
+                startY : 0,
                 //上拉加载配置
                 pullUpLoadObj : {
                     //临界值
@@ -154,6 +165,12 @@
                             item.purpose = '-';
                     }
                 });
+            },
+            rebuildScroll () {
+                Vue.nextTick(() => {
+                    this.$refs.scroll.destroy();
+                    this.$refs.scroll.initScroll();
+                });
             }
         },
         computed : {
@@ -165,6 +182,11 @@
         created () {
             this.query = this.$route.query;
             this.getData();
+        },
+        watch : {
+            startY () {
+                this.rebuildScroll();
+            }
         }
     };
 </script>
@@ -195,19 +217,6 @@
         .scroll-wrapper {
             position: relative;
             height: calc(100% - 175px);
-        }
-
-        .no-data {
-            width: 100%;
-            height: 150px;
-            @include absolute_pos(absolute, 0px, 0px, 0px, 0px);
-            margin: auto auto;
-            text-align: center;
-
-            img {
-                height: 150px;
-                width: 150px;
-            }
         }
     }
 

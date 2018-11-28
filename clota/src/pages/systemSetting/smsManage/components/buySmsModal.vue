@@ -153,10 +153,10 @@
                                 payMoney : this.formData.price
                             });
                         } else {
-                            this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
+                            this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
                         }
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
+                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
                     }
                 })
             },
@@ -189,7 +189,7 @@
                         this.hide();
                         this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
+                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
                     }
                 })
             },

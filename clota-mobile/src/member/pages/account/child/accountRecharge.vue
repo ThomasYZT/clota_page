@@ -103,7 +103,7 @@
                 if (params && Object.keys(params).length > 0) {
                     this.accountTypeId = params.accountTypeId;
                     this.accountTypeName = params.accountName;
-                    this.accounId = params.accounId
+                    this.accounId = params.accounId;
                     this.setTitle();
                     this.queryOnlinePayAccount();
                 } else {

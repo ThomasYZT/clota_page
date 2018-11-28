@@ -87,7 +87,6 @@
                 'updateUserInfo',
                 'updateCardInfoList',
                 'updateCardInfo',
-                'updateLoginStatus'
             ]),
             ...mapActions([
                 'getCardListInfo'

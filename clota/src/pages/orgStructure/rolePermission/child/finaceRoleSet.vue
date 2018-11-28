@@ -38,7 +38,8 @@
                          :expand-on-click-node="false"
                          v-show="menuList.length > 0"
                          :render-content="menuRenderContent"
-                         @check="menuCheckChange">
+                         @check="menuCheckChange"
+                         @check-change="checkChange">
                 </el-tree>
                 <no-data v-show="menuList.length < 1">
                 </no-data>
@@ -50,6 +51,7 @@
 <script>
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import debounce from 'lodash/debounce';
     export default {
         props : {
             //默认选中的节点
@@ -89,7 +91,7 @@
                 //当前左侧选择的组织节点和右侧菜单权限对应
                 privaligeInfo : {},
                 //选择的菜单权限节点
-                choosedNodes : []
+                choosedNodes : [],
             }
         },
         components : {
@@ -149,6 +151,9 @@
                 for(let i = 0,j = this.choosedNodes.length;i < j;i++){
                     if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
                         this.$set(data,'disabled',true);
+                        break;
+                    } else {
+                        this.$set(data,'disabled',false);
                     }
                 }
                 return h('div', {
@@ -233,27 +238,32 @@
              * @param halfCheckedNodes
              */
             menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
-                this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes));
+                this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes.filter(item => !item.disabled)));
+                // this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes));
                 if(checkedKeys.includes(data.privCode)){
                     //如果当前权限有其它关联权限，那么必须要选择其它关联的权限
                     if(data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)){
                         this.$refs.menuTree.setChecked(data.linkedPrivCode,true);
                     }
+                } else {
+                    this.$nextTick(() => {
+                        this.$refs.menuTree.setChecked(data.privCode,false,true);
+                    });
                 }
-                this.$nextTick(() => {
-                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();;
-                    this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
-                        return {
-                            ...item,
-                            choseStatus : ''
-                        }
-                    }),...halfCheckedNodes.map(item => {
-                        return {
-                            ...item,
-                            choseStatus : 'half'
-                        }
-                    })];
-                });
+                // this.$nextTick(() => {
+                //     let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();
+                //     this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
+                //         return {
+                //             ...item,
+                //             choseStatus : ''
+                //         }
+                //     }),...halfCheckedNodes.map(item => {
+                //         return {
+                //             ...item,
+                //             choseStatus : 'half'
+                //         }
+                //     })];
+                // });
             },
             /**
              * 设置右侧默认选中的菜单节点
@@ -261,7 +271,7 @@
             setDefaultMenuChosed () {
                 if(this.activeNodeId in this.privaligeInfo){
                     let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
-                    this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
+                    // this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes(chosedNode);
                     });
@@ -291,7 +301,27 @@
                     }
                 }
                 return returnValige;
-            }
+            },
+            checkChange : debounce(function () {
+                this.$nextTick(() => {
+                    let havedChosedNodes = this.$refs.menuTree.getCheckedNodes();
+                    let halfCheckedNodes = this.$refs.menuTree.getHalfCheckedNodes();
+                    // console.log(havedChosedNodes)
+                    this.choosedNodes = JSON.parse(JSON.stringify(havedChosedNodes.filter(item => !item.disabled)));
+                    // this.choosedNodes = JSON.parse(JSON.stringify(havedChosedNodes));
+                    this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
+                        return {
+                            ...item,
+                            choseStatus : ''
+                        }
+                    }),...halfCheckedNodes.map(item => {
+                        return {
+                            ...item,
+                            choseStatus : 'half'
+                        }
+                    })];
+                });
+            },100)
         },
         computed : {
             //公司树数据
@@ -301,7 +331,7 @@
                 }else{
                     return [];
                 }
-            }
+            },
         },
         created () {
             this.getOrgTree();
@@ -320,7 +350,7 @@
                         this.$refs.nodeTree.setCheckedKeys(data);
                     });
                 }
-            }
+            },
         }
     }
 </script>

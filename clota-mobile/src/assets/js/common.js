@@ -19,7 +19,6 @@ export default {
             name : 'mobileLogin'
         },() => {
             store.commit('updateUserInfo');
-            store.commit('updateCardInfo');
         });
     },
 

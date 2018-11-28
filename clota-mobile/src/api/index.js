@@ -6,7 +6,7 @@ import axios from 'axios';
 import querystring from 'querystring';
 import config from '../config/index.js';
 import common from '../assets/js/common';
-import store from '../member/store/index';
+import store from '../store/index';
 import Vue from 'vue';
 
 

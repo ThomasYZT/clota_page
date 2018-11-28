@@ -90,7 +90,7 @@
                         params.forEach(item => {
                             let spot = '<span style="display:inline-block;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:' +
                                         item.color + ';"></span> ';
-                            let account = this.$t(item.data.name) + ' ' + item.value.toFixed(2);
+                            let account = this.$t(item.data.name) + ' ' + (item.data.name === 'consumption' ? item.value.toFixed(2) : item.value);
                             html += '<p style="height:22px;line-height: 22px">' + spot + account + '</p>';
                         });
                         html += '</div>';
@@ -152,7 +152,7 @@
                                     this.xAxisData.push(data[key][i].date);
                                 }
                                 hasXAxis = true;
-                            } else {
+                            } else if (data[key] && data[key].length > 0 && hasXAxis) {
                                 for (let i = 0, len = data[key].length; i < len; i++) {
                                     consumeAmountData[i].value += data[key][i].consumeAmount;
                                     consumeAmountData[i].params.consumeAmount += data[key][i].consumeAmount;
@@ -182,7 +182,8 @@
                                 if (key === 'consumeAmount') {
                                     this.headInfo.push({
                                         label : 'memberConsumeAmount',
-                                        value : res.data[key] ? res.data[key] : 0
+                                        value : res.data[key] ? res.data[key] : 0,
+                                        type : 'money'
                                     });
                                 } else if (key === 'consumerNum') {
                                     this.headInfo.push({

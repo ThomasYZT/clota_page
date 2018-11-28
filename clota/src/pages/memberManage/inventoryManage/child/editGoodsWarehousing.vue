@@ -135,7 +135,7 @@
     import lifeCycleMixins from '../../../../mixins/lifeCycleMixins';
     import addUnitModal from '../components/addUnitModal';
     import common from '@/assets/js/common.js';
-    import breadCrumbHead from '../../../../components/breadCrumbHead/index'
+    import breadCrumbHead from '../../../../components/breadCrumbHead/index';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -181,7 +181,7 @@
                 //上级路由列表
                 beforeRouterList : [
                     {
-                        name : 'goodsManage',  //商品管理
+                        name : 'goodsManage', //商品管理
                         router : {
                             name : 'goodsManage'
                         }

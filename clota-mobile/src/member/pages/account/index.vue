@@ -16,15 +16,15 @@
                         {{item.accountName}}
                         <span class="iconfont icon-arrow-right"></span>
                     </div>
-                    <div class="asset-info">{{item.accountBalance | moneyFilter}}</div>
+                    <div class="asset-info">{{item.accountBalance | moneyFilter | contentFilter}}</div>
                     <div class="asset-tip">{{$t('allAssets')}}</div>
-                    <div class="account-type" :class="{'auto-width' : accountList[accountShow].accountDefineId === '4'}">
+                    <div class="account-type" :class="{'auto-width' : item.accountDefineId === '4'}">
                         <div class="account-priciple-left">
-                            <div class="money-num">{{item.corpusBalance | moneyFilter}}</div>
+                            <div class="money-num">{{item.corpusBalance | moneyFilter | contentFilter}}</div>
                             <div class="money-label">{{$t('rechargeMoney')}}</div>
                         </div>
-                        <div class="account-donate-left" v-show="accountList[accountShow].accountDefineId !== '4'">
-                            <div class="money-num">{{item.donateBalance | moneyFilter}}</div>
+                        <div class="account-donate-left" v-show="item.accountDefineId !== '4'">
+                            <div class="money-num">{{item.donateBalance | moneyFilter | contentFilter}}</div>
                             <div class="money-label">{{$t('donateMoney')}}</div>
                         </div>
                     </div>
@@ -33,15 +33,15 @@
         </swiper>
         <!-- 业主卡显示信息 -->
         <div v-else class="header no-list-chose">
-            <div class="asset-info">{{OwnerCardAccount.accountBalance | moneyFilter}}</div>
+            <div class="asset-info">{{OwnerCardAccount.accountBalance | moneyFilter | contentFilter}}</div>
             <div class="asset-tip">{{$t('allAssets')}}</div>
             <div class="account-type">
                 <div class="account-priciple-left">
-                    <div class="money-num">{{OwnerCardAccount.corpusBalance | moneyFilter}}</div>
+                    <div class="money-num">{{OwnerCardAccount.corpusBalance | moneyFilter | contentFilter}}</div>
                     <div class="money-label">{{$t('rechargeMoney')}}</div>
                 </div>
                 <div class="account-donate-left" >
-                    <div class="money-num">{{OwnerCardAccount.donateBalance | moneyFilter}}</div>
+                    <div class="money-num">{{OwnerCardAccount.donateBalance | moneyFilter | contentFilter}}</div>
                     <div class="money-label">{{$t('donateMoney')}}</div>
                 </div>
             </div>
@@ -49,19 +49,19 @@
             <div class="account-detail-wrapper">
                 <ul class="flex-box">
                     <li>
-                        <span class="detail-money">{{OwnerCardAccount.ticketBalance | moneyFilter}}</span>
+                        <span class="detail-money">{{OwnerCardAccount.ticketBalance | moneyFilter | contentFilter}}</span>
                         <p class="detail-title">{{$t('ticketMoney')}}</p>
                     </li>
                     <li>
-                        <span class="detail-money">{{OwnerCardAccount.hotelBalance | moneyFilter}}</span>
+                        <span class="detail-money">{{OwnerCardAccount.hotelBalance | moneyFilter | contentFilter}}</span>
                         <p class="detail-title">{{$t('hotelMoney')}}</p>
                     </li>
                     <li>
-                        <span class="detail-money">{{OwnerCardAccount.cateringBalance | moneyFilter}}</span>
+                        <span class="detail-money">{{OwnerCardAccount.cateringBalance | moneyFilter | contentFilter}}</span>
                         <p class="detail-title">{{$t('restaurantMoney')}}</p>
                     </li>
                     <li>
-                        <span class="detail-money">{{OwnerCardAccount.otherBalance | moneyFilter}}</span>
+                        <span class="detail-money">{{OwnerCardAccount.otherBalance | moneyFilter | contentFilter}}</span>
                         <p class="detail-title">{{$t('otherMoney')}}</p>
                     </li>
                 </ul>

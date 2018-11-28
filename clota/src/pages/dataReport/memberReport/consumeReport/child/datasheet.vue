@@ -54,6 +54,7 @@
         </div>
 
         <table-com
+            v-if="scenicList.length !== 0"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -63,6 +64,16 @@
             :page-no-d.sync="filterData.pageNo"
             :page-size-d.sync="filterData.pageSize"
             @query-data="getData">
+            <el-table-column
+                slot="column1"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{$t(scope.row.productType)}}</span>
+                </template>
+            </el-table-column>
             <el-table-column
                 slot="column3"
                 slot-scope="row"
