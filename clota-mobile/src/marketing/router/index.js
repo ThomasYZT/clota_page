@@ -27,6 +27,14 @@ export const marketingRoutes = [
                 meta : {
                     title : 'marketingRegister'
                 }
+            },
+            {
+                path : 'register/success',
+                name : 'marketingRegisterSuc',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/register/child/registerResult.vue'),
+                meta : {
+                    title : '注册成功'
+                }
             }
         ]
     }
