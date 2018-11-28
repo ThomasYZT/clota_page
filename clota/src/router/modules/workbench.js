@@ -13,7 +13,7 @@
 let topMenuName = 'workbench';
 
 export default {
-    universalMarketing : {
+    workbench : {
         path : '/workbench',
         component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/index.vue'),
         meta : {
