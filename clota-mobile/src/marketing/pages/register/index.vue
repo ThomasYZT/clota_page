@@ -74,7 +74,8 @@
                 }).then(res => {
                     if (res.success) {
                         this.$router.push({
-                            name : 'marketingRegisterSuc'
+                            name : 'marketingRegisterSuc',
+                            fromRegister : true
                         });
                     } else {
                         this.$vux.toast.show({
