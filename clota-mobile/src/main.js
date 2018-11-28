@@ -63,8 +63,6 @@ router.beforeEach((to, from, next) => {
     }
 });
 
->>>>>>> clota_v1.1.0
-
 /* eslint-disable no-new */
 new Vue({
     el : '#app',
