@@ -1,21 +1,67 @@
 <!--
-内容：
+内容：提现记录
 作者：djc
 日期：
 -->
 
 <template>
-    <div class="">
-        提现记录
+    <div class="cash-record">
+        <!--列表数据筛选器-->
+        <head-filter @on-search=""></head-filter>
+        <!--导出-->
+        <Button type="primary" style="width: 88px; margin: 10px 30px;"
+                @click="">{{$t("exporting")}}</Button>
+        <!--提现记录列表-->
+        <table-com
+            :show-pagination="true"
+            :column-data="columnData"
+            :table-data="tableData"
+            :total-count="totalCount"
+            :border="true"
+            @query-data="queryList">
+
+            <el-table-column
+                slot="column12"
+                slot-scope="row"
+                :label="row.title"
+                fixed="right"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <!--审核状态为“待审核”时，操作按钮：审核-->
+                    <!--<span class="operate-btn blue">{{$t('checked')}}</span>-->
+                    <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
+                    <!--<span class="operate-btn blue">{{$t('提交转账流水')}}</span>-->
+                    <!--审核状态为“已转账”时，操作按钮：修改转账流水-->
+                    <!--<span class="operate-btn blue">{{$t('修改转账流水')}}</span>-->
+                    <!--审核状态为“已驳回”时，操作按钮：无-->
+                    <span class="operate-btn blue">-</span>
+                </template>
+            </el-table-column>
+        </table-com>
     </div>
 </template>
 <script type="text/ecmascript-6">
+    import headFilter from './components/headFilter.vue';
+    import tableCom from '@/components/tableCom/tableCom.vue';
+    import ajax from '@/api/index';
+    import { cashRecordHead } from './cashRecordConfig';
 
     export default {
-        components : {},
+        components : {
+            headFilter,
+            tableCom
+        },
         props : {},
         data () {
-            return {}
+            return {
+                //表头配置
+                columnData : cashRecordHead,
+                //表格数据
+                tableData : [{}],
+                //总条数
+                totalCount : 0,
+            }
         },
         computed : {},
         created () {
@@ -23,10 +69,35 @@
         mounted () {
         },
         watch : {},
-        methods : {}
+        methods : {
+            /**
+             * 查询提现记录列表数据
+             */
+            queryList () {
+                /*ajax.post('queryOrderRefundAlterAuditList',{
+                    ...this.queryParams
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.tableData = res.data.data || [];
+                        this.totalCount = res.data.totalRow;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });*/
+            },
+        }
     };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+    @import '~@/assets/scss/base';
 
+    .cash-record {
+        @include block_outline();
+        min-width: $content_min_width;
+        overflow: auto;
+        background: $color_fff;
+        border-radius: 4px;
+    }
 </style>
