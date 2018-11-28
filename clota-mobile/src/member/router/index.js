@@ -44,18 +44,6 @@ export const memberRoutes = [
         name : 'mobileLogin',
         component : () => import(/* webpackChunkName: "login" */ '../pages/index.vue'),
         children : [
-            // {
-            //     path : '',
-            //     redirect : {
-            //         name : 'mobileLogin'
-            //     }
-            // },
-            // {
-            //     path : '/',
-            //     redirect : {
-            //         name : 'mobileLogin'
-            //     }
-            // },
             //会员登陆
             {
                 path : 'login',

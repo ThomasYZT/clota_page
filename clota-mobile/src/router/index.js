@@ -10,20 +10,20 @@ const createRouter = () => new Router({
     mode : 'history',
     base : '/clota/mobile',
     routes : [
-        // {
-        //     path : '',
-        //     redirect : {
-        //         name : 'mobileLogin'
-        //     }
-        // },
-        // {
-        //     path : '/',
-        //     redirect : {
-        //         name : 'mobileLogin'
-        //     }
-        // },
+        {
+            path : '',
+            redirect : {
+                name : 'mobileLogin'
+            }
+        },
+        {
+            path : '/',
+            redirect : {
+                name : 'mobileLogin'
+            }
+        },
         //会员系统路由信息
-        // ...memberRoutes,
+        ...memberRoutes,
         //营销系统路由信息
         ...marketingRoutes
     ],
@@ -36,6 +36,5 @@ const createRouter = () => new Router({
 });
 
 const router = createRouter();
-
 
 export default router;

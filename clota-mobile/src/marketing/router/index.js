@@ -25,7 +25,7 @@ export const marketingRoutes = [
                 name : 'marketingRegister',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/register/index.vue'),
                 meta : {
-                    title : 'register'
+                    title : 'marketingRegister'
                 }
             }
         ]
