@@ -1,7 +1,9 @@
-<!---->
+<!--全民分销系统-->
 
 <template>
-    <div>全民营销</div>
+    <router-view>
+
+    </router-view>
 </template>
 
 <script>

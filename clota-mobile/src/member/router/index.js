@@ -2,6 +2,7 @@ import store from "../../store/index";
 
 //会员页面路由进入前的处理
 export const memberRouterDeal = (to, from, next) => {
+    console.log(1)
     //无操作的路由
     if (
         to.name === 'mobileLogin' //会员登陆
@@ -43,18 +44,18 @@ export const memberRoutes = [
         name : 'mobileLogin',
         component : () => import(/* webpackChunkName: "login" */ '../pages/index.vue'),
         children : [
-            {
-                path : '',
-                redirect : {
-                    name : 'mobileLogin'
-                }
-            },
-            {
-                path : '/',
-                redirect : {
-                    name : 'mobileLogin'
-                }
-            },
+            // {
+            //     path : '',
+            //     redirect : {
+            //         name : 'mobileLogin'
+            //     }
+            // },
+            // {
+            //     path : '/',
+            //     redirect : {
+            //         name : 'mobileLogin'
+            //     }
+            // },
             //会员登陆
             {
                 path : 'login',
