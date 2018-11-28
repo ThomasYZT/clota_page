@@ -587,9 +587,9 @@
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') })); // 新增会员成功
                         this.cancelOperate();
                     } else {
-                        if (res.message === 'M008') {
+                        if (res.code === 'M008') {
                             this.$Message.error(this.$t('phoneExistCard'));
-                        } else if (res.message === 'M029') {
+                        } else if (res.code === 'M029') {
                             this.$Message.error(this.$t('viceCardAddErr'));
                         } else {
                             this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));

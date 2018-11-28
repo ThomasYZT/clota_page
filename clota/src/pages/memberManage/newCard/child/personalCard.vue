@@ -475,7 +475,7 @@
                         this.payModalShow = true;
                         this.cancelOperate();
                     } else {
-                        if (res.message === 'M008') {
+                        if (res.code === 'M008') {
                             this.payModalShow = false;
                             this.$Message.error(this.$t('phoneExistCard'));// 手机号已被注册，请更换手机号
                         } else if (res.code === 'P002') {

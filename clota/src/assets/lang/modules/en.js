@@ -1656,7 +1656,7 @@ export default {
     'pleaseReadEntityCard': '请读取实体卡信息',
     'reissueCardFee': '补卡收费',
     'reissueCardErr': '会员{name}下实体卡状态正常，如需补卡，请先挂失实体卡',
-    'viceCardAddErr': '副卡持有人已存在会员卡',
+    'viceCardAddErr': '副卡持有人已存在该类型会员卡',
 
     'moneyInCard': '卡内金额',
     'payTypeSelect': '支付方式选择',
