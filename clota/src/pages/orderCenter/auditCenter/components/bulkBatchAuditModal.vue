@@ -127,6 +127,8 @@
                         this.hide();
 
                         this.$emit('on-audited');
+                    } else {
+                        this.$Message.error('审核失败');
                     }
                 });
             },
