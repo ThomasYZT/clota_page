@@ -34,6 +34,8 @@ export default new Vuex.Store({
         errCode : '',
         //判断当前是否在微信当中打开
         isWeixin : null,
+        //微信jsdk是否可以使用
+        weixinIsConfiged : true
         //companyCode : '1045244656750825472',
         //companyCode : '1037976274619994114' //肖邦景区
         //companyCode : '121321' //信鸥互联 测试环境
@@ -124,6 +126,10 @@ export default new Vuex.Store({
                 state.isWeixin = ua.indexOf('micromessenger') !== -1;
             }
             return state.isWeixin;
+        },
+        //微信是否可以使用jsdk
+        weixinIsConfiged : state => {
+            return state.isWeixin && state.weixinIsConfiged;
         }
     },
     mutations : {
@@ -233,6 +239,14 @@ export default new Vuex.Store({
         updateShowNetworkError (state,status) {
             state.showNetworkError = status;
         },
+        /**
+         * 更新微信配置
+         * @param state
+         * @param status
+         */
+        updateWeixinConfig ( state,status) {
+            state.weixinIsConfiged = status;
+        }
     },
     actions : {
         //获取会员卡列表

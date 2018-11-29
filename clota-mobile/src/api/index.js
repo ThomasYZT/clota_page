@@ -179,9 +179,9 @@ export default {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`);
             }
-            showNetWorkError(err);
             return res.data;
         }).catch((err) => {
+            showNetWorkError(err);
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             return err;
         });
