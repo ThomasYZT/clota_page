@@ -480,7 +480,7 @@ export const refundStatusList = [
         value : 'some'
     },
     {
-        label : 'someRefund',       //全部退票
+        label : 'allRefund',       //全部退票
         value : 'all'
     }
 ];
