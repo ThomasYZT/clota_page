@@ -9,7 +9,11 @@
                 <img class="picture" src="../../../../../assets/images/cash-offer.svg" alt="">
             </div>
             <div class="info">
-                <h4 class="title">{{$t('cashOfferDays')}} <i class="iconfont icon-help"></i>  </h4>
+                <h4 class="title">{{$t('cashOfferDays')}}
+                    <Tooltip :content="$t('setDaysCashOffer')" placement="right">
+                        <i class="iconfont icon-help"></i>
+                    </Tooltip>
+                </h4>
                 <span class="value">{{99}}</span>
             </div>
         </div>

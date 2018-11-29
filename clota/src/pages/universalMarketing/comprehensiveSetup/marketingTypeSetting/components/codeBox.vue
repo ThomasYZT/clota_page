@@ -12,7 +12,8 @@
         <!-- 新增、编辑二维码区域 -->
         <transition name="fade">
             <div class="add-box" v-if="boxStatus === 'add' || boxStatus === 'edit'">
-                <Form :model="formData"
+                <Form ref="form"
+                      :model="formData"
                       :rules="ruleValidate"
                       :label-width="100">
                     <i-row class="box-row">
@@ -54,11 +55,11 @@
             <div class="box-footer" v-if="boxStatus !== 'null'">
                 <template v-if="boxStatus === 'show'">
                     <div class="btn"><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
-                    <div class="btn"><span>{{$t('del')}}</span></div>
+                    <div class="btn"><span @click="del">{{$t('del')}}</span></div>
                 </template>
-                <template v-if="boxStatus === 'add'">
+                <template v-if="boxStatus === 'add' || boxStatus === 'edit'">
                     <div class="btn"><span class="blue-btn" @click="save">{{$t('save')}}</span></div>
-                    <div class="btn"><span @click="backToNull">{{$t('cancel')}}</span></div>
+                    <div class="btn"><span @click="back">{{$t('cancel')}}</span></div>
                 </template>
             </div>
         </transition>
@@ -114,25 +115,42 @@
              * 保存
              */
             save () {
-
+                this.boxStatus = 'show';
+                this.resetBox();
             },
             /**
              * 编辑
              */
             edit () {
-
+                this.boxStatus = 'edit';
             },
             /**
-             * 返回无数据状态
+             * 返回
              */
-            backToNull () {
-                this.boxStatus = 'null';
+            back () {
+                if (this.boxStatus === 'add') {
+                    this.boxStatus = 'null';
+                } else {
+                    this.boxStatus = 'show';
+                }
+                this.resetBox();
+            },
+            /**
+             * 重置
+             */
+            resetBox () {
                 this.formData = {
                     marketType : '',
                     path : '',
                 };
                 this.marketTypeList = [];
                 this.$refs.form.resetFields();
+            },
+            /**
+             * 删除
+             */
+            del () {
+                this.boxStatus = 'null';
             }
         }
     };
@@ -150,6 +168,9 @@
 
 
         .null-box {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             cursor: pointer;
@@ -160,6 +181,9 @@
         }
 
         .show-box, .add-box {
+            position: absolute;
+            top: 0;
+            left: 0;
             height: 310px;
             width: 100%;
         }
@@ -208,8 +232,12 @@
         border: 1px dashed #D9D9D9;
     }
 
-    .add-code-box, add-edit-box {
+    .add-code-box, .edit-code-box {
         border: 1px solid #D9D9D9;
         box-shadow: #D9D9D9 0px 0px 10px 1px;
+    }
+
+    .show-code-box {
+        border: 1px solid #D9D9D9;
     }
 </style>

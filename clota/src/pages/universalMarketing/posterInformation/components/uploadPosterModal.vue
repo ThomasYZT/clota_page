@@ -45,7 +45,8 @@
                             </Select>
                         </FormItem>
                         <FormItem :label="$t('colonSetting', { key : $t('uploadPicture') })"  prop="img">
-                            <uploadImg :quantityLimit="1"
+                            <uploadImg v-if="visible"
+                                       :quantityLimit="1"
                                        @remove-img="removeImg"
                                        @upload-success="uploadSuccess"></uploadImg>
                         </FormItem>
@@ -180,7 +181,7 @@
              */
             removeImg (uploadList) {
                 this.formData.img = uploadList;
-                this.$refs.form.validate();
+                this.$refs.form.validateField('img');
             },
             /**
              *  上传图片成功
@@ -188,7 +189,7 @@
              */
             uploadSuccess (uploadList) {
                 this.formData.img = uploadList;
-                this.$refs.form.validate();
+                this.$refs.form.validateField('img');
             },
         }
     };
