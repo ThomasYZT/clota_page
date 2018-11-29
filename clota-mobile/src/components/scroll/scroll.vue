@@ -362,7 +362,6 @@
                     flex: 1 1;
                     flex-wrap: wrap;
                     overflow: auto;
-                    border: 1px solid rgba(0, 0, 0, .1);
                     border-radius: 1px;
                     transform: rotate(0deg);// fix 子元素超出边框圆角部分不隐藏的问题
                     background: #F4F6F9;

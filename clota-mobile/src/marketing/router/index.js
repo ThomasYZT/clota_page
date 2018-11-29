@@ -78,6 +78,15 @@ export const marketingRoutes = [
                 meta : {
                     title : '我的产品'
                 }
+            },
+            //我的订单
+            {
+                path : 'order',
+                name : 'marketingOrder',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/index.vue'),
+                meta : {
+                    title : '我的订单'
+                }
             }
         ]
     }

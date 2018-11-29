@@ -34,6 +34,7 @@ import {
     Tabbar,
     TabbarItem,
     Datetime,
+    DatetimePlugin
 } from 'vux';
 
 
@@ -86,6 +87,7 @@ plugin.install = function (Vue, options) {
     Vue.component('Tabbar', Tabbar);
     Vue.component('TabbarItem', TabbarItem);
     Vue.component('Datetime', Datetime);
+    Vue.use(DatetimePlugin)
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);
