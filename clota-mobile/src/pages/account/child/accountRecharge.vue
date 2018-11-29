@@ -148,7 +148,7 @@
              * 充值
              */
             recharge () {
-                if ( this.rechargeMoney ) {
+                this.validateRechargeMoney().then(() => {
                     if (this.payType === 'wx' && this.isWeixin()) {
                         //微信内微信支付专用
                         this.getPayPageForOfficialAccount();
@@ -156,9 +156,7 @@
                         //微信内支付宝支付、微信外支付宝、微信支付
                         this.getPayPageForMobile();
                     }
-                } else {
-                    this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('rechargeNum') }));
-                }
+                });
             },
             /**
              *  获取在线支付方式列表
