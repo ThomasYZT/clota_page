@@ -1808,5 +1808,5 @@ export default {
     'download' : '下载',
     'addNewCode' : '新增二维码',
     'cashOfferDays' : '提现天数',
-    'path' : '路径'
+    'path' : '路径',
 }
