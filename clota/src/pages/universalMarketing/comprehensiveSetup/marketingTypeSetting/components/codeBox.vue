@@ -3,7 +3,7 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="code-box" >
+    <div class="code-box" :class="[boxStatus+'-code-box']">
         <!-- 无二维码信息区域 -->
         <div v-if="boxStatus === 'null'" class="null-box" @click="add">
             <span> + {{$t('addNewCode')}}</span>
@@ -49,15 +49,16 @@
             <div class="show-box" v-if="boxStatus === 'show'"></div>
         </transition>
 
+        <!-- 底部按钮区域 -->
         <transition name="fade">
             <div class="box-footer" v-if="boxStatus !== 'null'">
                 <template v-if="boxStatus === 'show'">
-                    <div class="btn"><span class="blue-btn">{{$t('edit')}}</span></div>
+                    <div class="btn"><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
                     <div class="btn"><span>{{$t('del')}}</span></div>
                 </template>
                 <template v-if="boxStatus === 'add'">
-                    <div class="btn"><span class="blue-btn">{{$t('save')}}</span></div>
-                    <div class="btn"><span>{{$t('cancel')}}</span></div>
+                    <div class="btn"><span class="blue-btn" @click="save">{{$t('save')}}</span></div>
+                    <div class="btn"><span @click="backToNull">{{$t('cancel')}}</span></div>
                 </template>
             </div>
         </transition>
@@ -81,7 +82,16 @@
                     marketType : [],
                     path : [],
                 },
-                marketTypeList : [
+                marketTypeList : [],
+            };
+        },
+        methods : {
+            /**
+             * 新增
+             */
+            add () {
+                this.boxStatus = 'add';
+                this.marketTypeList = [
                     {
                         label : '111',
                         value : '111'
@@ -98,15 +108,31 @@
                         label : '444',
                         value : '444'
                     }
-                ],
-            };
-        },
-        methods : {
+                ];
+            },
             /**
-             * 新增
+             * 保存
              */
-            add () {
-                this.boxStatus = 'add';
+            save () {
+
+            },
+            /**
+             * 编辑
+             */
+            edit () {
+
+            },
+            /**
+             * 返回无数据状态
+             */
+            backToNull () {
+                this.boxStatus = 'null';
+                this.formData = {
+                    marketType : '',
+                    path : '',
+                };
+                this.marketTypeList = [];
+                this.$refs.form.resetFields();
             }
         }
     };
@@ -117,9 +143,9 @@
 
 
     .code-box {
+        position: relative;
         width: 300px;
         height: 350px;
-        border: 1px dashed #D9D9D9;
         border-radius: 8px;
 
 
@@ -140,13 +166,18 @@
 
         .add-box {
             padding-top: 70px;
+
         }
 
         .box-footer {
+            position: absolute;
+            bottom: 0;
             width: 100%;
             height: 40px;
             display: flex;
             background-color: #F7F9FA;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
             .btn {
                 flex: 1 0;
                 height: 100%;
@@ -171,5 +202,14 @@
     }
     .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
         opacity: 0;
+    }
+
+    .null-code-box {
+        border: 1px dashed #D9D9D9;
+    }
+
+    .add-code-box, add-edit-box {
+        border: 1px solid #D9D9D9;
+        box-shadow: #D9D9D9 0px 0px 10px 1px;
     }
 </style>
