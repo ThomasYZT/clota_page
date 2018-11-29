@@ -7,7 +7,7 @@
 <template>
     <div class="cash-record">
         <!--列表数据筛选器-->
-        <head-filter @on-search=""></head-filter>
+        <head-filter @on-search="searchCashRecords"></head-filter>
         <!--导出-->
         <Button type="primary" style="width: 88px; margin: 10px 30px;"
                 @click="">{{$t("exporting")}}</Button>
@@ -17,6 +17,8 @@
             :column-data="columnData"
             :table-data="tableData"
             :total-count="totalCount"
+            :page-no-d.sync="queryParams.pageNo"
+            :page-size-d.sync="queryParams.pageSize"
             :border="true"
             @query-data="queryList">
 
@@ -41,7 +43,7 @@
         </table-com>
     </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
     import headFilter from './components/headFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index';
@@ -61,6 +63,11 @@
                 tableData : [{}],
                 //总条数
                 totalCount : 0,
+                //提现记录传参
+                queryParams : {
+                    pageNo : 1,
+                    pageSize : 10,
+                }
             }
         },
         computed : {},
@@ -74,7 +81,7 @@
              * 查询提现记录列表数据
              */
             queryList () {
-                /*ajax.post('queryOrderRefundAlterAuditList',{
+                ajax.post('marketing-queryWithdrawRecord',{
                     ...this.queryParams
                 }).then(res => {
                     if (res.success && res.data) {
@@ -84,8 +91,12 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                });*/
+                });
             },
+            searchCashRecords (params) {
+                Object.assign(this.queryParams, params);
+                this.queryList();
+            }
         }
     };
 </script>

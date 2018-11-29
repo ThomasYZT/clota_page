@@ -10,23 +10,31 @@
             <li>
                 <span class="filter-label">{{$t('审核状态')}}</span>
                 <Select v-model="filterParams.auditStatus" class="field-item">
-                    <!--<Option v-for="item in orderEnterprise"
-                            :key="item.id"
-                            :value="item.id">
-                        {{$t(item.orgName)}}
-                    </Option>-->
+                    <Option v-for="item in auditStatusList"
+                            :key="item.value"
+                            :value="item.value">
+                        {{$t(item.label)}}
+                    </Option>
                 </Select>
             </li>
             <li>
                 <span class="filter-label">{{$t('营销类别')}}</span>
-                <Select v-model="filterParams.marketingType" class="field-item">
-
+                <Select v-model="filterParams.marketTypeId" class="field-item">
+                    <Option v-for="item in marketingTypes"
+                            :key="item.id"
+                            :value="item.id">
+                        {{$t(item.typeName)}}
+                    </Option>
                 </Select>
             </li>
             <li>
                 <span class="filter-label">{{$t('营销等级')}}</span>
-                <Select v-model="filterParams.marketingLevel" class="field-item">
-
+                <Select v-model="filterParams.marketLevelId" class="field-item">
+                    <Option v-for="item in marketingLevels"
+                            :key="item.id"
+                            :value="item.id">
+                        {{$t(item.levelName)}}
+                    </Option>
                 </Select>
             </li>
             <li>
@@ -37,6 +45,8 @@
     </div>
 </template>
 <script>
+    import { auditStatusList } from '../cashRecordConfig';
+    import ajax from '@/api/index';
 
     export default {
         components : {},
@@ -44,27 +54,79 @@
         data () {
             return {
                 filterParams : {
-                    auditStatus : '',
-                    marketingType : '',
-                    marketingLevel : '',
+                    auditStatus : 'reject_no_req,reject,success,auditing',
+                    marketTypeId : 'all',
+                    marketLevelId : 'all',
                 },
                 // 重置使用的初始筛选条件
-                resetFilter : {}
+                resetFilter : {},
+                // 审核状态列表
+                auditStatusList : auditStatusList,
+                // 营销类别列表
+                marketingTypes : [{ id : 'all', typeName : this.$t('all') }],
+                // 营销等级列表
+                marketingLevels : [],
+                // 全部营销等级
+                allMarketLevel : [{ id : 'all', levelName : this.$t('all') }],
             }
         },
         computed : {},
         created () {
             this.resetFilter = JSON.stringify(this.filterParams);
+            this.getMarketingTypes();
+            this.searchList();
         },
         mounted () {
         },
-        watch : {},
+        watch : {
+            'filterParams.marketTypeId' : {
+                handler (val, oldVal) {
+                    this.getMarketingLevels(val);
+                },
+                immediate : true
+            }
+        },
         methods : {
+            /**
+             * 获取营销类别列表数据
+             **/
+            getMarketingTypes () {
+                ajax.post('marketing-typeList').then(res => {
+                    if (res.success) {
+                        this.marketingTypes = this.marketingTypes.concat(res.data || []);
+                    }
+                });
+            },
+            /**
+             * 获取营销级别列表数据
+             * @param typeId
+             **/
+            getMarketingLevels (typeId) {
+                if (typeId.includes('all')) {
+                    this.marketingLevels = this.allMarketLevel;
+                } else {
+                    ajax.post('marketing-listLevel', {
+                        pageNo : 1,
+                        pageSize : 9999,
+                        typeId : typeId || this.filterParams.marketTypeId
+                    }).then(res => {
+                        if (res.success) {
+                            this.marketingLevels = this.allMarketLevel.concat(res.data || []);
+                        }
+                    });
+                }
+            },
             /**
              * 获取提现记录列表数据
              */
             searchList () {
-                this.$emit('on-search', this.filterParams);
+                let queryParams = Object.assign({}, this.filterParams);
+                ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
+                    if (queryParams[key].includes('all')) {
+                        queryParams[key] = '';
+                    }
+                });
+                this.$emit('on-search', queryParams);
             },
             /**
              * 重置筛选条件
@@ -80,7 +142,7 @@
     .withdraw-filter {
         padding: 15px 20px 0 20px;
 
-        ul > li {
+        > ul > li {
             float: left;
             margin-right: 20px;
         }

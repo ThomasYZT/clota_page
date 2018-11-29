@@ -80,7 +80,8 @@
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
-                                <span class="info-key">{{$t('支付宝账号')}}：</span>
+                                <!--收款账号-->
+                                <span class="info-key">{{$t('收款账号')}}：</span>
                                 <span class="info-val">{{'59789792839809'}}</span>
                             </div>
                         </i-col>
