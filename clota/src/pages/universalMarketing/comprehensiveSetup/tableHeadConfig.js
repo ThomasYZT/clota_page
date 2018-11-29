@@ -45,7 +45,7 @@ export const marketingLevelHead = [
     },
     {
         title : 'marketingLevelName',
-        minWidth : 100,
+        minWidth : 150,
         field : 'payType'
     },
     {
@@ -55,22 +55,24 @@ export const marketingLevelHead = [
     },
     {
         title : 'marketingTypeName',
-        minWidth : 100,
+        minWidth : 150,
         field : 'payType'
     },
     {
         title : 'levelUpMoney',
         minWidth : 100,
-        field : 'payType'
+        field : 'payType',
+        type : 'money'
     },
     {
         title : 'createdTime',
         minWidth : 100,
-        field : 'payType'
+        field : 'payType',
+        type : 'date'
     },
     {
         title : 'operate',
-        minWidth : 100,
+        minWidth : 120,
         field : ''
     }
 ]

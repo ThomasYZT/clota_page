@@ -17,10 +17,12 @@ export const posterInfoHead = [
     {
         title : 'createdTime',
         minWidth : 100,
-        field : 'payType'
+        field : 'payType',
+        type : 'date'
     },
     {
         title : 'operate',
+        width : 140,
         minWidth : 100,
         field : ''
     },

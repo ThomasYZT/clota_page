@@ -1785,7 +1785,7 @@ export default {
     'positionName' : '位置名称',
     'longitude' : '经度',
     'latitude' : '纬度',
-    'radiusWithUnit' : '半径带单位',
+    'radiusWithUnit' : '半径（米）',
     'levelID' : '等级ID',
     'marketingLevelName' : '营销等级名称',
     'marketingTypeName' : '营销类别名称',
@@ -1796,5 +1796,18 @@ export default {
     'codeRegisterManage' : '二维码注册管理',
     'cashSetting' : '提现设置',
     'addNewMarketingType'  : '新增营销类别',
+    'uploadPicture' : '上传图片',
+    'picturePreview' : '图片预览',
+    'pleaseUploadImgAtleastOne' : '请上传至少1张图片',
+    'picture' : '图片',
+    'mostUploadPic' : '最多上传{num}张图片',
+    'radiusWithoutUnit' : '半径',
+    'getLogLatValue' : '获取经纬度坐标值',
+    'clickHereGetValue' : '点击此处获取',
+    'pleaseGetLngLat' : '请获取经纬度',
+    'download' : '下载',
+    'addNewCode' : '新增二维码',
+    'cashOfferDays' : '提现天数',
+    'path' : '路径'
 
 }

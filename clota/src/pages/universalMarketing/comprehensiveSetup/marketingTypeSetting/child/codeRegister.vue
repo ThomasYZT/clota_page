@@ -4,14 +4,16 @@
 -->
 <template>
     <div class="code-register">
-
+        <codeBox></codeBox>
     </div>
 </template>
 
 <script>
-
+    import codeBox from '../components/codeBox';
     export default {
-        components : {},
+        components : {
+            codeBox
+        },
         data () {
             return {};
         },
@@ -21,4 +23,7 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .code-register {
+        padding : 35px 33px;
+    }
 </style>

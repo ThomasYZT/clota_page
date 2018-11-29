@@ -6,7 +6,7 @@
     <div class="poster-information">
         <div class="btn-area">
             <Button type="primary" class="ivu-btn-108px" @click="uploadPoster">{{$t('uploadPoster')}}</Button>
-            <Button type="default" class="ivu-btn-108px error" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+            <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
         </div>
 
         <div class="table-area">
@@ -19,8 +19,23 @@
                       :ofset-height="120"
                       :page-no-d.sync="filterData.pageNo"
                       :page-size-d.sync="filterData.pageSize"
+                      @selection-change="selectionChange"
                       @query-data="getData">
-
+                <el-table-column
+                    slot="column4"
+                    slot-scope="row"
+                    show-overflow-tooltip
+                    fixed="right"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <ul class="operate-list">
+                            <li @click="download(scope.row)" >{{$t('download')}}</li>
+                            <li class="red-label" @click="deleteBatch(scope.$index)">{{$t('del')}}</li>
+                        </ul>
+                    </template>
+                </el-table-column>
             </tableCom>
         </div>
 
@@ -29,6 +44,7 @@
 </template>
 
 <script>
+    import ajax from '@/api/index';
     import tableCom from '../../../components/tableCom/tableCom';
     import { posterInfoHead } from './tableHeadConfig';
     import uploadPosterModal from './components/uploadPosterModal';
@@ -45,7 +61,8 @@
                 filterData : {
                     pageNo : 0,
                     pageSize : 10
-                }
+                },
+                chosedColomn : [],
             };
         },
         methods : {
@@ -66,6 +83,20 @@
              * 批量删除
              */
             deleteBatch () {
+
+            },
+            /**
+             * 表格栏被check时
+             * @param {object} list
+             */
+            selectionChange (list) {
+                this.chosedColomn = list;
+            },
+            /**
+             * 下载
+             * @param {object} data
+             */
+            download (data) {
 
             }
         }
@@ -93,6 +124,11 @@
 
             .ivu-btn-108px {
                 margin-right: 10px;
+            }
+
+            .disabled {
+                background-color: $color_gray;
+                border-color: $color_gray;
             }
         }
     }

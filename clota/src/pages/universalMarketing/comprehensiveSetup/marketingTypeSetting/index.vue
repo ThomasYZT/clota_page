@@ -11,9 +11,15 @@
 
             <div class="view-wrapper">
                 <Tabs :animated="false">
-                    <TabPane :label="$t('marketingLevel')">1</TabPane>
-                    <TabPane :label="$t('codeRegisterManage')">2</TabPane>
-                    <TabPane :label="$t('cashSetting')">3</TabPane>
+                    <TabPane :label="$t('marketingLevel')">
+                        <marketingLevel></marketingLevel>
+                    </TabPane>
+                    <TabPane :label="$t('codeRegisterManage')">
+                        <codeRegister></codeRegister>
+                    </TabPane>
+                    <TabPane :label="$t('cashSetting')">
+                        <cashOfferSettings></cashOfferSettings>
+                    </TabPane>
                 </Tabs>
             </div>
         </div>
@@ -22,9 +28,15 @@
 
 <script>
     import marketTypeTree from './components/marketTypeTree';
+    import cashOfferSettings from './child/cashOfferSettings';
+    import codeRegister from './child/codeRegister';
+    import marketingLevel from './child/marketingLevel'
     export default {
         components : {
-            marketTypeTree
+            marketTypeTree,
+            cashOfferSettings,
+            codeRegister,
+            marketingLevel,
         },
         data () {
             return {};
@@ -78,7 +90,6 @@
             /deep/ .ivu-tabs-content {
                 height: calc(100% - 51px);
                 .ivu-tabs-tabpane {
-                    padding: 30px 23px;
                     height: 100%;
                     overflow: auto;
                 }

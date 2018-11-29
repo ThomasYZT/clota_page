@@ -6,7 +6,7 @@
     <div class="marketing-position-setting">
         <div class="btn-area">
             <Button type="primary" class="ivu-btn-108px" @click="add">{{$t('add')}}</Button>
-            <Button type="default" class="ivu-btn-108px error" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+            <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
         </div>
 
         <tableCom :column-data="columnData"
@@ -18,6 +18,7 @@
                   :ofset-height="120"
                   :page-no-d.sync="filterData.pageNo"
                   :page-size-d.sync="filterData.pageSize"
+                  @selection-change="selectionChange"
                   @query-data="getData">
 
         </tableCom>
@@ -44,7 +45,8 @@
                 filterData : {
                     pageNo : 0,
                     pageSize : 10
-                }
+                },
+                chosedColomn : [],
             };
         },
         methods : {
@@ -66,6 +68,13 @@
              */
             deleteBatch () {
 
+            },
+            /**
+             * 表格栏被check时
+             * @param list
+             */
+            selectionChange (list) {
+                this.chosedColomn = list;
             }
         }
     };
@@ -86,6 +95,11 @@
 
             .ivu-btn-108px {
                 margin-right: 10px;
+            }
+
+            .disabled {
+                background-color: $color_gray;
+                border-color: $color_gray;
             }
         }
     }

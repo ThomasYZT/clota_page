@@ -4,14 +4,16 @@
 -->
 <template>
     <div class="cash-offer-settings">
-
+        <cashOfferSettingBox></cashOfferSettingBox>
     </div>
 </template>
 
 <script>
-
+    import cashOfferSettingBox from '../components/cashOfferSettingBox'
     export default {
-        components : {},
+        components : {
+            cashOfferSettingBox
+        },
         data () {
             return {};
         },
@@ -21,4 +23,7 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .cash-offer-settings {
+        padding: 20px 30px;
+    }
 </style>
