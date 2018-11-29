@@ -28,7 +28,7 @@
                     <li v-if="orderOrgType === 'channel' || orderOrgType === 'scenic'"
                         class="col">{{$t('SN')}}：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
                     <!--仅景区视图字段-->
-                    <li v-if="orderOrgType === 'scenic'" class="col">{{$t('smsStatus')}}：{{transSMSStatus(baseInfo.smsStatus) | contentFilter}}</li>
+                    <li v-if="orderOrgType === 'scenic'" class="col">{{$t('smsStatus')}}：{{$t(transSMSStatus(baseInfo.smsStatus)) | contentFilter}}</li>
                     <!--仅分销商视图字段-->
                     <li v-if="orderOrgType === 'allocation'" class="col">{{$t('reserveNum')}}：{{baseInfo.quantity | contentFilter}}</li>
 
