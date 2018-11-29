@@ -229,5 +229,7 @@ export default {
     'userHasNoCard' : '用户暂无会员卡',
     'enterSenicCode' : '入园码',
     'scenicCode' : '入园二维码',
+    'errorFormat' : '请输入正确金额',
+    'numError' : '请输入正确金额',
 
 };

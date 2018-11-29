@@ -30,9 +30,10 @@
                     </radio>
                 </group>
             </div>
+
         </div>
         <div class="btn-area">
-            <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
+            <x-button @click.native="recharge" :disabled="commonList.length < 1">{{$t('recharge')}}</x-button>
         </div>
 
     </div>
@@ -93,6 +94,9 @@
                             this.donateMoney = '';
                         }
                     });
+                }).catch(() => {
+                    this.actualMoney = '';
+                    this.donateMoney = '';
                 });
             },
             /**
@@ -123,16 +127,19 @@
             },
             /**
              * 校验充值金额
+             * @param showErrorInfo 是否显示错误信息
              */
-            validateRechargeMoney () {
+            validateRechargeMoney (showErrorInfo) {
                 return new Promise((resolve,reject) => {
                     common.validateMoney(this.rechargeMoney).then(() => {
                         resolve();
                     }).catch(err => {
-                        if (err === 'errorMaxLength') {
-                            this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('rechargeNum'),length : 10 }));
-                        } else {
-                            this.$vux.toast.text(this.$t(err,{ field : this.$t('rechargeNum') }));
+                        if (showErrorInfo) {
+                            if (err === 'errorMaxLength') {
+                                this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('rechargeNum'),length : 10 }));
+                            } else {
+                                this.$vux.toast.text(this.$t(err,{ field : this.$t('rechargeNum') }));
+                            }
                         }
                         reject();
                     });
@@ -148,7 +155,7 @@
              * 充值
              */
             recharge () {
-                if ( this.rechargeMoney ) {
+                this.validateRechargeMoney(true).then(() => {
                     if (this.payType === 'wx' && this.isWeixin()) {
                         //微信内微信支付专用
                         this.getPayPageForOfficialAccount();
@@ -156,9 +163,7 @@
                         //微信内支付宝支付、微信外支付宝、微信支付
                         this.getPayPageForMobile();
                     }
-                } else {
-                    this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('rechargeNum') }));
-                }
+                });
             },
             /**
              *  获取在线支付方式列表
@@ -215,14 +220,39 @@
                     channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : encodeURI(location.origin + '/payStatus')
+                    redirectUrl : this.getRedirectUrl()
                 }).then(res => {
                     if (res.success) {
                         this.payFormData = res.data ? res.data : {};
 
                         //设置支付表单信息
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        location.href = location.origin + '/h5Pay?memberId=' + this.userInfo.memberId +
+                        // this.$router.push({
+                        //     name : 'h5Pay',
+                        //     query : {
+                        //         memberId : this.userInfo.memberId,
+                        //         cardId : this.userInfo.id,
+                        //         accounId : this.accounId,
+                        //         paymentTypeId : this.payType,
+                        //         accountTypeId : this.accountTypeId,
+                        //         amount : this.payFormData.txnAmt,
+                        //         txnType : this.payFormData.txnType,
+                        //         partnerId : this.payFormData.partnerId,
+                        //         channelId : this.payFormData.channelId,
+                        //         merchantTxnNo : this.payFormData.merchantTxnNo,
+                        //         merchantId : this.payFormData.merchantId,
+                        //         txnAmt : this.payFormData.txnAmt,
+                        //         redirectUrl : this.payFormData.redirectUrl,
+                        //         txnShortDesc : this.payFormData.txnShortDesc,
+                        //         sign : this.payFormData.sign,
+                        //         currencyCode : this.payFormData.currencyCode,
+                        //         notifyUrl : escape(this.payFormData.notifyUrl),
+                        //         payWebUrl : escape(this.payFormData.payWebUrl),
+                        //         transactionId : this.payFormData.transactionId,
+                        //         token : ajax.getToken(),
+                        //     }
+                        // });
+                        location.href = location.origin + this.$router.options.base + '/h5Pay?memberId=' + this.userInfo.memberId +
                             '&cardId=' + this.cardInfo.id +
                             '&accounId=' + this.accounId +
                             '&paymentTypeId=' + this.payType +
@@ -259,7 +289,7 @@
                     channelId : 'weixin',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : encodeURI(location.origin + '/payStatus')
+                    redirectUrl : this.getRedirectUrl()
                 }).then(res => {
                     if (res.success) {
                         //设置支付表单信息
@@ -271,14 +301,27 @@
                         this.payFormData.accountTypeId = this.accountTypeId;
                         this.payFormData.remark = '';
                         this.payFormData.amount = this.payFormData.txnAmt;
-                        this.payFormData.redirectUrl = this.payFormData.redirectUrl;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        location.href = location.origin + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
+                        // this.$router.push({
+                        //     name : 'h5Pay',
+                        //     query : {
+                        //         payFormData : encodeURI(this.payFormData)
+                        //     }
+                        // });
+                        location.href = location.origin + this.$router.options.base + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));
                     }
                 })
+            },
+            /**
+             * 获取支付回调地址
+             */
+            getRedirectUrl () {
+                let router = this.$router;
+                let base = router.options.base;
+                return encodeURI(location.origin + base + '/payStatus');
             }
         },
         mounted () {
@@ -376,7 +419,6 @@
             }
 
             .type-list{
-                @include block_outline($height : 109px);
                 padding: 15px 0;
 
                 /deep/ .vux-radio-icon{
@@ -418,6 +460,12 @@
                 color: $color_fff;
                 border-radius: 100px;
                 letter-spacing: 2px;
+
+                &[disabled='disabled']{
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                    color: rgba(0, 0, 0, 0.2);
+                    background: $color_fff;
+                }
             }
         }
 

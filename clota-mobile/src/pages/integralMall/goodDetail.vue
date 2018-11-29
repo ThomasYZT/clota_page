@@ -29,13 +29,14 @@
         </div>
 
 
-        <div class="button" @click="toExchangeGood">{{$t('immediatelyChange')}}</div>
+        <div class="button" :class="{ disabled : cardInfo.status === 'frozen' }" @click="toExchangeGood">{{$t('immediatelyChange')}}</div>
     </div>
 </template>
 
 <script>
     import ajax from '../../api/index';
-    import lifeCycleMixins from '../../mixins/lifeCycleMixins'
+    import lifeCycleMixins from '../../mixins/lifeCycleMixins';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         components : {},
@@ -87,6 +88,7 @@
              * 前往兑换商品界面
              */
             toExchangeGood () {
+                if (this.cardInfo.status === 'frozen') return;
                 this.$router.push({
                     name : 'exchangeGood',
                     params : {
@@ -94,6 +96,11 @@
                     }
                 })
             }
+        },
+        computed : {
+            ...mapGetters({
+                cardInfo : 'cardInfo'
+            })
         }
     };
 </script>
@@ -239,6 +246,10 @@
             font-size: 16px;
             text-align: center;
             background: linear-gradient(to left,#FE4021, #FB4A6E);
+
+            &.disabled{
+                background: $color_gray;
+            }
         }
     }
 </style>

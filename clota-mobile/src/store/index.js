@@ -29,7 +29,7 @@ export default new Vuex.Store({
         //用户是否登陆
         isLogin : false,
         //公司id
-        companyCode : '',
+        companyCode : '10000059',
         //错误码
         errCode : '',
         //判断当前是否在微信当中打开
@@ -82,23 +82,25 @@ export default new Vuex.Store({
         },
         //公司id
         companyCode : state => {
+            let url = location.href;
             let companyCode = '';
-            if (!state.companyCode) {
-                let url = location.href;
-                if (url.indexOf('?') !== -1) {
-                    let query = url.split("?")[1];
-                    let queryArr = query.split("&");
-                    queryArr.forEach(function (item) {
-                        let key = item.split("=")[0];
-                        let value = item.split("=")[1];
-                        if (key === 'companyCode') {
-                            companyCode = value;
-                        }
-                    });
+            if (url.indexOf('?') !== -1) {
+                let query = url.split("?")[1];
+                let queryArr = query.split("&");
+                queryArr.forEach(function (item) {
+                    let key = item.split("=")[0];
+                    let value = item.split("=")[1];
+                    if (key === 'companyCode') {
+                        companyCode = value;
+                    }
+                });
+                if (companyCode) {
                     return companyCode;
                 } else {
-                    return companyCode;
+                    return state.companyCode;
                 }
+            } else {
+                return state.companyCode;
             }
         },
         //是否登陆

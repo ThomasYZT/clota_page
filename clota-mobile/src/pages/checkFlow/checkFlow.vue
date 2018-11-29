@@ -106,7 +106,8 @@
                 await ajax.post('queryMemberAccountDefine', {
                     accountType : 'charging',
                     pageNo : 1,
-                    pageSize : 200
+                    pageSize : 200,
+                    cardId : this.cardInfo.id
                 }).then((res) => {
                     if (res.success && res.data) {
                         //业主卡返回全部账户类型
