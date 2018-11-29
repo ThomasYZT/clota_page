@@ -92,10 +92,10 @@
                             this.actualMoney = '';
                             this.donateMoney = '';
                         }
-                    }).catch(() => {
-                        this.actualMoney = '';
-                        this.donateMoney = '';
                     });
+                }).catch(() => {
+                    this.actualMoney = '';
+                    this.donateMoney = '';
                 });
             },
             /**
