@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 //会员系统路由信息
 import { memberRoutes } from '../member/router/index';
-import { marketingRoutes } from '../marketing/router/index'
+import { marketingRoutes } from '../marketing/router/index';
 
 Vue.use(Router);
 //生成新路由的方法

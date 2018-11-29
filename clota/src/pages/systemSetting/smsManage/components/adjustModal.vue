@@ -104,7 +104,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('adjust') }));
                     }
-                })
+                });
             }
         }
     }

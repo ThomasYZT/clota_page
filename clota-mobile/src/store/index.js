@@ -25,6 +25,8 @@ export default new Vuex.Store({
         errCode : '',
         //判断当前是否在微信当中打开
         isWeixin : null,
+        //是否可以使用微信jsdk
+        weixinIsConfiged : true,
         ...memberState,
         ...marketingState
     },
@@ -58,8 +60,12 @@ export default new Vuex.Store({
             }
             return state.isWeixin;
         },
+        //微信是否可以使用jsdk
+        weixinIsConfiged : state => {
+            return state.isWeixin && state.weixinIsConfiged;
+        },
         ...memberGetters,
-        ...marketingGetters
+        ...marketingGetters,
     },
     mutations : {
         //设置语言
@@ -96,6 +102,14 @@ export default new Vuex.Store({
          */
         updateShowNetworkError (state,status) {
             state.showNetworkError = status;
+        },
+        /**
+         * 更新微信配置
+         * @param state
+         * @param status
+         */
+        updateWeixinConfig ( state,status) {
+            state.weixinIsConfiged = status;
         },
         ...memberMutations
     },

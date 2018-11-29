@@ -1,4 +1,4 @@
-<!--个人信息-->
+1<!--个人信息-->
 
 <template>
     <div class="person-info">
@@ -7,8 +7,8 @@
                 <img :src="formData.portrait" v-if="formData.portrait" alt="">
                 <img clsss="img-span" v-else src="../../../assets/images/defaut-face.png">
                 <span class="edit">
-                    <!--<input class="upload" type="file" accept="image/*" @change="uploadImg($event)">-->
                     <span class="label" @click="editHeadImg">{{$t('edit')}}</span>
+                    <input v-if="!weixinIsConfiged" class="upload" type="file" accept="image/*" @change="uploadImg($event)">
                 </span>
             </div>
         </div>
@@ -166,11 +166,16 @@
                     cardId : this.cardInfo.id
                 }).then(res => {
                     if (res.success) {
+                        if (res.data && res.data.memberInfo) {
+                            res.data.memberInfo.homeAddr = res.data.memberInfo.homeAddr ? res.data.memberInfo.homeAddr : '';
+                        }
                         this.$set(this,'formData',res.data ? Object.assign(this.formData,{
                             ...res.data,
                             name : res.data.custName,
                             gender : [res.data.gender],
-                            qq : res.data.qq ? res.data.qq : ''
+                            qq : res.data.qq ? res.data.qq : '',
+                            portrait : res.data ? res.data.memberInfo.portrait : '',
+                            homeAddr : res.data ? res.data.memberInfo.homeAddr : ''
                         }) : {});
                     } else {
                         this.formData = {};
@@ -306,61 +311,62 @@
                     }
                 });
             },
-            // /**
-            //  * 上传图片
-            //  * @param e
-            //  */
-            // uploadImg (e) {
-            //     let file = e.target.files[0];
-            //     let param = new FormData(); //创建form对象
-            //     param.append('file',file,file.name);//通过append向form对象添加数据
-            //     if(file.size > 1024 * 1024 * 10){
-            //         this.$vux.toast.show({
-            //             text : this.$t('uploadErr',{size : 10}),
-            //             type : 'text',
-            //             width : '3.5rem'
-            //         });
-            //     }else{
-            //         ajax.uploadFile('uploadMemberImageInfo',param).then(res => {
-            //             if(res.success){
-            //                 this.modifyHeadImg(res.data);
-            //             }else{
-            //                 this.$vux.toast.show({
-            //                     text : '上传头像失败',
-            //                     type : 'text',
-            //                     width : '3rem'
-            //                 });
-            //             }
-            //         });
-            //     }
-            // },
-            // /**
-            //  * 修改头像信息
-            //  * @param imgSrc 头像地址
-            //  */
-            // modifyHeadImg (imgSrc) {
-            //     ajax.post('updateMemberInfo',{
-            //         id : this.userInfo.memberId,
-            //         portrait : imgSrc
-            //     }).then(res => {
-            //         if(res.success){
-            //             this.$vux.toast.show({
-            //                 text: this.$t('operateSuc',{msg : this.$t('changeImg')})
-            //             });
-            //             this.getMemberDetail();
-            //             this.getGrowthBalance();
-            //         }else{
-            //             this.$vux.toast.show({
-            //                 text: this.$t('operateFail',{msg : this.$t('changeImg')}),
-            //                 type : 'cancel'
-            //             });
-            //         }
-            //     });
-            // },
+            /**
+             * 上传图片
+             * @param e
+             */
+            uploadImg (e) {
+                let file = e.target.files[0];
+                let param = new FormData(); //创建form对象
+                param.append('file',file,file.name);//通过append向form对象添加数据
+                if (file.size > 1024 * 1024 * 10) {
+                    this.$vux.toast.show({
+                        text : this.$t('uploadErr',{ size : 10 }),
+                        type : 'text',
+                        width : '3.5rem'
+                    });
+                } else {
+                    ajax.uploadFile('uploadMemberImageInfo',param).then(res => {
+                        if (res.success) {
+                            this.savePortrait(res.data);
+                        } else {
+                            this.$vux.toast.show({
+                                text : '上传头像失败',
+                                type : 'text',
+                                width : '3rem'
+                            });
+                        }
+                    });
+                }
+            },
+            /**
+             * 修改头像信息
+             * @param imgSrc 头像地址
+             */
+            modifyHeadImg (imgSrc) {
+                ajax.post('updateMemberInfo',{
+                    id : this.userInfo.memberId,
+                    portrait : imgSrc
+                }).then(res => {
+                    if (res.success) {
+                        this.$vux.toast.show({
+                            text : this.$t('operateSuc',{ msg : this.$t('changeImg') })
+                        });
+                        this.getMemberDetail();
+                        this.getGrowthBalance();
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('operateFail',{ msg : this.$t('changeImg') }),
+                            type : 'cancel'
+                        });
+                    }
+                });
+            },
             /**
              * 上传头像
              */
             editHeadImg () {
+                if (!this.weixinIsConfiged) return;
                 this.$wechat.chooseImage({
                     count : 1, // 默认9
                     sizeType : ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -435,6 +441,7 @@
             ...mapGetters({
                 userInfo : 'userInfo',
                 cardInfo : 'cardInfo',
+                weixinIsConfiged : 'weixinIsConfiged',
             }),
             //证件号码
             idNum () {
@@ -457,7 +464,7 @@
                     endTime = this.formData.expDate.split(' ')[0];
                     return startTime + '/' + endTime;
                 } else {
-                    return '-'
+                    return '-';
                 }
             },
             //会员生日
@@ -517,6 +524,7 @@
                         display: inline-block;
                         width: 74px;
                         opacity: 0;
+                        left: 0;
                     }
                 }
             }

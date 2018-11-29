@@ -187,6 +187,9 @@
                                     'uploadImage'
                                 ]
                             });
+                            this.$wechat.error(() => {
+                                this.$store.commit('updateWeixinConfig',false);
+                            });
                         }
                     });
                 } else {

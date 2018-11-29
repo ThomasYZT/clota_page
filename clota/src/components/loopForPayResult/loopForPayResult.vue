@@ -66,7 +66,7 @@
                     交易结果未知！
                 </div>
                 <div class="to-for-detail">
-                可前往<span class="trade-record" @click="toTradeRecrod"> 在线交易记录 </span>继续查询支付结果
+                可前往<span class="trade-record" @click="toTradeRecrod"> {{resultLocation ? $t(resultLocation) : '在线交易记录'}}  </span>继续查询支付结果
                 </div>
             </template>
             <!--支付成功-->
@@ -102,6 +102,11 @@
             },
             //内部交易id
             'transaction-id' : {
+                type : String,
+                default : ''
+            },
+            //提示地址信息
+            'result-location' : {
                 type : String,
                 default : ''
             }

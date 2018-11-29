@@ -8,22 +8,24 @@
            :mask-closable="false"
            :title="$t(title)">
 
-        <div>
-            <div class="payment-item">
-                <span>{{$t('colonSetting', { key : $t('collectionAccountType') })}}</span>
-                <span>
+        <i-row class="content">
+            <i-col span="12" offset="8">
+                <div class="payment-item">
+                    <span>{{$t('colonSetting', { key : $t('collectionAccountType') })}}</span>
+                    <span>
                     {{$t('payType.' + accountInfo.accountType) | contentFilter}}
                 </span>
-            </div>
-            <div class="payment-item">
-                <span>{{$t('colonSetting', { key : 'MerchantID' })}}</span>
-                <span>{{accountInfo.merchantId | contentFilter}}</span>
-            </div>
-            <div class="payment-item">
-                <span>{{$t('colonSetting', { key : 'partnerID' })}}</span>
-                <span>{{accountInfo.partnerId | contentFilter}}</span>
-            </div>
-        </div>
+                </div>
+                <div class="payment-item">
+                    <span>{{$t('colonSetting', { key : 'MerchantID' })}}</span>
+                    <span>{{accountInfo.merchantId | contentFilter}}</span>
+                </div>
+                <div class="payment-item">
+                    <span>{{$t('colonSetting', { key : 'partnerID' })}}</span>
+                    <span>{{accountInfo.partnerId | contentFilter}}</span>
+                </div>
+            </i-col>
+        </i-row>
 
         <div slot="footer" class="modal-footer">
             <Button type="primary" @click="confirm">{{$t("confirm")}}</Button>
@@ -36,7 +38,7 @@
                     {{$t('areYouSureAccount', { field : (accountInfo.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')) + $t('payType.' + accountInfo.accountType)  })}}
                 </span>
             </span>
-            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('whetherSure')}}？</span>
         </del-modal>
     </Modal>
 </template>
@@ -116,10 +118,15 @@
     .payment-item{
         line-height: 22px;
         color: $color_666;
+        margin-top: 5px;
 
         .using-btn {
             color: $color_blue;
             cursor: pointer;
         }
+    }
+
+    .content {
+        font-size: 14px;
     }
 </style>

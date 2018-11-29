@@ -9,7 +9,7 @@
           <p class="time">{{info.createdTime}}</p>
       </div>
       <div class="check">
-          <p><span v-if="info.amount > 0">+</span>{{ info.amount  | moneyFilter | contentFilter}}¥</p>
+          <p><span v-if="info.amount > 0">+</span>{{ info.amount  | moneyFilter | contentFilter}}{{$t('yuan')}}</p>
       </div>
   </div>
 </template>
