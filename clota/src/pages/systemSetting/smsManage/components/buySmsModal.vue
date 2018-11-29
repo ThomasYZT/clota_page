@@ -55,6 +55,7 @@
         <loop-for-pay-result v-model="payModalShow"
                              ref="payResultModal"
                              :transaction-id="transactionId"
+                             :resultLocation="'smsBuyRecord'"
                              @search-success="paySuccess">
         </loop-for-pay-result>
     </div>
