@@ -92,6 +92,9 @@
                             this.actualMoney = '';
                             this.donateMoney = '';
                         }
+                    }).catch(() => {
+                        this.actualMoney = '';
+                        this.donateMoney = '';
                     });
                 });
             },
@@ -123,16 +126,19 @@
             },
             /**
              * 校验充值金额
+             * @param showErrorInfo 是否显示错误信息
              */
-            validateRechargeMoney () {
+            validateRechargeMoney (showErrorInfo) {
                 return new Promise((resolve,reject) => {
                     common.validateMoney(this.rechargeMoney).then(() => {
                         resolve();
                     }).catch(err => {
-                        if (err === 'errorMaxLength') {
-                            this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('rechargeNum'),length : 10 }));
-                        } else {
-                            this.$vux.toast.text(this.$t(err,{ field : this.$t('rechargeNum') }));
+                        if (showErrorInfo) {
+                            if (err === 'errorMaxLength') {
+                                this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('rechargeNum'),length : 10 }));
+                            } else {
+                                this.$vux.toast.text(this.$t(err,{ field : this.$t('rechargeNum') }));
+                            }
                         }
                         reject();
                     });
@@ -148,7 +154,7 @@
              * 充值
              */
             recharge () {
-                this.validateRechargeMoney().then(() => {
+                this.validateRechargeMoney(true).then(() => {
                     if (this.payType === 'wx' && this.isWeixin()) {
                         //微信内微信支付专用
                         this.getPayPageForOfficialAccount();
