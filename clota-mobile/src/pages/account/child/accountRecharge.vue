@@ -30,9 +30,10 @@
                     </radio>
                 </group>
             </div>
+
         </div>
         <div class="btn-area">
-            <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
+            <x-button @click.native="recharge" :disabled="commonList.length < 1">{{$t('recharge')}}</x-button>
         </div>
 
     </div>
@@ -418,7 +419,6 @@
             }
 
             .type-list{
-                @include block_outline($height : 109px);
                 padding: 15px 0;
 
                 /deep/ .vux-radio-icon{
@@ -460,6 +460,12 @@
                 color: $color_fff;
                 border-radius: 100px;
                 letter-spacing: 2px;
+
+                &[disabled='disabled']{
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                    color: rgba(0, 0, 0, 0.2);
+                    background: $color_fff;
+                }
             }
         }
 
