@@ -44,44 +44,44 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkBatchAuditHead} from '../auditConfig';
-    import {mapGetters} from 'vuex';
+    import { bulkBatchAuditHead } from '../auditConfig';
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: [],
-        components: {
+        props : [],
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
-                title: '',
+                visible : false,
+                title : '',
                 //批量表头配置
                 batchColumnData : bulkBatchAuditHead,
                 //订单数据
-                orderData: {
-                    items: [],  //表格数据
-                    isBatch: false,
-                    type: ''
+                orderData : {
+                    items : [], //表格数据
+                    isBatch : false,
+                    type : ''
                 },
                 //审核备注
-                auditRemark: ''
-            }
+                auditRemark : ''
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             }),
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
-            reqType() {
-                if (this.$route.name=='auditBulkRefund') {
+            reqType () {
+                if (this.$route.name == 'auditBulkRefund') {
                     return 'refund';
-                } else if (this.$route.name=='auditBulkChange') {
+                } else if (this.$route.name == 'auditBulkChange') {
                     return 'alter';
                 }
             },
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 if (data) {
@@ -92,33 +92,33 @@
                         this.title = '批量驳回';
                     }
 
-                    if (this.reqType=='refund') {
+                    if (this.reqType == 'refund') {
                         this.batchColumnData = bulkBatchAuditHead.filter(item => {
                             return item.field !== 'rescheduleAfterVisitDate';
-                        })
+                        });
                     }
                 }
 
                 this.visible = true;
             },
             //关闭模态框
-            hide() {
+            hide () {
                 this.auditRemark = this.orderData.type = '';
                 this.orderData.items = [];
                 this.visible = false;
             },
 
-            bulkBatchAudit() {
-                if (this.auditRemark.length>500) {
+            bulkBatchAudit () {
+                if (this.auditRemark.length > 500) {
                     return;
                 }
                 ajax.post('auditBatchOrderProduct', {
-                    productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
-                    remark: this.auditRemark,
-                    auditStatus: this.orderData.type,
-                    reqType: this.reqType
+                    productRefundAlterIds : this.orderData.items.map(item => item.productRefundAlterId).join(','),
+                    remark : this.auditRemark,
+                    auditStatus : this.orderData.type,
+                    reqType : this.reqType
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         if (this.orderData.type === 'pass') {
                             this.$Message.success(this.$t('订单已批量审核通过'));
                         } else if (this.orderData.type === 'reject') {
@@ -132,7 +132,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

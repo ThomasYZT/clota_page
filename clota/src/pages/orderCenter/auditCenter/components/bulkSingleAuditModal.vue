@@ -33,7 +33,7 @@
                 </Form-item>
                 <!--申请改签后的游玩日期-->
                 <Form-item :label="$t('visitDateAfterAlter') + '：'" prop="" v-if="reqType=='alter'">
-                    <span>{{formData.rescheduleAfterVisitDate | contentFilter}}</span>
+                    <span>{{formData.afterAlterDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
                 </Form-item>
                 <!--申请数量-->
                 <Form-item :label="$t('requestNum') + '：'" prop="">
