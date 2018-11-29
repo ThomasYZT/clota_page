@@ -1,7 +1,7 @@
 /**
  * Created by Sasha on 2018/6/1.
  */
-import api from '../member/api/apiList';
+import api from './apiList';
 import axios from 'axios';
 import querystring from 'querystring';
 import config from '../config/index.js';
