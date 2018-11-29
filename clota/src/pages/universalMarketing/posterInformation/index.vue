@@ -79,7 +79,7 @@
             <div class="del-modal">
                 <i class="iconfont icon-help"></i>
                 <span class="result">{{$t('sureToDelPoster')}}</span>
-                <span class="warn-tip">{{$t('operationIrrevocable')}}，{{$t('sureToDel')}}</span>
+                <span class="warn-tip">{{$t('operationIrrevocable')}}{{$t('sureToDel')}}</span>
             </div>
         </delModal>
     </div>
@@ -159,8 +159,7 @@
                             }
                         }));
                     }
-                })
-
+                });
             },
             /**
              * 表格栏被check时

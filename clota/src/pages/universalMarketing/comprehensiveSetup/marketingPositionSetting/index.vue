@@ -7,6 +7,13 @@
         <div class="btn-area">
             <Button type="primary" class="ivu-btn-108px" @click="add">{{$t('add')}}</Button>
             <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+
+            <Input class="input-field"
+                   v-model.trim="filterData.keyword"
+                   icon="ios-search"
+                   :placeholder="$t('inputField', {field: $t('positionName')})"
+                   @on-enter="getData"
+                   @on-click="getData" />
         </div>
 
         <tableCom :column-data="columnData"
@@ -20,10 +27,32 @@
                   :page-size-d.sync="filterData.pageSize"
                   @selection-change="selectionChange"
                   @query-data="getData">
-
+            <el-table-column
+                slot="column6"
+                slot-scope="row"
+                show-overflow-tooltip
+                fixed="right"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <ul class="operate-list">
+                        <li @click="modify(scope.row)" >{{$t('modify')}}</li>
+                        <li class="red-label" @click="deleteBatch(scope.row.id)">{{$t('del')}}</li>
+                    </ul>
+                </template>
+            </el-table-column>
         </tableCom>
 
-        <addLngLatModal ref="addLngLatModal"></addLngLatModal>
+        <addLngLatModal ref="addLngLatModal" @addSuccess="getData"></addLngLatModal>
+
+        <delModal ref="delModal">
+            <div class="del-modal">
+                <i class="iconfont icon-help"></i>
+                <span class="result">{{$t('sureToDelmarketingPosition')}}</span>
+                <span class="warn-tip">{{$t('operationIrrevocable')}}{{$t('sureToDel')}}</span>
+            </div>
+        </delModal>
     </div>
 </template>
 
@@ -32,10 +61,12 @@
     import tableCom from '../../../../components/tableCom/tableCom';
     import { marketingPositionHead } from '../tableHeadConfig';
     import addLngLatModal from './components/addLngLatModal';
+    import delModal from '../../../../components/delModal/index'
     export default {
         components : {
             tableCom,
-            addLngLatModal
+            addLngLatModal,
+            delModal
         },
         data () {
             return {
@@ -43,8 +74,9 @@
                 tableData : [],
                 totalCount : 0,
                 filterData : {
-                    pageNo : 0,
-                    pageSize : 10
+                    pageNo : 1,
+                    pageSize : 10,
+                    keyword : '',
                 },
                 chosedColomn : [],
             };
@@ -54,20 +86,50 @@
              * 获取表格数据
              */
             getData () {
-                this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},];
-                this.totalCount = 20;
+                ajax.post('marketing-queryForbiddenList', this.filterData).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
             },
             /**
              * 新增
              */
             add () {
-                this.$refs.addLngLatModal.toggle();
+                this.$refs.addLngLatModal.toggle({
+                    type : 'show'
+                });
             },
             /**
              * 批量删除
              */
-            deleteBatch () {
-
+            deleteBatch (id) {
+                this.$refs.delModal.show({
+                    confirmCallback : () => {
+                        let ids;
+                        if (id) {
+                            ids = id
+                        } else {
+                            ids = this.chosedColomn.map((item) => {
+                                return item.id;
+                            }).join(',');
+                        }
+                        ajax.post('marketing-deleteForbidden',{
+                            ids : ids
+                        }).then((res => {
+                            if (res.success) {
+                                this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
+                                this.getData();
+                            } else {
+                                this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
+                            }
+                        }));
+                    }
+                });
             },
             /**
              * 表格栏被check时
@@ -75,6 +137,16 @@
              */
             selectionChange (list) {
                 this.chosedColomn = list;
+            },
+            /**
+             * 修改
+             * @param {object} data
+             */
+            modify (data) {
+                this.$refs.addLngLatModal.toggle({
+                    type : 'show',
+                    param : data
+                });
             }
         }
     };
@@ -101,6 +173,26 @@
                 background-color: $color_gray;
                 border-color: $color_gray;
             }
+        }
+
+        .input-field {
+            width: 350px;
+            float: right;
+        }
+    }
+
+    .del-modal {
+        width: 80%;
+        .icon-help {
+            color: #EB6751;
+        }
+
+        .type-name {
+            color: $color_yellow;
+        }
+
+        .result {
+            color: $color_red;
         }
     }
 

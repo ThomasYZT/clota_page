@@ -3,36 +3,36 @@ export const marketingPositionHead = [
     {
         title : 'ID',
         minWidth : 100,
-        field : 'payType'
+        field : 'id'
     },
     {
         title : 'scenePlace',
         minWidth : 100,
-        field : 'payType'
+        field : 'orgName'
     },
     {
         title : 'positionName',
         minWidth : 100,
-        field : 'payType'
+        field : 'address'
     },
     {
         title : 'longitude',
         minWidth : 100,
-        field : 'payType'
+        field : 'longitude'
     },
     {
         title : 'latitude',
         minWidth : 100,
-        field : 'payType'
+        field : 'latitude'
     },
     {
         title : 'radiusWithUnit',
         minWidth : 100,
-        field : 'payType'
+        field : 'radius'
     },
     {
         title : 'operate',
-        minWidth : 100,
+        minWidth : 90,
         field : ''
     }
 ];

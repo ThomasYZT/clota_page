@@ -17,26 +17,18 @@
                 <i-row>
                     <i-col span="18" offset="3">
                         <!-- 所属景区 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('scenePlace') })" prop="scenePlace">
-                            <Select v-model="formData.scenePlace"
-                                    :placeholder="$t('selectField', { msg : $t('scenePlace') })"
-                                    show-name
-                                    style="width:200px">
-                                <Option v-for="item in scenePlaceList"
-                                        :value="item.value"
-                                        :key="item.value">{{ item.label }}
-                                </Option>
-                            </Select>
+                        <FormItem :label="$t('colonSetting', { key : $t('scenePlace') })" prop="orgId">
+                            <span>{{manageOrgs.orgName | contentFilter}}</span>
                         </FormItem>
                         <!-- 位置名称 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('positionName') })"  prop="positionName">
+                        <FormItem :label="$t('colonSetting', { key : $t('positionName') })"  prop="address">
                             <Input type="text"
                                    style="width:200px;"
-                                   v-model.trim="formData.positionName"
+                                   v-model.trim="formData.address"
                                    :placeholder="$t('inputField', { field : $t('positionName') })"/>
                         </FormItem>
                         <!-- 获取经纬度坐标值 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })"  prop="coordinates">
+                        <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })">
                             <span class="click-btn">{{$t('clickHereGetValue')}}</span>
                         </FormItem>
                         <!-- 经度 -->
@@ -78,29 +70,60 @@
                     @click="save" >{{$t('save')}}</Button>
             <Button class="ivu-btn-90px"
                     type="ghost"
-                    @click="toggle" >{{$t("cancel")}}</Button>
+                    @click="toggle({type : 'hide'})" >{{$t("cancel")}}</Button>
         </div>
     </Modal>
 </template>
 
 <script>
-
+    import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
+    import {validator} from 'klwk-ui';
     export default {
         components : {},
         data () {
+            //校验经度
+            const longitudeValid = (rule, value, callback) => {
+                let reg = /^-?((0|1?[0-7]?[0-9]?)(([.][0-9]{1,4})?)|180(([.][0]{1,4})?))$/;
+                if (!reg.test(value)) {
+                    callback(new Error(this.$t('errorFormat', { field : this.$t('longitude') })));
+                } else {
+                    callback();
+                }
+            };
+
+            //校验纬度
+            const latitudeValid = (rule, value, callback) => {
+                let reg = /^-?((0|[1-8]?[0-9]?)(([.][0-9]{1,4})?)|90(([.][0]{1,4})?))$/;
+                if (!reg.test(value)) {
+                    callback(new Error(this.$t('errorFormat', { field : this.$t('latitude') })));
+                } else {
+                    callback();
+                }
+            };
+
+            //校验是否为数字
+            const isNumber = (rule, value, callback) => {
+                if (!validator.isBothNumber(value)) {
+                    callback(new Error(this.$t('numError', { field : this.$t('radiusWithoutUnit') })));
+                } else {
+                    callback();
+                }
+            }
+
             return {
-                //所属景区下拉列表
-                scenePlaceList : [],
+                //模态框编辑、新增状态
+                type : 'add',
+                //列表项数据
+                listItem : {},
                 //是否显示模态框
                 visible : false,
                 //表单数据
                 formData : {
                     //所属景区
-                    scenePlace : '',
+                    orgId : '',
                     //地理位置名称
-                    positionName : '',
-                    //坐标值
-                    coordinates : [],
+                    address : '',
                     //经度
                     longitude : '',
                     //纬度
@@ -113,66 +136,55 @@
                 },
                 //表单验证规则
                 ruleValidate : {
-                    scenePlace : [
+                    orgId : [
                         { required : true, message : this.$t('selectField',{ msg : this.$t('scenePlace') }), trigger : 'blur' },
                     ],
-                    positionName : [
+                    address : [
                         { required : true, message : this.$t('inputField',{ field : this.$t('positionName') }), trigger : 'blur' },
                         { type : 'string', max : 50, message : this.$t('errorMaxLength',{ field : this.$t('positionName'),length : 50 }), trigger : 'blur' },
                     ],
-                    coordinates : [
-                        { required : true, type : 'array', min : 2, message : this.$t('pleaseGetLngLat'), trigger : 'blur' },
-                    ],
                     longitude : [
                         { required : true, message : this.$t('inputField',{ field : this.$t('longitude') }), trigger : 'blur' },
+                        { validator : longitudeValid, trigger : 'blur' }
                     ],
                     latitude : [
                         { required : true, message : this.$t('inputField',{ field : this.$t('latitude') }), trigger : 'blur' },
+                        { validator : latitudeValid, trigger : 'blur' }
                     ],
                     radius : [
                         { required : true, message : this.$t('inputField',{ field : this.$t('radiusWithoutUnit') }), trigger : 'blur' },
+                        { validator : isNumber, trigger : 'blur' }
                     ],
                     remark : [
                         { type : 'string', max : 200, message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 200 }), trigger : 'blur' },
                     ],
                 },
+                //坐标值
+                coordinates : [],
             };
+        },
+        computed : {
+            ...mapGetters([
+                'manageOrgs'
+            ])
         },
         methods : {
             /**
              * 显示、隐藏模态框
              */
-            toggle () {
-                this.formData = {
-                    scenePlace : '',
-                    positionName : '',
-                    coordinates : [],
-                    longitude : '',
-                    latitude : '',
-                    radius : '',
-                    remark : '',
-                };
-                this.scenePlaceList = [
-                    {
-                        label : '111',
-                        value : '111'
-                    },
-                    {
-                        label : '222',
-                        value : '222'
-                    },
-                    {
-                        label : '333',
-                        value : '333'
-                    },
-                    {
-                        label : '444',
-                        value : '444'
+            toggle ({ type, param }) {
+                if (type && type === 'show') {
+                    if (param) {
+                        this.listItem = param;
+                        this.formData = Object.assign(this.formData, this.listItem);
+                        this.formData.radius = this.formData.radius.toString();
+                    } else {
+                        this.formData.orgId = this.manageOrgs.id;
                     }
-                ];
-                this.$refs.form.resetFields();
+                } else if (type && type === 'hide') {
+                    this.reset();
+                }
                 this.visible = !this.visible;
-
             },
             /**
              * 保存
@@ -180,9 +192,63 @@
             save () {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
-
+                        if (Object.keys(this.listItem).length > 0) {
+                            this.editLongLng();
+                        } else {
+                            this.addLongLng();
+                        }
                     }
-                })
+                });
+            },
+            /**
+             * 重置
+             */
+            reset () {
+                this.formData = {
+                    orgId : '',
+                    address : '',
+                    longitude : '',
+                    latitude : '',
+                    radius : '',
+                    remark : '',
+                };
+                this.listItem = {};
+                this.$refs.form.resetFields();
+            },
+            /**
+             * 新增经纬度
+             */
+            addLongLng () {
+                ajax.post('marketing-addForbidden', this.formData).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        this.$emit('addSuccess');
+                        this.toggle({ type : 'hide' });
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                    }
+                });
+            },
+            /**
+             * 修改经纬度
+             */
+            editLongLng () {
+                ajax.post('marketing-updateForbidden', {
+                    id : this.formData.id,
+                    address : this.formData.address,
+                    latitude : this.formData.latitude,
+                    longitude : this.formData.longitude,
+                    radius : this.formData.radius,
+                    remark : this.formData.remark,
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
+                        this.$emit('addSuccess');
+                        this.toggle({ type : 'hide' });
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
+                    }
+                });
             }
         }
     };

@@ -1813,6 +1813,7 @@ export default {
     'delMarketingTypeName' : '您正在删除营销类别名称',
     'delMarketingTypeResult' : '删除该营销类别将导致属于该类别的分销等级同时删除。',
     'whetherSure' : '是否确认',
-    'sureToDelPoster' : '是否确定删除海报？'
+    'sureToDelPoster' : '是否确定删除海报？',
+    'sureToDelmarketingPosition' : '是否确定删除营销地理位置？',
 
 }
