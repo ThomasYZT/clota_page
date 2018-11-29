@@ -20,6 +20,8 @@ import finance from './modules/finance';
 import orderCenter from './modules/orderCenter';
 //数据中心接口
 import report from './modules/report';
+//全民营销接口
+import marketing from './modules/marketing'
 
 const apiList = {
 
@@ -57,7 +59,9 @@ const apiList = {
     //预定中心接口
     ...orderCenter,
     //数据中心接口
-    ...report
+    ...report,
+    //全民营销接口
+    ...marketing
 };
 
 export default apiList;
