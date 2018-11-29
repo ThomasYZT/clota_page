@@ -38,7 +38,7 @@ export default {
     //新增营销类别
     'marketing-addType' : '/market/type/addType',
     //删除海报
-    'marketing-deletePoste' : '/market/poster/deletePoste',
+    'marketing-deletePoster' : '/market/poster/deletePoster',
     //查询海报列表
     'marketing-posterList' : '/market/poster/list',
     //新增海报

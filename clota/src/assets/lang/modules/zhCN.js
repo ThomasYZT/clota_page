@@ -1812,5 +1812,6 @@ export default {
     'setDaysCashOffer' : '设置入园多少天后可以提现',
     'delMarketingTypeName' : '您正在删除营销类别名称',
     'delMarketingTypeResult' : '删除该营销类别将导致属于该类别的分销等级同时删除。',
+    'sureToDelPoster' : '是否确定删除海报？'
 
 }

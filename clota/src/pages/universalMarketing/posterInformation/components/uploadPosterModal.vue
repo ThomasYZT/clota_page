@@ -22,28 +22,29 @@
                                    v-model.trim="formData.posterName"
                                    :placeholder="$t('inputField', { field : $t('posterName') })"/>
                         </FormItem>
-                        <FormItem :label="$t('colonSetting', { key : $t('industryType') })"  prop="industryType">
-                            <Select v-model="formData.industryType"
+                        <FormItem :label="$t('colonSetting', { key : $t('industryType') })"  prop="posterType">
+                            <Select v-model="formData.posterType"
                                     :placeholder="$t('selectField', { msg : $t('industryType') })"
                                     show-name
                                     style="width:200px">
-                                <Option v-for="item in industryTypeList"
+                                <Option v-for="item in posterTypeList"
                                         :value="item.value"
                                         :key="item.value">{{ item.label }}
                                 </Option>
                             </Select>
                         </FormItem>
-                        <FormItem :label="$t('colonSetting', { key : $t('scenePlace') })"  prop="scenePlace">
-                            <Select v-model="formData.scenePlace"
-                                    :placeholder="$t('selectField', { msg : $t('scenePlace') })"
-                                    show-name
-                                    style="width:200px">
-                                <Option v-for="item in scenePlaceList"
-                                        :value="item.value"
-                                        :key="item.value">{{ item.label }}
-                                </Option>
-                            </Select>
-                        </FormItem>
+                        <!--<FormItem :label="$t('colonSetting', { key : $t('scenePlace') })"  prop="scenePlace">-->
+                            <!--<Select v-model="formData.scenePlace"-->
+                                    <!--:placeholder="$t('selectField', { msg : $t('scenePlace') })"-->
+                                    <!--show-name-->
+                                    <!--style="width:200px">-->
+                                <!--<Option v-for="item in scenePlaceList"-->
+                                        <!--:value="item.value"-->
+                                        <!--:key="item.value">{{ item.label }}-->
+                                <!--</Option>-->
+                            <!--</Select>-->
+                            <!--<span>{{manageOrgs.orgName}}</span>-->
+                        <!--</FormItem>-->
                         <FormItem :label="$t('colonSetting', { key : $t('uploadPicture') })"  prop="img">
                             <uploadImg v-if="visible"
                                        :quantityLimit="1"
@@ -61,12 +62,13 @@
                     @click="upload" >{{$t('save')}}</Button>
             <Button class="ivu-btn-90px"
                     type="ghost"
-                    @click="toggle" >{{$t("cancel")}}</Button>
+                    @click="toggle({type : 'hide'})" >{{$t("cancel")}}</Button>
         </div>
     </Modal>
 </template>
 
 <script>
+    import ajax from '@/api/index';
     import uploadImg from './uploadImg';
     export default {
         components : {
@@ -88,9 +90,12 @@
                 visible : false,
                 //表单数据
                 formData : {
+                    //海报名称
                     posterName : '',
-                    scenePlace : '',
-                    industryType : '',
+                    //业态类型
+                    posterType : '',
+                    //海报图片地址
+                    posterUrl : '',
                     img : []
                 },
                 //表单验证规则
@@ -99,10 +104,7 @@
                         { required : true, message : this.$t('inputField',{ field : this.$t('posterName') }), trigger : 'blur' },
                         { type : 'string', max : 20, message : this.$t('errorMaxLength',{ field : this.$t('posterName'),length : 20 }), trigger : 'blur' },
                     ],
-                    scenePlace : [
-                        { required : true, message : this.$t('selectField',{ msg : this.$t('scenePlace') }), trigger : 'blur' },
-                    ],
-                    industryType : [
+                    posterType : [
                         { required : true, message : this.$t('selectField',{ msg : this.$t('industryType') }), trigger : 'blur' },
                     ],
                     img : [
@@ -111,58 +113,20 @@
                     ]
                 },
                 //业态类型下拉列表
-                industryTypeList : [],
-                scenePlaceList : []
+                posterTypeList : [],
             };
         },
         methods : {
             /**
              * 显示、隐藏模态框
+             * @param {string} type
              */
-            toggle () {
-                this.formData = {
-                    posterName : '',
-                    scenePlace : '',
-                    industryType : '',
-                    img : []
-                };
-                this.industryTypeList = [
-                    {
-                        label : '111',
-                        value : '111'
-                    },
-                    {
-                        label : '222',
-                        value : '222'
-                    },
-                    {
-                        label : '333',
-                        value : '333'
-                    },
-                    {
-                        label : '444',
-                        value : '444'
-                    }
-                ];
-                this.scenePlaceList = [
-                    {
-                        label : '111',
-                        value : '111'
-                    },
-                    {
-                        label : '222',
-                        value : '222'
-                    },
-                    {
-                        label : '333',
-                        value : '333'
-                    },
-                    {
-                        label : '444',
-                        value : '444'
-                    }
-                ];
-                this.$refs.form.resetFields();
+            toggle ({type}) {
+                if (type && type === 'show') {
+                    this.getIndustryTypeList();
+                } else if (type && type === 'hide') {
+                    this.reset();
+                }
                 this.visible = !this.visible;
             },
             /**
@@ -171,7 +135,7 @@
             upload () {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
-
+                        this.addPoster();
                     }
                 })
             },
@@ -191,6 +155,52 @@
                 this.formData.img = uploadList;
                 this.$refs.form.validateField('img');
             },
+            /**
+             *
+             */
+            addPoster () {
+                this.formData.posterUrl = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0] : '';
+                ajax.post('marketing-addPoster', this.formData).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        this.$emit('addSuccess');
+                        this.toggle({type : 'hide'});
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                    }
+                });
+            },
+            /**
+             * 获取业态类型下拉列表数据
+             */
+            getIndustryTypeList () {
+                ajax.post('getAllPolicyType').then(res => {
+                    if (res.success) {
+                        this.posterTypeList = res.data && res.data.length > 0 ? res.data.map((item) => {
+                            return {
+                                label : item.desc,
+                                value : item.name
+                            }
+                        }) : [];
+                    } else {
+                        this.posterTypeList = [];
+                        this.$Message.error(this.$t('failToGet', { feild : this.$t('industryType') }))
+                    }
+                });
+            },
+            /**
+             * 重置模态框数据
+             */
+            reset () {
+                this.formData = {
+                    posterName : '',
+                    posterType : '',
+                    posterUrl : '',
+                    img : []
+                };
+                this.posterTypeList = [];
+                this.$refs.form.resetFields();
+            }
         }
     };
 </script>

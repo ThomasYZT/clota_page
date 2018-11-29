@@ -2,22 +2,22 @@ export const posterInfoHead = [
     {
         title : 'posterName',
         minWidth : 100,
-        field : 'payType'
+        field : 'posterName'
     },
     {
         title : 'industryType',
         minWidth : 100,
-        field : 'payType'
+        field : 'posterType'
     },
     {
         title : 'scenePlace',
         minWidth : 100,
-        field : 'payType'
+        field : 'orgName'
     },
     {
         title : 'createdTime',
         minWidth : 100,
-        field : 'payType',
+        field : 'createdTime',
         type : 'date'
     },
     {
