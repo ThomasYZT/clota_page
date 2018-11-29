@@ -175,6 +175,7 @@ export default {
                 'Content-type' : 'multipart/form-data'
             }
         };
+        store.commit('changePromisings','add');
         return instance.post(baseUrl + api[urlKey], paramObj, myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
                 console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`);
@@ -184,6 +185,8 @@ export default {
             showNetWorkError(err);
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
             return err;
+        }).finally(() => {
+            store.commit('changePromisings','del');
         });
     },
 };

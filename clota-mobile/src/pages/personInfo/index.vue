@@ -1,4 +1,4 @@
-<!--个人信息-->
+1<!--个人信息-->
 
 <template>
     <div class="person-info">
@@ -166,12 +166,16 @@
                     cardId : this.cardInfo.id
                 }).then(res => {
                     if (res.success) {
+                        if (res.data && res.data.memberInfo) {
+                            res.data.memberInfo.homeAddr = res.data.memberInfo.homeAddr ? res.data.memberInfo.homeAddr : '';
+                        }
                         this.$set(this,'formData',res.data ? Object.assign(this.formData,{
                             ...res.data,
                             name : res.data.custName,
                             gender : [res.data.gender],
                             qq : res.data.qq ? res.data.qq : '',
-                            portrait : res.data ? res.data.memberInfo.portrait : ''
+                            portrait : res.data ? res.data.memberInfo.portrait : '',
+                            homeAddr : res.data ? res.data.memberInfo.homeAddr : ''
                         }) : {});
                     } else {
                         this.formData = {};
