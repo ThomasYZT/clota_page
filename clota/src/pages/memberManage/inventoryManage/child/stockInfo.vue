@@ -115,7 +115,7 @@
             <div class="title">{{$t('goodInfo')}}</div>
             <i-row>
                 <i-col span="23" class="col-wrapper">
-                    <Tabs value="in" @on-click="tabChange">
+                    <Tabs value="in" @on-click="tabChange" :animated="false">
                         <!-- 商品入库记录 -->
                         <TabPane :label="$t('CommodityInRecord')" name="in">
                             <div class="table-wrapper">

@@ -117,7 +117,11 @@
                         this.toggle();
                         this.$emit('editSuccess');
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
+                        if (res.code && (res.code === 'M017' || res.code === 'M018' || res.code === 'M019')) {
+                            this.$Message.error(this.$t(res.code));
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
+                        }
                         this.toggle();
                     }
                 });
