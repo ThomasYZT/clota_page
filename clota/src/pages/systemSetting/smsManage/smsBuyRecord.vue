@@ -25,7 +25,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{$t('payType.' + scope.row.payType)}}
+                    {{$t(scope.row.payType ? 'payType.' + scope.row.payType : '-')}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -58,6 +58,9 @@
                 <template slot-scope="scope">
                     <ul class="operate-list" v-if="scope.row.txnStatus === 'success' && scope.row.bizStatus !== 'success'">
                         <li class="operate" @click="adjust(scope.row)">{{$t('adjust')}}</li><!--查看-->
+                    </ul>
+                    <ul class="operate-list" v-else-if="scope.row.txnStatus !=='success' && scope.row.txnStatus !=='fail' && scope.row.txnStatus !=='cancelled'">
+                        <li class="operate" @click="query(scope.row)">{{$t('orgStructQuery')}}</li><!--查询-->
                     </ul>
                     <span v-else>-</span>
                 </template>
@@ -123,6 +126,21 @@
              */
             adjust (data) {
                 this.$refs.adjustModal.toggle(data);
+            },
+            /**
+             * 查询
+             * @param {*} data
+             */
+            query (data) {
+                ajax.post('queryConsumeUpdateBiz' , {
+                    transactionId : data.transactionId
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('searchPayResult') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('searchPayResult') }));
+                    }
+                })
             }
         }
     }
