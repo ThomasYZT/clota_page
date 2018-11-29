@@ -136,53 +136,53 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {bulkRefundHead, batchAudit} from './auditConfig';
+    import { bulkRefundHead, batchAudit } from './auditConfig';
     import ajax from '@/api/index';
-    import {configVariable} from '@/assets/js/constVariable';
+    import { configVariable } from '@/assets/js/constVariable';
     import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
     import bulkSingleAuditModal from './components/bulkSingleAuditModal.vue';
-    import {transOrderOrg, transSyncStatus} from '../commFun';
+    import { transOrderOrg, transSyncStatus } from '../commFun';
 
     export default {
-        components: {
+        components : {
             auditFilter,
             tableCom,
             bulkBatchAuditModal,
             bulkSingleAuditModal
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 //表头配置
                 columnData : bulkRefundHead.filter(item => {
                     return item.field !== 'afterAlterDate';
                 }),
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //表格是否显示
 //                tableShow : false,
                 // 获取数据的请求参数
-                queryParams: {
-                    reqType: 'refund',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    reqType : 'refund',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
                 // 已勾选的数据
-                chosenRowData: [],
+                chosenRowData : [],
                 //是否显示预定模态框
                 showReserveModal : false,
                 //选择的产品列表
-                productList: [],
+                productList : [],
                 //批量审核
-                batchAudit: batchAudit
-            }
+                batchAudit : batchAudit
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        methods: {
+        methods : {
             /**
              * 查询所有团队订单审核信息
              */
@@ -190,10 +190,10 @@
                 ajax.post('queryOrderRefundAlterAuditList',{
                     ...this.queryParams
                 }).then(res => {
-                    if(res.success && res.data){
+                    if (res.success && res.data) {
                         this.tableData = res.data.data || [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -203,11 +203,11 @@
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.chosenRowData = selection;
             },
-            handleCommand(dropItem) {
-                if (this.chosenRowData.length<=0) {
+            handleCommand (dropItem) {
+                if (this.chosenRowData.length <= 0) {
                     this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
@@ -223,16 +223,16 @@
             /**
              * 下单渠道的code转换
              */
-            transOrderOrg: transOrderOrg,
+            transOrderOrg : transOrderOrg,
             /**
              * 同步状态的code转换
              */
-            transSyncStatus: transSyncStatus,
+            transSyncStatus : transSyncStatus,
             /**
              * 按筛选条件获取审核列表数据
              * @param paramsObj   筛选条件
              */
-            filterAuditList(paramsObj) {
+            filterAuditList (paramsObj) {
                 Object.assign(this.queryParams, paramsObj);
                 this.queryList();
             },
@@ -242,34 +242,34 @@
              * @param isBatch - 是否批量操作  Boolean
              * @param type - 类型  'pass' | 'reject'
              **/
-            showAuditModal(data, isBatch, type) {
+            showAuditModal (data, isBatch, type) {
                 let auditModal = '';
                 auditModal = isBatch ? 'bulkBatchAuditModal' : 'bulkSingleAuditModal';
                 this.$refs[auditModal].show({
-                    items: isBatch ? data : [data],
-                    isBatch: isBatch,
-                    type: type
+                    items : isBatch ? data : [data],
+                    isBatch : isBatch,
+                    type : type
                 });
             },
             /**
              * 跳转至散客退票审核详情
              * @param scopeRow
              */
-            goBulkDetail(scopeRow) {
+            goBulkDetail (scopeRow) {
                 this.$router.push({
-                    name: 'bulkRefundDetail',
-                    query: {reqType: 'refund'},
-                    params: {rowData: scopeRow}
+                    name : 'bulkRefundDetail',
+                    query : { reqType : 'refund' },
+                    params : { rowData : scopeRow }
                 });
             },
             /**
              * 跳转至散客一级订单详情
              * @param scopeRow
              */
-            goBulkLevel1Detail(scopeRow) {
+            goBulkLevel1Detail (scopeRow) {
                 this.$router.push({
-                    name: 'individualFirstLevel',
-                    params: {orderId: scopeRow.orderId},
+                    name : 'individualFirstLevel',
+                    params : { orderId : scopeRow.orderId },
                 });
             },
         }

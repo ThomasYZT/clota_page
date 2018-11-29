@@ -20,7 +20,7 @@
             <product-detail :module-info="orderTicketList"
                             :base-info="detailData.baseInfo"
                             :visitor-info="detailData.visitor"
-                            @confirm-audit="handleConfirmAudit">
+                            @confirm-audit="handleConfirmAudit" >
             </product-detail>
             <!--分销信息-->
             <!--<allocation-info :module-info="detailData.allocationInfo"></allocation-info>-->
@@ -49,11 +49,11 @@
     import verifyLog from '../../components/verifyLog.vue';
     import operateLog from '../../components/operateLog';
     import assignWith from 'lodash/assignWith';
-    import distributionInfo from '../../orderDetail/individualOrderChild/level2/distributionInfo'
+    import distributionInfo from '../../orderDetail/individualOrderChild/level2/distributionInfo';
 
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead,
             bulkOrderBase,
             visitorInfo,
@@ -64,61 +64,61 @@
             operateLog,
             distributionInfo
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 // 订单审核详情
-                detailData: {
-                    baseInfo: {},
-                    visitor: {
-                        documentInfo: {},   // 证件信息：type-证件类型，data-证件号
-                        phoneNumber: '',
-                        visitorName: '',
+                detailData : {
+                    baseInfo : {},
+                    visitor : {
+                        documentInfo : {}, // 证件信息：type-证件类型，data-证件号
+                        phoneNumber : '',
+                        visitorName : '',
                     },
-                    ticketList: [],
-                    allocationInfo: {
-                        allocationCommission: 0,    // 分销佣金
-                        policyName: '',    // 政策名称
-                        settleLink: [],    // 分销链
+                    ticketList : [],
+                    allocationInfo : {
+                        allocationCommission : 0, // 分销佣金
+                        policyName : '', // 政策名称
+                        settleLink : [], // 分销链
                     },
-                    refundAlterList: [],    // 退票改签日志
-                    verifyTicketLogList: [],    // 核销日志
-                    orderOperationRecordList: [],    // 操作日志
+                    refundAlterList : [], // 退票改签日志
+                    verifyTicketLogList : [], // 核销日志
+                    orderOperationRecordList : [], // 操作日志
                 },
                 // 订单审核详情里面的产品明细列表
-                orderTicketList: [],
-            }
+                orderTicketList : [],
+            };
         },
-        computed: {
+        computed : {
             // 面包屑上级路由信息
-            beforeRouterList() {
+            beforeRouterList () {
                 if (this.$route.name == 'bulkRefundDetail') {
                     return [{
-                        name: 'auditBulkRefund',   // 散客退票审核
-                        router: {name: 'auditBulkRefund'}
-                    }]
+                        name : 'auditBulkRefund', // 散客退票审核
+                        router : { name : 'auditBulkRefund' }
+                    }];
                 } else if (this.$route.name == 'bulkChangeDetail') {
                     return [{
-                        name: 'auditBulkChange',   // 散客改签审核
-                        router: {name: 'auditBulkChange'}
-                    }]
+                        name : 'auditBulkChange', // 散客改签审核
+                        router : { name : 'auditBulkChange' }
+                    }];
                 }
             },
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             /**
              * 查询散客订单详情
              */
             getBulkOrderDetail (id) {
                 ajax.post('querySecondIndividualOrderDetail',{
-                    visitorProductId: id
+                    visitorProductId : id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
 //                        this.detailData = res.data || {};
                         this.detailData = assignWith(this.detailData, res.data, (objValue, srcValue) => {
                             return srcValue ? srcValue : objValue;
@@ -131,11 +131,11 @@
              */
             getOrderTicketList (id) {
                 ajax.post('queryOrderTicketList',{
-                    visitorProductId: id
+                    visitorProductId : id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.orderTicketList = res.data || [];
-                    }else{
+                    } else {
                         this.orderTicketList = [];
                     }
                 });
@@ -145,11 +145,11 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
+                if (params && Object.keys(params).length > 0) {
                     this.getBulkOrderDetail(params.rowData.visitorProductId);
 //                    this.getBulkOrderDetail('1051793405354577920');
                     this.getOrderTicketList(params.rowData.visitorProductId);
-                }else{
+                } else {
                     this.$router.go(-1);
                 }
             },
@@ -157,8 +157,9 @@
              * 单个订单审核确认OK后，刷新订单详情数据
              * @param visitorProductId
              */
-            handleConfirmAudit(visitorProductId) {
+            handleConfirmAudit (visitorProductId) {
                 this.getBulkOrderDetail(visitorProductId);
+                this.getOrderTicketList(visitorProductId);
             },
         }
     };

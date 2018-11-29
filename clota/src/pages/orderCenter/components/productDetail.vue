@@ -155,59 +155,59 @@
 </template>
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {productListHead} from '../auditCenter/auditConfig';
+    import { productListHead } from '../auditCenter/auditConfig';
     import ajax from '@/api/index';
     import confirmAuditModal from '../auditCenter/child/confirmAuditModal.vue';
-    import productDetailModal from '../orderDetail/individualOrderChild/components/productDetailModal.vue'
-    import {transSyncStatus} from '../commFun';
+    import productDetailModal from '../orderDetail/individualOrderChild/components/productDetailModal.vue';
+    import { transSyncStatus } from '../commFun';
 
     export default {
-        components: {tableCom, confirmAuditModal, productDetailModal},
-        props: {
-            moduleInfo: {
-                type: Array,
-                default() {
+        components : { tableCom, confirmAuditModal, productDetailModal },
+        props : {
+            moduleInfo : {
+                type : Array,
+                default () {
                     return [];
                 }
             },
-            baseInfo: Object,
-            visitorInfo: Object,
+            baseInfo : Object,
+            visitorInfo : Object,
         },
-        data() {
+        data () {
             return {
                 // 已勾选的数据
-                chosenRowData: [],
+                chosenRowData : [],
                 //发起申请的产品
-                reqOrderTickets: [],
-            }
+                reqOrderTickets : [],
+            };
         },
-        computed: {
-            isAlter() {
+        computed : {
+            isAlter () {
                 return this.$route.name == 'bulkChangeDetail';
             },
             //表头配置 --- 如果是退票审核详情，则无'申请改签后游玩日期' 这一列
-            columnData() {
+            columnData () {
                 return this.isAlter ? productListHead : productListHead.filter(item => {
                     return item.field !== 'rescheduleAfterVisitDate';
                 });
             },
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {
-            moduleInfo(val, oldVal) {
-                if (val.length>0) {
+        watch : {
+            moduleInfo (val, oldVal) {
+                if (val.length > 0) {
                     this.getReqOrderTickets();
                 }
             }
         },
-        methods: {
+        methods : {
             /**
              * 获取发起申请的产品
              */
-            getReqOrderTickets() {
+            getReqOrderTickets () {
                 let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
                 if (bulkDetail && bulkDetail.rowData && this.moduleInfo) {
                     this.reqOrderTickets = this.moduleInfo.filter(item => {
@@ -219,18 +219,18 @@
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.chosenRowData = selection;
             },
             /**
              * 弹出审核确认的模态框
              **/
-            showAuditModal(auditType) {
+            showAuditModal (auditType) {
 
                 this.$refs['confirmAuditModal'].show({
-                    productList: this.reqOrderTickets,
-                    passList: this.chosenRowData,
-                    type: auditType
+                    productList : this.reqOrderTickets,
+                    passList : this.chosenRowData,
+                    type : auditType
                 });
             },
             /**
@@ -238,7 +238,7 @@
              * @param row   // 行数据
              * @param index // 序号
              */
-            handleSelectable(row, index) {
+            handleSelectable (row, index) {
                 let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
                 if (bulkDetail && bulkDetail.rowData) {
                     return bulkDetail.rowData.reqOrderTicketIds.includes(row.id);
@@ -248,24 +248,24 @@
              * 单个订单审核
              * @param auditParams   单个订单审核的传参
              */
-            onAuditConfirmed(auditParams) {
+            onAuditConfirmed (auditParams) {
                 ajax.post('auditSingleOrderProduct', auditParams).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$refs['confirmAuditModal'].hide();
                         this.$Message.success(this.$t('auditSuccess')); // 审核成功
                         this.$emit('confirm-audit', auditParams.visitorProductId);
-                    }else{
-                        this.$Message.error(this.$t('auditFailure'));   // 审核失败
+                    } else {
+                        this.$Message.error(this.$t('auditFailure')); // 审核失败
                     }
                 });
             },
             // 同步状态code转换
-            transSyncStatus: transSyncStatus,
+            transSyncStatus : transSyncStatus,
             /**
              * 查看散客订单下产品明细详情
              * @param data
              */
-            orderProductDetail(data) {
+            orderProductDetail (data) {
                 this.$refs.productDetailModal.toggle(data);
             },
         }

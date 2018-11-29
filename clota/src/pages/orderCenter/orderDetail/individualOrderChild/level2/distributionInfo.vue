@@ -17,14 +17,18 @@
             <div class="rank-wrapper">
                 <div class="rank-progress" v-for="(item,index) in distributionLinks"
                      :key="index">
-                    <img v-if="index !== 0" src="../../../../../assets/images/arrow.svg">
-                    <div class="price-board">
+                    <div class="process-price" v-if="index !== 0">
                         <div class="stress-info">
                             <span>{{item.settlePrice | moneyFilter}}</span>
                         </div>
-                        <div>
-                            <span>{{item.content}}</span>
-                        </div>
+                        <img  src="../../../../../assets/images/arrow.svg">
+                    </div>
+                    <div class="price-board" v-w-title="item.content">
+                        {{item.content}}
+                        <!--<div class="stress-info">-->
+                            <!--<span>{{item.settlePrice | moneyFilter}}</span>-->
+                        <!--</div>-->
+                        <!--<span v-w-title="">{{item.content}}</span>-->
                     </div>
                 </div>
             </div>
@@ -130,31 +134,28 @@
                     display: flex;
                     margin: 20px 0;
 
+                    .process-price{
+                        text-align: center;
+
+                        .stress-info{
+                            height: 33px;
+                            line-height: 40px;
+                            font-size: $font_size_18px;
+                            color: #353B48;
+                        }
+                    }
+
                     img {
                         margin: 0 65px;
                         width: 40px;
                     }
 
                     .price-board {
-                        display: flex;
-                        flex-direction: column;
-
-                        div {
-                            flex: 1 0;
-                            text-align: center;
-                            span {
-                                font-size: $font_size_12px;
-                                color: #999999;
-                            }
-                        }
-
-                        .stress-info {
-                            margin-bottom: 5px;
-                            span {
-                                font-size: $font_size_18px;
-                                color: #353B48;
-                            }
-                        }
+                        line-height: 54px;
+                        font-size: $font_size_12px;
+                        color: #999999;
+                        display: inline-block;
+                        @include overflow_tip();
                     }
 
                 }

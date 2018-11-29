@@ -33,7 +33,7 @@
                 </Form-item>
                 <!--申请改签后的游玩日期-->
                 <Form-item :label="$t('visitDateAfterAlter') + '：'" prop="" v-if="reqType=='alter'">
-                    <span>{{formData.rescheduleAfterVisitDate | contentFilter}}</span>
+                    <span>{{formData.afterAlterDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
                 </Form-item>
                 <!--申请数量-->
                 <Form-item :label="$t('requestNum') + '：'" prop="">
@@ -73,49 +73,49 @@
     import ajax from '@/api/index';
 
     export default {
-        components: {},
-        props: {},
-        data() {
+        components : {},
+        props : {},
+        data () {
             return {
-                visible: false,
-                title: '',
+                visible : false,
+                title : '',
                 //订单数据
-                orderData: {
-                    items: [],  //表格数据
-                    isBatch: false,
-                    type: ''
+                orderData : {
+                    items : [], //表格数据
+                    isBatch : false,
+                    type : ''
                 },
                 //表单数据
-                formData: {
-                    auditRemark: ''
+                formData : {
+                    auditRemark : ''
                 },
                 //校验规则
-                ruleValidate: {
-                    auditRemark: {
-                        type: 'string',
-                        max: 500,
-                        message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 500}),
-                        trigger: 'blur'
+                ruleValidate : {
+                    auditRemark : {
+                        type : 'string',
+                        max : 500,
+                        message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 500 }),
+                        trigger : 'blur'
                     },
                 },
-            }
+            };
         },
-        computed: {
+        computed : {
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
-            reqType() {
-                if (this.$route.name=='auditBulkRefund') {
+            reqType () {
+                if (this.$route.name == 'auditBulkRefund') {
                     return 'refund';
-                } else if (this.$route.name=='auditBulkChange') {
+                } else if (this.$route.name == 'auditBulkChange') {
                     return 'alter';
                 }
             }
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             show ( data ) {
                 if (data) {
                     this.orderData = data;
@@ -124,16 +124,16 @@
                     }
 
                     if (data.type == 'pass') {
-                        this.title = 'checkPass';   // 审核通过
+                        this.title = 'checkPass'; // 审核通过
                     } else if (data.type == 'reject') {
-                        this.title = 'PRODUCT_AUDIT_REJECT';    // 驳回申请
+                        this.title = 'PRODUCT_AUDIT_REJECT'; // 驳回申请
                     }
                 }
 
                 this.visible = true;
             },
             //关闭模态框
-            hide() {
+            hide () {
                 this.visible = false;
 
                 setTimeout(() => {
@@ -145,28 +145,30 @@
             /**
              * 单个订单退票的审核通过/驳回
              */
-            bulkBatchAudit() {
+            bulkBatchAudit () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         ajax.post('auditBatchOrderProduct', {
-                            productRefundAlterIds: this.orderData.items.map(item => item.productRefundAlterId).join(','),
-                            remark: this.formData.auditRemark,
-                            auditStatus: this.orderData.type,
-                            reqType: this.reqType
+                            productRefundAlterIds : this.orderData.items.map(item => item.productRefundAlterId).join(','),
+                            remark : this.formData.auditRemark,
+                            auditStatus : this.orderData.type,
+                            reqType : this.reqType
                         }).then(res => {
-                            if(res.success){
+                            if (res.success) {
                                 if (this.orderData.type === 'pass') {
-                                    this.$Message.success(this.$t('orderCheckPassed'));     // 订单已审核通过
+                                    this.$Message.success(this.$t('orderCheckPassed')); // 订单已审核通过
                                 } else if (this.orderData.type === 'reject') {
-                                    this.$Message.success(this.$t('orderRejected'));    // 订单已驳回
+                                    this.$Message.success(this.$t('orderRejected')); // 订单已驳回
                                 }
                                 this.hide();
 
                                 this.$emit('on-audited');
+                            } else {
+                                this.$Message.error('审核失败');
                             }
                         });
                     }
-                })
+                });
             },
         }
     };

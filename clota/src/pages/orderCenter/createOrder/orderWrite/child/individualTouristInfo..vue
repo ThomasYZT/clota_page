@@ -5,7 +5,9 @@
         <div class="title">
             <!--游客信息-->
             {{$t('touristInfo')}}
-            <Button type="primary" @click="addTourist">{{$t('addVisitor')}}</Button><!--添加游客-->
+            <Button type="primary"
+                    :disabled="!canAddTouristInfo"
+                    @click="addTourist">{{$t('addVisitor')}}</Button><!--添加游客-->
         </div>
         <div class="person-info-list" v-for="(item,index) in touristInfo" :key="item.phone">
             <div class="name">
@@ -55,6 +57,14 @@
                      @modify-tourist="confirmModifyTouristInfo"
                      @add-tourist="getTouristInfo">
         </add-tourist>
+
+        <!--删除员工确认模态框-->
+        <confirm-modal ref="confirmModal">
+            <div class="confirm-label">
+                <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
+                {{$t('确认删除游客信息？')}}
+            </div>
+        </confirm-modal>
     </div>
 </template>
 
@@ -62,9 +72,10 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import addTourist from './addTourist';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import confirmModal from '@/components/delModal/index.vue';
 
     export default {
-        props :{
+        props : {
             //选择的产品列表
             'product-list' : {
                 type : Array,
@@ -76,26 +87,27 @@
         components : {
             tableCom,
             addTourist,
-            noData
+            noData,
+            confirmModal
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : [
                     {
-                        title: 'productName',
-                        minwidth: 130,
-                        field: 'productName'
+                        title : 'productName',
+                        minwidth : 130,
+                        field : 'productName'
                     },
                     {
-                        title: 'quantity',
-                        width: 130,
-                        field: 'takeNum'
+                        title : 'quantity',
+                        width : 130,
+                        field : 'takeNum'
                     },
                     {
-                        title: 'ticketGetterCredentials',  // 取票证件
-                        width: 130,
-                        field: 'idType'
+                        title : 'ticketGetterCredentials', // 取票证件
+                        width : 130,
+                        field : 'idType'
                     },
                 ],
                 //添加游客模态框是否显示
@@ -106,9 +118,9 @@
                 touristInfo : [],
                 //当前修改的游客信息
                 modifyIngTouristInfo : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 添加游客
              */
@@ -128,9 +140,15 @@
              * 删除游客信息
              * @param index
              */
-            delTouristInfo(index) {
-                this.touristInfo.splice(index,1);
-                this.$emit('reset-tourist-info',JSON.parse(JSON.stringify(this.touristInfo)));
+            delTouristInfo (index) {
+                this.$refs.confirmModal.show({
+                    title : this.$t('notice'),
+                    confirmCallback : () => {
+                        this.touristInfo.splice(index,1);
+                        this.$emit('reset-tourist-info',JSON.parse(JSON.stringify(this.touristInfo)));
+                        this.$Message.success(this.$t('deletedField', { field : this.$t('touristInfo') })); // 游客信息已删除
+                    }
+                });
             },
             /**
              * 判断所选择的产品是否都分配完毕
@@ -138,17 +156,17 @@
             ticketIsAllocated () {
                 return new Promise((resolve,reject) => {
                     let leftTicket = [];
-                    for(let i = 0,j = this.productListFilter.length;i < j;i++){
-                        if(this.productListFilter[i]['leftNum'] > 0){
+                    for (let i = 0,j = this.productListFilter.length; i < j; i++) {
+                        if (this.productListFilter[i]['leftNum'] > 0) {
                             leftTicket.push(this.productListFilter[i]);
                         }
                     }
-                    if(leftTicket.length > 0){
+                    if (leftTicket.length > 0) {
                         reject({
                             type : 'ticketErr',
                             data : leftTicket
                         });
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -157,7 +175,7 @@
              * 修改游客信息
              * @param index
              */
-            modifyTouristInfo(index) {
+            modifyTouristInfo (index) {
                 this.modifyIngTouristInfo = JSON.parse(JSON.stringify(Object.assign({
                     index : index,
                     ...this.touristInfo[index]
@@ -176,11 +194,11 @@
              * 删除不能下单的产品
              * @param data
              */
-            deleteProduct(data) {
-                for(let i = 0,j = this.touristInfo.length;i < j;i++){
+            deleteProduct (data) {
+                for (let i = 0,j = this.touristInfo.length; i < j; i++) {
                     let productInfo = this.touristInfo[i]['productInfo'];
-                    for(let a = productInfo.length - 1,b = 0; a >= b;a--){
-                        if(data.includes(productInfo[a]['productId'])){
+                    for (let a = productInfo.length - 1,b = 0; a >= b; a--) {
+                        if (data.includes(productInfo[a]['productId'])) {
                             this.touristInfo[i]['productInfo'].splice(a,1);
                         }
                     }
@@ -193,18 +211,18 @@
             touristHasTicket () {
                 return new Promise((resolve,reject) => {
                     let result = [];
-                    for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                    for (let i = 0,j = this.touristInfo.length; i < j; i++) {
                         let productInfo = this.touristInfo[i]['productInfo'];
-                        if(productInfo.length < 1){
+                        if (productInfo.length < 1) {
                             result.push(this.touristInfo[i]);
                         }
                     }
-                    if(result.length > 0){
+                    if (result.length > 0) {
                         reject({
                             type : 'touristInfoErr',
                             data : result
-                        })
-                    }else{
+                        });
+                    } else {
                         resolve();
                     }
                 });
@@ -214,15 +232,15 @@
              */
             getChcekProducts () {
                 let result = [];
-                for(let i = 0,j = this.touristInfo.length;i < j;i++){
+                for (let i = 0,j = this.touristInfo.length; i < j; i++) {
                     let productInfo = this.touristInfo[i]['productInfo'];
                     let idTableData = this.touristInfo[i]['idTableData'];
                     //证件信息转对象
                     let idsObj = {};
-                    for(let i = 0,j = idTableData.length;i < j;i++){
+                    for (let i = 0,j = idTableData.length; i < j; i++) {
                         idsObj[idTableData[i]['type']] = idTableData[i];
                     }
-                    for(let a = productInfo.length - 1,b = 0; a >= b;a--){
+                    for (let a = productInfo.length - 1,b = 0; a >= b; a--) {
                         result.push({
                             productId : productInfo[a].productId,
                             documentType : productInfo[a].idType,
@@ -238,6 +256,15 @@
             }
         },
         computed : {
+            //是否可以添加游客
+            canAddTouristInfo () {
+                for (let i = 0,j = this.productListFilter.length;i < j;i++) {
+                    if (this.productListFilter[i]['leftNum'] > 0) {
+                        return true;
+                    }
+                }
+                return false;
+            },
             //对产品信息进行过滤，获取产品剩余值
             productListFilter () {
                 return this.productList.map(item => {
@@ -245,19 +272,19 @@
                         ...item,
                         takeNum : 0,
                         leftNum : this.productChosedInfo[item.productId] ? item.num - this.productChosedInfo[item.productId] : item.num
-                    }
+                    };
                 });
             },
             //游客已经选择的产品信息
             productChosedInfo () {
                 let result = {};
-                for(let i = 0,j = this.touristInfo.length;i < j;i++){
-                    if(this.touristInfo[i]['productInfo'] && this.touristInfo[i]['productInfo'].length > 0){
+                for (let i = 0,j = this.touristInfo.length; i < j; i++) {
+                    if (this.touristInfo[i]['productInfo'] && this.touristInfo[i]['productInfo'].length > 0) {
                         let productInfo = this.touristInfo[i]['productInfo'];
-                        for(let a = 0,b = productInfo.length;a < b;a++){
-                            if(productInfo[a]['productId'] in result){
+                        for (let a = 0,b = productInfo.length; a < b; a++) {
+                            if (productInfo[a]['productId'] in result) {
                                 result[productInfo[a]['productId']] += productInfo[a]['takeNum'];
-                            }else{
+                            } else {
                                 result[productInfo[a]['productId']] = productInfo[a]['takeNum'];
                             }
                         }
@@ -266,7 +293,7 @@
                 return result;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
