@@ -235,4 +235,5 @@ export default {
     'scenicCode' : '入园二维码',
     'marketingRegister' : '注册',
     'colonSetting' : '{key}：',
+    'errorPwdRule' : '密码须是6-20位，仅由数字、小写和大写字母组成',
 };
