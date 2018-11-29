@@ -278,6 +278,7 @@
                     orgName : data.nodeName,
                     nodeType : 'department',
                     parentManageId : this.currentNode.id,
+                    parentEconomicId : this.currentNode.id,
                     status : data.status
                 }).then(res => {
                     if (res.status === 200) {

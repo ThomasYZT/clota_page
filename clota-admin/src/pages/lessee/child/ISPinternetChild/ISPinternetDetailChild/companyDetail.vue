@@ -191,7 +191,7 @@
                                      :tree="fianceSuperiorList"
                                      style="width: 100%;">
                         </select-tree>
-                        <span class="info-val" v-else v-w-title="parentEconomicName">
+                        <span class="info-val" v-else v-w-title="companyDetail.parentEconomicName">
                             {{parentEconomicName | contentFilter}}
                         </span>
                     </FormItem>
@@ -205,7 +205,7 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem prop="orgName" label="受理客服：" :label-width="150">
-                        <Select v-model="formDataCopy.businessAccount1.id" v-if="type === 'edit'  && activeNode && !activeNode.pid">
+                        <Select v-model="formDataCopy.adminAccountId" v-if="type === 'edit'  && activeNode && !activeNode.pid">
                             <Option v-for="item in serviceStaffList"
                                     :value="item.id"
                                     :key="item.id">
@@ -290,8 +290,8 @@
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
             <div class="edit-modal-tip-word">
-                您正在重置管理员{{companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''}}的登录密码，
-                我们将以邮件形式将新密码发送到以下邮箱，请注意查收：{{companyDetail.managerAccount ? companyDetail.managerAccount.email : ''}}
+                您正在重置管理员{{companyDetail.adminAccountName}}的登录密码，
+                我们将以邮件形式将新密码发送到以下邮箱，请注意查收：{{companyDetail.email}}
             </div>
         </edit-modal>
     </div>
@@ -439,7 +439,7 @@
                             address : this.formDataCopy.address,
                             telephone : this.formDataCopy.telephone,
                             tex : this.formDataCopy.tex,
-                            businessAccountId : this.formDataCopy.businessAccount1.id,
+                            businessAccountId : this.formDataCopy.adminAccountId,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                         }).then(res => {
@@ -471,7 +471,6 @@
             edit () {
                 this.formDataCopy = defaultsDeep({
                     isStart : this.companyDetail.status === 'open',
-                    businessAccount1 : this.companyDetail.businessAccount1 ? this.companyDetail.businessAccount1 : {},
                 } , this.companyDetail);
 
                 this.type = 'edit';
@@ -483,17 +482,16 @@
                 this.$refs.editModal.show({
                     title : this.$t('resetPass'),
                     confirmCallback : (pass) => {
-                        this.confimChangePass('e10adc3949ba59abbe56e057f20f883e');
+                        this.confimChangePass();
                     }
                 });
             },
             /**
              * 确认重置密码
-             * @param pass
              */
-            confimChangePass (pass) {
+            confimChangePass () {
                 ajax.post('resetPwd',{
-                    id : this.activeNode.id,
+                    id : this.companyDetail.adminAccountId,
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('重置成功');
@@ -593,8 +591,8 @@
                     id : this.activeNode.id,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.superiorList = res.data.parentManages ? res.data.parentManages.filter(item => item.id !== this.activeNode.id) : [];
-                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics.filter(item => item.id !== this.activeNode.id) : [];
+                        this.fianceSuperiorList = res.data ? [res.data.parentEconomics] : [];
+                        this.superiorList = res.data ? [res.data.parentManages] : [];
                     } else {
                         this.superiorList = [];
                         this.fianceSuperiorList = [];
@@ -645,9 +643,9 @@
             },
             //管理上级名称
             parentManageName () {
-                if (this.companyDetail && this.companyDetail.parentManage) {
+                if (this.companyDetail && this.companyDetail.parentManageName) {
                     if (this.activeNode && this.activeNode.pid && this.activeNode.pid !== '0') {
-                        return this.companyDetail.parentManage.orgName;
+                        return this.companyDetail.parentManageName;
                     } else {
                         return '';
                     }
@@ -657,9 +655,9 @@
             },
             //财务上级名称
             parentEconomicName () {
-                if (this.companyDetail && this.companyDetail.parentEconomic) {
+                if (this.companyDetail && this.companyDetail.parentEconomicName) {
                     if (this.activeNode && this.activeNode.pid && this.activeNode.pid !== '0') {
-                        return this.companyDetail.parentEconomic.orgName;
+                        return this.companyDetail.parentEconomicName;
                     } else {
                         return '';
                     }

@@ -67,8 +67,8 @@
                 treeShow : false,
                 //组织树配置
                 defaultProps : {
-                    children : 'subNodes',
-                    label : 'orgName'
+                    children : 'children',
+                    label : 'name'
                 },
                 //组织id与name对应数据
                 treeIdToName : {},
@@ -104,7 +104,7 @@
              * 组织树render函数
              */
             renderContent (h, { root, node, data }) {
-                this.$set(this.treeIdToName,data.id,data['orgName']);
+                this.$set(this.treeIdToName,data.id,data['name']);
                 return h('div', {
                     style : {
                         display : 'inline-block',
@@ -123,10 +123,10 @@
                         directives : [
                             {
                                 name : 'w-title',
-                                value : data.orgName
+                                value : data.name
                             }
                         ],
-                    }, data.orgName)
+                    }, data.name)
                 ]);
             },
         },

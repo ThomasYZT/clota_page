@@ -75,8 +75,8 @@
                 <i-col span="12">
                     <FormItem label="管理账号：" :label-width="150">
                         <span class="info-val">
-                            <span class="account-name" v-w-title="sceneDetail.managerAccount ? sceneDetail.managerAccount.loginName : ''">
-                             {{sceneDetail.managerAccount ? sceneDetail.managerAccount.loginName : '' | contentFilter}}
+                            <span class="account-name" v-w-title="sceneDetail.adminAccountName">
+                             {{sceneDetail.adminAccountName | contentFilter}}
                             </span>
                             <span class="reset-pass" @click="resetPass">重置密码</span>
                         </span>
@@ -85,8 +85,8 @@
                 <i-col span="12">
                     <FormItem prop="email" label="电子邮箱：" :label-width="150">
                         <Input v-model="formDataCopy.email" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="sceneDetail.managerAccount ? sceneDetail.managerAccount.email : ''">
-                            {{sceneDetail.managerAccount ? sceneDetail.managerAccount.email : ''  | contentFilter}}
+                        <span class="info-val" v-else v-w-title="sceneDetail.email">
+                            {{sceneDetail.email  | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -155,8 +155,8 @@
                                      :tree="superiorList"
                                      style="width: 100%;">
                         </select-tree>
-                        <span class="info-val" v-else v-w-title="sceneDetail.parentManage ? sceneDetail.parentManage.orgName : ''">
-                            {{sceneDetail.parentManage ? sceneDetail.parentManage.orgName : '' | contentFilter}}
+                        <span class="info-val" v-else v-w-title="sceneDetail.parentManageName">
+                            {{sceneDetail.parentManageName | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -179,22 +179,22 @@
                                      :tree="fianceSuperiorList"
                                      style="width: 100%;">
                         </select-tree>
-                        <span class="info-val" v-else v-w-title="sceneDetail.parentEconomic ? sceneDetail.parentEconomic.orgName : ''">
-                            {{sceneDetail.parentEconomic ? sceneDetail.parentEconomic.orgName : '' | contentFilter}}
+                        <span class="info-val" v-else v-w-title="sceneDetail.parentEconomicName">
+                            {{sceneDetail.parentEconomicName | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
                     <FormItem label="受理客服：" :label-width="150">
-                        <Select v-model="formDataCopy.businessAccount1.id" v-if="type === 'edit' && activeNode && activeNode.pid">
+                        <Select v-model="formDataCopy.adminAccountId" v-if="type === 'edit' && activeNode && activeNode.pid">
                                 <Option v-for="item in serviceStaffList"
                                     :value="item.id"
                                     :key="item.id">
                                     {{ item.loginName }}
                                 </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="sceneDetail.businessAccount1 ? sceneDetail.businessAccount1.loginName : ''">
-                             {{sceneDetail.businessAccount1 ? sceneDetail.businessAccount1.loginName : '' | contentFilter}}
+                        <span class="info-val" v-else v-w-title="sceneDetail.businessName">
+                             {{sceneDetail.businessName | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -264,8 +264,8 @@
         <!--重置密码模态框-->
         <edit-modal ref="editModal">
             <div class="edit-modal-tip-word">
-                您正在重置管理员{{sceneDetail.managerAccount ? sceneDetail.managerAccount.loginName : ''}}的登录密码，
-                我们将以邮件形式将新密码发送到以下邮箱，请注意查收：{{sceneDetail.managerAccount ? sceneDetail.managerAccount.email : ''}}
+                您正在重置管理员{{sceneDetail.adminAccountName}}的登录密码，
+                我们将以邮件形式将新密码发送到以下邮箱，请注意查收：{{sceneDetail.email}}
             </div>
         </edit-modal>
     </div>
@@ -398,16 +398,16 @@
                             orgName : this.formDataCopy.orgName,
                             checkinCode : this.formDataCopy.checkinCode,
                             email : this.formDataCopy.email,
-                            province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
-                            city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
-                            district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
+                            province : this.formDataCopy.provinceId,
+                            city : this.formDataCopy.cityId,
+                            district : this.formDataCopy.areaId,
                             telephone : this.formDataCopy.telephone,
                             tex : this.formDataCopy.tex,
                             linkName : this.formDataCopy.linkName,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                             address : this.formDataCopy.address,
-                            businessAccountId : this.formDataCopy.businessAccount1.id,
+                            businessAccountId : this.formDataCopy.adminAccountId,
                         }).then(res => {
                             if (res.status === 200) {
                                 this.$Message.success('修改成功');
@@ -417,11 +417,11 @@
                                     this.freshOrg();
                                 }
                                 //修改了管理上级，需要刷新左侧的组织树
-                                if (this.formDataCopy.parentManageId !== this.companyDetail.parentManageId) {
+                                if (this.formDataCopy.parentManageId !== this.sceneDetail.parentManageId) {
                                     this.freshOrg();
                                 }
                                 //修改了财务上级，需要刷新左侧的组织树
-                                if (this.formDataCopy.parentEconomicId !== this.companyDetail.parentEconomicId) {
+                                if (this.formDataCopy.parentEconomicId !== this.sceneDetail.parentEconomicId) {
                                     this.freshOrg();
                                 }
                             } else {
@@ -437,20 +437,15 @@
             edit () {
                 this.formDataCopy = defaultsDeep({
                     isStart : this.sceneDetail.status === 'open',
-                    businessAccount1 : this.sceneDetail.businessAccount1 ? this.sceneDetail.businessAccount1 : {},
-                    parentManageId : this.sceneDetail.parentManage ? this.sceneDetail.parentManage.id : '',
-                    parentEconomicId : this.sceneDetail.parentEconomic ? this.sceneDetail.parentEconomic.id : '',
-                    email : this.sceneDetail.managerAccount ? this.sceneDetail.managerAccount.email : ''
                 } , this.sceneDetail);
                 this.type = 'edit';
             },
             /**
              * 确认重置密码
-             * @param pass
              */
-            confimChangePass (pass) {
+            confimChangePass () {
                 ajax.post('resetPwd',{
-                    id : this.sceneDetail.managerAccount ? this.sceneDetail.managerAccount.id : '',
+                    id : this.sceneDetail.adminAccountId,
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('重置成功');
@@ -500,8 +495,8 @@
                     id : this.activeNode.id,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.superiorList = res.data.parentManages ? res.data.parentManages.filter(item => item.id !== this.activeNode.id) : [];
-                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics.filter(item => item.id !== this.activeNode.id) : [];
+                        this.fianceSuperiorList = res.data ? [res.data.parentEconomics] : [];
+                        this.superiorList = res.data ? [res.data.parentManages] : [];
                     } else {
                         this.superiorList = [];
                         this.fianceSuperiorList = [];
@@ -527,27 +522,9 @@
              * @param data
              */
             changeCity (data) {
-                if (this.formDataCopy.sysProvinces) {
-                    this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
-                } else {
-                    this.formDataCopy.sysProvinces = {
-                        provinceid : data.province ? data.province.provinceid : ''
-                    };
-                }
-                if (this.formDataCopy.sysCities) {
-                    this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
-                } else {
-                    this.formDataCopy.sysCities = {
-                        cityid : data.city ? data.city.cityid : ''
-                    };
-                }
-                if (this.formDataCopy.sysAreas) {
-                    this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
-                } else {
-                    this.formDataCopy.sysAreas = {
-                        areaid : data.area ? data.area.areaid : ''
-                    };
-                }
+                this.formDataCopy.provinceId = data.province ? data.province.provinceid : '';
+                this.formDataCopy.cityId = data.city ? data.city.cityid : '';
+                this.formDataCopy.areaId = data.area ? data.area.areaid : '';
             },
         },
         watch : {
@@ -564,14 +541,14 @@
             //公司详细地址
             companyPlace () {
                 let place = '';
-                if (this.sceneDetail && this.sceneDetail.sysProvinces) {
-                    place += this.sceneDetail.sysProvinces.province;
+                if (this.sceneDetail && this.sceneDetail.provinceName) {
+                    place += this.sceneDetail.provinceName;
                 }
-                if (this.sceneDetail && this.sceneDetail.sysCities) {
-                    place += this.sceneDetail.sysCities.city;
+                if (this.sceneDetail && this.sceneDetail.cityName) {
+                    place += this.sceneDetail.cityName;
                 }
-                if (this.sceneDetail && this.sceneDetail.sysAreas) {
-                    place += this.sceneDetail.sysAreas.area;
+                if (this.sceneDetail && this.sceneDetail.areaName) {
+                    place += this.sceneDetail.areaName;
                 }
                 return place;
             },
@@ -579,9 +556,18 @@
             defaultAddress () {
                 if (this.sceneDetail && Object.keys(this.sceneDetail).length > 0) {
                     return {
-                        province : this.sceneDetail.sysProvinces,
-                        city : this.sceneDetail.sysCities,
-                        area : this.sceneDetail.sysAreas,
+                        province : {
+                            provinceid : this.sceneDetail.provinceId,
+                            province : this.sceneDetail.provinceName,
+                        },
+                        city : {
+                            cityid : this.sceneDetail.cityId,
+                            city : this.sceneDetail.cityName
+                        },
+                        area : {
+                            areaid : this.sceneDetail.areaId,
+                            area : this.sceneDetail.areaName
+                        },
                     };
                 } else {
                     return false;

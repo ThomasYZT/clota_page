@@ -343,17 +343,8 @@
                     id : this.chosedNodeDetail.id
                 }).then(res => {
                     if (res.status === 200) {
-                        this.parentEconomics = res.data.parentEconomics ? res.data.parentEconomics : [];
-                        this.parentManages = res.data.parentManages ? res.data.parentManages : [];
-                        // this.parentManages.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
-						//
-                        // this.parentEconomics.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
+                        this.parentEconomics = res.data ? [res.data.parentEconomics] : [];
+                        this.parentManages = res.data ? [res.data.parentManages] : [];
                     } else {
                         this.parentEconomics = [];
                         this.parentManages = [];

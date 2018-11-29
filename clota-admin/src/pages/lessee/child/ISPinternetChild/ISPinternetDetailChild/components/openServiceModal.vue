@@ -173,7 +173,7 @@
                 ajax.post('addServices',{
                     orgId : this.orgId,
                     // serviceIds : this.formData.servers,
-                    serviceIds : this.serverList.filter(item => this.formData.servers.includes(item.id) && !item.disabled ),
+                    serviceIds : this.serverList.filter(item => this.formData.servers.includes(item.id) && !item.disabled ).map(item => item.id),
                     startTime : new Date(startTime).format('yyyy-MM-dd 00:00:00'),
                     endTime : new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd 23:59:59'),
                 }).then(res => {

@@ -364,17 +364,8 @@
                     id : this.chosedNodeDetail.id
                 }).then(res => {
                     if (res.status === 200) {
-                        this.fianceSuperiorList = res.data.parentEconomics ? res.data.parentEconomics : [];
-                        this.manageSuperiorList = res.data.parentManages ? res.data.parentManages : [];
-                        // this.manageSuperiorList.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
-						//
-                        // this.fianceSuperiorList.push({
-                        //     id : this.chosedNodeDetail.id,
-                        //     orgName : this.chosedNodeDetail.name,
-                        // });
+                        this.fianceSuperiorList = res.data ? [res.data.parentEconomics] : [];
+                        this.manageSuperiorList = res.data ? [res.data.parentManages] : [];
                     } else {
                         this.fianceSuperiorList = [];
                         this.manageSuperiorList = [];
