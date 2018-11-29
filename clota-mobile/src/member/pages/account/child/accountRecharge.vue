@@ -173,14 +173,14 @@
                                     key : 'wx',
                                     value : this.$t('wxPay'),
                                     param : item
-                                }
+                                };
                             } else if (item.accountType === 'alipay') {
                                 return {
                                     icon : require('../../../../assets/images/icon-ali-pay.svg'),
                                     key : 'ali',
                                     value : this.$t('aliPay'),
                                     param : item
-                                }
+                                };
                             }
                         }) : [];
                         this.chosedAccount = this.commonList[0];
