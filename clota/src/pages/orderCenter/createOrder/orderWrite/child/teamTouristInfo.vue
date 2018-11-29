@@ -138,7 +138,7 @@
                 </el-table-column>
             </table-com>
         </Form>
-        <!--删除游客模态框-->
+        <!--删除游客确认模态框-->
         <del-modal ref="delModal" class="del-modal-lift">
             <ul class="pro-list">
                 <li class="detail">
@@ -156,15 +156,32 @@
                 </li>
             </ul>
         </del-modal>
+        <!--删除员工确认模态框-->
+        <del-modal ref="confirmModal">
+            <ul class="pro-list">
+                <li class="detail">
+                    <span class="content-text">
+                        {{$t('isDoing')}}{{$t('delete')}} {{$t('visitor')}}：
+                        <span class="yellow-label">{{currentData.name | contentFilter}}</span>
+                    </span>
+                </li>
+                <li class="detail">
+                    <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+                </li>
+                <li class="hint">
+                    <Icon type="help-circled"></Icon>
+                </li>
+            </ul>
+        </del-modal>
     </div>
 </template>
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './teamTouristConfig';
+    import { columnData } from './teamTouristConfig';
     import ajax from '@/api/index.js';
-    import {idType} from '@/assets/js/constVariable.js';
-    import {validator} from 'klwk-ui';
+    import { idType } from '@/assets/js/constVariable.js';
+    import { validator } from 'klwk-ui';
     import delModal from '@/components/delModal/index.vue';
     export default {
         components : {
@@ -176,57 +193,57 @@
             'product-list' : {
                 type : Array,
                 default () {
-                    return []
+                    return [];
                 }
             }
         },
-        data() {
+        data () {
             //校验是否选择了证件
-            const validateidTypeIn =(rule,value,callback) => {
-                if(rule.rowData.type){
+            const validateidTypeIn = (rule,value,callback) => {
+                if (rule.rowData.type) {
                     callback();
-                }else{
-                    callback(this.$t('selectField', {msg: this.$t('credentialsType')}));   // 请选择证件类型
+                } else {
+                    callback(this.$t('selectField', { msg : this.$t('credentialsType') })); // 请选择证件类型
                 }
             };
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
-                if(rule.rowData.idNum){
-                    if(rule.rowData.idNum.length > 100){
-                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100}));
-                    }else{
+                if (rule.rowData.idNum) {
+                    if (rule.rowData.idNum.length > 100) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100 }));
+                    } else {
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback(this.$t('existID'));   // 证件已存在
+                            callback(this.$t('existID')); // 证件已存在
                         });
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('IdentificationNumber') })); // 请输入证件号
                 }
             };
             //校验游客姓名
             const validateName = (rule,value,callback) => {
-                if(rule.rowData.name){
-                    if(rule.rowData.name.length > 20){
-                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20}));
-                    }else{
+                if (rule.rowData.name) {
+                    if (rule.rowData.name.length > 20) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20 }));
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('name')}));     // 请输入姓名
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('name') })); // 请输入姓名
                 }
             };
             //校验手机号
             const validatePhone = (rule,value,callback) => {
-                if(rule.rowData.phone){
-                    if(validator.isMobile(rule.rowData.phone)){
+                if (rule.rowData.phone) {
+                    if (validator.isMobile(rule.rowData.phone)) {
                         callback();
-                    }else {
-                        callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
+                    } else {
+                        callback(this.$t('errorFormat', { field : this.$t('mobilePhone') }));
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('mobilePhone')}));  // 请输入手机号
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('mobilePhone') })); // 请输入手机号
                 }
             };
             return {
@@ -240,22 +257,22 @@
                 rules : {
                     idTypeIn (rowData) {
                         return [
-                            {validator : validateidTypeIn,trigger: 'change',rowData : rowData}
-                        ]
+                            { validator : validateidTypeIn,trigger : 'change',rowData : rowData }
+                        ];
                     },
                     idCard (rowData) {
                         return [
-                            {validator : validateIdCard,trigger: 'blur',rowData : rowData}
-                        ]
+                            { validator : validateIdCard,trigger : 'blur',rowData : rowData }
+                        ];
                     },
                     name (rowData) {
                         return [
-                            {validator : validateName,trigger : 'blur',rowData : rowData}
+                            { validator : validateName,trigger : 'blur',rowData : rowData }
                         ];
                     },
                     phone (rowData) {
                         return [
-                            {validator : validatePhone,trigger : 'blur',rowData : rowData}
+                            { validator : validatePhone,trigger : 'blur',rowData : rowData }
                         ];
                     }
                 },
@@ -267,14 +284,16 @@
                 productPolicy : {},
                 //修改游客信息时，保存原始数据
                 originalTableData : [],
-            }
+                //当前操作的员工
+                currentData : {}
+            };
         },
-        methods: {
+        methods : {
             /**
              * 选择的游客信息
              * @param val
              */
-            handleSelectionChange(val) {
+            handleSelectionChange (val) {
                 this.selectedTouristInfo = val;
             },
             /**
@@ -284,9 +303,9 @@
                 ajax.post('findProductSaleRule',{
                     productIds : this.productList.map(item => item.productId).join(',')
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.productPolicy = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.productPolicy = {};
                     }
                 });
@@ -299,7 +318,7 @@
                     editType : 'edit',
                     name : '',
                     type : '',
-                    idNum :'',
+                    idNum : '',
                     phone : '',
                     modifyType : 'add'
                 });
@@ -310,8 +329,8 @@
              */
             validateIdCardNumIsExist (cardInfo) {
                 return new Promise((resolve,reject) => {
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(cardInfo !== this.tableData[i] && this.tableData[i]['idNum'] === cardInfo['idNum'] && this.tableData[i]['type'] === cardInfo['type']){
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (cardInfo !== this.tableData[i] && this.tableData[i]['idNum'] === cardInfo['idNum'] && this.tableData[i]['type'] === cardInfo['type']) {
                             reject();
                         }
                     }
@@ -326,7 +345,7 @@
                 this.originalTableData[index] = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
-                if(this.selectedTouristInfo.includes(this.tableData[index])){
+                if (this.selectedTouristInfo.includes(this.tableData[index])) {
                     this.$refs.table.toggleRowSelection(this.tableData[index]);
                 }
             },
@@ -335,8 +354,14 @@
              * @param index
              */
             delIdInfo (index) {
-                this.tableData.splice(index,1);
-                this.$Message.success(this.$t('deletedField', {field: this.$t('touristInfo')}));   // 游客信息已删除
+                this.currentData = this.tableData[index];
+                this.$refs.confirmModal.show({
+                    title : this.$t('del'),
+                    confirmCallback : () => {
+                        this.tableData.splice(index,1);
+                        this.$Message.success(this.$t('deletedField', { field : this.$t('touristInfo') })); // 游客信息已删除
+                    }
+                });
             },
             /**
              * 保存游客信息
@@ -346,41 +371,41 @@
                 //判断证件类型和证件号是否已经填写，并且需要判断证件号和证件类型是否已经填写过
                 Promise.all([new Promise((resolve,reject) => {//校验游客姓名
                     this.$refs.formInline.validateField('name' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验证件类型
-                    if(this.acceptCertificateType.all.length > 0){
+                    if (this.acceptCertificateType.all.length > 0) {
                         this.$refs.formInline.validateField('idCard' + index,valid => {
-                            if(valid){
+                            if (valid) {
                                 reject();
-                            }else{
+                            } else {
                                 resolve();
                             }
                         });
-                    }else{
+                    } else {
                         resolve();
                     }
                 }),new Promise((resolve,reject) => {//校验证件号码
-                    if(this.acceptCertificateType.all.length > 0){
+                    if (this.acceptCertificateType.all.length > 0) {
                         this.$refs.formInline.validateField('idTypeIn' + index,valid => {
-                            if(valid){
+                            if (valid) {
                                 reject();
-                            }else{
+                            } else {
                                 resolve();
                             }
                         });
-                    }else{
+                    } else {
                         resolve();
                     }
                 }),new Promise((resolve,reject) => {//校验手机号
                     this.$refs.formInline.validateField('phone' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
@@ -393,9 +418,9 @@
              * @param index
              */
             cancelEdit (index) {
-                if(this.tableData[index]['modifyType'] === 'add'){
+                if (this.tableData[index]['modifyType'] === 'add') {
                     this.tableData.splice(index,1);
-                }else{
+                } else {
                     this.$set(this.tableData,index,this.originalTableData[index]);
                 }
             },
@@ -408,28 +433,28 @@
                     confirmCallback : () => {
                         this.confirmDelTouristInfo();
                     }
-                })
+                });
             },
             /**
              * 判断当前游客是否可以选择
              * @param row
              * @param index
              */
-            selectableFunc (row,index){
-                return row['editType'] !== 'edit'
+            selectableFunc (row,index) {
+                return row['editType'] !== 'edit';
             },
             /**
              * 确认删除游客信息
              */
             confirmDelTouristInfo () {
-                for(let i = this.tableData.length,j = 0; i >= j;i--){
-                    if(this.selectedTouristInfo.includes(this.tableData[i])){
+                for (let i = this.tableData.length,j = 0; i >= j; i--) {
+                    if (this.selectedTouristInfo.includes(this.tableData[i])) {
                         this.tableData.splice(i,1);
                     }
                 }
                 this.$Message.success(this.$t('deletedField', {
-                    field: this.$t('touristInfo')
-                }));   // 游客信息已删除
+                    field : this.$t('touristInfo')
+                })); // 游客信息已删除
             },
             /**
              * 获取填写的游客信息
@@ -437,8 +462,8 @@
             getTouristInfo () {
                 return new Promise((resolve,reject) => {
                     let result = [];
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(this.tableData[i]['editType'] === 'edit'){
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (this.tableData[i]['editType'] === 'edit') {
                             reject('touristErr');
                         }
                         result.push({
@@ -465,22 +490,22 @@
                 let arrTmp = [];
                 let accpet = [];
                 let productIdsList = {};
-                for(let item in this.productPolicy){
+                for (let item in this.productPolicy) {
                     arrTmp = this.productPolicy[item].acceptIdType ? this.productPolicy[item].acceptIdType.split(',') : [];
-                    for(let i = 0,j = arrTmp.length;i < j;i++){
-                        if(!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired'){
+                    for (let i = 0,j = arrTmp.length; i < j; i++) {
+                        if (!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired') {
                             result.push(arrTmp[i]);
                         }
                     }
                     productIdsList[item] = [];
-                    for(let i = 0,j = idType.length;i < j;i++){
-                        if(arrTmp.includes(idType[i]['value'])){
-                            productIdsList[item].push(idType[i])
+                    for (let i = 0,j = idType.length; i < j; i++) {
+                        if (arrTmp.includes(idType[i]['value'])) {
+                            productIdsList[item].push(idType[i]);
                         }
                     }
                 }
-                for(let i = 0,j = idType.length;i < j;i++){
-                    if(result.includes(idType[i]['value'])){
+                for (let i = 0,j = idType.length; i < j; i++) {
+                    if (result.includes(idType[i]['value'])) {
                         accpet.push(idType[i]);
                     }
                 }
@@ -492,20 +517,20 @@
             },
             //将要删除的游客信息
             delingTouristInfo () {
-                if(this.selectedTouristInfo.length > 2){
+                if (this.selectedTouristInfo.length > 2) {
                     return {
                         data : this.selectedTouristInfo.map(item => item.name).slice(0,2).join(','),
                         showMore : true
-                    }
-                }else{
+                    };
+                } else {
                     return {
                         data : this.selectedTouristInfo.map(item => item.name).slice(0,2).join(','),
                         showMore : false
-                    }
+                    };
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
