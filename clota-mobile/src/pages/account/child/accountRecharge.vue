@@ -188,8 +188,8 @@
                                 }
                             }
                         }) : [];
-                        this.chosedAccount = this.commonList[0];
-                        this.payType = this.commonList[0].key;
+                        this.chosedAccount = this.commonList.length > 0 ? this.commonList[0] : {};
+                        this.payType = this.commonList.length > 0 ? this.commonList[0].key : '';
                     } else {
                         this.commonList = [];
                         this.chosedAccount = {};
