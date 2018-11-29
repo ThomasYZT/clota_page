@@ -32,7 +32,7 @@
 <script>
     import goodCard from './components/goodCard';
     import scroll from '@/components/scroll/scroll';
-    import ajax from '../../../api/index';
+    import ajax from '@/api/index';
     export default {
         components : {
             scroll,
