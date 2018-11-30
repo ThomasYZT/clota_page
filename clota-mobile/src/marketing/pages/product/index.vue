@@ -12,21 +12,14 @@
             地址：广州市番禺区迎宾路长隆旅游度假区内
         </div>
         <div class="product-list">
-            <scroll ref="scroll"
-                    :data="productListData"
-                    :scrollbar="scrollbarObj"
-                    :pullDownRefresh="pullDownRefreshObj"
-                    :pullUpLoad="pullUpLoadObj"
-                    :startY="parseInt(startY)"
-                    @pullingDown="onPullingDown"
-                    @pullingUp="onPullingUp">
+            <scroll-wrap :item-data="productListData">
                 <template v-for="(item,index) in productListData">
                     <product-list :key="index"
                                   :product-info="item"
                                   @show-notice="showProductNoticeMethod">
                     </product-list>
                 </template>
-            </scroll>
+            </scroll-wrap>
         </div>
         <div v-transfer-dom>
             <popup v-model="showProductNotice">
@@ -62,25 +55,13 @@
 
 <script>
     import productList from './components/product-list';
-    import scroll from '@/components/scroll/scroll';
-    import Vue from 'vue';
+    import scrollWrap from '@/components/scroll/scrollWrap';
     import ajax from '@/api/index.js';
-	export default {
-		data () {
-			return {
-			    //查看产品日期
-			    productDate : new Date().format('yyyy-MM-dd'),
-                //是否显示滚动条
-                scrollbar : false,
-                pullDownRefresh : true,
-                pullUpLoad : true,
-                pullDownRefreshThreshold : 90,
-                scrollbarFade : true,
-                pullDownRefreshStop : 40,
-                pullUpLoadThreshold : 0,
-                pullUpLoadMoreTxt : 'pullUpLoadMoreTxt',
-                pullUpLoadNoMoreTxt : 'loading',
-                startY : 0,
+    export default {
+        data () {
+            return {
+                //查看产品日期
+                productDate : new Date().format('yyyy-MM-dd'),
                 //产品列表数据
                 productListData : [
                     {},
@@ -106,12 +87,12 @@
                 //显示购票须知
                 showProductNotice : false
             };
-		},
+        },
         components : {
             productList,
-            scroll
+            scrollWrap
         },
-		methods : {
+        methods : {
             /**
              * 选择日期
              */
@@ -163,15 +144,6 @@
                 });
             },
             /**
-             * 重新渲染scroll组件
-             */
-            rebuildScroll : function () {
-                Vue.nextTick(() => {
-                    this.$refs.scroll.destroy();
-                    this.$refs.scroll.initScroll();
-                });
-            },
-            /**
              * 显示购票须知详情
              * @param data
              */
@@ -194,35 +166,14 @@
             }
         },
         computed : {
-            scrollbarObj : function () {
-                return this.scrollbar ? { fade : this.scrollbarFade } : false;
-            },
-            pullDownRefreshObj : function () {
-                return this.pullDownRefresh ? {
-                    threshold : parseInt(this.pullDownRefreshThreshold),
-                    stop : parseInt(this.pullDownRefreshStop),
-                    txt : 'freshComplete'
-                } : false;
-            },
-            pullUpLoadObj : function () {
-                return this.pullUpLoad ? {
-                    threshold : parseInt(this.pullUpLoadThreshold),
-                    txt : { more : 'loading', noMore : 'noMoreData' }
-                } : false;
-            }
-        },
-        watch : {
-            startY () {
-                this.rebuildScroll();
-            }
         },
         created () {
-		    // this.getProductListInfo();
+            // this.getProductListInfo();
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .product-info{
         @include block_outline();
         background: #f2f3f4;

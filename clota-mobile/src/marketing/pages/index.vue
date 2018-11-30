@@ -20,7 +20,8 @@
                 <img slot="icon" src="../../assets/images/icon-ali-pay.svg">
                 <span slot="label">订单</span>
             </tabbar-item>
-            <tabbar-item link="/component/demo">
+            <tabbar-item :selected="selectedTabbar === 'mine'"
+                         @on-item-click="toRouter('marketingOwnerCenter')">
                 <img slot="icon" src="../../assets/images/icon-ali-pay.svg">
                 <span slot="label">我的</span>
             </tabbar-item>

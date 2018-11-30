@@ -109,6 +109,16 @@ export const marketingRoutes = [
                     title : '提现申请',
                     hideTabbar : true
                 }
+            },
+            //我的中心页面
+            {
+                path : 'ownerCenter',
+                name : 'marketingOwnerCenter',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/index.vue'),
+                meta : {
+                    title : '我的',
+                    menuBar : 'mine'
+                }
             }
         ]
     }

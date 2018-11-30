@@ -183,7 +183,7 @@
                         this.OwnerCardAccount = [];
                         this.accountList = [];
                     }
-                })
+                });
             }
         },
         created () {
