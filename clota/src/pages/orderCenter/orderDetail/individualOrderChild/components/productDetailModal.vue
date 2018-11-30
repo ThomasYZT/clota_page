@@ -64,7 +64,7 @@
                         </i-col>
                         <i-col span="10">
                             <FormItem :label="$t('orderChannel')+'：'">
-                                {{orderInfo.orderChannel | contentFilter}}
+                                {{orderInfo.orderChannel ? $t('order.' + orderInfo.orderChannel) : '' | contentFilter}}
                             </FormItem>
                         </i-col>
                     </Row>

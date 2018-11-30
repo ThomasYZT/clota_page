@@ -63,7 +63,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span>{{scope.row.productName | contentFilter}}</span> |
+                            <span>{{(scope.row.productName && scope.row.productName.slice(0,1) === '[' ? JSON.parse(scope.row.productName).join(',') : scope.row.productName) | contentFilter}}</span> |
                             <span>{{$t('quantity')}}：{{scope.row.quantity | contentFilter}}</span>
                         </template>
                     </el-table-column>

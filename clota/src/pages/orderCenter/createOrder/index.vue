@@ -33,6 +33,16 @@
                 :min-width="row.minWidth">
             </el-table-column>
             <el-table-column
+                slot="column5"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row.productType)}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column8"
                 show-overflow-tooltip
                 slot-scope="row"
