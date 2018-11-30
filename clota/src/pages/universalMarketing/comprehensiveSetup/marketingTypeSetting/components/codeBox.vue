@@ -55,7 +55,7 @@
             <div class="box-footer" v-if="boxStatus !== 'null'">
                 <template v-if="boxStatus === 'show'">
                     <div class="btn"><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
-                    <div class="btn"><span @click="del">{{$t('del')}}</span></div>
+                    <div class="btn"><span class="warn-btn" @click="del">{{$t('del')}}</span></div>
                 </template>
                 <template v-if="boxStatus === 'add' || boxStatus === 'edit'">
                     <div class="btn"><span class="blue-btn" @click="save">{{$t('save')}}</span></div>
@@ -215,6 +215,10 @@
 
                 .blue-btn {
                     color: $color_blue;
+                }
+
+                .warn-btn {
+                    color: $color_red;
                 }
             }
 

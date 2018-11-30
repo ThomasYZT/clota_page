@@ -30,7 +30,8 @@
     import marketTypeTree from './components/marketTypeTree';
     import cashOfferSettings from './child/cashOfferSettings';
     import codeRegister from './child/codeRegister';
-    import marketingLevel from './child/marketingLevel'
+    import marketingLevel from './child/marketingLevel';
+    import ajax from '@/api/index';
     export default {
         components : {
             marketTypeTree,
@@ -39,9 +40,25 @@
             marketingLevel,
         },
         data () {
-            return {};
+            return {
+                //营销类别列表
+                typeList : []
+            };
         },
-        methods : {}
+        methods : {
+            getTypeList () {
+                ajax.post('marketing-typeList').then((res) => {
+                    if (res.success) {
+
+                    } else {
+
+                    }
+                });
+            }
+        },
+        created () {
+
+        }
     };
 </script>
 
