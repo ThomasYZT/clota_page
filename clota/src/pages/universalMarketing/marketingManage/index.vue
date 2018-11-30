@@ -10,10 +10,13 @@
         <marketing-product-filter @on-search=""></marketing-product-filter>
         <!--营销产品列表-->
         <table-com
+            :ofsetHeight="120"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
             :total-count="totalCount"
+            :page-no-d.sync="queryParams.pageNo"
+            :page-size-d.sync="queryParams.pageSize"
             :border="true"
             @query-data="queryList"
             @row-click="handleRowClick">
@@ -71,6 +74,14 @@
                 totalCount : 0,
                 //当前被修改的行
                 currRowIndex: null,
+                //提现记录传参
+                queryParams : {
+                    marketTypeId : 'all',
+                    marketLevelId : 'all',
+                    policyId : '',
+                    pageNo : 1,
+                    pageSize : 10,
+                },
             }
         },
         computed : {},
