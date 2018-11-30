@@ -339,7 +339,8 @@
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.manageSuperior,
                     nodeType : 'scenic',
-                    status : status
+                    status : status,
+                    businessAccountId : this.formData.service,
                 }).then(res => {
                     if (res.status === 200) {
                         this.$emit('fresh-structure-data');

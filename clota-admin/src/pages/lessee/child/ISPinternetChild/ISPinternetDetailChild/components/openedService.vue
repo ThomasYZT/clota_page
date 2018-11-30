@@ -191,6 +191,7 @@
         </del-modal>
         <!--添加服务模态框-->
         <add-service
+            :selected-services="tableData"
             ref="addService"
             :scene-detail="sceneDetail"
             @fresh-service="queryList">

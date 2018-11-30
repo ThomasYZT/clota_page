@@ -14,7 +14,7 @@
         <div class="service-body">
             <div class="label-info">
                 <span class="key">上级公司：</span>
-                <span class="val">{{sceneDetail.parentManage ? sceneDetail.parentManage.orgName : '' | contentFilter}}</span>
+                <span class="val">{{sceneDetail.orgName | contentFilter}}</span>
             </div>
             <span class="tip">请先为上级公司开通服务后，景区才能添加相应服务。</span>
             <div class="label-info" style="margin-bottom: 10px">
@@ -36,6 +36,7 @@
                     :label="row.title"
                     show-overflow-tooltip
                     :width="row.width"
+                    :selectable="selectable"
                     :min-width="row.minWidth">
                 </el-table-column>
                 <el-table-column
@@ -77,6 +78,13 @@
                 type : Object,
                 default () {
                     return {};
+                }
+            },
+            //已经选择的服务
+            'selected-services' : {
+                type : Array,
+                default () {
+                    return  [];
                 }
             }
         },
@@ -180,6 +188,19 @@
                 }).finally(() => {
                     this.modalShow = false;
                 });
+            },
+            /**
+             * 是否可以选择服务
+             * @param row
+             * @param index
+             */
+            selectable (row,index) {
+                for (let i = 0,j = this.selectedServices.length; i < j; i++) {
+                    if (row.serviceId === this.selectedServices[i]['serviceId']) {
+                        return false;
+                    }
+                }
+                return true;
             }
         },
         computed : {
