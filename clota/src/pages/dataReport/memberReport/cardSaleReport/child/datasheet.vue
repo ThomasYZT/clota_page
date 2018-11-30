@@ -84,7 +84,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.paymentType ? $t('payType.' + scope.row.payType) : '-'}}
+                    {{scope.row.payType ? $t('payType.' + scope.row.payType) : '-'}}
                 </template>
             </el-table-column>
         </table-com>
