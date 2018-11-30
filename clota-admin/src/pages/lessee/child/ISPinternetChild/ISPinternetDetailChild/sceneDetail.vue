@@ -186,7 +186,7 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem label="受理客服：" :label-width="150">
-                        <Select v-model="formDataCopy.adminAccountId" v-if="type === 'edit' && activeNode && activeNode.pid">
+                        <Select v-model="formDataCopy.businessId" v-if="type === 'edit' && activeNode && activeNode.pid">
                                 <Option v-for="item in serviceStaffList"
                                     :value="item.id"
                                     :key="item.id">
@@ -407,7 +407,7 @@
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                             address : this.formDataCopy.address,
-                            businessAccountId : this.formDataCopy.adminAccountId,
+                            businessAccountId : this.formDataCopy.businessId,
                         }).then(res => {
                             if (res.status === 200) {
                                 this.$Message.success('修改成功');

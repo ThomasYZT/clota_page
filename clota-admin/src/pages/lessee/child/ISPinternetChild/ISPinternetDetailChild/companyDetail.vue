@@ -200,12 +200,12 @@
             <i-row>
                 <i-col span="12">
                     <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
-                        {{companyDetail.smsDetails | contentFilter}}
+                        {{companyDetail.smsSendTotal | comtentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
                     <FormItem prop="orgName" label="受理客服：" :label-width="150">
-                        <Select v-model="formDataCopy.adminAccountId" v-if="type === 'edit'  && activeNode && !activeNode.pid">
+                        <Select v-model="formDataCopy.businessId" v-if="type === 'edit'  && activeNode && activeNode.pid !== '0'">
                             <Option v-for="item in serviceStaffList"
                                     :value="item.id"
                                     :key="item.id">
@@ -439,7 +439,7 @@
                             address : this.formDataCopy.address,
                             telephone : this.formDataCopy.telephone,
                             tex : this.formDataCopy.tex,
-                            businessAccountId : this.formDataCopy.adminAccountId,
+                            businessAccountId : this.formDataCopy.businessId,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
                         }).then(res => {

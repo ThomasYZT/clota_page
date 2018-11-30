@@ -380,7 +380,7 @@
                     orgId : this.chosedNodeDetail.id
                 }).then(res => {
                    if (res.status === 200) {
-                       this.serviceList = res.data.orgServices ? res.data.orgServices : [];
+                       this.serviceList = res.data ? res.data.orgServices : [];
                    } else {
                        this.serviceList = [];
                    }

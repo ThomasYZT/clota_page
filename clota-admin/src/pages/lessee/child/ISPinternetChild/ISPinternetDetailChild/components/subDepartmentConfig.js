@@ -25,7 +25,7 @@ export const partMentHead = [
     {
         title : '部门人数',
         minWidth : 130,
-        field : 'departmentNumber'
+        field : 'employeeNumber'
     },
     {
         title : '操作',
