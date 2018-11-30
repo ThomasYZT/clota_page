@@ -89,6 +89,26 @@ export const marketingRoutes = [
                     title : '我的订单',
                     menuBar : 'order'
                 }
+            },
+            //我的订单详情
+            {
+                path : 'order/detail',
+                name : 'marketingOrderDetail',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/child/orderDetail.vue'),
+                meta : {
+                    title : '我的订单',
+                    hideTabbar : true
+                }
+            },
+            //提现申请结果
+            {
+                path : 'order/result',
+                name : 'marketingDepositResult',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/child/depositResult.vue'),
+                meta : {
+                    title : '提现申请',
+                    hideTabbar : true
+                }
             }
         ]
     }

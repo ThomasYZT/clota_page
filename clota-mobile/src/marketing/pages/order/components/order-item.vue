@@ -16,7 +16,7 @@
             </div>
             <div class="detail-footer">
                 <div class="order-date">{{'2018-06-28 18:00:20'}}</div>
-                <div class="for-detail">{{$t('查看详情')}}</div>
+                <div class="for-detail" @click="toDetail">{{$t('查看详情')}}</div>
             </div>
             <div class="wait-audit">
                 <span class="text-label">待审</span>
@@ -57,6 +57,14 @@
                 if (this.showRadio) {
                     this.$emit('chose-item',this.orderDetail);
                 }
+            },
+            /**
+             * 跳转到订单详情
+             */
+            toDetail () {
+                this.$router.push({
+                    name : 'marketingOrderDetail'
+                });
             }
         }
 	};
