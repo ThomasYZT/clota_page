@@ -9,7 +9,7 @@
         class-name="vertical-center-modal"
         width="600"
         :mask-closable="false"
-        @on-cancel="toggle">
+        @on-cancel="toggle()">
         <div class="statistic">
             <span class="label">{{$t('memberName')}}</span> <span class="info">{{listItem.memberName | contentFilter}} | {{listItem.phoneNum | contentFilter}}</span>
             <span class="label">{{$t('memberCardType')}}</span> <span class="info">{{listItem.cardTypeName | contentFilter}} | {{listItem.cardLevelName | contentFilter}}</span>
@@ -88,10 +88,13 @@
                 if (data) {
                     this.listItem = data;
                     this.getData();
+                    this.visible = true;
                 } else {
+                    this.totalCount = 0;
+                    this.tableData = [];
                     this.listItem = {};
+                    this.visible = false;
                 }
-                this.visible = !this.visible;
             },
             getData () {
                 ajax.post('queryPagedOrderItemDetail', {
