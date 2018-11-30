@@ -97,7 +97,7 @@
                             <Select v-model.trim="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"
                                         :value="item.provider"
-                                        :key="item.provider">
+                                        :key="item.id">
                                     {{ item.provider }}
                                 </Option>
                             </Select>
