@@ -8,12 +8,10 @@
             <i-col span="8">
                 <!-- 搜索框 -->
                 <Input class="input-field"
-                       search
-                       enter-button
                        v-model.trim="queryParams.keyword"
                        icon="ios-search"
                        :placeholder="$t('inputSpecificForSearch', { field : $t('goodsName') })"
-                       @on-search="getListData"
+                       @on-click="getListData"
                        @on-enter="getListData"/>
             </i-col>
         </i-row>
