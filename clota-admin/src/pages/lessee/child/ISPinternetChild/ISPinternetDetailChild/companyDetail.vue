@@ -88,8 +88,8 @@
                 <i-col span="12">
                     <FormItem label="管理账号：" :label-width="150">
                         <span class="info-val" >
-                            <span class="account-name" v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.loginName : ''">
-                             {{companyDetail.managerAccount ? companyDetail.managerAccount.loginName : '' | contentFilter}}
+                            <span class="account-name" v-w-title="companyDetail.adminAccountName">
+                             {{companyDetail.adminAccountName | contentFilter}}
                             </span>
                             <span class="reset-pass" @click="resetPass">重置密码</span>
                         </span>
@@ -100,8 +100,8 @@
                 <i-col span="12">
                     <FormItem prop="email" label="电子邮箱：" :label-width="150">
                         <Input v-model.trim="formDataCopy.email" v-if="type === 'edit'"/>
-                        <span class="info-val" v-else v-w-title="companyDetail.managerAccount ? companyDetail.managerAccount.email : ''">
-                             {{companyDetail.managerAccount ? companyDetail.managerAccount.email : '' | contentFilter}}
+                        <span class="info-val" v-else v-w-title="companyDetail.email">
+                             {{companyDetail.email | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -212,8 +212,8 @@
                                 {{ item.loginName }}
                             </Option>
                         </Select>
-                        <span class="info-val" v-else v-w-title="companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : ''">
-                             {{companyDetail.businessAccount1 ? companyDetail.businessAccount1.loginName : '' | contentFilter}}
+                        <span class="info-val" v-else v-w-title="companyDetail.businessName">
+                             {{companyDetail.businessName | contentFilter}}
                         </span>
                     </FormItem>
                 </i-col>
@@ -432,9 +432,9 @@
                             checkinCode : this.formDataCopy.checkinCode,
                             smsProvider : this.formDataCopy.smsProvider,
                             email : this.formDataCopy.email,
-                            province : this.formDataCopy.sysProvinces ? this.formDataCopy.sysProvinces.provinceid : '',
-                            city : this.formDataCopy.sysCities ? this.formDataCopy.sysCities.cityid : '',
-                            district : this.formDataCopy.sysAreas ? this.formDataCopy.sysAreas.areaid : '',
+                            province : this.formDataCopy.provinceId,
+                            city : this.formDataCopy.cityId,
+                            district : this.formDataCopy.areaId,
                             linkName : this.formDataCopy.linkName,
                             address : this.formDataCopy.address,
                             telephone : this.formDataCopy.telephone,
@@ -472,9 +472,6 @@
                 this.formDataCopy = defaultsDeep({
                     isStart : this.companyDetail.status === 'open',
                     businessAccount1 : this.companyDetail.businessAccount1 ? this.companyDetail.businessAccount1 : {},
-                    parentManageId : this.companyDetail.parentManage ? this.companyDetail.parentManage.id : '',
-                    parentEconomicId : this.companyDetail.parentEconomic ? this.companyDetail.parentEconomic.id : '',
-                    email : this.companyDetail.managerAccount ? this.companyDetail.managerAccount.email : '',
                 } , this.companyDetail);
 
                 this.type = 'edit';
@@ -563,27 +560,30 @@
              * @param data
              */
             changeCity (data) {
-                if (this.formDataCopy.sysProvinces) {
-                    this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
-                } else {
-                    this.formDataCopy.sysProvinces = {
-                        provinceid : data.province ? data.province.provinceid : ''
-                    };
-                }
-                if (this.formDataCopy.sysCities) {
-                    this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
-                } else {
-                    this.formDataCopy.sysCities = {
-                        cityid : data.city ? data.city.cityid : ''
-                    };
-                }
-                if (this.formDataCopy.sysAreas) {
-                    this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
-                } else {
-                    this.formDataCopy.sysAreas = {
-                        areaid : data.area ? data.area.areaid : ''
-                    };
-                }
+                this.formDataCopy.provinceId = data.province ? data.province.provinceid : '';
+                this.formDataCopy.cityId = data.city ? data.city.cityid : '';
+                this.formDataCopy.areaId = data.area ? data.area.areaid : '';
+                // if (this.formDataCopy.sysProvinces) {
+                //     this.formDataCopy.sysProvinces.provinceid = data.province ? data.province.provinceid : '';
+                // } else {
+                //     this.formDataCopy.sysProvinces = {
+                //         provinceid : data.province ? data.province.provinceid : ''
+                //     };
+                // }
+                // if (this.formDataCopy.sysCities) {
+                //     this.formDataCopy.sysCities.cityid = data.city ? data.city.cityid : '';
+                // } else {
+                //     this.formDataCopy.sysCities = {
+                //         cityid : data.city ? data.city.cityid : ''
+                //     };
+                // }
+                // if (this.formDataCopy.sysAreas) {
+                //     this.formDataCopy.sysAreas.areaid = data.area ? data.area.areaid : '';
+                // } else {
+                //     this.formDataCopy.sysAreas = {
+                //         areaid : data.area ? data.area.areaid : ''
+                //     };
+                // }
             },
             /**
              * 获取财务上级和经营上级
@@ -611,14 +611,14 @@
             //公司详细地址
             companyPlace () {
                 let place = '';
-                if (this.companyDetail && this.companyDetail.sysProvinces) {
-                    place += this.companyDetail.sysProvinces.province;
+                if (this.companyDetail && this.companyDetail.provinceName) {
+                    place += this.companyDetail.provinceName;
                 }
-                if (this.companyDetail && this.companyDetail.sysCities) {
-                    place += this.companyDetail.sysCities.city;
+                if (this.companyDetail && this.companyDetail.cityName) {
+                    place += this.companyDetail.cityName;
                 }
-                if (this.companyDetail && this.companyDetail.sysAreas) {
-                    place += this.companyDetail.sysAreas.area;
+                if (this.companyDetail && this.companyDetail.areaName) {
+                    place += this.companyDetail.areaName;
                 }
                 return place;
             },
@@ -626,9 +626,18 @@
             defaultAddress () {
                 if (this.companyDetail && Object.keys(this.companyDetail).length > 0) {
                     return {
-                        province : this.companyDetail.sysProvinces,
-                        city : this.companyDetail.sysCities,
-                        area : this.companyDetail.sysAreas,
+                        province : {
+                            provinceid : this.companyDetail.provinceId,
+                            province : this.companyDetail.provinceName,
+                        },
+                        city : {
+                            cityid : this.companyDetail.cityId,
+                            city : this.companyDetail.cityName
+                        },
+                        area : {
+                            areaid : this.companyDetail.areaId,
+                            area : this.companyDetail.areaName
+                        },
                     };
                 } else {
                     return false;

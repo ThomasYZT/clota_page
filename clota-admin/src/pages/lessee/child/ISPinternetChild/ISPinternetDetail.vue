@@ -100,7 +100,7 @@
                     type : this.activeTap
                 }).then(res => {
                     if (res.status === 200) {
-                        this.structureData = res.data ? res.data : {};
+                        this.structureData = res.data ? [res.data] : [];
                         if (Object.keys(activeNode).length < 1) {
                             this.activeNode = JSON.parse(JSON.stringify({
                                 id : this.structureData[0] ? this.structureData[0].id : '',
@@ -111,7 +111,7 @@
                             this.activeNode = activeNode;
                         }
                     } else {
-                        this.structureData = {};
+                        this.structureData = [];
                         this.activeNode = {};
                     }
                 });
