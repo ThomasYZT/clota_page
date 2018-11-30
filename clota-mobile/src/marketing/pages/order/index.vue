@@ -12,6 +12,9 @@
                  {{'2018-06-19'}}
                 <span class="iconfont icon-arrow-right"></span>
             </span>
+            <span class="product-filter">
+                产品
+            </span>
         </div>
         <div class="tab-wrap">
             <!--卡包tap列表-->
@@ -19,8 +22,8 @@
                 <tab-item
                     v-for="(item,i) in tapInfo"
                     :key="i"
-                    @on-item-click="selectCard(item)">
-                    {{$t(item)}}
+                    @on-item-click="selectCard(i)">
+                    {{$t(item)}}{{$t('bracketSetting',{ content : 5 })}}
                 </tab-item>
             </tab>
         </div>
@@ -34,16 +37,17 @@
                     :show-dots="false"
                     @on-index-change="cardTypeChange">
                 <swiper-item>
-                    <order-item>
-                    </order-item>
+                    <tab-item-list :data="allOrderInfo">
+                    </tab-item-list>
                 </swiper-item>
                 <swiper-item>
-                    <order-item>
-                    </order-item>
+                    <tab-item-list :data="depositInfo"
+                                   :show-radio="true">
+                    </tab-item-list>
                 </swiper-item>
                 <swiper-item>
-                    <order-item>
-                    </order-item>
+                    <tab-item-list :data="allOrderInfo">
+                    </tab-item-list>
                 </swiper-item>
             </swiper>
         </div>
@@ -51,7 +55,7 @@
 </template>
 
 <script>
-    import orderItem from './components/order-item';
+    import tabItemList from './components/tab-item-list';
 	export default {
 		data () {
 			return {
@@ -63,19 +67,44 @@
                     '未体现',
                     '已体现'
                 ],
-                cardType : 0
+                cardType : 0,
+                allOrderInfo : [
+                    {
+                        id : 1,
+                        name : '1'
+                    },
+                    {
+                        id : 2,
+                        name : '1'
+                    },{
+                        id : 3,
+                        name : '1'
+                    },{
+                        id : 4,
+                        name : '1'
+                    },{
+                        id : 5,
+                        name : '1'
+                    },
+                ],
+                depositInfo : [
+                    {
+                        id : 2,
+                        name : '2'
+                    }
+                ]
             };
 		},
         components : {
-            orderItem
+            tabItemList
         },
 		methods : {
             /**
              * 选择了某个菜单
-             * @param item
+             * @param{Number} item tap菜单序列号
              */
             selectCard (item) {
-
+                this.cardType = item;
             },
             /**
              * 卡包类型改变
@@ -96,7 +125,8 @@
         .title{
             @include block_outline($height : 40px);
             line-height: 40px;
-            padding-left: 22px;
+            padding-left: 12px;
+            padding-right: 12px;
             font-size: $font_size_16px;
             color: $color_333;
             background: $color_fff;
@@ -111,9 +141,16 @@
                 font-size: $font_size_15px;
                 color: #8395A7;
             }
+
+            .product-filter{
+                float: right;
+                font-size: $font_size_14px;
+                color: $color_333;
+            }
         }
         .tab-wrap{
-            @include block_outline($height : 42px);
+            @include block_outline($height : 45px);
+            /*margin-bottom: 8px;*/
         }
         /deep/ .vux-tab-ink-bar{
             background: #046FDB;
@@ -121,10 +158,12 @@
         }
 
         .content{
-            height: calc(100% - 82px);
+            height: calc(100% - 90px);
 
-            /deep/ .vux-slider{
-                height: 100%;
+            /deep/ .vux-slider,
+            /deep/ .vux-swiper-item,
+            /deep/ .vux-swiper{
+                height: 100%!important;
             }
         }
     }

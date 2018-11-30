@@ -238,4 +238,5 @@ export default {
     'errorPwdRule' : '密码须是6-20位，仅由数字、小写和大写字母组成',
     'errorFormat' : '请输入正确金额',
     'numError' : '请输入正确金额',
+    'bracketSetting' : '（{content}）',
 };

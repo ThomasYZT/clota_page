@@ -76,7 +76,8 @@ export const marketingRoutes = [
                 name : 'marketingProduct',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/product/index.vue'),
                 meta : {
-                    title : '我的产品'
+                    title : '我的产品',
+                    menuBar : 'product'
                 }
             },
             //我的订单
@@ -85,7 +86,8 @@ export const marketingRoutes = [
                 name : 'marketingOrder',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/index.vue'),
                 meta : {
-                    title : '我的订单'
+                    title : '我的订单',
+                    menuBar : 'order'
                 }
             }
         ]

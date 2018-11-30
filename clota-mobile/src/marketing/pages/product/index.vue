@@ -83,7 +83,25 @@
                 startY : 0,
                 //产品列表数据
                 productListData : [
-                    {}
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
                 ],
                 //显示购票须知
                 showProductNotice : false
@@ -199,7 +217,7 @@
             }
         },
         created () {
-		    this.getProductListInfo();
+		    // this.getProductListInfo();
         }
 	};
 </script>
