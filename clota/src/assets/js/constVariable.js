@@ -668,3 +668,63 @@ export const  tradeTypeList = [
     }
 ];
 
+//银行列表
+export const  bankList = [
+    {
+        label : 'CMB',
+        value : 'CMB'  // 招商银行
+    },
+    {
+        label : 'CCB',
+        value : 'CCB'    // 中国建设银行
+    },
+    {
+        label : 'COM',
+        value : 'COM'  // 交通银行
+    },
+    {
+        label : 'CPG',
+        value : 'CPG'    // 邮政储蓄银行
+    },
+    {
+        label : 'ICBC',
+        value : 'ICBC'    // 中国工商银行
+    },
+    {
+        label : 'ABC',
+        value : 'ABC'    // 中国农业银行
+    },
+    {
+        label : 'BOC',
+        value : 'BOC'  // 中国银行
+    },
+    {
+        label : 'CITIC',
+        value : 'CITIC'  // 中信银行
+    },
+    {
+        label : 'CEB',
+        value : 'CEB'  // 光大银行
+    },
+    {
+        label : 'HXB',
+        value : 'HXB'  // 华夏银行
+    },
+    {
+        label : 'CMSB',
+        value : 'CMSB'  // 民生银行
+    },
+    {
+        label : 'CGB',
+        value : 'CGB'  // 广发银行
+    },
+    {
+        label : 'SZD',
+        value : 'SZD'  // 平安银行
+    },
+    {
+        label : 'others',
+        value : 'others'
+    },
+];
+

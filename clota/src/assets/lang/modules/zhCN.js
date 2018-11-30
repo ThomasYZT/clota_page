@@ -1815,5 +1815,19 @@ export default {
     'whetherSure' : '是否确认',
     'sureToDelPoster' : '是否确定删除海报？',
     'sureToDelmarketingPosition' : '是否确定删除营销地理位置？',
+    // 银行
+    'CMB' : '招商银行',
+    'CCB' : '中国建设银行',
+    'COM' : '交通银行',
+    'CPG' : '邮政储蓄银行',
+    'ICBC' : '中国工商银行',
+    'ABC' : '中国农业银行',
+    'BOC' : '中国银行',
+    'CITIC' : '中信银行',
+    'CEB' : '光大银行',
+    'HXB' : '华夏银行',
+    'CMSB' : '民生银行',
+    'CGB' : '广发银行',
+    'SZD' : '平安银行',
 
 }
