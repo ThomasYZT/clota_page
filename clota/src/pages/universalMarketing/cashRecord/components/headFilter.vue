@@ -54,7 +54,7 @@
         data () {
             return {
                 filterParams : {
-                    auditStatus : 'reject_no_req,reject,success,auditing',
+                    auditStatus : '',// reject_no_req,reject,success,auditing
                     marketTypeId : 'all',
                     marketLevelId : 'all',
                 },
@@ -63,18 +63,17 @@
                 // 审核状态列表
                 auditStatusList : auditStatusList,
                 // 营销类别列表
-                marketingTypes : [{ id : 'all', typeName : this.$t('all') }],
+                marketingTypes : [{ id : 'all', typeName : 'all' }],
                 // 营销等级列表
                 marketingLevels : [],
                 // 全部营销等级
-                allMarketLevel : [{ id : 'all', levelName : this.$t('all') }],
+                allMarketLevel : [{ id : 'all', levelName : 'all' }],
             }
         },
         computed : {},
         created () {
             this.resetFilter = JSON.stringify(this.filterParams);
             this.getMarketingTypes();
-            this.searchList();
         },
         mounted () {
         },
@@ -111,7 +110,7 @@
                         typeId : typeId || this.filterParams.marketTypeId
                     }).then(res => {
                         if (res.success) {
-                            this.marketingLevels = this.allMarketLevel.concat(res.data || []);
+                            this.marketingLevels = res.data ? this.allMarketLevel.concat(res.data.data || []) : this.allMarketLevel;
                         }
                     });
                 }
@@ -120,19 +119,14 @@
              * 获取提现记录列表数据
              */
             searchList () {
-                let queryParams = Object.assign({}, this.filterParams);
-                ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
-                    if (queryParams[key].includes('all')) {
-                        queryParams[key] = '';
-                    }
-                });
-                this.$emit('on-search', queryParams);
+                this.$emit('on-search', this.filterParams);
             },
             /**
              * 重置筛选条件
              */
             reset () {
-
+                this.filterParams = JSON.parse(this.resetFilter);
+                this.searchList();
             },
         }
     };

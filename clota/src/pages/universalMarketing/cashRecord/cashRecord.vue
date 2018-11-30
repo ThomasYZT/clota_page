@@ -13,6 +13,7 @@
                 @click="">{{$t("exporting")}}</Button>
         <!--提现记录列表-->
         <table-com
+            :ofsetHeight="135"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -21,6 +22,30 @@
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
             @query-data="queryList">
+            <el-table-column
+                slot="column10"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <Tooltip placement="bottom" :transfer="true">
+                        <span>{{$t(withdrawStatus[scope.row.withdrawStatus]) | contentFilter}}</span>
+                        <div slot="content" class="record-item"
+                             v-for="item in scope.row.operationRecordsVos || []"
+                             :key="item.id">
+                            <span class="record-time">{{item.createdTime}}</span>
+                            <div style="flex: 4;">
+                                <span>{{$t(statusLog[item.operationStatus]) | contentFilter}}</span>
+                                <div style="margin-top: 10px;" v-if="item.contents">
+                                    {{$t('colonSetting', { key: $t('remark') })}} {{item.contents}}
+                                </div>
+                            </div>
+                        </div>
+                    </Tooltip>
+                </template>
+            </el-table-column>
 
             <el-table-column
                 slot="column12"
@@ -30,14 +55,16 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <!--审核状态为“待审核”时，操作按钮：审核-->
-                    <!--<span class="operate-btn blue">{{$t('checked')}}</span>-->
-                    <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
-                    <!--<span class="operate-btn blue">{{$t('提交转账流水')}}</span>-->
-                    <!--审核状态为“已转账”时，操作按钮：修改转账流水-->
-                    <!--<span class="operate-btn blue">{{$t('修改转账流水')}}</span>-->
-                    <!--审核状态为“已驳回”时，操作按钮：无-->
-                    <span class="operate-btn blue">-</span>
+                    <ul class="operate-list">
+                        <!--审核状态为“待审核”时，操作按钮：审核-->
+                        <li v-if="scope.row.withdrawStatus=='auditing'">{{$t('checked')}}</li>
+                        <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
+                        <li v-else-if="scope.row.withdrawStatus=='pass'">{{$t('提交转账流水')}}</li>
+                        <!--审核状态为“已转账”时，操作按钮：修改转账流水-->
+                        <li v-else-if="scope.row.withdrawStatus=='success'">{{$t('修改转账流水')}}</li>
+                        <!--审核状态为“已驳回”时，操作按钮：无-->
+                        <li v-else>-</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -60,14 +87,32 @@
                 //表头配置
                 columnData : cashRecordHead,
                 //表格数据
-                tableData : [{}],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //提现记录传参
                 queryParams : {
+                    auditStatus : '',// reject_no_req,reject,success,auditing
+                    marketTypeId : 'all',
+                    marketLevelId : 'all',
                     pageNo : 1,
                     pageSize : 10,
-                }
+                },
+                //审核状态key-value
+                withdrawStatus : {
+                    auditing : '待审核',
+                    pass : '已通过',
+                    success : '已转账',
+                    reject : '已驳回',
+                    reject_no_req : '已驳回',
+                },
+                //审核状态日志key-value
+                statusLog : {
+                    MARKET_WITHDRAW_REQ : '申请提现',
+                    MARKET_WITHDRAW_REJECT : '驳回',
+                    MARKET_WITHDRAW_PASS : '通过',
+                    MARKET_WITHDRAW_SUCCESS : '已转账',
+                },
             }
         },
         computed : {},
@@ -81,8 +126,14 @@
              * 查询提现记录列表数据
              */
             queryList () {
+                let params = Object.assign({}, this.queryParams);
+                ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
+                    if (params[key].includes('all')) {
+                        params[key] = '';
+                    }
+                });
                 ajax.post('marketing-queryWithdrawRecord',{
-                    ...this.queryParams
+                    ...params
                 }).then(res => {
                     if (res.success && res.data) {
                         this.tableData = res.data.data || [];
@@ -110,5 +161,15 @@
         overflow: auto;
         background: $color_fff;
         border-radius: 4px;
+
+    }
+
+    .record-item {
+        display: flex;
+
+        .record-time {
+            margin-right: 20px;
+            flex: 2;
+        }
     }
 </style>

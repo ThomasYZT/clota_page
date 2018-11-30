@@ -23,20 +23,20 @@
                     <i-row>
                         <i-col span="8">
                             <div class="node-info">
-                                <span class="info-key">{{$t('name')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('name') })}}</span>
                                 <span class="info-val" v-w-title="'刘木子'">{{'刘木子' | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
-                                <span class="info-key">{{$t('gender')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('gender') })}}</span>
                                 <span class="info-val">{{$t('female') | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--身份证号码-->
-                                <span class="info-key">{{$t('身份证号码')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('身份证号码') })}}</span>
                                 <span class="info-val">{{'431129199411090989'}}</span>
                             </div>
                         </i-col>
@@ -44,13 +44,13 @@
                     <i-row>
                         <i-col span="8">
                             <div class="node-info">
-                                <span class="info-key">{{$t('birthday')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('birthday') })}}</span>
                                 <span class="info-val">{{'11-09'}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
-                                <span class="info-key">{{$t('mobilePhone')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('mobilePhone') })}}</span>
                                 <span class="info-val">{{'176387263872'}}</span>
                             </div>
                         </i-col>
@@ -67,21 +67,21 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--收款账户类型-->
-                                <span class="info-key">{{$t('collectionAccountType')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('collectionAccountType') })}}</span>
                                 <span class="info-val">{{$t('支付宝') | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--收款用户姓名-->
-                                <span class="info-key">{{$t('收款用户姓名')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('收款用户姓名') })}}</span>
                                 <span class="info-val">{{$t('张依依') | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--收款账号-->
-                                <span class="info-key">{{$t('收款账号')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('收款账号') })}}</span>
                                 <span class="info-val">{{'59789792839809'}}</span>
                             </div>
                         </i-col>
@@ -98,20 +98,20 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--营销类别-->
-                                <span class="info-key">{{$t('marketType')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('marketType') })}}</span>
                                 <span class="info-val" v-w-title="'物美超市'">{{'物美超市' | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--营销等级-->
-                                <span class="info-key">{{$t('marketingLevel')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('marketingLevel') })}}</span>
                                 <span class="info-val" v-w-title="'物美超市1级'">{{'物美超市1级' | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
-                                <span class="info-key">{{$t('signTime')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('signTime') })}}</span>
                                 <span class="info-val">{{'2018-08-06'}}</span>
                             </div>
                         </i-col>
@@ -120,7 +120,7 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--用户邀请码-->
-                                <span class="info-key">{{$t('用户邀请码')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('用户邀请码') })}}</span>
                                 <span class="info-val">{{'1109'}}</span>
                             </div>
                         </i-col>
@@ -137,7 +137,7 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--累计销售额-->
-                                <span class="info-key">{{$t('totalMoney')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('totalMoney') })}}</span>
                                 <span class="info-val text-org">{{'3478.00'}}</span>
                             </div>
                         </i-col>
@@ -146,21 +146,21 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--佣金总额-->
-                                <span class="info-key">{{$t('佣金总额')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('佣金总额') })}}</span>
                                 <span class="info-val text-org">{{'8932.93' | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--已提现金额-->
-                                <span class="info-key">{{$t('已提现金额')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('已提现金额') })}}</span>
                                 <span class="info-val text-org">{{'8932.93' | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--未提现金额-->
-                                <span class="info-key">{{$t('未提现金额')}}：</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('未提现金额') })}}</span>
                                 <span class="info-val text-org">{{'8932.93' | contentFilter}}</span>
                             </div>
                         </i-col>
