@@ -119,6 +119,36 @@ export const marketingRoutes = [
                     title : '我的',
                     menuBar : 'mine'
                 }
+            },
+            //我的中心页面--可提现金额
+            {
+                path : 'ownerCenter/deposit',
+                name : 'marketingDeposit',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/deposit.vue'),
+                meta : {
+                    title : '可提现金额',
+                    hideTabbar : true
+                }
+            },
+            //我的中心页面--扫码购票页面
+            {
+                path : 'ownerCenter/qrCode',
+                name : 'marketingQrCode',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/qrCode.vue'),
+                meta : {
+                    title : '扫码购票',
+                    hideTabbar : true
+                }
+            },
+            //我的中心页面--设置收款账户
+            {
+                path : 'ownerCenter/setAccount',
+                name : 'marketingSetAccount',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/setDepositAccount.vue'),
+                meta : {
+                    title : '设置收款账户',
+                    hideTabbar : true
+                }
             }
         ]
     }

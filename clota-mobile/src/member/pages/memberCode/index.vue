@@ -172,7 +172,7 @@
                     }
                 ];
                 this.$nextTick(() =>{
-                    this.$refs.previewer.show(0)
+                    this.$refs.previewer.show(0);
                 });
             },
             /**
