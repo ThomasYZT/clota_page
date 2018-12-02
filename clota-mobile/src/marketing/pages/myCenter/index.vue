@@ -10,13 +10,13 @@
                 <div class="level">{{$t('白银级')}}</div>
             </div>
             <div class="er-code">
-                <span class="iconfont icon-code"></span>
+                <span class="iconfont icon-code" @click="toCreateOrder"></span>
             </div>
         </div>
         <div></div>
         <div class="hr"></div>
         <!--提现金额-->
-        <div class="cell-list">
+        <div class="cell-list" @click="toDepositDetail">
             <span class="icon iconfont icon-default-account"></span>
             <span class="label-title">提现金额</span>
             <span class="label-value"><span class="money">{{27 | moneyFilter | contentFilter}}</span>元</span>
@@ -30,21 +30,68 @@
             <span class="iconfont icon-arrow"></span>
         </div>
         <!--设置-->
-        <div class="cell-list">
+        <div class="cell-list" @click="toSettingDetail">
             <span class="icon iconfont icon-security-setting"></span>
             <span class="label-title">设置</span>
             <span class="label-value"></span>
             <span class="iconfont icon-arrow"></span>
         </div>
+        <confirm v-model="confirmShow"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('继续')"
+                 @on-cancel="onCancel"
+                 @on-confirm="onConfirm">
+            <p style="text-align:center;">{{ $t('根据景区要求，当前位置扫码下达的订单不计算佣金！') }}</p>
+        </confirm>
     </div>
 </template>
 
 <script>
 	export default {
 		data () {
-			return {};
+			return {
+			    //是否确认下单
+                confirmShow : false
+            };
 		},
-		methods : {}
+		methods : {
+            /**
+             * 跳转到提现金额详情页面
+             */
+            toDepositDetail () {
+                this.$router.push({
+                    name : 'marketingDeposit'
+                });
+            },
+            /**
+             * 取消下单
+             */
+            onCancel () {
+                this.confirmShow = false;
+            },
+            /**
+             * 继续下单
+             */
+            onConfirm () {
+
+            },
+            /**
+             * 跳转到下单页面
+             */
+            toCreateOrder () {
+                this.confirmShow = true;
+            },
+            /**
+             * 跳转到账户设置页面
+             */
+            toSettingDetail () {
+                this.$router.push({
+                    name : 'marketingSetAccount'
+                });
+            }
+        }
 	};
 </script>
 <style lang="scss" scoped>
@@ -159,5 +206,11 @@
                 }
             }
         }
+    }
+</style>
+<style>
+    .confirm-modal-wrap .weui-dialog__bd{
+        padding-bottom: 30px!important;
+        line-height: 25px!important;
     }
 </style>
