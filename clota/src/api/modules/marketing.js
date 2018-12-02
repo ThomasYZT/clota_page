@@ -46,6 +46,8 @@ export default {
     //	新增禁止售卖区域
     'marketing-add' : '/market/forbidden/add',
     //获取禁止售卖区域
-    'marketing-forbiddenList' : '/market/forbidden/list'
+    'marketing-forbiddenList' : '/market/forbidden/list',
+    //查询类别及其级别
+    'marketing-queryTypes' : '/market/type/queryTypes',
 
 }

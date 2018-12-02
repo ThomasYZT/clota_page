@@ -10,7 +10,7 @@
             </div>
 
             <div class="view-wrapper">
-                <Tabs :animated="false">
+                <Tabs :animated="false" v-model="nowTab">
                     <TabPane :label="$t('marketingLevel')">
                         <marketingLevel></marketingLevel>
                     </TabPane>
@@ -31,7 +31,6 @@
     import cashOfferSettings from './child/cashOfferSettings';
     import codeRegister from './child/codeRegister';
     import marketingLevel from './child/marketingLevel';
-    import ajax from '@/api/index';
     export default {
         components : {
             marketTypeTree,
@@ -41,20 +40,12 @@
         },
         data () {
             return {
-                //营销类别列表
-                typeList : []
+                //当前tab项
+                nowTab : 0
             };
         },
         methods : {
-            getTypeList () {
-                ajax.post('marketing-typeList').then((res) => {
-                    if (res.success) {
 
-                    } else {
-
-                    }
-                });
-            }
         },
         created () {
 

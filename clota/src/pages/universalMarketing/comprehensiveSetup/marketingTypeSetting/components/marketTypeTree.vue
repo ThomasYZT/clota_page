@@ -7,13 +7,13 @@
         <p class="add-btn">
             <span @click="add">+{{$t('addNewMarketingType')}}</span>
         </p>
-        <el-tree :data="data" :props="defaultProps">
+        <el-tree ref="elTree" :data="typeList" :props="defaultProps" node-key="id">
             <div class="node" slot-scope="{ node, data }">
                 <div class="label">
-                    <span v-if="data.type !== 'edit' && data.type !== 'add'">{{data.label}}</span>
+                    <span v-if="data.type !== 'edit' && data.type !== 'add'">{{node.label}}</span>
                     <Input v-else v-model="data.label" :placeholder="$t('inputField', { field : $t('marketType') })" style="width: 130px;"></Input>
                 </div>
-                <div class="tool-box" v-if="data.level === '1'">
+                <div class="tool-box">
                     <template v-if="data.type === 'edit' || data.type === 'add'">
                         <span @click.stop="save(data)" class="save">{{$t('save')}}</span>
                         <span @click.stop="cancel(data)" class="cancel">{{$t('cancel')}}</span>
@@ -40,46 +40,22 @@
 
 <script>
     import delModal from '../../../../../components/delModal/index';
+    import ajax from '@/api/index';
+    import forEach from 'lodash/forEach';
     export default {
         components : {
             delModal
         },
         data () {
             return {
-                data : [
-                    {
-                        label : '一级 1',
-                        level : '1',
-                        children : [
-                            {
-                                label : '二级 1-1',
-                                level : '2',
-                            }
-                        ]
-                    },
-                    {
-                        label : '一级 2',
-                        level : '1',
-                        children : [
-                            {
-                                label : '二级 2-1',
-                                level : '2',
-                            },
-                            {
-                                label : '二级 2-2',
-                                level : '2',
-                            }
-                        ]
-                    }
-                ],
+                typeList : [],
                 defaultProps : {
                     children : 'children',
-                    label : 'label',
+                    label : 'typeName',
                 },
                 //新节点数据
                 newNodeData : {
                     label : '',
-                    level : '1',
                     type : 'add',
                     children : []
                 },
@@ -92,16 +68,26 @@
              * 增加营销类别
              */
             add () {
-                this.data.push(this.newNodeData);
+                let canAdd = true;
+                forEach(this.typeList, (item) => {
+                    if (item.type === 'add') {
+                        canAdd = false;
+                        return false;
+                    }
+                });
+                if (canAdd) {
+                    this.typeList.push(this.newNodeData);
+                }
             },
             /**
              *  编辑
              *  @param {object} data
              */
             edit (data) {
-                this.data.forEach((item,index, arr) => {
+                forEach(this.typeList, (item,index, arr) => {
                     if (data.label === item.label) {
                         this.$set(arr[index],'type','edit');
+                        return false;
                     }
                 });
             },
@@ -110,46 +96,134 @@
              *  @param {object} data
              */
             del (data) {
-                this.delData = data;
                 this.$refs.delModal.show({
                     confirmCallback : () => {
-                        this.data.forEach((item,index, arr) => {
-                            if (data.label === item.label) {
-                                arr.splice(index, 1)
-                            }
-                        });
-                    },
-                    cancelCallback : () => {
-                        this.delData = {};
+                        //确认删除
+                        this.confirmDel(data);
                     }
                 })
 
             },
             /**
-             * 保存
+             *  确认删除类别
+             *  @param {*} data
              */
-            save () {
+            confirmDel (data) {
+                forEach(this.typeList, (item) => {
+                    if (data.label === item.label) {
+                        this.forceDelete(data);
+                        return false;
+                    }
+                });
+            },
+            /**
+             *  接口强制删除类别
+             *  @param {*} data
+             */
+            forceDelete (data) {
+                ajax.post('marketing-forceDeleteType', {
+                    typeId : data.id
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
+                        this.getTypeList();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
+                    }
+                });
+            },
+            /**
+             * 保存
+             * @param {*} data
+             */
+            save (data) {
+                if (data.type && data.type === 'add') {
+                    this.addType(data);
+                } else {
+                    this.saveEdit(data);
+                }
 
+            },
+            /**
+             *  增加类别
+             *  @param {*} data
+             */
+            addType (data) {
+                ajax.post('marketing-addType', {
+                    typeName : data.label,
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        this.getTypeList();
+                        this.newNodeData = {
+                            label : '',
+                            type : 'add'
+                        }
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                    }
+                });
+            },
+            /**
+             * 保存编辑
+             * @param {*} data
+             */
+            saveEdit (data) {
+                ajax.post('marketing-updateType', {
+                    id : data.id,
+                    typeName : data.label,
+                    registerUrl : data.registerUrl,
+                    withdrawDay : data.withdrawDay
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('edit') }));
+                        this.getTypeList();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
+                    }
+                 })
             },
             /**
              * 取消
              * @param {object} data
              */
             cancel (data) {
-                this.data.forEach((item,index, arr) => {
+                forEach(this.typeList, (item,index, arr) => {
                     if (data.label === item.label && item.type === 'edit') {
                         this.$set(arr[index],'type','');
+                        return false;
                     } else if (data.label === item.label && item.type === 'add') {
-                        this.data.pop();
+                        this.typeList.pop();
+                        return false;
                     }
                 });
                 this.newNodeData = {
                     label : '',
-                    level : '1',
-                    type : 'add',
-                    children : []
+                    type : 'add'
                 }
+            },
+            /**
+             *  获取营销类别列表数据
+             */
+            getTypeList () {
+                ajax.post('marketing-typeList').then((res) => {
+                    if (res.success) {
+                        this.typeList = res.data ? res.data.map((item) => {
+                            return {
+                                ...item,
+                                label : item.typeName,
+                                type : '',
+                            }
+                        }) : [];
+                        this.$refs.elTree.setCurrentKey([this.typeList[0].id]);
+                    } else {
+                        this.typeList = [];
+                    }
+                });
             }
+        },
+        created () {
+            this.getTypeList();
         }
     };
 </script>
