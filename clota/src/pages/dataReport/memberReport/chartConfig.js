@@ -13,13 +13,35 @@ const defaultConfig = {
     legend : {
         orient : 'horizontal',
         textStyle : {
-            color : '#999999'
+            fontSize : 14,
+            rich : {
+                name : {
+                    width : 60,
+                    color : '#666666',
+                    padding : [0,5,0,0]
+                },
+                per : {
+                    width : 60,
+                    color : '#999999',
+                    padding : [0,0,0,10]
+                },
+                val : {
+                    color : '#333333'
+                },
+                sg : {
+                    borderColor : '#aaa',
+                    width : 1,
+                    height : 12,
+                    backgroundColor : '#D9D9D9'
+                }
+            }
         },
         bottom : 20,
         pageButtonGap : 10,
         lineHeight : 56,
-        itemGap : 18,
-        itemHeight : 17,
+        itemGap : 50,
+        itemWidth : 16,
+        itemHeight : 8,
         show : true,
         data : []
     },
@@ -58,6 +80,14 @@ const defaultConfig = {
     },
     yAxis : {
         type : 'value',
+        axisLine : {
+            lineStyle : {
+                color : '#B0BDC9'
+            }
+        },
+        axisLabel : {
+            color : '#666',
+        }
     },
 };
 

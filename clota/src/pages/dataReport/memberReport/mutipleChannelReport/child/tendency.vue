@@ -232,6 +232,7 @@
                 position: absolute;
                 left: 3%;
                 top: 20px;
+                color: #999;
             }
             .echarts {
                 height: 100%;
