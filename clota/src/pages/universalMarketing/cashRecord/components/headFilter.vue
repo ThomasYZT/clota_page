@@ -1,5 +1,5 @@
 <!--
-内容：数据筛选组件
+内容：提现记录数据筛选组件
 作者：djc
 日期：
 -->
@@ -54,7 +54,7 @@
         data () {
             return {
                 filterParams : {
-                    auditStatus : '',// reject_no_req,reject,success,auditing
+                    auditStatus : 'reject_no_req,reject,success,auditing,pass',// reject_no_req,reject,success,auditing,pass
                     marketTypeId : 'all',
                     marketLevelId : 'all',
                 },

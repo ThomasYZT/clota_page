@@ -10,7 +10,7 @@
         <head-filter @on-search="searchCashRecords"></head-filter>
         <!--导出-->
         <Button type="primary" style="width: 88px; margin: 10px 30px;"
-                @click="">{{$t("exporting")}}</Button>
+                @click="exportCashRecord()">{{$t("exporting")}}</Button>
         <!--提现记录列表-->
         <table-com
             :ofsetHeight="135"
@@ -32,14 +32,19 @@
                 <template slot-scope="scope">
                     <Tooltip placement="bottom" :transfer="true">
                         <span>{{$t(withdrawStatus[scope.row.withdrawStatus]) | contentFilter}}</span>
-                        <div slot="content" class="record-item"
-                             v-for="item in scope.row.operationRecordsVos || []"
-                             :key="item.id">
-                            <span class="record-time">{{item.createdTime}}</span>
-                            <div style="flex: 4;">
-                                <span>{{$t(statusLog[item.operationStatus]) | contentFilter}}</span>
-                                <div style="margin-top: 10px;" v-if="item.contents">
-                                    {{$t('colonSetting', { key: $t('remark') })}} {{item.contents}}
+                        <div slot="content" class="content-box">
+                            <div class="record-item"
+                                 v-for="item in scope.row.operationRecordsVos || []"
+                                 :key="item.id">
+                                <span class="record-time">{{item.createdTime}}</span>
+                                <div style="margin-left: 140px;">
+                                    <span>{{$t(statusLog[item.operationStatus]) | contentFilter}}</span>
+                                    <div class="remark-content" v-if="item.contents">
+                                        {{$t('colonSetting', { key: $t('remark') })}} {{item.contents}}
+                                    </div>
+                                    <!--<div class="remark-content">
+                                        {{$t('colonSetting', { key: $t('remark') })}} {{'ghir983409ifdjfio32908954fhgfhgfhghhihgkjdfhgkj'}}
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -57,7 +62,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <!--审核状态为“待审核”时，操作按钮：审核-->
-                        <li v-if="scope.row.withdrawStatus=='auditing'">{{$t('checked')}}</li>
+                        <li v-if="scope.row.withdrawStatus=='auditing'" @click="showAuditModal(scope.row)">{{$t('checked')}}</li>
                         <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
                         <li v-else-if="scope.row.withdrawStatus=='pass'">{{$t('提交转账流水')}}</li>
                         <!--审核状态为“已转账”时，操作按钮：修改转账流水-->
@@ -68,10 +73,13 @@
                 </template>
             </el-table-column>
         </table-com>
+        <!--审核提现弹窗-->
+        <audit-cash-modal ref="auditCashModal" @on-audited="queryList"></audit-cash-modal>
     </div>
 </template>
 <script>
     import headFilter from './components/headFilter.vue';
+    import auditCashModal from './components/auditCashModal.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index';
     import { cashRecordHead } from './cashRecordConfig';
@@ -79,7 +87,8 @@
     export default {
         components : {
             headFilter,
-            tableCom
+            tableCom,
+            auditCashModal
         },
         props : {},
         data () {
@@ -92,7 +101,7 @@
                 totalCount : 0,
                 //提现记录传参
                 queryParams : {
-                    auditStatus : '',// reject_no_req,reject,success,auditing
+                    auditStatus : 'reject_no_req,reject,success,auditing,pass',// reject_no_req,reject,success,auditing,pass
                     marketTypeId : 'all',
                     marketLevelId : 'all',
                     pageNo : 1,
@@ -144,9 +153,33 @@
                     }
                 });
             },
+            /**
+             * 搜索提现记录
+             * @param params  Object
+             */
             searchCashRecords (params) {
                 Object.assign(this.queryParams, params);
                 this.queryList();
+            },
+
+            showAuditModal (scopeRow) {
+                this.$refs.auditCashModal.show(scopeRow);
+            },
+            /**
+             * 导出提现记录
+             */
+            exportCashRecord () {
+                ajax.post('marketing-exportWithdrawRecord', {
+                    auditStatus : this.queryParams.auditStatus,
+                    marketTypeId : this.queryParams.marketTypeId.includes('all') ? '' : this.queryParams.marketTypeId,
+                    marketLevelId : this.queryParams.marketLevelId.includes('all') ? '' : this.queryParams.marketLevelId,
+                    pageNo : 1,
+                    pageSize : 9999,
+                }).then(res => {
+                    if (res.success) {
+
+                    }
+                });
             }
         }
     };
@@ -164,12 +197,23 @@
 
     }
 
+    .content-box {
+        max-height: 150px;
+        padding: 0 5px;
+        overflow-y: auto;
+    }
+
     .record-item {
-        display: flex;
+        min-width: 280px;
+        margin: 10px 0;
 
         .record-time {
+            float: left;
             margin-right: 20px;
-            flex: 2;
+        }
+
+        .remark-content {
+            word-break: break-all;
         }
     }
 </style>

@@ -1,5 +1,5 @@
 <!--
-内容：提现审核
+内容：提交/修改 转账流水
 作者：djc
 日期：
 -->
@@ -8,16 +8,15 @@
     <div>
         <Modal
             v-model="visible"
-            class="addChannel"
             class-name="vertical-center-modal"
             :mask-closable="false"
             :width="560"
-            :title="$t('审核提现信息')"
+            :title="$t('填写转账流水号')"
             @on-cancel="hide">
 
             <!--内容区域-->
             <Form ref="formValidate"
-                  :model="auditParams"
+                  :model="transferParams"
                   :rules="ruleValidate"
                   :label-width="140"
                   @submit.native.prevent>
@@ -45,9 +44,21 @@
                 <Form-item :label="$t('colonSetting', { key: $t('佣金') })">
                     <div>{{withdrawInfo.orderSalary | contentFilter}}</div>
                 </Form-item>
+                <!--付款方式-->
+                <Form-item :label="$t('colonSetting', { key: $t('modeOfPayment') })">
+                    <Select v-model="transferParams.salaryPayment" class="field-item">
+                        <Option v-for="item in paymentTypeList"
+                                :key="item.value"
+                                :value="item.value">
+                            {{$t(item.label)}}
+                        </Option>
+                    </Select>
+                </Form-item>
+
+
                 <!--备注-->
                 <Form-item :label="$t('colonSetting', { key: $t('remark') })" prop="remark">
-                    <Input v-model="auditParams.remark"
+                    <Input v-model="transferParams.remark"
                            type="textarea"
                            :rows="4"
                            :placeholder="$t('inputField', {field: $t('备注信息或驳回理由')})"/>
@@ -57,8 +68,8 @@
             <!--自定义页脚-->
             <div slot="footer">
                 <template>
-                    <i-button type="primary" @click="handlePass()">{{$t('passed')}}</i-button>
-                    <i-button type="error" @click="handleReject()">{{$t('reject')}}</i-button>
+                    <i-button type="primary" @click="handlePass()">{{$t('submit')}}</i-button>
+                    <i-button type="error" @click="hide()">{{$t('cancel')}}</i-button>
                 </template>
             </div>
         </Modal>
@@ -87,14 +98,18 @@
 
             return {
                 visible : false, //显示模态框变量
-                // 提现审核的传参
-                auditParams : {
-                    ids : '',
-                    auditStatus : '', // pass 审核通过, reject 驳回, reject_no_req, 驳回不能申请
+                // 提交、修改转账流水的传参
+                transferParams : {
+                    marketOrderId : '',
+                    salaryPayment : '',
+                    paySerialNum : '',
+                    payName : '',
                     remark : ''
                 },
                 // 被审核的提现信息数据
                 withdrawInfo : {},
+                // 付款方式列表
+                paymentTypeList : [],
 
                 // 校验规则
                 ruleValidate : {
@@ -120,22 +135,22 @@
              * @param data
              */
             show (data) {
-                this.$refs.formValidate.resetFields();
                 this.withdrawInfo = data;
-                this.auditParams.ids = data.id;
+                this.transferParams.ids = data.id;
                 this.visible = true;
             },
             /**
              * 隐藏模态框
              */
             hide () {
+                this.$refs.formValidate.resetFields();
                 this.visible = false;
             },
             /**
              * 点击通过
              **/
             handlePass () {
-                this.auditParams.auditStatus = 'pass';
+                this.transferParams.auditStatus = 'pass';
                 this.handleAudit();
             },
             /**
@@ -156,10 +171,10 @@
              **/
             handleAudit () {
                 ajax.post('marketing-auditWithdrawRecord',{
-                    ...this.auditParams
+                    ...this.transferParams
                 }).then(res => {
                     if (res.success) {
-                        if (this.auditParams.auditStatus == 'pass') {
+                        if (this.transferParams.auditStatus == 'pass') {
                             this.$Message.success(this.$t('提现审核通过'));
                             this.hide();
                         } else {
@@ -179,7 +194,7 @@
              * @param auditStatus
              */
             rejectWithdraw (auditStatus) {
-                this.auditParams.auditStatus = auditStatus;
+                this.transferParams.auditStatus = auditStatus;
                 this.handleAudit();
             }
         }
