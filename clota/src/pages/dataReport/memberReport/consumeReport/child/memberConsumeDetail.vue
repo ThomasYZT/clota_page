@@ -135,7 +135,6 @@
             getParams (params) {
                 if (params && params.listItem) {
                     this.listItem = params.listItem;
-                    this.getData();
                 } else {
                     this.$router.push({
                         name : 'consumeReport'
