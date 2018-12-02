@@ -39,18 +39,17 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <ul class="operate-list">
-                        <li class="normal" @click="showTip(scope.row)">{{$t('check')}}</li>
-                    </ul>
-                    <Tooltip placement="bottom" :transfer="true">
-                        <div class="check-button"></div>
-                        <div slot="content" v-if="isShowTip">
+                    <Tooltip placement="bottom" :transfer="true" :disabled="showTipId !== scope.row.itemId">
+                        <ul class="operate-list">
+                            <li class="normal" @click="showTip(scope.row)">{{$t('check')}}</li>
+                        </ul>
+                        <div slot="content">
                             <Timeline>
                                 <TimelineItem v-for="(item, index) in timeLineData"
                                               :key="index"
                                               color="blue">
                                     {{item.createdTime  | contentFilter}}
-                                    {{$t('packageCount')}} {{item.amount | moneyFilter | contentFilter}} ,
+                                    {{$t('packageCount')}} {{item.amount | contentFilter}} ,
                                     {{$t('unitPrice')}} {{item.price | moneyFilter | contentFilter}}
                                 </TimelineItem>
                             </Timeline>
@@ -106,7 +105,7 @@
                 //时间查看消费记录数据
                 timeLineData : [],
                 //是否显示tip
-                isShowTip : false
+                showTipId : ''
             };
         },
         methods : {
@@ -148,18 +147,18 @@
              * @param {*} data
              */
             showTip (data) {
-                this.isShowTip = false;
+                this.showTipId = '';
                 ajax.post('queryMemberOrderItemList', {
                     memberId : this.listItem.memberId,
                     orgId : this.listItem.outOrgId,
                     itemId : data.itemId
-                }).then(res => {
+                },null,false).then(res => {
                     if (res.success) {
                         this.timeLineData = res.data ? res.data : [];
-                        this.isShowTip = true;
+                        this.showTipId = data.itemId;
                     } else {
                         this.timeLineData = [];
-                        this.isShowTip = false;
+                        this.showTipId = '';
                     }
                 });
             },
@@ -192,14 +191,6 @@
             }
         }
 
-        /deep/ .check-button {
-            position: absolute;
-            left: -30px;
-            top: -12px;
-            width: 32px;
-            height: 22px;
-            cursor: pointer;
-            color: $color_blue;
-        }
+
     }
 </style>
