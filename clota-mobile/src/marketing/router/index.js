@@ -149,6 +149,16 @@ export const marketingRoutes = [
                     title : '设置收款账户',
                     hideTabbar : true
                 }
+            },
+            //我的中心页面--我的海报
+            {
+                path : 'ownerCenter/poster',
+                name : 'marketingPoster',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/poster.vue'),
+                meta : {
+                    title : '海报',
+                    hideTabbar : true
+                }
             }
         ]
     }
