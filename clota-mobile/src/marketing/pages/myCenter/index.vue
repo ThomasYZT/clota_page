@@ -23,7 +23,7 @@
             <span class="iconfont icon-arrow"></span>
         </div>
         <!--海报-->
-        <div class="cell-list">
+        <div class="cell-list" @click="toPoster">
             <span class="icon iconfont icon-my-orders"></span>
             <span class="label-title">海报</span>
             <span class="label-value"></span>
@@ -88,7 +88,15 @@
              */
             toSettingDetail () {
                 this.$router.push({
-                    name : 'marketingSetAccount'
+                    name : 'marketingSetting'
+                });
+            },
+            /**
+             * 跳转到我的海报页面
+             */
+            toPoster () {
+                this.$router.push({
+                    name : 'marketingPoster'
                 });
             }
         }

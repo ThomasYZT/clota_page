@@ -58,6 +58,36 @@
                         name : '2',
                         src : require('../../../../assets/images/icon-invalid-url.png'),
                         size : 23
+                    },
+                    {
+                        name : '2',
+                        src : require('../../../../assets/images/icon-invalid-url.png'),
+                        size : 23
+                    },
+                    {
+                        name : '2',
+                        src : require('../../../../assets/images/icon-invalid-url.png'),
+                        size : 23
+                    },
+                    {
+                        name : '2',
+                        src : require('../../../../assets/images/icon-invalid-url.png'),
+                        size : 23
+                    },
+                    {
+                        name : '2',
+                        src : require('../../../../assets/images/icon-invalid-url.png'),
+                        size : 23
+                    },
+                    {
+                        name : '2',
+                        src : require('../../../../assets/images/icon-invalid-url.png'),
+                        size : 23
+                    },
+                    {
+                        name : '2',
+                        src : require('../../../../assets/images/icon-invalid-url.png'),
+                        size : 23
                     }
                 ],
                 options : {
