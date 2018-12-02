@@ -118,8 +118,8 @@
                               prop="smsProvider">
                         <Select v-model.trim="formDataCopy.smsProvider" >
                             <Option v-for="item in smsSuppilerList"
-                                    :value="item.desc"
-                                    :key="item.desc">
+                                    :value="item.provider"
+                                    :key="item.id">
                                 {{ item.provider }}
                             </Option>
                         </Select>
