@@ -46,7 +46,7 @@ export default {
     //根据取票串码核销
     'checkByPickSerialNo' : '/order/checkByPickSerialNo',
     //给导游重发短信
-    'noticeGuidesAuditResult' : '/sms/noticeGuidesAuditResult',
+    'noticeGuidesAuditResult' : '/order/noticeGuidesAuditResult',
     //查询一级散客订单详情
     'queryFirstIndividualOrderDetail': '/order/queryFirstIndividualOrderDetail',
     //查询二级散客订单详情
@@ -66,6 +66,6 @@ export default {
     //获取产品可预定日期
     'getProductPolicyPlayDate': '/order/getProductPolicyPlayDate',
     //通知游客取票
-    'noticeVisitorToPick': '/sms/noticeVisitorToPick'
+    'noticeVisitorToPick': '/order/noticeVisitorToPick'
 
 }

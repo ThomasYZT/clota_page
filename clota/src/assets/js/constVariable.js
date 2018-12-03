@@ -728,3 +728,17 @@ export const  bankList = [
     },
 ];
 
+//第三方支付方式列表
+export const  proxyBankList = [
+    {
+        label : 'payType.weixin', //微信
+        value : 'wx'
+    },
+    {
+        label : 'payType.alipay', //支付宝
+        value : 'zfb'
+    },
+]
+
+
+

@@ -1829,6 +1829,9 @@ export default {
     'CMSB' : '民生银行',
     'CGB' : '广发银行',
     'SZD' : '平安银行',
-    'sureToDelMarketingLevel' : '是否确定删除营销等级，'
+    'hasPassed' : '已通过',
+    'hasTransfer' : '已转账',
+    'withdrawReq' : '申请提现',
+    'sureToDelMarketingLevel' : '是否确定删除营销等级，',
 
 }

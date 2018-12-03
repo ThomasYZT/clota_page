@@ -149,6 +149,76 @@ export const marketingRoutes = [
                     title : '设置收款账户',
                     hideTabbar : true
                 }
+            },
+            //我的中心页面--我的海报
+            {
+                path : 'ownerCenter/poster',
+                name : 'marketingPoster',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/poster.vue'),
+                meta : {
+                    title : '海报',
+                    hideTabbar : true
+                }
+            },
+            //我的中心页面--设置
+            {
+                path : 'ownerCenter/setting',
+                name : 'marketingSetting',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/setting.vue'),
+                meta : {
+                    title : '设置',
+                    hideTabbar : true
+                }
+            },
+            //我的中心页面--设置--修改手机号
+            {
+                path : 'ownerCenter/setting/changePhone',
+                name : 'marketingChangePhone',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/settingChild/changePhone.vue'),
+                meta : {
+                    title : '更改手机号',
+                    hideTabbar : true
+                }
+            },
+            //我的中心页面--设置--修改登录密码
+            {
+                path : 'ownerCenter/setting/changePassword',
+                name : 'marketingChangePassword',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/settingChild/changePassword.vue'),
+                meta : {
+                    title : '更改密码',
+                    hideTabbar : true
+                }
+            },
+            //我的中心页面--设置--修改登录密码结果页
+            {
+                path : 'ownerCenter/setting/changePassword/success',
+                name : 'marketingChangePasswordSuc',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/settingChild/changePasswordSuc.vue'),
+                meta : {
+                    title : '更改密码',
+                    hideTabbar : true
+                }
+            },
+            //游客下单
+            {
+                path : 'tourist',
+                name : 'marketingTourist',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/index.vue'),
+                meta : {
+                    title : '广州长隆水上乐园',
+                    hideTabbar : true
+                }
+            },
+            //游客下单
+            {
+                path : 'tourist/createOrder',
+                name : 'marketingCreateOrder',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/createOrder.vue'),
+                meta : {
+                    title : '填写订单',
+                    hideTabbar : true
+                }
             }
         ]
     }

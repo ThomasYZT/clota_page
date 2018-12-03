@@ -54,7 +54,7 @@ export const cashRecordHead = [
         width : 130,
         enWidth : 150,
         type : 'money',
-        field : 'saleAmount'
+        field : 'checkAmount'
     },
     {
         title : '佣金', // 佣金
@@ -81,8 +81,9 @@ export const cashRecordHead = [
 
 // 审核状态列表
 export const auditStatusList = [
-    { label : '全部', value : 'reject_no_req,reject,success,auditing' },
+    { label : '全部', value : 'reject_no_req,reject,success,auditing,pass' },
     { label : '已提现', value : 'success' },
     { label : '待审核', value : 'auditing' },
+    { label : '已通过', value : 'pass' },
     { label : '已驳回', value : 'reject_no_req,reject' },
 ];

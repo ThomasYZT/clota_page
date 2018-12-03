@@ -1,5 +1,5 @@
 <!--
-内容：数据筛选组件
+内容：提现记录数据筛选组件
 作者：djc
 日期：
 -->
@@ -54,7 +54,7 @@
         data () {
             return {
                 filterParams : {
-                    auditStatus : '',// reject_no_req,reject,success,auditing
+                    auditStatus : 'reject_no_req,reject,success,auditing,pass',// reject_no_req,reject,success,auditing,pass
                     marketTypeId : 'all',
                     marketLevelId : 'all',
                 },
@@ -78,11 +78,19 @@
         mounted () {
         },
         watch : {
+            // 营销类别改变的同时更新营销等级列表
             'filterParams.marketTypeId' : {
                 handler (val, oldVal) {
                     this.getMarketingLevels(val);
                 },
                 immediate : true
+            },
+            // 监听筛选条件只要有改变，就查询列表数据
+            filterParams : {
+                handler (val, oldVal) {
+                    this.searchList();
+                },
+                deep : true
             }
         },
         methods : {
@@ -126,7 +134,6 @@
              */
             reset () {
                 this.filterParams = JSON.parse(this.resetFilter);
-                this.searchList();
             },
         }
     };

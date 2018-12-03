@@ -93,6 +93,39 @@
                     :auto-height="true"
                     :table-com-min-height="280"
                     @query-data="getSmsBuyRecord">
+                    <el-table-column
+                        slot="columnpayType"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{$t(scope.row.payType)}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="columnpayStatus"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{scope.row.payStatus ? $t('payStatus.' + scope.row.payStatus) : ''}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="columnsysStatus"
+                        slot-scope="row"
+                        :label="row.title"
+                        show-overflow-tooltip
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            {{scope.row.sysStatus ? $t('systemStatus.' + scope.row.sysStatus) : ''}}
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
         </transition>

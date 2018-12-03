@@ -259,6 +259,11 @@
 
         </Form>
 
+        <!--在线收款账户-->
+        <online-receipt :node-info="activeNode"
+                        :receipt-account-info="companyDetail"
+                        @fresh-org-data="freshOrg">
+        </online-receipt>
 
         <!--已开通服务-->
         <opened-service
@@ -304,6 +309,7 @@
     import openedService from './components/openedService';
     import subCompany from './components/subCompany';
     import subScene from './components/subScene';
+    import onlineReceipt from './components/onlineReceipt';
     import subDepartment from './components/subDepartment';
     import defaultsDeep from 'lodash/defaultsDeep';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
@@ -330,7 +336,8 @@
             subScene,
             subDepartment,
             cityPlugin,
-            editModal
+            editModal,
+            onlineReceipt
         },
         data () {
             //校验邮箱
