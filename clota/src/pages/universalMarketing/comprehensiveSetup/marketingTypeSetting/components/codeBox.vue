@@ -19,16 +19,8 @@
                     <i-row class="box-row">
                         <i-col span="24">
                             <!-- 营销类别 -->
-                            <FormItem :label="$t('colonSetting', { key : $t('marketType') })" prop="marketType">
-                                <Select v-model="formData.marketType"
-                                        :placeholder="$t('selectField', { msg : $t('marketType') })"
-                                        show-name
-                                        style="width:170px">
-                                    <Option v-for="item in marketTypeList"
-                                            :value="item.value"
-                                            :key="item.value">{{ item.label }}
-                                    </Option>
-                                </Select>
+                            <FormItem :label="$t('colonSetting', { key : $t('marketType') })">
+                                <span>{{codeInfo.typeName | contentFilter}}</span>
                             </FormItem>
 
                             <!-- 路径 -->
@@ -47,7 +39,24 @@
 
         <!-- 展示二维码区域 -->
         <transition name="fade">
-            <div class="show-box" v-if="boxStatus === 'show'"></div>
+            <div class="show-box" v-if="boxStatus === 'show'">
+                <Form ref="form"
+                      :label-width="100">
+                    <i-row class="box-row">
+                        <i-col span="24">
+                            <!-- 营销类别 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('marketType') })">
+                                <span>{{codeInfo.typeName | contentFilter}}</span>
+                            </FormItem>
+
+                            <!-- 路径 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('path') })"  prop="path">
+                                <span>{{codeInfo.registerUrl}}</span>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+                </Form>
+            </div>
         </transition>
 
         <!-- 底部按钮区域 -->
@@ -67,24 +76,43 @@
 </template>
 
 <script>
-
+    import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
     export default {
+        props : {
+            codeInfo : {
+                type : Object,
+                default () {
+                    return {}
+                }
+            }
+        },
         components : {},
         data () {
             return {
-                boxStatus : 'null',
                 formData : {
-                    //营销类型
-                    marketType : '',
                     //路径
                     path : '',
                 },
                 ruleValidate : {
-                    marketType : [],
-                    path : [],
+                    path : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('path') }), trigger : 'blur' },
+                    ],
                 },
-                marketTypeList : [],
             };
+        },
+        computed : {
+            ...mapGetters([
+                'manageOrgs'
+            ]),
+            boxStatus : {
+                get : function () {
+                    return this.codeInfo.status;
+                },
+                set : function (newVal) {
+                    this.codeInfo.status = newVal;
+                }
+            }
         },
         methods : {
             /**
@@ -92,36 +120,25 @@
              */
             add () {
                 this.boxStatus = 'add';
-                this.marketTypeList = [
-                    {
-                        label : '111',
-                        value : '111'
-                    },
-                    {
-                        label : '222',
-                        value : '222'
-                    },
-                    {
-                        label : '333',
-                        value : '333'
-                    },
-                    {
-                        label : '444',
-                        value : '444'
-                    }
-                ];
             },
             /**
              * 保存
              */
             save () {
-                this.boxStatus = 'show';
-                this.resetBox();
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        //接口保存二维码信息
+                        this.formData.path = this.formData.path + '?Ycode=' + this.manageOrgs.saleCode
+                                                                + '&Ucid=' + this.codeInfo.id;
+                        this.updateCode({ path : this.formData.path, type : this.boxStatus });
+                    }
+                });
             },
             /**
              * 编辑
              */
             edit () {
+                this.formData.path = this.codeInfo.registerUrl.split('?')[0];
                 this.boxStatus = 'edit';
             },
             /**
@@ -130,7 +147,7 @@
             back () {
                 if (this.boxStatus === 'add') {
                     this.boxStatus = 'null';
-                } else {
+                } else if (this.boxStatus === 'edit') {
                     this.boxStatus = 'show';
                 }
                 this.resetBox();
@@ -139,19 +156,48 @@
              * 重置
              */
             resetBox () {
-                this.formData = {
-                    marketType : '',
-                    path : '',
-                };
-                this.marketTypeList = [];
-                this.$refs.form.resetFields();
+                if (this.boxStatus === 'add' || this.boxStatus === 'edit') {
+                    this.$refs.form.resetFields();
+                } else {
+                    this.formData = { path : '' };
+                }
             },
             /**
              * 删除
              */
             del () {
                 this.boxStatus = 'null';
+                this.updateCode({ path : '', type : 'del' });
+                this.resetBox();
+            },
+            /**
+             * 接口保存二维码信息
+             */
+            updateCode ({ path, type }) {
+                ajax.post('marketing-updateType', {
+                    id : this.codeInfo.id,
+                    registerUrl : path
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t(type) }));
+                        this.boxStatus = 'show';
+                        if (type === 'add' || type === 'edit') {
+                            this.resetBox();
+                        }
+                        this.$emit('updateSuccess');
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t(type) }));
+                    }
+                });
             }
+        },
+        watch : {
+            codeInfo : {
+                handler () {
+                    this.resetBox();
+                }
+            },
+            deep : true
         }
     };
 </script>
@@ -188,9 +234,14 @@
             width: 100%;
         }
 
-        .add-box {
+        .add-box, .show-box {
             padding-top: 70px;
 
+        }
+        .show-box {
+            padding-top: 100px;
+            width: 80%;
+            word-break: break-all;
         }
 
         .box-footer {

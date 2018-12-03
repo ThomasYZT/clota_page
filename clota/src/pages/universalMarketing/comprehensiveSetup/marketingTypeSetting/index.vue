@@ -6,19 +6,20 @@
     <div class="marketing-type-setting">
         <div class="setup-layout">
             <div class="tree-wrapper">
-                <marketTypeTree></marketTypeTree>
+                <marketTypeTree :marketingTypeItem.sync="marketingTypeItem"
+                                :isUpdate.sync="isUpdate"></marketTypeTree>
             </div>
 
             <div class="view-wrapper">
                 <Tabs :animated="false" v-model="nowTab">
                     <TabPane :label="$t('marketingLevel')">
-                        <marketingLevel></marketingLevel>
+                        <marketingLevel :marketingTypeItem="marketingTypeItem"></marketingLevel>
                     </TabPane>
                     <TabPane :label="$t('codeRegisterManage')">
-                        <codeRegister></codeRegister>
+                        <codeRegister :marketingTypeItem="marketingTypeItem" @updateSuccess="updateSuccess"></codeRegister>
                     </TabPane>
                     <TabPane :label="$t('cashSetting')">
-                        <cashOfferSettings></cashOfferSettings>
+                        <cashOfferSettings :marketingTypeItem="marketingTypeItem" @updateSuccess="updateSuccess"></cashOfferSettings>
                     </TabPane>
                 </Tabs>
             </div>
@@ -41,11 +42,20 @@
         data () {
             return {
                 //当前tab项
-                nowTab : 0
+                nowTab : 0,
+                //是否需要更新状态
+                isUpdate : false,
+                //当前选择的营销类别项
+                marketingTypeItem : {}
             };
         },
         methods : {
-
+            /**
+             * 更新成功
+             */
+            updateSuccess () {
+                this.isUpdate = true;
+            }
         },
         created () {
 

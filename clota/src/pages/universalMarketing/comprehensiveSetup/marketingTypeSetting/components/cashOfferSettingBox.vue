@@ -14,31 +14,144 @@
                         <i class="iconfont icon-help"></i>
                     </Tooltip>
                 </h4>
-                <span class="value">{{99}}</span>
+                <span v-if="status === 'show'" class="value">{{cashOfferInfo.withdrawDay | contentFilter}}</span>
+                <Form ref="form"
+                      v-if="status === 'edit'"
+                      :model="formData"
+                      :rules="ruleValidate"
+                      :label-width="0">
+                    <i-row class="box-row">
+                        <i-col span="24">
+                            <!-- 提现天数 -->
+                            <FormItem label=""  prop="withdrawDay">
+                                <Input style="width:120px;"
+                                       type="text"
+                                       v-model.trim="formData.withdrawDay"
+                                       :placeholder="$t('inputField', { field : $t('cashOfferDays') })"/>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+                </Form>
             </div>
         </div>
 
         <div class="box-footer">
-            <i class="iconfont icon-edit"></i>
-            <span @click="edit">{{$t('edit')}}</span>
+            <template v-if="status === 'show'">
+                <div class="btn">
+                    <i class="iconfont icon-edit"></i>
+                    <span class="blue-btn" @click="edit">{{$t('edit')}}</span>
+                </div>
+            </template>
+            <template v-if="status === 'edit'">
+                <div class="btn"><span class="blue-btn" @click="save">{{$t('save')}}</span></div>
+                <div class="btn"><span @click='cancel'> {{$t('cancel')}} </span></div>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
-
+    import common from '@/assets/js/common.js';
+    import ajax from '@/api/index';
     export default {
+        props : {
+            cashOfferInfo : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
         components : {},
         data () {
-            return {};
+            //校验正整数
+            const validateNumber = (rule,value,callback) => {
+                common.validateInteger(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t(err,{ field : this.$t('cashOfferDays'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('cashOfferDays') }));
+                    }
+                });
+            };
+            return {
+                formData : {
+                    withdrawDay : ''
+                },
+                ruleValidate : {
+                    withdrawDay : [
+                        { required : true, message : this.$t('inputField', { field : this.$t('cashOfferDays') }), trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' }
+                    ],
+                }
+            };
+        },
+        computed : {
+            status : {
+                get : function () {
+                    return this.cashOfferInfo.status;
+                },
+                set : function (newVal) {
+                    this.cashOfferInfo.status = newVal;
+                }
+            }
         },
         methods : {
             /**
              * 编辑
              */
             edit () {
-
+                this.status = 'edit';
+            },
+            /**
+             * 组件数据重置
+             */
+            reset () {
+                if (this.status === 'show') {
+                    this.formData = { withdrawDay : '' };
+                } else {
+                    this.$refs.form.resetFields();
+                }
+            },
+            /**
+             * 保存设置
+             */
+            save () {
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        ajax.post('marketing-updateType', {
+                            id : this.cashOfferInfo.id,
+                            withdrawDay : this.formData.withdrawDay
+                        }).then(res => {
+                            if (res.success) {
+                                this.$Message.success(this.$t('successTip', { tip : this.$t('edit') }));
+                                this.reset();
+                                this.status = 'show';
+                                this.$emit('updateSuccess');
+                            } else {
+                                this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
+                            }
+                        });
+                    }
+                })
+            },
+            /**
+             * 取消
+             */
+            cancel () {
+                this.status = 'show';
+                this.reset();
             }
+        },
+        watch : {
+            codeInfo : {
+                handler () {
+                    this.reset();
+                }
+            },
+            deep : true
         }
     };
 </script>
@@ -92,15 +205,27 @@
     }
 
     .box-footer {
+        display: flex;
         width: 100%;
         height: 40px;
         line-height: 40px;
         text-align: center;
-        color: $color_blue;
         background-color: #F7F9FA;
 
         span, i {
             cursor: pointer;
+        }
+
+        .blue-btn {
+            color: $color_blue;
+        }
+
+        .btn {
+            flex: 1 0;
+            flex-basis: 50%;
+            height: 40px;
+            line-height: 40px;
+            text-align : center;
         }
     }
 </style>

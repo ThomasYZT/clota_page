@@ -1829,5 +1829,6 @@ export default {
     'CMSB' : '民生银行',
     'CGB' : '广发银行',
     'SZD' : '平安银行',
+    'sureToDelMarketingLevel' : '是否确定删除营销等级，'
 
 }

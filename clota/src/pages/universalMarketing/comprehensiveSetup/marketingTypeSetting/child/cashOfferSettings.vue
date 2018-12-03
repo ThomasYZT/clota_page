@@ -4,20 +4,52 @@
 -->
 <template>
     <div class="cash-offer-settings">
-        <cashOfferSettingBox></cashOfferSettingBox>
+        <cashOfferSettingBox v-if="Object.keys(marketingTypeItem).length > 0"
+                             :cashOfferInfo="cashOfferInfo"
+                             @updateSuccess="updateSuccess"></cashOfferSettingBox>
     </div>
 </template>
 
 <script>
     import cashOfferSettingBox from '../components/cashOfferSettingBox'
     export default {
+        props : {
+            marketingTypeItem : {
+                type : Object,
+                default () {
+                    return {}
+                }
+            }
+        },
         components : {
             cashOfferSettingBox
         },
         data () {
-            return {};
+            return {
+                cashOfferInfo : {}
+            };
         },
-        methods : {}
+        methods : {
+            /**
+             * 更新成功
+             */
+            updateSuccess () {
+                this.$emit('updateSuccess');
+            }
+        },
+        watch : {
+            marketingTypeItem : {
+                handler (newVal) {
+                    this.cashOfferInfo = {
+                        withdrawDay : newVal.withdrawDay,
+                        id : newVal.id,
+                        status : 'show',
+                    };
+                }
+            },
+            immediate : true,
+            deep : true
+        }
     };
 </script>
 

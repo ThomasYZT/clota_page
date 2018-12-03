@@ -7,8 +7,14 @@
         <p class="add-btn">
             <span @click="add">+{{$t('addNewMarketingType')}}</span>
         </p>
-        <el-tree ref="elTree" :data="typeList" :props="defaultProps" node-key="id">
-            <div class="node" slot-scope="{ node, data }">
+        <el-tree ref="elTree"
+                 :data="typeList"
+                 :props="defaultProps"
+                 node-key="id"
+                 :highlight-current="false"
+                 @current-change="currentChange">
+            <div class="node"
+                 slot-scope="{ node, data }">
                 <div class="label">
                     <span v-if="data.type !== 'edit' && data.type !== 'add'">{{node.label}}</span>
                     <Input v-else v-model="data.label" :placeholder="$t('inputField', { field : $t('marketType') })" style="width: 130px;"></Input>
@@ -42,7 +48,20 @@
     import delModal from '../../../../../components/delModal/index';
     import ajax from '@/api/index';
     import forEach from 'lodash/forEach';
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
+        props : {
+            marketingTypeItem : {
+                type : Object,
+                defaut () {
+                    return {}
+                }
+            },
+            isUpdate : {
+                type : Boolean,
+                defaut : false
+            }
+        },
         components : {
             delModal
         },
@@ -60,7 +79,11 @@
                     children : []
                 },
                 //正在删除的内容
-                delData : {}
+                delData : {},
+                //当前选择的类别选项
+                nowItem : {
+                    //type : init & change 两种状态分别表示初始化和改变两种状态
+                }
             };
         },
         methods : {
@@ -126,7 +149,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
-                        this.getTypeList();
+                        this.getTypeList({});
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                     }
@@ -154,7 +177,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
-                        this.getTypeList();
+                        this.getTypeList({});
                         this.newNodeData = {
                             label : '',
                             type : 'add'
@@ -177,7 +200,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('edit') }));
-                        this.getTypeList();
+                        this.getTypeList({});
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
                     }
@@ -205,7 +228,7 @@
             /**
              *  获取营销类别列表数据
              */
-            getTypeList () {
+            getTypeList ({ type }) {
                 ajax.post('marketing-typeList').then((res) => {
                     if (res.success) {
                         this.typeList = res.data ? res.data.map((item) => {
@@ -215,15 +238,51 @@
                                 type : '',
                             }
                         }) : [];
-                        this.$refs.elTree.setCurrentKey([this.typeList[0].id]);
+                        this.initSetting();
+
+                        //用于各种操作的数据更新
+                        if (type && type === 'update') {
+                            this.$emit('update:isUpdate', false);
+                        }
                     } else {
                         this.typeList = [];
                     }
                 });
+            },
+            /**
+             * 初始化设置 首次加载数据默认选择第一项
+             */
+            initSetting () {
+                if (this.typeList.length > 0) {
+                    this.nowItem = defaultsDeep({ type : 'init' }, this.typeList[0]);
+                    this.$emit('update:marketingTypeItem', this.nowItem);
+                    this.$nextTick(() => {
+                        this.$refs.elTree.setCurrentKey(this.nowItem.id ? this.nowItem.id : '');
+                    });
+                } else {
+                    this.nowItem = {};
+                }
+            },
+            /**
+             *  类别选项改变事件（用户点击选择营销类别时触发）
+             */
+            currentChange (data) {
+                this.nowItem = defaultsDeep({ type : 'change' }, data);
+                this.$emit('update:marketingTypeItem', this.nowItem);
             }
         },
         created () {
-            this.getTypeList();
+            this.getTypeList({});
+        },
+        watch : {
+            isUpdate : {
+                handler (newVal) {
+                    if (newVal) {
+                        this.getTypeList({ type : 'update' });
+                    }
+                },
+                immediate : true
+            }
         }
     };
 </script>
@@ -234,6 +293,16 @@
         /deep/ .el-tree {
             span.el-tree-node__label {
                 font-size: 16px;
+            }
+
+            .is-current {
+                background-color: #f5f7fa;
+            }
+
+            .el-tree-node__content {
+                &:hover {
+                    background-color: #f5f7fa;
+                }
             }
         }
 
@@ -254,6 +323,8 @@
             .label {
                 flex: 1 0;
                 flex-basis: 70%;
+                height: 30px;
+                line-height: 30px;
                 span {
                     font-size: 16px;
                     color: #333;

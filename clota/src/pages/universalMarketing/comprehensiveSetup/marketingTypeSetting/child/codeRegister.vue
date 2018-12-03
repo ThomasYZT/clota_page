@@ -4,20 +4,53 @@
 -->
 <template>
     <div class="code-register">
-        <codeBox></codeBox>
+        <codeBox v-if="Object.keys(marketingTypeItem).length > 0"
+                 :codeInfo="codeInfo"
+                 @updateSuccess="updateSuccess"></codeBox>
     </div>
 </template>
 
 <script>
     import codeBox from '../components/codeBox';
     export default {
+        props : {
+            marketingTypeItem : {
+                type : Object,
+                default () {
+                    return {}
+                }
+            }
+        },
         components : {
             codeBox
         },
         data () {
-            return {};
+            return {
+                codeInfo : {}
+            };
         },
-        methods : {}
+        methods : {
+            /**
+             * 更新成功
+             */
+            updateSuccess () {
+                this.$emit('updateSuccess');
+            }
+        },
+        watch : {
+            marketingTypeItem : {
+                handler (newVal) {
+                    this.codeInfo = {
+                        registerUrl : newVal.registerUrl,
+                        id : newVal.id,
+                        typeName : newVal.typeName,
+                        status : newVal.registerUrl ? 'show' : 'null',
+                    };
+                }
+            },
+            immediate : true,
+            deep : true
+        }
     };
 </script>
 

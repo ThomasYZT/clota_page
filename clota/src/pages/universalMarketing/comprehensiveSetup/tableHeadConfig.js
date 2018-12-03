@@ -40,34 +40,29 @@ export const marketingPositionHead = [
 export const marketingLevelHead = [
     {
         title : 'levelID',
-        minWidth : 100,
-        field : 'payType'
+        minWidth : 150,
+        field : 'id'
     },
     {
         title : 'marketingLevelName',
         minWidth : 150,
-        field : 'payType'
+        field : 'levelName'
     },
     {
         title : 'level',
         minWidth : 100,
-        field : 'payType'
-    },
-    {
-        title : 'marketingTypeName',
-        minWidth : 150,
-        field : 'payType'
+        field : 'level'
     },
     {
         title : 'levelUpMoney',
         minWidth : 100,
-        field : 'payType',
+        field : 'levelAmount',
         type : 'money'
     },
     {
         title : 'createdTime',
-        minWidth : 100,
-        field : 'payType',
+        minWidth : 150,
+        field : 'createdTime',
         type : 'date'
     },
     {

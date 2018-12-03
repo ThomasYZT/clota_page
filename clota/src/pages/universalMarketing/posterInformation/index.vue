@@ -36,7 +36,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <Tooltip placement="right" transfer>
+                        <Tooltip theme="light" placement="right" transfer>
                             <span>{{scope.row.posterName | contentFilter}}</span>
                             <div slot="content" class="tooltip-content">
                                 <img :src="scope.row.posterUrl">
@@ -90,7 +90,7 @@
     import tableCom from '../../../components/tableCom/tableCom';
     import { posterInfoHead } from './tableHeadConfig';
     import uploadPosterModal from './components/uploadPosterModal';
-    import delModal from '../../../components/delModal/index'
+    import delModal from '../../../components/delModal/index';
     export default {
         components : {
             tableCom,
@@ -217,7 +217,8 @@
     .tooltip-content {
         width: 340px;
         height: 185px;
-        background-color: white;
+        line-height: 185px;
+        background-color: #fff;
         border-radius: 8px;
         img {
             width: 100%;
@@ -238,9 +239,6 @@
             color: $color_red;
         }
     }
-</style>
-<style>
-    .ivu-tooltip-inner {
-        background-color: #fff;
-    }
+
+
 </style>
