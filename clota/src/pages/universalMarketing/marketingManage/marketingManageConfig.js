@@ -9,37 +9,37 @@ export const marketingProductHead = [
     {
         title : 'stock', // 库存
         minWidth : 130,
-        field : ''
+        field : 'stockType/stockNum'
     },
     {
         title : 'printPrice', // 票面价格
         width : 110,
         enWidth : 130,
         type : 'money',
-        field : ''
+        field : 'printPrice'
     },
     {
         title : '销售政策产品单价', // 销售政策产品单价
         width : 160,
         enWidth : 180,
         type : 'money',
-        field : ''
+        field : 'settlePrice'
     },
     {
         title : '终端售价', // 终端售价
         minWidth : 130,
         type : 'money',
-        field : ''
+        field : 'salePrice'
     },
     {
         title : '佣金', // 佣金
         width : 110,
         type : 'money',
-        field : ''
+        field : 'commission'
     },
     {
         title : 'operate',
-        width : 180,
-        enWidth : 230,
+        width : 150,
+        enWidth : 200,
     }
 ];

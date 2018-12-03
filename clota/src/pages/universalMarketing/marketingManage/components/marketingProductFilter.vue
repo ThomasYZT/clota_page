@@ -84,6 +84,13 @@
                     this.getMarketingLevels(val);
                 },
                 immediate : true
+            },
+            // 监听筛选条件只要有改变，就查询列表数据
+            filterParams : {
+                handler (val, oldVal) {
+                    this.searchList();
+                },
+                deep : true
             }
         },
         methods : {
@@ -123,12 +130,7 @@
                     selectType : 'from'
                 }).then(res => {
                     if (res.success && res.data) {
-                        if (res.data.data && res.data.data.length > 0) {
-                            this.salesPolicy = this.salesPolicy.concat(res.data.data);
-                            this.$nextTick(() => {
-                                this.filterParams.policyId = res.data.data[0].id;
-                            });
-                        }
+                        this.salesPolicy = res.data.data || [];
                     }
                 });
             },
@@ -143,7 +145,6 @@
              */
             reset () {
                 this.filterParams = JSON.parse(this.resetFilter);
-                this.searchList();
             },
         }
     };

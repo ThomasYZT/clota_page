@@ -1833,5 +1833,8 @@ export default {
     'hasTransfer' : '已转账',
     'withdrawReq' : '申请提现',
     'sureToDelMarketingLevel' : '是否确定删除营销等级，',
+    'stockType.perDay' : '每日',
+    'stockType.total' : '总量',
+    'stockType.unlimited' : '不限',
 
 }

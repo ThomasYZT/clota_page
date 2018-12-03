@@ -73,7 +73,7 @@
                 </Form-item>
                 <!--备注-->
                 <Form-item :label="$t('colonSetting', { key: $t('remark') })" prop="remark">
-                    <Input v-model="transferParams.remark"
+                    <Input v-model.trim="transferParams.remark"
                            type="textarea"
                            :rows="4"
                            :placeholder="$t('inputField', {field: $t('交易流水号或备注说明')})"/>
