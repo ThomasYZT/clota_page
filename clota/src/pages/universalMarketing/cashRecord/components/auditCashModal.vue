@@ -31,7 +31,7 @@
                 </Form-item>
                 <!--收款账户类型-->
                 <Form-item :label="$t('colonSetting', { key: $t('collectionAccountType') })">
-                    <div>{{withdrawInfo.accountType | contentFilter}}</div>
+                    <div>{{ $t(transAccountType(withdrawInfo.accountType)) | contentFilter }}</div>
                 </Form-item>
                 <!--收款账号/卡号-->
                 <Form-item :label="$t('colonSetting', { key: $t('收款账号/卡号') })">
@@ -56,10 +56,8 @@
             </Form>
             <!--自定义页脚-->
             <div slot="footer">
-                <template>
-                    <i-button type="primary" @click="handlePass()">{{$t('passed')}}</i-button>
-                    <i-button type="error" @click="handleReject()">{{$t('reject')}}</i-button>
-                </template>
+                <i-button type="primary" @click="handlePass()">{{$t('passed')}}</i-button>
+                <i-button type="error" @click="handleReject()">{{$t('reject')}}</i-button>
             </div>
         </Modal>
         <!--驳回提示框-->
@@ -69,6 +67,7 @@
 <script type="text/ecmascript-6">
     import rejectModal from './rejectModal.vue';
     import ajax from '@/api/index';
+    import { transAccountType } from '../cashRecordFun';
 
     export default {
         components : { rejectModal },
@@ -181,7 +180,11 @@
             rejectWithdraw (auditStatus) {
                 this.auditParams.auditStatus = auditStatus;
                 this.handleAudit();
-            }
+            },
+            /**
+             * 收付款方式的code转换
+             */
+            transAccountType : transAccountType,
         }
     };
 </script>

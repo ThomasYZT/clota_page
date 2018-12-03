@@ -20,10 +20,8 @@
         </div>
         <!--自定义页脚-->
         <div slot="footer">
-            <template>
-                <i-button type="primary" @click="handleAllow('reject')">{{$t('允许')}}</i-button>
-                <i-button type="ghost" @click="handleAllow('reject_no_req')">{{$t('不允许')}}</i-button>
-            </template>
+            <i-button type="primary" @click="handleAllow('reject')">{{$t('允许')}}</i-button>
+            <i-button type="ghost" @click="handleAllow('reject_no_req')">{{$t('不允许')}}</i-button>
         </div>
     </Modal>
 </template>

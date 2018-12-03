@@ -7,7 +7,7 @@
 <template>
     <div class="cash-record">
         <!--列表数据筛选器-->
-        <head-filter @on-search="searchCashRecords"></head-filter>
+        <head-filter ref="headFilter" @on-search="searchCashRecords"></head-filter>
         <!--导出-->
         <Button type="primary" style="width: 88px; margin: 10px 30px;"
                 @click="exportCashRecord()">{{$t("exporting")}}</Button>
@@ -62,11 +62,14 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <!--审核状态为“待审核”时，操作按钮：审核-->
-                        <li v-if="scope.row.withdrawStatus=='auditing'" @click="showAuditModal(scope.row)">{{$t('checked')}}</li>
+                        <li v-if="scope.row.withdrawStatus=='auditing'"
+                            @click="showModal('auditCashModal', scope.row)">{{$t('checked')}}</li>
                         <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
-                        <li v-else-if="scope.row.withdrawStatus=='pass'">{{$t('提交转账流水')}}</li>
+                        <li v-else-if="scope.row.withdrawStatus=='pass'"
+                            @click="showModal('transferAccountModal', scope.row)">{{$t('提交转账流水')}}</li>
                         <!--审核状态为“已转账”时，操作按钮：修改转账流水-->
-                        <li v-else-if="scope.row.withdrawStatus=='success'">{{$t('修改转账流水')}}</li>
+                        <li v-else-if="scope.row.withdrawStatus=='success'"
+                            @click="showModal('transferAccountModal', scope.row)">{{$t('修改转账流水')}}</li>
                         <!--审核状态为“已驳回”时，操作按钮：无-->
                         <li v-else>-</li>
                     </ul>
@@ -75,20 +78,27 @@
         </table-com>
         <!--审核提现弹窗-->
         <audit-cash-modal ref="auditCashModal" @on-audited="queryList"></audit-cash-modal>
+        <!--提交/修改转账流水弹窗-->
+        <transfer-account-modal ref="transferAccountModal" @on-submit-success="queryList"></transfer-account-modal>
     </div>
 </template>
 <script>
     import headFilter from './components/headFilter.vue';
     import auditCashModal from './components/auditCashModal.vue';
+    import transferAccountModal from './components/transferAccountModal.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index';
     import { cashRecordHead } from './cashRecordConfig';
+    import ajaxConfig from '@/config/index.js';
+    import apiList from '@/api/apiList.js';
+    import querystring from 'querystring';
 
     export default {
         components : {
             headFilter,
             tableCom,
-            auditCashModal
+            auditCashModal,
+            transferAccountModal
         },
         props : {},
         data () {
@@ -109,18 +119,18 @@
                 },
                 //审核状态key-value
                 withdrawStatus : {
-                    auditing : '待审核',
-                    pass : '已通过',
-                    success : '已转账',
-                    reject : '已驳回',
-                    reject_no_req : '已驳回',
+                    auditing : 'waitChecking', //待审核
+                    pass : 'hasPassed', //已通过
+                    success : 'hasTransfer', //已转账
+                    reject : 'rejected', //已驳回 - 此驳回含义：可再次申请提现
+                    reject_no_req : 'rejected', //已驳回 - 此驳回含义：不可再次申请提现
                 },
                 //审核状态日志key-value
                 statusLog : {
-                    MARKET_WITHDRAW_REQ : '申请提现',
-                    MARKET_WITHDRAW_REJECT : '驳回',
-                    MARKET_WITHDRAW_PASS : '通过',
-                    MARKET_WITHDRAW_SUCCESS : '已转账',
+                    MARKET_WITHDRAW_REQ : 'withdrawReq', //申请提现
+                    MARKET_WITHDRAW_REJECT : 'reject', //驳回
+                    MARKET_WITHDRAW_PASS : 'passed', //通过
+                    MARKET_WITHDRAW_SUCCESS : 'hasTransfer', //已转账
                 },
             }
         },
@@ -162,24 +172,22 @@
                 this.queryList();
             },
 
-            showAuditModal (scopeRow) {
-                this.$refs.auditCashModal.show(scopeRow);
+            showModal (modalType,scopeRow) {
+                this.$refs[modalType].show(scopeRow);
             },
             /**
              * 导出提现记录
              */
             exportCashRecord () {
-                ajax.post('marketing-exportWithdrawRecord', {
-                    auditStatus : this.queryParams.auditStatus,
+                let stringifyPar = {
+                    auditStatus : this.queryParams.auditStatus == 'reject_no_req,reject,success,auditing,pass' ? '' : this.queryParams.auditStatus,
                     marketTypeId : this.queryParams.marketTypeId.includes('all') ? '' : this.queryParams.marketTypeId,
                     marketLevelId : this.queryParams.marketLevelId.includes('all') ? '' : this.queryParams.marketLevelId,
                     pageNo : 1,
                     pageSize : 9999,
-                }).then(res => {
-                    if (res.success) {
-
-                    }
-                });
+                    token : ajax.getToken()
+                };
+                window.location.href = `${ajaxConfig.HOST}${apiList['marketing-exportWithdrawRecord']}?${querystring.stringify(stringifyPar)}`;
             }
         }
     };
