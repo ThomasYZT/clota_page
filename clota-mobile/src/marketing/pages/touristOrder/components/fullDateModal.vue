@@ -4,7 +4,8 @@
     <popup :value="value"
            :hide-on-blur="false"
            @input="changeModalStatus"
-           v-transfer-dom>
+           v-transfer-dom
+           @on-show="popupShow">
         <div :class="$style.dateBody">
             <div :class="$style.title">
                 <div :class="$style.cancelBtn" @click="changeModalStatus(false)">{{$t('cancel')}}</div>
@@ -42,7 +43,7 @@
                                         <li :class="[
                                         $style.dateCol,
                                         !day.label ? $style.dateDisable : '',
-                                        day.completeVal === activeDate ? $style.dateActive : ''
+                                        day.completeVal === chooseDate ? $style.dateActive : ''
                                         ]"
                                             v-for="(day,dayIndex) in date"
                                             :key="dayIndex" @click="choseDay(day)">
@@ -67,6 +68,13 @@
             'value' : {
                 type : Boolean,
                 default : false
+            },
+            //当前激活的日期
+            'active-date' : {
+                type : Date,
+                default () {
+                    return new Date();
+                }
             }
         },
         data () {
@@ -75,7 +83,7 @@
                 dateIndex : 2,
                 dateSuffer : 1,
                 //当前选择的日期
-                activeDate : new Date().format('yyyy-MM-dd')
+                chooseDate : ''
             };
         },
         methods : {
@@ -107,14 +115,21 @@
              */
             choseDay (day) {
                 if (!day.label) return;
-                this.activeDate = day.completeVal;
+                this.chooseDate = day.completeVal;
             },
             /**
              * 确认选择日期
              */
             confirmChooseDay () {
-                this.$emit('choose-day',this.activeDate);
+                this.$emit('choose-day',new Date(this.chooseDate));
                 this.changeModalStatus(false);
+            },
+            /**
+             * 模态框显示
+             */
+            popupShow () {
+                this.dateSuffer = 1;
+                this.dateIndex = 2;
             }
         },
         computed : {
@@ -122,7 +137,8 @@
             dateInfo () {
                 let result = [];
                 for (let i = 0,j = this.dateIndexSort.length; i < j; i++) {
-                    let date = new Date().addMonths(i - 2 - this.dateSuffer);
+                    let dateObj = this.activeDate.valueOf();
+                    let date = new Date(dateObj).addMonths(i - 2 - this.dateSuffer);
                     result[this.dateIndexSort[i]] = {
                         date : date.valueOf(),
                         dayInfo : getDate(date.format('yyyy-MM-dd')),
@@ -141,6 +157,15 @@
                     case 3 : return [1,2,3,4,0];
                     default : return [0,1,2,3,4];
                 }
+            }
+        },
+        watch : {
+            //当前激活的日期改变，重新设置激活日期
+            'activeDate' : {
+                handler (newVal) {
+                    this.chooseDate = newVal ? newVal.format('yyyy-MM-dd') : '';
+                },
+                immediate : true
             }
         }
     };

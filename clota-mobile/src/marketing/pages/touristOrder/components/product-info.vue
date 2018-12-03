@@ -12,7 +12,7 @@
         </ul>
         <div class="ticket-notick" @click="$emit('show-notice',productInfo)">购票须知</div>
         <div class="price-info">
-            <span class="order-btn">{{$t('立即预定')}}</span>
+            <span class="order-btn" @click="toCreateOrder">{{$t('立即预定')}}</span>
         </div>
     </div>
 </template>
@@ -31,7 +31,16 @@
         data () {
             return {};
         },
-        methods : {}
+        methods : {
+            /**
+             * 新建订单
+             */
+            toCreateOrder () {
+                this.$router.push({
+                    name : 'marketingCreateOrder'
+                });
+            }
+        }
     };
 </script>
 <style lang="scss" scoped>

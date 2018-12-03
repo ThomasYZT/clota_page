@@ -209,6 +209,16 @@ export const marketingRoutes = [
                     title : '广州长隆水上乐园',
                     hideTabbar : true
                 }
+            },
+            //游客下单
+            {
+                path : 'tourist/createOrder',
+                name : 'marketingCreateOrder',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/createOrder.vue'),
+                meta : {
+                    title : '填写订单',
+                    hideTabbar : true
+                }
             }
         ]
     }

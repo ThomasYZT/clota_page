@@ -2,7 +2,10 @@
 
 <template>
     <div class="tourist-order">
-        <date-head @show-date-modal="chooseDateShow = true">
+        <date-head
+            :active-date="activeDate"
+            @show-date-modal="chooseDateShow = true"
+            @change-active-date="activeDate = $event">
         </date-head>
         <div class="address-tips">
             地址：广州市番禺区迎宾路长隆旅游度假区内
@@ -40,15 +43,13 @@
                             有效期：游玩日期当天起3天有效。
                             适用条件：成人或身高1.5米（含）以上儿童。</div>
                     </div>
-                    <!--<div :class="$style.footer">-->
-                        <!--<span :class="$style.price">{{$t('colonSetting',{ key : $t('佣金') })}}{{ 121 | moneyFilter(2,'¥') | contentFilter }}</span>-->
-                        <!--<span :class="$style.commission">{{$t('colonSetting',{ key : $t('佣金') })}}{{ 121 | moneyFilter(2,'¥') | contentFilter }}</span>-->
-                    <!--</div>-->
                 </div>
             </popup>
         </div>
         <!--日期选择模态框-->
-        <full-date-modal v-model="chooseDateShow">
+        <full-date-modal v-model="chooseDateShow"
+                         :active-date="activeDate"
+                         @choose-day="activeDate = $event">
         </full-date-modal>
     </div>
 </template>
@@ -70,7 +71,9 @@
                 //显示购票须知
                 showProductNotice : false,
                 //选择日期模态框是否显示
-                chooseDateShow : false
+                chooseDateShow : false,
+                //当前激活日期
+                activeDate : new Date()
             };
 		},
         components : {
