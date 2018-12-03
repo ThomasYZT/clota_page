@@ -199,6 +199,16 @@ export const marketingRoutes = [
                     title : '更改密码',
                     hideTabbar : true
                 }
+            },
+            //游客下单
+            {
+                path : 'tourist',
+                name : 'marketingTourist',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/index.vue'),
+                meta : {
+                    title : '广州长隆水上乐园',
+                    hideTabbar : true
+                }
             }
         ]
     }
