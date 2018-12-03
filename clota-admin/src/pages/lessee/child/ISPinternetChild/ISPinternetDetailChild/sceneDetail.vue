@@ -236,6 +236,12 @@
                 </i-col>
             </i-row>
         </Form>
+        <!--在线收款账户-->
+        <online-receipt :node-info="activeNode"
+                        :receipt-account-info="sceneDetail"
+                        :is-scenic="true"
+                        @fresh-org-data="freshOrg">
+        </online-receipt>
         <!--下属景区-->
         <sub-scene
             :search-params="{id : activeNode.id}">
@@ -278,6 +284,7 @@
     import subScene from './components/subScene';
     import subDepartment from './components/subDepartment';
     import partner from './components/partner';
+    import onlineReceipt from './components/onlineReceipt';
     import defaultsDeep from 'lodash/defaultsDeep';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import editModal from '@/components/editModal/index.vue';
@@ -302,7 +309,8 @@
             subDepartment,
             partner,
             cityPlugin,
-            editModal
+            editModal,
+            onlineReceipt
         },
         data () {
             //校验邮箱

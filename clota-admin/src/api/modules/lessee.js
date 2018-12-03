@@ -67,4 +67,8 @@ export default {
     'deleteServices' : 'tenant/deleteServices.json',
     //查询款台信息
     'getTableData' : 'tenant/table.json',
+    //添加收款账户信息
+    'addPayInfo' : 'tenant/addPayInfo.json',
+    //获取上级公司支付账户信息
+    'getCompanyPayInfo' : 'tenant/getCompanyPayInfo.json',
 };

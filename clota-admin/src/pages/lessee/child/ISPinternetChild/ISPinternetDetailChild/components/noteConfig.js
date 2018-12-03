@@ -69,6 +69,11 @@ export const buyColumns = [
         field : 'smsTotal'
     },
     {
+        title : '购买方式',
+        minWidth : 130,
+        field : 'payType'
+    },
+    {
         title : '总价',
         minWidth : 130,
         field : 'totalPrice'
@@ -78,5 +83,15 @@ export const buyColumns = [
         minWidth : 190,
         field : 'createTime',
         filters : true
+    },
+    {
+        title : '支付状态',
+        minWidth : 100,
+        field : 'payStatus',
+    },
+    {
+        title : '系统状态',
+        minWidth : 100,
+        field : 'sysStatus',
     },
 ];
