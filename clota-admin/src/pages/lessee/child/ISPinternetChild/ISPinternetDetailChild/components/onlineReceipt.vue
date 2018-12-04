@@ -28,9 +28,13 @@
                         <i-col span="10">
                             <!--设置收款账户-->
                             <FormItem :label="$t('colonSetting',{ key : '设置收款账户' })" prop="name">
-                                <Select v-model="formData.accountType" :disabled="!isEditing">
+                                <Select v-model="formData.accountType"
+                                        :disabled="!isEditing"
+                                        @on-change="accountTypeChange">
                                     <Option v-for="(item,index) in accountListDeal"
+                                            class="options-wrap"
                                             :key="index"
+                                            v-w-title="$t(item.name)"
                                             :value="item.value" >
                                         {{$t(item.name)}}
                                     </Option>
@@ -139,13 +143,6 @@
                 },
                 //是否在编辑中
                 isEditing : false,
-                //收款账户信息
-                accountList : [
-                    {
-                        value : '1',
-                        name : '2'
-                    }
-                ]
             };
         },
         methods : {
@@ -164,17 +161,25 @@
                     if (valid ) {
                         ajax.post('addPayInfo',{
                             id : this.nodeInfo.id,
-                            partnerId : this.formData.partnerID,
-                            merchantId : this.formData.MerchantID,
-                            payChannel : this.formData.payChannel.join(','),
-                            useCorpPayAcc : this.isScenic
+                            partnerId : !this.useCorpPayAcc ? this.formData.partnerID : '',
+                            merchantId : !this.useCorpPayAcc ? this.formData.MerchantID : '',
+                            payChannel : !this.useCorpPayAcc ? this.formData.payChannel.join(',') : '',
+                            useCorpPayAcc : this.useCorpPayAcc
                         }).then(res => {
                             if (res.status === 200) {
                                 this.isEditing = false;
-                                this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                                if (this.receiptAccountInfo.partnerId && this.receiptAccountInfo.merchantId) {
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
+                                } else {
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                                }
                                 this.$emit('fresh-org-data');
                             } else {
-                                this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                                if (this.receiptAccountInfo.partnerId && this.receiptAccountInfo.merchantId) {
+                                    this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
+                                } else {
+                                    this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                                }
                             }
                         });
                     }
@@ -189,34 +194,60 @@
                 this.$refs.formValidate.resetFields();
             },
             /**
-             * 获取上级公司的收款账户
+             * 账户类别改变
+             * @param accountType
              */
-            getCompanyPayInfo () {
-                ajax.post('getCompanyPayInfo',{
-                    id : this.nodeInfo.id,
-                }).then(res => {
-                    if (res.success) {
-                        this.accountList = [{
-
-                        }];
-                    } else {
-
+            accountTypeChange (accountType) {
+                for (let i = 0,j = this.accountListDeal.length; i < j; i++) {
+                    if (this.accountListDeal[i]['value'] === accountType) {
+                        this.formData.partnerID = this.accountListDeal[i]['partnerId'];
+                        this.formData.MerchantID = this.accountListDeal[i]['merchantId'];
+                        this.formData.payChannel = this.accountListDeal[i]['payChannel'];
                     }
-                });
+                }
             }
         },
         computed : {
             //收款账户处理数据
             accountListDeal () {
-                return this.accountList.concat({
-                    value : 'auto',
-                    name : '自定义'
-                });
-            }
-        },
-        created () {
-            if (this.isScenic) {
-                this.getCompanyPayInfo();
+                if ( this.receiptAccountInfo.parentPartnerId && this.receiptAccountInfo.parentMerchantId ) {
+                    return [
+                        {
+                            value : 'auto',
+                            name : '自定义',
+                            partnerId : this.receiptAccountInfo.partnerId,
+                            merchantId : this.receiptAccountInfo.merchantId,
+                            payChannel : this.receiptAccountInfo.payChannel,
+                        },
+                        {
+                            value : this.receiptAccountInfo.parentManageId,
+                            name : this.receiptAccountInfo.parentManageName,
+                            partnerId : this.receiptAccountInfo.parentPartnerId,
+                            merchantId : this.receiptAccountInfo.parentMerchantId,
+                            payChannel : this.receiptAccountInfo.parentPayChannelInfo,
+                        }
+                    ];
+                } else {
+                    return [{
+                        value : 'auto',
+                        name : '自定义',
+                        partnerId : this.receiptAccountInfo.partnerId,
+                        merchantId : this.receiptAccountInfo.merchantId,
+                        payChannel : this.receiptAccountInfo.payChannel,
+                    }];
+                }
+            },
+            //是否上级公司的收款账户
+            useCorpPayAcc () {
+                if (!this.isScenic) {
+                    return false;
+                } else {
+                    if (this.formData.accountType === 'auto') {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
             }
         },
         watch : {
@@ -224,13 +255,16 @@
             receiptAccountInfo : {
                 handler (newVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
-                        this.formData.partnerID = newVal.partnerId;
-                        this.formData.MerchantID = newVal.merchantId;
-                        this.formData.payChannel = newVal.payChannelInfo ? newVal.payChannelInfo : [];
-                        if (this.isScenic) {
-                            this.formData.accountType = 'auto';
+                        if (newVal.useCorpPayAcc === 'true') {
+                            this.formData.accountType = newVal.parentManageId;
+                            this.formData.partnerID = newVal.parentPartnerId;
+                            this.formData.MerchantID = newVal.parentMerchantId;
+                            this.formData.payChannel = newVal.parentPayChannelInfo ? newVal.parentPayChannelInfo : [];
                         } else {
                             this.formData.accountType = 'auto';
+                            this.formData.partnerID = newVal.partnerId;
+                            this.formData.MerchantID = newVal.merchantId;
+                            this.formData.payChannel = newVal.payChannelInfo ? newVal.payChannelInfo : [];
                         }
                     }
                 },
@@ -301,6 +335,10 @@
                     cursor: pointer;
                 }
             }
+        }
+
+        .options-wrap{
+            @include overflow_tip();
         }
     }
 </style>

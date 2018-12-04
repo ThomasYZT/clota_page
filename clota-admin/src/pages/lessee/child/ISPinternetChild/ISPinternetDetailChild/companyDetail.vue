@@ -200,7 +200,7 @@
             <i-row>
                 <i-col span="12">
                     <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
-                        {{companyDetail.smsSendTotal | comtentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
+                        {{companyDetail.smsSendTotal | contentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
@@ -262,7 +262,7 @@
         <!--在线收款账户-->
         <online-receipt :node-info="activeNode"
                         :receipt-account-info="companyDetail"
-                        @fresh-org-data="freshOrg">
+                        @fresh-org-data="getCompanyDetail">
         </online-receipt>
 
         <!--已开通服务-->
