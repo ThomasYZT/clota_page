@@ -97,6 +97,7 @@
     import delModal from '@/components/delModal/index';
     import getGoodModal from './components/getGoodModal';
     import goodDetailModal from './components/goodDetailModal';
+    import forEach from 'lodash/forEach';
     export default {
         components : {
             toolBox,
@@ -203,22 +204,32 @@
              * 批量上架商品
              */
             batchPutOnGoods () {
-                let data = this.chosedData.map((item) => {
-                    return item.id;
+                let canUp = true;
+                forEach(this.chosedData, (item) => {
+                    if (!item.requiredCredits) {
+                        this.$Message.error(this.$t('pleaseSetRequiredCredits'));
+                        canUp = false;
+                        return false;
+                    }
                 });
+                if (canUp) {
+                    let data = this.chosedData.map((item) => {
+                        return item.id;
+                    });
 
-                ajax.post('batchPutOnGoods', data,
-                    {
-                        headers : { "Content-Type" : "application/json;charset-UTF-8" }
-                    }
-                ).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('up') }));
-                        this.getListData();
-                    } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('up') }));
-                    }
-                });
+                    ajax.post('batchPutOnGoods', data,
+                        {
+                            headers : { "Content-Type" : "application/json;charset-UTF-8" }
+                        }
+                    ).then(res => {
+                        if (res.success) {
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('up') }));
+                            this.getListData();
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('up') }));
+                        }
+                    });
+                }
             },
             /**
              * 表格选择框选中事件处理

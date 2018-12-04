@@ -1773,4 +1773,7 @@ export default {
     'paying' : '支付中...',
     'goodsStockIn' : '商品入库',
     'whetherSure' : '是否确认',
+    'picture' : '图片',
+    'M035' : '商品已存在',
+    'pleaseSetRequiredCredits' : '请先设置兑换积分',
 }

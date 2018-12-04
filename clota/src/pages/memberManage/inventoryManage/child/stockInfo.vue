@@ -24,7 +24,7 @@
                                 {{goodInfo.name}}
                             </Form-item>
                         </i-col>
-                        <i-col span="6">
+                        <i-col span="6" :offset="2">
                             <!-- 入库数量 -->
                             <Form-item :label="$t('stockNum')+':'">
                                 {{goodInfo.stockNum + goodInfo.undrawNum}}
@@ -39,7 +39,7 @@
                                 {{goodInfo.purchasePrice}}
                             </Form-item>
                         </i-col>
-                        <i-col span="6">
+                        <i-col span="6" :offset="2">
                             <!-- 市场价 -->
                             <Form-item :label="$t('marketPrice')+':'">
                                 {{goodInfo.marketPrice}}
@@ -69,7 +69,7 @@
                                 {{goodInfo.unit}}
                             </Form-item>
                         </i-col>
-                        <i-col span="6">
+                        <i-col span="6" :offset="2">
                             <Form-item :label="$t('historyInTotal')">
                                 {{goodInfo.total}}
                             </Form-item>
@@ -77,13 +77,18 @@
                     </i-row>
 
                     <i-row>
-                        <i-col span="6" class="col-wrapper">
+                        <i-col span="8" class="col-wrapper">
                             <!-- 商品图片 -->
                             <FormItem :label="$t('goodPic')+':'">
-                                <img :src="goodInfo.pics" alt="">
+                                <span class="edit-btn"></span>
+                                <div class="img-wrapper">
+                                    <img-uploader @upload-success="uploadSuc"
+                                                  :defaultList="defaultImgList"
+                                                  :quantity-limit="1"></img-uploader>
+                                </div>
                             </FormItem>
                         </i-col>
-                        <i-col span="6">
+                        <i-col span="6" >
                             <!-- 异常管理 -->
                             <FormItem :label="$t('abnormalManagement')+':'">
                                 <span class="edit-btn" @click="abnormalEdit">{{$t('edit')}}</span>
@@ -186,12 +191,14 @@
     import { inBoundHead, outBoundHead, abnormalHead } from './tableConfig';
     import abnormalManageModal from '../components/abnormalManageModal';
     import breadCrumbHead from '../../../../components/breadCrumbHead/index';
+    import ImgUploader from '../../../register/components/ImgUploader';
     export default {
         mixins : [lifeCycleMixins],
         components : {
             tableCom,
             abnormalManageModal,
-            breadCrumbHead
+            breadCrumbHead,
+            ImgUploader
         },
         data () {
             return {
@@ -224,7 +231,9 @@
                 queryParams : {
                     pageNo : 1,
                     pageSize : 10
-                }
+                },
+                //图片上传组件默认显示列表
+                defaultImgList : [],
 
             };
         },
@@ -254,6 +263,12 @@
                 }).then(res => {
                     if (res.success) {
                         this.goodInfo = res.data ? res.data : {};
+                        this.defaultImgList = [
+                            {
+                                name : 0,
+                                url : this.goodInfo.pics
+                            }
+                        ]
                     } else {
                         this.$Message.error(this.$t('dataGetError'));
                     }
@@ -304,6 +319,43 @@
                     }
                 });
             },
+            /**
+             * @param {array} data
+             * 上传图片成功
+             */
+            uploadSuc (data) {
+                this.defaultImgList = data.map((url, index) => {
+                    return {
+                        name : index,
+                        url : url
+                    };
+                });
+                this.editGoodPic(data);
+            },
+            /**
+             * 接口修改图片信息
+             * @param {array} pics
+             */
+            editGoodPic (pics) {
+                ajax.post('addGoods', {
+                    id : this.detail.id,
+                    pics : pics.join(','),
+                    stockNum : '0',
+                    purchasePrice : this.detail.purchasePrice,
+                    marketPrice : this.detail.marketPrice,
+                    purchaser : this.detail.purchaser,
+                    purchaseDate : this.detail.purchaseDate ? this.detail.purchaseDate.split(' ')[0] : '',
+                    goodsDesc : this.detail.goodsDesc,
+                    remark : this.detail.remark,
+                    unit : this.detail.unit,
+                }).then( res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('edit') + this.$t('picture') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') + this.$t('picture') }));
+                    }
+                });
+            }
         }
     };
 </script>
@@ -317,8 +369,27 @@
 
         .form-wrapper {
             margin-top: 10px;
-            img {
-                height: 200px;
+
+            .img-wrapper {
+                width: 100%;
+                img {
+                    height: 200px;
+                }
+            }
+
+            /deep/ .el-upload {
+                width: 100px;
+                height: 100px;
+                line-height: 100px;
+            }
+
+            /deep/ .el-upload-list__item {
+                width: 100px;
+                height: 100px;
+                img {
+                    width: 100px;
+                    height: 100px;
+                }
             }
         }
 

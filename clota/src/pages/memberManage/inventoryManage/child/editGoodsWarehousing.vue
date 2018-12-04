@@ -73,13 +73,19 @@
                     <i-col span="8" offset="5">
                         <!-- 计量单位 -->
                         <Form-item :label="$t('unit')" prop="unit">
-                            <Select v-model="formData.unit" :placeholder="$t('selectField', { msg : $t('unit') })"
-                                    @on-change="addUnit" style="width:250px">
+                            <Select  ref="select"
+                                     v-model="formData.unit" :placeholder="$t('selectField', { msg : $t('unit') })"
+                                     @on-change="addUnit" style="width:250px">
                                 <Option v-for="(item, index) in unitList"
                                         :value="item.unitNames"
                                         :key="index"
                                         :label="item.unitNames === 'addUnit' ? $t(item.unitNames) : item.unitNames">
-                                    <span :class="{'add-unit': item.unitNames === 'addUnit'}">{{$t(item.unitNames)}}</span>
+                                    <div class="option">
+                                        <span :class="{'add-unit': item.unitNames === 'addUnit'}">{{$t(item.unitNames)}}</span>
+                                        <span class="option-del"
+                                              v-if="index !== unitList.length - 1"
+                                              @click.stop="delUnit(item)">{{$t('del')}}</span>
+                                    </div>
                                 </Option>
                             </Select>
                         </Form-item>
@@ -126,6 +132,16 @@
                       @restore="restore"
                       @addSuccess="addUnitSuccess"
                       @addError="addUnitError"></addUnitModal>
+
+        <del-modal ref="delModal">
+            <div class="del-modal">
+                <span class="content-text">
+                    {{$t('isDoing')}}{{$t('delete')}} {{$t('colonSetting', { key : $t('unit') }) + unitName}}：<!--导游-->
+                    <span class="yellow-label">{{$t('operationIrrevocable')}}</span>
+                    <span>{{$t('sureToDel')}}</span>
+                </span>
+            </div>
+        </del-modal>
     </div>
 </template>
 
@@ -136,13 +152,15 @@
     import addUnitModal from '../components/addUnitModal';
     import common from '@/assets/js/common.js';
     import breadCrumbHead from '../../../../components/breadCrumbHead/index';
+    import delModal from '../../../../components/delModal/index'
 
     export default {
         mixins : [lifeCycleMixins],
         components : {
             ImgUploader,
             addUnitModal,
-            breadCrumbHead
+            breadCrumbHead,
+            delModal
         },
         data () {
             //校验是否为正整数
@@ -241,7 +259,9 @@
                 //单位列表
                 unitList : [],
                 //现有库存
-                nowHaveStockNum : 0
+                nowHaveStockNum : 0,
+                //要删除的单位名称
+                unitName : ''
             };
         },
         methods : {
@@ -270,7 +290,11 @@
                             name : 'goodsManage'
                         });
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('stockIn') }));
+                        if (res.code && res.code === 'M035') {
+                            this.$Message.error(this.$t(res.code));
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('stockIn') }));
+                        }
                     }
                 });
             },
@@ -358,13 +382,13 @@
              * 新增单位失败
              */
             addUnitError () {
-                this.formData.unit = this.detail.unit;
+                this.formData.unit = this.detail.unit ? this.detail.unit : '';
             },
             /**
              *  取消新增单位
              */
             restore () {
-                this.formData.unit = this.unitList[0].unitNames;
+                this.formData.unit = this.unitList.length > 1 ? this.unitList[0].unitNames : '';
             },
             /**
              * 新增单位成功
@@ -372,6 +396,35 @@
              */
             addUnitSuccess (data) {
                 this.queryUnitList(data);
+            },
+            /**
+             * 删除单位
+             * @param data
+             */
+            delUnit (data) {
+                this.$set(this.$refs.select, 'visible', false)
+                this.formData.unit = '';
+                this.unitName = data.unitNames;
+                this.$refs.delModal.show({
+                    confirmCallback : () => {
+                        ajax.post('addUnit', {
+                            isDeleted : 'true',
+                            id : data.id,
+                            unitNames : data.unitNames,
+                        }).then(res => {
+                            if (res.success) {
+                                this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
+                                this.unitName = '';
+                                this.queryUnitList();
+                            } else {
+                                this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
+                            }
+                        });
+                    },
+                    cancelCallback : () => {
+                        this.unitName = '';
+                    }
+                })
             }
         },
         created () {
@@ -404,6 +457,13 @@
 
             /deep/ .ivu-date-picker {
                 width: 100%;
+            }
+
+            .option {
+                .option-del {
+                    color: $color_red;
+                    float: right;
+                }
             }
         }
 
