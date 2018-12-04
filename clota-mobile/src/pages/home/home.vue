@@ -225,7 +225,7 @@
             margin: 0 4.5px;
 
             .vux-icon-dot{
-                background: $color_eee;
+                background: $color_gray;
 
                 &.active{
                     background: #383837;
