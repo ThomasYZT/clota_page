@@ -9,7 +9,6 @@
                      :show-clear="false"
                      label-width="20px"
                      :debounce="500"
-                     keyboard="number"
                      @on-change="getTrueMoney">
             </x-input>
             <div class="actual-money">
@@ -33,7 +32,10 @@
 
         </div>
         <div class="btn-area">
-            <x-button @click.native="recharge" :disabled="commonList.length < 1">{{$t('recharge')}}</x-button>
+            <x-button @click.native="recharge"
+                      :disabled="commonList.length < 1 || cardInfo.status === 'frozen'">
+                {{$t('recharge')}}
+            </x-button>
         </div>
 
     </div>
@@ -155,6 +157,7 @@
              * 充值
              */
             recharge () {
+                if (this.cardInfo.status === 'frozen') return;
                 this.validateRechargeMoney(true).then(() => {
                     if (this.payType === 'wx' && this.isWeixin()) {
                         //微信内微信支付专用

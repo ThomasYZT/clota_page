@@ -217,7 +217,7 @@
                     <div class="content-info">
                         <div class="title">{{$t("securitySettings")}}</div>
                         <div class="switch-wrap">
-                            <i-switch :value="choosedCard.status === 'active' ? true : false"
+                            <i-switch :value="choosedCard.status === 'active' ? false : true"
                                       @on-change="changeCardStatus">
                             </i-switch>
                             <span class="text">{{$t("freezeMemberCard")}}</span>
@@ -622,9 +622,9 @@
             //监听开关组件改变
             changeCardStatus ( bool ) {
                 if (bool) {
-                    this.manualUpdateCardStatus('active');
-                } else {
                     this.manualUpdateCardStatus('frozen');
+                } else {
+                    this.manualUpdateCardStatus('active');
                 }
             },
             //更新会员卡信息

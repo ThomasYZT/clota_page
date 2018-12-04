@@ -50,7 +50,8 @@
         <div class="search-wrap">
             <Input v-model.trim="queryParams.keyWord"
                    :placeholder="$t('memberPlaceholder')"
-                   :style="{width : lang === 'zh-CN' ? '250px' : '400px'}"/>
+                   :style="{width : lang === 'zh-CN' ? '250px' : '400px'}"
+                   @on-enter="queryList"/>
             <Button type="primary" @click="queryList">{{$t("query")}}</Button>
             <Button type="ghost" @click="reset">{{$t("reset")}}</Button>
         </div>
