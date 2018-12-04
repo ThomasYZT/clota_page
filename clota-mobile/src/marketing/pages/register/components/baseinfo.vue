@@ -81,9 +81,10 @@
             getValidCode () {
                 if (!this.isTiming) {
                     this.validatePhone().then(() => {
-                        ajax.post('getCode', {
+                        ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
-                            type : 'member_login',
+                            type : 'maket_register',
+                            companyCode : this.marketINgCompanyCode
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -117,7 +118,7 @@
                 }).then(() =>{
                     return this.validatePassword();
                 }).then(() => {
-                    this.$emit('get-formData',this.formData);
+                    this.validatePhoneCode();
                 });
             },/**
              * 校验手机号是否正确
@@ -179,11 +180,37 @@
                 this.$router.push({
                     name : 'marketingLogin'
                 });
+            },
+            /**
+             * 校验手机验证码是否正确
+             */
+            validatePhoneCode () {
+                ajax.post('market_checkVerifyCode',{
+                    mobile : this.formData.phoneNum,
+                    code : this.formData.code,
+                    companyCode : this.marketINgCompanyCode,
+                    type : 'maket_register',
+                }).then((res) => {
+                    if (res.success) {
+                        this.$emit('get-formData',this.formData);
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            type : 'cancel',
+                            text : this.$t(res.code)
+                        });
+                    } else {
+                        this.$vux.toast.show({
+                            type : 'cancel',
+                            text : this.$t('验证码错误')
+                        });
+                    }
+                });
             }
         },
         computed : {
             ...mapGetters({
-                companyName : 'companyName'
+                companyName : 'companyName',
+                marketINgCompanyCode : 'marketINgCompanyCode',
             })
         }
 	};

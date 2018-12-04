@@ -55,7 +55,7 @@
                 this.formData.phoneNum = formData.phoneNum;
                 this.formData.code = formData.code;
                 this.formData.password = formData.password;
-                this.stage = '1';
+                this.stage = '2';
             },
             /**
              * 注册
