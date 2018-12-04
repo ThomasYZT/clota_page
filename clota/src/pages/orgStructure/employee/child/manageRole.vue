@@ -171,10 +171,10 @@
                         directives: [
                             {
                                 name: 'w-title',
-                                value: this.$t(data.privCode)
+                                value:  this.$t('privalige.' + data.privCode)
                             }
                         ],
-                    }, this.$t(data.privCode))
+                    },  this.$t('privalige.' + data.privCode))
                 ])
             },
             /**
