@@ -115,7 +115,8 @@ export default {
     home : '主页',
     scoreRate : '积分比例',
     discountRate : '折扣率',
-    adjustScore : '手动修改储值账户',
+    adjustScore : '手动修改积分账户',
+    adjustMoney : '手动修改储值账户',
     gainByConsuming : '消费所得',
     scoreResume : '积分消耗',
     gainByRecharging : '储值所得',
@@ -235,4 +236,5 @@ export default {
     'scenicCode' : '入园二维码',
     'errorFormat' : '请输入正确金额',
     'numError' : '请输入正确金额',
+    'expire_score' : '积分失效',
 };

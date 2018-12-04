@@ -27,8 +27,6 @@
       computed : {
           checkFlowName () {
               switch (this.info.operationType) {
-                  case 'adjust_score':
-                      return 'adjustScore';
                   case 'consume':
                       if (this.info.evaluateType === 'consume_add') {
                           return 'gainByConsuming';
@@ -38,7 +36,7 @@
                   case 'recharge':
                       return 'gainByRecharging';
                   case 'adjust_money':
-                      return 'adjustScore';
+                      return 'adjustMoney';
                   case 'open_card':
                       return 'open_card';
                   default:

@@ -116,6 +116,7 @@ export default {
     scoreRate : 'Point scale',
     discountRate : 'Discount rate',
     adjustScore : 'Manually modify the point account',
+    adjustMoney : 'Manually modify the store account',
     gainByConsuming : 'Consumption income',
     scoreResume : 'Score resume',
     gainByRecharging : 'Stored-value income',
@@ -231,5 +232,6 @@ export default {
     'scenicCode' : '入园二维码',
     'errorFormat' : '请输入正确金额',
     'numError' : '请输入正确金额',
+    'expire_score' : '积分失效',
 
 };
