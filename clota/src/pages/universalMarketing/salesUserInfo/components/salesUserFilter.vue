@@ -9,8 +9,13 @@
         <ul class="clearfix">
             <li>
                 <span class="filter-label">{{$t('营销类别')}}</span>
-                <Select v-model="filterParams.marketingType" class="field-item">
-
+                <Select v-model="filterParams.marketTypeId"
+                        class="field-item">
+                    <Option v-for="item in marketingTypes"
+                            :key="item.id"
+                            :value="item.id">
+                        {{$t(item.typeName)}}
+                    </Option>
                 </Select>
             </li>
             <li>
@@ -21,12 +26,12 @@
             </li>
             <li>
                 <Button type="primary" @click="searchList">{{$t("query")}}</Button>
-                <Button type="ghost" @click="reset">{{$t("reset")}}</Button>
             </li>
         </ul>
     </div>
 </template>
 <script>
+    import ajax from '@/api/index';
 
     export default {
         components : {},
@@ -34,32 +39,42 @@
         data () {
             return {
                 filterParams : {
-                    marketingType : '',
+                    marketTypeId : 'all',
                     keyword : '',
                 },
-                // 重置使用的初始筛选条件
-                resetFilter : {}
+                // 营销类别列表
+                marketingTypes : [{ id : 'all', typeName : 'all' }],
             }
         },
         computed : {},
         created () {
-            this.resetFilter = JSON.stringify(this.filterParams);
+            this.getMarketingTypes();
         },
         mounted () {
         },
-        watch : {},
+        watch : {
+            'filterParams.marketTypeId' : {
+                handler (val, oldVal) {
+                    this.searchList();
+                }
+            },
+        },
         methods : {
+            /**
+             * 获取营销类别列表数据
+             **/
+            getMarketingTypes () {
+                ajax.post('marketing-typeList').then(res => {
+                    if (res.success) {
+                        this.marketingTypes = this.marketingTypes.concat(res.data || []);
+                    }
+                });
+            },
             /**
              * 获取营销产品列表数据
              */
             searchList () {
                 this.$emit('on-search', this.filterParams);
-            },
-            /**
-             * 重置筛选条件
-             */
-            reset () {
-
             },
         }
     };
@@ -69,7 +84,7 @@
     .filter-box {
         padding: 15px 20px;
 
-        ul > li {
+        > ul > li {
             float: left;
             margin-right: 20px;
         }

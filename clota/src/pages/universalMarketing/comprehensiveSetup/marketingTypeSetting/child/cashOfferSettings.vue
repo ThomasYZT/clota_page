@@ -11,13 +11,13 @@
 </template>
 
 <script>
-    import cashOfferSettingBox from '../components/cashOfferSettingBox'
+    import cashOfferSettingBox from '../components/cashOfferSettingBox';
     export default {
         props : {
             marketingTypeItem : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
@@ -34,7 +34,7 @@
              * 更新成功
              */
             updateSuccess () {
-                this.$emit('updateSuccess');
+                this.$emit('updateSuccess', this.marketingTypeItem);
             }
         },
         watch : {

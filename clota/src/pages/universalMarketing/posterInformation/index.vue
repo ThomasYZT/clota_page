@@ -65,7 +65,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="download(scope.row)" >{{$t('download')}}</li>
+                            <li><span @click="download(scope.row.posterUrl)">{{$t('download')}}</span></li>
                             <li class="red-label" @click="deleteBatch(scope.row.id)">{{$t('del')}}</li>
                         </ul>
                     </template>
@@ -142,7 +142,7 @@
                     confirmCallback : () => {
                         let posterIds;
                         if (id) {
-                            posterIds = id
+                            posterIds = id;
                         } else {
                             posterIds = this.chosedColomn.map((item) => {
                                 return item.id;
@@ -150,14 +150,14 @@
                         }
                         ajax.post('marketing-deletePoster',{
                             posterIds : posterIds
-                        }).then((res => {
+                        }).then(res => {
                             if (res.success) {
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                                 this.getData();
                             } else {
                                 this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                             }
-                        }));
+                        });
                     }
                 });
             },
@@ -170,9 +170,9 @@
             },
             /**
              * 下载
-             * @param {object} data
+             * @param {string} url
              */
-            download (data) {
+            download (url) {
 
             }
         }

@@ -48,6 +48,8 @@
                         <FormItem :label="$t('colonSetting', { key : $t('uploadPicture') })"  prop="img">
                             <uploadImg v-if="visible"
                                        :quantityLimit="1"
+                                       :size="1"
+                                       :format="['jpeg','png','bmp']"
                                        @remove-img="removeImg"
                                        @upload-success="uploadSuccess"></uploadImg>
                         </FormItem>
@@ -75,16 +77,6 @@
             uploadImg
         },
         data () {
-            //上传文件类型校验
-            const fileType = (rule, value, callback) => {
-                let reg = /\.(bmp|jpg|png|JPG|PNG|BMP)$/;
-                if (!reg.test(value)) {
-                    callback(new Error(this.$t('errorFormat', { field : this.$t('picture') })));
-                } else {
-                    callback();
-                }
-            };
-
             return {
                 //是否显示模态框
                 visible : false,
@@ -109,7 +101,6 @@
                     ],
                     img : [
                         { required : true, type : 'array', min : 1, message : this.$t('pleaseUploadImgAtleastOne'), trigger : 'blur' },
-                        { validator : fileType, trigger : 'blur' }
                     ]
                 },
                 //业态类型下拉列表

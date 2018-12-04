@@ -29,7 +29,8 @@
                         </FormItem>
                         <!-- 获取经纬度坐标值 -->
                         <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })">
-                            <span class="click-btn">{{$t('clickHereGetValue')}}</span>
+                            <span class="click-btn" @click="getPosition">{{$t('clickHereGetValue')}}</span>
+                            <el-amap v-if="isCreateMap" v-show="false" vid="amapDemo" :plugin="plugins"></el-amap>
                         </FormItem>
                         <!-- 经度 -->
                         <FormItem :label="$t('colonSetting', { key : $t('longitude') })"  prop="longitude">
@@ -78,13 +79,14 @@
 <script>
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     export default {
         components : {},
         data () {
             //校验经度
             const longitudeValid = (rule, value, callback) => {
-                let reg = /^-?((0|1?[0-7]?[0-9]?)(([.][0-9]{1,4})?)|180(([.][0]{1,4})?))$/;
+                let reg = /^(\-|\+)?(((\d|[1-9]\d|1[0-7]\d|0{1,3})\.\d{0,6})|(\d|[1-9]\d|1[0-7]\d|0{1,3})|180\.0{0,6}|180)$/;
+
                 if (!reg.test(value)) {
                     callback(new Error(this.$t('errorFormat', { field : this.$t('longitude') })));
                 } else {
@@ -94,7 +96,7 @@
 
             //校验纬度
             const latitudeValid = (rule, value, callback) => {
-                let reg = /^-?((0|[1-8]?[0-9]?)(([.][0-9]{1,4})?)|90(([.][0]{1,4})?))$/;
+                let reg = /^(\-|\+)?([0-8]?\d{1}\.\d{0,6}|90\.0{0,6}|[0-8]?\d{1}|90)$/;
                 if (!reg.test(value)) {
                     callback(new Error(this.$t('errorFormat', { field : this.$t('latitude') })));
                 } else {
@@ -109,7 +111,7 @@
                 } else {
                     callback();
                 }
-            }
+            };
 
             return {
                 //模态框编辑、新增状态
@@ -161,6 +163,23 @@
                 },
                 //坐标值
                 coordinates : [],
+                isCreateMap : false,
+                plugins : [
+                    {
+                        pName : 'Geolocation',
+                        events : {
+                            init : (o) => {
+                                o.getCurrentPosition((status, result) => {
+                                    if (result && result.position) {
+                                        this.formData.longitude = result.position.lng.toString();
+                                        this.formData.latitude = result.position.lat.toString();
+                                        this.isCreateMap = false;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                ]
             };
         },
         computed : {
@@ -176,7 +195,7 @@
                 if (type && type === 'show') {
                     if (param) {
                         this.listItem = param;
-                        this.formData = Object.assign(this.formData, this.listItem);
+                        Object.assign(this.formData, this.listItem);
                         this.formData.radius = this.formData.radius.toString();
                     } else {
                         this.formData.orgId = this.manageOrgs.id;
@@ -249,6 +268,33 @@
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
                     }
                 });
+            },
+            /**
+             * h5获取经纬度信息
+             */
+            getGeolocationInfo () {
+                // return new Promise((resolve, reject) => {
+                //     if (navigator.geolocation) {
+                //         navigator.geolocation.getCurrentPosition((position) => {
+                //             let latitude = position.coords.latitude;
+                //             let longitude = position.coords.longitude;
+                //             let data = {
+                //                 latitude : latitude,
+                //                 longitude : longitude
+                //             };
+                //             resolve(data);
+                //         }, (res) => {
+                //             console.log(res);
+                //             reject(arguments);
+                //         });
+                //     } else {
+                //         let msg = 'no-support';
+                //         reject(msg);
+                //     }
+                // });
+            },
+            getPosition () {
+                this.isCreateMap = true;
             }
         }
     };

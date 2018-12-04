@@ -61,7 +61,7 @@
             marketingTypeItem : {
                 type : Object,
                 defaut () {
-                    return {}
+                    return {};
                 }
             }
         },
@@ -120,22 +120,22 @@
                     confirmCallback : () => {
                         let levelIds;
                         if (id) {
-                            levelIds = id
+                            levelIds = id;
                         } else {
                             levelIds = this.chosedColomn.map((item) => {
                                 return item.id;
                             }).join(',');
                         }
                         ajax.post('marketing-deleteLevel',{
-                            levelId : levelIds
-                        }).then((res => {
+                            levelIds : levelIds
+                        }).then(res => {
                             if (res.success) {
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                                 this.getData();
                             } else {
                                 this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                             }
-                        }));
+                        });
                     }
                 });
             },

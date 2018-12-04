@@ -8,12 +8,14 @@
             :action="action"
             :headers="headers"
             list-type="picture-card"
+            :limit="quantityLimit"
             :before-upload="beforeUpload"
             :on-error="uploadFail"
             :file-list="defaultList"
             :show-upload-list="true"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
+            :on-exceed="handlEexceed"
             :on-success="uploadSuc">
             <i class="el-icon-plus"></i>
             <span>{{$t('uploadPicture')}}</span>
@@ -51,6 +53,18 @@
                 default () {
                     return [];
                 }
+            },
+            //上传图片大小控制 单位M
+            size : {
+                type : Number,
+                default : 1
+            },
+            //上传文件格式
+            format : {
+                type : Array,
+                default () {
+                    return [];
+                }
             }
         },
         components : {},
@@ -63,20 +77,20 @@
             };
         },
         computed : {
-            /**
-             *  返回上传接口地址
-             */
+            //返回上传接口地址
             action () {
                 return config.HOST + api.imgUpload;
             },
-            /**
-             * 上传文件的headers
-             */
+            //上传文件的headers
             headers () {
                 return {
                     token : ajaxConfig.getToken()
                 };
             },
+            //图片限制大小
+            limitSize () {
+                return this.size * 1024;
+            }
         },
         methods : {
             /**
@@ -127,22 +141,39 @@
             },
             /**
              * 上传文件之前
+             * @param {object} file
              */
-            beforeUpload () {
-                const check = this.uploadList.length < this.quantityLimit;
-                if (!check) {
-                    this.$Message.error(this.$t( 'mostUploadPic', { num : this.quantityLimit }));
-                    this.limit = true;
-                } else {
-                    this.$store.commit('changePromisings','add');
+            beforeUpload (file) {
+                //文件格式校验
+                let isRightFormat = this.format.findIndex((item) => {
+                    return file.type.split('/')[1] === item;
+                });
+                //校验文件大小
+                let isRightSize = file.size > this.size * 1024 * 1024;
+
+                if (isRightFormat < 0) {
+                    this.$Message.error(this.$t('fileFormatOnlyIs', { format : this.format.join(',') }));
+                    return false;
                 }
-                return check;
+
+                if (isRightSize) {
+                    this.$Message.error(this.$t('fileSizeNoMore', { size : this.size + 'M' }));
+                    return false;
+                }
+                this.$store.commit('changePromisings','add');
             },
             /**
              * 隐藏预览
              */
             hide () {
                 this.dialogVisible = false;
+            },
+            /**
+             * 文件超出指定数量时
+             */
+            handlEexceed () {
+                this.$Message.error(this.$t( 'mostUploadPic', { num : this.quantityLimit }));
+                this.limit = true;
             }
         }
     };

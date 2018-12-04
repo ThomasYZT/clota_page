@@ -16,7 +16,7 @@
             <div class="node"
                  slot-scope="{ node, data }">
                 <div class="label">
-                    <span v-if="data.type !== 'edit' && data.type !== 'add'">{{node.label}}</span>
+                    <span v-w-title="node.label" v-if="data.type !== 'edit' && data.type !== 'add'">{{node.label}}</span>
                     <Input v-else v-model="data.label" :placeholder="$t('inputField', { field : $t('marketType') })" style="width: 130px;"></Input>
                 </div>
                 <div class="tool-box">
@@ -54,12 +54,18 @@
             marketingTypeItem : {
                 type : Object,
                 defaut () {
-                    return {}
+                    return {};
                 }
             },
             isUpdate : {
                 type : Boolean,
                 defaut : false
+            },
+            nowControlItem : {
+                type : Object,
+                defaut () {
+                    return {};
+                }
             }
         },
         components : {
@@ -124,7 +130,7 @@
                         //确认删除
                         this.confirmDel(data);
                     }
-                })
+                });
 
             },
             /**
@@ -160,12 +166,15 @@
              * @param {*} data
              */
             save (data) {
-                if (data.type && data.type === 'add') {
-                    this.addType(data);
+                if (data.label.length > 10) {
+                    this.$Message.error(this.$t('errorMaxLength', { field : this.$t('marketType'), length : '10' }))
                 } else {
-                    this.saveEdit(data);
+                    if (data.type && data.type === 'add') {
+                        this.addType(data);
+                    } else {
+                        this.saveEdit(data);
+                    }
                 }
-
             },
             /**
              *  增加类别
@@ -181,7 +190,7 @@
                         this.newNodeData = {
                             label : '',
                             type : 'add'
-                        }
+                        };
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
                     }
@@ -204,7 +213,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
                     }
-                 })
+                 });
             },
             /**
              * 取消
@@ -223,7 +232,7 @@
                 this.newNodeData = {
                     label : '',
                     type : 'add'
-                }
+                };
             },
             /**
              *  获取营销类别列表数据
@@ -236,13 +245,15 @@
                                 ...item,
                                 label : item.typeName,
                                 type : '',
-                            }
+                            };
                         }) : [];
-                        this.initSetting();
 
                         //用于各种操作的数据更新
                         if (type && type === 'update') {
+                            this.initSetting(this.nowControlItem);
                             this.$emit('update:isUpdate', false);
+                        } else {
+                            this.initSetting();
                         }
                     } else {
                         this.typeList = [];
@@ -252,24 +263,32 @@
             /**
              * 初始化设置 首次加载数据默认选择第一项
              */
-            initSetting () {
-                if (this.typeList.length > 0) {
-                    this.nowItem = defaultsDeep({ type : 'init' }, this.typeList[0]);
-                    this.$emit('update:marketingTypeItem', this.nowItem);
-                    this.$nextTick(() => {
-                        this.$refs.elTree.setCurrentKey(this.nowItem.id ? this.nowItem.id : '');
-                    });
+            initSetting (data) {
+                if (data && Object.keys(data).length > 0) {
+                    this.nowItem = defaultsDeep({ type : 'change' }, this.typeList.find((item) => {
+                        return item.id === data.id;
+                    }));
                 } else {
-                    this.nowItem = {};
+                    if (this.typeList.length > 0) {
+                        this.nowItem = defaultsDeep({ type : 'init' }, this.typeList[0]);
+                    } else {
+                        this.nowItem = {};
+                    }
                 }
+                this.$emit('update:marketingTypeItem', this.nowItem);
+                this.$nextTick(() => {
+                    this.$refs.elTree.setCurrentKey(this.nowItem.id ? this.nowItem.id : '');
+                });
             },
             /**
              *  类别选项改变事件（用户点击选择营销类别时触发）
              */
             currentChange (data) {
-                this.nowItem = defaultsDeep({ type : 'change' }, data);
-                this.$emit('update:marketingTypeItem', this.nowItem);
-            }
+                if (data.type !== 'add') {
+                    this.nowItem = defaultsDeep({ type : 'change' }, data);
+                    this.$emit('update:marketingTypeItem', this.nowItem);
+                }
+            },
         },
         created () {
             this.getTypeList({});
@@ -326,8 +345,12 @@
                 height: 30px;
                 line-height: 30px;
                 span {
+                    display: inline-block;
+                    width: 130px;
                     font-size: 16px;
                     color: #333;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
 

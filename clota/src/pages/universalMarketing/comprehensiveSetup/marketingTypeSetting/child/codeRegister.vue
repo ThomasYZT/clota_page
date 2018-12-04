@@ -17,7 +17,7 @@
             marketingTypeItem : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
@@ -34,7 +34,7 @@
              * 更新成功
              */
             updateSuccess () {
-                this.$emit('updateSuccess');
+                this.$emit('updateSuccess', this.marketingTypeItem);
             }
         },
         watch : {
