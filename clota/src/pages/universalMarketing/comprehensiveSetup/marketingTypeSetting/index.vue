@@ -7,6 +7,7 @@
         <div class="setup-layout">
             <div class="tree-wrapper">
                 <marketTypeTree :marketingTypeItem.sync="marketingTypeItem"
+                                :nowControlItem='nowItem'
                                 :isUpdate.sync="isUpdate"></marketTypeTree>
             </div>
 
@@ -46,15 +47,19 @@
                 //是否需要更新状态
                 isUpdate : false,
                 //当前选择的营销类别项
-                marketingTypeItem : {}
+                marketingTypeItem : {},
+                //当前选中的类别
+                nowItem : {}
             };
         },
         methods : {
             /**
              * 更新成功
+             * @param {object} nowItem 当前操作的类别
              */
-            updateSuccess () {
+            updateSuccess (nowItem) {
                 this.isUpdate = true;
+                this.nowItem = nowItem;
             }
         },
         created () {

@@ -1836,5 +1836,8 @@ export default {
     'stockType.perDay' : '每日',
     'stockType.total' : '总量',
     'stockType.unlimited' : '不限',
+    'fileSizeNoMore' : '文件大小不能超过{size}',
+    'fileFormatOnlyIs' : '文件格式只能为{format}',
+    'noSupportGeolocation' : '你的浏览器不支持当前地理位置信息获取',
 
 }

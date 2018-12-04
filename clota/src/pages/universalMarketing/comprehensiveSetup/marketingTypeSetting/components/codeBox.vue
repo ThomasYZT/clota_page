@@ -5,9 +5,12 @@
 <template>
     <div class="code-box" :class="[boxStatus+'-code-box']">
         <!-- 无二维码信息区域 -->
-        <div v-if="boxStatus === 'null'" class="null-box" @click="add">
-            <span> + {{$t('addNewCode')}}</span>
-        </div>
+
+        <transition name="fade">
+            <div v-if="boxStatus === 'null'" class="null-box" @click="add">
+                <span> + {{$t('addNewCode')}}</span>
+            </div>
+        </transition>
 
         <!-- 新增、编辑二维码区域 -->
         <transition name="fade">
@@ -40,7 +43,11 @@
         <!-- 展示二维码区域 -->
         <transition name="fade">
             <div class="show-box" v-if="boxStatus === 'show'">
+                <div class="code-wrapper">
+                    <vueQRcode v-if="codeInfo.registerUrl" :url="codeInfo.registerUrl" :width="140"></vueQRcode>
+                </div>
                 <Form ref="form"
+                      class="show-form"
                       :label-width="100">
                     <i-row class="box-row">
                         <i-col span="24">
@@ -51,7 +58,7 @@
 
                             <!-- 路径 -->
                             <FormItem :label="$t('colonSetting', { key : $t('path') })"  prop="path">
-                                <span>{{codeInfo.registerUrl}}</span>
+                                <span class="show-path">{{codeInfo.registerUrl}}</span>
                             </FormItem>
                         </i-col>
                     </i-row>
@@ -76,6 +83,7 @@
 </template>
 
 <script>
+    import vueQRcode from './vueQRcode';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
     export default {
@@ -83,11 +91,13 @@
             codeInfo : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
-        components : {},
+        components : {
+            vueQRcode
+        },
         data () {
             return {
                 formData : {
@@ -189,7 +199,7 @@
                         this.$Message.error(this.$t('failureTip', { tip : this.$t(type) }));
                     }
                 });
-            }
+            },
         },
         watch : {
             codeInfo : {
@@ -239,9 +249,25 @@
 
         }
         .show-box {
-            padding-top: 100px;
+            padding: 0;
+            margin-left: 10%;
             width: 80%;
             word-break: break-all;
+
+            .code-wrapper {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .show-form {
+                /deep/ .ivu-form-item-content {
+                    line-height: 20px;
+                }
+
+                /deep/ .ivu-form-item-label {
+                    padding: 3px 3px 0px 10px;
+                }
+            }
+
         }
 
         .box-footer {
@@ -277,7 +303,7 @@
     }
 
     .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
+        transition: opacity .3s;
     }
     .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
         opacity: 0;

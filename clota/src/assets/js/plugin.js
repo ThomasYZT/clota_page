@@ -49,6 +49,12 @@ import elCollapse from 'element-ui/lib/collapse';
 import elCollapseItem from 'element-ui/lib/collapse-item';
 import Loading  from 'element-ui/lib/loading';
 
+//引入qr-code工具
+import QRcode from 'qrcode';
+//引入地图工具
+import VueAMap from 'vue-amap';
+
+
 // 按需引入 Echarts 图表
 require('echarts/lib/chart/pie');
 require('echarts/lib/chart/bar');
@@ -57,7 +63,6 @@ require('echarts/lib/component/tooltip');
 require('echarts/lib/component/legend');
 require('echarts/lib/component/legendScroll');
 require('echarts/lib/component/dataZoom');
-
 
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
@@ -129,9 +134,18 @@ plugin.install = function (Vue, options) {
     Vue.component('Step',Steps.Step);
     Vue.component('Poptip',Poptip);
     Vue.prototype.$Message = Message;
+    Vue.prototype.$QRcode = QRcode;
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
+    Vue.use(VueAMap);
+
+    //全局注入获取经纬度插件
+    VueAMap.initAMapApiLoader({
+        key: '91e8fc59f5a65ca490ce419c646b7b35',
+        plugin: ['Geolocation'],
+        v: '1.4.4'
+    });
 
     // 注入全局变量
     Vue.mixin({

@@ -224,13 +224,13 @@
             save () {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
-                        if (type === 'add') {
+                        if (this.type === 'add') {
                             this.addLevel();
                         } else {
                             this.updateLevel();
                         }
                     }
-                })
+                });
             },
             /**
              *  新增等级
