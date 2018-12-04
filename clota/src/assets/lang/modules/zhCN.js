@@ -1773,4 +1773,9 @@ export default {
     'paying' : '支付中...',
     'goodsStockIn' : '商品入库',
     'whetherSure' : '是否确认',
+    'new-card' : '新开卡',
+    'transaction-record' : '在线交易记录',
+    'activity-point-setting' : '特定活动积分折扣率设置',
+    'storage-account-detail' : '账户储值明细',
+    'storage-transfer' : '转账',
 }

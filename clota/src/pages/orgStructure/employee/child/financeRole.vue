@@ -32,7 +32,8 @@
                          :expand-on-click-node="false"
                          v-show="menuList.length > 0"
                          :render-content="menuRenderContent"
-                         @check="menuCheckChange">
+                         @check="menuCheckChange"
+                         @check-change="checkChange">
                 </el-tree>
                 <no-data v-show="menuList.length < 1">
                 </no-data>
@@ -44,6 +45,7 @@
 <script>
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import debounce from 'lodash/debounce';
     export default {
         props : {
             //默认选中的节点
@@ -148,6 +150,9 @@
                 for(let i = 0,j = this.choosedNodes.length;i < j;i++){
                     if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
                         this.$set(data,'disabled',true);
+                        break;
+                    } else {
+                        this.$set(data,'disabled',false);
                     }
                 }
                 return h('div', {
@@ -221,12 +226,13 @@
                 //如果节点取消选择，那么右侧的菜单权限也要全部取消选择
                 if(!checkedKeys.includes(data.id)){
                     this.privaligeInfo[data.id] = [];
-                    if(this.activeNodeId === data['id']){
+                    if(this.activeNodeId === data.id){
                         this.$nextTick(() => {
                             this.$refs.menuTree.setCheckedNodes([]);
                         });
                     }
                 }
+                this.chosedOrgList = checkedKeys;
             },
             /**
              * 组织机构选择的对应的菜单权限改变
@@ -236,90 +242,47 @@
              * @param halfCheckedNodes
              */
             menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
-                this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes));
-                this.handlerChosedMenu[this.activeNodeId] = [];
+                this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes.filter(item => !item.disabled)));
+                // this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes));
                 if(checkedKeys.includes(data.privCode)){
                     //如果当前权限有其它关联权限，那么必须要选择其它关联的权限
                     if(data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)){
                         this.$refs.menuTree.setChecked(data.linkedPrivCode,true);
                     }
+                } else {
+                    this.$nextTick(() => {
+                        this.$refs.menuTree.setChecked(data.privCode,false,true);
+                    });
                 }
-                this.$nextTick(() => {
-                    let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();
-                    this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
-                        //将不是默认选中的权限保存为手动选择的额外权限
-                        if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
-                            !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
-                            this.handlerChosedMenu[this.activeNodeId].push({
-                                ...item,
-                                choseStatus : ''
-                            });
-                        }
-                        return {
-                            ...item,
-                            choseStatus : ''
-                        }
-                    }),...halfCheckedNodes.map(item => {
-                        if(!item.disabled){
-                            //将不是默认选中的权限保存为手动选择的额外权限
-                            if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
-                                !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
-                                this.handlerChosedMenu[this.activeNodeId].push({
-                                    ...item,
-                                    choseStatus : 'half'
-                                });
-                            }
-                        }
-                        return {
-                            ...item,
-                            choseStatus : 'half'
-                        }
-                    })];
-                });
-                // this.privaligeInfo[this.activeNodeId] = [...checkedNodes.map(item => {
-                //     //将不是默认选中的权限保存为手动选择的额外权限
-                //     if(!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
-                //         !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)){
-                //         this.handlerChosedMenu[this.activeNodeId].push(item);
-                //     }
-                //     return {
-                //         ...item,
-                //         choseStatus : '',
-                //     }
-                // }),...halfCheckedNodes.map(item => {
-                //     return {
-                //         ...item,
-                //         choseStatus : 'half'
-                //     }
-                // })];
+                // this.$nextTick(() => {
+                //     let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();
+                //     this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
+                //         return {
+                //             ...item,
+                //             choseStatus : ''
+                //         }
+                //     }),...halfCheckedNodes.map(item => {
+                //         return {
+                //             ...item,
+                //             choseStatus : 'half'
+                //         }
+                //     })];
+                // });
             },
             /**
              * 设置右侧默认选中的菜单节点
              */
             setDefaultMenuChosed () {
-                //将角色下的菜单权限和手动选择的菜单权限全部默认选中
-                let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
-                let handlerChoseNode = this.handlerChosedMenu[this.activeNodeId] ? this.handlerChosedMenu[this.activeNodeId] : [];
-                this.choosedNodes = JSON.parse(JSON.stringify(chosedNode.concat(handlerChoseNode)));
-                this.$nextTick(() => {
-                    this.$refs.menuTree.setCheckedNodes(chosedNode.concat(handlerChoseNode));
-                });
-            },
-            /**
-             * 节点的复选框选择状态改变
-             * @param data
-             * @param select
-             */
-            checkChange (data,select) {
-                if(select){
-                    this.chosedOrgList.push(data['id']);
+                if(this.activeNodeId in this.privaligeInfo){
+                    let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
+                    // this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
+                    this.$nextTick(() => {
+                        this.$refs.menuTree.setCheckedNodes(chosedNode);
+                    });
                 }else{
-                    for(let i = 0,j = this.chosedOrgList.length;i < j;i++){
-                        if(this.chosedOrgList[i] === data['id']){
-                            this.chosedOrgList.splice(i,1);
-                            break;
-                        }
-                    }
+                    this.$nextTick(() => {
+                        this.$refs.menuTree.setCheckedNodes([]);
+                    });
                 }
             },
             /**
@@ -341,8 +304,28 @@
                         });
                     }
                 }
-                return result;
-            }
+                return returnValige;
+            },
+            checkChange : debounce(function () {
+                this.$nextTick(() => {
+                    let havedChosedNodes = this.$refs.menuTree.getCheckedNodes();
+                    let halfCheckedNodes = this.$refs.menuTree.getHalfCheckedNodes();
+                    // console.log(havedChosedNodes)
+                    this.choosedNodes = JSON.parse(JSON.stringify(havedChosedNodes.filter(item => !item.disabled)));
+                    // this.choosedNodes = JSON.parse(JSON.stringify(havedChosedNodes));
+                    this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
+                        return {
+                            ...item,
+                            choseStatus : ''
+                        }
+                    }),...halfCheckedNodes.map(item => {
+                        return {
+                            ...item,
+                            choseStatus : 'half'
+                        }
+                    })];
+                });
+            },100)
         },
         computed : {
             //公司树数据
