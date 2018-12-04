@@ -337,17 +337,9 @@
              * @param {array} pics
              */
             editGoodPic (pics) {
-                ajax.post('addGoods', {
+                ajax.post('updateGoodsInfo', {
                     id : this.detail.id,
-                    pics : pics.join(','),
-                    stockNum : '0',
-                    purchasePrice : this.detail.purchasePrice,
-                    marketPrice : this.detail.marketPrice,
-                    purchaser : this.detail.purchaser,
-                    purchaseDate : this.detail.purchaseDate ? this.detail.purchaseDate.split(' ')[0] : '',
-                    goodsDesc : this.detail.goodsDesc,
-                    remark : this.detail.remark,
-                    unit : this.detail.unit,
+                    pics : pics.length > 0 ? pics[0] : '',
                 }).then( res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('edit') + this.$t('picture') }));
