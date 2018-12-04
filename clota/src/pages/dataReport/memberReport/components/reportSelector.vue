@@ -24,6 +24,7 @@
                         @on-change="cardTypeChange"
                         style="width:160px">
                     <Option v-for="item in cardTypeList"
+                            v-if="(item.value !== '1' && $route.name === 'scoreReport') || $route.name === 'mutipleChannelReport'"
                             :value="item.value"
                             :key="item.value">
                         {{ item.label === 'memberTypeAll' ? $t('memberTypeAll') : item.label }}
@@ -130,6 +131,17 @@
                                 label : item.typeName
                             };
                         }));
+                        this.cType = 'all';
+
+                        if (this.$route.name === 'scoreReport') {
+                            this.$emit('update:cardType', this.cardTypeList.filter((item) => {
+                                return item.value !== '1' && item.value !== 'all';
+                            }).map((item) => {
+                                return item.value;
+                            }).join(','));
+                        } else {
+                            this.$emit('update:cardType', this.cType);
+                        }
                     } else {
                         this.cardTypeList = [
                             {
@@ -137,6 +149,7 @@
                                 label : 'memberTypeAll'
                             }
                         ];
+                        this.cType = 'all';
                     }
                 });
             },
@@ -144,18 +157,43 @@
              * 卡类型改变
              */
             cardTypeChange () {
-                this.$emit('update:cardType', this.cType);
+                if (this.$route.name === 'scoreReport') {
+                    if (this.cType === 'all') {
+                        this.$emit('update:cardType', this.cardTypeList.filter((item) => {
+                            return item.value !== '1' && item.value !== 'all';
+                        }).map((item) => {
+                            return item.value;
+                        }).join(','));
+                    } else {
+                        this.$emit('update:cardType', this.cType);
+                    }
+                } else {
+                    this.$emit('update:cardType', this.cType);
+                }
             },
-        },
-        created () {
-            this.getMemberTypeList();
+            /**
+             * 组件数据重置
+             */
+            reset () {
+                this.cardTypeList = [
+                    {
+                        value : 'all',
+                        label : 'memberTypeAll'
+                    }
+                ];
+            }
         },
         watch : {
             $route : {
                 handler (newVal) {
                     this.dataReport = newVal.name;
+                    this.reset();
                     if (this.$route && this.$route.params && this.$route.params.selectButton) {
                         this.selectButton = this.$route.params.selectButton;
+                    }
+                    if (this.$route && this.$route.name && (this.$route.name === 'mutipleChannelReport' || this.$route.name === 'scoreReport')) {
+                        this.$emit('update:cardType', '');
+                        this.getMemberTypeList();
                     }
                 },
                 immediate : true

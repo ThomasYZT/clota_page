@@ -68,8 +68,6 @@
                 legendData : [],
                 //头部信息
                 headInfo : [],
-                //会员卡类型
-                cardTypeId : '',
                 formatter : (params) => {
                     if (params && params.length > 0) {
                         let html = '<div class="chart-tooltip">';
@@ -109,7 +107,6 @@
                 this.seriesData = [];
                 this.xAxisData = [];
                 this.legendData = [];
-                this.headInfo = [];
                 //获取会员渠道折线图数据
                 ajax.post('listCardSourceByDate', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
@@ -161,6 +158,7 @@
             },
             //获取会员来源渠道数据
             countGroupBySource () {
+                this.headInfo = [];
                 ajax.post('countGroupBySource', {
                     cardTypeId : this.cardType === 'all' ? '' : this.cardType
                 }).then(res => {
@@ -189,17 +187,17 @@
                 });
             }
         },
-        created () {
-            this.getData();
-        },
         watch : {
             /**
              * 监听cardType
              * @param {*} newVal
              */
-            cardType (newVal) {
-                this.cardTypeId = newVal;
-                this.getData();
+            cardType : {
+                handler (newVal) {
+                    if (newVal !== '') {
+                        this.getData();
+                    }
+                },
             }
         }
     };
@@ -234,6 +232,7 @@
                 position: absolute;
                 left: 3%;
                 top: 20px;
+                color: #999;
             }
             .echarts {
                 height: 100%;

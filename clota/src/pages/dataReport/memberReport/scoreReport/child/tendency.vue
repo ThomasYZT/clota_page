@@ -70,8 +70,6 @@
                 legendData : [],
                 //头部信息
                 headInfo : [],
-                //会员卡类型
-                cardTypeId : '',
                 formatter : (params) => {
                     if (params && params.length > 0) {
                         let html = '<div class="chart-tooltip">';
@@ -109,7 +107,6 @@
                 this.seriesData = [];
                 this.xAxisData = [];
                 this.legendData = [];
-                this.headInfo = [];
                 //获取会员卡销售数据趋势数据
                 ajax.post('queryMemberScoreChangeRecord', {
                     startTime : this.filterData.date ? this.filterData.date[0].format('yyyy-MM-dd') : '',
@@ -161,6 +158,7 @@
                 });
             },
             queryTotalScoreChangeRecord () {
+                this.headInfo = [];
                 ajax.post('queryTotalScoreChangeRecord', {
                     cardTypeId : this.cardType === 'all' ? '' : this.cardType
                 }).then(res => {
@@ -188,14 +186,14 @@
                 });
             }
         },
-        created () {
-            this.getData();
-        },
         watch : {
-            cardType (newVal) {
-                this.cardTypeId = newVal;
-                this.getData();
-            }
+            cardType : {
+                handler (newVal) {
+                    if (newVal !== '') {
+                        this.getData();
+                    }
+                }
+            },
         }
     };
 </script>
@@ -229,6 +227,7 @@
                 position: absolute;
                 left: 3%;
                 top: 20px;
+                color: #999;
             }
             .echarts {
                 height: 100%;

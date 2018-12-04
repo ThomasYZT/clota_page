@@ -28,7 +28,7 @@
                 //数据表类型
                 type : 'tendency',
                 //会员类型
-                cardType : 'all'
+                cardType : ''
             };
         },
         computed : {
