@@ -3,50 +3,50 @@ export const salesUserHead = [
     {
         title : '用户编码', // 用户编码
         minWidth : 130,
-        field : ''
+        field : 'id'
     },
     {
         title : 'userName', // 用户姓名
         minWidth : 130,
-        field : ''
+        field : 'name'
     },
     {
         title : '用户手机号', // 用户手机号
-        width : 200,
+        width : 150,
         enWidth : 180,
-        field : ''
+        field : 'mobile'
     },
     {
         title : '用户邀请码', // 用户邀请码
         minWidth : 130,
-        field : ''
+        field : 'inviteCode'
     },
     {
         title : '佣金总额', // 佣金总额
         width : 110,
         type : 'money',
-        field : ''
+        field : 'salary'
     },
     {
         title : 'totalMoney', // 累计销售额
         width : 130,
         type : 'money',
-        field : ''
+        field : 'saleAmount'
     },
     {
-        title : '营销级别', // 营销级别
+        title : 'marketType', // 营销类别
         minWidth : 130,
-        field : ''
+        field : 'typeName'
     },
     {
         title : 'marketingLevelName', // 营销等级名称
         minWidth : 130,
-        field : ''
+        field : 'levelName'
     },
     {
         title : 'signTime', // 注册时间
         width : 190,
-        field : ''
+        field : 'createdTime'
     },
     {
         title : 'operate',

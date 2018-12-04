@@ -7,7 +7,7 @@
 <template>
     <div class="sales-user-info">
         <!--列表数据筛选器-->
-        <sales-user-filter @on-search=""></sales-user-filter>
+        <sales-user-filter @on-search="searchSalesUsers"></sales-user-filter>
         <!--销售用户信息列表-->
         <table-com
             :show-pagination="true"
@@ -58,6 +58,13 @@
                 tableData : [{}],
                 //总条数
                 totalCount : 0,
+                //销售用户信息传参
+                queryParams : {
+                    marketTypeId : 'all',
+                    keyword : '',
+                    pageNo : 1,
+                    pageSize : 10,
+                },
             }
         },
         computed : {},
@@ -71,7 +78,21 @@
              * 查询销售用户信息列表数据
              */
             queryList () {
-
+                let params = Object.assign({}, this.queryParams);
+                if (params.marketTypeId.includes('all')) {
+                    params.marketTypeId = '';
+                }
+                ajax.post('marketing-queryMarketUserList',{
+                    ...params
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.tableData = res.data.data || [];
+                        this.totalCount = res.data.totalRow;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
             },
             /**
              * 显示销售用户信息模态框
@@ -79,6 +100,14 @@
              */
             showModal (scopeRow) {
                 this.$refs.infoDetailModal.show(scopeRow);
+            },
+            /**
+             * 搜索销售用户信息列表
+             * @param params  Object
+             */
+            searchSalesUsers (params) {
+                Object.assign(this.queryParams, params);
+                this.queryList();
             },
         }
     };
