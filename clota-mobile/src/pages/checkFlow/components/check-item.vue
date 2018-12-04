@@ -31,7 +31,7 @@
                       if (this.info.evaluateType === 'consume_add') {
                           return 'gainByConsuming';
                       } else {
-                          return 'scoreResume';
+                          return 'consume';
                       }
                   case 'recharge':
                       return 'gainByRecharging';
