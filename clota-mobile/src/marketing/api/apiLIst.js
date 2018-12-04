@@ -7,6 +7,8 @@ const apiList = {
     'market_userRegister' : '/market/marketUser/userRegister',
     //校验验证码
     'market_checkVerifyCode' : '/market/marketUser/checkVerifyCode',
+    //登录
+    'market_login' : '/market/marketUser/login',
 };
 
 export default apiList;

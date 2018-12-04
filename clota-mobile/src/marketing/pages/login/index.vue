@@ -19,11 +19,12 @@
                          v-model="formData.password"
                          class="c-input"
                          text-align="right"
+                         type="password"
                          label-width="150px"
                          :placeholder="$t('inputField',{ field : $t('登录密码') })">
                 </x-input>
                 <x-input :title="$t('validCode')"
-                         v-model="formData.password"
+                         v-model="formData.code"
                          class="c-input"
                          type="password"
                          text-align="right"
@@ -54,6 +55,9 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    import ajax from '@/api/index.js';
+    import { validator } from 'klwk-ui';
+    import MD5 from 'crypto-js/md5';
     export default {
         data () {
             return {
@@ -64,7 +68,9 @@
                     //登录密码
                     password : '',
                     //所属类别
-                    type : '出租车'
+                    type : '出租车',
+                    //验证码
+                    code : '',
                 }
             };
         },
@@ -73,7 +79,23 @@
              * 登录
              */
             login () {
+                this.validatePhone().then(() => {
+                    return this.validatePassword();
+                }).then(() => {
+                    ajax.post('market_login',{
+                        mobile : this.formData.phoneNum,
+                        password : MD5(this.formData.password).toString(),
+                        typeId : this.marketTypeId,
+                        orgId : this.marketOrgId,
+                        levelId : this.marketLevelId,
+                    }).then(res => {
+                        if (res.success) {
 
+                        } else {
+                            // this.$
+                        }
+                    });
+                });
             },
             /**
              * 跳转到注册页面
@@ -82,11 +104,62 @@
                 this.$router.push({
                     name : 'marketingRegister'
                 });
-            }
+            },
+            /**
+             * 校验手机号是否正确
+             * @return{Function} 校验结果
+             */
+            validatePhone () {
+                return new Promise((resolve,reject) => {
+                    if (this.formData.phoneNum === '') {
+                        this.$vux.toast.text(this.$t('pleaseEnterMobile'));
+                        reject();
+                    } else {
+                        if (!validator.isMobile(this.formData.phoneNum)) {
+                            this.$vux.toast.text(this.$t('pleaseEnterRightMobile'));
+                            reject();
+                        } else {
+                            resolve();
+                        }
+                    }
+                });
+            },
+            /**
+             * 校验登录密码
+             * @return {Promise<any>}
+             */
+            validatePassword () {
+                return new Promise((resolve,reject) => {
+                    if (this.formData.password === '') {
+                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('登录密码') }));
+                        reject();
+                    } else {
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验验证码
+             * @return {Promise<any>}
+             */
+            validateCode () {
+                return new Promise((resolve,reject) => {
+                    resolve();
+                    if (this.formData.code === '') {
+                        this.$vux.toast.text(this.$t('pleaseInputValidCode'));
+                        reject();
+                    } else {
+                        resolve();
+                    }
+                });
+            },
         },
         computed : {
             ...mapGetters({
-                companyName : 'companyName'
+                companyName : 'companyName',
+                marketOrgId : 'marketOrgId',
+                marketLevelId : 'marketLevelId',
+                marketTypeId : 'marketTypeId',
             })
         }
     };

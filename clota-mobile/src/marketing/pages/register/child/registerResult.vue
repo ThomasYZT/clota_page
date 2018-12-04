@@ -22,7 +22,7 @@
              */
             toLogin () {
                 this.$router.push({
-                    name : ''
+                    name : 'marketingLogin'
                 });
             },
             /**
