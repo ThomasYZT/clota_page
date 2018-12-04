@@ -185,6 +185,14 @@
                         this.accountList = [];
                     }
                 })
+            },
+            /**
+             * 监听物理键返回
+             */
+            physicalBack () {
+                this.$router.push({
+                    name : 'home'
+                });
             }
         },
         created () {
@@ -201,11 +209,10 @@
                 url : "#"
             };
             history.pushState(state, "title", "#");
-            window.addEventListener("popstate", (e) => {
-                this.$router.push({
-                    name : 'home'
-                })
-            }, false);
+            window.addEventListener("popstate", this.physicalBack, false);
+        },
+        beforeDestroy () {
+            window.removeEventListener("popstate", this.physicalBack);
         }
     };
 </script>

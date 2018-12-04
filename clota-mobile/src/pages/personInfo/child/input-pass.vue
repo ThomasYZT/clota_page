@@ -367,10 +367,6 @@
                     }
                 }
 
-
-                .disabled {
-                    background: gray !important;
-                }
             }
         }
     }
