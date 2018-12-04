@@ -281,29 +281,33 @@
              * @param{Object} rowData 保存的业主卡信息
              */
             saveAccount (rowData) {
-                rowData.edit = false;
-                ajax.post('saveViceCard',{
-                    levelId : this.cardInfo.levelId,
-                    viceCard : JSON.stringify([{
-                        custName : rowData.custName,
-                        phoneNum : rowData.phoneNum,
-                        gender : rowData.gender,
-                        birthDay : rowData.birthDay ? new Date(rowData.birthDay).format('yyyy-MM-dd') : '',
-                        certificationType : rowData.certificationType,
-                        idCardNumber : rowData.idCardNumber,
-                        tradePassword : rowData.tradePassword,
-                        tpNo : rowData.tpNo,
-                        tpCardNo : rowData.tpCardNo,
-                        parentId : this.cardInfo.id,
-                        levelId : this.cardInfo.levelId,
-                        cardTypeId : this.cardInfo.cardTypeId,
-                    }])
-                }).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
-                        this.findMainOrViceCard();
-                    } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        rowData.edit = false;
+                        ajax.post('saveViceCard',{
+                            levelId : this.cardInfo.levelId,
+                            viceCard : JSON.stringify([{
+                                custName : rowData.custName,
+                                phoneNum : rowData.phoneNum,
+                                gender : rowData.gender,
+                                birthDay : rowData.birthDay ? new Date(rowData.birthDay).format('yyyy-MM-dd') : '',
+                                certificationType : rowData.certificationType,
+                                idCardNumber : rowData.idCardNumber,
+                                tradePassword : rowData.tradePassword,
+                                tpNo : rowData.tpNo,
+                                tpCardNo : rowData.tpCardNo,
+                                parentId : this.cardInfo.id,
+                                levelId : this.cardInfo.levelId,
+                                cardTypeId : this.cardInfo.cardTypeId,
+                            }])
+                        }).then(res => {
+                            if (res.success) {
+                                this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                                this.findMainOrViceCard();
+                            } else {
+                                this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                            }
+                        });
                     }
                 });
             },
@@ -561,6 +565,15 @@
 
         /deep/ .ivu-form-item{
             margin-bottom: 0;
+        }
+
+        /deep/ .ivu-form-item-error-tip{
+            padding-top: 0!important;
+            position: relative;
+        }
+
+        .operate-list{
+            float: none;
         }
     }
 </style>
