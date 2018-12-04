@@ -9,7 +9,6 @@
                      :show-clear="false"
                      label-width="20px"
                      :debounce="500"
-                     keyboard="number"
                      @on-change="getTrueMoney">
             </x-input>
             <div class="actual-money">
