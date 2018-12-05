@@ -289,8 +289,18 @@
     } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     import { mapGetters } from 'vuex';
+    import debounce from 'lodash/debounce';
     export default {
-        data() {
+        props : {
+            //默认筛选条件
+            'params-default' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
+        },
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -331,7 +341,7 @@
                     //营销级别
                     marketLevelId : '',
                     //关键字
-                    keyword :''
+                    keyword : ''
                 },
                 //所属景区列表
                 belongScene : [],
@@ -353,9 +363,9 @@
                 payStatusList : payStatusList,
                 //下单企业是否禁用
                 orderTaskDisabled : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 订单类型改变，查询所属景区信息
              */
@@ -364,18 +374,18 @@
                     allocationStatus : this.formData.allocationStatus,
                     orderType : this.formData.orderType
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.belongScene = res.data ? [].concat([{
                             id : 'all',
                             orgName : this.$t('all')
                         }],res.data) : [];
                         this.orderTakeList = [];
-                        if(this.formData.scenicOrgId !== 'all'){
+                        if (this.formData.scenicOrgId !== 'all') {
                             this.sceneChange();
-                        }else{
+                        } else {
                             this.search();
                         }
-                    }else{
+                    } else {
                         this.belongScene = [];
                     }
                 });
@@ -384,35 +394,35 @@
              * 所属景区改变，查询下单企业信息
              */
             sceneChange () {
-                if(!this.formData.scenicOrgId) {
+                if (!this.formData.scenicOrgId) {
                     this.orderTakeList = [];
-                    return ;
+                    return;
                 }
                 this.formData.orderOrgId = '';
                 ajax.post('getOrderOrgList',{
                     scenicId : this.formData.scenicOrgId,
                     allocationStatus : this.formData.allocationStatus
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.orderTakeList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.orderTakeList = [];
                     }
                     //如果所属景区不是当前登录景区,且是否分销选择了否，那么下单企业必须是当前景区，且不可修改
-                    if(this.formData.scenicOrgId === this.manageOrgs.id){
+                    if (this.formData.scenicOrgId === this.manageOrgs.id) {
                         this.orderTaskDisabled = false;
-                    }else{
-                        if(this.formData.allocationStatus === 'false'){
-                            if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
+                    } else {
+                        if (this.formData.allocationStatus === 'false') {
+                            if (!this.formData.orderOrgId && this.orderTakeList.length > 0) {
                                 this.formData.orderOrgId = this.orderTakeList[0].id;
                             }
                             //所属景区不为全部，下单企业不可选
-                            if(this.formData.scenicOrgId !== 'all'){
+                            if (this.formData.scenicOrgId !== 'all') {
                                 this.orderTaskDisabled = true;
-                            }else{
+                            } else {
                                 this.orderTaskDisabled = false;
                             }
-                        }else{
+                        } else {
                             this.orderTaskDisabled = false;
                         }
                     }
@@ -422,15 +432,27 @@
             /**
              * 查询数据
              */
-            search () {
-                this.$emit('set-params',this.paramsObj);
-            },
+            search : debounce(function () {
+                this.$emit('set-params',{
+                    searchParams : this.paramsObj,
+                    formData : this.formData
+                });
+            },100),
             /**
              * 触发查询产品列表
              */
-            searchProductList () {
-                this.$emit('search-product',this.paramsObj);
-            },
+            // searchProductList () {
+            //     this.$emit('search-product',{
+            //         searchParams : this.paramsObj,
+            //         formData : this.formData
+            //     });
+            // },
+            searchProductList : debounce (function () {
+                this.$emit('search-product',{
+                    searchParams : this.paramsObj,
+                    formData : this.formData
+                });
+            },100),
             /**
              * 重置筛选条件
              */
@@ -438,23 +460,23 @@
                 //下单时间
                 this.formData.orderDate = [new Date().addMonths(-1),new Date()];
                 this.formData.visitDate = [];
-                this.formData.pickStatus =  'allStatus';
-                this.formData.allocationStatus =  'true';
-                this.formData.refundStatus =  'allStatus';
-                this.formData.scenicOrgId =  'all';
-                this.formData.orderChannel =  'allStatus';
-                this.formData.syncStatus =  'allStatus';
-                this.formData.rescheduleStatus =  'allStatus';
-                this.formData.verifyStatus =  'allStatus';
-                this.formData.orderOrgId =  '';
-                this.formData.productType =  'ticket';
-                this.formData.orderType =  'allStatus';
-                this.formData.abnormalStatus =  false;
-                this.formData.auditStatus =  'allStatus';
-                this.formData.paymentStatus =  'allStatus';
-                this.formData.marketTypeId =  '';
-                this.formData.marketLevelId =  '';
-                this.formData.keyword =  '';
+                this.formData.pickStatus = 'allStatus';
+                this.formData.allocationStatus = 'true';
+                this.formData.refundStatus = 'allStatus';
+                this.formData.scenicOrgId = 'all';
+                this.formData.orderChannel = 'allStatus';
+                this.formData.syncStatus = 'allStatus';
+                this.formData.rescheduleStatus = 'allStatus';
+                this.formData.verifyStatus = 'allStatus';
+                this.formData.orderOrgId = '';
+                this.formData.productType = 'ticket';
+                this.formData.orderType = 'allStatus';
+                this.formData.abnormalStatus = false;
+                this.formData.auditStatus = 'allStatus';
+                this.formData.paymentStatus = 'allStatus';
+                this.formData.marketTypeId = '';
+                this.formData.marketLevelId = '';
+                this.formData.keyword = '';
                 this.orderTypeChange();
                 this.searchProductList();
             },
@@ -470,22 +492,25 @@
             }
         },
         created () {
+            // if (this.paramsDefault && Object.keys(this.paramsDefault).length > 0) {
+            //     this.formData = this.paramsDefault;
+            // }
             this.orderTypeChange();
         },
-        computed :{
+        computed : {
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             }),
             //下单企业名字
             orderOrgName () {
-                if(this.orderTakeList && this.orderTakeList.length > 0){
-                    for(let i = 0, j = this.orderTakeList.length;i < j;i++){
-                        if(this.formData.orderOrgId === this.orderTakeList[i]['id']){
+                if (this.orderTakeList && this.orderTakeList.length > 0) {
+                    for (let i = 0, j = this.orderTakeList.length; i < j; i++) {
+                        if (this.formData.orderOrgId === this.orderTakeList[i]['id']) {
                             return this.orderTakeList[i]['orgName'];
                         }
                     }
                     return '';
-                }else{
+                } else {
                     return '';
                 }
             },
@@ -494,7 +519,7 @@
                 return {
                     orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd 00:00:00'),
                     orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd 23:59:59'),
-                    visitStartDate : this.formData.visitDate[0] ?this.formData.visitDate[0].format('yyyy-MM-dd 00:00:00') : '',
+                    visitStartDate : this.formData.visitDate[0] ? this.formData.visitDate[0].format('yyyy-MM-dd 00:00:00') : '',
                     visitEndDate : this.formData.visitDate[1] ? this.formData.visitDate[1].format('yyyy-MM-dd 23:59:59') : '',
                     orderType : this.formData.orderType === 'allStatus' ? '' : this.formData.orderType,
                     allocationStatus : this.formData.allocationStatus,
@@ -540,8 +565,15 @@
             orderChannelList () {
                 return this.formData.allocationStatus === 'true' ? distributorChannelList : notDistributorChannelList;
             }
+        },
+        watch : {
+            paramsDefault (newVal,oldVal) {
+                if (newVal && Object.keys(newVal).length > 0) {
+                    this.formData = this.paramsDefault;
+                }
+            }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

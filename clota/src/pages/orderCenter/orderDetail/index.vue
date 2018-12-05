@@ -3,7 +3,8 @@
 <template>
     <div class="order-detail">
         <!--过滤表头-->
-        <filter-head @set-params="setParams"
+        <filter-head :params-default="paramsDefault"
+                     @set-params="setParams"
                      @search-product="searchProduct">
         </filter-head>
         <table-com
@@ -226,17 +227,19 @@
     import applyRefundTicket from './child/applyRefundTicketModal';
     import ajax from '@/api/index.js';
     import applyAlterTicketModal from './child/applyAlterTicketModal';
-    import { transSyncStatus,transSMSStatus,transPaymentStatus } from '../commFun.js'
+    import { transSyncStatus,transSMSStatus,transPaymentStatus } from '../commFun.js';
     import debounce from 'lodash/debounce';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             filterHead,
             tableCom,
             applyRefundTicket,
             applyAlterTicketModal
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
@@ -246,7 +249,7 @@
                 totalCount : 0,
                 //筛选条件
                 queryParams : {
-                    pageNo :1,
+                    pageNo : 1,
                     pageSize : 10,
                     orderStartDate : '',
                     orderEndDate : '',
@@ -269,7 +272,7 @@
                     marketTypeId : '',
                     marketLevelId : '',
                     //关键字
-                    keyword :''
+                    keyword : ''
                 },
                 //退款模态框是否显示
                 refundTicketModalShow : false,
@@ -278,10 +281,12 @@
                 //订单下产品信息
                 orderProductInfo : [],
                 //改签模态框是否显示
-                alterTicketModalShow : false
-            }
+                alterTicketModalShow : false,
+                //默认筛选条件信息
+                paramsDefault : {}
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询所有订单
              */
@@ -295,10 +300,10 @@
                 ajax.post('getOrderList',{
                     ...this.queryParams
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -309,7 +314,8 @@
              * @param params
              */
             setParams (params) {
-                Object.assign(this.queryParams,params);
+                Object.assign(this.queryParams,params.searchParams);
+                this.updateStorgeInfo(params.formData);
                 this.queryList();
             },
             /**
@@ -317,7 +323,8 @@
              * @param params
              */
             searchProduct (params) {
-                Object.assign(this.queryParams,params);
+                Object.assign(this.queryParams,params.searchParams);
+                this.updateStorgeInfo(params.formData);
                 this.queryList();
             },
             /**
@@ -325,7 +332,7 @@
              * @param data
              */
             toOrderDetail (data) {
-                if(data['orderType'] === 'individual') {
+                if (data['orderType'] === 'individual') {
                     // 散客订单详情
                     this.$router.push({
                         name : 'individualFirstLevel',
@@ -333,7 +340,7 @@
                             orderId : data.orderId
                         }
                     });
-                }else {
+                } else {
                     // 团队订单详情
                     this.$router.push({
                         name : 'teamOrderDetail',
@@ -349,13 +356,13 @@
              * @param data
              */
             refundTicket (data) {
-                if(!this.judgeCanReturn(data)) return;
+                if (!this.judgeCanReturn(data)) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
-                    if(res.success){
+                    if (res.success) {
                         this.orderProductInfo = res.data;
                         this.refundTicketModalShow = true;
-                    }else{
+                    } else {
                         this.orderProductInfo = {};
                     }
                 });
@@ -374,13 +381,13 @@
              * @param  data 订单信息
              */
             alterTicket (data) {
-                if(!this.judgeCanAlter(data)) return;
+                if (!this.judgeCanAlter(data)) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
-                    if(res.success){
+                    if (res.success) {
                         this.orderProductInfo = res.data;
                         this.alterTicketModalShow = true;
-                    }else{
+                    } else {
                         this.orderProductInfo = {};
                     }
                 });
@@ -403,15 +410,15 @@
              * 跳转到订单详情
              * @param rowData
              */
-            toDetail(rowData) {
-                if(rowData.orderType === 'team'){
+            toDetail (rowData) {
+                if (rowData.orderType === 'team') {
                     this.$router.push({
                         name : 'teamOrderDetail',
-                        params :{
+                        params : {
                             orderId : rowData.orderId
                         }
                     });
-                }else if(rowData.orderType === 'individual'){
+                } else if (rowData.orderType === 'individual') {
                     this.$router.push({
                         name : 'individualSecondLevel',
                         params : {
@@ -430,11 +437,20 @@
              * 获取产品名称
              * @param rowData 订单详情数据
              */
-            getProductName(rowData) {
-                if(rowData.orderType === 'team'){
+            getProductName (rowData) {
+                if (rowData.orderType === 'team') {
                     return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
-                }else{
+                } else {
                     return rowData.productName;
+                }
+            },
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由参数
+             */
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    this.paramsDefault = params;
                 }
             }
         },
@@ -442,18 +458,18 @@
             //是否可以显示退票按钮和改签按钮，
             returnTicketMenuShow () {
                 //散客非分销订单
-                if((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')
-                    && this.queryParams.allocationStatus === 'false'){
+                if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')
+                    && this.queryParams.allocationStatus === 'false') {
                     return {
                         show : true,
                         width : 170,
                     };
-                }else if((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')  && this.queryParams.orderChannel === 'market'){
+                } else if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '') && this.queryParams.orderChannel === 'market') {
                     return {
                         show : true,
                         width : 170,
                     };
-                }else{//散客全民营销订单
+                } else {//散客全民营销订单
                     return {
                         show : false,
                         width : 80,
@@ -464,7 +480,7 @@
         created () {
             this.queryList = debounce(this.queryListAjax,300);
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
