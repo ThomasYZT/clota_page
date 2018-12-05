@@ -158,6 +158,7 @@
                         levelAmount : data.levelAmount,
                         level : data.level,
                         levelName : data.levelName,
+                        typeId : data.typeId
                     }
                 });
             },

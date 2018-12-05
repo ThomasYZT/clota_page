@@ -212,6 +212,7 @@
                     this.formData.level = editParams.level.toString();
                     this.formData.levelUpMoney = editParams.levelAmount.toString();
                     this.formData.marketingLevelName = editParams.levelName;
+                    this.typeId = editParams.typeId;
 
                 //关闭
                 } else {
@@ -256,6 +257,7 @@
              */
             updateLevel () {
                 ajax.post('marketing-addLevel', {
+                    typeId : this.typeId,
                     id : this.levelId,
                     levelName : this.formData.marketingLevelName,
                     levelAmount : this.formData.levelUpMoney,
