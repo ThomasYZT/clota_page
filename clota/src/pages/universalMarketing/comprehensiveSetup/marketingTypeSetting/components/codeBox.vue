@@ -79,6 +79,14 @@
                 </template>
             </div>
         </transition>
+
+        <delModal ref="delModal">
+            <div class="del-modal">
+                <i class="iconfont icon-help"></i>
+                <span class="result">{{$t('sureToDelQRcode')}}</span>
+                <span class="warn-tip">{{$t('operationIrrevocable')}}{{$t('sureToDel')}}</span>
+            </div>
+        </delModal>
     </div>
 </template>
 
@@ -86,6 +94,7 @@
     import vueQRcode from './vueQRcode';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
+    import delModal from '@/components/delModal/index';
     export default {
         props : {
             codeInfo : {
@@ -96,7 +105,8 @@
             }
         },
         components : {
-            vueQRcode
+            vueQRcode,
+            delModal
         },
         data () {
             return {
@@ -176,9 +186,13 @@
              * 删除
              */
             del () {
-                this.boxStatus = 'null';
-                this.updateCode({ path : '', type : 'del' });
-                this.resetBox();
+                this.$refs.delModal.show({
+                    confirmCallback : () => {
+                        this.boxStatus = 'null';
+                        this.updateCode({ path : '', type : 'del' });
+                        this.resetBox();
+                    }
+                });
             },
             /**
              * 接口保存二维码信息
@@ -299,6 +313,21 @@
                 }
             }
 
+        }
+    }
+
+    .del-modal {
+        width: 80%;
+        .icon-help {
+            color: #EB6751;
+        }
+
+        .type-name {
+            color: $color_yellow;
+        }
+
+        .result {
+            color: $color_red;
         }
     }
 

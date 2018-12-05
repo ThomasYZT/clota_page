@@ -1921,4 +1921,5 @@ export default {
     'picture' : '图片',
     'M035' : '商品已存在',
     'pleaseSetRequiredCredits' : '请先设置兑换积分',
+    'sureToDelQRcode' : '确认删除二维码？'
 }
