@@ -49,11 +49,16 @@
          * 页面导航控制
          */
         toUrl (url,params) {
-            if (params && Object.keys(params).length > 0) {
-                this.$router.push({ path : url, query : params });
+            if (this.cardInfo.status && this.cardInfo.status === 'frozen' && this.info.link === '/memberCode') {
+                this.$vux.toast.text(this.$t('thisCardIsFrozen'));
             } else {
-                this.$router.push({ path : url });
+                if (params && Object.keys(params).length > 0) {
+                    this.$router.push({ path : url, query : params });
+                } else {
+                    this.$router.push({ path : url });
+                }
             }
+
         }
     }
   };

@@ -237,5 +237,6 @@ export default {
     'errorFormat' : '请输入正确金额',
     'numError' : '请输入正确金额',
     'expire_score' : '积分失效',
-    'activityMemberRightInfo' : '特点活动积分折扣权益说明'
+    'activityMemberRightInfo' : '特点活动积分折扣权益说明',
+    'thisCardIsFrozen' : '该卡已冻结，暂无权限',
 };
