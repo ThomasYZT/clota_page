@@ -33,8 +33,9 @@
                 <Select v-model="filterParams.policyId" class="field-item">
                     <Option v-for="item in salesPolicy"
                             :key="item.id"
-                            :value="item.id">
-                        <div class="policy-desc" v-w-title="item.policyDesc">{{$t(item.policyDesc)}}</div>
+                            :value="item.id"
+                            :label="item.name">
+                        <div class="policy-name" v-w-title="item.name">{{item.name}}</div>
                     </Option>
                 </Select>
             </li>
@@ -43,13 +44,22 @@
                 <Button type="ghost" @click="reset">{{$t("reset")}}</Button>
             </li>
         </ul>
+        <!--销售政策描述-->
+        <div class="policy-desc">
+            {{$t('colonSetting', { key : $t('销售政策描述') })}}
+            <span class="content">{{(policyItem ? policyItem.policyDesc : policyItem) | contentFilter}}</span>
+            <Button type="primary" @click="checkPolicyDetail">{{$t("viewDetail")}}</Button>
+        </div>
+        <!--查看销售政策详情弹窗-->
+        <policy-detail-modal ref="detailView"></policy-detail-modal>
     </div>
 </template>
 <script>
     import ajax from '@/api/index';
+    import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
 
     export default {
-        components : {},
+        components : { policyDetailModal },
         props : {},
         data () {
             return {
@@ -70,7 +80,13 @@
                 salesPolicy : [],
             }
         },
-        computed : {},
+        computed : {
+            policyItem () {
+                return this.salesPolicy.find(item => {
+                    return this.filterParams.policyId == item.id;
+                });
+            }
+        },
         created () {
             this.resetFilter = JSON.stringify(this.filterParams);
             this.getMarketingTypes();
@@ -133,6 +149,8 @@
                 }).then(res => {
                     if (res.success && res.data) {
                         this.salesPolicy = res.data.data || [];
+                        //默认选中第一个政策
+                        this.filterParams.policyId = this.salesPolicy[0].id;
                     }
                 });
             },
@@ -148,6 +166,17 @@
             reset () {
                 this.filterParams = JSON.parse(this.resetFilter);
             },
+            /**
+             * 查看销售政策详情
+             */
+            checkPolicyDetail () {
+                //显示弹窗
+                if (this.policyItem) {
+                    this.$refs.detailView.toggle(this.policyItem);
+                } else {
+                    this.$Message.error(this.$t('selectField', { msg : this.$t('marketingPolicy') }));
+                }
+            }
         }
     };
 </script>
@@ -170,9 +199,17 @@
             width: 150px;
         }
 
-        .policy-desc {
+        .policy-name {
             padding-right: 12px;
             @include overflow_tip();
+        }
+
+        .policy-desc {
+            margin-top: 10px;
+            .content {
+                display: inline-block;
+                width: 653px;
+            }
         }
     }
 

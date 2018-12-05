@@ -119,6 +119,8 @@
                     }).then(res => {
                         if (res.success) {
                             this.marketingLevels = res.data ? this.allMarketLevel.concat(res.data.data || []) : this.allMarketLevel;
+                        } else {
+                            this.marketingLevels = this.allMarketLevel;
                         }
                     });
                 }

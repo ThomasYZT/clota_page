@@ -21,6 +21,7 @@
     import ajax from '@/api/index.js';
     import baseInfo from './components/baseinfo';
     import otherInfo from './components/otherInfo';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -55,7 +56,7 @@
                 this.formData.phoneNum = formData.phoneNum;
                 this.formData.code = formData.code;
                 this.formData.password = formData.password;
-                this.stage = '1';
+                this.stage = '2';
             },
             /**
              * 注册
@@ -64,18 +65,27 @@
             register (formData) {
                 this.formData.name = formData.name;
                 this.formData.idNum = formData.idNum;
+                this.toRegister();
             },
             /**
              * 开始注册
              */
             toRegister () {
-                ajax.post('',{
-
+                ajax.post('market_userRegister',{
+                    name : this.formData.name,
+                    mobile : this.formData.phoneNum,
+                    idno : this.formData.idNum,
+                    typeId : this.marketTypeId,
+                    orgId : this.marketOrgId,
+                    levelId : this.marketLevelId,
+                    password : MD5(this.formData.password).toString(),
                 }).then(res => {
                     if (res.success) {
                         this.$router.push({
                             name : 'marketingRegisterSuc',
-                            fromRegister : true
+                            params : {
+                                fromRegister : true
+                            }
                         });
                     } else {
                         this.$vux.toast.show({
@@ -85,6 +95,13 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters({
+                marketOrgId : 'marketOrgId',
+                marketLevelId : 'marketLevelId',
+                marketTypeId : 'marketTypeId',
+            })
         }
     };
 </script>

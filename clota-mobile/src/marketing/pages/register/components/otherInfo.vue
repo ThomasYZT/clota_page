@@ -75,13 +75,13 @@
             validateIdNum () {
                 return new Promise((resolve,reject) => {
                     if (this.formData.idNum === '') {
-                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('idNum') }));
+                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('身份证号') }));
                         reject();
                     } else {
                         if (validator.isIdCard(this.formData.idNum)) {
                             resolve();
                         } else {
-                            this.$vux.toast.text(this.$t('errFormat',{ field : this.$t('idNum') }));
+                            this.$vux.toast.text(this.$t('errFormat',{ field : this.$t('身份证号') }));
                         }
                     }
                 });

@@ -731,12 +731,12 @@ export const  bankList = [
 //第三方支付方式列表
 export const  proxyBankList = [
     {
-        label : 'payType.weixin', //微信
-        value : 'wx'
+        salaryPayment : 'payType.weixin', //微信
+        id : 'wxPay'
     },
     {
-        label : 'payType.alipay', //支付宝
-        value : 'zfb'
+        salaryPayment : 'payType.alipay', //支付宝
+        id : 'aliPay'
     },
 ]
 

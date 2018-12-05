@@ -1,7 +1,7 @@
 /**
  * 提现记录中的一些公用功能方法
  */
-import { bankList, proxyBankList } from '@/assets/js/constVariable.js';
+import { proxyBankList } from '@/assets/js/constVariable.js';
 
 /**
  * 收付款方式的code转换
@@ -9,9 +9,9 @@ import { bankList, proxyBankList } from '@/assets/js/constVariable.js';
  * @returns {string}
  */
 export const transAccountType = (value) => {
-    let accountType = [...bankList, ...proxyBankList].find((item, i) => {
-        return value === item.value;
+    let accountType = [...proxyBankList].find((item, i) => {
+        return value === item.id;
     });
 
-    return accountType ? accountType.label : value;
+    return accountType ? accountType.salaryPayment : value;
 };

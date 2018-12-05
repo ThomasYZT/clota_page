@@ -53,5 +53,9 @@ export default {
     'marketing-auditWithdrawRecord' : '/market/manage/auditWithdrawRecord',
     //导出提现记录
     'marketing-exportWithdrawRecord' : '/market/manage/exportWithdrawRecord',
+    //查询销售用户详情
+    'marketing-findMarketUserDetail' : '/market/manage/findMarketUserDetail',
+    //获取最近n次使用的银行卡付款账号类型
+    'marketing-getRecentlyPayTypes' : '/market/manage/getRecentlyPayTypes',
 
 }

@@ -30,7 +30,7 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <span class="info-key">{{$t('colonSetting', { key: $t('gender') })}}</span>
-                                <span class="info-val">{{$t('female') | contentFilter}}</span>
+                                <span class="info-val">{{$t(salesUserInfo.sex) | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
@@ -45,7 +45,7 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <span class="info-key">{{$t('colonSetting', { key: $t('birthday') })}}</span>
-                                <span class="info-val">{{'11-09'  | contentFilter}}</span>
+                                <span class="info-val">{{salesUserInfo.birthday | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
@@ -144,7 +144,7 @@
                             <div class="node-info">
                                 <!--累计销售额-->
                                 <span class="info-key">{{$t('colonSetting', { key: $t('totalMoney') })}}</span>
-                                <span class="info-val text-org">{{salesUserInfo.saleAmount | contentFilter}}</span>
+                                <span class="info-val text-org">{{salesUserInfo.totalMarketAmount | contentFilter | moneyFilter}}</span>
                             </div>
                         </i-col>
                     </i-row>
@@ -153,21 +153,21 @@
                             <div class="node-info">
                                 <!--佣金总额-->
                                 <span class="info-key">{{$t('colonSetting', { key: $t('佣金总额') })}}</span>
-                                <span class="info-val text-org">{{salesUserInfo.salary | contentFilter}}</span>
+                                <span class="info-val text-org">{{salesUserInfo.totalEarnAmount | contentFilter | moneyFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--已提现金额-->
                                 <span class="info-key">{{$t('colonSetting', { key: $t('已提现金额') })}}</span>
-                                <span class="info-val text-org">{{salesUserInfo.auditWithdrawAmount | contentFilter}}</span>
+                                <span class="info-val text-org">{{salesUserInfo.haveWithdrawAmount | contentFilter | moneyFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--未提现金额-->
                                 <span class="info-key">{{$t('colonSetting', { key: $t('未提现金额') })}}</span>
-                                <span class="info-val text-org">{{salesUserInfo.canApplyWithdrawAmount | contentFilter}}</span>
+                                <span class="info-val text-org">{{salesUserInfo.unWithdrawAmount | contentFilter | moneyFilter}}</span>
                             </div>
                         </i-col>
                     </i-row>
@@ -183,6 +183,7 @@
     </Modal>
 </template>
 <script>
+    import ajax from '@/api/index';
 
     export default {
         components : {},
@@ -201,12 +202,27 @@
         watch : {},
         methods : {
             /**
+             * 获取销售用户详情
+             * @param rowData  当前销售用户的列表信息
+             */
+            getDetailInfo (rowData) {
+                ajax.post('marketing-findMarketUserDetail', {
+                    userId : rowData.id
+                }).then(res => {
+                    if (res.success) {
+                        this.salesUserInfo = res.data || {};
+                    } else {
+                        this.salesUserInfo = {};
+                    }
+                });
+            },
+            /**
              * 弹窗弹出时传入销售用户详细信息数据
              * @param data
              */
             show ( data ) {
                 if (data) {
-                    this.salesUserInfo = data;
+                    this.getDetailInfo(data);
                 }
 
                 this.visible = true;

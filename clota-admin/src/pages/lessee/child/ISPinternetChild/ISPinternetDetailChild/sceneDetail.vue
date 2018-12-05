@@ -240,7 +240,7 @@
         <online-receipt :node-info="activeNode"
                         :receipt-account-info="sceneDetail"
                         :is-scenic="true"
-                        @fresh-org-data="freshOrg">
+                        @fresh-org-data="getSceneDetail">
         </online-receipt>
         <!--下属景区-->
         <sub-scene

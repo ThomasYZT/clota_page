@@ -18,7 +18,7 @@
             <Form ref="formValidate"
                   :model="transferParams"
                   :rules="ruleValidate"
-                  :label-width="140"
+                  :label-width="180"
                   style="padding-right: 30px;"
                   @submit.native.prevent>
                 <!--订单号-->
@@ -47,11 +47,15 @@
                 </Form-item>
                 <!--付款方式-->
                 <Form-item :label="$t('colonSetting', { key: $t('modeOfPayment') })">
-                    <!--TODO 选择其他银行的交互，该如何做？？？-->
-                    <!--<Input
-                           v-model.trim="transferParams.payAccount"
-                           :placeholder="$t('inputField', { field : $t('银行卡号') })" />-->
-                    <Select class="field-item"
+                    <AutoComplete
+                        v-model.trim="transferParams.salaryPayment"
+                        :disabled="isProxyBank"
+                        :placeholder="$t('inputField', { field : $t('modeOfPayment') })"><!--请输入付款方式-->
+                        <Option v-for="item in paymentTypeList"
+                                :value="$t(item.salaryPayment)"
+                                :key="item.id">{{ $t(item.salaryPayment) }}</Option>
+                    </AutoComplete>
+                    <!--<Select class="field-item"
                             v-model="transferParams.salaryPayment"
                             @on-change="">
                         <Option v-for="item in paymentTypeList"
@@ -59,7 +63,7 @@
                                 :value="item.value">
                             {{$t(item.label)}}
                         </Option>
-                    </Select>
+                    </Select>-->
                 </Form-item>
                 <!--付款方姓名-->
                 <Form-item :label="$t('colonSetting', { key: $t('付款方姓名') })" prop="payName">
@@ -111,11 +115,21 @@
                 },
                 // 被审核的提现信息数据
                 withdrawInfo : {},
+                // 付款方式列表
+                paymentTypeList : [],
 
                 // 校验规则
                 ruleValidate : {
-                    payName : { required : true, trigger : 'blur' },
-                    payAccount : { required : true, trigger : 'blur' },
+                    payName : {
+                        required : true,
+                        message : this.$t('inputField', { field : this.$t('付款方姓名') }),
+                        trigger : 'blur'
+                    },
+                    payAccount : {
+                        required : true,
+                        message : this.$t('inputField', { field : this.$t('付款账号/卡号') }),
+                        trigger : 'blur'
+                    },
                     remark : [
                         {
                             required : true,
@@ -129,15 +143,17 @@
                         },
                     ]
                 },
+                //最近n次使用的银行卡付款账号类型
+                recentPayTypes : [],
             }
         },
         computed : {
             // 付款方式列表
-            paymentTypeList () {
+            /*paymentTypeList () {
                 let typeList = [];
                 switch (this.withdrawInfo.accountType) {
-                    case 'wx' :
-                    case 'zfb' :
+                    case 'wxPay' :
+                    case 'aliPay' :
                         typeList = proxyBankList.filter(item => {
                             return item.value == this.withdrawInfo.accountType;
                         });
@@ -148,13 +164,31 @@
                 }
 
                 return typeList;
+            }*/
+            //是否微信、支付宝付款方式
+            isProxyBank () {
+                return this.withdrawInfo.accountType == 'wxPay' || this.withdrawInfo.accountType == 'aliPay';
             }
         },
         created () {
+            this.getRecentlyPayTypes(3);
         },
         mounted () {
         },
-        watch : {},
+        watch : {
+            'withdrawInfo.accountType' : {
+                handler (val, oldVal) {
+                    if (this.isProxyBank) {
+                        this.paymentTypeList = proxyBankList.filter(item => {
+                            return item.value == this.withdrawInfo.accountType;
+                        });
+                    } else {
+                        this.paymentTypeList = [...proxyBankList, ...this.recentPayTypes];
+                    }
+                },
+                immediate : true
+            }
+        },
         methods : {
             /**
              * 显示模态框
@@ -163,10 +197,11 @@
             show (data) {
                 this.withdrawInfo = data;
                 this.transferParams.marketOrderId = data.id;
-//                this.transferParams.salaryPayment = data.accountType;
+                this.transferParams.salaryPayment = this.isProxyBank ? this.$t(data.accountType) : data.accountType;
 
-                this.withdrawInfo.accountType = 'zfb';
-                this.transferParams.salaryPayment = 'zfb';
+                //测试代码
+                /*this.withdrawInfo.accountType = 'aliPay';
+                this.transferParams.salaryPayment = this.$t('payType.alipay');*/
                 this.visible = true;
             },
             /**
@@ -182,6 +217,9 @@
             handleSubmit () {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
+                        if (this.isProxyBank) {
+                            this.transferParams.salaryPayment = this.withdrawInfo.accountType;
+                        }
                         ajax.post('marketing-fillInTransferInfo',{
                             ...this.transferParams
                         }).then(res => {
@@ -201,6 +239,20 @@
              * 收付款方式的code转换
              */
             transAccountType : transAccountType,
+
+            /**
+             * 获取最近n次使用的银行卡付款账号类型
+             * @param n
+             */
+            getRecentlyPayTypes (n) {
+                ajax.post('marketing-getRecentlyPayTypes',{
+                    limit : n
+                }).then(res => {
+                    if (res.success) {
+                        this.recentPayTypes = res.data || [];
+                    }
+                });
+            }
         }
     };
 </script>
