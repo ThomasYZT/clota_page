@@ -39,8 +39,8 @@
           </template>
 
           <h3 class="category">{{$t('memberVos')}}</h3>
-          <template v-if="memberVos && memberVos.length > 0">
-              <illustration-board v-for="(item, index) in memberVos"
+          <template v-if="commonMemberVos && commonMemberVos.length > 0">
+              <illustration-board v-for="(item, index) in commonMemberVos"
                                   :key="item.id"
                                   :info="item"
                                   class="ill-item1">
@@ -52,8 +52,8 @@
           </div>
 
           <h3 class="category">{{$t('storeVos')}}</h3>
-          <template v-if="storeVos && storeVos.length > 0">
-              <illustration-board v-for="(item, index) in storeVos"
+          <template v-if="commonStoreVos && commonStoreVos.length > 0">
+              <illustration-board v-for="(item, index) in commonStoreVos"
                                   :key="item.index"
                                   :info="item"
                                   class="ill-item2">
@@ -65,8 +65,8 @@
           </div>
 
           <h3 class="category">{{$t('productMap')}}</h3>
-          <template v-if="productArr && productArr.length > 0">
-              <illustration-board v-for="(item, index) in productArr"
+          <template v-if="commonProductArr && commonProductArr.length > 0">
+              <illustration-board v-for="(item, index) in commonProductArr"
                                   :key="item.id"
                                   :info="item"
                                   class="ill-item3">
@@ -93,11 +93,11 @@
         data () {
             return {
                 //按会员级别分类数据
-                memberVos : [],
+                commonMemberVos : [],
                 //按产品类别分类数据
-                productArr : [],
+                commonProductArr : [],
                 //按店铺分类数据
-                storeVos : [],
+                commonStoreVos : [],
                 query : null,
                 //是否显示页面
                 isShow : false,
@@ -151,7 +151,12 @@
                 //会员权益信息
                 memberRight : [],
                 //会员权益是否数据为空
-                isMemberRightNoData : true
+                isMemberRightNoData : true,
+                //普通积分信息
+                commonInfo : {},
+                //特定活动积分信息
+                activityInfo : {},
+
             };
         },
         computed : {
@@ -174,9 +179,13 @@
                 }).then((res) => {
                     //console.log(res.data)
                     if (res.success) {
-                        this.memberVos = res.data ? (res.data.memberVos ? res.data.memberVos : []) : [];
-                        let productMap = res.data ? (res.data.productMap ? res.data.productMap : []) : [];
-                        this.storeVos = res.data ? (res.data.storeVos ? res.data.storeVos : []) : [];
+                        this.commonInfo = res.data && res.data.common ? res.data.common : {};
+                        this.activityInfo = res.data && res.data.activity ? res.data.activity : {};
+
+                        this.commonMemberVos = this.commonInfo.memberVos ? this.commonInfo.memberVos : []
+                        let commonProductMap = this.commonInfo.productMap ? this.commonInfo.productMap : [];
+                        this.commonStoreVos = this.commonInfo.storeVos ? this.commonInfo.storeVos : [];
+
                         //会员权益信息整理
                         this.rightInfo = {
                             birthday : [],
@@ -185,7 +194,7 @@
                         };
                         this.memberRight = [];
                         this.levelModel = {};
-                        this.levelModel = res.data ? res.data.levelModel : {};
+                        this.levelModel = this.commonInfo.levelModel ? this.commonInfo.levelModel : {};
                         this.memberRight = this.levelModel.rights ? JSON.parse(this.levelModel.rights) : [];
 
                         let rightInfoLocale = [];
@@ -213,13 +222,13 @@
                         }
                         this.isMemberRightNoData = isNoData;
 
-                        this.packageData(this.memberVos, productMap, this.storeVos);
+                        this.packageData(this.commonMemberVos, commonProductMap, this.commonStoreVos);
                         //显示页面
                         this.isShow = true;
                     } else {
-                        this.memberVos = [];
-                        this.productArr = [];
-                        this.storeVos = [];
+                        this.commonMemberVos = [];
+                        this.commonProductArr = [];
+                        this.commonStoreVos = [];
                         this.$vux.toast.text(res.message);
                         //显示页面
                         this.isShow = true;
@@ -247,7 +256,7 @@
                         item.name = item.typeName;
                         item.scoreRate = item.prodScoreRate;
                         item.discountRate = item.prodDiscountRate;
-                        this.productArr = this.productArr.concat(item);
+                        this.commonProductArr = this.commonProductArr.concat(item);
                     });
                 }
             }
