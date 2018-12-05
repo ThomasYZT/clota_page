@@ -8,7 +8,7 @@
                 <img clsss="img-span" v-else src="../../assets/images/defaut-face.png">
                 <span class="edit">
                     <span class="label" @click="editHeadImg">{{$t('edit')}}</span>
-                    <input v-if="!weixinIsConfiged" class="upload" type="file" accept="image/*" @change="uploadImg($event)">
+                    <input :disabled="!hasPermission" v-if="!weixinIsConfiged" class="upload" type="file" accept="image/*" @change="uploadImg($event)">
                 </span>
             </div>
         </div>
@@ -19,6 +19,7 @@
                     :title="$t('name')"
                     text-align="right"
                     :show-clear="false"
+                    :disabled="!hasPermission"
                     v-model.trim="formData.name"
                     placeholder-align="right">
                 </x-input>
@@ -26,6 +27,7 @@
                 <popup-picker
                     :title="$t('sex')"
                     show-name
+                    :disabled="!hasPermission"
                     v-model.trim="formData.gender"
                     :data="[genderEnum]">
                 </popup-picker>
@@ -33,6 +35,7 @@
                 <cell
                     :title="$t('phone')"
                     is-link
+                    :disabled="!hasPermission"
                     :value="formData.memberInfo.phoneNum"
                     :link="{name : 'changeMobile',params : {mobile : formData.memberInfo.phoneNum}}">
                 </cell>
@@ -41,6 +44,7 @@
                     class="trade-pass"
                     :title="$t('tradePass')"
                     is-link
+                    :disabled="!hasPermission"
                     value="●●●●●●"
                     :link="{name : 'changeTradePass',params : {mobile : formData.memberInfo.phoneNum}}">
                 </cell>
@@ -48,6 +52,7 @@
                 <cell
                     :title="$t('IdNumber')"
                     is-link
+                    :disabled="!hasPermission"
                     :link="{name : 'changeId',params : {certificationType : formData.certificationType,idCardNumber : formData.idCardNumber}}"
                     :value="idNum">
                 </cell>
@@ -116,13 +121,14 @@
                     :title="$t('address')"
                     text-align="right"
                     :show-clear="false"
+                    :disabled="!hasPermission"
                     v-model.trim="formData.memberInfo.homeAddr"
                     placeholder-align="right">
                 </x-input>
             </group>
         </div>
         <div class="btn-area">
-            <x-button @click.native="saveInfo">{{$t('save')}}</x-button>
+            <x-button :disabled="!hasPermission" @click.native="saveInfo">{{$t('save')}}</x-button>
         </div>
     </div>
 </template>
@@ -152,8 +158,7 @@
                         birthDay : ''
                     },
                     effDate : '',
-                    expDate : ''
-
+                    expDate : '',
                 }
             };
         },
@@ -474,6 +479,10 @@
                 } else {
                     return '';
                 }
+            },
+            //有无权限编辑
+            hasPermission () {
+                return !(this.cardInfo.status === 'frozen');
             }
         }
     };
