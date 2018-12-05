@@ -259,6 +259,7 @@
                     id : this.levelId,
                     levelName : this.formData.marketingLevelName,
                     levelAmount : this.formData.levelUpMoney,
+                    level : this.formData.level,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('edit') }));
