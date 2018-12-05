@@ -108,6 +108,10 @@
             show(data) {
                 if( data.item ){
                     this.addChannel = defaultsDeep({}, pick(data.item, [...Object.keys(this.addChannel), 'id']), this.addChannel);
+                } else {
+                    if ('id' in this.addChannel){
+                        delete this.addChannel.id;
+                    }
                 }
                 this.type = data.type;
 
