@@ -193,6 +193,7 @@
                     <Form-item :label="$t('playPark')+'：'"><!--可游玩园区-->
                         <div>
                             <table-com
+                                auto-height
                                 :table-com-min-height="260"
                                 :column-data="columnData"
                                 :table-data="productPlayRuleVo"
@@ -206,6 +207,17 @@
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
                                         {{$t(scope.row.saleType) | contentFilter}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column2"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        {{$t(!scope.row.itemCheckTimes || scope.row.itemCheckTimes === '0' ? '-' : scope.row.itemCheckTimes) | contentFilter}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column
