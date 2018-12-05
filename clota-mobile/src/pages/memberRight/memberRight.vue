@@ -9,9 +9,8 @@
               <p :class="{small: isEn}">{{$t('memberRightInfo')}}</p>
           </div>
 
-          <h3 class="category">{{$t('memberRight')}}</h3>
-
           <!-- 会员权益 -->
+          <h3 class="category">{{$t('memberRight')}}</h3>
           <template v-if="!isMemberRightNoData">
               <!--优惠通知-->
               <ul class="right-list" v-if="rightInfo.desc.length > 0">
