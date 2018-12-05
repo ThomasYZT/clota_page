@@ -550,10 +550,6 @@
                 margin-left: 30px;
                 font-size: $font_size_16px;
             }
-
-            /deep/ .ivu-tabs-ink-bar {
-                background-color: #EBEEF5;
-            }
         }
 
         .btn-wrap{
