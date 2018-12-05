@@ -114,12 +114,12 @@ export const marketingColumn = [
     {
         title : 'type', // 类型
         width : 250,
-        field : 'id'
+        field : 'typeName'
     },
     {
         title : 'level', // 等级
         minWidth : 250,
-        field : 'name'
+        field : 'levelName'
     }
 ];
 

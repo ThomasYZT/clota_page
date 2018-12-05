@@ -213,20 +213,20 @@
                     </Form-item>
                 </div>
 
-                <!--全民营销 暂时隐藏-->
-                <!--<div class="form-content line" :style="{height: (detail.productList.length + 1) * 50 + 80+'px'}">
-                    <Form-item :label="$t('allPeopleMarket')+'：'">&lt;!&ndash;全民营销&ndash;&gt;
+                <!--全民营销-->
+                <div class="form-content line" v-if="detail.marketSalePriceVos">
+                    <Form-item :label="$t('allPeopleMarket')+'：'"><!--全民营销-->
                         <div>
                             <table-com
-                                :show-pagination="true"
+                                auto-height
                                 :table-com-min-height="260"
                                 :column-data="marketingColumn"
-                                :table-data="detail.productList"
+                                :table-data="detail.marketSalePriceVos"
                                 :border="false">
                             </table-com>
                         </div>
                     </Form-item>
-                </div>-->
+                </div>
 
                 <!--退改规则-->
                 <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.returnRuleModel">
@@ -416,6 +416,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.detail = res.data || {};
+                        console.log(this.detail)
                     } else {
                         this.detail = {};
                         this.$Message.error(res.message || this.$t('fail'));

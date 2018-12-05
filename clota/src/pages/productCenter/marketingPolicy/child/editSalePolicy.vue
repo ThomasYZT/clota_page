@@ -327,10 +327,10 @@
                         </Form-item>
                     </div>
 
-                    <!--全民营销暂不显示-->
-                    <div class="ivu-form-item-wrap single" v-if="false">
+                    <!--全民营销-->
+                    <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('allPeopleMarket')"><!--全民营销-->
-                            <span class="blue">+ {{$t('addMarketLevel')}}</span><!--增加营销等级-->
+                            <span @click="addMarketLevel" class="blue">+ {{$t('addMarketLevel')}}</span><!--增加营销等级-->
                             <table-com
                                 :table-com-min-height="260"
                                 :column-data="marketingColumn"
@@ -349,16 +349,18 @@
                                     :min-width="row.minWidth">
                                     <template slot-scope="scope">
                                         <Select v-if="scope.row.editable"
-                                                v-model="scope.row.name"
+                                                v-model="scope.row.typeId"
+                                                label-in-value
                                                 transfer
-                                                :placeholder="$t('selectField', {msg: ''})">
-                                            <Option v-for="(item,index) in enumData.orderInfo"
+                                                :placeholder="$t('selectField', {msg: ''})"
+                                                @on-change="marketingTypeChange($event, scope.row)">
+                                            <Option v-for="(item,index) in marketingTypeList"
                                                     :key="index"
                                                     :value="item.value">
                                                 {{$t(item.label)}}
                                             </Option>
                                         </Select>
-                                        <span v-else>{{$t(scope.row.editable) | contentFilter}}</span>
+                                        <span v-else>{{$t(scope.row.typeName) | contentFilter}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -370,16 +372,18 @@
                                     :min-width="row.minWidth">
                                     <template slot-scope="scope">
                                         <Select v-if="scope.row.editable"
-                                                v-model="scope.row.name"
+                                                v-model="scope.row.levelId"
+                                                label-in-value
                                                 transfer
-                                                :placeholder="$t('selectField', {msg: ''})">
-                                            <Option v-for="(item,index) in enumData.orderInfo"
+                                                :placeholder="$t('selectField', {msg: ''})"
+                                                @on-change="marketingLevelChange($event, scope.row)">
+                                            <Option v-for="(item,index) in marketingLevelList"
                                                     :key="index"
                                                     :value="item.value">
                                                 {{$t(item.label)}}
                                             </Option>
                                         </Select>
-                                        <span v-else>{{$t(scope.row.editable) | contentFilter}}</span>
+                                        <span v-else>{{$t(scope.row.levelName) | contentFilter}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -391,11 +395,11 @@
                                     <template slot-scope="scope">
                                         <ul class="operate-list">
                                             <template v-if="scope.row.editable">
-                                                <li class="normal" @click="modify(scope.row)">{{$t('save')}}</li><!--保存-->
-                                                <li class="normal" @click="modify(scope.row)">{{$t('cancel')}}</li><!--取消-->
+                                                <li class="normal" @click="saveMarketingData(scope.row)">{{$t('save')}}</li><!--保存-->
+                                                <li class="normal" @click="cancelMarketingData(scope.row)">{{$t('cancel')}}</li><!--取消-->
                                             </template>
                                             <template v-else>
-                                                <li class="red-label" @click="del(scope.row)">{{$t('delete')}}</li><!--删除-->
+                                                <li class="red-label" @click="delMarketingData(scope.row)">{{$t('delete')}}</li><!--删除-->
                                             </template>
                                         </ul>
                                     </template>
@@ -702,6 +706,8 @@
                     },
                     //销售渠道组ID，多个逗号分隔
                     groupIds : '',
+                    //全民营销
+                    marketSaleData : [],
                 },
                 ruleValidate : {
                     name : [
@@ -752,10 +758,7 @@
 
                 //全民营销列表及表头
                 marketingColumn : marketingColumn,
-                marketingData : [
-                    { editable : false },
-                    { editable : true },
-                ],
+                marketingData : [],
                 queryParams : {
                     pageNo : 1, // 当前页码数
                     pageSize : configVariable.pageDefaultSize, // 每页显示数量
@@ -778,6 +781,10 @@
                 //显示/隐藏日历控件--默认日历显示
                 showSaleDatePicker : true,
                 showPlayDatePicker : true,
+
+                //全民营销类别、等级
+                marketingTypeList : [],
+                marketingLevelList : [],
             };
         },
         created () {
@@ -948,8 +955,8 @@
                                 year : year,
                                 month : month,
                                 day : (obj[year][month].sort( (a,b) => {
-return a - b;
-}) ).join('、')
+                                    return a - b;
+                                }) ).join('、')
                             });
                         }
                     }
@@ -1076,6 +1083,19 @@ return a - b;
                     return;
                 }
 
+                //全民营销
+                if (this.marketingData && this.marketingData.length < 1) {
+                    this.$Message.warning(this.$t('selectField', { msg : this.$t('addMarketLevel') }));
+                    return;
+                } else {
+                    for (let i = 0, len = this.marketingData.length; i < len; i++) {
+                        if (!this.marketingData[i].levelId) {
+                            this.$Message.error(this.$t('selectField',  { msg : this.$t('marketingLevel') }));
+                            return;
+                        }
+                    }
+                }
+
                 //退票规则
                 if (this.formData.returnRule.type !== 'notAllow' && this.formData.returnRule.rules.length < 1) {
                     this.$Message.warning(this.$t('selectField', { msg : this.$t('addReturnRateRule') }));
@@ -1086,17 +1106,17 @@ return a - b;
                     if ( valid ) {
                         let params = defaultsDeep({}, this.formData);
                         params.groupIds = this.selectedRow.map( item => {
- return item.id;
-}).join(',');
+                            return item.id;
+                        }).join(',');
                         params.itemsData = JSON.stringify(defaultsDeep([], this.itemsData));
 
                         params.saleRule.weekSold = this.formData.saleRule.weekSold && this.formData.saleRule.weekSold.length > 0 ?
                             this.formData.saleRule.weekSold.join(',') : '';
                         params.saleRule.specifiedTime = this.formData.saleRule.type === 'specifiedDateSold' && this.formData.saleRule.specifiedTime && this.formData.saleRule.specifiedTime.length > 0 ?
                             this.formData.saleRule.specifiedTime.map( item => {
- return new Date(item).format('yyyy-MM-dd');
-}).join(',') : '';
-                            params.saleRule.startTime = this.formData.saleRule.time[0] ? new Date(this.formData.saleRule.time[0]).format('yyyy-MM-dd') : '';
+                            return new Date(item).format('yyyy-MM-dd');
+                        }).join(',') : '';
+                        params.saleRule.startTime = this.formData.saleRule.time[0] ? new Date(this.formData.saleRule.time[0]).format('yyyy-MM-dd') : '';
                         params.saleRule.endTime = this.formData.saleRule.time[1] ? new Date(this.formData.saleRule.time[1]).format('yyyy-MM-dd') : '';
                         delete params.saleRule.validDates;
                         delete params.saleRule.time;
@@ -1107,8 +1127,8 @@ return a - b;
 
                         params.playRule.specifiedTime = this.formData.playRule.type === 'specifiedDateSold' && this.formData.playRule.specifiedTime && this.formData.playRule.specifiedTime.length > 0 ?
                             this.formData.playRule.specifiedTime.map( item => {
- return new Date(item).format('yyyy-MM-dd');
-}).join(',') : '';
+                            return new Date(item).format('yyyy-MM-dd');
+                        }).join(',') : '';
                         params.playRule.startTime = this.formData.playRule.time[0] ? new Date(this.formData.playRule.time[0]).format('yyyy-MM-dd') : '';
                         params.playRule.endTime = this.formData.playRule.time[1] ? new Date(this.formData.playRule.time[1]).format('yyyy-MM-dd') : '';
                         delete params.playRule.validDates;
@@ -1144,6 +1164,15 @@ return a - b;
                         params.todaySaleEndTime = this.formData.todaySaleTime[1];
                         params.checkinTime = this.formData.checkinTime.join('~');
                         params.allocationId = this.allocationId || ''; //分销id
+
+                        //全民营销表单数据
+                        params.marketSaleData = this.marketingData.map((item) => {
+                            return {
+                                market_type_id : item.typeId,
+                                market_level_id : item.levelId,
+                            };
+                        });
+                        params.marketSaleData = JSON.stringify(params.marketSaleData);
 
                         delete params.saleTime;
                         delete params.todaySaleTime;
@@ -1262,8 +1291,8 @@ return a - b;
 
                 //销售渠道列表
                 formData.groupIds = data.policyChannels.map( item => {
- return item.groupId;
-});
+                    return item.groupId;
+                });
                 //查询销售渠道组
                 this.queryOrgGroupVoList();
 
@@ -1281,9 +1310,139 @@ return a - b;
                     });
                 });
 
+                //全民营销数据
+                this.marketingData = data.marketSalePriceVos && data.marketSalePriceVos.length > 0 ? data.marketSalePriceVos.map((item) => {
+                    return {
+                        typeId : item.typeId,
+                        typeName : item.typeName,
+                        levelId : item.levelId,
+                        levelName : item.levelName,
+                        editable : false
+                    }
+                }) : [];
+
                 this.formData = defaultsDeep( {}, formData );
             },
+            /**
+             * 新增营销等级
+             */
+            addMarketLevel () {
+                //一次只能同时新增一个营销等级
+                if (this.marketingData.findIndex((item) => {
+                    return item.editable === true;
+                }) < 0) {
+                    this.marketingData.push({
+                        typeName : '',
+                        typeId : '',
+                        levelName : '',
+                        levelId : '',
+                        editable : true
+                    });
+                    ajax.post('marketing-typeList').then(res => {
+                        if (res.success) {
+                            this.marketingTypeList = res.data ? res.data.map((item) => {
+                                return {
+                                    value : item.id,
+                                    label : item.typeName,
+                                };
+                            }) : [];
+                            this.marketingData[this.marketingData.length - 1].typeName = this.marketingTypeList.length > 0 ? this.marketingTypeList[0].label : '';
+                            this.marketingData[this.marketingData.length - 1].typeId = this.marketingTypeList.length > 0 ? this.marketingTypeList[0].value : '';
+                            this.listLevel(this.marketingTypeList[0].value);
+                        } else {
+                            this.marketingTypeList = [];
+                        }
+                    });
+                }
+            },
+            /**
+             *  查询等级列表
+             *  @param {string} typeId
+             */
+            listLevel (typeId) {
+                ajax.post('marketing-listLevel', {
+                    typeId : typeId,
+                    pageNo : 1,
+                    pageSize : 99
+                }).then(res => {
+                    if (res.success) {
+                        this.marketingLevelList = res.data ? res.data.data.map((item) => {
+                            return  {
+                                label : item.levelName,
+                                value : item.id
+                            };
+                        }) : [];
 
+                        //过滤已增加的营销等级
+                        for (let i = 0, len = this.marketingData.length; i < len; i++) {
+                            for (let j = 0, jlen = this.marketingLevelList.length; j < jlen; j++) {
+                                if (this.marketingData[i].levelId === this.marketingLevelList[j].value) {
+                                    this.marketingLevelList.splice(j, 1);
+                                    jlen--;
+                                    j--;
+                                }
+                            }
+                        }
+
+                        this.marketingData[this.marketingData.length - 1].levelName = this.marketingLevelList.length > 0 ? this.marketingLevelList[0].label : '';
+                        this.marketingData[this.marketingData.length - 1].levelId = this.marketingLevelList.length > 0 ? this.marketingLevelList[0].value : '';
+                    } else {
+                        this.marketingLevelList = [];
+                    }
+                })
+            },
+            /**
+             *  营销类别变化时触发
+             *  @param {string} newType
+             *  @param {object} rowData
+             */
+            marketingTypeChange (newType, rowData) {
+                rowData.typeName = newType.label;
+                rowData.typeId = newType.value;
+                this.listLevel(newType.value);
+            },
+            /**
+             *  营销级别变化时触发
+             *  @param {string} newLevel
+             *  @param {object} rowData
+             */
+            marketingLevelChange (newLevel, rowData) {
+                rowData.levelName = newLevel ? newLevel.label : '';
+                rowData.levelId = newLevel ? newLevel.value : '';
+            },
+            /**
+             *  保存新增营销等级数据
+             *  @param {object} data
+             */
+            saveMarketingData (data) {
+                if (!data.typeName) {
+                    this.$Message.warning(this.$t('selectField', { msg : this.$t('marketType') }));
+                    return;
+                }
+
+                if (!data.levelName) {
+                    this.$Message.warning(this.$t('selectField', { msg : this.$t('marketingLevel') }));
+                    return;
+                }
+
+                data.editable = false;
+            },
+            /**
+             *  取消新增营销等级数据
+             *  @param {object} data
+             */
+            cancelMarketingData (data) {
+                this.marketingData.pop();
+            },
+            /**
+             *  删除营销等级数据
+             *  @param {object} data
+             */
+            delMarketingData (data) {
+                this.marketingData.splice(this.marketingData.findIndex((item) => {
+                    return item.value === data.value;
+                }), 1);
+            }
         },
         computed : {
             localeRouter () {

@@ -60,12 +60,12 @@ export const marketingColumn = [
     {
         title : 'marketType', // 营销类别
         width : 300,
-        field : 'parkName'
+        field : 'typeName'
     },
     {
         title : 'gradeName', // 等级名称
         minWidth : 300,
-        field : 'saleType'
+        field : 'levelName'
     },
     {
         title : 'operate', // 操作
