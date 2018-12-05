@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="qr-code">
-        <img :src="src" alt="">
+        <img v-if="show" :src="src" alt="">
     </div>
 </template>
 
@@ -12,7 +12,7 @@
     export default {
         props : {
             //要转换的url值
-            url : {
+            codeUrl : {
                 type : String,
                 default : '',
                 required : true
@@ -25,12 +25,14 @@
         },
         data () {
             return {
-                src : ''
+                src : '',
+                show : false,
             };
         },
         methods : {
             getQRcode () {
-                this.$QRcode.toDataURL(this.url,{
+                this.show = false;
+                this.$QRcode.toDataURL(this.codeUrl, {
                     errorCorrectionLevel : 'H',
                     type : 'image/jpeg',
                     rendererOpts : {
@@ -39,11 +41,17 @@
                     width : this.width
                 }).then(res => {
                     this.src = res;
+                    this.show = true;
                 });
             }
         },
-        created () {
-            this.getQRcode();
+        watch : {
+            codeUrl : {
+                handler () {
+                    this.getQRcode();
+                },
+                immediate : true
+            },
         }
     };
 </script>

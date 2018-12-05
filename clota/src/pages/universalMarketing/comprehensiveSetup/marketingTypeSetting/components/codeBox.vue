@@ -44,7 +44,7 @@
         <transition name="fade">
             <div class="show-box" v-if="boxStatus === 'show'">
                 <div class="code-wrapper">
-                    <vueQRcode v-if="codeInfo.registerUrl" :url="codeInfo.registerUrl" :width="140"></vueQRcode>
+                    <vueQRcode v-if="codeInfo.registerUrl" :codeUrl="codeInfo.registerUrl" :width="140"></vueQRcode>
                 </div>
                 <Form ref="form"
                       class="show-form"
