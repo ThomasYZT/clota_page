@@ -221,6 +221,9 @@
             handleSubmit () {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
+                        if (this.isProxyBank) {
+                            this.transferParams.salaryPayment = this.withdrawInfo.accountType;
+                        }
                         ajax.post('marketing-fillInTransferInfo',{
                             ...this.transferParams
                         }).then(res => {
