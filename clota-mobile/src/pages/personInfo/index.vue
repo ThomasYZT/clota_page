@@ -136,8 +136,9 @@
 <script>
     import { genderEnum } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapMutations } from 'vuex';
     import { validator } from 'klwk-ui';
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         data () {
             return {
@@ -163,6 +164,9 @@
             };
         },
         methods : {
+            ...mapMutations([
+                'updateUserInfo'
+            ]),
             /**
              * 获取个人信息
              */
@@ -424,6 +428,7 @@
                     if (res.success) {
                         this.getMemberDetail();
                         this.getGrowthBalance();
+                        this.updateUserInfo(defaultsDeep({ portrait : portrait }, this.userInfo));
                         this.$vux.toast.show({
                             text : this.$t('operateSuc',{ msg : this.$t('changeImg') })
                         });

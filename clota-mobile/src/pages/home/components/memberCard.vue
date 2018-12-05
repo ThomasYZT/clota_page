@@ -10,7 +10,7 @@
             <div class="person-info">
                 <div class="left">
                     <div class="img-wrapper">
-                        <img @click="showImg" class="person-img" :src="userInfo.userImg ? userInfo.userImg : memberHeadImg" alt="">
+                        <img @click="showImg" class="person-img" :src="userInfo.portrait ? userInfo.portrait : memberHeadImg" alt="">
                     </div>
                     <span class="username" @click="toPersonInfo">
                       <span class="name">
