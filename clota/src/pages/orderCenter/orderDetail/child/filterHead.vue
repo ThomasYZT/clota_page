@@ -517,8 +517,8 @@
             //查询条件列表
             paramsObj () {
                 return {
-                    orderStartDate : this.formData.orderDate[0].format('yyyy-MM-dd 00:00:00'),
-                    orderEndDate : this.formData.orderDate[1].format('yyyy-MM-dd 23:59:59'),
+                    orderStartDate : this.formData.orderDate[0] ? this.formData.orderDate[0].format('yyyy-MM-dd 00:00:00') : '',
+                    orderEndDate : this.formData.orderDate[1] ? this.formData.orderDate[1].format('yyyy-MM-dd 23:59:59') : '',
                     visitStartDate : this.formData.visitDate[0] ? this.formData.visitDate[0].format('yyyy-MM-dd 00:00:00') : '',
                     visitEndDate : this.formData.visitDate[1] ? this.formData.visitDate[1].format('yyyy-MM-dd 23:59:59') : '',
                     orderType : this.formData.orderType === 'allStatus' ? '' : this.formData.orderType,
