@@ -4,10 +4,10 @@
     <div class="my-center">
         <div class="toast-info">您还未允许系统定位手机的权限，请前往设置允许权限</div>
         <div class="base-info">
-            <img class="head-img" src="../../../assets/images/icon-invalid-url.png" alt="">
+            <img class="head-img" src="../../../assets/images/icon-avator.svg" alt="">
             <div class="info-name">
-                <div class="name">刘芬芳刘芬芳刘芬芳刘芬芳</div>
-                <div class="level">{{$t('白银级')}}</div>
+                <div class="name">{{marketUserInfo.name | contentFilter}}</div>
+                <div class="level">{{userInfo.levelName | contentFilter}}</div>
             </div>
             <div class="er-code">
                 <span class="iconfont icon-code" @click="toCreateOrder"></span>
@@ -19,7 +19,7 @@
         <div class="cell-list" @click="toDepositDetail">
             <span class="icon iconfont icon-default-account"></span>
             <span class="label-title">提现金额</span>
-            <span class="label-value"><span class="money">{{27 | moneyFilter | contentFilter}}</span>元</span>
+            <span class="label-value"><span class="money">{{userInfo.canApplyWithdrawAmount | moneyFilter | contentFilter}}</span>元</span>
             <span class="iconfont icon-arrow"></span>
         </div>
         <!--海报-->
@@ -49,11 +49,15 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+    import ajax from '@/api/index.js';
 	export default {
 		data () {
 			return {
 			    //是否确认下单
-                confirmShow : false
+                confirmShow : false,
+                //用户信息
+                userInfo : {}
             };
 		},
 		methods : {
@@ -75,7 +79,9 @@
              * 继续下单
              */
             onConfirm () {
-
+                this.$router.push({
+                    name : 'marketingQrCode'
+                });
             },
             /**
              * 跳转到下单页面
@@ -96,9 +102,34 @@
              */
             toPoster () {
                 this.$router.push({
-                    name : 'marketingPoster'
+                    name : 'marketingPoster',
+                    params : {
+                        posterData : this.userInfo.posterModels
+                    }
+                });
+            },
+            /**
+             * 查询用户信息
+             */
+            queryUserInfo () {
+                ajax.post('market_getMarketUserMyInfo').then(res => {
+                    if (res.success) {
+                        this.userInfo = res.data ? res.data : {};
+                    } else {
+                        this.userInfo = {};
+                    }
                 });
             }
+        },
+        computed : {
+            ...mapGetters({
+                marketUserInfo : 'marketUserInfo',
+            })
+        },
+        beforeRouteEnter(to,from,next) {
+		    next(vm => {
+		        vm.queryUserInfo();
+            });
         }
 	};
 </script>

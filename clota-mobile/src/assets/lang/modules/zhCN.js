@@ -253,5 +253,6 @@ export default {
 
     'errorMsg.MK001' : '账号或密码错误',
     'errorMsg.MK002' : '用户不存在',
+    'errorMsg.MK005' : '暂无可提现金额',
     'expire_score' : '积分失效',
 };

@@ -4,10 +4,10 @@
     <div class="poster-list">
         <div class="detail" v-for="(item,index) in data" :key="index">
             <div class="poster-pic" @click="showPreImage(index)">
-                <img class="poster-img" :src="item.src" alt="">
+                <img class="poster-img" :src="item.posterUrl" alt="">
             </div>
             <div class="poster-desc">
-                <div class="poster-name">{{item.name}}</div>
+                <div class="poster-name">{{item.posterName}}</div>
                 <div class="poster-size">{{item.size}}</div>
             </div>
         </div>

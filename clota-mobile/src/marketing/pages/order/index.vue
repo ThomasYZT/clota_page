@@ -4,16 +4,18 @@
     <div class="order">
         <div class="title">
             <span class="time">
-                 {{'2018-06-19'}}
+                 <span class="start-date" @click="chooseStartDate">{{startDate | contentFilter}}</span>
                 <span class="iconfont icon-arrow-right"></span>
             </span>
             <span class="zhi">至</span>
             <span class="time">
-                 {{'2018-06-19'}}
+                 <span class="end-date" @click="chooseEndDate">{{endDate | contentFilter}}</span>
                 <span class="iconfont icon-arrow-right"></span>
             </span>
-            <span class="product-filter">
+            <span class="product-filter" @click="productFilterShow = true">
                 产品
+                <img v-if="choosedProductInfo.length > 0" class="filter" src="../../../assets/images/icon-filter-activated.svg" alt="">
+                <img v-else class="filter" src="../../../assets/images/icon-filter.svg" alt="">
             </span>
         </div>
         <div class="tab-wrap">
@@ -37,68 +39,80 @@
                     :show-dots="false"
                     @on-index-change="cardTypeChange">
                 <swiper-item>
-                    <tab-item-list :data="allOrderInfo">
+                    <tab-item-list :data="allOrderInfo"
+                                   @pull-down="pullDown($event,'')"
+                                   @pull-up="pullUp($event,'')">
+                    </tab-item-list>
+                </swiper-item>
+                <swiper-item>
+                    <tab-item-list :data="noDepositInfo"
+                                   :show-radio="true"
+                                   @pull-down="pullDown($event,'no_withdraw')"
+                                   @pull-up="pullUp($event,'no_withdraw')"
+                                   @fresh-data="pullDown($event,'no_withdraw')">
                     </tab-item-list>
                 </swiper-item>
                 <swiper-item>
                     <tab-item-list :data="depositInfo"
-                                   :show-radio="true">
-                    </tab-item-list>
-                </swiper-item>
-                <swiper-item>
-                    <tab-item-list :data="allOrderInfo">
+                                   @pull-down="pullDown($event,'withdraw')"
+                                   @pull-up="pullUp($event,'withdraw')">
                     </tab-item-list>
                 </swiper-item>
             </swiper>
         </div>
+        <!--产品列表筛选-->
+        <product-filter v-model="productFilterShow"
+                        :data="productList"
+                        :default-choosed-data="choosedProductInfo"
+                        @set-choosed-product="getChoosedProduct">
+        </product-filter>
     </div>
 </template>
 
 <script>
     import tabItemList from './components/tab-item-list';
-	export default {
-		data () {
-			return {
-			    //选择的菜单
+    import ajax from '@/api/index.js';
+    import productFilter from './components/productFilter';
+
+    export default {
+        data () {
+            return {
+                //选择的菜单
                 tabSelected : 0,
                 //菜单列表
                 tapInfo : [
                     '全部',
-                    '未体现',
-                    '已体现'
+                    '未提现',
+                    '已提现'
                 ],
+                //开始日期
+                startDate : new Date().addMonths(-1).format('yyyy-MM-dd'),
+                //结束日期
+                endDate : new Date().format('yyyy-MM-dd'),
                 cardType : 0,
-                allOrderInfo : [
-                    {
-                        id : 1,
-                        name : '1'
-                    },
-                    {
-                        id : 2,
-                        name : '1'
-                    },{
-                        id : 3,
-                        name : '1'
-                    },{
-                        id : 4,
-                        name : '1'
-                    },{
-                        id : 5,
-                        name : '1'
-                    },
-                ],
-                depositInfo : [
-                    {
-                        id : 2,
-                        name : '2'
-                    }
-                ]
+                //全部订单信息
+                allOrderInfo : [],
+                //已提现订单
+                depositInfo : [],
+                //未提现订单
+                noDepositInfo : [],
+                //页码
+                pageNo : 1,
+                //每页条数
+                pageSize : 10,
+                //产品筛选条件是否显示
+                productFilterShow : false,
+                //选择的产品筛选数据
+                choosedProductInfo : [],
+                //可筛选的产品列表
+                productList : []
             };
-		},
-        components : {
-            tabItemList
         },
-		methods : {
+        components : {
+            tabItemList,
+            productFilter
+        },
+        methods : {
             /**
              * 选择了某个菜单
              * @param{Number} item tap菜单序列号
@@ -108,16 +122,129 @@
             },
             /**
              * 卡包类型改变
-             * @param index 卡包序号
+             * @param{Number} index 卡包序号
              */
             cardTypeChange (index) {
                 this.tabSelected = index;
+                if (index === 0) {
+                    this.queryOrderInfo('');
+                } else if (index === 1) {
+                    this.queryOrderInfo('no_withdraw');
+                } else if (index === 2) {
+                    this.queryOrderInfo('withdraw');
+                }
             },
+            /**
+             * 选择开始日期
+             */
+            chooseStartDate () {
+                this.$vux.datetime.show({
+                    cancelText : '取消',
+                    confirmText : '确定',
+                    format : 'YYYY-MM-DD',
+                    value : this.startDate,
+                    endDate : this.endDate,
+                    onConfirm : (val) => {
+                        this.startDate = val;
+                        this.cardTypeChange(this.tabSelected);
+                    }
+                });
+            },
+            /**
+             * 选择结束日期
+             */
+            chooseEndDate () {
+                this.$vux.datetime.show({
+                    cancelText : '取消',
+                    confirmText : '确定',
+                    format : 'YYYY-MM-DD',
+                    value : this.endDate,
+                    startDate : this.startDate,
+                    onConfirm : (val) => {
+                        this.endDate = val;
+                        this.cardTypeChange(this.tabSelected);
+                    }
+                });
+            },
+            /**
+             * 查询我的订单信息
+             * @param{String} withdrawStatus 提现状态
+             */
+            queryOrderInfo (withdrawStatus) {
+                return ajax.post('market_queryMyMarkOrderList',{
+                    startBuyDate : this.startDate,
+                    endBuyDate : this.endDate,
+                    pageNo : this.pageNo,
+                    withdrawStatus : withdrawStatus,
+                    pageSize : this.pageSize,
+                    productId : this.choosedProductInfo.map(item => item.productId)
+                }).then(res => {
+                    if (res.success) {
+                        //全部
+                        if (withdrawStatus === '') {
+                            this.allOrderInfo = res.data ? res.data.data : [];
+                        } else if (withdrawStatus === 'withdraw') {//未提现
+                            this.depositInfo = res.data ? res.data.data : [];
+                        } else {//已提现
+                            this.noDepositInfo = res.data ? res.data.data : [];
+                        }
+                    } else {
+                        this.allOrderInfo = [];
+                        this.depositInfo = [];
+                        this.noDepositInfo = [];
+                    }
+                });
+            },
+            /**
+             * 下拉刷新
+             * @param{Function} callback 加载完成回调函数
+             * @param{String} withdrawStatus 提现状态
+             */
+            pullDown (callback,withdrawStatus) {
+                this.queryOrderInfo(withdrawStatus).finally(() => {
+                    callback();
+                });
+            },
+            /**
+             * 上拉加载
+             * @param{Function} callback 加载完成回调函数
+             * @param{String} withdrawStatus 提现状态
+             */
+            pullUp (callback,withdrawStatus) {
+                this.pageSize += 10;
+                this.queryOrderInfo(withdrawStatus).finally(() => {
+                    callback();
+                });
+            },
+            /**
+             * 获取选择的产品信息
+             * @param{Array} productData 选择的产品信息
+             */
+            getChoosedProduct (productData) {
+                this.choosedProductInfo = productData;
+                this.cardTypeChange(this.tabSelected);
+            },
+            /**
+             * 查询所有产品信息
+             */
+            queryProductInfo () {
+                ajax.post('market_getUserProducts').then(res => {
+                    if (res.success) {
+                        this.productList = res.data ? res.data : [];
+                    } else {
+                        this.productList = [];
+                    }
+                });
+            }
+        },
+        created () {
+            this.queryOrderInfo('');
+            this.queryProductInfo();
         }
-	}
+    };
 </script>
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .order{
         @include block_outline();
         background: #f2f3f4;
@@ -132,7 +259,7 @@
             background: $color_fff;
 
             .zhi{
-                padding: 0 15px;
+                padding: 0 10px;
             }
 
             .icon-arrow-right{
@@ -146,6 +273,15 @@
                 float: right;
                 font-size: $font_size_14px;
                 color: $color_333;
+
+                .filter{
+                    display: inline-block;
+                    width: 14px;
+                    height: 14px;
+                    vertical-align: middle;
+                    float: right;
+                    margin-top: 13px;
+                }
             }
         }
         .tab-wrap{
@@ -158,7 +294,7 @@
         }
 
         .content{
-            height: calc(100% - 90px);
+            height: calc(100% - 80px);
 
             /deep/ .vux-slider,
             /deep/ .vux-swiper-item,

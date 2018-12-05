@@ -5,119 +5,167 @@
         <div class="content">
             <div class="order-info">
                 <div class="order-base-info">
-                    <span class="order-name">珠海长隆主题乐园珠海长隆</span>
-                    <span class="order-type">成人平日票</span>
+                    <span class="order-name">{{orderDetail.scenicName | contentFilter}}</span>
+                    <span class="order-type">{{orderDetail.productName | contentFilter}}</span>
                 </div>
                 <div class="detail-list">
                     <span class="key">{{$t('colonSetting',{ key : $t('订单明细编号') })}}</span>
-                    <span class="value">0187978739892</span>
+                    <span class="value">{{orderDetail.orderId | contentFilter}}</span>
                 </div>
                 <div class="detail-list">
                     <span class="key">{{$t('colonSetting',{ key : $t('使用日期') })}}</span>
-                    <span class="value">2018-03-03</span>
+                    <span class="value">{{orderDetail.playDate | contentFilter}}</span>
                 </div>
             </div>
             <div class="preorder-info">
-                <div class="title">预定信息</div>
+                <div class="title">{{$t('预定信息')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('产品单价') })}}</span>
-                        <span class="value">100.00</span>
+                        <span class="value">{{orderDetail.itemSalePrice | moneyFilter(2,'￥') | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('预定数量') })}}</span>
-                        <span class="value">2</span>
+                        <span class="value">{{orderDetail.productNum | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('订单金额') })}}</span>
-                        <span class="value">{{290 | moneyFilter(2,'￥') | contentFilter}}</span>
-                    </div>
-                    <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('游客姓名') })}}</span>
-                        <span class="value">王</span>
+                        <span class="value">{{orderDetail.orderAmount | moneyFilter(2,'￥') | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('下单日期') })}}</span>
-                        <span class="value">2018-06-15 19:22:10</span>
+                        <span class="value">{{orderDetail.createdTime | contentFilter}}</span>
                     </div>
                 </div>
             </div>
             <!--核销信息-->
             <div class="preorder-info">
-                <div class="title">核销信息</div>
+                <div class="title">{{$t('核销信息')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('已核销数量') })}}</span>
-                        <span class="value">2</span>
+                        <span class="value">{{orderDetail.verifiedNum | contentFilter}}</span>
                     </div>
                 </div>
             </div>
             <!--佣金-->
             <div class="preorder-info">
-                <div class="title">佣金</div>
+                <div class="title">{{$t('佣金')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('已核销数量') })}}</span>
-                        <span class="value">2</span>
-                    </div>
-                    <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('佣金总额') })}}</span>
-                        <span class="value">{{290 | moneyFilter(2,'￥') | contentFilter}}</span>
+                        <span class="value">{{orderDetail.orderSalary | moneyFilter(2,'￥') | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('申请提现日期') })}}</span>
-                        <span class="value">2018.05.20 19:00:00</span>
+                        <span class="value">{{orderDetail.reqWithdrawTime | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('景区审核日期') })}}</span>
-                        <span class="value">2018.05.20 19:00:00</span>
-                    </div>
-                    <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('到账日期') })}}</span>
-                        <span class="value">2018.05.20 19:00:00</span>
+                        <span class="value">{{orderDetail.auditTime | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('佣金支付方式') })}}</span>
-                        <span class="value">{{'微信支付'}}</span>
-                    </div>
-                    <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('流水号') })}}</span>
-                        <span class="value">{{'微信支付20184783647836433'}}</span>
+                        <span class="value">{{$t(orderDetail.salaryPayment) | contentFilter}}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="deposit">
             <div class="commission">
-                {{$t('colonSetting',{ key : $t('可提现佣金') })}}<span class="money">{{15 | moneyFilter(2,'￥') | contentFilter}}</span>
+                {{$t('colonSetting',{ key : $t('可提现佣金') })}}
+                <span class="money">{{orderDetail.expectedSalary | moneyFilter(2,'￥') | contentFilter}}</span>
             </div>
-            <div class="apply-deposit" :class="{ 'disabled' : true }" @click="deposit">申请提现</div>
+            <div v-if="canApplyDeposit"
+                 class="apply-deposit"
+                 @click="deposit">{{$t('申请提现')}}</div>
+            <div v-else-if="orderDetail.withdrawStatus === 'reject_no_req'"
+                 class="apply-deposit" :class="{ 'disabled' : true }">{{$t('申请被驳回')}}</div>
+            <div v-else
+                 class="apply-deposit" :class="{ 'disabled' : true }">{{$t('申请提现')}}</div>
         </div>
     </div>
 </template>
 
 <script>
-	export default {
-		data () {
-			return {};
-		},
-		methods : {
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '@/api/index.js';
+
+    export default {
+        mixins : [lifeCycleMixins],
+        data () {
+            return {
+                //订单详情
+                orderDetail : {}
+            };
+        },
+        methods : {
             /**
              * 跳转到提现申请结果
              */
             deposit () {
-                this.$router.push({
-                    name : 'marketingDepositResult',
-                    params : {
-                        fromRegister : true
+                this.applyDeposit();
+            },
+            /**
+             * 获取路由信息
+             * @param{Object} params 路由参数
+             */
+            getParams (params) {
+                if (params && params.orderDtail) {
+                    this.orderDetail = params.orderDtail;
+                } else {
+                    this.$router.push({
+                        name : 'marketingOrder'
+                    });
+                }
+            },
+            /**
+             * 申请提现
+             */
+            applyDeposit () {
+                ajax.post('market_orderSalaryWithdrawApply',{
+                    orderIds : this.orderDetail.orderId,
+                    amount : this.orderDetail.expectedSalary
+                }).then(res => {
+                    if (res.success) {
+                        this.$router.push({
+                            name : 'marketingDepositResult',
+                            params : {
+                                fromRegister : true
+                            }
+                        });
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
+                        });
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('operateFail',{ msg : this.$t('申请提现') }),
+                            type : 'cancel'
+                        });
                     }
                 });
             }
+        },
+        computed : {
+            //是否可以申请提现
+            canApplyDeposit () {
+                //未审核或已拒绝可再次申请,佣金大于0，并且订单全部核销的才可以申请提现
+                if (this.orderDetail &&
+                    this.orderDetail.expectedSalary > 0 &&
+                    (this.orderDetail.withdrawStatus === 'unaudit' || this.orderDetail.withdrawStatus === 'reject') &&
+                    this.orderDetail.verifiedNum === this.orderDetail.productNum) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .order-detail{
         @include block_outline();
         background: #f2f3f4;

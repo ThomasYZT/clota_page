@@ -3,23 +3,31 @@
 <template>
     <div class="order-item" @click="choseOrderItem">
         <div class="radio-wrap" v-if="showRadio" :class="{ 'choosed' : choosed }">
-
+            <span class="iconfont icon-checked"
+                  v-if="(orderDetail.withdrawStatus === 'reject' || orderDetail.withdrawStatus === 'unaudit') && orderDetail.expectedSalary > 0"></span>
+            <span class="iconfont icon-not-allow-select" v-else></span>
         </div>
         <div class="content">
             <div class="order-title">
-                <div class="order-name">不而退不而退不而退不</div>
-                <div class="order-num">{{$t('colonSetting',{ key : $t('数量') })}}{{5}}</div>
+                <div class="order-name">{{orderDetail.productName | contentFilter}}</div>
+                <div class="order-num">{{$t('colonSetting',{ key : $t('数量') })}}{{orderDetail.productNum | contentFilter}}</div>
             </div>
             <div class="order-detail">
-                <div class="time-info">{{$t('colonSetting',{ key : $t('使用日期') })}}{{'2018-06-20'}}</div>
-                <div class="commission">{{$t('colonSetting',{ key : $t('佣金') })}}{{5 | moneyFilter | contentFilter}}</div>
+                <div class="time-info">{{$t('colonSetting',{ key : $t('使用日期') })}}{{orderDetail.playDate | moneyFilter}}</div>
+                <div class="commission">{{$t('colonSetting',{ key : $t('佣金') })}}{{orderDetail.expectedSalary | moneyFilter | contentFilter}}</div>
             </div>
             <div class="detail-footer">
-                <div class="order-date">{{'2018-06-28 18:00:20'}}</div>
+                <div class="order-date">{{orderDetail.createdTime | contentFilter}}</div>
                 <div class="for-detail" @click="toDetail">{{$t('查看详情')}}</div>
             </div>
-            <div class="wait-audit">
-                <span class="text-label">待审</span>
+            <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'unaudit'">
+                <span class="text-label">{{$t('待审')}}</span>
+            </div>
+            <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'auditing'">
+                <span class="text-label">{{$t('审核中')}}</span>
+            </div>
+            <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'reject_no_req'">
+                <span class="text-label">{{$t('已拒绝，不可再次申请')}}</span>
             </div>
         </div>
     </div>
@@ -54,7 +62,11 @@
              * 选择订单
              */
             choseOrderItem () {
-                if (this.showRadio) {
+                //未审核和驳回可以再申请的可以申请提现
+                if (this.showRadio &&
+                    this.orderDetail.expectedSalary > 0 &&
+                    (this.orderDetail.withdrawStatus === 'reject' ||
+                    this.orderDetail.withdrawStatus === 'unaudit')) {
                     this.$emit('chose-item',this.orderDetail);
                 }
             },
@@ -63,7 +75,10 @@
              */
             toDetail () {
                 this.$router.push({
-                    name : 'marketingOrderDetail'
+                    name : 'marketingOrderDetail',
+                    params : {
+                        orderDtail : this.orderDetail
+                    }
                 });
             }
         }
@@ -84,8 +99,26 @@
         .radio-wrap{
             @include block_outline(20px);
 
+            .iconfont{
+                font-size: $font_size_16px;
+                line-height: 22px;
+
+                .icon-not-allow-select{
+                    background: #F1F4FB;
+                }
+            }
+
             &.choosed{
-                background: red;
+
+                .icon-checked{
+                    font-size: $font_size_16px;
+                    line-height: 22px;
+                    color: $color_blue;
+                }
+            }
+
+            .icon-checked{
+                color: #C5C5C5;
             }
         }
 
@@ -106,7 +139,7 @@
             .text-label{
                 @include absolute_pos(absolute,$top : -15px,$left : -26px);
                 width: 50px;
-                font-size: $font_size_12px;
+                font-size: $font_size_11px;
             }
         }
 

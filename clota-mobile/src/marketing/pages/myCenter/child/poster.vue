@@ -2,7 +2,9 @@
 
 <template>
     <div class="poster">
-        <scroll-wrap :item-data="posterData">
+        <scroll-wrap :item-data="posterData"
+                     :pullDownRefreshDefault="false"
+                     :pullUpRefreshDefault="false">
             <template v-for="(item,index) in posterRowData">
                 <poster-item :key="index"
                              :data-index="index"
@@ -39,57 +41,14 @@
 <script>
     import scrollWrap from '@/components/scroll/scrollWrap';
     import posterItem from './posterComponents/poster-list';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+
     export default {
+        mixins : [lifeCycleMixins],
         data () {
             return {
                 //海报数据
-                posterData : [
-                    {
-                        name : '爱的色放爱的色放爱的色放爱的色放爱的色放',
-                        src : require('../../../../assets/images/1levelMember.png'),
-                        size : 23
-                    },
-                    {
-                        name : '爱的色',
-                        src : require('../../../../assets/images/2levelMember.png'),
-                        size : 23
-                    },
-                    {
-                        name : '2',
-                        src : require('../../../../assets/images/icon-invalid-url.png'),
-                        size : 23
-                    },
-                    {
-                        name : '2',
-                        src : require('../../../../assets/images/icon-invalid-url.png'),
-                        size : 23
-                    },
-                    {
-                        name : '2',
-                        src : require('../../../../assets/images/icon-invalid-url.png'),
-                        size : 23
-                    },
-                    {
-                        name : '2',
-                        src : require('../../../../assets/images/icon-invalid-url.png'),
-                        size : 23
-                    },
-                    {
-                        name : '2',
-                        src : require('../../../../assets/images/icon-invalid-url.png'),
-                        size : 23
-                    },
-                    {
-                        name : '2',
-                        src : require('../../../../assets/images/icon-invalid-url.png'),
-                        size : 23
-                    },
-                    {
-                        name : '2',
-                        src : require('../../../../assets/images/icon-invalid-url.png'),
-                        size : 23
-                    }
-                ],
+                posterData : [],
                 options : {
                     getThumbBoundsFn : (index) => {
                         let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -125,8 +84,21 @@
             downLoadImg () {
                 this.$nextTick(() =>{
                     let imgIndex = this.$refs.previewer.getCurrentIndex();
-                    window.open(this.prevList[imgIndex]['src']);
+                    window.open(this.prevList[imgIndex]['posterUrl']);
                 });
+            },
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由参数
+             */
+            getParams (params) {
+                if (params && params.posterData) {
+                    this.posterData = params.posterData;
+                } else {
+                    this.$router.push({
+                        name : 'marketingOwnerCenter'
+                    });
+                }
             }
         },
         computed : {
@@ -152,7 +124,7 @@
                 let width = document.body.offsetWidth;
                 return this.posterData.map(item => {
                     return {
-                        src : item.src,
+                        src : item.posterUrl,
                         w : width,
                     };
                 });

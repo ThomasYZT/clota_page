@@ -2,10 +2,22 @@ import store from "../../store/index";
 
 //会员页面路由进入前的处理
 export const marketRouterDeal = (to, from, next) => {
+    //meta信息上填写了notNeedCheck表示改路由不需要校验，直接进入
     if (to.meta && to.meta.notNeedCheck) {
         next();
-    } else if (store.getters.marketToken) {
-        next();
+    } else if (store.getters.marketToken) {//有token继续校验，没有则直接跳到登录页
+        //vuex中如果用户信息为空，则需要重新获取用户信息，获取用户信息失败，则需要跳转到登录页面重新登录
+        if (store.getters.marketUserInfo && Object.keys(store.getters.marketUserInfo).length > 0) {
+            next();
+        } else {
+            store.dispatch('marketGetUserInfo').then(() => {
+                next();
+            }).catch(() => {
+                next({
+                    name : 'marketingLogin'
+                });
+            });
+        }
     } else {
         next({
             name : 'marketingLogin'
