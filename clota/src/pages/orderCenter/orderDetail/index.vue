@@ -450,7 +450,7 @@
              */
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
-                    this.paramsDefault = params;
+                    // this.paramsDefault = params;
                 }
             }
         },
