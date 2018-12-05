@@ -12,7 +12,7 @@
             </div>
 
             <div class="view-wrapper">
-                <Tabs :animated="false" v-model="nowTab">
+                <Tabs v-if="Object.keys(marketingTypeItem).length > 0" :animated="false" v-model="nowTab">
                     <TabPane :label="$t('marketingLevel')">
                         <marketingLevel :marketingTypeItem="marketingTypeItem"></marketingLevel>
                     </TabPane>
@@ -23,6 +23,7 @@
                         <cashOfferSettings :marketingTypeItem="marketingTypeItem" @updateSuccess="updateSuccess"></cashOfferSettings>
                     </TabPane>
                 </Tabs>
+                <noDataTip v-else></noDataTip>
             </div>
         </div>
     </div>
@@ -33,12 +34,14 @@
     import cashOfferSettings from './child/cashOfferSettings';
     import codeRegister from './child/codeRegister';
     import marketingLevel from './child/marketingLevel';
+    import noDataTip from '../../../../components/noDataTip/noData-tip';
     export default {
         components : {
             marketTypeTree,
             cashOfferSettings,
             codeRegister,
             marketingLevel,
+            noDataTip
         },
         data () {
             return {
@@ -47,7 +50,9 @@
                 //是否需要更新状态
                 isUpdate : false,
                 //当前选择的营销类别项
-                marketingTypeItem : {},
+                marketingTypeItem : {
+                    id : ''
+                },
                 //当前选中的类别
                 nowItem : {}
             };
@@ -86,6 +91,7 @@
             }
 
             .view-wrapper {
+                position: relative;
                 flex: 0 1;
                 flex-basis: 78%;
                 height: 100%;

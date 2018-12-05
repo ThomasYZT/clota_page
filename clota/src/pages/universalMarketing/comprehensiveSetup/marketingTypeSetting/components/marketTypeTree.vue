@@ -23,7 +23,6 @@
                     <template v-if="data.type === 'edit' || data.type === 'add'">
                         <span @click.stop="save(data)" class="save">{{$t('save')}}</span>
                         <span @click.stop="cancel(data)" class="cancel">{{$t('cancel')}}</span>
-
                     </template>
                     <template v-else>
                         <i @click.stop="edit(data)" class="iconfont icon-edit"></i>
@@ -191,6 +190,7 @@
                             label : '',
                             type : 'add'
                         };
+                        this.getTypeList({});
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
                     }
