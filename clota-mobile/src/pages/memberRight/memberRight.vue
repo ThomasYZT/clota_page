@@ -233,51 +233,19 @@
                     if (res.success) {
                         this.commonInfo = res.data && res.data.common ? res.data.common : {};
                         this.activityInfo = res.data && res.data.activity ? res.data.activity : {};
-
+                        //普通会员权益信息设置
                         this.commonMemberVos = this.commonInfo.memberVos ? this.commonInfo.memberVos : []
                         let commonProductMap = this.commonInfo.productMap ? this.commonInfo.productMap : [];
                         this.commonStoreVos = this.commonInfo.storeVos ? this.commonInfo.storeVos : [];
-
+                        //特定活动会员权益信息设置
                         this.activityMemberVos = this.activityInfo.memberVos ? this.activityInfo.memberVos : []
                         let activityProductMap = this.activityInfo.productMap ? this.activityInfo.productMap : [];
                         this.activityStoreVos = this.activityInfo.storeVos ? this.activityInfo.storeVos : [];
 
-                        //会员权益信息整理
-                        this.rightInfo = {
-                            birthday : [],
-                            ticket : [],
-                            desc : []
-                        };
-                        this.memberRight = [];
-                        this.levelModel = {};
-                        this.levelModel = this.commonInfo.levelModel ? this.commonInfo.levelModel : {};
-                        this.memberRight = this.levelModel.rights ? JSON.parse(this.levelModel.rights) : [];
+                        //普通会员权益 -- 会员权益信息数据组装
+                        this.packageMemberInfo();
 
-                        let rightInfoLocale = [];
-                        if (this.memberRight && this.memberRight.length > 0) {
-                            rightInfoLocale = this.memberRight;
-                        } else {
-                            rightInfoLocale = this.rightDefaultInfo;
-                        }
-                        for (let i = 0,j = rightInfoLocale.length; i < j; i++ ) {
-                            if (rightInfoLocale[i]['type'] === 'birthday') {
-                                this.rightInfo.birthday.push(rightInfoLocale[i]);
-                            } else if (rightInfoLocale[i]['type'] === 'ticket') {
-                                this.rightInfo.ticket.push(rightInfoLocale[i]);
-                            } else if (rightInfoLocale[i]['type'] === 'desc') {
-                                this.rightInfo.desc.push(rightInfoLocale[i]);
-                            }
-                        }
-
-                        let isNoData = true;
-                        for (let i = 0, len = rightInfoLocale.length; i < len; i++) {
-                            if (rightInfoLocale[i].isEnable) {
-                                isNoData = false;
-                                break;
-                            }
-                        }
-                        this.isMemberRightNoData = isNoData;
-
+                        //普通和特定会员权益信息数据组装
                         this.packageData(this.commonMemberVos, commonProductMap, this.commonStoreVos, this.commonProductArr);
                         this.packageData(this.activityMemberVos, activityProductMap, this.activityStoreVos, this.activityProductArr);
                         //显示页面
@@ -319,6 +287,46 @@
                         commonProductArr = commonProductArr.concat(item);
                     });
                 }
+            },
+            /**
+             * 会员权益数据组装
+             */
+            packageMemberInfo () {
+                //会员权益信息整理
+                this.rightInfo = {
+                    birthday : [],
+                    ticket : [],
+                    desc : []
+                };
+                this.memberRight = [];
+                this.levelModel = {};
+                this.levelModel = this.commonInfo.levelModel ? this.commonInfo.levelModel : {};
+                this.memberRight = this.levelModel.rights ? JSON.parse(this.levelModel.rights) : [];
+
+                let rightInfoLocale = [];
+                if (this.memberRight && this.memberRight.length > 0) {
+                    rightInfoLocale = this.memberRight;
+                } else {
+                    rightInfoLocale = this.rightDefaultInfo;
+                }
+                for (let i = 0,j = rightInfoLocale.length; i < j; i++ ) {
+                    if (rightInfoLocale[i]['type'] === 'birthday') {
+                        this.rightInfo.birthday.push(rightInfoLocale[i]);
+                    } else if (rightInfoLocale[i]['type'] === 'ticket') {
+                        this.rightInfo.ticket.push(rightInfoLocale[i]);
+                    } else if (rightInfoLocale[i]['type'] === 'desc') {
+                        this.rightInfo.desc.push(rightInfoLocale[i]);
+                    }
+                }
+
+                let isNoData = true;
+                for (let i = 0, len = rightInfoLocale.length; i < len; i++) {
+                    if (rightInfoLocale[i].isEnable) {
+                        isNoData = false;
+                        break;
+                    }
+                }
+                this.isMemberRightNoData = isNoData;
             }
         },
         created () {
