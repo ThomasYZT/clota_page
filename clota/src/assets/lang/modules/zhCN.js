@@ -1855,4 +1855,5 @@ export default {
     'picture' : '图片',
     'M035' : '商品已存在',
     'pleaseSetRequiredCredits' : '请先设置兑换积分',
+    'disableSet' : '不可设置'
 }
