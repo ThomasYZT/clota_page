@@ -4,13 +4,14 @@
 -->
 <template>
   <div class="member-right" v-show="isShow">
-      <div class="top-tab">
-          <p :class="{small: isEn}">{{$t('memberRightInfo')}}</p>
-      </div>
-
       <div class="member-right-content">
+          <div class="head-tab">
+              <p :class="{small: isEn}">{{$t('memberRightInfo')}}</p>
+          </div>
+
           <h3 class="category">{{$t('memberRight')}}</h3>
 
+          <!-- 会员权益 -->
           <template v-if="!isMemberRightNoData">
               <!--优惠通知-->
               <ul class="right-list" v-if="rightInfo.desc.length > 0">
@@ -38,6 +39,7 @@
               </div>
           </template>
 
+          <!-- 会员积分权益折扣说明 -->
           <h3 class="category">{{$t('memberVos')}}</h3>
           <template v-if="commonMemberVos && commonMemberVos.length > 0">
               <illustration-board v-for="(item, index) in commonMemberVos"
@@ -76,6 +78,50 @@
               <no-data>
               </no-data>
           </div>
+
+          <div class="head-tab activity-tab">
+              <p :class="{small: isEn}">{{$t('activityMemberRightInfo')}}</p>
+          </div>
+
+          <!-- 特定活动会员积分权益折扣说明 -->
+          <h3 class="category">{{$t('memberVos')}}</h3>
+          <template v-if="activityMemberVos && activityMemberVos.length > 0">
+              <illustration-board v-for="(item, index) in activityMemberVos"
+                                  :key="item.id"
+                                  :info="item"
+                                  class="ill-item1">
+              </illustration-board>
+          </template>
+          <div class="no-data-area" v-else>
+              <no-data>
+              </no-data>
+          </div>
+
+          <h3 class="category">{{$t('storeVos')}}</h3>
+          <template v-if="activityStoreVos && activityStoreVos.length > 0">
+              <illustration-board v-for="(item, index) in activityStoreVos"
+                                  :key="item.index"
+                                  :info="item"
+                                  class="ill-item2">
+              </illustration-board>
+          </template>
+          <div class="no-data-area" v-else>
+              <no-data>
+              </no-data>
+          </div>
+
+          <h3 class="category">{{$t('productMap')}}</h3>
+          <template v-if="activityProductArr && activityProductArr.length > 0">
+              <illustration-board v-for="(item, index) in activityProductArr"
+                                  :key="item.id"
+                                  :info="item"
+                                  class="ill-item3">
+              </illustration-board>
+          </template>
+          <div class="no-data-area" v-else>
+              <no-data>
+              </no-data>
+          </div>
       </div>
   </div>
 </template>
@@ -98,6 +144,12 @@
                 commonProductArr : [],
                 //按店铺分类数据
                 commonStoreVos : [],
+                //特定活动会员权益 按会员级别分类数据
+                activityMemberVos : [],
+                //特定活动会员权益 按产品类别分类数据
+                activityProductArr : [],
+                //特定活动会员权益 按店铺分类数据
+                activityStoreVos : [],
                 query : null,
                 //是否显示页面
                 isShow : false,
@@ -186,6 +238,10 @@
                         let commonProductMap = this.commonInfo.productMap ? this.commonInfo.productMap : [];
                         this.commonStoreVos = this.commonInfo.storeVos ? this.commonInfo.storeVos : [];
 
+                        this.activityMemberVos = this.activityInfo.memberVos ? this.activityInfo.memberVos : []
+                        let activityProductMap = this.activityInfo.productMap ? this.activityInfo.productMap : [];
+                        this.activityStoreVos = this.activityInfo.storeVos ? this.activityInfo.storeVos : [];
+
                         //会员权益信息整理
                         this.rightInfo = {
                             birthday : [],
@@ -222,13 +278,17 @@
                         }
                         this.isMemberRightNoData = isNoData;
 
-                        this.packageData(this.commonMemberVos, commonProductMap, this.commonStoreVos);
+                        this.packageData(this.commonMemberVos, commonProductMap, this.commonStoreVos, this.commonProductArr);
+                        this.packageData(this.activityMemberVos, activityProductMap, this.activityStoreVos, this.activityProductArr);
                         //显示页面
                         this.isShow = true;
                     } else {
                         this.commonMemberVos = [];
                         this.commonProductArr = [];
                         this.commonStoreVos = [];
+                        this.activityMemberVos = [];
+                        this.activityProductArr = [];
+                        this.activityStoreVos = [];
                         this.$vux.toast.text(res.message);
                         //显示页面
                         this.isShow = true;
@@ -238,7 +298,7 @@
             /**
              * 组装数据
              */
-            packageData (memberVos,productMap,storeVos) {
+            packageData (memberVos,productMap,storeVos, commonProductArr) {
                 memberVos.forEach((item) => {
                     item.name = this.query.name;
                     item.scoreRate = item.scoreRate;
@@ -256,7 +316,7 @@
                         item.name = item.typeName;
                         item.scoreRate = item.prodScoreRate;
                         item.discountRate = item.prodDiscountRate;
-                        this.commonProductArr = this.commonProductArr.concat(item);
+                        commonProductArr = commonProductArr.concat(item);
                     });
                 }
             }
@@ -274,9 +334,7 @@
     .member-right {
         height: 100%;
         overflow: auto;
-        .top-tab {
-            position: fixed;
-            top: 0;
+        .head-tab {
             width: 100%;
             height: 43px;
             background-color: #F4F6F9;
@@ -289,6 +347,7 @@
                 color: #8395A7;
                 font-size: 14px;
                 white-space:nowrap;
+                text-align: left;
             }
 
             .small {
@@ -296,9 +355,12 @@
             }
         }
 
+        .activity-tab {
+            margin-top: 20px;
+        }
+
         .member-right-content {
-            height: calc(100% - 43px);
-            margin-top: 43px;
+            height: 100%;
             text-align: center;
             -webkit-overflow-scrolling: touch;
             overflow: auto;
