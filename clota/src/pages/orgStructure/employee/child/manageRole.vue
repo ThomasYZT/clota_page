@@ -304,7 +304,7 @@
                         });
                     }
                 }
-                return returnValige;
+                return result;
             },
             checkChange : debounce(function () {
                 this.$nextTick(() => {
