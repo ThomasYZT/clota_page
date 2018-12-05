@@ -71,7 +71,7 @@
         <div v-if="accountList.length > 0 && accountList[accountShow].accountDefineId === '1'"
              class="btn-area"
              :class="{'owner-btn' : isOwnerCard}">
-            <x-button @click.native="recharge">{{$t('recharge')}}</x-button>
+            <x-button @click.native="recharge" :disabled="cardInfo.status === 'frozen'">{{$t('recharge')}}</x-button>
         </div>
         <popup-picker
             :cancel-text="$t('cancel')"
@@ -126,6 +126,7 @@
              * 充值
              */
             recharge () {
+                if (this.cardInfo.status === 'frozen') return;
                 this.$router.push({
                     name : 'accountRecharge',
                     params : {
@@ -183,6 +184,14 @@
                         this.OwnerCardAccount = [];
                         this.accountList = [];
                     }
+                })
+            },
+            /**
+             * 监听物理键返回
+             */
+            physicalBack () {
+                this.$router.push({
+                    name : 'home'
                 });
             }
         },
@@ -200,11 +209,10 @@
                 url : "#"
             };
             history.pushState(state, "title", "#");
-            window.addEventListener("popstate", (e) => {
-                this.$router.push({
-                    name : 'home'
-                })
-            }, false);
+            window.addEventListener("popstate", this.physicalBack, false);
+        },
+        beforeDestroy () {
+            window.removeEventListener("popstate", this.physicalBack);
         }
     };
 </script>

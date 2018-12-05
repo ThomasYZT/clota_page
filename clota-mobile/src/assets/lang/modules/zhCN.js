@@ -115,7 +115,8 @@ export default {
     home : '主页',
     scoreRate : '积分比例',
     discountRate : '折扣率',
-    adjustScore : '手动修改储值账户',
+    adjustScore : '手动修改积分账户',
+    adjustMoney : '手动修改储值账户',
     gainByConsuming : '消费所得',
     scoreResume : '积分消耗',
     gainByRecharging : '储值所得',
@@ -252,4 +253,5 @@ export default {
 
     'errorMsg.MK001' : '账号或密码错误',
     'errorMsg.MK002' : '用户不存在',
+    'expire_score' : '积分失效',
 };

@@ -7,7 +7,7 @@
             <group>
                 <cell
                     :title="$t('localePhone')"
-                    value-align="left"
+                    value-align="right"
                     :value="originPhone">
                 </cell>
                 <x-input :title="$t('validCode')"
