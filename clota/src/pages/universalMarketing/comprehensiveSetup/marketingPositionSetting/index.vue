@@ -28,6 +28,17 @@
                   @selection-change="selectionChange"
                   @query-data="getData">
             <el-table-column
+                slot="column1"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{manageOrgs.orgName | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column6"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -62,6 +73,7 @@
     import { marketingPositionHead } from '../tableHeadConfig';
     import addLngLatModal from './components/addLngLatModal';
     import delModal from '../../../../components/delModal/index'
+    import { mapGetters } from 'vuex';
     export default {
         components : {
             tableCom,
@@ -80,6 +92,11 @@
                 },
                 chosedColomn : [],
             };
+        },
+        computed : {
+            ...mapGetters([
+                'manageOrgs'
+            ])
         },
         methods : {
             /**
