@@ -810,7 +810,7 @@ export default {
     'alterRule': '改签规则',
     'returnRule': '退票规则',
     'lastAlterDate': '最晚改签日期',
-    'lastAlterDateDesc': '游玩日期前{day}可改签次数{times}次',
+    'lastAlterDateDesc': '游玩日期前{day}天可改签次数{times}次',
     'buyTicketNotes': '购票须知',
     'settlePrice': '产品单价',
     'chooseSaleChannelGroup': '选择销售渠道分组',
