@@ -6,14 +6,14 @@
 
 <template>
     <div class="overview-tpl">
-        <img :src="icon" class="label-img" alt="">
+        <span :class="['iconfont', 'label-img', icon]" :style="{'color': iconColor}"></span>
         <div class="detail-info">
             <span class="label-name">{{labelName}}</span>
             <span class="number">{{labelNum}}</span>
             <span class="circle-rate">
             <span class="rate" v-if="labelRate !== ''">
                 <span class="iconfont"
-                      :class="{'icon-up' : labelCurve === 'up', 'icon-down' : labelCurve === 'down'}">
+                      :class="{'icon-up' : labelCurve === 'positive', 'icon-down' : !labelCurve || labelCurve === 'negative'}">
                 </span>
                 {{getRate(labelRate) | contentFilter }}%
             </span>
@@ -50,13 +50,22 @@
                     return {};
                 }
             },
+            //icon颜色配置
+            iconColor : {
+                type : String
+            },
+            //同比上周，当前指标是上升，还是下降
+            labelCurve : {
+                type : String,
+                default : 'negative'
+            }
         },
         data () {
             return {}
         },
         computed : {
             //同比上周，当前指标是上升，还是下降
-            labelCurve () {
+            /*labelCurve () {
                 if (this.labelRate === '-') {
                     return '-';
                 } else {
@@ -68,7 +77,7 @@
                         return '';
                     }
                 }
-            }
+            }*/
         },
         created () {
         },
@@ -96,10 +105,9 @@
         @include block_outline(unquote('calc((100% - 60px) / 4)'), 125px);
         float: left;
         margin-right: 20px;
-        padding: 16px 30px;
+        padding: 25px 30px;
         background: $color_fff;
         border: 1px solid $color_DFE2E5;
-        box-shadow: 0 2px 8px 0 rgba($color_000, 0.10);
         border-radius: 4px;
 
         &:nth-last-of-type(1) {
@@ -108,9 +116,9 @@
 
         .label-img {
             float: left;
-            @include block_outline(52px, 52px, false);
-            margin-top: 13px;
-            border-radius: 26px;
+            line-height: normal;
+            margin-top: 8px;
+            font-size: 52px;
         }
 
         .detail-info {
@@ -132,7 +140,7 @@
 
             .circle-rate {
                 @include block_outline($height: 24px, $is_block: false);
-                padding: 5px 0 2px 0;
+                /*padding: 5px 0 2px 0;*/
                 line-height: 17px;
 
                 .rate,

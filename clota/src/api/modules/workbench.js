@@ -9,4 +9,8 @@ export default {
     'workbench-getSaleAmountGroup' : '/workbench/getSaleAmountGroupByProductName',
     //景区业态经营占比
     'workbench-getSaleAmountRatio' : '/workbench/getSaleAmountRatioByProductType',
+    //查询机构待处理事项
+    'workbench-queryUnfinishedWorkBack' : '/workbench/queryUnfinishedWorkBacklog',
+    //查看/忽略待处理事项
+    'workbench-updateWorkBacklogStatus' : '/workbench/updateWorkBacklogStatus',
 }

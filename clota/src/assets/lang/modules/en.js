@@ -1922,5 +1922,16 @@ export default {
     'picture' : '图片',
     'M035' : '商品已存在',
     'pleaseSetRequiredCredits' : '请先设置兑换积分',
-    'sureToDelQRcode' : '确认删除二维码？'
+    'sureToDelQRcode' : '确认删除二维码？',
+    'businessState' : '营业状况',
+    'ranking' : '排名',
+    'tradeVolume' : '交易量',
+    'checkAll' : '查看全部',
+    'mattersType' : '事项类别',
+    'mattersExplain' : '事项说明',
+    'pendingMatters' : '待处理事项',
+    'pendingMatters.product' : '产品类',
+    'pendingMatters.fund' : '资金类',
+    'pendingMatters.order' : '订单类',
+    'ignore' : '忽略',
 }
