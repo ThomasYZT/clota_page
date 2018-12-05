@@ -18,7 +18,7 @@
             <Form ref="formValidate"
                   :model="transferParams"
                   :rules="ruleValidate"
-                  :label-width="140"
+                  :label-width="180"
                   style="padding-right: 30px;"
                   @submit.native.prevent>
                 <!--订单号-->
@@ -47,14 +47,10 @@
                 </Form-item>
                 <!--付款方式-->
                 <Form-item :label="$t('colonSetting', { key: $t('modeOfPayment') })">
-                    <!--TODO 选择其他银行的交互，该如何做？？？-->
-                    <!--<Input
-                           v-model.trim="transferParams.payAccount"
-                           :placeholder="$t('inputField', { field : $t('银行卡号') })" />-->
                     <AutoComplete
                         v-model.trim="transferParams.salaryPayment"
                         :disabled="isProxyBank"
-                        :placeholder="$t('inputField', { field : $t('银行卡号') })">
+                        :placeholder="$t('inputField', { field : $t('modeOfPayment') })"><!--请输入付款方式-->
                         <Option v-for="item in paymentTypeList"
                                 :value="$t(item.salaryPayment)"
                                 :key="item.id">{{ $t(item.salaryPayment) }}</Option>
@@ -156,8 +152,8 @@
             /*paymentTypeList () {
                 let typeList = [];
                 switch (this.withdrawInfo.accountType) {
-                    case 'wx' :
-                    case 'zfb' :
+                    case 'wxPay' :
+                    case 'aliPay' :
                         typeList = proxyBankList.filter(item => {
                             return item.value == this.withdrawInfo.accountType;
                         });
@@ -171,7 +167,7 @@
             }*/
             //是否微信、支付宝付款方式
             isProxyBank () {
-                return this.withdrawInfo.accountType == 'wx' || this.withdrawInfo.accountType == 'zfb';
+                return this.withdrawInfo.accountType == 'wxPay' || this.withdrawInfo.accountType == 'aliPay';
             }
         },
         created () {
@@ -204,8 +200,8 @@
                 this.transferParams.salaryPayment = this.isProxyBank ? this.$t(data.accountType) : data.accountType;
 
                 //测试代码
-                /*this.withdrawInfo.accountType = 'zfb';
-                this.transferParams.salaryPayment = 'zfb';*/
+                /*this.withdrawInfo.accountType = 'aliPay';
+                this.transferParams.salaryPayment = this.$t('payType.alipay');*/
                 this.visible = true;
             },
             /**

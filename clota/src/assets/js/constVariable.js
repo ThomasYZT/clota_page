@@ -732,11 +732,11 @@ export const  bankList = [
 export const  proxyBankList = [
     {
         salaryPayment : 'payType.weixin', //微信
-        id : 'wx'
+        id : 'wxPay'
     },
     {
         salaryPayment : 'payType.alipay', //支付宝
-        id : 'zfb'
+        id : 'aliPay'
     },
 ]
 
