@@ -37,6 +37,7 @@
                             </template>
                             <template v-else>
                                 <Select v-model="formData.productId"
+                                        transfer
                                         :disabled="type === 'check'"
                                         :placeholder="$t('selectField', {msg: ''})"
                                         @on-change="changeChooseProduct">

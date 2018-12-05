@@ -108,6 +108,14 @@
                     this.$vux.toast.text(this.$t('pleaseBackToWX'));
                 }
             },
+            /**
+             * 监听物理键返回
+             */
+            physicalBack () {
+                this.$router.push({
+                    name : 'home'
+                });
+            }
         },
         mounted () {
             //监听微信物理返回
@@ -116,11 +124,10 @@
                 url : "#"
             };
             history.pushState(state, "title", "#");
-            window.addEventListener("popstate", (e) => {
-                this.$router.push({
-                    name : 'account'
-                })
-            }, false);
+            window.addEventListener("popstate", this.physicalBack, false);
+        },
+        beforeDestroy () {
+            window.removeEventListener("popstate", this.physicalBack);
         }
     };
 </script>

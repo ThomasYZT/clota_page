@@ -164,12 +164,12 @@
                 </i-col>
                 <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('physicalCardNo') })">
-                        {{currentData.memberName | contentFilter}}
+                        {{currentData.tpCardNo | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('cardFaceNum') })">
-                        {{currentData.memberName | contentFilter}}
+                        {{currentData.tpNo | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">

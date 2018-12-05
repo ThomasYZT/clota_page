@@ -367,7 +367,7 @@
                     background: #F4F6F9;
 
                     &.no-data-wrap{
-                        background: url('../../assets/images/icon-no-data.svg') no-repeat;
+                        background: url('../../assets/images/icon-no-data.svg') no-repeat,#fff;
                         background-position: center center;
                         background-size: 150px 150px;
                     }

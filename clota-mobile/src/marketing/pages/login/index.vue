@@ -2,6 +2,9 @@
 
 <template>
     <div class="login">
+        <div class="login-bg">
+            <img src="../../../assets/images/icon-login-bg.png" alt="">
+        </div>
         <div class="input-wrap">
             <div class="company-name">
                 {{companyName}}
@@ -42,7 +45,9 @@
                          label-width="150px"
                          :placeholder="$t('inputField',{ field : $t('登录密码') })">
                 </x-input>
-                <div class="regret-pass">{{$t('忘记密码')}}</div>
+                <div class="regret-pass" >
+                    <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
+                </div>
                 <x-button class="button"
                           @click.native="login">{{$t('login')}}</x-button>
                 <div class="to-register">
@@ -90,9 +95,22 @@
                         levelId : this.marketLevelId,
                     }).then(res => {
                         if (res.success) {
-
+                            this.$store.commit('marketUpdateToken',res.data);
+                            this.$store.dispatch('marketGetUserInfo').then(() => {
+                                this.$router.push({
+                                    name : 'marketingProduct'
+                                });
+                            });
+                        } else if (res.code && res.code !== '300') {
+                            this.$vux.toast.show({
+                                text : this.$t('errorMsg.' + res.code),
+                                type : 'cancel'
+                            });
                         } else {
-                            // this.$
+                            this.$vux.toast.show({
+                                text : this.$t('operateFail',{ msg : this.$t('login') }),
+                                type : 'cancel'
+                            });
                         }
                     });
                 });
@@ -153,6 +171,14 @@
                     }
                 });
             },
+            /**
+             * 跳转到重置密码页面
+             */
+            toResetPass () {
+                this.$router.push({
+                    name : 'marketingResetPassword'
+                });
+            }
         },
         computed : {
             ...mapGetters({
@@ -172,9 +198,19 @@
         background: #2c78ee;
         @include padding_place();
 
+        .login-bg{
+            @include block_outline($height : 125px);
+
+            img{
+                height: 100%;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+
         .input-wrap{
             @include block_outline(unquote('calc(100% - 20px)'),468px);
-            margin: 125px auto 0;
+            margin: 0 auto;
             background: $color_fff;
             box-shadow: 0 5px 15px 0 rgba(0,77,148,0.10);
             border-radius: 5px;
@@ -224,11 +260,15 @@
                 }
 
                 .regret-pass{
+                    display: inline-block;
                     margin-top: 10px;
                     @include block_outline($height : 17px);
-                    color: $color_blue;
-                    font-size: $font_size_12px;
                     text-align: right;
+
+                    .label{
+                        color: $color_blue;
+                        font-size: $font_size_12px;
+                    }
                 }
 
                 /deep/ .weui-btn{

@@ -161,6 +161,10 @@
                             //新开卡
                             item.purpose = 'open_card';
                             break;
+                        case 'expire_score':
+                            //积分失效
+                            item.purpose = 'expire_score';
+                            break;
                         default:
                             item.purpose = '-';
                     }

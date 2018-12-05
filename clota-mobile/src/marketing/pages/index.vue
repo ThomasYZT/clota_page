@@ -11,18 +11,41 @@
             <tabbar-item badge="2"
                          :selected="selectedTabbar === 'product'"
                          @on-item-click="toRouter('marketingProduct')">
-                <img slot="icon" src="../../assets/images/icon-ali-pay.svg">
+                <div slot="icon">
+                    <img v-if="selectedTabbar === 'product'"
+                         slot="icon"
+                         class="tabbar-img"
+                         src="../../assets/images/icon-product-tabbar-selected.svg">
+                    <img v-else
+                         slot="icon"
+                         class="tabbar-img"
+                         src="../../assets/images/icon-product-tabbar.svg">
+                </div>
                 <span slot="label">产品</span>
             </tabbar-item>
             <tabbar-item show-dot
                          :selected="selectedTabbar === 'order'"
                          @on-item-click="toRouter('marketingOrder')">
-                <img slot="icon" src="../../assets/images/icon-ali-pay.svg">
+                <img v-if="selectedTabbar === 'order'"
+                     slot="icon"
+                     class="tabbar-img"
+                     src="../../assets/images/icon-order-tabbar-selected.svg">
+                <img v-else
+                     slot="icon"
+                     class="tabbar-img"
+                     src="../../assets/images/icon-order-tabbar.svg">
                 <span slot="label">订单</span>
             </tabbar-item>
             <tabbar-item :selected="selectedTabbar === 'mine'"
                          @on-item-click="toRouter('marketingOwnerCenter')">
-                <img slot="icon" src="../../assets/images/icon-ali-pay.svg">
+                <img v-if="selectedTabbar === 'mine'"
+                     slot="icon"
+                     class="tabbar-img"
+                     src="../../assets/images/icon-own-tabbar-selected.svg">
+                <img v-else
+                     slot="icon"
+                     class="tabbar-img"
+                     src="../../assets/images/icon-own-tabbar.svg">
                 <span slot="label">我的</span>
             </tabbar-item>
         </tabbar>
@@ -61,6 +84,10 @@
     @import '~@/assets/scss/base';
     .marketing{
         @include block_outline();
+
+        .tabbar-img{
+            @include block_outline(25px,25px);
+        }
 
         .view-content{
             @include block_outline($height : unquote('calc(100% - 53px)'));

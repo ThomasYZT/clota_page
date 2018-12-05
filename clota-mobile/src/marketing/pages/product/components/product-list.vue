@@ -3,39 +3,55 @@
 <template>
     <div class="product-list-info">
         <div class="product-title">
-            <div class="product-name">不而退不而退不而退不</div>
-            <div class="product-price">{{192 | moneyFilter(2,'¥') | contentFilter}}</div>
+            <div class="product-name">{{productInfo.productName | contentFilter}}</div>
+            <div class="product-price">{{productInfo.salePrice | moneyFilter(2,'¥') | contentFilter}}</div>
         </div>
         <ul class="label-input">
-            <li class="label-list">不可退</li>
-            <li class="label-list">不可改</li>
+            <li class="label-list" v-if="cannotReturn">不可退</li>
+            <li class="label-list" v-if="cannotAlter">不可改</li>
         </ul>
         <div class="ticket-notick" @click="$emit('show-notice',productInfo)">购票须知</div>
         <div class="price-info">
-            {{$t('colonSetting',{ key : $t('佣金') })}}{{ 121 | moneyFilter(2,'¥') | contentFilter }}
+            {{$t('colonSetting',{ key : $t('佣金') })}}{{ productInfo.salary | moneyFilter(2,'¥') | contentFilter }}
         </div>
-    </div>
+    </DIV>
 </template>
 
 <script>
-	export default {
-	    props : {
-	        //产品明细
-	        'product-info' : {
-	            type : Object,
+    export default {
+        props : {
+            //产品明细
+            'product-info' : {
+                type : Object,
                 default () {
-	                return {};
+                    return {};
                 }
             }
         },
-		data () {
-			return {}
-		},
-		methods: {}
-	}
+        data () {
+            return {};
+        },
+        methods : {},
+        computed : {
+            //产品不可退
+            cannotReturn () {
+                if (this.productInfo && this.productInfo.returnRuleModel) {
+                    return this.productInfo.returnRuleModel.type === 'notAllow';
+                }
+                return false;
+            },
+            //产品不可改签
+            cannotAlter () {
+                if (this.productInfo && this.productInfo.alterRuleModel) {
+                    return this.productInfo.alterRuleModel.type === 'notAllow';
+                }
+                return false;
+            }
+        }
+    };
 </script>
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
 
     .product-list-info{
         @include block_outline($height : 128px);
@@ -85,7 +101,8 @@
         }
 
         .ticket-notick{
-            @include block_outline($height : 26px);
+            display: inline-block;
+            @include block_outline(auto, 26px);
             padding-bottom: 10px;
             font-size: $font_size_12px;
             color: $color_999;

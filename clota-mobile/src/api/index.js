@@ -102,7 +102,8 @@ export default {
         // 如果是登录，则不需要传递token
         if (urlKey !== 'login' || urlKey !== 'getCode') {
             myConfig.headers = {
-                token : this.getToken()
+                // token : this.getToken()
+                token : '49dHB8a+Udm8vOOZPo826uY+tyWSu1RN/IIq4lrgIdvFk1gacT3xw2mNsn+Swf3MgkwqwmsaILPdp16CsJBc4NlhxRyz/oG1Tc+dDS+5hyE='
             };
         }
 

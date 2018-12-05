@@ -2,8 +2,15 @@ import store from "../../store/index";
 
 //会员页面路由进入前的处理
 export const marketRouterDeal = (to, from, next) => {
-    console.log(to)
-    next();
+    if (to.meta && to.meta.notNeedCheck) {
+        next();
+    } else if (store.getters.marketToken) {
+        next();
+    } else {
+        next({
+            name : 'marketingLogin'
+        });
+    }
 };
 //会员路由页面
 /**
@@ -27,7 +34,8 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/register/index.vue'),
                 meta : {
                     title : 'marketingRegister',
-                    hideTabbar : true
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             },
             //注册成功
@@ -37,7 +45,8 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/register/child/registerResult.vue'),
                 meta : {
                     title : '注册成功',
-                    hideTabbar : true
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             },
             //登录
@@ -47,7 +56,8 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/login/index.vue'),
                 meta : {
                     title : 'login',
-                    hideTabbar : true
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             },
             //重置密码
@@ -57,7 +67,8 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/resetPass/index.vue'),
                 meta : {
                     title : '重置密码',
-                    hideTabbar : true
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             },
             //重置密码成功
@@ -67,7 +78,8 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/resetPass/child/resetPasswordResult.vue'),
                 meta : {
                     title : '重置密码成功',
-                    hideTabbar : true
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             },
             //我的产品
