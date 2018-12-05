@@ -51,9 +51,6 @@
              * 下拉刷新
              */
             onPullingDown () {
-                setTimeout(() => {
-                    this.$refs.scroll.forceUpdate();
-                },2000);
                 this.$emit('pull-down',() => {
                     // 如果没有新数据
                     this.$refs.scroll.forceUpdate();
@@ -67,15 +64,11 @@
                     // 如果没有新数据
                     this.$refs.scroll.forceUpdate();
                 });
-                setTimeout(() => {
-                    this.$refs.scroll.forceUpdate();
-                },2000);
             },
             /**
              * 重新渲染scroll组件
              */
             rebuildScroll : function () {
-                console.log('aaa');
                 Vue.nextTick(() => {
                     this.$refs.scroll.destroy();
                     this.$refs.scroll.initScroll();

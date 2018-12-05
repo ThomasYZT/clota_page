@@ -249,4 +249,7 @@ export default {
     'sunday' : '周日',
     'after tomorrow' : '明天',
     'bracketSetting' : '（{content}）',
+
+    'errorMsg.MK001' : '账号或密码错误',
+    'errorMsg.MK002' : '用户不存在',
 };

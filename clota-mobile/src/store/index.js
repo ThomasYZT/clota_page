@@ -4,7 +4,7 @@ import i18n from '../assets/lang/lang.config';
 import ajax from '../api/index';
 import defaultsDeep from 'lodash/defaultsDeep';
 import { memberState,memberGetters,memberMutations,memberActions } from '../member/store/index';
-import { marketingState,marketingGetters } from '../marketing/store/index';
+import { marketingState,marketingGetters,marketMutations,marketActions } from '../marketing/store/index';
 
 Vue.use(Vuex);
 
@@ -111,10 +111,12 @@ export default new Vuex.Store({
         updateWeixinConfig ( state,status) {
             state.weixinIsConfiged = status;
         },
-        ...memberMutations
+        ...memberMutations,
+        ...marketMutations
     },
     actions : {
-        ...memberActions
+        ...memberActions,
+        ...marketActions
     }
 });
 

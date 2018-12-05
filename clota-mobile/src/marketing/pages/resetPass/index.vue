@@ -2,7 +2,6 @@
 
 <template>
     <div class="reset-password">
-        {{isWeixin}}
         <div class="head">
             <img class="img-head" src="../../../assets/images/icon-no-data.svg" alt="">
             <div class="register-tips">{{companyName}}</div>
@@ -83,6 +82,8 @@
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
+    import MD5 from 'crypto-js/md5';
+
 	export default {
 		data () {
 			return {
@@ -116,9 +117,10 @@
             getValidCode () {
                 if (!this.isTiming) {
                     this.validatePhone().then(() => {
-                        ajax.post('getCode', {
+                        ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'member_login',
+                            companyCode : this.marketINgCompanyCode
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -157,7 +159,7 @@
                     this.validatePhone().then(() => {
                         return this.validateCode();
                     }).then(() => {
-                        this.stage += 1;
+                        this.validatePhoneCode();
                     });
                 } else if (this.stage === 3) {
                     this.validatePassword().then(() => {
@@ -284,13 +286,29 @@
              * 重置密码
              */
             resetPassword () {
-                ajax.post('',{
-
+                ajax.post('market_resetPassword',{
+                    name : this.formData.name,
+                    idno : this.formData.idNum,
+                    mobile : this.formData.phoneNum,
+                    newPassword : MD5(this.formData.password).toString(),
+                    typeId : this.marketTypeId,
+                    orgId : this.marketOrgId,
+                    levelId : this.marketLevelId,
                 }).then(res => {
                     if (res.success) {
+                        this.$vux.toast.show({
+                            text : this.$t('operateSuc',{ msg : this.$t('重置密码') }),
+                        });
                         this.$router.push({
                             name : 'marketingResetPasswordSuc',
-                            fromRegister : true
+                            params : {
+                                fromRegister : true
+                            }
+                        });
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
                         });
                     } else {
                         this.$vux.toast.show({
@@ -299,12 +317,41 @@
                         });
                     }
                 });
+            },
+            /**
+             * 校验手机验证码是否正确
+             */
+            validatePhoneCode () {
+                ajax.post('market_checkVerifyCode',{
+                    mobile : this.formData.phoneNum,
+                    code : this.formData.code,
+                    companyCode : this.marketINgCompanyCode,
+                    type : 'maket_register',
+                }).then((res) => {
+                    if (res.success) {
+                        this.stage += 1;
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            type : 'cancel',
+                            text : this.$t(res.code)
+                        });
+                    } else {
+                        this.$vux.toast.show({
+                            type : 'cancel',
+                            text : this.$t('验证码错误')
+                        });
+                    }
+                });
             }
         },
         computed : {
             ...mapGetters({
                 companyName : 'companyName',
-                isWeixin : 'isWeixin'
+                isWeixin : 'isWeixin',
+                marketOrgId : 'marketOrgId',
+                marketLevelId : 'marketLevelId',
+                marketTypeId : 'marketTypeId',
+                marketINgCompanyCode : 'marketINgCompanyCode',
             })
         }
 	};

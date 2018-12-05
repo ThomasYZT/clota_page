@@ -12,11 +12,13 @@
             地址：广州市番禺区迎宾路长隆旅游度假区内
         </div>
         <div class="product-list">
-            <scroll-wrap :item-data="productListData">
+            <scroll-wrap :item-data="productListData"
+                         @pull-down="onPullingDown"
+                         @pull-up="onPullingUp">
                 <template v-for="(item,index) in productListData">
                     <product-list :key="index"
                                   :product-info="item"
-                                  @show-notice="showProductNoticeMethod">
+                                  @show-notice="showProductNoticeMethod(item)">
                     </product-list>
                 </template>
             </scroll-wrap>
@@ -29,23 +31,19 @@
                         购票须知
                     </div>
                     <div :class="$style.content">
-                        <div :class="$style.productTitle">广州长隆水上乐园成人单人票</div>
+                        <div :class="$style.productTitle">{{currentProductInfo.productName | contentFilter}}</div>
                         <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('产品说明') })}}</div>
-                        <div :class="$style.notice">本产品包含：水上乐园全天双人票1张，野生动物园门票1张以及飞鸟乐园10选3门票1张。
-                            其中飞鸟乐园可选游玩项目包括：丛林飞龙、旋转木马、哪吒闹海。。。
-                            使用规则：两人同时检票入园，每张票限免费携带一名1.0米（不含）以下儿童入园。
-                            有效期：游玩日期当天起3天有效。
-                            适用条件：成人或身高1.5米（含）以上儿童。</div>
+                        <div :class="$style.notice">{{currentProductInfo.productDes | contentFilter}}</div>
                         <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('购票须知') })}}</div>
-                        <div :class="$style.notice">本产品包含：水上乐园全天双人票1张，野生动物园门票1张以及飞鸟乐园10选3门票1张。
-                            其中飞鸟乐园可选游玩项目包括：丛林飞龙、旋转木马、哪吒闹海。。。
-                            使用规则：两人同时检票入园，每张票限免费携带一名1.0米（不含）以下儿童入园。
-                            有效期：游玩日期当天起3天有效。
-                            适用条件：成人或身高1.5米（含）以上儿童。</div>
+                        <div :class="$style.notice">{{currentProductInfo.buyTicketNotes | contentFilter}}</div>
                     </div>
                     <div :class="$style.footer">
-                        <span :class="$style.price">{{$t('colonSetting',{ key : $t('佣金') })}}{{ 121 | moneyFilter(2,'¥') | contentFilter }}</span>
-                        <span :class="$style.commission">{{$t('colonSetting',{ key : $t('佣金') })}}{{ 121 | moneyFilter(2,'¥') | contentFilter }}</span>
+                        <span :class="$style.price">
+                            {{$t('colonSetting',{ key : $t('佣金') })}}{{ currentProductInfo.salary | moneyFilter(2,'¥') | contentFilter }}
+                        </span>
+                        <span :class="$style.commission">
+                            {{$t('colonSetting',{ key : $t('售价') })}}{{ currentProductInfo.salePrice | moneyFilter(2,'¥') | contentFilter }}
+                        </span>
                     </div>
                 </div>
             </popup>
@@ -57,35 +55,22 @@
     import productList from './components/product-list';
     import scrollWrap from '@/components/scroll/scrollWrap';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
     export default {
         data () {
             return {
                 //查看产品日期
                 productDate : new Date().format('yyyy-MM-dd'),
                 //产品列表数据
-                productListData : [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ],
+                productListData : [],
                 //显示购票须知
-                showProductNotice : false
+                showProductNotice : false,
+                //页码
+                pageNo : 1,
+                //每页条数
+                pageSize : 10,
+                //当前查看产品的明细
+                currentProductInfo : {}
             };
         },
         components : {
@@ -102,45 +87,30 @@
                     confirmText : '确定',
                     format : 'YYYY-MM-DD',
                     value : this.productDate,
+                    startDate : new Date().format('yyyy-MM-dd'),
                     onConfirm : (val) => {
                         this.productDate = val;
+                        this.getProductListInfo();
                     }
                 });
             },
             /**
              * 下拉刷新
+             * @param{Function} callback 下拉完的回调函数
              */
-            onPullingDown () {
-                ajax.post('',{
-
-                }).then((res) => {
-                    // if (this._isDestroyed) {
-                    //     return;
-                    // }
-                    if (res.success) {
-                        this.productListData = res.data ? res.data : [];
-                    } else {
-                        // 如果没有新数据
-                        this.$refs.scroll.forceUpdate()
-                    }
+            onPullingDown (callback) {
+                this.getProductListInfo().finally(() => {
+                    callback();
                 });
             },
             /**
              * 上拉刷新
+             * @param{Function} callback 下拉完的回调函数
              */
-            onPullingUp () {
-                ajax.post('',{
-
-                }).then((res) => {
-                    // if (this._isDestroyed) {
-                    //     return;
-                    // }
-                    if (res.success) {
-                        this.productListData = res.data ? res.data : [];
-                    } else {
-                        // 如果没有新数据
-                        this.$refs.scroll.forceUpdate()
-                    }
+            onPullingUp (callback) {
+                this.pageSize += 10;
+                this.getProductListInfo().finally(() => {
+                    callback();
                 });
             },
             /**
@@ -148,17 +118,22 @@
              * @param data
              */
             showProductNoticeMethod (data) {
+                this.currentProductInfo = data;
                 this.showProductNotice = true;
             },
             /**
              * 获取产品信息
              */
             getProductListInfo () {
-                ajax.post('',{
-
+                return ajax.post('market_queryMarketSaleProductList',{
+                    playDate : this.productDate,
+                    marketTypeId : this.marketTypeId,
+                    marketLevelId : this.marketLevelId,
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
                 }).then(res => {
                     if (res.success) {
-                        this.productListData = res.data ? res.data : [];
+                        this.productListData = res.data ? res.data.data : [];
                     } else {
                         this.productListData = [];
                     }
@@ -166,9 +141,13 @@
             }
         },
         computed : {
+            ...mapGetters({
+                marketLevelId : 'marketLevelId',
+                marketTypeId : 'marketTypeId',
+            })
         },
         created () {
-            // this.getProductListInfo();
+            this.getProductListInfo();
         }
     };
 </script>
