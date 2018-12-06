@@ -101,7 +101,7 @@
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('playDeadline')+'：'"><!--游玩期限-->
-                                <div v-w-title="$t(detail.productPolicy.playRuleModel.type)">{{$t(detail.productPolicy.playRuleModel.type) | contentFilter}}</div>
+                                <div v-w-title="$t(detail.productPolicy.playRuleModel.type)">{{$t('specifiedPeriodPlay') | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <!--游玩期限 = 指定期间可售-->

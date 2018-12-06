@@ -471,6 +471,7 @@
                                             <template v-if="scope.row.active">
                                                 <InputNumber :max="1"
                                                              :min="0"
+                                                             :step="0.01"
                                                              class="short-input"
                                                              v-model.trim="scope.row.procedureRates"
                                                              :placeholder="$t('inputField', {field: ''})">
@@ -549,7 +550,7 @@
                 <Button type="primary"
                         :loading="loading"
                         @click="formValidateFunc">
-                    {{$t('save')}}
+                    {{$t('commitCheck')}}
                 </Button>
                 <Button type="ghost"
                         @click="goBack">

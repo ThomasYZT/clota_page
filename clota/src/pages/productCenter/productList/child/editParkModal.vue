@@ -616,7 +616,7 @@
                     effDay : '1',
                     effTimes : '1',
                     gardenGroupId : '',//核销设备分组ID
-                    fingerCheck : true,//其他设置
+                    fingerCheck : false,//其他设置
                     //游玩项目
                     itemCheckTimes : 0,//项目游玩总次数itemCheckTimes
                     equipmentGroupIds : [],//游玩项目分组ID-多个逗号分隔

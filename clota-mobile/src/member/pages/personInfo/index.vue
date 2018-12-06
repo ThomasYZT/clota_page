@@ -1,4 +1,4 @@
-1<!--个人信息-->
+<!--个人信息-->
 
 <template>
     <div class="person-info">
@@ -8,7 +8,7 @@
                 <img clsss="img-span" v-else src="../../../assets/images/defaut-face.png">
                 <span class="edit">
                     <span class="label" @click="editHeadImg">{{$t('edit')}}</span>
-                    <input v-if="!weixinIsConfiged" class="upload" type="file" accept="image/*" @change="uploadImg($event)">
+                    <input :disabled="!hasPermission" v-if="!weixinIsConfiged" class="upload" type="file" accept="image/*" @change="uploadImg($event)">
                 </span>
             </div>
         </div>
@@ -19,6 +19,7 @@
                     :title="$t('name')"
                     text-align="right"
                     :show-clear="false"
+                    :disabled="!hasPermission"
                     v-model.trim="formData.name"
                     placeholder-align="right">
                 </x-input>
@@ -26,6 +27,7 @@
                 <popup-picker
                     :title="$t('sex')"
                     show-name
+                    :disabled="!hasPermission"
                     v-model.trim="formData.gender"
                     :data="[genderEnum]">
                 </popup-picker>
@@ -33,6 +35,7 @@
                 <cell
                     :title="$t('phone')"
                     is-link
+                    :disabled="!hasPermission"
                     :value="formData.memberInfo.phoneNum"
                     :link="{name : 'changeMobile',params : {mobile : formData.memberInfo.phoneNum}}">
                 </cell>
@@ -41,6 +44,7 @@
                     class="trade-pass"
                     :title="$t('tradePass')"
                     is-link
+                    :disabled="!hasPermission"
                     value="●●●●●●"
                     :link="{name : 'changeTradePass',params : {mobile : formData.memberInfo.phoneNum}}">
                 </cell>
@@ -48,6 +52,7 @@
                 <cell
                     :title="$t('IdNumber')"
                     is-link
+                    :disabled="!hasPermission"
                     :link="{name : 'changeId',params : {certificationType : formData.certificationType,idCardNumber : formData.idCardNumber}}"
                     :value="idNum">
                 </cell>
@@ -116,13 +121,14 @@
                     :title="$t('address')"
                     text-align="right"
                     :show-clear="false"
+                    :disabled="!hasPermission"
                     v-model.trim="formData.memberInfo.homeAddr"
                     placeholder-align="right">
                 </x-input>
             </group>
         </div>
         <div class="btn-area">
-            <x-button @click.native="saveInfo">{{$t('save')}}</x-button>
+            <x-button :disabled="!hasPermission" @click.native="saveInfo">{{$t('save')}}</x-button>
         </div>
     </div>
 </template>
@@ -130,8 +136,9 @@
 <script>
     import { genderEnum } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapMutations } from 'vuex';
     import { validator } from 'klwk-ui';
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         data () {
             return {
@@ -152,12 +159,14 @@
                         birthDay : ''
                     },
                     effDate : '',
-                    expDate : ''
-
+                    expDate : '',
                 }
             };
         },
         methods : {
+            ...mapMutations([
+                'updateUserInfo'
+            ]),
             /**
              * 获取个人信息
              */
@@ -419,6 +428,7 @@
                     if (res.success) {
                         this.getMemberDetail();
                         this.getGrowthBalance();
+                        this.updateUserInfo(defaultsDeep({ portrait : portrait }, this.userInfo));
                         this.$vux.toast.show({
                             text : this.$t('operateSuc',{ msg : this.$t('changeImg') })
                         });
@@ -474,6 +484,10 @@
                 } else {
                     return '';
                 }
+            },
+            //有无权限编辑
+            hasPermission () {
+                return !(this.cardInfo.status === 'frozen');
             }
         }
     };

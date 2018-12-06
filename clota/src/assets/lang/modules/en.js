@@ -534,7 +534,6 @@ export default {
     // 会员3期暂时去掉
     // 'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points and growth values when you consume.',
     'storeWithouIntegetAGrowthNoRepeat' : 'when you store the value, you will earn points, growth value, and do not repeat the points when you consume.',
-    'storeIntegetRatioSetting' : '储值获得积分生效设置',
     // 会员3期暂时去掉
     // 'storeIntegetRatioSetting' : 'effective settings of points and growth value obtained during the stored value',
     'storeIntegetRatioSetting' : 'effective settings of points obtained during the stored value',
@@ -1161,7 +1160,7 @@ export default {
     'reserveOrderDetail': '订单查询',
     'synchronized': '已同步',
     'syncFailed': '同步失败',
-    'syncSucceed': '同步成功',
+    'syncSucceed' : '同步成功',
     'order.market': '全民营销',
     'order.all': '全部',
     'order.tour': '旅行社',
@@ -1934,10 +1933,10 @@ export default {
     'pendingMatters.fund' : '资金类',
     'pendingMatters.order' : '订单类',
     'ignore' : '忽略',
-    'sureToDelQRcode' : '确认删除二维码？',
     'MK010' : '营销等级设置冲突',
     'MK011' : '营销等级名称设置冲突',
     'MK012' : '营销等级级别与升级金额不同步',
     'pleaseSelectMarketingLevelFirst' : '请先选择营销等级',
     'levelAmountRule' : '升级金额不得低于低等级的金额或不得高于高等级的金额',
+    'disableSet' : '不可设置'
 }

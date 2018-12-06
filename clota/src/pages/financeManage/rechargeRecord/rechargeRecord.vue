@@ -51,14 +51,11 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.status=='rejected'">{{'-'}}
-                    </span>
-                    <span v-else-if="scope.row.status=='valid'">{{'-'}}
-                    </span>
                     <span class="operate"
-                          v-else
+                          v-if="scope.row.status === 'pending_audit' && scope.row.peerOrgId === manageOrgs.id"
                           @click="handleAudit(scope.row)">{{$t('checked')}}
                     </span>
+                    <span v-else>{{'-'}}</span>
                 </template>
             </el-table-column>
         </table-com>
@@ -77,6 +74,7 @@
     import {configVariable} from '@/assets/js/constVariable';
     import {rechargeHead} from '../financeManageConfig';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {tableCom, auditRechargeModal ,recallModal},
@@ -99,7 +97,11 @@
                 totalCount: 0,
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'manageOrgs'
+            ])
+        },
         created() {
         },
         mounted() {
