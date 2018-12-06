@@ -7,11 +7,22 @@ export const marketRouterDeal = (to, from, next) => {
         next();
     } else if (store.getters.marketToken) {//有token继续校验，没有则直接跳到登录页
         //vuex中如果用户信息为空，则需要重新获取用户信息，获取用户信息失败，则需要跳转到登录页面重新登录
-        if (store.getters.marketUserInfo && Object.keys(store.getters.marketUserInfo).length > 0) {
+        if (store.getters.marketUserInfo &&
+            Object.keys(store.getters.marketUserInfo).length > 0 &&
+            store.getters.marketINgCompanyCode &&
+            Object.keys(store.getters.marketINgCompanyCode).length > 0 &&
+            store.getters.marketTypeId &&
+            Object.keys(store.getters.marketTypeId).length > 0) {
             next();
         } else {
             store.dispatch('marketGetUserInfo').then(() => {
-                next();
+                store.dispatch('marketGetLoginData').then(() => {
+                    next();
+                }).catch(() => {
+                    next({
+                        name : 'marketingLogin'
+                    });
+                });
             }).catch(() => {
                 next({
                     name : 'marketingLogin'
@@ -40,7 +51,7 @@ export const marketingRoutes = [
         path : '/marketing',
         // name : 'marketing',
         component : () => import(/* webpackChunkName: "marketing" */ '../pages/index.vue'),
-        // beforeEnter : marketRouterDeal,
+        beforeEnter : marketRouterDeal,
         redirect : {
             name : 'marketingRegister'
         },

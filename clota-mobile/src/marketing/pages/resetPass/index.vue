@@ -3,7 +3,7 @@
 <template>
     <div class="reset-password">
         <div class="head">
-            <img class="img-head" src="../../../assets/images/icon-no-data.svg" alt="">
+            <img class="img-head" src="../../../assets/images/icon-avator.svg" alt="">
             <div class="register-tips">{{companyName}}</div>
             <div class="belong-type">
                 {{$t('全民营销系统')}}
@@ -119,7 +119,7 @@
                     this.validatePhone().then(() => {
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
-                            type : 'member_login',
+                            type : 'market_reset_password',
                             companyCode : this.marketINgCompanyCode
                         }).then((res) => {
                             if (!res.success) {
@@ -326,7 +326,7 @@
                     mobile : this.formData.phoneNum,
                     code : this.formData.code,
                     companyCode : this.marketINgCompanyCode,
-                    type : 'maket_register',
+                    type : 'market_reset_password',
                 }).then((res) => {
                     if (res.success) {
                         this.stage += 1;
@@ -372,7 +372,6 @@
             .img-head{
                 display: inline-block;
                 @include block_outline(53px,53px);
-                background: red;
                 border-radius: 27px;
                 background-size: 100% 100%;
             }

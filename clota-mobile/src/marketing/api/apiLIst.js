@@ -1,6 +1,8 @@
 
 //会员系统接口
 const apiList = {
+    //获取微信配置信息
+    getWxConfig : '/wechat/mp/getConfig',
     //获取验证码
     'market_getPhoneVerificationCode' : '/external/sms/getPhoneVerificationCode',
     //注册账号
@@ -33,6 +35,14 @@ const apiList = {
     'market_updateBankAccount' : '/market/marketUser/updateBankAccount',
     //获取游客查看的订单
     'market_queryMarketProductsForVisitor' : '/market/marketUser/queryMarketProductsForVisitor',
+    //注册时获取参数信息
+    'market_registerPage' : '/market/marketUser/registerPage',
+    //根据companyCode获取公司名称
+    'market_toLoginPage' : '/market/marketUser/toLoginPage',
+    //查询用户绑定的所属类别信息
+    'market_queryUserType' : '/market/marketUser/queryUserType',
+    //获取登录信息
+    'market_getLoginInfo' : '/market/marketUser/getLoginInfo',
 };
 
 export default apiList;

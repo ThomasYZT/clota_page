@@ -92,8 +92,8 @@
              * @param{Object} params 路由参数
              */
             getParams (params) {
-                if (params && params.posterData) {
-                    this.posterData = params.posterData;
+                if (params && 'posterData' in params) {
+                    this.posterData = params.posterData ? params.posterData : [];
                 } else {
                     this.$router.push({
                         name : 'marketingOwnerCenter'

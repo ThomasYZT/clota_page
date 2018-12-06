@@ -7,17 +7,19 @@ import Vue from 'vue';
 export const marketingState = {
     marketing : {
         //公司名称
-        companyName : '广州长隆飞鸟乐园',
+        companyName : '',
         //公司编码
-        companyCode : '444',
+        companyCode : '',
         //组织id
-        orgId : '1037976274619994113',
+        orgId : '',
         //营销级别id
-        levelId : '1067617391137132544',
+        levelId : '',
         //营销类别id
-        typeId : '1067616682551414784',
+        typeId : '',
         //用户信息
-        userInfo : {}
+        userInfo : {},
+        //营销类别名称
+        typeName : ''
     }
 };
 export const marketingGetters = {
@@ -48,6 +50,10 @@ export const marketingGetters = {
     //用户信息
     marketUserInfo : state => {
         return state.marketing.userInfo;
+    },
+    //营销名称
+    marketTypeName : state => {
+        return state.marketing.typeName;
     }
 };
 
@@ -59,6 +65,30 @@ export const marketMutations = {
     //更新用户信息
     marketUpdateUserInfo (state,userInfo) {
         state.marketing.userInfo = userInfo;
+    },
+    //更新组织id
+    marketUpdateOrgId (state,orgId) {
+        state.marketing.orgId = orgId;
+    },
+    //更新levelId
+    marketUpdateLevelId (state,levelId) {
+        state.marketing.levelId = levelId;
+    },
+    //更新typeId
+    marketUpdateTypeId (state,typeId) {
+        state.marketing.typeId = typeId;
+    },
+    //更新营销名称
+    marketUpdateTypeName (state,typeName) {
+        state.marketing.typeName = typeName;
+    },
+    //更新公司名称
+    marketUpdateCompanyName (state,companyName) {
+        state.marketing.companyName = companyName;
+    },
+    //更新公司code
+    marketUpdateCompanyCode (state,companyCode) {
+        state.marketing.companyCode = companyCode;
     }
 };
 
@@ -81,6 +111,32 @@ export const marketActions = {
             }
         }).catch(() => {
             commit('marketUpdateUserInfo',{});
+        });
+    },
+    /**
+     * 获取登录信息
+     * @param{Function} commit vux的commit事件
+     * @param{Function} dispatch vux的dispatch事件
+     * @return{Promise} promise对象
+     */
+    marketGetLoginData ({ commit,dispatch }) {
+        const ajax = require('../api/index').default;
+        return ajax.post('market_getLoginInfo').then(res => {
+            if (res.success) {
+                if (res.data && Object.keys(res.data).length > 0) {
+                    commit('marketUpdateCompanyName',res.data.orgName);
+                    commit('marketUpdateCompanyCode',res.data.orgCode);
+                    commit('marketUpdateTypeId',res.data.marketTypeId);
+                } else {
+                    commit('marketUpdateCompanyName','');
+                    commit('marketUpdateCompanyCode','');
+                    commit('marketUpdateTypeId','');
+                }
+            } else {
+                commit('marketUpdateCompanyName','');
+                commit('marketUpdateCompanyCode','');
+                commit('marketUpdateTypeId','');
+            }
         });
     }
 };

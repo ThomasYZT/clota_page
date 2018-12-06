@@ -87,6 +87,11 @@
                                 fromRegister : true
                             }
                         });
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
+                        });
                     } else {
                         this.$vux.toast.show({
                             text : this.$t('operateFail',{ msg : this.$t('marketingRegister') }),
@@ -94,6 +99,40 @@
                         });
                     }
                 });
+            },
+            /**
+             * 获取注册时的参数
+             * @param{String} marketTypeId 会员卡类型id
+             * @param{String} saleCode 营销编码
+             */
+            getRegisterParams (marketTypeId,saleCode) {
+                ajax.post('market_registerPage',{
+                    saleCode : saleCode,
+                    marketTypeId : marketTypeId,
+                }).then(res => {
+                    if (res.success) {
+                        this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
+                        this.$store.commit('marketUpdateLevelId',marketTypeId);
+                        this.$store.commit('marketUpdateTypeId',res.data ? res.data.marketTypeId : '');
+                        this.$store.commit('marketUpdateTypeName',res.data ? res.data.marketTypeName : '');
+                        this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
+                    } else {
+                        this.$store.commit('marketUpdateOrgId','');
+                        this.$store.commit('marketUpdateLevelId',marketTypeId);
+                        this.$store.commit('marketUpdateTypeId','');
+                        this.$store.commit('marketUpdateTypeName','');
+                        this.$store.commit('marketUpdateCompanyName','');
+                    }
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由信息
+             */
+            getParms (params) {
+                if (params && Object.keys(params).length > 0) {
+                    this.getRegisterParams(params.Ucid,params.Ycode);
+                }
             }
         },
         computed : {
@@ -101,7 +140,13 @@
                 marketOrgId : 'marketOrgId',
                 marketLevelId : 'marketLevelId',
                 marketTypeId : 'marketTypeId',
+                marketTypeName : 'marketTypeName',
             })
+        },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.getParms(to.query);
+            });
         }
     };
 </script>
