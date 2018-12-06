@@ -35,10 +35,16 @@
                         <div v-html="statusFilter(scope.row.status)"></div>
                         <div slot="content">
                             <Timeline>
-                                <TimelineItem color="green">发布1.0版本</TimelineItem>
-                                <TimelineItem color="green">发布2.0版本</TimelineItem>
-                                <TimelineItem color="red">严重故障</TimelineItem>
-                                <TimelineItem color="blue">发布3.0版本</TimelineItem>
+                                <TimelineItem v-for="(item, index) in scope.row.auditRecordVos"
+                                              :key="index"
+                                              :color="item.rechargeStatus === 'pending_audit' ? 'green' : item.rechargeStatus === 'rejected' ? 'red' : 'blue'">
+                                    <span v-if="item.rechargeStatus === 'pending_audit'">{{$t('finance.pending_audit')}}</span>
+                                    <span v-else-if="item.rechargeStatus === 'rejected'">{{$t('finance.rejected')}}</span>
+                                    <span v-else-if="item.rechargeStatus === 'valid'">{{$t('finance.valid')}}</span>
+                                    <span v-else>-</span>
+                                    <span>{{item.orgName | contentFilter}}/{{item.updateUser | contentFilter}}</span>
+                                    <p>{{item.updatedTime | contentFilter}}</p>
+                                </TimelineItem>
                             </Timeline>
                         </div>
                     </Tooltip>
@@ -212,5 +218,11 @@
             width: 350px;
             float: right;
         }
+    }
+    /deep/ .ivu-timeline {
+        margin-top: 12px;
+    }
+    /deep/ .ivu-timeline-item-head {
+        background-color: #404040;
     }
 </style>
