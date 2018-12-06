@@ -190,6 +190,19 @@ export default {
                     lightMenu : 'system',
                     subMenuType : 'setting'
                 },
+            },
+            //帮助中心
+            helperCenter : {
+                path : '/setting/helperCenter',
+                name : 'helperCenter', //todo 权限暂时使用设置-账户的权限
+                component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/helperCenter/index.vue'),
+                meta : {
+                    _name : 'system',
+                    menuName : 'helperCenter',
+                    lightMenu : 'system',
+                    showInMenu : true,
+                    subMenuType : 'helperCenter'
+                },
             }
         }
     },

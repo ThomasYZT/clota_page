@@ -376,6 +376,6 @@ export default {
     'weixin' : '微信',
     'failureTip' : '{tip}失败',
     'successTip' : '{tip}成功',
-
+    'helperCenter' : '帮助中心',
 
 };
