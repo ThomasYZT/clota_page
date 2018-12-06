@@ -4,10 +4,10 @@
 import api from './apiList';
 import axios from 'axios';
 import config from '@/config/index.js';
+import common from '@/assets/js/common';
 
-import { ajaxMethods } from '../../api/index.js';
-import store from "../../store";
-import router from "../../router";
+import { ajaxMethods } from '@/api/index.js'
+
 
 const instance = axios.create({
     baseURL : config.HOST,
@@ -24,12 +24,7 @@ const instance = axios.create({
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
     if (response.data.message === '请先登录') {
-        localStorage.removeItem('token');
-        router.push({
-            name : 'marketingLogin'
-        },() => {
-            store.commit('marketUpdateUserInfo');
-        });
+        common.loginOut();
     }
     return response;
 }, function (error) {
@@ -43,7 +38,7 @@ export default {
      * 获取token参数
      */
     getToken () {
-        return localStorage.getItem('marketToken') ? localStorage.getItem('marketToken') : '';
+        return localStorage.getItem('token') ? localStorage.getItem('token') : '';
     },
     api : api,
     instance : instance,

@@ -252,5 +252,13 @@ export default {
 
     'errorMsg.MK001' : '账号或密码错误',
     'errorMsg.MK002' : '用户不存在',
+    'errorMsg.MK005' : '暂无可提现金额',
+    'errorMsg.MK003' : '身份证号错误',
+    'errorMsg.A003' : '验证码错误',
+    'errorMsg.MK015' : '原密码错误',
+    'errorMsg.MK014' : '手机号已存在',
     'expire_score' : '积分失效',
+    'cardRegister' : 'register',
+    'cardFinishInfo' : 'Complete information',
+    'getActivate' : 'Immediately active'
 };

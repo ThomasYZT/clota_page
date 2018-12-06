@@ -54,7 +54,7 @@
 <script>
     import productList from './components/product-list';
     import scrollWrap from '@/components/scroll/scrollWrap';
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
     import { mapGetters } from 'vuex';
     export default {
         data () {

@@ -185,7 +185,7 @@ export const ajaxMethods = {
         store.commit('changePromisings','add');
         return this.instance.get(baseUrl + this.api[urlKey], myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
-                console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`);
+                console.warn(`接口名: ${this.api[urlKey]}, 错误信息: ${res.data.message}`);
             }
             return res.data;
         }).catch((err) => {
@@ -212,8 +212,7 @@ export const ajaxMethods = {
         // 如果是登录，则不需要传递token
         if (urlKey !== 'login' || urlKey !== 'getCode') {
             myConfig.headers = {
-                // token : this.getToken()
-                token : '49dHB8a+Udm8vOOZPo826uY+tyWSu1RN/IIq4lrgIdvFk1gacT3xw2mNsn+Swf3MgkwqwmsaILPdp16CsJBc4NlhxRyz/oG1Tc+dDS+5hyE='
+                token : this.getToken()
             };
         }
 
@@ -226,12 +225,12 @@ export const ajaxMethods = {
         store.commit('changePromisings','add');
         return this.instance.post(baseUrl + this.api[urlKey], needStringify ? querystring.stringify(paramObj) : paramObj, myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
-                console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`);
+                console.warn(`接口名: ${this.api[urlKey]}, 错误信息: ${res.data.message}`);
             }
             return res.data;
         }).catch((err) => {
             showNetWorkError(err);
-            console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
+            console.error(`接口名: ${this.api[urlKey]}, 错误信息: `, err);
             return err;
         }).finally(() => {
             store.commit('changePromisings','del');
@@ -289,12 +288,12 @@ export const ajaxMethods = {
         store.commit('changePromisings','add');
         return this.instance.post(baseUrl + this.api[urlKey], paramObj, myConfig).then(res => {
             if (!res.data && typeof res.data === 'object' && !res.data.success) {
-                console.warn(`接口名: ${api[urlKey]}, 错误信息: ${res.data.message}`);
+                console.warn(`接口名: ${this.api[urlKey]}, 错误信息: ${res.data.message}`);
             }
             return res.data;
         }).catch((err) => {
             showNetWorkError(err);
-            console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
+            console.error(`接口名: ${this.api[urlKey]}, 错误信息: `, err);
             return err;
         }).finally(() => {
             store.commit('changePromisings','del');

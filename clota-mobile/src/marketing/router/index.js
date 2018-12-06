@@ -2,8 +2,6 @@ import store from "../../store/index";
 
 //会员页面路由进入前的处理
 export const marketRouterDeal = (to, from, next) => {
-    debugger
-    console.log(to)
     //meta信息上填写了notNeedCheck表示改路由不需要校验，直接进入
     if (to.meta && to.meta.notNeedCheck) {
         next();

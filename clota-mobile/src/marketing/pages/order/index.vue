@@ -25,7 +25,7 @@
                     v-for="(item,i) in tapInfo"
                     :key="i"
                     @on-item-click="selectCard(i)">
-                    {{$t(item)}}{{$t('bracketSetting',{ content : 5 })}}
+                    {{$t(item.name)}}{{$t('bracketSetting',{ content : item.count })}}
                 </tab-item>
             </tab>
         </div>
@@ -71,7 +71,7 @@
 
 <script>
     import tabItemList from './components/tab-item-list';
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
     import productFilter from './components/productFilter';
 
     export default {
@@ -81,9 +81,18 @@
                 tabSelected : 0,
                 //菜单列表
                 tapInfo : [
-                    '全部',
-                    '未提现',
-                    '已提现'
+                    {
+                        name : '全部',
+                        count : '0'
+                    },
+                    {
+                        name : '未提现',
+                        count : '0'
+                    },
+                    {
+                        name : '已提现',
+                        count : '0'
+                    }
                 ],
                 //开始日期
                 startDate : new Date().addMonths(-1).format('yyyy-MM-dd'),
@@ -193,6 +202,8 @@
                         this.depositInfo = [];
                         this.noDepositInfo = [];
                     }
+                }).finally(() => {
+                    this.queryOrderCount();
                 });
             },
             /**
@@ -233,6 +244,22 @@
                         this.productList = res.data ? res.data : [];
                     } else {
                         this.productList = [];
+                    }
+                });
+            },
+            /**
+             * 查询订单统计信息
+             */
+            queryOrderCount () {
+                ajax.post('market_getOrderCount').then(res => {
+                    if (res.success) {
+                        this.tapInfo[0]['count'] = res.data ? res.data.totalCount : '';
+                        this.tapInfo[1]['count'] = res.data ? res.data.noWithdraw : '';
+                        this.tapInfo[2]['count'] = res.data ? res.data.withDraw : '';
+                    } else {
+                        this.tapInfo[0]['count'] = 0;
+                        this.tapInfo[1]['count'] = 0;
+                        this.tapInfo[2]['count'] = 0;
                     }
                 });
             }

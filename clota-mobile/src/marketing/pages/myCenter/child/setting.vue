@@ -1,3 +1,4 @@
+
 <!--设置-->
 
 <template>
@@ -11,13 +12,14 @@
                 disabled
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
-                :value="marketUserInfo.name"
+                :value="formData.name"
                 placeholder-align="right">
             </x-input>
             <!-- 身份证号 -->
             <x-input
                 :title="$t('身份证号')"
                 text-align="right"
+                disabled
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
                 v-model.trim="formData.idNum"
@@ -58,16 +60,18 @@
             return {
                 //表单配置
                 formData : {
-                    name : 'name',
+                    name : '',
                     //手机号
-                    phoneNum : '121212',
+                    phoneNum : '',
                     //登录密码
-                    password : '',
+                    password : '●●●●●●',
                     //收款账户
                     account : '',
                     //证件号
                     idNum : ''
-                }
+                },
+                //账户信息
+                accountInfo : {}
             };
         },
         methods : {
@@ -76,7 +80,10 @@
              */
             toAccount () {
                 this.$router.push({
-                    name : 'marketingSetAccount'
+                    name : 'marketingSetAccount',
+                    params : {
+                        accountInfo : this.accountInfo
+                    }
                 });
             },
             /**
@@ -84,7 +91,10 @@
              */
             changePhone () {
                 this.$router.push({
-                    name : 'marketingChangePhone'
+                    name : 'marketingChangePhone',
+                    params : {
+                        phone : this.formData.phoneNum
+                    }
                 });
             },
             /**
@@ -94,12 +104,46 @@
                 this.$router.push({
                     name : 'marketingChangePassword'
                 });
+            },
+            /**
+             * 获取用户信息
+             */
+            getUserInfo () {
+                this.$store.dispatch('marketGetUserInfo').then((data) => {
+                    if (data) {
+                        this.formData.name = data.name;
+                        this.formData.phoneNum = data.mobile;
+                        this.formData.account = data.accountInfo;
+                        this.formData.name = data.name;
+                        this.formData.name = data.name;
+                        this.formData.idNum = data.idno;
+                        this.accountInfo = {
+                            account : data.accountInfo,
+                            accountType : data.accountType,
+                            name : data.name,
+                            mobile : data.mobile
+                        };
+                    } else {
+                        this.formData.name = '';
+                        this.formData.phoneNum = '';
+                        this.formData.account = '';
+                        this.formData.name = '';
+                        this.formData.name = '';
+                        this.formData.idNum = '';
+                        this.accountInfo = {};
+                    }
+                });
             }
         },
         computed : {
             ...mapGetters({
                 marketUserInfo : 'marketUserInfo',
             })
+        },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.getUserInfo();
+            });
         }
     };
 </script>

@@ -1,6 +1,8 @@
 
 
-import ajax from '@/api/index';
+// import ajax from '../api/index';
+// const ajax = require('../api/index');
+import Vue from 'vue';
 //全民营销state信息
 export const marketingState = {
     marketing : {
@@ -68,6 +70,7 @@ export const marketActions = {
      * @return{Promise} promise对象
      */
     marketGetUserInfo ({ commit, dispatch }) {
+        const ajax = require('../api/index').default;
         return ajax.post('market_getUserInfo').then(res => {
             if (res.success) {
                 commit('marketUpdateUserInfo',res.data ? res.data : {});

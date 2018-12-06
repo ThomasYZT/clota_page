@@ -27,6 +27,7 @@ export const getDate = function (dateInfo) {
     let tmpDate = [];
     //格式化后的日期信息
     let returnDate = [];
+    let nowDateValue = new Date().valueOf();
     //获取上个月的月数据
     for (let i = 0,j = beforeMonthLeft; i < j; i++) {
         let day = parseInt(prevMonthDays - beforeMonthLeft + i + 1);
@@ -34,8 +35,8 @@ export const getDate = function (dateInfo) {
             label : false,
             val : day,
             nl : calendar.solar2lunar(year,prevMonth,prevMonthDays - beforeMonthLeft + i + 1).IDayCn,
-            // completeVal : year + '-' + parseInt(month - 1) + '-' + new Date(year , (month - 1) , (prevMonthDays - beforeMonthLeft + i + 1)).format('dd')
-            completeVal : year + '-' + parseInt(month - 1) + '-' + ((day >= 10) ? day : ('0' + day))
+            completeVal : year + '-' + parseInt(month - 1) + '-' + ((day >= 10) ? day : ('0' + day)),
+            disabled : new Date(year,month,day) < nowDateValue
         });
     }
     //获取当月的月数据
@@ -45,8 +46,8 @@ export const getDate = function (dateInfo) {
             label : true,
             val : day,
             nl : calendar.solar2lunar(year,month,i + 1).IDayCn,
-            // completeVal : year + '-' + month + '-' + new Date(year , month , (i + 1)).format('dd')
-            completeVal : year + '-' + month + '-' + ((day >= 10) ? day : ('0' + day))
+            completeVal : year + '-' + month + '-' + ((day >= 10) ? day : ('0' + day)),
+            disabled : new Date(year,month + 1,day) < nowDateValue
         });
     }
     //获取下个月的月数据
@@ -56,8 +57,8 @@ export const getDate = function (dateInfo) {
             label : false,
             val : day,
             nl : calendar.solar2lunar(year,month,i + 1).IDayCn,
-            // completeVal : year + '-' + parseInt(month + 1) + '-' + new Date(year , (month + 1) , (i + 1)).format('dd')
-            completeVal : year + '-' + parseInt(month + 1) + '-' + ((day >= 10) ? day : ('0' + day))
+            completeVal : year + '-' + parseInt(month + 2) + '-' + ((day >= 10) ? day : ('0' + day)),
+            disabled : new Date(year,month + 1,day) < nowDateValue
         });
     }
     //将数据整合成一个6 * 7的二维数组

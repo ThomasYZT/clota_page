@@ -80,7 +80,7 @@
 
 <script>
     import { mapGetters } from 'vuex';
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
     import { validator } from 'klwk-ui';
     import MD5 from 'crypto-js/md5';
 

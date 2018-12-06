@@ -43,7 +43,8 @@
                                         <li :class="[
                                         $style.dateCol,
                                         !day.label ? $style.dateDisable : '',
-                                        day.completeVal === chooseDate ? $style.dateActive : ''
+                                        day.completeVal === chooseDate ? $style.dateActive : '',
+                                        day.disabled ? $style.disabled : '',
                                         ]"
                                             v-for="(day,dayIndex) in date"
                                             :key="dayIndex" @click="choseDay(day)">
@@ -136,13 +137,14 @@
             //日期信息
             dateInfo () {
                 let result = [];
+                let nowDate = new Date().valueOf();
                 for (let i = 0,j = this.dateIndexSort.length; i < j; i++) {
                     let dateObj = this.activeDate.valueOf();
                     let date = new Date(dateObj).addMonths(i - 2 - this.dateSuffer);
                     result[this.dateIndexSort[i]] = {
                         date : date.valueOf(),
                         dayInfo : getDate(date.format('yyyy-MM-dd')),
-                        test : date.format('yyyy-MM-dd')
+                        disabled : date.valueOf() < nowDate
                     };
                 }
                 return result;
@@ -272,6 +274,10 @@
     .dateActive{
         background: #046FDB;
         color: #fff;
+    }
+
+    .disabled{
+        background: #C5C5C5;
     }
 
     .dateDisable{

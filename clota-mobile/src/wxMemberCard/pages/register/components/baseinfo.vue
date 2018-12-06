@@ -46,14 +46,11 @@
         </div>
         <x-button class="button"
                   @click.native="next">{{$t('下一步')}}</x-button>
-        <div class="to-login">
-            {{$t('已有账号')}}<span class="login-label" @click="toLogin">去登陆</span>
-        </div>
     </div>
 </template>
 
 <script>
-    import ajax from '@/marketing/api/index';
+    import ajax from '../../../api/index.js';
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
 	export default {
@@ -171,14 +168,6 @@
                             reject();
                         }
                     }
-                });
-            },
-            /**
-             * 跳转到登录页面
-             */
-            toLogin () {
-                this.$router.push({
-                    name : 'marketingLogin'
                 });
             },
             /**

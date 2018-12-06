@@ -63,7 +63,6 @@
     import ajax from '../../api/index';
     import { validator } from 'klwk-ui';
     import MD5 from 'crypto-js/md5';
-    console.log(ajax)
     export default {
         data () {
             return {

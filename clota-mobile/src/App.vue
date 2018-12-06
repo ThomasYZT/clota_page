@@ -184,7 +184,9 @@
                                 jsApiList : [
                                     'chooseImage',
                                     'getLocalImgData',
-                                    'uploadImage'
+                                    'uploadImage',
+                                    'addCard',
+                                    'getLocation'
                                 ]
                             });
                             this.$wechat.error(() => {
@@ -210,6 +212,7 @@
         },
         created () {
             this.getWxConfig();
+            this.$store.dispatch('getLocation');
         },
         watch : {
             '$route' : {

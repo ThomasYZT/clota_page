@@ -1,8 +1,5 @@
-    <!--会员注册
-    作者：杨泽涛
--->
 <template>
-    <div class="register">
+    <div class="wx-finish-info">
         <x-input :title="$t('name')"
                  class="c-input"
                  label-width="150px"
@@ -41,20 +38,7 @@
         <p class="msg" v-if="msg != ''">{{msg}}</p>
 
         <x-button class="button"
-                  @click.native="register()">{{$t('getCard')}}</x-button>
-
-        <x-dialog v-model="isShowCard"
-                  @on-show="addCard"
-                  :hide-on-blur="true">
-            <div class="get-crad-wrap">
-                <p>添加会员卡</p>
-                <p>是否将会员卡加入微信卡包</p>
-                <div class="bottom-btn">
-                    <div class="no">不</div>
-                    <div class="yes">放入卡包</div>
-                </div>
-            </div>
-        </x-dialog>
+                  @click.native="register()">{{$t('getActivate')}}</x-button>
     </div>
 </template>
 
@@ -78,8 +62,7 @@
                 isGetCode: false,
                 timer: null,
                 //倒计时间
-                countDown: null,
-                isShowCard: true
+                countDown: null
             }
         },
         methods: {
@@ -96,18 +79,18 @@
                             type : 'member_register',
                             companyCode : this.companyCode
                         }).then((res) => {
-                           if(!res.success) {
-                               this.$vux.toast.show({
-                                   text: this.$t('operateFail',{msg : this.$t('send')}),
-                                   type : 'cancel'
-                               });
-                           }else {
-                               this.timimg();
-                               this.isGetCode = true;
-                               this.$vux.toast.show({
-                                   text: this.$t('operateSuc',{msg : this.$t('send')})
-                               })
-                           }
+                            if(!res.success) {
+                                this.$vux.toast.show({
+                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    type : 'cancel'
+                                });
+                            }else {
+                                this.timimg();
+                                this.isGetCode = true;
+                                this.$vux.toast.show({
+                                    text: this.$t('operateSuc',{msg : this.$t('send')})
+                                })
+                            }
                         })
                     });
                 }
@@ -120,7 +103,7 @@
                 //console.log(value)
             },
             /**
-             * 注册会员
+             * 立即激活
              */
             register() {
                 this.msg = '';
@@ -229,25 +212,6 @@
                     //     name: 'login'
                     // });
                 }
-            },
-            /**
-             * 添加至卡包
-             */
-            addCard () {
-                this.$wechat.addCard({
-                    cardList: [
-                        {
-                            cardId: '343',
-                            cardExt: '{"code":"", "openid": "<{$smarty.session.openid}>", "nonce_str":"<?php echo F$signPackage["nonceStr"];?>","timestamp": "<?php echo $signPackage["timestamp"]; ?>", "signature":"'+'32423432423'+'"}'
-                        }
-                    ],
-                    success: function (res) {
-                        alert('已添加卡券：' + JSON.stringify(res.cardList));
-                    },
-                    cancel: function (res) {
-                        alert(JSON.stringify(res))
-                    }
-                });
             }
         },
         computed :{
@@ -262,7 +226,7 @@
     @import '~@/assets/scss/base';
     $img_base_url : '../../../assets/images/';
 
-    .register {
+    .wx-finish-info {
         height: 100%;
         width: 100%;
         color: #4A4A4A;
@@ -305,38 +269,6 @@
 
             &.time-counting{
                 color: #C5C5C5;
-            }
-        }
-    }
-
-    .get-crad-wrap {
-        width:100%;
-        display: inline-block;
-        background: #ffffff;
-        border-radius: 4px;
-        padding-top: 20px;
-        p {
-            font-size: 14px;
-            color: #333333;
-            text-align: center;
-            &:first-child {
-                padding-bottom: 6px;
-            }
-        }
-        .bottom-btn {
-            display: flex;
-            margin-top:30px;
-            > div {
-                flex:1;
-                font-size: 14px;
-                color: #ffffff;
-                padding: 10px 0;
-                &.no {
-                    background: gray;
-                }
-                &.yes {
-                    background: yellow;
-                }
             }
         }
     }
