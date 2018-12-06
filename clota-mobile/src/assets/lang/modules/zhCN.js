@@ -255,4 +255,7 @@ export default {
     'errorMsg.MK002' : '用户不存在',
     'errorMsg.MK005' : '暂无可提现金额',
     'expire_score' : '积分失效',
+    'cardRegister': '注册',
+    'cardFinishInfo': '完善信息',
+    'getActivate': '立即激活'
 };

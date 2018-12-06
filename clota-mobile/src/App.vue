@@ -184,7 +184,8 @@
                                 jsApiList : [
                                     'chooseImage',
                                     'getLocalImgData',
-                                    'uploadImage'
+                                    'uploadImage',
+                                    'addCard'
                                 ]
                             });
                             this.$wechat.error(() => {
