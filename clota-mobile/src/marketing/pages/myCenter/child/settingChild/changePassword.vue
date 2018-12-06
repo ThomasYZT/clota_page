@@ -41,6 +41,8 @@
 </template>
 
 <script>
+    import MD5 from 'crypto-js/md5';
+    import ajax from '@/marketing/api/index';
     export default {
         data () {
             return {
@@ -120,12 +122,35 @@
                 }).then(() => {
                     return this.validatePasswordAgain();
                 }).then(() => {
-                    this.$router.push({
-                        name : 'marketingChangePasswordSuc',
-                        params : {
-                            from : true
-                        }
-                    });
+                    this.modifyPassword();
+                });
+            },
+            /**
+             * 修改手机号码
+             */
+            modifyPassword () {
+                ajax.post('market_modifyPassword',{
+                    newPassword : MD5(this.formData.password).toString(),
+                    oldPassword : MD5(this.formData.oldPassword).toString(),
+                }).then(res => {
+                    if (res.success) {
+                        this.$router.push({
+                            name : 'marketingChangePasswordSuc',
+                            params : {
+                                from : true
+                            }
+                        });
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
+                        });
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('operateFail',{ msg : this.$t('修改密码') }),
+                            type : 'cancel'
+                        });
+                    }
                 });
             }
         }
@@ -154,6 +179,10 @@
         /deep/ .weui-cell__ft,
         /deep/ .weui-label{
             color: #172434;
+        }
+
+        /deep/ .weui-cell{
+            height: 50px;
         }
     }
 </style>

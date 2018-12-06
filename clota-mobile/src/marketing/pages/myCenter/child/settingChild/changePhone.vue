@@ -47,10 +47,13 @@
 </template>
 
 <script>
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         data () {
             return {
                 //身份证号
@@ -63,6 +66,10 @@
                 },
                 //是否正在计时
                 isTiming : false,
+                //计时时间
+                time : 60,
+                //原手机号
+                originPhone : ''
             };
         },
         methods : {
@@ -72,9 +79,10 @@
             getValidCode () {
                 if (!this.isTiming) {
                     this.validatePhone().then(() => {
-                        ajax.post('getCode', {
+                        ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
-                            type : 'member_login',
+                            type : 'market_change_phone',
+                            companyCode : this.marketINgCompanyCode
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -103,7 +111,7 @@
                 }).then(() => {
                     return this.validateCode();
                 }).then(() => {
-
+                    this.changePhone();
                 });
             },
             /**
@@ -139,7 +147,11 @@
                             this.$vux.toast.text(this.$t('pleaseEnterRightMobile'));
                             reject();
                         } else {
-                            resolve();
+                            if (this.originPhone === this.formData.phoneNum) {
+                                this.$vux.toast.text(this.$t('twPhoneError'));
+                            } else {
+                                resolve();
+                            }
                         }
                     }
                 });
@@ -158,6 +170,61 @@
                     }
                 });
             },
+            /**
+             * 修改手机号
+             */
+            changePhone () {
+                ajax.post('market_modifyMobile',{
+                    idno : this.formData.idNum,
+                    newMobile : this.formData.phoneNum,
+                    code : this.formData.code,
+                    type : 'market_change_phone',
+                }).then(res => {
+                    if (res.success) {
+                        this.$vux.toast.show({
+                            text : this.$t('operateSuc',{ msg : this.$t('modify') })
+                        });
+                        this.$router.push({
+                            name : 'marketingSetting'
+                        });
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
+                        });
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('operateFail',{ msg : this.$t('modify') }),
+                            type : 'cancel'
+                        });
+                    }
+                });
+            },
+            /**
+             * 计时完成
+             */
+            timeFinish () {
+                this.isTiming = false;
+                this.time = 60;
+            },
+            /**
+             * 获取路由信息
+             * @param{Object} params 路由信息
+             */
+            getParams (params) {
+                if (params && params.phone) {
+                    this.originPhone = params.phone;
+                } else {
+                    this.$rotuer.push({
+                        name : 'marketingSetting'
+                    });
+                }
+            }
+        },
+        computed : {
+            ...mapGetters({
+                marketINgCompanyCode : 'marketINgCompanyCode',
+            })
         }
     };
 </script>

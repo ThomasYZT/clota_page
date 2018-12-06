@@ -18,7 +18,7 @@
 <script>
     import { validator } from 'klwk-ui';
     import MD5 from 'crypto-js/md5';
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
     import baseInfo from './components/baseinfo';
     import otherInfo from './components/otherInfo';
     import { mapGetters } from 'vuex';

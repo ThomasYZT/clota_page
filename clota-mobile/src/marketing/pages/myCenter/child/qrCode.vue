@@ -11,7 +11,7 @@
                 @click.native="showPreImage">
             </qrcode>
         </div>
-        <div class="scene-name">{{$t('广州长隆水上乐园')}}</div>
+        <div class="scene-name">{{companyName}}</div>
         <div class="buy-ticket-tips">{{$t('扫码购票入口')}}</div>
         <!--预览图片-->
         <previewer
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
 	export default {
 		data () {
 			return {
@@ -58,6 +59,11 @@
                     this.$refs.previewer.show(0);
                 });
             }
+        },
+        computed : {
+            ...mapGetters({
+                companyName : 'companyName'
+            })
         }
 	};
 </script>

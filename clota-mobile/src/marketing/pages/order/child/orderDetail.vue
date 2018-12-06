@@ -89,7 +89,7 @@
 
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
 
     export default {
         mixins : [lifeCycleMixins],

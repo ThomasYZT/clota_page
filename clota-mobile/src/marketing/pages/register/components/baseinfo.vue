@@ -53,7 +53,7 @@
 </template>
 
 <script>
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
 	export default {

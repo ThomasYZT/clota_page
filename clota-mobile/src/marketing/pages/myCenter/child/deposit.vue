@@ -4,34 +4,35 @@
     <div class="deposit">
         <div class="head">
             <div class="deposit-num">
-                {{111 | moneyFilter | contentFilter}}
+                {{accountDetail.canApplyWithdrawAmount | moneyFilter | contentFilter}}
             </div>
             <div class="tips">{{$t('可提现金额(元)')}}</div>
         </div>
         <div class="money-detail-box">
             <div class="top">
                 <div class="detail-box border-right">
-                    <div class="num-info">{{111 | moneyFilter | contentFilter}}</div>
+                    <div class="num-info">{{accountDetail.haveWithdrawAmount | moneyFilter | contentFilter}}</div>
                     <div class="des">{{$t('已提现(元)')}}</div>
                 </div>
                 <div class="detail-box">
-                    <div class="num-info">{{111 | moneyFilter | contentFilter}}</div>
+                    <div class="num-info">{{accountDetail.auditWithdrawAmount | moneyFilter | contentFilter}}</div>
                     <div class="des">{{$t('已冻结(元)')}}</div>
                 </div>
             </div>
             <div class="bottom">
                 <div class="detail-box border-right">
-                    <div class="num-info">{{111 | moneyFilter | contentFilter}}</div>
+                    <div class="num-info">{{accountDetail.totalEarnAmount | moneyFilter | contentFilter}}</div>
                     <div class="des">{{$t('累计赚取(元)')}}</div>
                 </div>
                 <div class="detail-box">
-                    <div class="num-info">{{111 | moneyFilter | contentFilter}}</div>
+                    <div class="num-info">{{accountDetail.totalMarketAmount | moneyFilter | contentFilter}}</div>
                     <div class="des">{{$t('累计销售(元)')}}</div>
                 </div>
             </div>
         </div>
 
         <x-button class="button"
+                  :disabled="!canDeposit"
                   @click.native="deposit">{{$t('全部提现')}}</x-button>
         <!--未设置账户提示框-->
         <confirm v-model="confirmShow"
@@ -39,7 +40,7 @@
                  :title="$t('提示')"
                  :confirm-text="$t('立即设置')"
                  @on-cancel="onCancel"
-                 @on-confirm="onConfirm">
+                 @on-confirm="toSetAccount">
             <p style="text-align:center;">{{ $t('您还未设置佣金收款账户。') }}</p>
         </confirm>
         <!--提现金额以及收款方式确认模态框-->
@@ -49,14 +50,16 @@
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
             <template>
-                <div class="receipt-money">您申请提现<span class="num">{{1222 | moneyFilter | contentFilter}}</span>元</div>
+                <div class="receipt-money">
+                    您申请提现<span class="num">{{accountDetail.canApplyWithdrawAmount | moneyFilter | contentFilter}}</span>元
+                </div>
                 <div class="receipt-type">
                     <span class="key">{{$t('colonSetting',{ key : $t('收款方式') })}}</span>
-                    <span class="value">{{$t('微信支付')}}</span>
+                    <span class="value">{{accountDetail.accountType}}</span>
                 </div>
                 <div class="receipt-type">
                     <span class="key">{{$t('colonSetting',{ key : $t('收款账户名') })}}</span>
-                    <span class="value">{{$t('1212')}}</span>
+                    <span class="value">{{$t(accountDetail.accountInfo)}}</span>
                 </div>
             </template>
         </confirm>
@@ -64,13 +67,19 @@
 </template>
 
 <script>
+    import ajax from '@/marketing/api/index';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { validator } from 'klwk-ui';
     export default {
+        mixins : [lifeCycleMixins],
         data () {
             return {
                 //提现提醒模态框是否显示
                 confirmShow : false,
                 //提现金额以及方式确认模态框是否显示
-                depositConfirmModalShow : false
+                depositConfirmModalShow : false,
+                //我的账户信息
+                accountDetail : {}
             };
         },
         methods : {
@@ -78,20 +87,101 @@
              * 提现金额
              */
             deposit () {
-                this.depositConfirmModalShow = true;
-                // this.confirmShow = true;
+                if (!this.canDeposit) return;
+                if (validator.isEmpty(this.accountDetail.accountType) || validator.isEmpty(this.accountDetail.accountInfo) ) {
+                    this.confirmShow = true;
+                } else {
+                    this.depositConfirmModalShow = true;
+                }
             },
             /**
              * 取消提现
              */
             onCancel () {
                 this.confirmShow = false;
+                this.depositConfirmModalShow = false;
             },
             /**
              * 立即设置收款账户
              */
             onConfirm () {
-
+                this.applyDeposit();
+            },
+            /**
+             * 获取路由信息
+             * @param{Object} params 路由信息
+             */
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    this.accountDetail = params;
+                    if (validator.isEmpty(this.accountDetail.accountType) || validator.isEmpty(this.accountDetail.accountInfo) ) {
+                        this.confirmShow = true;
+                    }
+                } else {
+                    this.$router.push({
+                        name : 'marketingOwnerCenter'
+                    });
+                }
+            },
+            /**
+             * 申请提现
+             */
+            applyDeposit () {
+                if (!this.canDeposit) return;
+                ajax.post('market_orderSalaryWithdrawApply',{
+                    amount : this.accountDetail.canApplyWithdrawAmount
+                }).then(res => {
+                    if (res.success) {
+                        this.$vux.toast.show({
+                            text : this.$t('operateSuc',{ msg : this.$t('申请提现') }),
+                        });
+                        //申请成功，重新查询提现信息
+                        this.queryUserInfo();
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('operateFail',{ msg : this.$t('申请提现') }),
+                            type : 'cancel'
+                        });
+                    }
+                });
+            },
+            /**
+             * 查询用户信息
+             */
+            queryUserInfo () {
+                ajax.post('market_getMarketUserMyInfo').then(res => {
+                    if (res.success) {
+                        this.accountDetail = res.data ? res.data : {};
+                    } else {
+                        this.userInfo = {};
+                    }
+                });
+            },
+            /**
+             * 前去设置账户
+             */
+            toSetAccount () {
+                this.$router.push({
+                    name : 'marketingSetAccount',
+                    params : {
+                        accountInfo : {
+                            account : this.accountDetail.accountInfo,
+                            accountType : this.accountDetail.accountType,
+                            name : this.accountDetail.name,
+                            mobile : this.accountDetail.mobile
+                        }
+                    }
+                });
+            }
+        },
+        computed : {
+            //提现按钮是否可以点击
+            canDeposit () {
+                return !!(this.accountDetail &&
+                    this.accountDetail.canApplyWithdrawAmount &&
+                    this.accountDetail.canApplyWithdrawAmount > 0 &&
+                    !validator.isEmpty(this.accountDetail.accountType) &&
+                    !validator.isEmpty(this.accountDetail.accountInfo) );
             }
         }
     };

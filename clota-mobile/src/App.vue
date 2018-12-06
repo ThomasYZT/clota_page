@@ -185,7 +185,8 @@
                                     'chooseImage',
                                     'getLocalImgData',
                                     'uploadImage',
-                                    'addCard'
+                                    'addCard',
+                                    'getLocation'
                                 ]
                             });
                             this.$wechat.error(() => {
@@ -211,6 +212,7 @@
         },
         created () {
             this.getWxConfig();
+            this.$store.dispatch('getLocation');
         },
         watch : {
             '$route' : {

@@ -28,7 +28,7 @@
 <script>
     import orderItem from './order-item';
     import scrollWrap from '@/components/scroll/scrollWrap';
-    import ajax from '@/api/index.js';
+    import ajax from '@/marketing/api/index';
     export default {
         props : {
             //是否显示单选框

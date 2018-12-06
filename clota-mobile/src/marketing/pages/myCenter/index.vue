@@ -6,8 +6,8 @@
         <div class="base-info">
             <img class="head-img" src="../../../assets/images/icon-avator.svg" alt="">
             <div class="info-name">
-                <div class="name">{{marketUserInfo.name | contentFilter}}</div>
-                <div class="level">{{userInfo.levelName | contentFilter}}</div>
+                <div class="name">{{userInfo.name | contentFilter}}</div>
+                <div class="level" v-show="userInfo.levelName">{{userInfo.levelName | contentFilter}}</div>
             </div>
             <div class="er-code">
                 <span class="iconfont icon-code" @click="toCreateOrder"></span>
@@ -50,23 +50,24 @@
 
 <script>
     import { mapGetters } from 'vuex';
-    import ajax from '@/api/index.js';
-	export default {
-		data () {
-			return {
-			    //是否确认下单
+    import ajax from '@/marketing/api/index';
+    export default {
+        data () {
+            return {
+                //是否确认下单
                 confirmShow : false,
                 //用户信息
                 userInfo : {}
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
              * 跳转到提现金额详情页面
              */
             toDepositDetail () {
                 this.$router.push({
-                    name : 'marketingDeposit'
+                    name : 'marketingDeposit',
+                    params : this.userInfo
                 });
             },
             /**
@@ -126,15 +127,15 @@
                 marketUserInfo : 'marketUserInfo',
             })
         },
-        beforeRouteEnter(to,from,next) {
-		    next(vm => {
-		        vm.queryUserInfo();
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.queryUserInfo();
             });
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .my-center{
         @include block_outline();
         /*background: #f2f3f4;*/

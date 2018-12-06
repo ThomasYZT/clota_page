@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import i18n from '../assets/lang/lang.config';
-import ajax from '../api/index';
-import defaultsDeep from 'lodash/defaultsDeep';
+// import ajax from '../api/index';
+// import defaultsDeep from 'lodash/defaultsDeep';
 import { memberState,memberGetters,memberMutations,memberActions } from '../member/store/index';
 import { marketingState,marketingGetters,marketMutations,marketActions } from '../marketing/store/index';
 
@@ -116,7 +116,21 @@ export default new Vuex.Store({
     },
     actions : {
         ...memberActions,
-        ...marketActions
+        ...marketActions,
+        /**
+         * 获取位置信息
+         * @param{Object} store
+         */
+        getLocation (store) {
+            if (store.getters.isWeixin) {
+                console.log('abc')
+                Vue.prototype.$weixin.getLocation({
+                    success (res) {
+                        console.log(res);
+                    }
+                });
+            }
+        }
     }
 });
 

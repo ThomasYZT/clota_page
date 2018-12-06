@@ -23,6 +23,16 @@ const apiList = {
     'market_orderSalaryWithdrawApply' : '/market/marketUser/orderSalaryWithdrawApply',
     //获取我的信息
     'market_getMarketUserMyInfo' : '/market/marketUser/getMarketUserMyInfo',
+    //修改手机号
+    'market_modifyMobile' : '/market/marketUser/modifyMobile',
+    //获取订单统计信息
+    'market_getOrderCount' : '/market/marketUser/getOrderCount',
+    //获取订单统计信息
+    'market_modifyPassword' : '/market/marketUser/modifyPassword',
+    //修改收款账户信息
+    'market_updateBankAccount' : '/market/marketUser/updateBankAccount',
+    //获取游客查看的订单
+    'market_queryMarketProductsForVisitor' : '/market/marketUser/queryMarketProductsForVisitor',
 };
 
 export default apiList;

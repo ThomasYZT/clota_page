@@ -5,13 +5,15 @@
         <date-head
             :active-date="activeDate"
             @show-date-modal="chooseDateShow = true"
-            @change-active-date="activeDate = $event">
+            @change-active-date="changeAciveDate">
         </date-head>
         <div class="address-tips">
             地址：广州市番禺区迎宾路长隆旅游度假区内
         </div>
         <div class="product-list">
-            <scroll-wrap :item-data="productList">
+            <scroll-wrap :item-data="productList"
+                         @pull-down="onPullingDown"
+                         @pull-up="onPullingUp">
                 <template v-for="(item,index) in productList">
                     <product-info :product-info="item"
                                   :key="index"
@@ -49,7 +51,7 @@
         <!--日期选择模态框-->
         <full-date-modal v-model="chooseDateShow"
                          :active-date="activeDate"
-                         @choose-day="activeDate = $event">
+                         @choose-day="changeAciveDate">
         </full-date-modal>
     </div>
 </template>
@@ -59,21 +61,25 @@
     import scrollWrap from '@/components/scroll/scrollWrap.vue';
     import productInfo from './components/product-info';
     import fullDateModal from './components/fullDateModal';
+    import ajax from '@/marketing/api/index';
+    import { mapGetters } from 'vuex';
 
 	export default {
 		data () {
 			return {
                 cardType : 2,
                 //产品列表
-                productList : [
-                    {}
-                ],
+                productList : [],
                 //显示购票须知
                 showProductNotice : false,
                 //选择日期模态框是否显示
                 chooseDateShow : false,
                 //当前激活日期
-                activeDate : new Date()
+                activeDate : new Date(),
+                //页码
+                pageNo : 1,
+                //每页条数
+                pageSize : 10
             };
 		},
         components : {
@@ -90,6 +96,59 @@
             showProductNoticeMethod (data) {
                 this.showProductNotice = true;
             },
+            /**
+             * 查询游客订单信息
+             */
+            queryProductList () {
+                return ajax.post('market_queryMarketProductsForVisitor',{
+                    playDate : this.activeDate.format('yyyy-MM-dd'),
+                    marketUserId : '1067659364082520064',
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize
+                }).then(res => {
+                    if (res.success) {
+                        this.productList = res.data ? res.data.data : [];
+                    } else {
+                        this.productList = [];
+                    }
+                });
+            },
+            /**
+             * 下拉刷新
+             * @param{Function} callback 刷新完成回调
+             */
+            onPullingDown (callback) {
+                this.queryProductList().finally(() => {
+                    callback();
+                });
+            },
+            /**
+             * 上拉刷新
+             * @param{Function} callback 刷新完成回调
+             */
+            onPullingUp (callback) {
+                this.queryProductList().finally(() => {
+                    callback();
+                });
+            },
+            /**
+             * 更新日期
+             * @param{Date} date 要更新的日期
+             */
+            changeAciveDate (date) {
+                this.activeDate = date;
+                this.queryProductList();
+            }
+        },
+        computed : {
+            ...mapGetters({
+                marketOrgId : 'marketOrgId',
+                marketLevelId : 'marketLevelId',
+                marketTypeId : 'marketTypeId',
+            })
+        },
+        created () {
+		    this.queryProductList();
         }
 	};
 </script>
