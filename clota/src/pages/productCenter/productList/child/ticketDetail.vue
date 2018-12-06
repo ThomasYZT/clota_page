@@ -267,7 +267,7 @@
                         @click="modify">{{$t('modify')}}</Button><!--修  改-->
             </template>
             <!--已启用-->
-            <template v-else-if="detail.auditStatus === 'enabled'">
+            <template v-else-if="detail.auditStatus === 'enabled' && manageOrgs.nodeType !== 'partner'">
                 <Button type="primary" @click="auditProduct('PRODUCT_DISABLE')">{{$t('disabled')}}</Button><!--禁用-->
             </template>
             <!--待审核-->
@@ -302,6 +302,7 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { parkColumn } from './parkConfig';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -338,6 +339,11 @@
                 //可接受证件类型
                 acceptIdType : []
             };
+        },
+        computed : {
+            ...mapGetters([
+                'manageOrgs'
+            ]),
         },
         methods : {
 
