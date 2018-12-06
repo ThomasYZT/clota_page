@@ -109,7 +109,6 @@
 
         .product-list{
             @include block_outline($height : unquote('calc(100% - 83px)'));
-            background: red;
         }
     }
 </style>

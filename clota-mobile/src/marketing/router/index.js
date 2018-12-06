@@ -2,6 +2,8 @@ import store from "../../store/index";
 
 //会员页面路由进入前的处理
 export const marketRouterDeal = (to, from, next) => {
+    debugger
+    console.log(to)
     //meta信息上填写了notNeedCheck表示改路由不需要校验，直接进入
     if (to.meta && to.meta.notNeedCheck) {
         next();
@@ -27,14 +29,20 @@ export const marketRouterDeal = (to, from, next) => {
 //会员路由页面
 /**
  * 路由的名字前缀必须是marketing开始
- * @type {*[]}
  */
+/*
+* meta参数说明
+* title 网页的title标题
+* hideTabbar  隐藏底部导航栏
+* notNeedCheck 路由进入前是否需要进行登录状态检查
+* menuBar 当前路由激活的底部导航栏
+* */
 export const marketingRoutes = [
     {
         path : '/marketing',
         // name : 'marketing',
         component : () => import(/* webpackChunkName: "marketing" */ '../pages/index.vue'),
-        beforeEnter : marketRouterDeal,
+        // beforeEnter : marketRouterDeal,
         redirect : {
             name : 'marketingRegister'
         },
@@ -231,7 +239,8 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/index.vue'),
                 meta : {
                     title : '广州长隆水上乐园',
-                    hideTabbar : true
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             },
             //游客下单
@@ -241,7 +250,8 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/createOrder.vue'),
                 meta : {
                     title : '填写订单',
-                    hideTabbar : true
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             }
         ]
