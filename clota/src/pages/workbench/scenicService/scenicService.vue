@@ -8,7 +8,7 @@
     <div class="workbench-main">
         <div class="overview-data clearfix">
             <!--今日入园人数-->
-            <overview-data :label-name="$t('今日入园人数')"
+            <overview-data :label-name="$t('todayVisitorNum')"
                       :label-rate="itemsData.checkVisitorNum.rate"
                       :label-num="itemsData.checkVisitorNum.value"
                       :icon="'icon-person-num'"
@@ -16,7 +16,7 @@
                       :label-curve="itemsData.checkVisitorNum.sign">
             </overview-data>
             <!--今日订单数量-->
-            <overview-data :label-name="$t('今日订单数量')"
+            <overview-data :label-name="$t('todayOrderNum')"
                       :label-rate="itemsData.orderNum.rate"
                       :label-num="itemsData.orderNum.value"
                       :icon="'icon-quantity'"
@@ -24,7 +24,7 @@
                       :label-curve="itemsData.orderNum.sign">
             </overview-data>
             <!--今日订单金额-->
-            <overview-data :label-name="$t('今日订单金额')"
+            <overview-data :label-name="$t('todayOrderAmount')"
                       :label-rate="itemsData.orderAmount.rate"
                       :label-num="itemsData.orderAmount.value"
                       :icon="'icon-money-amount'"
@@ -32,21 +32,28 @@
                       :label-curve="itemsData.orderAmount.sign">
             </overview-data>
             <!--未处理通知-->
-            <overview-data :label-name="$t('未处理通知')"
+            <overview-data :label-name="$t('unHandledNotice')"
                       :label-num="itemsData.workBackNum.value"
                       :icon="'icon-untreated'"
-                      :icon-color="'#479FF8'"><!--require('@/assets/images/icon-abnormal.svg')-->
+                      :icon-color="'#479FF8'">
             </overview-data>
         </div>
-        <div class="quota-info">
+        <div class="quota-info-top">
             <!--门票业绩指标-->
+            <ticket-performance></ticket-performance>
             <!--业态经营占比-->
+            <trade-proportion></trade-proportion>
         </div>
-        <div class="quota-info placement-bottom-left">
-            <!--今日营业状况-->
-            <business-situation></business-situation>
-            <!--待处理事项-->
-            <pending-matters></pending-matters>
+        <div class="quota-info-bottom">
+            <div class="placement-bottom-left">
+                <!--今日营业状况-->
+                <business-situation></business-situation>
+                <!--待处理事项-->
+                <pending-matters style="width: 42%; padding-left: 15px; float: left"></pending-matters>
+            </div>
+
+            <!--畅销产品-->
+            <popular-product></popular-product>
         </div>
     </div>
 </template>
@@ -54,6 +61,9 @@
     import overviewData from '../components/overviewData.vue';
     import pendingMatters from '../components/pendingMatters.vue';
     import businessSituation from './components/businessSituation.vue';
+    import popularProduct from './components/popularProduct.vue';
+    import tradeProportion from './components/tradeProportion.vue';
+    import ticketPerformance from './components/ticketPerformance.vue';
     import ajax from '@/api/index';
 
     export default {
@@ -61,6 +71,9 @@
             overviewData,
             businessSituation,
             pendingMatters,
+            popularProduct,
+            tradeProportion,
+            ticketPerformance,
         },
         props : {},
         data () {
@@ -111,9 +124,15 @@
             background: transparent;
         }
 
-        .quota-info {
+        .quota-info-top,
+        .quota-info-bottom {
             overflow: auto;
             margin-top: 15px;
+        }
+        .quota-info-top {
+            height: 325px;
+        }
+        .quota-info-bottom {
             height: 310px;
         }
 

@@ -11,13 +11,13 @@
             <span class="label-name">{{labelName}}</span>
             <span class="number">{{labelNum}}</span>
             <span class="circle-rate">
-            <span class="rate" v-if="labelRate !== ''">
+            <span class="rate">
                 <span class="iconfont"
                       :class="{'icon-up' : labelCurve === 'positive', 'icon-down' : !labelCurve || labelCurve === 'negative'}">
                 </span>
                 {{getRate(labelRate) | contentFilter }}%
             </span>
-            <span class="desc" v-if="labelRate !== ''">{{$t('thanYestoday')}}</span>
+            <span class="desc">{{$t('thanYestoday')}}</span>
           </span>
         </div>
     </div>

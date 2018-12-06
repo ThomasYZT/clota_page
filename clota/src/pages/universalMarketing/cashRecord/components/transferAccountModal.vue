@@ -148,35 +148,17 @@
             }
         },
         computed : {
-            // 付款方式列表
-            /*paymentTypeList () {
-                let typeList = [];
-                switch (this.withdrawInfo.accountType) {
-                    case 'wxPay' :
-                    case 'aliPay' :
-                        typeList = proxyBankList.filter(item => {
-                            return item.value == this.withdrawInfo.accountType;
-                        });
-                        break;
-                    default :
-                        typeList = bankList;
-                        break;
-                }
-
-                return typeList;
-            }*/
             //是否微信、支付宝付款方式
             isProxyBank () {
                 return this.withdrawInfo.accountType == 'wxPay' || this.withdrawInfo.accountType == 'aliPay';
             }
         },
         created () {
-            this.getRecentlyPayTypes(3);
         },
         mounted () {
         },
         watch : {
-            'withdrawInfo.accountType' : {
+            /*'withdrawInfo.accountType' : {
                 handler (val, oldVal) {
                     if (this.isProxyBank) {
                         this.paymentTypeList = proxyBankList.filter(item => {
@@ -187,14 +169,15 @@
                     }
                 },
                 immediate : true
-            }
+            }*/
         },
         methods : {
             /**
-             * 显示模态框
+             * 显示模态框   1. 获取最近n次使用的银行卡付款账号类型，并处理   2. 展示销售用户信息
              * @param data
              */
             show (data) {
+                this.getRecentlyPayTypes(3);
                 this.withdrawInfo = data;
                 this.transferParams.marketOrderId = data.id;
                 this.transferParams.salaryPayment = this.isProxyBank ? this.$t(data.accountType) : data.accountType;
@@ -250,6 +233,14 @@
                 }).then(res => {
                     if (res.success) {
                         this.recentPayTypes = res.data || [];
+                        // 付款方式列表的组装 --- 付款方式为微信支付、支付宝，则只能选各自的支付方式；若付款方式是银行，则微信支付、支付宝、银行都可选
+                        if (this.isProxyBank) {
+                            this.paymentTypeList = proxyBankList.filter(item => {
+                                return item.value == this.withdrawInfo.accountType;
+                            });
+                        } else {
+                            this.paymentTypeList = [...proxyBankList, ...this.recentPayTypes];
+                        }
                     }
                 });
             }

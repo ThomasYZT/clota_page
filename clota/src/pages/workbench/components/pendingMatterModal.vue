@@ -14,52 +14,50 @@
         @on-cancel="hide">
 
         <!--内容区域-->
-        <div style="padding: 15px 20px;">
-            <table-com
-                :ofsetHeight="200"
-                :height="300"
-                :show-pagination="false"
-                :column-data="columnData"
-                :table-data="tableData"
-                :border="false"
-                @query-data="queryList">
-                <el-table-column
-                    slot="column0"
-                    slot-scope="row"
-                    show-overflow-tooltip
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <span>{{scope.$index + 1}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    slot="column2"
-                    slot-scope="row"
-                    show-overflow-tooltip
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{$t('pendingMatters.' + scope.row.classify)}}
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    slot="column3"
-                    show-overflow-tooltip
-                    slot-scope="row"
-                    :label="row.title"
-                    fixed="right">
-                    <template slot-scope="scope">
-                        <ul class="operate-list">
-                            <li @click="jumpToPages(scope)">{{$t('check')}}</li><!--查看-->
-                            <li @click="handleMatters(scope)">{{$t('ignore')}}</li><!--忽略-->
-                        </ul>
-                    </template>
-                </el-table-column>
-            </table-com>
-        </div>
+        <table-com
+            :ofsetHeight="200"
+            :height="300"
+            :show-pagination="false"
+            :column-data="columnData"
+            :table-data="tableData"
+            :border="false"
+            @query-data="getAllPendingMatters">
+            <el-table-column
+                slot="column0"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.$index + 1}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column2"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t('pendingMatters.' + scope.row.classify)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column3"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                fixed="right">
+                <template slot-scope="scope">
+                    <ul class="operate-list">
+                        <li @click="jumpToPages(scope)">{{$t('check')}}</li><!--查看-->
+                        <li @click="handleMatters(scope)">{{$t('ignore')}}</li><!--忽略-->
+                    </ul>
+                </template>
+            </el-table-column>
+        </table-com>
         <!--自定义页脚-->
         <div slot="footer"></div>
     </Modal>
@@ -131,6 +129,16 @@
             jumpToPages (scopeData) {
                 this.handleMatters(scopeData);
                 //TODO 问产品经理，查看跳转页面的逻辑？
+                /*let routerObj = {};
+                switch (scopeData.row.type) {
+                    case '' :
+                        routerObj = {
+                            name : ''
+                        }
+                        break;
+                }
+
+                this.$router.push(routerObj);*/
             }
         }
     };

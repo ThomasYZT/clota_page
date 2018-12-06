@@ -1,14 +1,13 @@
 <!--
-内容：营业状况
+内容：合作伙伴里的游客来源、分业态经营状况、分产品经营状况。 按时间查询数据公用组件
 作者：djc
 日期：
 -->
 
 <template>
-    <div class="business-situation">
-        <!--营业状况-->
+    <div class="diff-date-data">
         <div class="header-box">
-            <span class="title">{{$t('businessState')}}</span>
+            <span class="title">{{$t(cardTitle)}}</span>
             <DatePicker type="daterange"
                         v-model.trim="date"
                         :editable="false"
@@ -16,9 +15,11 @@
                         :placeholder="$t('selectField',{msg: ''})"
                         placement="bottom-end"
                         class="date-picker"
+                        :transfer="true"
                         @on-change="queryList">
             </DatePicker>
         </div>
+
         <div class="table-list-area">
             <table-com
                 :ofsetHeight="200"
@@ -55,45 +56,48 @@
     </div>
 </template>
 <script>
-    import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { businessHead } from '../../workbenchConfig';
 
     export default {
-        components : {
-            tableCom
+        components : { tableCom },
+        props : {
+            //卡片标题
+            cardTitle : {
+                type : String
+            },
+            //表头配置
+            columnData : {
+                type : Array,
+                default () {
+                    return []
+                }
+            },
+            //表格数据
+            tableData : {
+                type : Array,
+                default () {
+                    return []
+                }
+            },
         },
-        props : {},
         data () {
             return {
                 date : [new Date().addMonths(-1), new Date()],
-                //表头配置
-                columnData : businessHead,
-                //表格数据
-                tableData : [],
             }
         },
         computed : {},
         created () {
+            this.queryList();
         },
         mounted () {
         },
         watch : {},
         methods : {
             /**
-             * 查询营业状况数据
+             * 查询数据
              */
             queryList () {
-                ajax.post('workbench-getSaleAmountGroup',{
-                    startDate : this.date[0].format('yyyy-MM-dd'),
-                    endDate : this.date[1].format('yyyy-MM-dd')
-                }).then(res => {
-                    if (res.success) {
-                        this.tableData = res.data || [];
-                    } else {
-                        this.tableData = [];
-                    }
-                });
+                this.$emit('on-change', this.date);
             },
         }
     };
@@ -102,11 +106,9 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .business-situation {
-        position: relative;
-        float: left;
-        /*@include block_outline($width: unquote('calc(100% - 330px)'));*/
-        width: 58%;
+    .diff-date-data {
+        /*float: right;*/
+        height: 100%;
         background: $color_fff;
         border: 1px solid $color_DFE2E5;
         border-radius: 4px;
@@ -121,15 +123,19 @@
                 font-size: $font_size_18px;
                 color: $color_353B5E;
             }
+
             .date-picker {
                 width: 220px;
                 float: right;
                 margin-top: 7px;
             }
+
+            .chart-area {
+                height: calc(100% - 45px);
+            }
         }
 
         .table-list-area {
-            /*padding: 0 30px;*/
             @include block_outline($height: calc(100% - 45px));
         }
     }

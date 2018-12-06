@@ -1,13 +1,13 @@
 <!--
-内容：游客来源
+内容：畅销产品 - 按日期获取数据
 作者：djc
 日期：
 -->
 
 <template>
-    <div class="tourist-source">
+    <div class="popular-product">
         <div class="header-box">
-            <span class="title">{{$t('touristSource')}}</span>
+            <span class="title">{{$t('popularProduct')}}</span>
             <DatePicker type="date"
                         v-model.trim="date"
                         :editable="false"
@@ -15,64 +15,71 @@
                         :placeholder="$t('selectField',{msg: ''})"
                         placement="bottom-end"
                         class="date-picker"
-                        @on-change="getTradeRatio">
+                        @on-change="getPopularProducts">
             </DatePicker>
         </div>
         <div class="chart-area">
-            <pie :pie-data="pieChartData"></pie>
+            <column :column-data="columnChartData"></column>
         </div>
     </div>
 </template>
 <script>
     import ajax from '@/api/index.js';
-    import pie from '../../components/pie.vue';
+    import column from '../../components/column.vue';
 
     export default {
         components : {
-            pie
+            column
         },
         props : {},
         data () {
             return {
                 //日期
                 date : new Date(),
-                //游客来源柱状图表数据
-                pieChartData : {
-                    data : [
-                        /*{
-                            value : 20,
-                            name : '冰雪'
-                        },{
-                            value : 40,
-                            name : '餐饮'
-                        },{
-                            value : 40,
-                            name : '门票'
-                        },*/
+                //畅销产品柱状图表数据
+                columnChartData : {
+                    /*"series":[
+                        {
+                            "data":[
+                                20,
+                                20,
+                                15
+                            ],
+                            "name":null,
+                            "smooth":null,
+                            "stack":null,
+                            "type":"bar"
+                        }
                     ],
-                    legend : []
-                },
+                    "xAxisData":[
+                        "国庆嗨翻天（团队票）",
+                        "国庆大酬宾（团队票）",
+                        "[元旦三人行（真团队）]"
+                    ]*/
+                }
             }
         },
         computed : {},
         created () {
-            this.getTradeRatio();
+            this.getPopularProducts();
         },
         mounted () {
         },
         watch : {},
         methods : {
             /**
-             * 查询游客来源柱状图表数据
+             * 查询畅销产品数据
              */
-            getTradeRatio () {
-                ajax.post('workbench-getOrderVisitorAreaRatio',{
+            getPopularProducts () {
+                ajax.post('workbench-getGoodSaleProduct',{
                     date : this.date.format('yyyy-MM-dd'),
                 }).then(res => {
-                    if (res.success) {
-                        this.pieChartData = res.data || [];
+                    if (res.success && res.data) {
+//                        this.columnChartData = res.data || { series : [], xAxisData : [] };
+                        this.$set(this.columnChartData, 'series', res.data.series || []);
+                        this.$set(this.columnChartData, 'xAxisData', res.data.xAxisData || []);
                     } else {
-                        this.pieChartData = [];
+                        this.columnChartData = { series : [], xAxisData : [] };
                     }
                 });
             },
@@ -83,7 +90,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .tourist-source {
+    .popular-product {
         width: 410px;
         float: right;
         height: 100%;
@@ -103,7 +110,7 @@
             }
 
             .date-picker {
-                width: 130px;
+                width: 180px;
                 float: right;
                 margin-top: 7px;
             }

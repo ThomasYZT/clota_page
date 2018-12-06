@@ -29,7 +29,7 @@ export default {
                 component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/scenicService/scenicService.vue'),
                 name : 'scenicService',
                 meta : {
-                    // menuName : 'posterInformation', //lang.config.js 里面的语言键值
+                    menuName : 'scenicWorkbench', //lang.config.js 里面的语言键值
                     _name : 'member-report', //todo 暂时用数据报表二级菜单权限
                     rightPath : topMenuName + '.' + 'scenicService',
                     isMenu : true,
@@ -41,9 +41,21 @@ export default {
                 component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/cooperPartner/cooperPartner.vue'),
                 name : 'cooperPartner',
                 meta : {
-                    // menuName : 'posterInformation', //lang.config.js 里面的语言键值
+                    menuName : 'partnerWorkbench', //lang.config.js 里面的语言键值
                     _name : 'member-report', //todo 暂时用数据报表二级菜单权限
                     rightPath : topMenuName + '.' + 'cooperPartner',
+                    isMenu : true,
+                },
+            },
+            //公司/单位工作台
+            company : {
+                path : '/workbench/scenicService',
+                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/scenicService/scenicService.vue'),
+                name : 'company',
+                meta : {
+                    menuName : 'companyWorkbench', //lang.config.js 里面的语言键值
+                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    rightPath : topMenuName + '.' + 'company',
                     isMenu : true,
                 },
             },

@@ -1,13 +1,13 @@
 <!--
-内容：游客来源
+内容：业态经营占比 - 按日期获取数据
 作者：djc
 日期：
 -->
 
 <template>
-    <div class="tourist-source">
+    <div class="trade-proportion">
         <div class="header-box">
-            <span class="title">{{$t('touristSource')}}</span>
+            <span class="title">{{$t('tradeProportion')}}</span>
             <DatePicker type="date"
                         v-model.trim="date"
                         :editable="false"
@@ -36,7 +36,7 @@
             return {
                 //日期
                 date : new Date(),
-                //游客来源柱状图表数据
+                //业态经营占比柱状图表数据
                 pieChartData : {
                     data : [
                         /*{
@@ -63,16 +63,16 @@
         watch : {},
         methods : {
             /**
-             * 查询游客来源柱状图表数据
+             * 查询业态经营占比柱状图表数据
              */
             getTradeRatio () {
-                ajax.post('workbench-getOrderVisitorAreaRatio',{
+                ajax.post('workbench-getSaleAmountRatio',{
                     date : this.date.format('yyyy-MM-dd'),
                 }).then(res => {
-                    if (res.success) {
-                        this.pieChartData = res.data || [];
+                    if (res.success && res.data) {
+                        this.pieChartData.data = res.data.data || [];
                     } else {
-                        this.pieChartData = [];
+                        this.pieChartData.data = [];
                     }
                 });
             },
@@ -83,7 +83,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .tourist-source {
+    .trade-proportion {
         width: 410px;
         float: right;
         height: 100%;
@@ -103,7 +103,7 @@
             }
 
             .date-picker {
-                width: 130px;
+                width: 180px;
                 float: right;
                 margin-top: 7px;
             }

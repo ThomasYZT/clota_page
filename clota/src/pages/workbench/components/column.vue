@@ -1,20 +1,20 @@
-<!--饼图-->
+<!--柱图-->
 
 <template>
     <vue-echarts
-        :options="pieOptions"
+        :options="columnOptions"
         auto-resize>
     </vue-echarts>
 </template>
 
 <script>
-    import getPieConfig from './pieConfig';
+    import getColumnConfig from './columnConfig';
     import vueEcharts from '@/components/vueEcharts/ECharts.vue';
 
     export default {
         props : {
             //饼图数据
-            'pie-data' : {
+            'column-data' : {
                 type : Object,
                 default () {
                     return {};
@@ -29,9 +29,9 @@
         },
         methods : {},
         computed : {
-            //饼图配置
-            pieOptions () {
-                return getPieConfig(this.pieData.legend, this.pieData.data);
+            //柱图配置
+            columnOptions () {
+                return getColumnConfig(this.columnData.xAxisData, this.columnData.series);
             }
         }
     };
