@@ -467,6 +467,7 @@
                                             <template v-if="scope.row.active">
                                                 <InputNumber :max="1"
                                                              :min="0"
+                                                             :step="0.01"
                                                              class="short-input"
                                                              v-model.trim="scope.row.procedureRates"
                                                              :placeholder="$t('inputField', {field: ''})">
