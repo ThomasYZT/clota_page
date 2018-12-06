@@ -113,6 +113,23 @@
                 });
             },
             /**
+             * 修改
+             * @param {object} data
+             */
+            modify (data) {
+                this.$refs.addMarketingLevelModal.toggle({
+                    type : 'edit',
+                    editParams : {
+                        id : data.id,
+                        levelAmount : data.levelAmount,
+                        level : data.level,
+                        levelName : data.levelName,
+                        typeId : data.typeId,
+                        haslevelList : this.tableData,
+                    }
+                });
+            },
+            /**
              * 批量删除
              */
             deleteBatch (id) {
@@ -145,22 +162,6 @@
              */
             selectionChange (list) {
                 this.chosedColomn = list;
-            },
-            /**
-             * 修改
-             * @param {object} data
-             */
-            modify (data) {
-                this.$refs.addMarketingLevelModal.toggle({
-                    type : 'edit',
-                    editParams : {
-                        id : data.id,
-                        levelAmount : data.levelAmount,
-                        level : data.level,
-                        levelName : data.levelName,
-                        typeId : data.typeId
-                    }
-                });
             },
             /**
              * 新增等级成功回调

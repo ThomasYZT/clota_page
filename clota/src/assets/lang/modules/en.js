@@ -1938,4 +1938,6 @@ export default {
     'MK010' : '营销等级设置冲突',
     'MK011' : '营销等级名称设置冲突',
     'MK012' : '营销等级级别与升级金额不同步',
+    'pleaseSelectMarketingLevelFirst' : '请先选择营销等级',
+    'levelAmountRule' : '升级金额不得低于低等级的金额或不得高于高等级的金额',
 }

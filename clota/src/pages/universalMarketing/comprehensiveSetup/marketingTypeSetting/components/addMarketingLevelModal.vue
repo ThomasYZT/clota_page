@@ -8,7 +8,8 @@
            :title="$t('addNewMarketingLevel')"
            class-name="vertical-center-modal add-marketing-level"
            width="600"
-           :mask-closable="false">
+           :mask-closable="false"
+           @on-cancel=toggle({})>
 
         <div class="form-wrapper">
             <Form ref="form"
@@ -66,11 +67,12 @@
 <script>
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import forEach from 'lodash/forEach';
     export default {
         components : {},
         data () {
             //校验钱
-            const validateMoney = (rule,value,callback) => {
+            const validateMoney = (rule, value, callback) => {
                 if (value) {
                     common.validateMoney(value).then(() => {
                         callback();
@@ -85,6 +87,54 @@
                     callback();
                 }
             };
+
+            //校验等级名称
+            const validateMarketingLevelName = (rule, value, callback) => {
+                //不能与已存在的等级名称相同
+                if (value && this.haslevelList.findIndex((item) => {
+                    return item.levelName === value;
+                }) < 0) {
+                    callback();
+                } else {
+                    callback(new Error(this.$t('MK011')));
+                }
+            }
+
+            //校验升级金额
+            const validateLevelUpMoney = (rule, value, callback) => {
+                if (value && this.formData.level) {
+                    let biggerMix = 100,
+                        smallerMax = 0,
+                        biggerMixItem,
+                        smallerMaxItem;
+                    forEach(this.haslevelList, (item) => {
+                        if (item.level > this.formData.level) {
+                            if (item.level < biggerMix) {
+                                biggerMix = item.level;
+                                biggerMixItem = item;
+                            }
+                        } else {
+                            if (item.level > smallerMax) {
+                                smallerMax = item.level;
+                                smallerMaxItem = item;
+                            }
+                        }
+                    });
+                    if (biggerMixItem && smallerMaxItem && value < biggerMixItem.levelAmount && value > smallerMaxItem.levelAmount) {
+                        callback();
+                    } else if (!biggerMixItem && smallerMaxItem && value > smallerMaxItem.levelAmount) {
+                        callback();
+                    } else if (biggerMixItem && !smallerMaxItem && value < biggerMixItem.levelAmount) {
+                        callback();
+                    } else if (!biggerMixItem && !smallerMaxItem) {
+                        callback();
+                    } else {
+                        callback(new Error(this.$t('levelAmountRule')));
+                    }
+                } else {
+                    callback(new Error(this.$t('pleaseSelectMarketingLevelFirst')));
+                }
+            }
 
             return {
                 //是否显示模态框
@@ -103,13 +153,15 @@
                     marketingLevelName : [
                         { required : true, message : this.$t('inputField',{ field : this.$t('marketingLevelName') }), trigger : 'blur' },
                         { type : 'string', max : 20, message : this.$t('errorMaxLength',{ field : this.$t('marketingLevelName'),length : 20 }), trigger : 'blur' },
+                        { validator : validateMarketingLevelName, trigger : 'blur' }
                     ],
                     level : [
                         { required : true, message : this.$t('selectField',{ msg : this.$t('level') }), trigger : 'blur' },
                     ],
                     levelUpMoney : [
                         { required : true, message : this.$t('inputField',{ field : this.$t('levelUpMoney') }), trigger : 'blur' },
-                        { validator : validateMoney, trigger : 'blur' }
+                        { validator : validateMoney, trigger : 'blur' },
+                        { validator : validateLevelUpMoney }
                     ]
                 },
                 //已存在等级列表
@@ -213,6 +265,7 @@
                     this.formData.levelUpMoney = editParams.levelAmount.toString();
                     this.formData.marketingLevelName = editParams.levelName;
                     this.typeId = editParams.typeId;
+                    this.haslevelList = editParams.haslevelList;
 
                 //关闭
                 } else {
@@ -286,7 +339,7 @@
                 this.typeId = '';
                 this.type = '';
                 this.visible = false;
-            }
+            },
         }
     };
 </script>
