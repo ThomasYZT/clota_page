@@ -125,6 +125,7 @@ export default {
     operateFail : '{msg} failure',
     send : 'Send',
     pleaseInput : 'Please enter {field}',
+    inputField : '请输入{field}',
     freshComplete : 'Refresh complete',
     inputPassAgain : 'Please enter your password again',
     modify : 'Modify',
@@ -249,6 +250,9 @@ export default {
     'sunday' : '周日',
     'after tomorrow' : '明天',
     'bracketSetting' : '（{content}）',
+    'expire_score' : '积分失效',
+    'activityMemberRightInfo' : '特点活动积分折扣权益说明',
+    'thisCardIsFrozen' : '该卡已冻结，暂无权限',
 
     'errorMsg.MK001' : '账号或密码错误',
     'errorMsg.MK002' : '用户不存在',
@@ -257,7 +261,6 @@ export default {
     'errorMsg.A003' : '验证码错误',
     'errorMsg.MK015' : '原密码错误',
     'errorMsg.MK014' : '手机号已存在',
-    'expire_score' : '积分失效',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'Complete information',
     'getActivate' : 'Immediately active'

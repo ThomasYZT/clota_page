@@ -26,6 +26,13 @@
                 default () {
                     return {};
                 }
+            },
+            //当前激活的日期
+            'active-date' : {
+                type : Date,
+                default () {
+                    return new Date();
+                }
             }
         },
         data () {
@@ -37,7 +44,11 @@
              */
             toCreateOrder () {
                 this.$router.push({
-                    name : 'marketingCreateOrder'
+                    name : 'marketingCreateOrder',
+                    params : {
+                        productDetail : this.productInfo,
+                        playDate : this.activeDate.format('yyyy-MM-dd')
+                    }
                 });
             }
         },
@@ -110,7 +121,8 @@
         }
 
         .ticket-notick{
-            @include block_outline($height : 26px);
+            display: inline-block;
+            @include block_outline(auto, 26px);
             padding-bottom: 10px;
             font-size: $font_size_12px;
             color: $color_999;
@@ -121,7 +133,7 @@
             @include block_outline($height : 35px);
             border-top: 0.5px solid #E8E8E8;
             text-align: right;
-            padding-top: 7px;
+            padding-top: 6px;
 
             .order-btn{
                 padding: 2px 6px;

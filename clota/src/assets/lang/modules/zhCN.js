@@ -534,10 +534,10 @@ export default {
     // 会员3期暂时去掉
     // 'storeWithouIntegetAGrowthNoRepeat' : '储值时获得积分、成长值，消费时不重复获得积分、成长值',
     'storeWithouIntegetAGrowthNoRepeat' : '储值时获得积分，消费时不重复获得积分、成长值',
-    'storeIntegetRatioSetting' : '储值获得积分生效设置',
     // 会员3期暂时去掉
     // 'storeIntegetRatioSetting' : '储值获得积分、成长值生效设置',
     'rechartSucEffective' : '储值成功后立即生效',
+    'storeIntegetRatioSetting' : '储值获得积分生效设置',
     'rechartSuc' : '储值成功后',
     'hourLaterInvalid' : '个小时后生效',
     'setProportionOfBonusAmountOfStorageValue' : '储值赠送金额比例设置',
@@ -810,7 +810,7 @@ export default {
     'alterRule': '改签规则',
     'returnRule': '退票规则',
     'lastAlterDate': '最晚改签日期',
-    'lastAlterDateDesc': '游玩日期前{day}可改签次数{times}次',
+    'lastAlterDateDesc': '游玩日期前{day}天可改签次数{times}次',
     'buyTicketNotes': '购票须知',
     'settlePrice': '产品单价',
     'chooseSaleChannelGroup': '选择销售渠道分组',
@@ -1938,4 +1938,5 @@ export default {
     'MK012' : '营销等级级别与升级金额不同步',
     'pleaseSelectMarketingLevelFirst' : '请先选择营销等级',
     'levelAmountRule' : '升级金额不得低于低等级的金额或不得高于高等级的金额',
+    'disableSet' : '不可设置'
 }

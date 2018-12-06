@@ -183,8 +183,13 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('stockNum')" prop="stockNum"><!-- 库存数量-->
-                            <Input v-model.trim="formData.stockNum"
-                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <template v-if="formData.stockType !== 'is_no_limit'">
+                                <Input v-model.trim="formData.stockNum"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </template>
+                            <span v-else>
+                                {{$t('disableSet')}}
+                            </span>
                         </Form-item>
                     </div>
                 </div>

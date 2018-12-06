@@ -10,6 +10,8 @@ export const getDate = function (dateInfo) {
     let year = date[0];
     //选中的月
     let month = date[1];
+    //选中的天
+    let choosedDay = date[2];
     //下个月
     let nextMonth = parseInt(month) + 1;
     //上个月
@@ -27,7 +29,7 @@ export const getDate = function (dateInfo) {
     let tmpDate = [];
     //格式化后的日期信息
     let returnDate = [];
-    let nowDateValue = new Date().valueOf();
+    let nowDateValue = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()).valueOf();
     //获取上个月的月数据
     for (let i = 0,j = beforeMonthLeft; i < j; i++) {
         let day = parseInt(prevMonthDays - beforeMonthLeft + i + 1);
@@ -36,7 +38,7 @@ export const getDate = function (dateInfo) {
             val : day,
             nl : calendar.solar2lunar(year,prevMonth,prevMonthDays - beforeMonthLeft + i + 1).IDayCn,
             completeVal : year + '-' + parseInt(month - 1) + '-' + ((day >= 10) ? day : ('0' + day)),
-            disabled : new Date(year,month,day) < nowDateValue
+            disabled : new Date(year,month - 2,day) < nowDateValue
         });
     }
     //获取当月的月数据
@@ -47,7 +49,7 @@ export const getDate = function (dateInfo) {
             val : day,
             nl : calendar.solar2lunar(year,month,i + 1).IDayCn,
             completeVal : year + '-' + month + '-' + ((day >= 10) ? day : ('0' + day)),
-            disabled : new Date(year,month + 1,day) < nowDateValue
+            disabled : new Date(year,month - 1,day) < nowDateValue
         });
     }
     //获取下个月的月数据
@@ -58,7 +60,7 @@ export const getDate = function (dateInfo) {
             val : day,
             nl : calendar.solar2lunar(year,month,i + 1).IDayCn,
             completeVal : year + '-' + parseInt(month + 2) + '-' + ((day >= 10) ? day : ('0' + day)),
-            disabled : new Date(year,month + 1,day) < nowDateValue
+            disabled : new Date(year,month,day) < nowDateValue
         });
     }
     //将数据整合成一个6 * 7的二维数组

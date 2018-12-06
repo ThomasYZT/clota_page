@@ -23,7 +23,7 @@
             </ul>
             <div :class="$style.content">
                 <swiper v-model="dateIndex"
-                        height="277px"
+                        height="287px"
                         :loop="true"
                         v-if="value"
                         :threshold="70"
@@ -115,7 +115,7 @@
              * @param{String} day 选择的日期
              */
             choseDay (day) {
-                if (!day.label) return;
+                if (!day.label || day.disabled) return;
                 this.chooseDate = day.completeVal;
             },
             /**
@@ -131,20 +131,19 @@
             popupShow () {
                 this.dateSuffer = 1;
                 this.dateIndex = 2;
+                this.chooseDate = this.activeDate ? this.activeDate.format('yyyy-MM-dd') : '';
             }
         },
         computed : {
             //日期信息
             dateInfo () {
                 let result = [];
-                let nowDate = new Date().valueOf();
                 for (let i = 0,j = this.dateIndexSort.length; i < j; i++) {
                     let dateObj = this.activeDate.valueOf();
                     let date = new Date(dateObj).addMonths(i - 2 - this.dateSuffer);
                     result[this.dateIndexSort[i]] = {
                         date : date.valueOf(),
                         dayInfo : getDate(date.format('yyyy-MM-dd')),
-                        disabled : date.valueOf() < nowDate
                     };
                 }
                 return result;
@@ -263,12 +262,13 @@
     }
 
     .dateCol{
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         border-radius: 3px;
         line-height: 40px;
         text-align: center;
         color: #4A4A4A;
+        padding: 1px;
     }
 
     .dateActive{
@@ -277,7 +277,8 @@
     }
 
     .disabled{
-        background: #C5C5C5;
+        background: #efefef;
+        color: #D5D9E4;
     }
 
     .dateDisable{

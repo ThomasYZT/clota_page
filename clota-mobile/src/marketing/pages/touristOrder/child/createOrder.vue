@@ -4,12 +4,12 @@
     <div class="create-order">
         <div class="order-title">
             <div class="order-info">
-                <div class="order-name">{{'珠海长隆主题乐园珠海长隆主题乐园珠海长隆主题乐园珠海长隆主题乐园'}}</div>
-                <div class="notice">{{$t('购票须知')}}</div>
+                <div class="order-name">{{productDetail.productName | contentFilter}}</div>
+                <div class="notice" @click="showProductNotice = true">{{$t('购票须知')}}</div>
             </div>
             <ul class="label-input">
-                <li class="label-list">不可退</li>
-                <li class="label-list">不可改</li>
+                <li class="label-list" v-if="cannotReturn">不可退</li>
+                <li class="label-list" v-if="cannotAlter">不可改</li>
             </ul>
         </div>
         <div class="content">
@@ -20,7 +20,10 @@
                     :value="formData.date">
                 </cell>
                 <cell :title="$t('购买数量')">
-                    <inline-x-number style="display:block;" :min="0" ></inline-x-number>
+                    <inline-x-number style="display:block;"
+                                     v-model="formData.num"
+                                     :min="1" >
+                    </inline-x-number>
                 </cell>
             </group>
             <group class="group-wrap">
@@ -29,7 +32,7 @@
                     :title="$t('游客姓名')"
                     text-align="right"
                     :show-clear="false"
-                    v-model.trim="formData.date"
+                    v-model.trim="formData.name"
                     placeholder-align="right">
                 </x-input>
                 <!-- 手机号 -->
@@ -37,34 +40,86 @@
                     :title="$t('手机号')"
                     text-align="right"
                     :show-clear="false"
-                    v-model.trim="formData.date"
+                    keyboard="tel"
+                    v-model.trim="formData.phone"
                     placeholder-align="right">
                 </x-input>
             </group>
         </div>
         <div class="btn-wrap">
             <div class="total-amount">
-                {{$t('colonSetting',{ key : $t('总额') })}}<span class="money">{{12 | moneyFilter(2,'￥') | contentFilter}}</span>
+                {{$t('colonSetting',{ key : $t('总额') })}}
+                <span class="money">{{totalAmount | moneyFilter(2,'￥') | contentFilter}}</span>
             </div>
             <div class="create-btn">{{$t('下单')}}</div>
         </div>
+
+        <!--购票须知模态框-->
+        <ticket-notice :choosedProductInfo="productDetail"
+                       v-model="showProductNotice">
+        </ticket-notice>
     </div>
 </template>
 
 <script>
-	export default {
-		data () {
-			return {
-			    formData : {
-			        date : ''
-                }
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ticketNotice from '../components/ticketNotice';
+    export default {
+        mixins : [lifeCycleMixins],
+        components : {
+            ticketNotice
+        },
+        data () {
+            return {
+                formData : {
+                    date : '',
+                    name : '',
+                    phone : '',
+                    num : 1
+                },
+                //产品明细信息
+                productDetail : {},
+                //是否显示购票须知模态框
+                showProductNotice : false
             };
-		},
-		methods : {}
-	};
+        },
+        methods : {
+            getParams (params) {
+                if (params && params.productDetail && Object.keys(params.productDetail).length > 0) {
+                    console.log(params)
+                    this.productDetail = params.productDetail;
+                    this.formData.date = params.playDate;
+                } else {
+                    this.$router.push({
+                        name : 'marketingTourist'
+                    });
+                }
+            }
+        },
+        computed : {
+            //产品不可退
+            cannotReturn () {
+                if (this.productDetail && this.productDetail.returnRuleModel) {
+                    return this.productDetail.returnRuleModel.type === 'notAllow';
+                }
+                return false;
+            },
+            //产品不可改签
+            cannotAlter () {
+                if (this.productDetail && this.productDetail.alterRuleModel) {
+                    return this.productDetail.alterRuleModel.type === 'notAllow';
+                }
+                return false;
+            },
+            //支付总额
+            totalAmount () {
+                return this.formData.num * (this.productDetail ? this.productDetail.salePrice : 0);
+            }
+        }
+    };
 </SCRIPT>
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .create-order{
         @include block_outline();
         overflow: hidden;
@@ -151,6 +206,18 @@
 
         /deep/ .weui-cell{
             height: 50px;
+        }
+
+        /deep/ .vux-number-selector{
+            height: 28px!important;
+        }
+
+        /deep/ .vux-number-input{
+            font-size: 17px;
+        }
+
+        /dee/ .vux-number-selector-plus{
+            margin-right: 0!important;
         }
     }
 </style>
