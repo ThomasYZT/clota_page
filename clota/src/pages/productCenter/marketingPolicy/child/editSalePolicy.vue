@@ -330,7 +330,7 @@
                     <!--全民营销-->
                     <div class="ivu-form-item-wrap single">
                         <Form-item :label="$t('allPeopleMarket')"><!--全民营销-->
-                            <span @click="addMarketLevel" class="blue">+ {{$t('addMarketLevel')}}</span><!--增加营销等级-->
+                            <span @click="addMarketLevel" class="blue">+ {{$t('addNewMarketingType')}}</span><!--增加营销等级-->
                             <table-com
                                 :table-com-min-height="260"
                                 :column-data="marketingColumn"
