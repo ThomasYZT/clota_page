@@ -5,6 +5,7 @@
 <template>
     <div class="upload-img">
         <el-upload
+            :class="{ 'add-hidden' : addDisabled }"
             :action="action"
             :headers="headers"
             list-type="picture-card"
@@ -73,7 +74,9 @@
                 uploadList : [],
                 dialogImageUrl : '',
                 dialogVisible : false,
-                limit : false
+                limit : false,
+                //是否显示添加按钮
+                addDisabled : false
             };
         },
         computed : {
@@ -100,6 +103,9 @@
             uploadSuc (res) {
                 if (res.success) {
                     this.uploadList.push(res.data);
+                    if (this.uploadList.length === this.quantityLimit) {
+                        this.addDisabled = true;
+                    }
                     this.$emit('upload-success',this.uploadList);
                     this.$Message.success(this.$t('上传成功'));
                 } else {
@@ -122,6 +128,9 @@
                 } else {
                     this.uploadList.splice(fileList.indexOf(file), 1);
                     this.$emit('remove-img',this.uploadList);
+                    if (this.uploadList.length < this.quantityLimit) {
+                        this.addDisabled = false;
+                    }
                 }
             },
             /**
@@ -202,6 +211,12 @@
 
         /deep/ .picture-preview.ivu-modal-wrap {
             z-index: 9999;
+        }
+    }
+
+    /deep/ .add-hidden {
+        .el-upload {
+            display: none;
         }
     }
 
