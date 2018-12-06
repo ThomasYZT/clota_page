@@ -71,9 +71,13 @@
         components : {},
         data () {
             return {
+                //已上传文件列表
                 uploadList : [],
+                //预览图片url
                 dialogImageUrl : '',
+                //是否显示预览图片
                 dialogVisible : false,
+                //是否到达文件数量限制
                 limit : false,
                 //是否显示添加按钮
                 addDisabled : false
@@ -103,6 +107,7 @@
             uploadSuc (res) {
                 if (res.success) {
                     this.uploadList.push(res.data);
+                    //若已上传文件到达上传数量限制，则不显示上传按钮
                     if (this.uploadList.length === this.quantityLimit) {
                         this.addDisabled = true;
                     }
@@ -124,10 +129,12 @@
              */
             handleRemove (file, fileList) {
                 if (this.limit) {
+                    //删除图片，消除超出限制的状态
                     this.limit = false;
                 } else {
                     this.uploadList.splice(fileList.indexOf(file), 1);
                     this.$emit('remove-img',this.uploadList);
+                    //删除图片--显示出添加上传的按钮
                     if (this.uploadList.length < this.quantityLimit) {
                         this.addDisabled = false;
                     }
