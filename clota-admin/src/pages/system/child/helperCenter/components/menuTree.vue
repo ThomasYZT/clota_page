@@ -1,5 +1,5 @@
 <!--
-    帮助信息目录树
+    帮助信息目录树组件
     作者：杨泽涛
 -->
 <template>
@@ -11,12 +11,12 @@
 <script>
 
     export default {
-        components: {},
-        data() {
-            return {}
+        components : {},
+        data () {
+            return {};
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>
