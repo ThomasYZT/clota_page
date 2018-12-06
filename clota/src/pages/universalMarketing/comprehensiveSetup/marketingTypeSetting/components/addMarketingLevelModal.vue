@@ -5,7 +5,7 @@
 <template>
     <Modal class="add-marketing-level"
            v-model="visible"
-           :title="$t('addNewMarketingLevel')"
+           :title="$t(type) + $t('marketingLevel')"
            class-name="vertical-center-modal add-marketing-level"
            width="600"
            :mask-closable="false"
@@ -67,7 +67,6 @@
 <script>
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
-    import forEach from 'lodash/forEach';
     export default {
         components : {},
         data () {
@@ -90,13 +89,18 @@
 
             //校验等级名称
             const validateMarketingLevelName = (rule, value, callback) => {
-                //不能与已存在的等级名称相同
-                if (value && this.haslevelList.findIndex((item) => {
+                let valIndex = this.haslevelList.findIndex((item) => {
                     return item.levelName === value;
-                }) < 0) {
+                });
+                //不能与已存在的等级名称相同
+                if (value && valIndex < 0) {
                     callback();
                 } else {
-                    callback(new Error(this.$t('MK011')));
+                    if (this.type === 'edit' && value === this.haslevelList[valIndex].levelName) {
+                        callback();
+                    } else {
+                        callback(new Error(this.$t('MK011')));
+                    }
                 }
             }
 
@@ -107,13 +111,13 @@
                         smallerMax = 0,
                         biggerMixItem,
                         smallerMaxItem;
-                    forEach(this.haslevelList, (item) => {
-                        if (item.level > this.formData.level) {
+                    this.haslevelList.forEach((item) => {
+                        if (item.level > parseInt(this.formData.level)) {
                             if (item.level < biggerMix) {
                                 biggerMix = item.level;
                                 biggerMixItem = item;
                             }
-                        } else {
+                        } else if (item.level < parseInt(this.formData.level)) {
                             if (item.level > smallerMax) {
                                 smallerMax = item.level;
                                 smallerMaxItem = item;
