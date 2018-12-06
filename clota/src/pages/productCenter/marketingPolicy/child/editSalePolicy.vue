@@ -545,7 +545,7 @@
                 <Button type="primary"
                         :loading="loading"
                         @click="formValidateFunc">
-                    {{$t('save')}}
+                    {{$t('commitCheck')}}
                 </Button>
                 <Button type="ghost"
                         @click="goBack">
