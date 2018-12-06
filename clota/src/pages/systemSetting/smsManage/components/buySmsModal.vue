@@ -43,8 +43,6 @@
 
             </div>
 
-            <div slot="close"></div>
-
             <div slot="footer" class="modal-footer">
                 <Button type="primary" @click="buyNow(formData)" >{{$t('buyNow')}}</Button>
             </div>
@@ -107,15 +105,6 @@
                     this.queryOnlineAccount();
                 }
                 this.visible = true;
-            },
-
-            //表单校验
-            formValidateFunc () {
-                this.$refs.formValidate.validate((valid) => {
-                    if(valid){
-
-                    }
-                })
             },
 
             //关闭模态框
