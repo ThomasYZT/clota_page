@@ -256,7 +256,7 @@
              *  编辑等级
              */
             updateLevel () {
-                ajax.post('marketing-addLevel', {
+                ajax.post('marketing-updateLevel', {
                     typeId : this.typeId,
                     id : this.levelId,
                     levelName : this.formData.marketingLevelName,
@@ -268,7 +268,11 @@
                         this.$emit('do-success');
                         this.toggle({});
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
+                        if (res.code && (res.code === 'MK010' || res.code === 'MK011' || res.code === 'MK012')) {
+                            this.$Message.error(this.$t(res.code));
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
+                        }
                     }
                 });
             },

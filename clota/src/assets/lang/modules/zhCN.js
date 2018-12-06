@@ -1921,5 +1921,8 @@ export default {
     'picture' : '图片',
     'M035' : '商品已存在',
     'pleaseSetRequiredCredits' : '请先设置兑换积分',
-    'sureToDelQRcode' : '确认删除二维码？'
+    'sureToDelQRcode' : '确认删除二维码？',
+    'MK010' : '营销等级设置冲突',
+    'MK011' : '营销等级名称设置冲突',
+    'MK012' : '营销等级级别与升级金额不同步',
 }
