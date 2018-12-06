@@ -11,7 +11,7 @@
                 disabled
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
-                v-model.trim="formData.name"
+                :value="marketUserInfo.name"
                 placeholder-align="right">
             </x-input>
             <!-- 身份证号 -->
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
     export default {
         data () {
             return {
@@ -94,6 +95,11 @@
                     name : 'marketingChangePassword'
                 });
             }
+        },
+        computed : {
+            ...mapGetters({
+                marketUserInfo : 'marketUserInfo',
+            })
         }
     };
 </script>

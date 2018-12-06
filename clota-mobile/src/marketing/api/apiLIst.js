@@ -15,6 +15,14 @@ const apiList = {
     'market_queryMarketSaleProductList' : '/market/marketUser/queryMarketSaleProductList',
     //获取用户信息
     'market_getUserInfo' : '/market/marketUser/getUserInfo',
+    //获取订单信息
+    'market_queryMyMarkOrderList' : '/market/marketUser/queryMyMarkOrderList',
+    //获取所有产品信息
+    'market_getUserProducts' : '/market/marketUser/getUserProducts',
+    //订单申请提现
+    'market_orderSalaryWithdrawApply' : '/market/marketUser/orderSalaryWithdrawApply',
+    //获取我的信息
+    'market_getMarketUserMyInfo' : '/market/marketUser/getMarketUserMyInfo',
 };
 
 export default apiList;

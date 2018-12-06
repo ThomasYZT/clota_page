@@ -26,14 +26,24 @@
                 default () {
                     return [];
                 }
+            },
+            //是否可以下拉刷新
+            pullDownRefreshDefault : {
+                type : Boolean,
+                default : true
+            },
+            //是否可以上拉刷新
+            pullUpRefreshDefault : {
+                type : Boolean,
+                default : true
             }
         },
         data () {
             return {
                 //是否显示滚动条
                 scrollbar : false,
-                pullDownRefresh : true,
-                pullUpLoad : true,
+                pullDownRefresh : this.pullDownRefreshDefault,
+                pullUpLoad : this.pullUpRefreshDefault,
                 pullDownRefreshThreshold : 40,
                 scrollbarFade : true,
                 pullDownRefreshStop : 40,
