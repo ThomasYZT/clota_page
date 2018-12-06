@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="cash-offer-settings">
-        <cashOfferSettingBox v-if="Object.keys(marketingTypeItem).length > 0"
+        <cashOfferSettingBox v-if="Object.keys(marketingTypeItem).length > 1"
                              :cashOfferInfo="cashOfferInfo"
                              @updateSuccess="updateSuccess"></cashOfferSettingBox>
     </div>

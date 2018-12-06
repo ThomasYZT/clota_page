@@ -9,7 +9,7 @@
             <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
         </div>
 
-        <tableCom v-if="Object.keys(marketingTypeItem).length > 0"
+        <tableCom v-if="Object.keys(marketingTypeItem).length > 1"
                   :column-data="columnData"
                   :table-data="tableData"
                   :border="true"
@@ -172,7 +172,7 @@
         watch : {
             marketingTypeItem : {
                 handler (newVal) {
-                    if (Object.keys(newVal).length > 0 && newVal.type === 'change') {
+                    if (Object.keys(newVal).length > 1 && newVal.type === 'change') {
                         this.getData();
                     }
                 },

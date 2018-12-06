@@ -1933,7 +1933,6 @@ export default {
     'pendingMatters.fund' : '资金类',
     'pendingMatters.order' : '订单类',
     'ignore' : '忽略',
-    'sureToDelQRcode' : '确认删除二维码？',
     'MK010' : '营销等级设置冲突',
     'MK011' : '营销等级名称设置冲突',
     'MK012' : '营销等级级别与升级金额不同步',

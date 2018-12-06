@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="code-register">
-        <codeBox v-if="Object.keys(marketingTypeItem).length > 0"
+        <codeBox v-if="Object.keys(marketingTypeItem).length > 1"
                  :codeInfo="codeInfo"
                  @updateSuccess="updateSuccess"></codeBox>
     </div>
