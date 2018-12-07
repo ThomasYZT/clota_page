@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import noDataTip from '../../../components/noDataTip/noData-tip';
+    import noDataTip from '@/components/noDataTip/noData-tip';
     import ajax from '@/api/index';
     export default {
         props : {
