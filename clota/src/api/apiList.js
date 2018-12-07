@@ -21,9 +21,11 @@ import orderCenter from './modules/orderCenter';
 //数据中心接口
 import report from './modules/report';
 //全民营销接口
-import marketing from './modules/marketing'
+import marketing from './modules/marketing';
 //工作台
-import workbench from './modules/workbench'
+import workbench from './modules/workbench';
+//帮助中心
+import helperCenter from './modules/helperCenter';
 
 const apiList = {
 
@@ -66,6 +68,8 @@ const apiList = {
     ...marketing,
     //工作台
     ...workbench,
+    //帮助中心
+    ...helperCenter,
 };
 
 export default apiList;
