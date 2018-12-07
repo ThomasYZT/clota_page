@@ -45,8 +45,39 @@ const pieBaseConfig = {
 };
 
 export default function (legendData, seriesData) {
-    let data = [];
-    for (let i = 0, j = seriesData.length; i < j; i++) {
+    let seriesOption = [];
+    let option = {
+        value : 0,
+        name : '',
+        label : {
+            normal : {
+                formatter : '{b|{b}}{per|{d}%}  ',
+                rich : {
+                    b : {
+                        color : '#666666',
+                        fontSize : 12,
+                        lineHeight : 20,
+                        padding : [2, 4],
+                    },
+                    per : {
+                        color : '#666666',
+                        fontSize : 12,
+                    }
+                }
+            }
+        },
+    };
+    if (seriesData && seriesData.length > 0) {
+        for (let i = 0, j = seriesData.length; i < j; i++) {
+            option.value = seriesData[i].value;
+            option.name = seriesData[i].name;
+            seriesOption.push(option);
+        }
+    } else {
+        seriesOption = [option];
+    }
+
+    /*for (let i = 0, j = seriesData.length; i < j; i++) {
         data.push({
             value : seriesData[i].value,
             name : seriesData[i].name,
@@ -68,14 +99,14 @@ export default function (legendData, seriesData) {
                 }
             },
         });
-    }
+    }*/
     return defaultsDeep(pieBaseConfig, {
         legend : {
             data : legendData
         },
         series : [
             {
-                data : data
+                data : seriesOption
             }
         ]
     });

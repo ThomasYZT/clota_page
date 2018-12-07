@@ -3,10 +3,10 @@
 <template>
     <div class="base-info">
         <div class="head">
-            <img class="img-head" src="../../../../assets/images/icon-no-data.svg" alt="">
+            <img class="img-head" src="../../../../assets/images/icon-avator.svg" alt="">
             <div class="register-tips">您正在注册 <span class="company-name">{{companyName}}</span> 的销售用户</div>
             <div class="belong-type">
-                {{$t('colonSetting',{ key : '所属类别' })}}出租车
+                {{$t('colonSetting',{ key : '所属类别' })}}{{marketTypeName | contentFilter}}
             </div>
         </div>
         <div class="content">
@@ -210,6 +210,7 @@
         computed : {
             ...mapGetters({
                 companyName : 'companyName',
+                marketTypeName : 'marketTypeName',
                 marketINgCompanyCode : 'marketINgCompanyCode',
             })
         }
@@ -228,7 +229,6 @@
             .img-head{
                 display: inline-block;
                 @include block_outline(53px,53px);
-                background: red;
                 border-radius: 27px;
                 background-size: 100% 100%;
             }

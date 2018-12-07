@@ -1,82 +1,99 @@
 import defaultsDeep from 'lodash/defaultsDeep';
+import echarts from 'echarts/lib/echarts';
 
-const pieBaseConfig = {
-    tooltip : {
-        trigger : 'item',
-        formatter : "{b} : {c} ({d}%)",
-        extraCssText : 'background : #ffffff;border: 1px solid #DFE3E9; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10);color:rgb(51, 51, 51);'
+const columnBaseConfig = {
+    xAxis : {
+        type : 'category',
+        data : [],
+        axisLabel : {
+            inside : false,
+            textStyle : {
+                color : '#999'
+            },
+        },
+        axisTick : {
+            // show : false
+        },
+        axisLine : {
+            show : true,
+            lineStyle : {
+                color : '#B0BDC9'
+            }
+        },
+        z : 10
     },
-    legend : {
-        bottom : 10,
-        left : 'center',
-        data : []
-    },
-    series : [
-        {
-            type : 'pie',
-            radius : '73',
-            center : ['50%', '50%'],
-            selectedMode : 'single',
-            color : [
-                '#8B8DFD',
-                '#F0E21A',
-                '#64BFFA',
-                '#0071BC',
-                '#55C6C5',
-                '#F8AAC4',
-                '#FDB252',
-                '#F6857E',
-                '#6FD6E3',
-                '#71CF7F',
-                '#5B9DF3',
-                '#D990E3',
-            ],
-            hoverAnimation : false,
-            data : [],
-            itemStyle : {
-                emphasis : {
-                    shadowBlur : 10,
-                    shadowOffsetX : 0,
-                    shadowColor : 'rgba(0, 0, 0, 0.5)'
-                }
+    yAxis : {
+        type : 'value',
+        splitLine : {
+            show : false
+        },
+        axisLine : {
+            show : true,
+            lineStyle : {
+                color : '#B0BDC9'
+            }
+        },
+        axisTick : {
+            // show : false
+        },
+        axisLabel : {
+            textStyle : {
+                color : '#999',
+                fontSize : '12px'
             }
         }
-    ]
+    },
+    tooltip : {
+        "trigger" : "item",
+        "textStyle" : {
+            "fontSize" : 12
+        },
+        "formatter" : "{b0}: {c0}"
+    },
+    series : []
 };
 
-export default function (legendData, seriesData) {
-    let data = [];
-    for (let i = 0, j = seriesData.length; i < j; i++) {
-        data.push({
-            value : seriesData[i].value,
-            name : seriesData[i].name,
-            label : {
-                normal : {
-                    formatter : '{b|{b}}{per|{d}%}  ',
-                    rich : {
-                        b : {
-                            color : '#666666',
-                            fontSize : 12,
-                            lineHeight : 20,
-                            padding : [2, 4],
-                        },
-                        per : {
-                            color : '#666666',
-                            fontSize : 12,
-                        }
-                    }
-                }
+export default function (xAxisData, seriesData) {
+    let seriesOption = [];
+    let option = {
+        type : 'bar',
+        barWidth : '20%',
+        itemStyle : {
+            normal : {
+                barBorderRadius : [4, 4, 0, 0],
+                color : new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        { offset : 0, color : '#0055B8' },
+                        { offset : 1, color : '#00B8C2' }
+                    ]
+                )
             },
-        });
-    }
-    return defaultsDeep(pieBaseConfig, {
-        legend : {
-            data : legendData
-        },
-        series : [
-            {
-                data : data
+            emphasis : {
+                color : new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        { offset : 0, color : '#2378f7' },
+                        { offset : 1, color : '#83bff6' }
+                    ]
+                )
             }
-        ]
+        },
+        data : []
+    };
+    if (seriesData && seriesData.length > 0) {
+        for (let i = 0, len = seriesData.length; i < len; i++) {
+            option.data = seriesData[i].data;
+            seriesOption.push(option);
+        }
+    } else {
+        seriesOption = [option];
+    }
+
+    return defaultsDeep(columnBaseConfig, {
+        xAxis : {
+            data : xAxisData
+        },
+        series : seriesOption
     });
 }

@@ -71,7 +71,12 @@
             tableCom,
             pendingMatterModal
         },
-        props : {},
+        props : {
+            pendingMattersWidth : {
+                type : String,
+//                default : '100%'
+            }
+        },
         data () {
             return {
                 //表头配置
@@ -113,10 +118,7 @@
     @import '~@/assets/scss/base';
 
     .pending-matters {
-        width: 42%;
-        float: left;
         height: 100%;
-        padding-left: 15px;
 
         .container {
             position: relative;

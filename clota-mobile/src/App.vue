@@ -211,7 +211,7 @@
             }),
         },
         created () {
-            this.getWxConfig();
+            // this.getWxConfig();
             this.$store.dispatch('getLocation');
         },
         watch : {

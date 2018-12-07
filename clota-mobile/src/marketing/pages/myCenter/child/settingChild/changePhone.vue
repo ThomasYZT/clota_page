@@ -184,9 +184,7 @@
                         this.$vux.toast.show({
                             text : this.$t('operateSuc',{ msg : this.$t('modify') })
                         });
-                        this.$router.push({
-                            name : 'marketingSetting'
-                        });
+                        this.$router.back(-1);
                     } else if (res.code && res.code !== '300') {
                         this.$vux.toast.show({
                             text : this.$t('errorMsg.' + res.code),

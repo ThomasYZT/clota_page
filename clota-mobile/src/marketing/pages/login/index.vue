@@ -27,6 +27,7 @@
                          :placeholder="$t('inputField',{ field : $t('登录密码') })">
                 </x-input>
                 <x-input :title="$t('validCode')"
+                         v-if="showValidateCode"
                          v-model="formData.code"
                          class="c-input"
                          type="password"
@@ -37,24 +38,23 @@
                          class="validate"
                          src="../../../assets/images/icon-no-data.svg" alt="">
                 </x-input>
-                <x-input :title="$t('所属类别')"
-                         v-model="formData.type"
-                         class="c-input"
-                         text-align="right"
-                         :disabled="true"
-                         label-width="150px"
-                         :placeholder="$t('inputField',{ field : $t('登录密码') })">
-                </x-input>
                 <div class="regret-pass" >
                     <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
                 </div>
                 <x-button class="button"
+                          :disabled="!marketINgCompanyCode"
                           @click.native="login">{{$t('login')}}</x-button>
                 <div class="to-register">
                     {{$t('没有账号?')}}<span class="login-label" @click="toRegister">去注册</span>
                 </div>
             </div>
         </div>
+
+        <!--选择所属类别-->
+        <choose-type v-model="showTypeChosedModal"
+                     :type-list="userTypeList"
+                     @choose-type="toLogin">
+        </choose-type>
     </div>
 </template>
 
@@ -63,7 +63,12 @@
     import ajax from '../../api/index';
     import { validator } from 'klwk-ui';
     import MD5 from 'crypto-js/md5';
+    import chooseType from './components/chooseType';
+
     export default {
+        components : {
+            chooseType
+        },
         data () {
             return {
                 //表单信息
@@ -76,7 +81,13 @@
                     type : '出租车',
                     //验证码
                     code : '',
-                }
+                },
+                //显示验证码
+                showValidateCode : false,
+                //当前用户所属列表
+                userTypeList : [],
+                //是否显示选择类别模态框
+                showTypeChosedModal : false
             };
         },
         methods : {
@@ -87,32 +98,36 @@
                 this.validatePhone().then(() => {
                     return this.validatePassword();
                 }).then(() => {
-                    ajax.post('market_login',{
-                        mobile : this.formData.phoneNum,
-                        password : MD5(this.formData.password).toString(),
-                        typeId : this.marketTypeId,
-                        orgId : this.marketOrgId,
-                        levelId : this.marketLevelId,
-                    }).then(res => {
-                        if (res.success) {
-                            this.$store.commit('marketUpdateToken',res.data);
-                            this.$store.dispatch('marketGetUserInfo').then(() => {
-                                this.$router.push({
-                                    name : 'marketingProduct'
-                                });
-                            });
-                        } else if (res.code && res.code !== '300') {
-                            this.$vux.toast.show({
-                                text : this.$t('errorMsg.' + res.code),
-                                type : 'cancel'
-                            });
-                        } else {
-                            this.$vux.toast.show({
-                                text : this.$t('operateFail',{ msg : this.$t('login') }),
-                                type : 'cancel'
-                            });
-                        }
-                    });
+                    this.queryUserType();
+                    // ajax.post('market_login',{
+                    //     mobile : this.formData.phoneNum,
+                    //     password : MD5(this.formData.password).toString(),
+                    //     typeId : this.marketTypeId,
+                    //     orgId : this.marketOrgId,
+                    //     levelId : this.marketLevelId,
+                    // }).then(res => {
+                    //     if (res.success) {
+                    //         this.$store.commit('marketUpdateToken',res.data);
+                    //         this.$store.dispatch('marketGetUserInfo').then(() => {
+                    //             this.$router.push({
+                    //                 name : 'marketingProduct'
+                    //             });
+                    //         });
+                    //         sessionStorage.setItem('loginErr',0);
+                    //     } else if (res.code && res.code !== '300') {
+                    //         this.$vux.toast.show({
+                    //             text : this.$t('errorMsg.' + res.code),
+                    //             type : 'cancel'
+                    //         });
+                    //         this.setLoginErrNum();
+                    //     } else {
+                    //         this.$vux.toast.show({
+                    //             text : this.$t('operateFail',{ msg : this.$t('login') }),
+                    //             type : 'cancel'
+                    //         });
+                    //         this.setLoginErrNum();
+                    //     }
+                    // });
                 });
             },
             /**
@@ -178,6 +193,131 @@
                 this.$router.push({
                     name : 'marketingResetPassword'
                 });
+            },
+            /**
+             * 设置登录错误信息
+             */
+            setLoginErrNum () {
+                let countLoginErrNum = sessionStorage.getItem('loginErr') ? Number(sessionStorage.getItem('loginErr')) : 0;
+                if (++countLoginErrNum > 3) {
+                    this.showValidateCode = true;
+                } else {
+                    this.showValidateCode = false;
+                }
+                sessionStorage.setItem('loginErr',countLoginErrNum++);
+            },
+            /**
+             * 获取组织信息
+             * @param{String} orgCode 组织code
+             */
+            queryOrgInfo (orgCode) {
+                ajax.post('market_toLoginPage',{
+                    orgCode : orgCode
+                }).then(res => {
+                    if (res.success) {
+                        this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
+                        this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
+                    } else {
+                        this.$store.commit('marketUpdateCompanyName','');
+                        this.$store.commit('marketUpdateOrgId','');
+                    }
+                }).finally(() => {
+                    this.$store.commit('marketUpdateCompanyCode',orgCode);
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由信息
+             */
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    this.queryOrgInfo(params.companyCode);
+                }
+            },
+            /**
+             * 查询用户所属类别信息
+             */
+            queryUserType () {
+                ajax.post('market_queryUserType',{
+                    phone : this.formData.phoneNum,
+                    password : MD5(this.formData.password).toString(),
+                    orgId : this.marketOrgId,
+                }).then(res => {
+                    if (!res.success && res.code === 'MK013') {
+                        this.userTypeList = res.data ? res.data.map(item => {
+                            return {
+                                key : item.id,
+                                value : item.typeName
+                            };
+                        }) : [];
+                        if (this.userTypeList.length > 0 ) {
+                            this.showTypeChosedModal = true;
+                        } else {
+                            this.$vux.toast.show({
+                                text : this.$t('operateFail',{ msg : this.$t('login') }),
+                                type : 'cancel'
+                            });
+                        }
+                    } else if (res.code && res.code !== '100' && res.code !== '300') {
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
+                        });
+                    } else {
+                        if (res.data && res.data.length === 1) {
+                            this.$store.commit('marketUpdateTypeId',res.data[0]['id']);
+                            this.$store.commit('marketUpdateTypeName',res.data[0]['typeName']);
+                            this.loginWithType();
+                        } else {
+                            this.$vux.toast.show({
+                                text : this.$t('operateFail',{ msg : this.$t('login') }),
+                                type : 'cancel'
+                            });
+                        }
+                    }
+                });
+            },
+            /**
+             * 选择了所属类别，然后登录
+             * @param{String} typeId 营销类别id
+             */
+            toLogin (typeId) {
+                this.$store.commit('marketUpdateTypeId',typeId);
+                this.$store.commit('marketUpdateTypeName',this.userTypeList.filter(item => item.id === typeId)['typeName']);
+                this.loginWithType();
+            },
+            /**
+             * 开始登录
+             */
+            loginWithType () {
+                ajax.post('market_login',{
+                    mobile : this.formData.phoneNum,
+                    password : MD5(this.formData.password).toString(),
+                    typeId : this.marketTypeId,
+                    orgId : this.marketOrgId,
+                }).then(res => {
+                    if (res.success) {
+                        this.$store.commit('marketUpdateToken',res.data);
+                        this.$store.dispatch('marketGetUserInfo').then(() => {
+                            this.$router.push({
+                                name : 'marketingProduct'
+                            });
+                        });
+                        sessionStorage.setItem('loginErr',0);
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
+                        });
+                        this.setLoginErrNum();
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('operateFail',{ msg : this.$t('login') }),
+                            type : 'cancel'
+                        });
+                        this.setLoginErrNum();
+                    }
+                });
             }
         },
         computed : {
@@ -186,7 +326,13 @@
                 marketOrgId : 'marketOrgId',
                 marketLevelId : 'marketLevelId',
                 marketTypeId : 'marketTypeId',
+                marketINgCompanyCode : 'marketINgCompanyCode',
             })
+        },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.getParams(to.query);
+            });
         }
     };
 </script>

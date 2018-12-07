@@ -13,4 +13,16 @@ export default {
     'workbench-queryUnfinishedWorkBack' : '/workbench/queryUnfinishedWorkBacklog',
     //查看/忽略待处理事项
     'workbench-updateWorkBacklogStatus' : '/workbench/updateWorkBacklogStatus',
+    //查询景区业绩指标
+    'workbench-getScenicEchartOptionData' : '/workbench/getScenicEchartOptionData',
+    //查询合作伙伴工作台各项
+    'workbench-queryPartnerWorkbenchOptions' : '/workbench/queryPartnerWorkbenchOptions',
+    //查询合作伙伴经营状况
+    'workbench-getPartnerEchartOptionData' : '/workbench/getPartnerEchartOptionData',
+    //查询游客来源
+    'workbench-getOrderVisitorAreaRatio' : '/workbench/getOrderVisitorAreaRatio',
+    //查询合作伙伴分业态经营状况
+    'workbench-getOrderAmountGroupByProductType' : '/workbench/getOrderAmountGroupByProductType',
+    //查询合作伙伴分产品经营状况
+    'workbench-getOrderAmountGroupByProductName' : '/workbench/getOrderAmountGroupByProductName',
 }

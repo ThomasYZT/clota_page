@@ -59,3 +59,41 @@ export const allPendingMattersHead = [
         enWidth : 230,
     }
 ];
+
+// 分业态经营状况列表表头
+export const productTypeOperateHead = [
+    {
+        title : 'ranking', // 排名
+        minWidth : 70,
+        field : ''
+    },
+    {
+        title : 'industryType', // 业态类型
+        width : 110,
+        field : 'name'
+    },
+    {
+        title : 'quantity', // 预定金额
+        minWidth : 70,
+        field : 'value'
+    },
+];
+
+// 分产品经营状况列表表头
+export const productNameOperateHead = [
+    {
+        title : 'ranking', // 排名
+        minWidth : 70,
+        field : ''
+    },
+    {
+        title : 'productName', // 产品名称
+        minWidth : 130,
+        field : 'name'
+    },
+    {
+        title : 'quantity', // 预定金额
+        minWidth : 70,
+        field : 'value'
+    },
+];
