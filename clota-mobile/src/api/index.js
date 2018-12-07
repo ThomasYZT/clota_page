@@ -189,7 +189,7 @@ export const ajaxMethods = {
             return res.data;
         }).catch((err) => {
             showNetWorkError(err);
-            console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
+            console.error(`接口名: ${this.api[urlKey]}, 错误信息: `, err);
         }).finally(() => {
             store.commit('changePromisings','del');
         });
@@ -202,6 +202,7 @@ export const ajaxMethods = {
      * @returns {promise} 返回promise对象
      */
     post (urlKey, paramObj, config = null) {
+        console.log(this.api)
         let myConfig = {
             cancelToken : new axios.CancelToken(function (cancel) {
                 cancelTokenCollection[urlKey] = cancel;
