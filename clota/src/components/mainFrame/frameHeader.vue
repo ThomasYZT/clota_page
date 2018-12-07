@@ -7,6 +7,7 @@
         </div>
         <div class="shrink">
       <span
+          v-if="hasSidebar"
           class="iconfont"
           :class="{'icon-icon-unfold' : !menuIsPackUp,'icon-icon-pack-up' : menuIsPackUp}"
           @click="shrinkMenu"></span>
@@ -165,7 +166,19 @@
                 } else {
                     return [];
                 }
-            }
+            },
+            //是否有侧边栏导航
+            hasSidebar () {
+                if (this.$route && this.$route.meta) {
+                    if (this.$route.meta.hasSideBar === false) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            },
         },
         mounted () {
         }

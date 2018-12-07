@@ -1959,4 +1959,6 @@ export default {
     'scenicWorkbench' : '景区服务工作台',
     'partnerWorkbench' : '合作伙伴工作台',
     'companyWorkbench' : '公司/单位工作台',
+    'goToHelperCenter' : '前往帮助中心',
+    'helperCenter' : '帮助中心',
 }

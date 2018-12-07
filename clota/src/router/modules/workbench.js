@@ -33,6 +33,7 @@ export default {
                     _name : 'member-report', //todo 暂时用数据报表二级菜单权限
                     rightPath : topMenuName + '.' + 'scenicService',
                     isMenu : true,
+                    hasSideBar : false,
                 },
             },
             //合作伙伴工作台
@@ -45,6 +46,7 @@ export default {
                     _name : 'member-report', //todo 暂时用数据报表二级菜单权限
                     rightPath : topMenuName + '.' + 'cooperPartner',
                     isMenu : true,
+                    hasSideBar : false,
                 },
             },
             //公司/单位工作台
@@ -57,6 +59,7 @@ export default {
                     _name : 'member-report', //todo 暂时用数据报表二级菜单权限
                     rightPath : topMenuName + '.' + 'company',
                     isMenu : true,
+                    hasSideBar : false,
                 },
             },
         }

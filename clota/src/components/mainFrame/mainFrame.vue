@@ -5,9 +5,9 @@
         <frame-header>
         </frame-header>
         <div class="frame-content">
-            <frame-sidebar>
+            <frame-sidebar v-if="hasSidebar">
             </frame-sidebar>
-            <div class="router-con" :class="{'pick-up' : menuIsPackUp}">
+            <div class="router-con" :class="{'pick-up' : menuIsPackUp, 'no-sider-bar' : !hasSidebar}">
                 <slot></slot>
                 <!--加载中插件-->
                 <transition name="fade">
@@ -45,6 +45,18 @@
                 menuIsPackUp: 'menuIsPackUp',
                 isLoading : 'isLoading'
             }),
+            //是否有侧边栏导航
+            hasSidebar () {
+                if (this.$route && this.$route.meta) {
+                    if (this.$route.meta.hasSideBar === false) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            },
         }
     }
 
@@ -71,6 +83,13 @@
                 &.pick-up {
                     @include block_outline(unquote('calc(100% - 55px)'));
                     transition: all 0.3s;
+                }
+
+                &.no-sider-bar {
+                    @include block_outline(unquote('calc(100% - 40px)'));
+                    margin-left: 20px;
+                    transition: all 0.1s;
+                    overflow: hidden;
                 }
             }
 

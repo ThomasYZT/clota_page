@@ -15,6 +15,15 @@
                 个人中心 <span class="iconfont icon-arrow-right"></span>
             </span>
         </div>
+        <div class="helper-center-entry">
+            <div class="font-wrapper">
+                <i class="iconfont icon-help"></i>
+                <span class="helper-center" @click="toHelperCenter">{{$t('goToHelperCenter')}}</span>
+            </div>
+            <div class="arrow-wrapper">
+                <span class="iconfont icon-arrow-right"></span>
+            </div>
+        </div>
         <div class="lang-wrap">
             <div class="lang-list">
                 <!--<div class="chinese"-->
@@ -101,6 +110,14 @@
                     name : 'personalInfo'
                 });
                 this.$store.commit('changeOperateLine',false);
+            },
+            /**
+             * 前往帮助中心
+             */
+            toHelperCenter () {
+                this.$router.push({
+                    name : 'helperCenter'
+                });
             }
         },
         created () {
@@ -161,6 +178,31 @@
                 .icon-arrow-right{
                     font-size: 12px;
                 }
+            }
+        }
+
+        .helper-center-entry {
+            @include block_outline($height : 50px);
+            display: flex;
+            line-height: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: $color_blue;
+
+            .font-wrapper {
+                flex: 1 0;
+                flex-basis: 80%;
+                text-align: center;
+            }
+
+            .arrow-wrapper {
+                flex: 1 0;
+                flex-basis: 20%;
+                text-align: left;
+            }
+
+            .helper-center {
+                cursor: pointer;
             }
         }
 
