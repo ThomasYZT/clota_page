@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
     export default {
         data () {
             return {};
@@ -22,7 +23,10 @@
              */
             toLogin () {
                 this.$router.push({
-                    name : 'marketingLogin'
+                    name : 'marketingLogin',
+                    query : {
+                        companyCode : this.marketINgCompanyCode
+                    }
                 });
             },
             /**
@@ -41,6 +45,11 @@
             next(vm => {
                 vm.getParams(to.params);
             });
+        },
+        computed : {
+            ...mapGetters({
+                marketINgCompanyCode : 'marketINgCompanyCode',
+            })
         }
     };
 </script>

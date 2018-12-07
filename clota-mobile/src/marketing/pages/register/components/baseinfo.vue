@@ -179,7 +179,10 @@
              */
             toLogin () {
                 this.$router.push({
-                    name : 'marketingLogin'
+                    name : 'marketingLogin',
+                    query : {
+                        companyCode : this.marketINgCompanyCode
+                    }
                 });
             },
             /**

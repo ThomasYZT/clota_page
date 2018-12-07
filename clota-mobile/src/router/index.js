@@ -8,8 +8,8 @@ import { wxMemberCardRoutes } from '../wxMemberCard/router/index';
 Vue.use(Router);
 //生成新路由的方法
 const createRouter = () => new Router({
-    mode : 'history',
-    base : '/clota/mobile',
+    // mode : 'history',
+    // base : '/clota/mobile',
     routes : [
         {
             path : '',
