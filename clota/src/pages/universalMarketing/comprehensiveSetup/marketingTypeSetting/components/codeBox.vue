@@ -282,6 +282,17 @@
                 }
             }
 
+            .show-path {
+                display: inline-block;
+                height: 100px;
+                overflow: auto;
+                padding-right: 5px;
+                &::-webkit-scrollbar {display:none}
+                &:hover {
+                    &::-webkit-scrollbar {display:block}
+                }
+            }
+
         }
 
         .box-footer {
