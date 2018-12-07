@@ -1,8 +1,8 @@
-<!--我的菜单-->
+1<!--我的菜单-->
 
 <template>
     <div class="my-center">
-        <div class="toast-info">您还未允许系统定位手机的权限，请前往设置允许权限</div>
+        <div class="toast-info" v-if="canShowLocationTips">您还未允许系统定位手机的权限，请前往设置允许权限</div>
         <div class="base-info">
             <img class="head-img" src="../../../assets/images/icon-avator.svg" alt="">
             <div class="info-name">
@@ -88,7 +88,13 @@
              * 跳转到下单页面
              */
             toCreateOrder () {
-                this.confirmShow = true;
+                this.$store.commit('marketUpdateIsGettingLocation',true);
+                let unwatch = this.$watch('marketIsGettingLocation',(newVal) => {
+                    if (!newVal) {
+                        this.checkMarketForbidden();
+                    }
+                    unwatch();
+                });
             },
             /**
              * 跳转到账户设置页面
@@ -120,18 +126,46 @@
                         this.userInfo = {};
                     }
                 });
+            },
+            /**
+             * 校验是否在营销范围外
+             */
+            checkMarketForbidden () {
+                ajax.post('market_checkMarketForbidden',{
+                    latitude : this.marketLatitude,
+                    longitude : this.marketLongitude,
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data) {
+                            this.confirmShow = true;
+                        } else {
+                            this.$router.push({
+                                name : 'marketingQrCode'
+                            });
+                        }
+                    } else {
+                        this.confirmShow = true;
+                    }
+                });
             }
         },
         computed : {
             ...mapGetters({
                 marketUserInfo : 'marketUserInfo',
-            })
+                marketLongitude : 'marketLongitude',
+                marketLatitude : 'marketLatitude',
+                marketIsGettingLocation : 'marketIsGettingLocation',
+            }),
+            //是否显示没有获取到定位信息提示
+            canShowLocationTips () {
+                return !this.marketLongitude || !this.marketLatitude && !this.marketIsGettingLocation;
+            }
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.queryUserInfo();
             });
-        }
+        },
     };
 </script>
 <style lang="scss" scoped>

@@ -32,7 +32,7 @@
                  v-transfer-dom
                  v-if="downLoadBtnShow"
                  @click="downLoadImg($event)">
-                <span class="iconfont icon-alipay" ></span>
+                <img class="download-svg" src="../../../../assets/images/icon-download.svg" alt="">
             </div>
         </transition>
     </div>
@@ -84,7 +84,7 @@
             downLoadImg () {
                 this.$nextTick(() =>{
                     let imgIndex = this.$refs.previewer.getCurrentIndex();
-                    window.open(this.prevList[imgIndex]['posterUrl']);
+                    window.open(this.prevList[imgIndex]['src']);
                 });
             },
             /**
@@ -155,7 +155,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: red;
+    }
+
+    .down-load-img .download-svg{
+        width: 100%;
+        height: 100%;
+        display: block;
     }
 
     .down-load-img .iconfont {

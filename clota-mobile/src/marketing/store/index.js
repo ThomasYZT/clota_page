@@ -19,7 +19,15 @@ export const marketingState = {
         //用户信息
         userInfo : {},
         //营销类别名称
-        typeName : ''
+        typeName : '',
+        //地理位置信息
+        locationInfo : '',
+        //经度
+        longitude : '',
+        //纬度
+        latitude : '',
+        //是否正在获取位置信息
+        isGettingLocation : true
     }
 };
 export const marketingGetters = {
@@ -54,6 +62,22 @@ export const marketingGetters = {
     //营销名称
     marketTypeName : state => {
         return state.marketing.typeName;
+    },
+    //地理位置信息
+    marketLocationInfo : state => {
+        return state.marketing.locationInfo;
+    },
+    //经度
+    marketLongitude : state => {
+        return state.marketing.longitude;
+    },
+    //纬度
+    marketLatitude : state => {
+        return state.marketing.latitude;
+    },
+    //是否正在获取位置信息
+    marketIsGettingLocation : state => {
+        return state.marketing.isGettingLocation;
     }
 };
 
@@ -89,6 +113,22 @@ export const marketMutations = {
     //更新公司code
     marketUpdateCompanyCode (state,companyCode) {
         state.marketing.companyCode = companyCode;
+    },
+    /**
+     * 更新位置信息
+     * @param{Object} state
+     * @param{String} location
+     * @param{float} longitude 经度
+     * @param{float} latitude 纬度
+     */
+    updateLocationInfo (state,{ location,longitude,latitude }) {
+        state.marketing.locationInfo = location;
+        state.marketing.longitude = longitude;
+        state.marketing.latitude = latitude;
+    },
+    //更新获取位置信息状态
+    marketUpdateIsGettingLocation (state,status) {
+        state.marketing.isGettingLocation = status;
     }
 };
 

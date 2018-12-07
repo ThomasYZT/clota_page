@@ -26,8 +26,8 @@
             <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'auditing'">
                 <span class="text-label">{{$t('审核中')}}</span>
             </div>
-            <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'reject_no_req'">
-                <span class="text-label">{{$t('已拒绝，不可再次申请')}}</span>
+            <div class="wait-audit err" v-if="orderDetail.withdrawStatus === 'reject_no_req'">
+                <span class="text-label">{{$t('已驳回')}}</span>
             </div>
         </div>
     </div>
@@ -136,10 +136,16 @@
             border-top: 22px solid #F9AD49;
             border-bottom: 22px solid transparent;
 
+            &.err{
+                border-right: 22px solid $color_err;
+                border-top: 22px solid $color_err;
+            }
+
             .text-label{
-                @include absolute_pos(absolute,$top : -15px,$left : -26px);
+                @include absolute_pos(absolute,$top : -17px,$left : -26px);
                 width: 50px;
                 font-size: $font_size_11px;
+                transform: rotate(43deg) translate(1px,-4px);
             }
         }
 

@@ -293,7 +293,6 @@
                     newPassword : MD5(this.formData.password).toString(),
                     typeId : this.marketTypeId,
                     orgId : this.marketOrgId,
-                    levelId : this.marketLevelId,
                 }).then(res => {
                     if (res.success) {
                         this.$vux.toast.show({
@@ -349,7 +348,6 @@
                 companyName : 'companyName',
                 isWeixin : 'isWeixin',
                 marketOrgId : 'marketOrgId',
-                marketLevelId : 'marketLevelId',
                 marketTypeId : 'marketTypeId',
                 marketINgCompanyCode : 'marketINgCompanyCode',
             })

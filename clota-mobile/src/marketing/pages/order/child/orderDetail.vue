@@ -46,6 +46,10 @@
                         <span class="key">{{$t('colonSetting',{ key : $t('已核销数量') })}}</span>
                         <span class="value">{{orderDetail.verifiedNum | contentFilter}}</span>
                     </div>
+                    <div class="detail-list">
+                        <span class="key">{{$t('colonSetting',{ key : $t('已退票数量') })}}</span>
+                        <span class="value">{{orderDetail.refundNum | contentFilter}}</span>
+                    </div>
                 </div>
             </div>
             <!--佣金-->
@@ -153,7 +157,7 @@
             canApplyDeposit () {
                 //未审核或已拒绝可再次申请,佣金大于0，并且订单全部核销的才可以申请提现
                 if (this.orderDetail &&
-                    this.orderDetail.expectedSalary > 0 &&
+                    this.orderDetail.verifiedNum > 0 &&
                     (this.orderDetail.withdrawStatus === 'unaudit' || this.orderDetail.withdrawStatus === 'reject') &&
                     this.orderDetail.verifiedNum === this.orderDetail.productNum) {
                     return true;

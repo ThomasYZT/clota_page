@@ -9,7 +9,12 @@
             </span>
         </div>
         <div class="area-info">
-            地址：广州市番禺区迎宾路长隆旅游度假区内
+            <template v-if="marketLocationInfo">
+                地址：{{marketLocationInfo}}
+            </template>
+            <span v-else class="re-get-location" @click="getLocation">
+                重新获取地理位置信息
+            </span>
         </div>
         <div class="product-list">
             <scroll-wrap :item-data="productListData"
@@ -128,7 +133,6 @@
                 return ajax.post('market_queryMarketSaleProductList',{
                     playDate : this.productDate,
                     marketTypeId : this.marketTypeId,
-                    marketLevelId : this.marketLevelId,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
@@ -138,12 +142,18 @@
                         this.productListData = [];
                     }
                 });
+            },
+            /**
+             * 重新获取位置信息
+             */
+            getLocation () {
+                this.$store.commit('marketUpdateIsGettingLocation',true);
             }
         },
         computed : {
             ...mapGetters({
-                marketLevelId : 'marketLevelId',
                 marketTypeId : 'marketTypeId',
+                marketLocationInfo : 'marketLocationInfo',
             })
         },
         created () {
@@ -181,7 +191,11 @@
             @include block_outline($height : 30px);
             line-height: 30px;
             padding-left: 14px;
-            @include overflow_tip();
+            //@include overflow_tip();
+        }
+
+        .re-get-location{
+            color: $color_err;
         }
 
         .product-list{
