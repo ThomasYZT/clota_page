@@ -59,7 +59,7 @@
 
 <script>
 
-    import vueEcharts from '../../../components/vueEcharts/eCharts.vue';
+    import vueEcharts from '@/components/vueEcharts/eCharts.vue';
     import ajax from '@/api/index.js';
     import { getConfig } from './chartLineConfig';
 

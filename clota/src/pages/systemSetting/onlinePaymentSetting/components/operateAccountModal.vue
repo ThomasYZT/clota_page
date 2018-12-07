@@ -44,8 +44,8 @@
 </template>
 
 <script>
-    import delModal from '../../../../components/delModal/index';
-    import ajax from '../../../../api/index';
+    import delModal from '@/components/delModal/index';
+    import ajax from '@/api/index';
     export default {
         components: {
             delModal

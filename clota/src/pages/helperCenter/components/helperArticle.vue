@@ -10,7 +10,8 @@
 </template>
 
 <script>
-    import noDataTip from '../../../components/noDataTip/noData-tip'
+    import noDataTip from '../../../components/noDataTip/noData-tip';
+    import ajax from '@/api/index';
     export default {
         props : {
             //帮助信息
@@ -25,9 +26,34 @@
             noDataTip
         },
         data () {
-            return {};
+            return {
+                pageContent : {}
+            };
         },
-        methods : {}
+        methods : {
+            /**
+             * 根据id查询页面信息
+             */
+            findPageInfoById () {
+                ajax.post('findPageInfoById', {
+                    id : this.pageInfo.id
+                }).then(res => {
+                    if (res.success) {
+                        this.pageContent = res.data ? res.data : {};
+                    } else {
+                        this.pageContent = {};
+                    }
+                })
+            }
+        },
+        watch : {
+            pageInfo : {
+                handler () {
+                    this.findPageInfoById();
+                },
+                deep : true,
+            }
+        }
     };
 </script>
 

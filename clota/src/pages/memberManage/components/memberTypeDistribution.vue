@@ -46,7 +46,7 @@
 
 <script>
 
-    import vueEcharts from '../../../components/vueEcharts/eCharts.vue';
+    import vueEcharts from '@/components/vueEcharts/eCharts.vue';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
 

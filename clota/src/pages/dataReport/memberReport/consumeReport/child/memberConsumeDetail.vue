@@ -62,11 +62,11 @@
 </template>
 
 <script>
-    import tableCom from '../../../../../components/tableCom/tableCom';
-    import ajax from '../../../../../api/index';
+    import tableCom from '@/components/tableCom/tableCom';
+    import ajax from '@/api/index';
     import { memberConsumeDetailHead } from '../../tableHeadConfig';
-    import lifeCycleMixins from '../../../../../mixins/lifeCycleMixins';
-    import breadCrumbHead from '../../../../../components/breadCrumbHead/index';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins';
+    import breadCrumbHead from '@/components/breadCrumbHead/index';
     export default {
         mixins : [lifeCycleMixins],
         components : {

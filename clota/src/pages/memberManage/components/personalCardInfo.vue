@@ -41,7 +41,7 @@
 
 <script>
     import { getConfig } from './histogramConfig';
-    import vueEcharts from '../../../components/vueEcharts/eCharts.vue';
+    import vueEcharts from '@/components/vueEcharts/eCharts.vue';
     import ajax from '@/api/index.js';
 
     export default {

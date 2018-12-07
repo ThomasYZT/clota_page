@@ -51,9 +51,9 @@
 </template>
 
 <script>
-    import tableCom from '../../../../../components/tableCom/tableCom';
+    import tableCom from '@/components/tableCom/tableCom';
     import { consumeRecordHead } from '../../tableHeadConfig';
-    import ajax from '../../../../../api/index';
+    import ajax from '@/api/index';
     export default {
         components : {
             tableCom

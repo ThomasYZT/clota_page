@@ -105,11 +105,11 @@
 </template>
 
 <script>
-    import common from '../../../../../assets/js/common';
+    import common from '@/assets/js/common';
     import filterHead from '../../components/filterHead';
-    import tableCom from '../../../../../components/tableCom/tableCom';
+    import tableCom from '@/components/tableCom/tableCom';
     import { consumeHead } from '../../tableHeadConfig';
-    import ajax from '../../../../../api/index';
+    import ajax from '@/api/index';
     import detailModal from '../components/detailModal';
     export default {
         props : {

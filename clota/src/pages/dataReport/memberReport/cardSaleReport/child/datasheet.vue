@@ -93,11 +93,11 @@
 </template>
 
 <script>
-    import common from '../../../../../assets/js/common';
+    import common from '@/assets/js/common';
     import filterHead from '../../components/filterHead';
-    import tableCom from '../../../../../components/tableCom/tableCom';
+    import tableCom from '@/components/tableCom/tableCom';
     import { memberCardHead } from '../../tableHeadConfig';
-    import ajax from '../../../../../api/index';
+    import ajax from '@/api/index';
     export default {
         props : {
             cardTypeList : {
