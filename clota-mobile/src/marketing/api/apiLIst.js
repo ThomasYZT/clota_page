@@ -47,4 +47,6 @@ export default {
     'market_createIMGValidCode' : '/market/marketUser/createIMGValidCode',
     //校验地理位置信息
     'market_checkMarketForbidden' : '/market/marketUser/checkMarketForbidden',
+    //查询用户所属类别信息
+    'market_queryUserTypeForReset' : '/market/marketUser/queryUserTypeForReset',
 };

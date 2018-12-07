@@ -53,6 +53,11 @@
                      label-width="150px"
                      :placeholder="$t('enterCode')">
             </x-input>
+            <popup-radio v-show="stage === 3"
+                         :title="$t('所属类别')"
+                         :options="typeList"
+                         v-model="formData.typeInfo">
+            </popup-radio>
             <x-input v-show="stage === 3"
                      :title="$t('设置新密码')"
                      v-model.trim="formData.password"
@@ -100,14 +105,18 @@
                     //输入的密码
                     password : '',
                     //再次输入的密码
-                    passwordAgain : ''
+                    passwordAgain : '',
+                    //选择的所属类别
+                    typeInfo : ''
                 },
                 //是否正在计时
                 isTiming : false,
                 //计时时间
                 time : 60,
                 //阶段
-                stage : 1
+                stage : 1,
+                //所属类别列表
+                typeList : []
             };
 		},
 		methods : {
@@ -156,6 +165,7 @@
                         this.stage += 1;
                     });
                 } else if (this.stage === 2) {
+                    this.queryUserTypeList();
                     this.validatePhone().then(() => {
                         return this.validateCode();
                     }).then(() => {
@@ -291,13 +301,10 @@
                     idno : this.formData.idNum,
                     mobile : this.formData.phoneNum,
                     newPassword : MD5(this.formData.password).toString(),
-                    typeId : this.marketTypeId,
+                    typeId : this.formData.typeInfo,
                     orgId : this.marketOrgId,
                 }).then(res => {
                     if (res.success) {
-                        this.$vux.toast.show({
-                            text : this.$t('operateSuc',{ msg : this.$t('重置密码') }),
-                        });
                         this.$router.push({
                             name : 'marketingResetPasswordSuc',
                             params : {
@@ -341,7 +348,59 @@
                         });
                     }
                 });
-            }
+            },
+            /**
+             * 查询用户所属类别列表
+             */
+            queryUserTypeList () {
+                ajax.post('market_queryUserTypeForReset',{
+                    phone : this.formData.phoneNum,
+                    idno : this.formData.idNum,
+                    orgId : this.marketOrgId
+                }).then(res => {
+                    if (res.success) {
+                        this.typeList = res.data ? res.data.map(item => {
+                            return {
+                                key : item.id,
+                                value : item.typeName
+                            };
+                        }) : [];
+                        if (this.typeList.length > 0) {
+                            this.formData.typeInfo = this.typeList[0]['key'];
+                        }
+                    } else {
+                        this.typeList = [];
+                    }
+                });
+            },
+            /**
+             * 获取组织信息
+             * @param{String} orgCode 组织code
+             */
+            queryOrgInfo (orgCode) {
+                ajax.post('market_toLoginPage',{
+                    orgCode : orgCode
+                }).then(res => {
+                    if (res.success) {
+                        this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
+                        this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
+                    } else {
+                        this.$store.commit('marketUpdateCompanyName','');
+                        this.$store.commit('marketUpdateOrgId','');
+                    }
+                }).finally(() => {
+                    this.$store.commit('marketUpdateCompanyCode',orgCode);
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由信息
+             */
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    this.queryOrgInfo(params.companyCode);
+                }
+            },
         },
         computed : {
             ...mapGetters({
@@ -351,6 +410,11 @@
                 marketTypeId : 'marketTypeId',
                 marketINgCompanyCode : 'marketINgCompanyCode',
             })
+        },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.getParams(to.query);
+            });
         }
 	};
 </script>
@@ -425,6 +489,15 @@
             max-width: calc(100% - 1.466667rem);
             text-align: left;
             margin: 12px auto 0;
+        }
+
+
+        /deep/ .weui-cell{
+            height: 50px;
+
+            &:before{
+                top : 50px;
+            }
         }
     }
 </style>

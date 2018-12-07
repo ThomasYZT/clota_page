@@ -36,7 +36,9 @@
                          :placeholder="$t('inputField',{ field : $t('validCode') })">
                     <img slot="right-full-height"
                          class="validate"
-                         :src="imgCode" alt="">
+                         :src="imgCodeImfo.code"
+                         alt=""
+                         @click="createIMGValidCode">
                 </x-input>
                 <div class="regret-pass" >
                     <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
@@ -89,7 +91,10 @@
                 //是否显示选择类别模态框
                 showTypeChosedModal : false,
                 //图形验证码
-                imgCode : ''
+                imgCodeImfo : {
+                    code : '',
+                    key : ''
+                }
             };
         },
         methods : {
@@ -234,6 +239,7 @@
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
                     this.queryOrgInfo(params.companyCode);
+                    this.createIMGValidCode();
                 }
             },
             /**
@@ -244,6 +250,8 @@
                     phone : this.formData.phoneNum,
                     password : MD5(this.formData.password).toString(),
                     orgId : this.marketOrgId,
+                    imgkey : this.imgCodeImfo.key,
+                    imgCode : this.imgCodeImfo.code
                 }).then(res => {
                     if (!res.success && res.code === 'MK013') {
                         this.userTypeList = res.data ? res.data.map(item => {
@@ -265,6 +273,7 @@
                             text : this.$t('errorMsg.' + res.code),
                             type : 'cancel'
                         });
+                        this.setLoginErrNum();
                     } else {
                         if (res.data && res.data.length === 1) {
                             this.$store.commit('marketUpdateTypeId',res.data[0]['id']);
@@ -276,6 +285,7 @@
                                 type : 'cancel'
                             });
                         }
+                        this.setLoginErrNum();
                     }
                 });
             },
@@ -297,8 +307,8 @@
                     password : MD5(this.formData.password).toString(),
                     typeId : this.marketTypeId,
                     orgId : this.marketOrgId,
-                    imgkey : 3,
-                    imgCode : this.formData.code
+                    imgkey : this.imgCodeImfo.key,
+                    imgCode : this.imgCodeImfo.code
                 }).then(res => {
                     if (res.success) {
                         this.$store.commit('marketUpdateToken',res.data);
@@ -329,9 +339,11 @@
             createIMGValidCode () {
                 ajax.post('market_createIMGValidCode').then(res => {
                     if (res.success) {
-                        this.imgCode = res.data ? res.data : '';
+                        this.imgCodeImfo.code = res.data ? 'data:img/jpg;base64,' + res.data.code : '';
+                        this.imgCodeImfo.key = res.data ? res.data.key : '';
                     } else {
-                        this.imgCode = '';
+                        this.imgCodeImfo.code = '';
+                        this.imgCodeImfo.key = '';
                     }
                 });
             }

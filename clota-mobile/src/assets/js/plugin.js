@@ -36,6 +36,7 @@ import {
     Datetime,
     InlineXNumber,
     AlertPlugin,
+    PopupRadio,
     DatetimePlugin
 } from 'vux';
 
@@ -92,6 +93,7 @@ plugin.install = function (Vue, options) {
     Vue.component('TabbarItem', TabbarItem);
     Vue.component('Datetime', Datetime);
     Vue.component('InlineXNumber', InlineXNumber);
+    Vue.component('PopupRadio', PopupRadio);
     Vue.use(DatetimePlugin);
     Vue.use(AlertPlugin);
 
