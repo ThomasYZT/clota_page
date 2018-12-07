@@ -175,6 +175,7 @@ export const ajaxMethods = {
      * @returns {promise} 返回promise对象
      */
     get (urlKey, paramObj) {
+        console.log(this)
         let myConfig = {
             params : paramObj,
             headers : {
