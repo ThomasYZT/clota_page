@@ -1,7 +1,7 @@
 /**
  * Created by Sasha on 2018/6/1.
  */
-import api from './apiList';
+import api from './apiList.js';
 import axios from 'axios';
 import config from '@/config/index.js';
 
