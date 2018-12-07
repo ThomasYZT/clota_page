@@ -35,6 +35,7 @@ import {
     TabbarItem,
     Datetime,
     InlineXNumber,
+    AlertPlugin,
     DatetimePlugin
 } from 'vux';
 
@@ -92,6 +93,7 @@ plugin.install = function (Vue, options) {
     Vue.component('Datetime', Datetime);
     Vue.component('InlineXNumber', InlineXNumber);
     Vue.use(DatetimePlugin);
+    Vue.use(AlertPlugin);
 
     Vue.directive('transfer-dom', TransferDom);
     Vue.directive('click-outside', ClickOutsideDirective);

@@ -82,9 +82,9 @@
              * 下载图片
              */
             downLoadImg () {
-                this.$nextTick(() =>{
-                    let imgIndex = this.$refs.previewer.getCurrentIndex();
-                    window.open(this.prevList[imgIndex]['src']);
+                this.$vux.alert.show({
+                    title : this.$t('notick'),
+                    content : this.$t('长按保存图片哦')
                 });
             },
             /**
