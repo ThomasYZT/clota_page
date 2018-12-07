@@ -36,10 +36,12 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <Tooltip theme="light" placement="right" transfer>
+                        <Tooltip placement="right" transfer>
                             <span>{{scope.row.posterName | contentFilter}}</span>
                             <div slot="content" class="tooltip-content">
-                                <img :src="scope.row.posterUrl">
+                                <div class="img-wrapper">
+                                    <img :src="scope.row.posterUrl">
+                                </div>
                             </div>
                         </Tooltip>
                     </template>
@@ -215,13 +217,23 @@
     }
 
     .tooltip-content {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 340px;
         height: 185px;
         line-height: 185px;
         background-color: #fff;
         border-radius: 8px;
-        img {
-            width: 100%;
+        .img-wrapper {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #fff;
+            border: 1px solid #DFE3E9;
+            box-shadow: #C2C6CB 0px 0px 10px;
+            img {
+                width: 100%;
+            }
         }
     }
 
@@ -239,6 +251,4 @@
             color: $color_red;
         }
     }
-
-
 </style>
