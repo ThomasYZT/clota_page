@@ -44,7 +44,9 @@
                     idNum : ''
                 },
                 //当前注册的阶段
-                stage : '1'
+                stage : '1',
+                //公司code
+                companyCode : ''
             };
         },
         methods : {
@@ -131,6 +133,7 @@
             getParms (params) {
                 if (params && Object.keys(params).length > 0) {
                     this.getRegisterParams(params.Ucid,params.Ycode);
+                    this.companyCode = params.companyCode;
                 }
             }
         },

@@ -1,7 +1,7 @@
 /**
  * Created by Sasha on 2018/6/1.
  */
-import api from './apiList.js';
+// import api from './apiList.js';
 import axios from 'axios';
 import config from '@/config/index.js';
 
@@ -45,7 +45,7 @@ export default {
     getToken () {
         return localStorage.getItem('marketToken') ? localStorage.getItem('marketToken') : '';
     },
-    api : api,
+    api : require('./apiList.js'),
     instance : instance,
     ...ajaxMethods
 };

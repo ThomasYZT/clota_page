@@ -1,5 +1,5 @@
 
-//会员系统接口
+//营销系统接口
 export default {
     //获取微信配置信息
     getWxConfig : '/wechat/mp/getConfig',
