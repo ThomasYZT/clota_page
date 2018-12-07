@@ -45,7 +45,7 @@ export default {
     getToken () {
         return localStorage.getItem('marketToken') ? localStorage.getItem('marketToken') : '';
     },
-    api : require('./apiList.js'),
+    // api : require('./apiList.js'),
     instance : instance,
     ...ajaxMethods
 };
