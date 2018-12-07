@@ -4,14 +4,16 @@
 -->
 <template>
     <div class="helper-center">
-
+        <menuTree></menuTree>
     </div>
 </template>
 
 <script>
-
+    import menuTree from './components/menuTree'
     export default {
-        components : {},
+        components : {
+            menuTree
+        },
         data () {
             return {};
         },
