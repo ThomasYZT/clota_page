@@ -83,7 +83,7 @@
              */
             downLoadImg () {
                 this.$vux.alert.show({
-                    title : this.$t('notick'),
+                    title : this.$t('提示'),
                     content : this.$t('长按保存图片哦')
                 });
             },
