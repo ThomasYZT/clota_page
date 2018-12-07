@@ -49,4 +49,6 @@ export default {
     'market_checkMarketForbidden' : '/market/marketUser/checkMarketForbidden',
     //查询用户所属类别信息
     'market_queryUserTypeForReset' : '/market/marketUser/queryUserTypeForReset',
+    //查询产品销售规则
+    'market_findProductSaleRules' : '/market/marketUser/findProductSaleRules',
 };
