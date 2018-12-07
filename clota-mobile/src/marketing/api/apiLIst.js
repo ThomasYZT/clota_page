@@ -1,6 +1,6 @@
 
 //会员系统接口
-const apiList = {
+export default {
     //获取微信配置信息
     getWxConfig : '/wechat/mp/getConfig',
     //获取验证码
@@ -48,5 +48,3 @@ const apiList = {
     //校验地理位置信息
     'market_checkMarketForbidden' : '/market/marketUser/checkMarketForbidden',
 };
-
-export default apiList;
