@@ -52,6 +52,8 @@
                                        :format="['jpeg','png','bmp']"
                                        @remove-img="removeImg"
                                        @upload-success="uploadSuccess"></uploadImg>
+
+                            <span class="format-info">{{$t('colonSetting', { key : $t('imgFormat') })}} PNG/JPG/BMP</span>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -198,4 +200,9 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+
+    .format-info {
+        font-size: 12px;
+        color: #F7981C;
+    }
 </style>

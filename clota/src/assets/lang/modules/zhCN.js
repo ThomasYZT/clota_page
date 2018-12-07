@@ -1961,4 +1961,5 @@ export default {
     'companyWorkbench' : '公司/单位工作台',
     'goToHelperCenter' : '前往帮助中心',
     'helperCenter' : '帮助中心',
+    'imgFormat' : '图片格式',
 }
