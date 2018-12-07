@@ -123,14 +123,24 @@ export default new Vuex.Store({
          */
         getLocation (store) {
             if (store.getters.isWeixin) {
-                console.log('abc')
                 Vue.prototype.$weixin.getLocation({
                     success (res) {
                         console.log(res);
                     }
                 });
             }
-        }
+        },
+        /**
+         * vuex错误提示信息
+         * @param{Object} store
+         * @param{String} errCode 错误码
+         */
+        showToast (store, errCode) {
+            store.state.errCode = errCode;
+            setTimeout(() => {
+                store.state.errCode = '';
+            },100);
+        },
     }
 });
 

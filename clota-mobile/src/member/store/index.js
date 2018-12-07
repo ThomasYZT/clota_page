@@ -189,16 +189,5 @@ export const memberActions = {
                 reject();
             });
         });
-    },
-    /**
-     * vuex错误提示信息
-     * @param{Object} store
-     * @param{String} errCode 错误码
-     */
-    showToast (store, errCode) {
-        store.state.errCode = errCode;
-        setTimeout(() => {
-            store.state.errCode = '';
-        },100);
-    },
+    }
 };

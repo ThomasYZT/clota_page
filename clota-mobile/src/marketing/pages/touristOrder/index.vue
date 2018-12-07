@@ -127,7 +127,6 @@
         computed : {
             ...mapGetters({
                 marketOrgId : 'marketOrgId',
-                marketLevelId : 'marketLevelId',
                 marketTypeId : 'marketTypeId',
             })
         },

@@ -2,14 +2,16 @@
 
 <template>
     <div class="marketing">
+        <el-amap :plugin="plugin"
+                 v-if="marketIsGettingLocation"
+                 class="amap-demo">
+        </el-amap>
         <div class="view-content" :class="{ 'full-height' : !showTabbar }">
             <router-view>
-
             </router-view>
         </div>
         <tabbar v-if="showTabbar" @on-item-click="toRouter">
-            <tabbar-item badge="2"
-                         :selected="selectedTabbar === 'product'"
+            <tabbar-item :selected="selectedTabbar === 'product'"
                          @on-item-click="toRouter('marketingProduct')">
                 <div slot="icon">
                     <img v-if="selectedTabbar === 'product'"
@@ -23,8 +25,7 @@
                 </div>
                 <span slot="label">产品</span>
             </tabbar-item>
-            <tabbar-item show-dot
-                         :selected="selectedTabbar === 'order'"
+            <tabbar-item :selected="selectedTabbar === 'order'"
                          @on-item-click="toRouter('marketingOrder')">
                 <img v-if="selectedTabbar === 'order'"
                      slot="icon"
@@ -49,6 +50,11 @@
                 <span slot="label">我的</span>
             </tabbar-item>
         </tabbar>
+        <loading
+            v-transfer-dom
+            :show="marketIsGettingLocation"
+            :text="$t('获取位置信息中')">
+        </loading>
     </div>
 </template>
 
@@ -57,7 +63,35 @@
     import ajax from '@/marketing/api/index';
     export default {
         data () {
-            return {};
+            let self = this;
+            return {
+                plugin : [{
+                    enableHighAccuracy : true,//是否使用高精度定位，默认:true
+                    pName : 'Geolocation',
+                    events : {
+                        init (o) {
+                            // o 是高德地图定位插件实例
+                            o.getCurrentPosition((status, result) => {
+                                if (result && result.position) {
+                                    self.$store.commit('updateLocationInfo',{
+                                        location : result.formattedAddress,
+                                        longitude : result.position.lng,
+                                        latitude : result.position.lat,
+                                    });
+                                    self.$nextTick();
+                                } else {
+                                    self.$store.commit('updateLocationInfo',{
+                                        location : '',
+                                        longitude : '',
+                                        latitude : '',
+                                    });
+                                }
+                                self.$store.commit('marketUpdateIsGettingLocation',false);
+                            });
+                        }
+                    }
+                }]
+            };
         },
         methods : {
             /**
@@ -79,7 +113,7 @@
                     }).then(res => {
                         if (res.success) {
                             this.$wechat.config({
-                                debug : true,
+                                // debug : true,
                                 appId : res.data.appId,
                                 timestamp : res.data.timestamp,
                                 nonceStr : res.data.nonceStr,
@@ -113,7 +147,8 @@
                 return this.$route && this.$route.meta ? this.$route.meta.menuBar : '';
             },
             ...mapGetters({
-                isWeixin : 'isWeixin'
+                isWeixin : 'isWeixin',
+                marketIsGettingLocation : 'marketIsGettingLocation',
             })
         }
     };
@@ -122,6 +157,10 @@
     @import '~@/assets/scss/base';
     .marketing{
         @include block_outline();
+
+        .amap-demo{
+            display: none;
+        }
 
         .tabbar-img{
             @include block_outline(25px,25px);

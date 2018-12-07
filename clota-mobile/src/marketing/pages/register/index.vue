@@ -77,7 +77,6 @@
                     idno : this.formData.idNum,
                     typeId : this.marketTypeId,
                     orgId : this.marketOrgId,
-                    levelId : this.marketLevelId,
                     password : MD5(this.formData.password).toString(),
                 }).then(res => {
                     if (res.success) {
@@ -138,7 +137,6 @@
         computed : {
             ...mapGetters({
                 marketOrgId : 'marketOrgId',
-                marketLevelId : 'marketLevelId',
                 marketTypeId : 'marketTypeId',
                 marketTypeName : 'marketTypeName',
             })

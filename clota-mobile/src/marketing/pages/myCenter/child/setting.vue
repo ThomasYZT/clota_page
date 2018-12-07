@@ -55,6 +55,8 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    import ajax from '@/marketing/api/index';
+
     export default {
         data () {
             return {

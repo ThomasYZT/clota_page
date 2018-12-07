@@ -36,7 +36,7 @@
                          :placeholder="$t('inputField',{ field : $t('validCode') })">
                     <img slot="right-full-height"
                          class="validate"
-                         src="../../../assets/images/icon-no-data.svg" alt="">
+                         :src="imgCode" alt="">
                 </x-input>
                 <div class="regret-pass" >
                     <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
@@ -87,7 +87,9 @@
                 //当前用户所属列表
                 userTypeList : [],
                 //是否显示选择类别模态框
-                showTypeChosedModal : false
+                showTypeChosedModal : false,
+                //图形验证码
+                imgCode : ''
             };
         },
         methods : {
@@ -295,6 +297,8 @@
                     password : MD5(this.formData.password).toString(),
                     typeId : this.marketTypeId,
                     orgId : this.marketOrgId,
+                    imgkey : 3,
+                    imgCode : this.formData.code
                 }).then(res => {
                     if (res.success) {
                         this.$store.commit('marketUpdateToken',res.data);
@@ -318,13 +322,24 @@
                         this.setLoginErrNum();
                     }
                 });
+            },
+            /**
+             * 获取图形验证码
+             */
+            createIMGValidCode () {
+                ajax.post('market_createIMGValidCode').then(res => {
+                    if (res.success) {
+                        this.imgCode = res.data ? res.data : '';
+                    } else {
+                        this.imgCode = '';
+                    }
+                });
             }
         },
         computed : {
             ...mapGetters({
                 companyName : 'companyName',
                 marketOrgId : 'marketOrgId',
-                marketLevelId : 'marketLevelId',
                 marketTypeId : 'marketTypeId',
                 marketINgCompanyCode : 'marketINgCompanyCode',
             })

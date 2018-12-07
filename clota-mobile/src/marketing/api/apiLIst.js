@@ -43,6 +43,10 @@ const apiList = {
     'market_queryUserType' : '/market/marketUser/queryUserType',
     //获取登录信息
     'market_getLoginInfo' : '/market/marketUser/getLoginInfo',
+    //获取图形验证码
+    'market_createIMGValidCode' : '/market/marketUser/createIMGValidCode',
+    //校验地理位置信息
+    'market_checkMarketForbidden' : '/market/marketUser/checkMarketForbidden',
 };
 
 export default apiList;
