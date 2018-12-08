@@ -24,6 +24,7 @@
         min-width: $content_min_width;
         overflow: auto;
         background: $color-fff;
+
         border-radius: 4px;
     }
 </style>
