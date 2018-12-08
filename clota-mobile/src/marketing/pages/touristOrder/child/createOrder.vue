@@ -66,7 +66,7 @@
                 {{$t('colonSetting',{ key : $t('总额') })}}
                 <span class="money">{{totalAmount | moneyFilter(2,'￥') | contentFilter}}</span>
             </div>
-            <div class="create-btn">{{$t('下单')}}</div>
+            <div class="create-btn" @click="createOrder">{{$t('下单')}}</div>
         </div>
 
         <!--购票须知模态框-->
@@ -80,6 +80,8 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ticketNotice from '../components/ticketNotice';
     import ajax from '@/marketing/api/index';
+    import { validator } from 'klwk-ui';
+
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -130,6 +132,109 @@
                         this.productPolicy = [];
                     }
                 });
+            },
+            /**
+             * 校验证件类型
+             * @return {Promise<any>}
+             */
+            validateIdType () {
+                return new Promise((resolve,reject) => {
+                    if ( this.acceptIdType.length > 0 && this.formData.idType === '') {
+                        this.$vux.toast.text(this.$t('请选择证件类型'));
+                        reject();
+                    } else {
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验证件号
+             * @return {Promise<any>}
+             */
+            validateIdNum () {
+                return new Promise((resolve,reject) => {
+                    if ( this.acceptIdType.length > 0 && this.formData.idNum === '') {
+                        this.$vux.toast.text(this.$t('请输入证件号'));
+                        reject();
+                    } else if ( this.acceptIdType.length > 0 && this.formData.idNum !== '') {
+                        if (this.formData.idNum.length > 50) {
+                            this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('idCard'),length : 50 }));
+                        } else {
+                            resolve();
+                        }
+                    } else {
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验姓名
+             * @return {Promise<any>}
+             */
+            validateName () {
+                return new Promise ((resolve,reject) => {
+                    if (this.formData && this.formData.name ) {
+                        if (this.formData.name.length > 20) {
+                            this.$vux.toast.text(this.$t('maxLengthErr',{ field : this.$t('name'),length : 20 }));
+                            reject();
+                        } else {
+                            resolve();
+                        }
+                    } else {
+                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('name') }));
+                        reject();
+                    }
+                });
+            },
+            /**
+             * 校验手机号是否正确
+             * @return{Function} 校验结果
+             */
+            validatePhone () {
+                return new Promise((resolve,reject) => {
+                    if (this.formData.phone === '') {
+                        this.$vux.toast.text(this.$t('pleaseEnterMobile'));
+                        reject();
+                    } else {
+                        if (!validator.isMobile(this.formData.phone)) {
+                            this.$vux.toast.text(this.$t('pleaseEnterRightMobile'));
+                            reject();
+                        } else {
+                            if (this.originPhone === this.formData.phone) {
+                                this.$vux.toast.text(this.$t('twPhoneError'));
+                            } else {
+                                resolve();
+                            }
+                        }
+                    }
+                });
+            },
+            /**
+             * 下单
+             */
+            createOrder () {
+                this.validateIdType().then(() => {
+                    return this.validateIdNum();
+                }).then(() => {
+                    return this.validateName();
+                }).then(() => {
+                    return this.validatePhone();
+                }).then(() => {
+
+                });
+            },
+            /**
+             * 校验是否能下单
+             */
+            validateOrderIsRight () {
+                ajax.post('market_checkOrderBeforePay',{
+                    productInfos : '',
+                    orderVisitorProductVos : '',
+                    playDate : this.formData.date,
+                    saleRuleVos : '',
+                }).then(res => {
+
+                });
             }
         },
         computed : {
@@ -153,15 +258,19 @@
             },
             //支持的证件类型
             acceptIdType () {
-                if (this.productPolicy && this.productPolicy.acceptIdType) {
-                    return this.productPolicy.acceptIdType.split(',').map(item => {
-                        return {
-                            key : this.$t(item),
-                            value : item,
-                        };
-                    });
-                } else {
+                if (this.productPolicy && this.productPolicy.needId === 'noRequired') {
                     return [];
+                } else {
+                    if (this.productPolicy && this.productPolicy.acceptIdType) {
+                        return this.productPolicy.acceptIdType.split(',').map(item => {
+                            return {
+                                key : item,
+                                value : this.$t(item),
+                            };
+                        });
+                    } else {
+                        return [];
+                    }
                 }
             },
             //最大选择的产品数量

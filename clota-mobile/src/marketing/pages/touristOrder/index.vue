@@ -104,7 +104,7 @@
             queryProductList () {
                 return ajax.post('market_queryMarketProductsForVisitor',{
                     playDate : this.activeDate.format('yyyy-MM-dd'),
-                    marketUserId : '1070973507824914432',
+                    marketUserId : '1067659364082520064',
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
