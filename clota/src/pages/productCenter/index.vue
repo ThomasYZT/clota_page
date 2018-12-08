@@ -21,6 +21,7 @@
 
     .container{
         @include block_outline();
+
         min-width: $content_min_width;
         overflow: auto;
         background: $color-fff;
