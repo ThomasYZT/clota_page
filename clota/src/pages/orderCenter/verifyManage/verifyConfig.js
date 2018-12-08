@@ -197,3 +197,27 @@ export const orderVerifyHead = [
         enWidth: 120,
     }
 ];
+
+//取票状态列表
+export const pickTicketStatusList = [
+    {
+        label : 'haveTickets', //已取票
+        value : 'true'
+    },
+    {
+        label : 'noHaveTickets', //未取票
+        value : 'false'
+    },
+];
+
+//核销状态列表
+export const verifyStatus = [
+    {
+        label : 'consumed', //已核销
+        value : 'true'
+    },
+    {
+        label : 'noConsumed', //未核销
+        value : 'false'
+    },
+];

@@ -1,8 +1,9 @@
 /**
  * 预定中心的一些公用功能方法
  */
-import {orderSyncStatus, batchAudit} from './auditCenter/auditConfig';
-import {notDistributorChannelList, payStatusList, takeTicketStatusList, refundStatusList, rescheduleStatus, verifyStatusList, smsStatusList} from '@/assets/js/constVariable';
+import { orderSyncStatus, batchAudit } from './auditCenter/auditConfig';
+import { pickTicketStatusList, verifyStatus } from './verifyManage/verifyConfig';
+import { notDistributorChannelList, payStatusList, takeTicketStatusList, refundStatusList, rescheduleStatus, verifyStatusList, smsStatusList } from '@/assets/js/constVariable';
 
 /**
  * 下单渠道的code转换
@@ -49,7 +50,7 @@ export const transSyncStatus = (status) => {
  * @returns {string}
  */
 export const transPickStatus = (status) => {
-    let currentStatus = takeTicketStatusList.find((item, i) => {
+    let currentStatus = [...takeTicketStatusList, ...pickTicketStatusList].find((item, i) => {
         return status === item.value;
     });
 
@@ -89,7 +90,7 @@ export const transRescheduleStatus = (status) => {
  * @returns {string}
  */
 export const transVerifyStatus = (status) => {
-    let currentStatus = verifyStatusList.find((item, i) => {
+    let currentStatus = [...verifyStatusList, ...verifyStatus].find((item, i) => {
         return status === item.value;
     });
 
@@ -184,3 +185,7 @@ export const canAlterTicket = (orderOrgType,rowData) => {
     }
     return true;
 };
+
+export const auditCenter = (orderOrgType,rowData) => {
+
+}

@@ -1865,4 +1865,5 @@ export default {
     'productCenter.editOrAddPolicyTip' : '以下产品为不可用状态，请点击确认后再次提交：',
     'product.needId.one' : '每个证件可预定多张票',
     'product.needId.more' : '每个证件只能预定一张票',
+    'waitToSync' : '待同步',
 }

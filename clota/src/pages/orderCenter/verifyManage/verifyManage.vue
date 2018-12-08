@@ -166,7 +166,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(transSyncStatus(scope.row.syncStatus))}}
+                            {{$t(transSyncStatus(scope.row.syncStatus))  | contentFilter}}
                         </template>
                     </el-table-column>
 
@@ -276,7 +276,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(transRefundStatus(scope.row.refundStatus))}}
+                            {{$t('order.' + scope.row.refundStatus) | contentFilter}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -286,7 +286,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(transRescheduleStatus(scope.row.rescheduleStatus))}}
+                            {{$t('order.' + scope.row.rescheduleStatus) | contentFilter}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -296,7 +296,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(transSyncStatus(scope.row.syncStatus))}}
+                            {{$t(transSyncStatus(scope.row.syncStatus)) | contentFilter}}
                         </template>
                     </el-table-column>
 
@@ -330,7 +330,7 @@
     import {orderTicketHead, orderVerifyHead} from './verifyConfig';
     import ajax from '@/api/index'
     import verifyModal from './child/verifyModal.vue';
-    import {transOrderOrg, transSyncStatus, transPickStatus, transRefundStatus, transRescheduleStatus, transVerifyStatus, transSMSStatus} from '../commFun';
+    import {transOrderOrg, transSyncStatus, transSMSStatus, transVerifyStatus, transPickStatus} from '../commFun';
 
     export default {
         components: {tableCom, noDataTip, verifyModal},
@@ -429,15 +429,11 @@
             // 同步状态code转换
             transSyncStatus: transSyncStatus,
             // 取票状态code转换
-            transPickStatus: transPickStatus,
-            // 退票状态code转换
-            transRefundStatus: transRefundStatus,
-            // 改签状态code转换
-            transRescheduleStatus: transRescheduleStatus,
+            transPickStatus : transPickStatus,
             // 短信发送状态code转换
             transSMSStatus: transSMSStatus,
             // 核销状态code转换
-            transVerifyStatus: transVerifyStatus,
+            transVerifyStatus : transVerifyStatus,
             /**
              * 设置表格每一行的CheckBox是否可勾选状态（verifyRule: 'true' 表示可勾选，否则disabled不可勾选 置灰）
              * @param row
