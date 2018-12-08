@@ -20,6 +20,11 @@ export const productColumn = [
         title : 'stockType', // 限制库存
         minWidth : 100,
         field : 'stockType'
+    },
+    {
+        title : 'status', // 状态
+        minWidth : 100,
+        field : 'productStatus'
     }
 ];
 

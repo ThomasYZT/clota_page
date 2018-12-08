@@ -53,7 +53,7 @@ export const disableHeadConfig = [
     {
         title : 'salePolicyName', // 销售政策名称
         minWidth : 190,
-        field : 'updatedTime'
+        field : 'name'
     },
     {
         title : 'status', // 状态

@@ -31,9 +31,10 @@
                         show-overflow-tooltip
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span v-if="scope.row.auditStatus === 'enabled'">{{$t('startingUse')}}</span>
-                            <span v-else-if="scope.row.auditStatus === 'auditing'">{{$t('checking')}}</span>
-                            <span v-else-if="scope.row.auditStatus === 'rejected'">{{$t('rejected')}}</span>
+                            <span v-if="scope.row.auditStatus === 'enabled'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
+                            <span v-else-if="scope.row.auditStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
+                            <span v-else-if="scope.row.auditStatus === 'rejected'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
+                            <span v-else-if="scope.row.auditStatus === 'not_enabled'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
                             <span v-else>-</span>
                         </template>
                     </el-table-column>
@@ -127,6 +128,31 @@
             width: 100%;
             line-height: 50px;
             color: #333;
+        }
+
+        .status-recharge {
+            position: relative;
+            padding-left: 14px;
+            &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                width: 6px;
+                height: 6px;
+                border-radius: 50px;
+            }
+        }
+        .pass:after {
+            background: $color_green;
+        }
+        .pending:after {
+            background: $color_BBC5D5;
+        }
+        .reject:after {
+            background: $color_red;
         }
     }
 </style>
