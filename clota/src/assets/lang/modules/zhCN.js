@@ -1965,4 +1965,5 @@ export default {
     'finance.pending_audit' : '提交充值申请',
     'finance.rejected' : '申请驳回',
     'finance.valid' : '申请通过',
+    'productCenter.addPolicyMarketingTip' : '说明：各营销类别的销售用户只允许销售散客产品。',
 }

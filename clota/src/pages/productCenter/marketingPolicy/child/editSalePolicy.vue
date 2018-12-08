@@ -410,6 +410,7 @@
                                 </el-table-column>
                             </table-com>
                         </Form-item>
+                        <span class="marketing-tip">{{$t('productCenter.addPolicyMarketingTip')}}</span>
                     </div>
                 </div>
 
@@ -1615,7 +1616,10 @@
                     }
 
                 }
-
+                .marketing-tip {
+                    margin-bottom: 10px;
+                    color: $color_yellow;
+                }
             }
 
             .float-right{
