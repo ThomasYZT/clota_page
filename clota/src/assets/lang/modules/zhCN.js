@@ -1969,4 +1969,5 @@ export default {
     'wethereContinueToDisableOrDel' : '是否继续禁用/删除？',
     'wethereSureToDisable' : '是否确认禁用？',
     'productCenter.editOrAddPolicyTip' : '以下产品为不可用状态，请点击确认后再次提交：',
+    'productCenter.addPolicyMarketingTip' : '说明：各营销类别的销售用户只允许销售散客产品。',
 }
