@@ -19,6 +19,10 @@ export default {
     'getCheckItems' : '/organize/getCheckItems',
     //审核操作
     'auditProduct' : '/product/auditProduct',
+    //根据IDS获取产品信息
+    'queryProducts' : '/product/queryProducts',
+    //获取包含该产品的销售政策
+    'getPolicyIncludeProduct' : 'product/getPolicyIncludeProduct',
 
 
     /***********************************销售政策***********************************/

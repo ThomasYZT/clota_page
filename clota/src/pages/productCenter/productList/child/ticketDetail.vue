@@ -289,6 +289,9 @@
         <!--新增备注弹窗-->
         <add-remark-modal ref="addRemarkModal"></add-remark-modal>
 
+        <!-- 禁用提示模态框 -->
+        <disableModal ref="disableModal"></disableModal>
+
     </div>
 </template>
 
@@ -299,6 +302,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import editParkModal from './editParkModal.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
+    import disableModal from '../components/disableModal';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { parkColumn } from './parkConfig';
     import ajax from '@/api/index';
@@ -312,6 +316,7 @@
             tableCom,
             editParkModal,
             addRemarkModal,
+            disableModal
         },
         data () {
             return {
@@ -406,6 +411,23 @@
 
             //审核操作
             auditProduct ( status ) {
+                //当禁用时
+                if (status === 'PRODUCT_DISABLE') {
+                    this.$refs.disableModal.toggle({
+                        type : 'disable',
+                        productId : this.detail.id,
+                        confirmCallback : () => {
+                            this.auditApi( status );
+                        }
+                    });
+                } else {
+                    this.auditApi( status );
+                }
+            },
+            /**
+             *  审核接口
+             */
+            auditApi (status) {
                 ajax.post('auditProduct', {
                     productId : this.detail.id,
                     operType : status,

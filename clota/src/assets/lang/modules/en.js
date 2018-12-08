@@ -1965,5 +1965,8 @@ export default {
     'finance.pending_audit' : '提交充值申请',
     'finance.rejected' : '申请驳回',
     'finance.valid' : '申请通过',
-    'productCenter.addPolicyMarketingTip' : '说明：各营销类别的销售用户只允许销售散客产品。',
+    'productCenter.disableProductTip' : '本产品在以下销售政策中被引用，被禁用或删除后，将在这些政策中被删除：',
+    'wethereContinueToDisableOrDel' : '是否继续禁用/删除？',
+    'wethereSureToDisable' : '是否确认禁用？',
+    'productCenter.editOrAddPolicyTip' : '以下产品为不可用状态，请点击确认后再次提交：',
 }
