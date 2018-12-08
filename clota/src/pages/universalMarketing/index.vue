@@ -19,4 +19,7 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .universal-marketing {
+
+    }
 </style>
