@@ -252,6 +252,7 @@
     .notice{
         font-size: 12px;
         color: #999999;
+        word-break: break-all;
     }
     .footer{
         height: 38px;

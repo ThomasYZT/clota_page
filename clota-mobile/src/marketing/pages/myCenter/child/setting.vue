@@ -118,7 +118,7 @@
                         this.formData.account = data.accountInfo;
                         this.formData.name = data.name;
                         this.formData.name = data.name;
-                        this.formData.idNum = data.idno;
+                        this.formData.idNum = data.idno ? this.dealIdNum(data.idno) : '';
                         this.accountInfo = {
                             account : data.accountInfo,
                             accountType : data.accountType,
@@ -135,6 +135,21 @@
                         this.accountInfo = {};
                     }
                 });
+            },
+            /**
+             * 加密身份证号
+             * @param{String} idNum 身份证号
+             * @param{Number} frontLen 前面不加密的位数
+             * @param{Number} endLen 后面不加密的位数
+             * @return {string}
+             */
+            dealIdNum (idNum,frontLen = 2,endLen = 4) {
+                let len = idNum.length - frontLen - endLen;
+                let xing = '';
+                for (let i = 0; i < len; i++) {
+                    xing += '*';
+                }
+                return idNum.substring(0,frontLen) + xing + idNum.substring(idNum.length - endLen);
             }
         },
         computed : {
