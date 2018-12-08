@@ -264,5 +264,7 @@ export default {
     'errorMsg.MK008' : '营销用户已存在',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'Complete information',
-    'getActivate' : 'Immediately active'
+    'getActivate' : 'Immediately active',
+    'identity' : '身份证',
+    'passport' : '护照',
 };

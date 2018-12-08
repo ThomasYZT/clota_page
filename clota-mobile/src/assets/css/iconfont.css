@@ -56,9 +56,6 @@ body {
     margin-left: -1em;
     color: rgb(255, 255, 255);
 }
-.icon-filter:before {
-    content: "\e92e";
-}
 .icon-not-allow-select:before {
     content: "\e92f";
     color: #f1f4fb;
@@ -196,6 +193,10 @@ body {
 .icon-check-flow1:before {
     content: "\e90c";
     color: #6f62e5;
+}
+.icon-fresh:before {
+    content: "\e931";
+    color: #999;
 }
 .icon-alipay:before {
     content: "\e903";
