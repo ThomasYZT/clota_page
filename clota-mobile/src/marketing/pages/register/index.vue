@@ -44,7 +44,9 @@
                     idNum : ''
                 },
                 //当前注册的阶段
-                stage : '1'
+                stage : '1',
+                //公司code
+                companyCode : ''
             };
         },
         methods : {
@@ -115,12 +117,15 @@
                         this.$store.commit('marketUpdateTypeId',res.data ? res.data.marketTypeId : '');
                         this.$store.commit('marketUpdateTypeName',res.data ? res.data.marketTypeName : '');
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
+                        this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
+                        this.$store.commit('marketUpdateCompanyCode',res.data ? res.data.orgCode : '');
                     } else {
                         this.$store.commit('marketUpdateOrgId','');
                         this.$store.commit('marketUpdateLevelId',marketTypeId);
                         this.$store.commit('marketUpdateTypeId','');
                         this.$store.commit('marketUpdateTypeName','');
                         this.$store.commit('marketUpdateCompanyName','');
+                        this.$store.commit('marketUpdateCompanyCode','');
                     }
                 });
             },
@@ -131,6 +136,7 @@
             getParms (params) {
                 if (params && Object.keys(params).length > 0) {
                     this.getRegisterParams(params.Ucid,params.Ycode);
+                    this.companyCode = params.companyCode;
                 }
             }
         },

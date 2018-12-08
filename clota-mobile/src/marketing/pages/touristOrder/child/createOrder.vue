@@ -22,11 +22,26 @@
                 <cell :title="$t('购买数量')">
                     <inline-x-number style="display:block;"
                                      v-model="formData.num"
-                                     :min="1" >
+                                     :max="maxChoosed"
+                                     :min="minChoosed" >
                     </inline-x-number>
                 </cell>
             </group>
             <group class="group-wrap">
+                <popup-radio :title="$t('证件类型')"
+                             v-if="acceptIdType.length > 0"
+                             :options="acceptIdType"
+                             v-model="formData.idType">
+                </popup-radio>
+                <!-- 证件号 -->
+                <x-input
+                    v-if="acceptIdType.length > 0"
+                    :title="$t('证件号')"
+                    text-align="right"
+                    :show-clear="false"
+                    v-model.trim="formData.idNum"
+                    placeholder-align="right">
+                </x-input>
                 <!-- 游客姓名 -->
                 <x-input
                     :title="$t('游客姓名')"
@@ -64,6 +79,7 @@
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ticketNotice from '../components/ticketNotice';
+    import ajax from '@/marketing/api/index';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -75,25 +91,45 @@
                     date : '',
                     name : '',
                     phone : '',
-                    num : 1
+                    num : 1,
+                    //证件类型
+                    idType : '',
+                    //证件号
+                    idNum : ''
                 },
                 //产品明细信息
                 productDetail : {},
                 //是否显示购票须知模态框
-                showProductNotice : false
+                showProductNotice : false,
+                //产品销售政策
+                productPolicy : {}
             };
         },
         methods : {
             getParams (params) {
                 if (params && params.productDetail && Object.keys(params.productDetail).length > 0) {
-                    console.log(params)
                     this.productDetail = params.productDetail;
                     this.formData.date = params.playDate;
+                    this.queryProductPolicy();
                 } else {
                     this.$router.push({
                         name : 'marketingTourist'
                     });
                 }
+            },
+            /**
+             * 查询产品销售规则
+             */
+            queryProductPolicy () {
+                ajax.post('market_findProductSaleRules',{
+                    productIds : this.productDetail.productId
+                }).then(res => {
+                    if (res.success) {
+                        this.productPolicy = res.data ? res.data[this.productDetail.productId] : {};
+                    } else {
+                        this.productPolicy = [];
+                    }
+                });
             }
         },
         computed : {
@@ -114,6 +150,35 @@
             //支付总额
             totalAmount () {
                 return this.formData.num * (this.productDetail ? this.productDetail.salePrice : 0);
+            },
+            //支持的证件类型
+            acceptIdType () {
+                if (this.productPolicy && this.productPolicy.acceptIdType) {
+                    return this.productPolicy.acceptIdType.split(',').map(item => {
+                        return {
+                            key : this.$t(item),
+                            value : item,
+                        };
+                    });
+                } else {
+                    return [];
+                }
+            },
+            //最大选择的产品数量
+            maxChoosed () {
+                if (this.productPolicy && this.productPolicy.maxNum) {
+                    return Number(this.productPolicy.maxNum);
+                } else {
+                    return 0;
+                }
+            },
+            //最小选择的产品数量
+            minChoosed () {
+                if (this.productPolicy && this.productPolicy.minNum) {
+                    return Number(this.productPolicy.minNum);
+                } else {
+                    return 0;
+                }
             }
         }
     };

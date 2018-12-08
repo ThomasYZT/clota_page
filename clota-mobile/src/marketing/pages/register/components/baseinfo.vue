@@ -84,7 +84,8 @@
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'maket_register',
-                            companyCode : this.marketINgCompanyCode
+                            companyCode : this.marketINgCompanyCode,
+                            orgId : this.marketOrgId
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -178,7 +179,10 @@
              */
             toLogin () {
                 this.$router.push({
-                    name : 'marketingLogin'
+                    name : 'marketingLogin',
+                    query : {
+                        companyCode : this.marketINgCompanyCode
+                    }
                 });
             },
             /**
@@ -190,6 +194,7 @@
                     code : this.formData.code,
                     companyCode : this.marketINgCompanyCode,
                     type : 'maket_register',
+                    orgId : this.marketOrgId
                 }).then((res) => {
                     if (res.success) {
                         this.$emit('get-formData',this.formData);
@@ -212,6 +217,7 @@
                 companyName : 'companyName',
                 marketTypeName : 'marketTypeName',
                 marketINgCompanyCode : 'marketINgCompanyCode',
+                marketOrgId : 'marketOrgId',
             })
         }
 	};
