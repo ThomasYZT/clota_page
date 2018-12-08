@@ -79,7 +79,7 @@ export const orderProductHead = [
     {
         title : 'productActPrice', // 产品小计
         width : 100,
-        field : 'actPrice'
+        field : 'actAmount'
     },
 ];
 

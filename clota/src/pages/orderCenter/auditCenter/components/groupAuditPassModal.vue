@@ -47,7 +47,7 @@
                             :width="row.width"
                             :min-width="row.minWidth">
                             <template slot-scope="scope">
-                                {{scope.row.actPrice | moneyFilter}}
+                                {{scope.row.actAmount | moneyFilter}}
                             </template>
                         </el-table-column>
                     </table-com>

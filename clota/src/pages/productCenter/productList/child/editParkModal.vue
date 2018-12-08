@@ -293,6 +293,7 @@
                             <!--入园检票处--核销表格,区分查看与编辑-->
                             <table-com
                                 v-if="type === 'check'"
+                                auto-height
                                 :table-com-min-height="250"
                                 :column-data="viewDistributeColumnHead"
                                 :table-data="checkPoint"
@@ -300,6 +301,7 @@
                             </table-com>
                             <table-com
                                 v-else
+                                auto-height
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
                                 :table-data="checkPoint"

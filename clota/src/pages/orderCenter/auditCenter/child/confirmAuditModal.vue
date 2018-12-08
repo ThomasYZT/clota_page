@@ -50,7 +50,7 @@
                 </div>
                 <!--退票手续费-->
                 <div class="refund-fee" v-if="isRefund">
-                    {{$t('cancellationCharge')}}：<span class="yellow">{{(refundProcedureFee || '-') | moneyFilter}} {{$t('yuan')}}</span>
+                    {{$t('cancellationCharge')}}：<span class="yellow">{{refundProcedureFee | moneyFilter}} {{$t('yuan')}}</span>
                 </div>
             </div>
             <!--备注-->
@@ -114,7 +114,7 @@
                 //审核备注
                 auditRemark: '',
                 //退票手续费
-                refundProcedureFee: ''
+                refundProcedureFee: 0
             }
         },
         computed: {
@@ -157,8 +157,8 @@
                         return item;
                     });
 
-                    // 只有退票的时候才需调接口，获取退票手续费
-                    if (this.isRefund) {
+                    // 只有退票审核并且有被勾选了的产品的时候才需调接口，获取退票手续费
+                    if (this.isRefund && this.passedProducts.length) {
                         this.getRefundProcedureFee();
                     }
                 }
@@ -166,15 +166,18 @@
                 this.visible = true;
             },
             //关闭模态框
-            hide() {
-                this.auditRemark = '';
-                this.tableData = [];
+            hide () {
+                setTimeout(() => {
+                    this.auditRemark = '';
+                    this.tableData = [];
+                    this.refundProcedureFee = 0;
+                }, 500);
                 this.visible = false;
             },
             /**
              * 审核状态的code转换
              */
-            transAudit: transAudit,
+            transAudit : transAudit,
 
             /**
              * 获取订单退票手续费
