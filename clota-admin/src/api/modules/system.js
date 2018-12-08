@@ -108,4 +108,26 @@ export default {
     'switchChannel' : 'channel/switch.json',
 
 
+    /***********************************帮助中心***********************************/
+    //新增文件夹
+    'addFolder' : 'helpcenter/addFolder.json',
+    //删除文件夹
+    'deleteFolder' : 'helpcenter/deleteFolder.json',
+    //修改文件夹
+    'updateFolder' : 'helpcenter/updateFolder.json',
+    //查询文件夹列表
+    'folderList' : 'helpcenter/folderList.json',
+    //新增页面接口
+    'addPage' : 'helpcenter/addPage.json',
+    //删除页面接口
+    'deletePage' : 'helpcenter/deletePage.json',
+    //修改页面接口
+    'updatePage' : 'helpcenter/updatePage.json',
+    //查询页面信息接口
+    'pageInfo' : 'helpcenter/pageInfo.json',
+    //查询页面列表接口
+    'pageList' : 'helpcenter/pageList.json',
+    //图片上传接口
+    'uploadPicture' : 'helpcenter/uploadPicture.json',
+
 };

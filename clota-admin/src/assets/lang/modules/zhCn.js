@@ -377,5 +377,6 @@ export default {
     'failureTip' : '{tip}失败',
     'successTip' : '{tip}成功',
     'helperCenter' : '帮助中心',
+    'addFile' : '新增文件夹',
 
 };
