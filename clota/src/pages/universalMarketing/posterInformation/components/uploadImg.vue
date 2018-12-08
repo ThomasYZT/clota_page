@@ -102,7 +102,7 @@
         methods : {
             /**
              * 文件上传成功
-             * @param response
+             * @param {object} res
              */
             uploadSuc (res) {
                 if (res.success) {
@@ -124,8 +124,8 @@
             },
             /**
              * 删除图片
-             * @param file
-             * @param fileList
+             * @param {object} file
+             * @para {array} fileList
              */
             handleRemove (file, fileList) {
                 if (this.limit) {
@@ -142,7 +142,7 @@
             },
             /**
              * 点击预览图片
-             * @param file
+             * @param {object} file
              */
             handlePictureCardPreview (file) {
                 this.dialogImageUrl = file.url;

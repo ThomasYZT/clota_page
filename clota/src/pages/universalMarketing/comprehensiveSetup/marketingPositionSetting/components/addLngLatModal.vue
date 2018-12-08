@@ -190,6 +190,8 @@
         methods : {
             /**
              * 显示、隐藏模态框
+             * @type {string} type
+             * @param {object} param
              */
             toggle ({ type, param }) {
                 if (type && type === 'show') {

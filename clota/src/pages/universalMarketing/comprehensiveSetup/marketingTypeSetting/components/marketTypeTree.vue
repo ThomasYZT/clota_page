@@ -166,7 +166,7 @@
              */
             save (data) {
                 if (data.label.length > 10) {
-                    this.$Message.error(this.$t('errorMaxLength', { field : this.$t('marketType'), length : '10' }))
+                    this.$Message.error(this.$t('errorMaxLength', { field : this.$t('marketType'), length : '10' }));
                 } else {
                     if (data.type && data.type === 'add') {
                         this.addType(data);
@@ -236,6 +236,7 @@
             },
             /**
              *  获取营销类别列表数据
+             *  @param {object} type
              */
             getTypeList ({ type }) {
                 ajax.post('marketing-typeList').then((res) => {
@@ -262,6 +263,7 @@
             },
             /**
              * 初始化设置 首次加载数据默认选择第一项
+             * @param {object} data
              */
             initSetting (data) {
                 if (data && Object.keys(data).length > 0) {
@@ -282,6 +284,7 @@
             },
             /**
              *  类别选项改变事件（用户点击选择营销类别时触发）
+             *  @param {object} data
              */
             currentChange (data) {
                 if (data.type !== 'add') {

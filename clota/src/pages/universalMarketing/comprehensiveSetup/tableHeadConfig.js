@@ -70,4 +70,4 @@ export const marketingLevelHead = [
         minWidth : 120,
         field : ''
     }
-]
+];

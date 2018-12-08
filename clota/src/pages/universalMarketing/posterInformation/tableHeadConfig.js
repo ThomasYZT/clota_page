@@ -26,4 +26,4 @@ export const posterInfoHead = [
         minWidth : 100,
         field : ''
     },
-]
+];

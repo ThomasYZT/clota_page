@@ -72,7 +72,7 @@
     import tableCom from '../../../../components/tableCom/tableCom';
     import { marketingPositionHead } from '../tableHeadConfig';
     import addLngLatModal from './components/addLngLatModal';
-    import delModal from '../../../../components/delModal/index'
+    import delModal from '../../../../components/delModal/index';
     import { mapGetters } from 'vuex';
     export default {
         components : {
@@ -123,13 +123,14 @@
             },
             /**
              * 批量删除
+             * @param {string} id
              */
             deleteBatch (id) {
                 this.$refs.delModal.show({
                     confirmCallback : () => {
                         let ids;
                         if (id) {
-                            ids = id
+                            ids = id;
                         } else {
                             ids = this.chosedColomn.map((item) => {
                                 return item.id;
@@ -137,20 +138,20 @@
                         }
                         ajax.post('marketing-deleteForbidden',{
                             ids : ids
-                        }).then((res => {
+                        }).then(res => {
                             if (res.success) {
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                                 this.getData();
                             } else {
                                 this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                             }
-                        }));
+                        });
                     }
                 });
             },
             /**
              * 表格栏被check时
-             * @param list
+             * @param {array} list
              */
             selectionChange (list) {
                 this.chosedColomn = list;

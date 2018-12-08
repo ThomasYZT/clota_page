@@ -131,6 +131,7 @@
             },
             /**
              * 批量删除
+             * @param {string} id
              */
             deleteBatch (id) {
                 this.$refs.delModal.show({

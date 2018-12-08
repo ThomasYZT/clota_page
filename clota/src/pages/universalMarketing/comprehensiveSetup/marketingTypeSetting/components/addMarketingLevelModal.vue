@@ -102,7 +102,7 @@
                         callback(new Error(this.$t('MK011')));
                     }
                 }
-            }
+            };
 
             //校验升级金额
             const validateLevelUpMoney = (rule, value, callback) => {
@@ -138,7 +138,7 @@
                 } else {
                     callback(new Error(this.$t('pleaseSelectMarketingLevelFirst')));
                 }
-            }
+            };
 
             return {
                 //是否显示模态框

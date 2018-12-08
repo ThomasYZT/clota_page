@@ -114,7 +114,7 @@
              * 显示、隐藏模态框
              * @param {string} type
              */
-            toggle ({type}) {
+            toggle ({ type }) {
                 if (type && type === 'show') {
                     this.getIndustryTypeList();
                 } else if (type && type === 'hide') {
@@ -130,11 +130,11 @@
                     if (valid) {
                         this.addPoster();
                     }
-                })
+                });
             },
             /**
              *  删除图片
-             * @param uploadList
+             * @param {array} uploadList
              */
             removeImg (uploadList) {
                 this.formData.img = uploadList;
@@ -142,14 +142,14 @@
             },
             /**
              *  上传图片成功
-             * @param uploadList
+             * @param {array} uploadList
              */
             uploadSuccess (uploadList) {
                 this.formData.img = uploadList;
                 this.$refs.form.validateField('img');
             },
             /**
-             *
+             *  添加海报
              */
             addPoster () {
                 this.formData.posterUrl = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0] : '';
@@ -157,7 +157,7 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                         this.$emit('addSuccess');
-                        this.toggle({type : 'hide'});
+                        this.toggle({ type : 'hide' });
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
                     }
@@ -173,11 +173,11 @@
                             return {
                                 label : item.desc,
                                 value : item.name
-                            }
+                            };
                         }) : [];
                     } else {
                         this.posterTypeList = [];
-                        this.$Message.error(this.$t('failToGet', { feild : this.$t('industryType') }))
+                        this.$Message.error(this.$t('failToGet', { feild : this.$t('industryType') }));
                     }
                 });
             },

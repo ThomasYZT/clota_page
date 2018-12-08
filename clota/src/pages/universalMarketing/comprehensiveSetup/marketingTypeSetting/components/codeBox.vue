@@ -196,6 +196,8 @@
             },
             /**
              * 接口保存二维码信息
+             * @param {string} path
+             * @param {string} type
              */
             updateCode ({ path, type }) {
                 ajax.post('marketing-updateType', {
