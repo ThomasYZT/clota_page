@@ -26,7 +26,10 @@ instance.interceptors.response.use(function (response) {
     if (response.data.message === '请先登录') {
         localStorage.removeItem('token');
         router.push({
-            name : 'marketingLogin'
+            name : 'marketingLogin',
+            query : {
+                companyCode : store.getters.marketINgCompanyCode
+            }
         },() => {
             store.commit('marketUpdateUserInfo');
         });

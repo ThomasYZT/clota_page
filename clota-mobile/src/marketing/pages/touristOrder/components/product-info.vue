@@ -18,6 +18,10 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+    import { validator } from 'klwk-ui';
+    import common from '@/assets/js/common';
+
     export default {
         props : {
             //产品明细
@@ -43,13 +47,17 @@
              * 新建订单
              */
             toCreateOrder () {
-                this.$router.push({
-                    name : 'marketingCreateOrder',
-                    params : {
-                        productDetail : this.productInfo,
-                        playDate : this.activeDate.format('yyyy-MM-dd')
-                    }
-                });
+                if (this.canCreateOrder) {
+                    this.$router.push({
+                        name : 'marketingCreateOrder',
+                        params : {
+                            productDetail : this.productInfo,
+                            playDate : this.activeDate.format('yyyy-MM-dd')
+                        }
+                    });
+                } else {
+                    this.$emit('create-order-warning');
+                }
             }
         },
         computed : {
@@ -66,6 +74,14 @@
                     return this.productInfo.alterRuleModel.type === 'notAllow';
                 }
                 return false;
+            },
+            ...mapGetters({
+                marketLongitude : 'marketLongitude',
+                marketLatitude : 'marketLatitude',
+            }),
+            //是否可以下单
+            canCreateOrder () {
+                return common.isNotEmpty(this.marketLongitude) && common.isNotEmpty(this.marketLatitude);
             }
         }
     };

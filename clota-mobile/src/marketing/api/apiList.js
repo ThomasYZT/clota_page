@@ -51,4 +51,6 @@ export default {
     'market_queryUserTypeForReset' : '/market/marketUser/queryUserTypeForReset',
     //查询产品销售规则
     'market_findProductSaleRules' : '/market/marketUser/findProductSaleRules',
+    //校验所下订单是否正确
+    'market_checkOrderBeforePay' : '/market/marketUser/checkOrderBeforePay',
 };
