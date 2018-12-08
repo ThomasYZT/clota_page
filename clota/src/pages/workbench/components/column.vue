@@ -9,7 +9,7 @@
 
 <script>
     import getColumnConfig from './columnConfig';
-    import vueEcharts from '@/components/vueEcharts/ECharts.vue';
+    import vueEcharts from '@/components/vueEcharts/eCharts.vue';
 
     export default {
         props : {

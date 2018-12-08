@@ -57,5 +57,7 @@ export default {
     'marketing-findMarketUserDetail' : '/market/manage/findMarketUserDetail',
     //获取最近n次使用的银行卡付款账号类型
     'marketing-getRecentlyPayTypes' : '/market/manage/getRecentlyPayTypes',
+    //下载图片
+    'downloadImage' : '/downloadImage'
 
 }

@@ -32,7 +32,7 @@
 
 <script>
     import getLineConfig from './lineConfig';
-    import vueEcharts from '@/components/vueEcharts/ECharts.vue';
+    import vueEcharts from '@/components/vueEcharts/eCharts.vue';
 
     export default {
         props : {
