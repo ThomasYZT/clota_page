@@ -1443,7 +1443,7 @@ export default {
     'auditResult' : '审核结果',
     'confirmAuditRes' : '审核结果确认',
     'orderCheckFailure' : '订单审核失败',
-    'orderSNPlaceholder' : '输入订单串码、多个串码用; 隔开',
+    'orderSNPlaceholder' : '输入订单串码、多个串码用英文";"隔开',
     'listForTicketSN' : '取票串码查询结果列表',
     'listForVerifySN' : '每张门票的核销串码查询结果列表',
     'batchVerify' : '批量核销',

@@ -9,7 +9,7 @@
         <div class="filter-box">
             <Input v-model.trim="filterParam.serialNos"
                    class="input-field"
-                   :placeholder="$t('orderSNPlaceholder')" /><!--输入订单串码、多个串码用；隔开-->
+                   :placeholder="$t('orderSNPlaceholder')" /><!--输入订单串码、多个串码用;隔开-->
             <Button type="primary"
                     :disabled="!filterParam.serialNos"
                     @click="handleSearch">
