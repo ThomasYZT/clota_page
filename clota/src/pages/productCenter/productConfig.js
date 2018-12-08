@@ -47,3 +47,17 @@ export const ticketTypeHead = [
         field : ''
     },
 ];
+
+//禁用模态框表格
+export const disableHeadConfig = [
+    {
+        title : 'salePolicyName', // 销售政策名称
+        minWidth : 190,
+        field : 'updatedTime'
+    },
+    {
+        title : 'status', // 状态
+        width : 110,
+        field : 'auditStatus'
+    },
+]

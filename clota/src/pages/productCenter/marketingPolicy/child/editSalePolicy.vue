@@ -564,6 +564,7 @@
         <!--添加/修改产品-->
         <edit-product-modal ref="editProduct" :list="productList"></edit-product-modal>
 
+        <auditConfirmModal ref="auditConfirmModal"></auditConfirmModal>
     </div>
 </template>
 
@@ -573,6 +574,7 @@
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import editProductModal from './editProductModal.vue';
+    import auditConfirmModal from '../components/auditConfirmModal';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
@@ -588,6 +590,7 @@
             titleTemp,
             tableCom,
             editProductModal,
+            auditConfirmModal
         },
         data () {
 
@@ -953,8 +956,8 @@
                                 year : year,
                                 month : month,
                                 day : (obj[year][month].sort( (a,b) => {
-return a - b;
-}) ).join('、')
+                                    return a - b;
+                                }) ).join('、')
                             });
                         }
                     }
@@ -1091,17 +1094,17 @@ return a - b;
                     if ( valid ) {
                         let params = defaultsDeep({}, this.formData);
                         params.groupIds = this.selectedRow.map( item => {
- return item.id;
-}).join(',');
+                            return item.id;
+                        }).join(',');
                         params.itemsData = JSON.stringify(defaultsDeep([], this.itemsData));
 
                         params.saleRule.weekSold = this.formData.saleRule.weekSold && this.formData.saleRule.weekSold.length > 0 ?
                             this.formData.saleRule.weekSold.join(',') : '';
                         params.saleRule.specifiedTime = this.formData.saleRule.type === 'specifiedDateSold' && this.formData.saleRule.specifiedTime && this.formData.saleRule.specifiedTime.length > 0 ?
                             this.formData.saleRule.specifiedTime.map( item => {
- return new Date(item).format('yyyy-MM-dd');
-}).join(',') : '';
-                            params.saleRule.startTime = this.formData.saleRule.time[0] ? new Date(this.formData.saleRule.time[0]).format('yyyy-MM-dd') : '';
+                                return new Date(item).format('yyyy-MM-dd');
+                            }).join(',') : '';
+                        params.saleRule.startTime = this.formData.saleRule.time[0] ? new Date(this.formData.saleRule.time[0]).format('yyyy-MM-dd') : '';
                         params.saleRule.endTime = this.formData.saleRule.time[1] ? new Date(this.formData.saleRule.time[1]).format('yyyy-MM-dd') : '';
                         delete params.saleRule.validDates;
                         delete params.saleRule.time;
@@ -1112,8 +1115,8 @@ return a - b;
 
                         params.playRule.specifiedTime = this.formData.playRule.type === 'specifiedDateSold' && this.formData.playRule.specifiedTime && this.formData.playRule.specifiedTime.length > 0 ?
                             this.formData.playRule.specifiedTime.map( item => {
- return new Date(item).format('yyyy-MM-dd');
-}).join(',') : '';
+                                return new Date(item).format('yyyy-MM-dd');
+                            }).join(',') : '';
                         params.playRule.startTime = this.formData.playRule.time[0] ? new Date(this.formData.playRule.time[0]).format('yyyy-MM-dd') : '';
                         params.playRule.endTime = this.formData.playRule.time[1] ? new Date(this.formData.playRule.time[1]).format('yyyy-MM-dd') : '';
                         delete params.playRule.validDates;
@@ -1152,13 +1155,20 @@ return a - b;
 
                         delete params.saleTime;
                         delete params.todaySaleTime;
-                        //区分新增与修改
-                        if ( this.type === 'add' ) {
-                            this.saveAndEditPolicy( 'addPolicy', params);
-                        }
-                        if ( this.type === 'modify' ) {
-                            this.saveAndEditPolicy( 'modifyPolicy', params);
-                        }
+
+                        this.$refs.auditConfirmModal.toggle({
+                            type : 'audit',
+                            products : this.itemsData,
+                            confirmCallback : () => {
+                                //区分新增与修改
+                                if ( this.type === 'add' ) {
+                                    this.saveAndEditPolicy( 'addPolicy', params);
+                                }
+                                if ( this.type === 'modify' ) {
+                                    this.saveAndEditPolicy( 'modifyPolicy', params);
+                                }
+                            }
+                        });
                     }
                 });
             },
@@ -1267,8 +1277,8 @@ return a - b;
 
                 //销售渠道列表
                 formData.groupIds = data.policyChannels.map( item => {
- return item.groupId;
-});
+                    return item.groupId;
+                });
                 //查询销售渠道组
                 this.queryOrgGroupVoList();
 
