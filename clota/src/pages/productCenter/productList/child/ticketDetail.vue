@@ -34,26 +34,26 @@
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('productName')+'：'"><!--产品名称-->
-                                <div v-w-title="detail.productName">{{detail.productName | contentFilter}}</div>
+                                <div class="form-item-content" v-w-title="detail.productName">{{detail.productName | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                         <i-col span="12" v-if="$store.state.manageOrgs.nodeType !== 'partner'">
                             <Form-item :label="$t('standardPrice')+'：'"><!--景区成本价-->
-                                <div>{{detail.standardPrice | contentFilter}}</div>
+                                <div class="form-item-content">{{detail.standardPrice | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="24">
                             <Form-item :label="$t('thirdCode')+'：'"><!--第三方产品编码-->
-                                <div v-w-title="detail.thirdCode">{{detail.thirdCode | contentFilter}}</div>
+                                <div class="form-item-content" v-w-title="detail.thirdCode">{{detail.thirdCode | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="24">
                             <Form-item :label="$t('productDes')+'：'"><!--产品描述-->
-                                <div v-w-title="detail.productDes">{{detail.productDes | contentFilter}}</div>
+                                <div class="form-item-content" v-w-title="detail.productDes">{{detail.productDes | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -77,14 +77,14 @@
                     <i-row>
                         <i-col span="24">
                             <Form-item :label="$t('ticketRemark')+'：'"><!--票面说明-->
-                                <div v-w-title="detail.ticketRemark">{{detail.ticketRemark | contentFilter}}</div>
+                                <div class="form-item-content" v-w-title="detail.ticketRemark">{{detail.ticketRemark | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="24">
                             <Form-item :label="$t('printRemark')+'：'"><!--打印说明-->
-                                <div v-w-title="detail.printRemark">{{detail.printRemark | contentFilter}}</div>
+                                <div class="form-item-content" v-w-title="detail.printRemark">{{detail.printRemark | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -581,7 +581,9 @@
                 }
 
             }
-
+            .form-item-content {
+                word-break: break-all;
+            }
         }
 
         .footer{

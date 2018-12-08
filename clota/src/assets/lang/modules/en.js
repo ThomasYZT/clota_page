@@ -1962,4 +1962,7 @@ export default {
     'goToHelperCenter' : '前往帮助中心',
     'helperCenter' : '帮助中心',
     'imgFormat' : '图片格式',
+    'finance.pending_audit' : '提交充值申请',
+    'finance.rejected' : '申请驳回',
+    'finance.valid' : '申请通过',
 }

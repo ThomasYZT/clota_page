@@ -669,7 +669,7 @@
                 this.$refs.editPark.show({
                     index : index,
                     data : data,
-                    parkList : this.parkList,
+                    parkList :  Array.from(this.parkList),
                     list : this.productPlayRuleVo,
                     title : this.$t('modify') + (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
                     type : 'modify',
@@ -692,7 +692,7 @@
                     list : this.productPlayRuleVo,
                     confirmCallback : ( data ) => {
                         this.productPlayRuleVo.push(data);
-                        this.dealParkList(data.parkId);
+                        //this.dealParkList(data.parkId);
                     }
                 });
             },
