@@ -120,7 +120,7 @@
                     <i-row>
                         <i-col span="12">
                             <Form-item :label="$t('needId')+'：'"><!--预定时提交身份信息-->
-                                <div v-w-title="$t(detail.needId)">{{$t(detail.needId)}}</div>
+                                <div v-w-title="$t(detail.needId)">{{$t(detail.needId === 'one' ? 'product.needId.one' : 'product.needId.more')}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>

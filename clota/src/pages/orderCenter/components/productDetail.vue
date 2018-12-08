@@ -27,7 +27,7 @@
             </div>
         </div>
         <!--产品列表-->
-        <table-com
+        <table-com ref="productListTable"
             :table-com-min-height="300"
             :ofsetHeight="170"
             :show-pagination="false"
@@ -234,24 +234,35 @@
                 });
             },
             /**
-             * 根据判断每个产品的id是否在发起申请订单里，来设置CheckBox 是否可以勾选
+             * 根据判断每个产品的id是否在发起申请订单里，来设置CheckBox 是否可以勾选。 只能勾选发起申请的产品
              * @param row   // 行数据
              * @param index // 序号
              */
-            handleSelectable (row, index) {
-                let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
+            handleSelectable(row, index) {
+                /*let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
                 if (bulkDetail && bulkDetail.rowData) {
                     return bulkDetail.rowData.reqOrderTicketIds.includes(row.id);
+                }*/
+                let reqOrderTicketIds = this.reqOrderTickets.map(item => item.id);
+                if (reqOrderTicketIds && reqOrderTicketIds.length) {
+                    return reqOrderTicketIds.includes(row.id);
                 }
             },
             /**
              * 单个订单审核
              * @param auditParams   单个订单审核的传参
              */
-            onAuditConfirmed (auditParams) {
-                ajax.post('auditSingleOrderProduct', auditParams).then(res => {
+            onAuditConfirmed(auditParams) {
+                let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
+                ajax.post('auditSingleOrderProduct', {
+                    ...auditParams,
+                    id : (bulkDetail && bulkDetail.rowData) ? bulkDetail.rowData.productRefundAlterId : ''
+                }).then(res => {
                     if (res.success) {
                         this.$refs['confirmAuditModal'].hide();
+                        this.reqOrderTickets = []; // 审核成功后，清空发起申请的产品
+                        this.$refs.productListTable.clearSelection(); // 清空表格勾选状态
+                        sessionStorage.removeItem(this.$route.name);
                         this.$Message.success(this.$t('auditSuccess')); // 审核成功
                         this.$emit('confirm-audit', auditParams.visitorProductId);
                     } else {

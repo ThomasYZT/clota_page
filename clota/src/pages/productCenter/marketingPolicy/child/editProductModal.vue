@@ -160,7 +160,6 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props : ['list'],
         components : {
             tableCom,
             titlePark,
@@ -234,6 +233,8 @@
             };
 
             return {
+                //可选产品下拉列表数据
+                list : [],
                 //类型 add/modify/check
                 type : 'add',
                 //标题信息
@@ -390,9 +391,25 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({ data,type,title,confirmCallback = null,cancelCallback }) {
+            show ({ data, type, productList, chosedProducts, title, confirmCallback = null, cancelCallback }) {
                 this.title = title;
                 this.type = type;
+                let _productList = productList;
+                let _chosedProducts = chosedProducts;
+                for (let i = 0, len = _productList.length; i < len; i ++) {
+                    for (let j = 0, jlen = _chosedProducts.length; j < jlen; j++) {
+                        if (_chosedProducts[j].productId === _productList[i].id) {
+                            _productList.splice(i, 1);
+                            _chosedProducts.splice(j, 1);
+                            i--;
+                            len--;
+                            j--;
+                            jlen--;
+                            break;
+                        }
+                    }
+                }
+                this.list = _productList;
                 if (data) {
                     this.formData = defaultsDeep({}, data);
                     if (data.productId) {

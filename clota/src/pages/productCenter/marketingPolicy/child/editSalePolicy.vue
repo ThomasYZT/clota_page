@@ -567,7 +567,7 @@
         </div>
 
         <!--添加/修改产品-->
-        <edit-product-modal ref="editProduct" :list="productList"></edit-product-modal>
+        <edit-product-modal ref="editProduct"></edit-product-modal>
 
         <auditConfirmModal ref="auditConfirmModal"></auditConfirmModal>
     </div>
@@ -977,10 +977,11 @@
                 this.$refs.editProduct.show({
                     title : this.$t('append') + this.$t('product'),
                     type : 'add',
+                    productList : [...this.productList],
+                    chosedProducts : [...this.itemsData],
                     confirmCallback : ( data ) => {
                         this.open = true;
                         this.itemsData.push(data);
-                        this.dealProductList(data.productId);
                     },
                     cancelCallback : () => {
                         this.open = true;
@@ -988,23 +989,14 @@
                 });
                 this.open = false;
             },
-            //新增成功，可选产品数组数据-1
-            dealProductList ( id ) {
-                let index = null;
-                this.productList.forEach( (item, i) => {
-                    if (id === item.id) {
-                        index = i;
-                        return;
-                    }
-                } );
-                this.productList.splice(index,1);
-            },
             //修改产品
             modify ( data, index ) {
                 this.$refs.editProduct.show({
                     data : data,
                     title : this.$t('modify') + this.$t('product'),
                     type : 'modify',
+                    productList : [...this.productList],
+                    chosedProducts : [...this.itemsData],
                     confirmCallback : ( _data ) => {
                         this.open = true;
                         this.$set(this.itemsData, index, _data);
@@ -1017,7 +1009,7 @@
             },
             //删除产品
             del ( data, index ) {
-                this.productList.splice(0,0,this.itemsData.splice(index,1)[0]);
+                this.itemsData.splice(index, 1);
             },
 
             //新增退票手续费率档位
