@@ -21,7 +21,8 @@
             <li>
                 <i-input v-model.trim="filterParams.keyword"
                          style="width: 240px;"
-                         :placeholder="$t('请输入查询内容')">
+                         :placeholder="$t('请输入查询内容')"
+                         @on-enter="searchList">
                 </i-input><!--请输入查询内容-->
             </li>
             <li>
