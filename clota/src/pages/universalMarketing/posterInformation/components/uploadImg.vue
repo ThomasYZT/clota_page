@@ -125,7 +125,7 @@
             /**
              * 删除图片
              * @param {object} file
-             * @para {array} fileList
+             * @param {array} fileList
              */
             handleRemove (file, fileList) {
                 if (this.limit) {
@@ -158,6 +158,7 @@
             /**
              * 上传文件之前
              * @param {object} file
+             * @returns {boolean}
              */
             beforeUpload (file) {
                 //文件格式校验
