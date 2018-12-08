@@ -203,7 +203,6 @@ export const ajaxMethods = {
      * @returns {promise} 返回promise对象
      */
     post (urlKey, paramObj, config = null) {
-        console.log(this.api)
         let myConfig = {
             cancelToken : new axios.CancelToken(function (cancel) {
                 cancelTokenCollection[urlKey] = cancel;
