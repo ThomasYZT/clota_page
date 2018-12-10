@@ -93,6 +93,8 @@
     import { posterInfoHead } from './tableHeadConfig';
     import uploadPosterModal from './components/uploadPosterModal';
     import delModal from '../../../components/delModal/index';
+    import ajaxConfig from '@/config/index.js';
+    import apiList from '@/api/apiList.js';
     export default {
         components : {
             tableCom,
@@ -110,7 +112,18 @@
                     keyword : ''
                 },
                 chosedColomn : [],
+                //海报图片地址
+                imgUrl : '',
             };
+        },
+        computed : {
+            //下载模板路径
+            downloadUrl () {
+                return ajaxConfig['HOST'] + apiList['downloadImage'] +
+                    '?token=' + ajax.getToken().toString() +
+                    '&url=' + this.imgUrl +
+                    '&name=' + 'image.' + this.imgUrl.substring(this.imgUrl.lastIndexOf(".") + 1, this.imgUrl.length);
+            },
         },
         methods : {
             /**
@@ -175,14 +188,11 @@
              * @param {string} url
              */
             download (url) {
-                ajax.post('downloadImage', {
-                    url : url,
-                    name : 'image.jpg',
-                }).then((res) => {
-                    if (!res.success) {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('download') }));
-                    }
-                });
+                this.imgUrl = url;
+                let alink = document.createElement('a');
+                let event = new MouseEvent('click');
+                alink.href = this.downloadUrl;
+                alink.dispatchEvent(event);
             }
         }
     };
