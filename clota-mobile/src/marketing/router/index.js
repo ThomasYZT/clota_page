@@ -262,6 +262,17 @@ export const marketingRoutes = [
                     hideTabbar : true,
                     notNeedCheck : true
                 }
+            },
+            //支付
+            {
+                path : 'tourist/createOrder/pay',
+                name : 'marketingCreateOrderToPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/payOrder.vue'),
+                meta : {
+                    title : '支付方式',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
             }
         ]
     }

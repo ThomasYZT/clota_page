@@ -55,4 +55,6 @@ export default {
     'market_checkOrderBeforePay' : '/market/marketUser/checkOrderBeforePay',
     //游客下单
     'market_addVisitorOrder' : '/market/marketUser/addVisitorOrder',
+    //查询支付方式
+    'market_queryOnlinePayAccount' : '/external/account/queryOnlinePayAccount',
 };

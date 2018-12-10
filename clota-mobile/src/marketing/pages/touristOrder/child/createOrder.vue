@@ -247,6 +247,8 @@
                 }).then(res => {
                     if (res.success && res.data) {
                         this.addTouristOrder();
+                    } else if (res.code && res.code !== '300') {
+                        this.$vux.toast.text(this.$t('errorMsg.' + res.code));
                     } else {
                         this.$vux.toast.text(this.$t('下单失败'));
                     }
@@ -275,11 +277,16 @@
                             originVisitDate : this.playDate,
                             productId : this.productDetail.productId,
                             productName : this.productDetail.productName,
-                            quantity : this.productPolicy.needId === 'more' ? this.buyNum : 1
+                            quantity : this.productPolicy.needId === 'one' ? 1 : this.buyNum
                         }];
                     } else {
                         baseInfo['documentInfo'] = [];
-                        baseInfo['productModels'] = [];
+                        baseInfo['productModels'] = [{
+                            originVisitDate : this.playDate,
+                            productId : this.productDetail.productId,
+                            productName : this.productDetail.productName,
+                            quantity : this.productPolicy.needId === 'one' ? 1 : this.buyNum
+                        }];
                     }
                     result.push(baseInfo);
                 }
@@ -299,7 +306,7 @@
                         mobile : this.formData[i]['phone'],
                         productName : this.productDetail.productName,
                         visitorName : this.formData[i]['name'],
-                        count : this.productPolicy.needId === 'more' ? this.buyNum : 1
+                        count : this.productPolicy.needId === 'one' ? 1 : this.buyNum
                     });
                 }
                 return result;
@@ -326,7 +333,19 @@
                      latitude : this.marketLatitude,
                      longitude : this.marketLongitude,
                  }).then(res => {
-
+                     if (res.success) {
+                         this.$router.replace({
+                             name : 'marketingCreateOrderToPay',
+                             params : {
+                                 productName : this.productDetail.productName,
+                                 totalAmount : this.totalAmount
+                             }
+                         });
+                     } else if (res.code && res.code !== '300') {
+                         this.$vux.toast.text(this.$t('errorMsg.' + res.code));
+                     } else {
+                         this.$vux.toast.text(this.$t('下单失败'));
+                     }
                  });
             }
         },
