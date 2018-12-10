@@ -177,7 +177,7 @@
             download (url) {
                 ajax.post('downloadImage', {
                     url : url,
-                    name : 'image.jpg'
+                    name : 'image.jpg',
                 }).then((res) => {
                     if (!res.success) {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('download') }));

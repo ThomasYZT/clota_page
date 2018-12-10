@@ -28,7 +28,7 @@ export const columns = [
     {
         title : '管理账号',
         minWidth : 100,
-        field : 'loginName'
+        field : 'managerAccount'
     },
     {
         title : '注册时间',
