@@ -28,7 +28,7 @@ export default new Vuex.Store({
         //是否可以使用微信jsdk
         weixinIsConfiged : true,
         ...memberState,
-        ...marketingState
+        ...marketingState,
     },
     getters : {
         //当前语言状态

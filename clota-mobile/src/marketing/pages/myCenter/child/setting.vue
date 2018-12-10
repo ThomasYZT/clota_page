@@ -143,7 +143,7 @@
              * @param{Number} endLen 后面不加密的位数
              * @return {string}
              */
-            dealIdNum (idNum,frontLen = 2,endLen = 4) {
+            dealIdNum (idNum,frontLen = 0,endLen = 4) {
                 let len = idNum.length - frontLen - endLen;
                 let xing = '';
                 for (let i = 0; i < len; i++) {
