@@ -55,7 +55,7 @@
                 <i-col span="8">
                     <!--类别-->
                     <FormItem label="类别">
-                        <Select v-model="formData.runStatus"
+                        <Select v-model="formData.opId"
                                 :transfer="true"
                                 @on-change="search">
                             <Option v-for="item in serviceOperateType"
@@ -82,7 +82,6 @@
 </template>
 
 <script>
-    import { serviceOperateType } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -98,10 +97,10 @@
                     //操作时间
                     operateTime : [],
                     //类别
-                    runStatus : ''
+                    opId : ''
                 },
                 //操作类型
-                serviceOperateType : serviceOperateType,
+                serviceOperateType : [],
                 //租户列表
                 lesseeList : [],
                 //服务列表
@@ -137,7 +136,7 @@
             reset () {
                 this.formData.serviceId = '';
                 this.formData.orgId = '';
-                this.formData.runStatus = '';
+                this.formData.opId = '';
                 this.formData.operateTime = [];
                 this.search();
             },
@@ -154,10 +153,30 @@
                 }).catch(err => {
                     this.lesseeList = [];
                 });
+            },
+            /**
+             * 获取操作类型下拉列表接口
+             */
+            listServiceOpTypes () {
+                ajax.post('listServiceOpTypes').then(res => {
+                    if (res.status === 200) {
+                        this.serviceOperateType = res.data ? res.data.map((item) => {
+                            return {
+                                label : item.opType,
+                                value : item.id,
+                            }
+                        }) : [];
+                    } else {
+                        this.serviceOperateType = [];
+                    }
+                }).catch(() => {
+                    this.serviceOperateType = [];
+                })
             }
         },
         created () {
             this.queryServiceList();
+            this.listServiceOpTypes();
             this.listServiceProvider();
         }
     };

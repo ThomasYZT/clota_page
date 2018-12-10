@@ -15,7 +15,7 @@ export const serviceOpenHead = [
     {
         title : '操作类型',
         width : 100,
-        field : 'runStatus'
+        field : 'opType'
     },
     {
         title : '服务开始时间',
@@ -40,6 +40,6 @@ export const serviceOpenHead = [
     {
         title : '操作时间',
         width : 190,
-        field : 'created_time'
+        field : 'createdTime'
     },
 ];

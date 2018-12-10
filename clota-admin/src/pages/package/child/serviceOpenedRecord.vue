@@ -23,7 +23,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{$t(scope.row['runStatus'])}}
+                        {{$t(scope.row['runStatus']) | contentFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -74,7 +74,7 @@
                     //结束时间
                     endTime : '',
                     //类别
-                    runStatus : ''
+                    opId : ''
                 },
             };
         },
@@ -92,9 +92,9 @@
                     page : this.pageNo,
                     pageSize : this.pageSize,
                 };
-                if (this.formData.runStatus) {
+                if (this.formData.opId) {
                     Object.assign(params,{
-                        runStatus : this.formData.runStatus,
+                        opId : this.formData.opId,
                     });
                 }
                 ajax.post('getServiceRecord',params).then(res => {
@@ -117,7 +117,7 @@
             searchData (formData) {
                 this.formData.serviceId = formData.serviceId;
                 this.formData.orgId = formData.orgId;
-                this.formData.runStatus = formData.runStatus;
+                this.formData.opId = formData.opId;
                 this.formData.startTime = formData.operateTime[0] ? new Date(formData.operateTime[0]).format('yyyy-MM-dd 00:00:00') : '';
                 this.formData.endTime = formData.operateTime[1] ? new Date(formData.operateTime[1]).format('yyyy-MM-dd 23:59:59') : '';
                 this.getServiceRecord();

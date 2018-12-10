@@ -32,4 +32,6 @@ export default {
     'listServiceProvider' : 'tenant/getOrgAllNames.json',
     //获取单个短信发送记录详情
     'getSmsDetail' : 'sms/get.json',
+    //获取操作类型下拉列表数据
+    'listServiceOpTypes' : 'service/listServiceOpTypes.json'
 };
