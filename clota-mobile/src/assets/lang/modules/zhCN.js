@@ -262,6 +262,7 @@ export default {
     'errorMsg.MK015' : '原密码错误',
     'errorMsg.MK014' : '手机号已存在',
     'errorMsg.MK008' : '营销用户已存在',
+    'errorMsg.S002' : '接口错误',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'Complete information',
     'getActivate' : 'Immediately active',

@@ -53,4 +53,6 @@ export default {
     'market_findProductSaleRules' : '/market/marketUser/findProductSaleRules',
     //校验所下订单是否正确
     'market_checkOrderBeforePay' : '/market/marketUser/checkOrderBeforePay',
+    //游客下单
+    'market_addVisitorOrder' : '/market/marketUser/addVisitorOrder',
 };

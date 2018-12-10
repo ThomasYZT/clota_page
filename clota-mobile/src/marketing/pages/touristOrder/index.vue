@@ -104,7 +104,7 @@
             queryProductList () {
                 return ajax.post('market_queryMarketProductsForVisitor',{
                     playDate : this.activeDate.format('yyyy-MM-dd'),
-                    marketUserId : '1067659364082520064',
+                    marketUserId : this.marketUserId,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
@@ -154,6 +154,7 @@
                 marketTypeId : 'marketTypeId',
                 marketIsGettingLocation : 'marketIsGettingLocation',
                 marketLocationInfo : 'marketLocationInfo',
+                marketUserId : 'marketUserId',
             })
         },
         created () {
@@ -180,6 +181,7 @@
                 max-width: calc(100% - 95px);
                 text-overflow: clip;
                 overflow-x: auto;
+                float: left;
             }
 
             .re-get-location{
@@ -187,6 +189,7 @@
                 width: 90px;
                 padding-left: 5px;
                 color: $color_yellow;
+                float: left;
 
                 .icon-fresh{
                     padding-top: 4px;

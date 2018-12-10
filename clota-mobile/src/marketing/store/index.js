@@ -27,7 +27,9 @@ export const marketingState = {
         //纬度
         latitude : '',
         //是否正在获取位置信息
-        isGettingLocation : true
+        isGettingLocation : true,
+        //营销用户id
+        marketUserId : '1067659364082520064'
     }
 };
 export const marketingGetters = {
@@ -78,6 +80,10 @@ export const marketingGetters = {
     //是否正在获取位置信息
     marketIsGettingLocation : state => {
         return state.marketing.isGettingLocation;
+    },
+    //营销用户id
+    marketUserId : state => {
+        return state.marketing.marketUserId;
     }
 };
 

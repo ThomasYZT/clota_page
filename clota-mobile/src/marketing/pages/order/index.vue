@@ -300,6 +300,12 @@
                 float: right;
                 font-size: $font_size_14px;
                 color: $color_333;
+                padding-left: 10px;
+                border-left: 0.5px solid #E1E1E1;
+
+                &::before{
+                    @include absolute_pos(absolute);
+                }
 
                 .filter{
                     display: inline-block;

@@ -17,21 +17,21 @@
                 <cell
                     :title="$t('游玩日期')"
                     class="padding-right"
-                    :value="formData.date">
+                    :value="playDate">
                 </cell>
                 <cell :title="$t('购买数量')">
                     <inline-x-number style="display:block;"
-                                     v-model="formData.num"
+                                     v-model="buyNum"
                                      :max="maxChoosed"
                                      :min="minChoosed" >
                     </inline-x-number>
                 </cell>
             </group>
-            <group class="group-wrap">
+            <group class="group-wrap" v-for="(item,index) in formData" :key="index">
                 <popup-radio :title="$t('证件类型')"
                              v-if="acceptIdType.length > 0"
                              :options="acceptIdType"
-                             v-model="formData.idType">
+                             v-model="formData[index].idType">
                 </popup-radio>
                 <!-- 证件号 -->
                 <x-input
@@ -39,7 +39,7 @@
                     :title="$t('证件号')"
                     text-align="right"
                     :show-clear="false"
-                    v-model.trim="formData.idNum"
+                    v-model.trim="formData[index].idNum"
                     placeholder-align="right">
                 </x-input>
                 <!-- 游客姓名 -->
@@ -47,7 +47,7 @@
                     :title="$t('游客姓名')"
                     text-align="right"
                     :show-clear="false"
-                    v-model.trim="formData.name"
+                    v-model.trim="formData[index].name"
                     placeholder-align="right">
                 </x-input>
                 <!-- 手机号 -->
@@ -56,7 +56,7 @@
                     text-align="right"
                     :show-clear="false"
                     keyboard="tel"
-                    v-model.trim="formData.phone"
+                    v-model.trim="formData[index].phone"
                     placeholder-align="right">
                 </x-input>
             </group>
@@ -81,6 +81,8 @@
     import ticketNotice from '../components/ticketNotice';
     import ajax from '@/marketing/api/index';
     import { validator } from 'klwk-ui';
+    import common from '@/assets/js/common.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -89,29 +91,31 @@
         },
         data () {
             return {
-                formData : {
-                    date : '',
+                formData : [{
                     name : '',
                     phone : '',
-                    num : 1,
                     //证件类型
                     idType : '',
                     //证件号
                     idNum : ''
-                },
+                }],
                 //产品明细信息
                 productDetail : {},
                 //是否显示购票须知模态框
                 showProductNotice : false,
                 //产品销售政策
-                productPolicy : {}
+                productPolicy : {},
+                //游玩日期
+                playDate : '',
+                //购买数量
+                buyNum : 1
             };
         },
         methods : {
             getParams (params) {
                 if (params && params.productDetail && Object.keys(params.productDetail).length > 0) {
                     this.productDetail = params.productDetail;
-                    this.formData.date = params.playDate;
+                    this.playDate = params.playDate;
                     this.queryProductPolicy();
                 } else {
                     this.$router.push({
@@ -139,9 +143,14 @@
              */
             validateIdType () {
                 return new Promise((resolve,reject) => {
-                    if ( this.acceptIdType.length > 0 && this.formData.idType === '') {
-                        this.$vux.toast.text(this.$t('请选择证件类型'));
-                        reject();
+                    if ( this.acceptIdType.length > 0) {
+                        for ( let i = 0,j = this.formData.length; i < j; i++) {
+                            if (this.formData[i]['idType'] === '') {
+                                this.$vux.toast.text(this.$t('请选择证件类型'));
+                                reject();
+                            }
+                        }
+                        resolve();
                     } else {
                         resolve();
                     }
@@ -153,15 +162,17 @@
              */
             validateIdNum () {
                 return new Promise((resolve,reject) => {
-                    if ( this.acceptIdType.length > 0 && this.formData.idNum === '') {
-                        this.$vux.toast.text(this.$t('请输入证件号'));
-                        reject();
-                    } else if ( this.acceptIdType.length > 0 && this.formData.idNum !== '') {
-                        if (this.formData.idNum.length > 50) {
-                            this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('idCard'),length : 50 }));
-                        } else {
-                            resolve();
+                    if ( this.acceptIdType.length > 0) {
+                        for ( let i = 0,j = this.formData.length; i < j; i++) {
+                            if (this.formData[i]['idNum'] === '') {
+                                this.$vux.toast.text(this.$t('请输入证件号'));
+                                reject();
+                            } else if (this.formData[i].idNum.length > 50) {
+                                this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('idCard'),length : 50 }));
+                                reject();
+                            }
                         }
+                        resolve();
                     } else {
                         resolve();
                     }
@@ -173,17 +184,16 @@
              */
             validateName () {
                 return new Promise ((resolve,reject) => {
-                    if (this.formData && this.formData.name ) {
-                        if (this.formData.name.length > 20) {
+                    for ( let i = 0,j = this.formData.length; i < j; i++) {
+                        if (this.formData[i]['name'] === '') {
+                            this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('name') }));
+                            reject();
+                        } else if (this.formData[i].name.length > 20) {
                             this.$vux.toast.text(this.$t('maxLengthErr',{ field : this.$t('name'),length : 20 }));
                             reject();
-                        } else {
-                            resolve();
                         }
-                    } else {
-                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('name') }));
-                        reject();
                     }
+                    resolve();
                 });
             },
             /**
@@ -192,21 +202,16 @@
              */
             validatePhone () {
                 return new Promise((resolve,reject) => {
-                    if (this.formData.phone === '') {
-                        this.$vux.toast.text(this.$t('pleaseEnterMobile'));
-                        reject();
-                    } else {
-                        if (!validator.isMobile(this.formData.phone)) {
+                    for ( let i = 0,j = this.formData.length; i < j; i++) {
+                        if (this.formData[i]['phone'] === '') {
+                            this.$vux.toast.text(this.$t('pleaseEnterMobile'));
+                            reject();
+                        } else if (!validator.isMobile(this.formData[i].phone)) {
                             this.$vux.toast.text(this.$t('pleaseEnterRightMobile'));
                             reject();
-                        } else {
-                            if (this.originPhone === this.formData.phone) {
-                                this.$vux.toast.text(this.$t('twPhoneError'));
-                            } else {
-                                resolve();
-                            }
                         }
                     }
+                    resolve();
                 });
             },
             /**
@@ -220,7 +225,7 @@
                 }).then(() => {
                     return this.validatePhone();
                 }).then(() => {
-
+                    this.validateOrderIsRight();
                 });
             },
             /**
@@ -228,16 +233,109 @@
              */
             validateOrderIsRight () {
                 ajax.post('market_checkOrderBeforePay',{
-                    productInfos : '',
-                    orderVisitorProductVos : '',
-                    playDate : this.formData.date,
-                    saleRuleVos : '',
+                    productInfos : JSON.stringify([{
+                        productId : this.productDetail.productId,
+                        policyId : this.productDetail.policyId,
+                        allocationId : this.productDetail.allocationId,
+                        price : this.productDetail.salePrice,
+                        actPrice : this.productDetail.salePrice,
+                        quantity : this.buyNum
+                    }]),
+                    orderVisitorProductVos : JSON.stringify(this.getTouristInfo()),
+                    playDate : this.playDate,
+                    saleRuleVos : JSON.stringify(this.getSaleRuleVos()),
                 }).then(res => {
-
+                    if (res.success && res.data) {
+                        this.addTouristOrder();
+                    } else {
+                        this.$vux.toast.text(this.$t('下单失败'));
+                    }
                 });
+            },
+            /**
+             * 获取游客信息
+             * @return {Array}
+             */
+            getTouristInfo () {
+                let result = [];
+                for (let i = 0,j = this.formData.length; i < j; i++) {
+                    let baseInfo = {
+                        phoneNumber : this.formData[i]['phone'],
+                        visitorType : 'visitor',
+                        visitorName : this.formData[i]['name'],
+                    };
+                    if (this.acceptIdType.length > 0) {
+                        baseInfo['documentInfo'] = [{
+                            data : this.formData[i]['idNum'],
+                            type : this.formData[i]['idType'],
+                        }];
+                        baseInfo['productModels'] = [{
+                            documentId : this.formData[i]['idNum'],
+                            documentType : this.formData[i]['idType'],
+                            originVisitDate : this.playDate,
+                            productId : this.productDetail.productId,
+                            productName : this.productDetail.productName,
+                            quantity : this.productPolicy.needId === 'more' ? this.buyNum : 1
+                        }];
+                    } else {
+                        baseInfo['documentInfo'] = [];
+                        baseInfo['productModels'] = [];
+                    }
+                    result.push(baseInfo);
+                }
+                return result;
+            },
+            /**
+             * 获取销售规则
+             * @return {Array}
+             */
+            getSaleRuleVos () {
+                let result = [];
+                for (let i = 0,j = this.formData.length; i < j; i++) {
+                    result.push({
+                        productId : this.productDetail.productId,
+                        documentType : this.formData[i]['idType'],
+                        documentId : this.formData[i]['idNum'],
+                        mobile : this.formData[i]['phone'],
+                        productName : this.productDetail.productName,
+                        visitorName : this.formData[i]['name'],
+                        count : this.productPolicy.needId === 'more' ? this.buyNum : 1
+                    });
+                }
+                return result;
+            },
+            /**
+             * 新增订单
+             */
+            addTouristOrder () {
+                 ajax.post('market_addVisitorOrder',{
+                     productInfos : JSON.stringify([{
+                         productId : this.productDetail.productId,
+                         policyId : this.productDetail.policyId,
+                         allocationId : this.productDetail.allocationId,
+                         price : this.productDetail.salePrice,
+                         actPrice : this.productDetail.salePrice,
+                         quantity : this.buyNum
+                     }]),
+                     orderVisitorProductVos : JSON.stringify(this.getTouristInfo()),
+                     playDate : this.playDate,
+                     saleRuleVos : JSON.stringify(this.getSaleRuleVos()),
+                     orderAmount : this.totalAmount,
+                     orderChannel : 'market',
+                     marketUserId : this.marketUserId,
+                     latitude : this.marketLatitude,
+                     longitude : this.marketLongitude,
+                 }).then(res => {
+
+                 });
             }
         },
         computed : {
+            ...mapGetters({
+                marketUserId : 'marketUserId',
+                marketLongitude : 'marketLongitude',
+                marketLatitude : 'marketLatitude',
+            }),
             //产品不可退
             cannotReturn () {
                 if (this.productDetail && this.productDetail.returnRuleModel) {
@@ -254,7 +352,7 @@
             },
             //支付总额
             totalAmount () {
-                return this.formData.num * (this.productDetail ? this.productDetail.salePrice : 0);
+                return this.buyNum * (this.productDetail ? this.productDetail.salePrice : 0);
             },
             //支持的证件类型
             acceptIdType () {
@@ -278,7 +376,7 @@
                 if (this.productPolicy && this.productPolicy.maxNum) {
                     return Number(this.productPolicy.maxNum);
                 } else {
-                    return 0;
+                    return 1;
                 }
             },
             //最小选择的产品数量
@@ -286,7 +384,28 @@
                 if (this.productPolicy && this.productPolicy.minNum) {
                     return Number(this.productPolicy.minNum);
                 } else {
-                    return 0;
+                    return 1;
+                }
+            }
+        },
+        watch : {
+            //监视购买数量判断需要添加几个证件
+            buyNum (newVal,oldVal) {
+                if (common.isNotEmpty(newVal)) {
+                    if (this.productPolicy && this.productPolicy.needId === 'one') {
+                        if (newVal > oldVal) {
+                            this.formData.push({
+                                name : '',
+                                phone : '',
+                                //证件类型
+                                idType : '',
+                                //证件号
+                                idNum : ''
+                            });
+                        } else {
+                            this.formData.pop();
+                        }
+                    }
                 }
             }
         }
