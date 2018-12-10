@@ -77,7 +77,9 @@
                     //订单退票审核
                     case 'ORDER_REFUND_AUDIT' :
                         //退票审核，通过数量：                                                                    // 手续费率                                                                                 // 驳回数量                                         // 备注
-                        return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，${this.$t('handlingRate')}：${contentsObj.refundRate || '-'}，${contentsObj.passOrderTicketIds || '-'}；${this.$t('rejectedNum')}：${contentsObj.rejectNum}。${this.$t('remark')}：${contentsObj.remark}`;
+                        return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，
+                        ${'refundRate' in contentsObj ? ( this.$t('handlingRate') + ':' + contentsObj.refundRate + ',' ) : '' }
+                        ${contentsObj.passOrderTicketIds || '-'}；${this.$t('rejectedNum')}：${contentsObj.rejectNum}。${this.$t('remark')}：${contentsObj.remark}`;
                     //订单改签申请
                     case 'ORDER_ALTER_APPLY' :
                         // 申请改签，数量：                                                                      // 申请改签至
