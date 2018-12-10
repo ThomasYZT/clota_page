@@ -24,7 +24,7 @@ export const columns = {
         {
             title : '主账号',
             minWidth : 100,
-            field : 'loginName'
+            field : 'managerAccount'
         },
         {
             title : '身份证',
@@ -71,7 +71,7 @@ export const columns = {
         {
             title : '主账号',
             minWidth : 100,
-            field : 'loginName'
+            field : 'managerAccount'
         },
         {
             title : '身份证',
