@@ -29,7 +29,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     {{$t('stockType.' + scope.row.stockType) | contentFilter}}
-                    {{$t(scope.row.stockNum) | contentFilter}}
+                    <span v-if="scope.row.stockType !== 'is_no_limit'">{{$t(scope.row.stockNum) | contentFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -40,6 +40,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
+
                     <i-input v-model.trim="modifiedSalePrice"
                              ref="salePriceInput"
                              v-if="currRowIndex==scope.$index"></i-input>
@@ -99,6 +100,10 @@
                 },
                 //修改后的终端售价
                 modifiedSalePrice : '',
+                //表单验证
+                ruleValidate : [
+
+                ]
             }
         },
         computed : {},
