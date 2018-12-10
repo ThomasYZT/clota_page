@@ -172,7 +172,7 @@
             checkPolicyDetail () {
                 //显示弹窗
                 if (this.policyItem) {
-                    this.$refs.detailView.toggle(this.policyItem);
+                    this.$refs.detailView.toggle(this.policyItem, 'marketing');
                 } else {
                     this.$Message.error(this.$t('selectField', { msg : this.$t('marketingPolicy') }));
                 }

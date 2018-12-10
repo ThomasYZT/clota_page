@@ -14,25 +14,41 @@
                   label-position="right"
                   :label-width="150"
                   v-if="detail && detail.productPolicy">
-                <i-row>
-                    <i-col span="12">
-                        <Form-item :label="$t('salePolicyName')+':'"><!--销售政策名称-->
-                            <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
-                        </Form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <Form-item :label="$t('scenePlace')+':'"><!--所属景区-->
-                            <div v-w-title="detail.scenicName">{{detail.scenicName | contentFilter}}</div>
-                        </Form-item>
-                    </i-col>
-                </i-row>
-                <i-row>
-                    <i-col span="12">
-                        <Form-item :label="$t('desc')+':'"><!--描述-->
-                            <div v-w-title="detail.policyDesc">{{detail.policyDesc | contentFilter}}</div>
-                        </Form-item>
-                    </i-col>
-                </i-row>
+                <template v-if="callFrom && callFrom === 'marketing'">
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('salePolicyName')+':'"><!--销售政策名称-->
+                                <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('desc')+':'"><!--描述-->
+                                <div v-w-title="detail.policyDesc">{{detail.policyDesc | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                </template>
+                <template v-else>
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('salePolicyName')+':'"><!--销售政策名称-->
+                                <div v-w-title="detail.productPolicy.name">{{detail.productPolicy.name | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('scenePlace')+':'"><!--所属景区-->
+                                <div v-w-title="detail.scenicName">{{detail.scenicName | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('desc')+':'"><!--描述-->
+                                <div v-w-title="detail.policyDesc">{{detail.policyDesc | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                </template>
 
                 <!-- 售卖游玩政策 -->
                 <div class="divider-header">
@@ -269,7 +285,9 @@
                 //退改规则列表表头
                 refundColumn : refundColumn,
                 //分销详情数据
-                detail : {}
+                detail : {},
+                //模态框调用来源
+                callFrom : '',
             };
         },
         computed : {
@@ -295,11 +313,15 @@
             /**
              * 控制弹窗显示/隐藏
              */
-            toggle (data) {
+            toggle (data, callFrom) {
                 if (data) {
                     this.listItem = data;
+                    if (callFrom && callFrom === 'marketing') {
+                        this.callFrom = callFrom;
+                    }
                     this.getPolicyDetailData();
                 } else {
+                    this.callFrom = '';
                     this.listItem = {};
                 }
                 this.show = !this.show;
