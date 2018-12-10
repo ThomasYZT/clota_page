@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import ajax from '../../../api/index';
+    import ajax from '@/member/api/index.js';
     import goodBoard from './components/goodBoard';
     import { mapGetters } from 'vuex';
     export default {

@@ -1,6 +1,5 @@
 
-import ajax from "../../api";
-
+import defaultsDeep from 'lodash/defaultsDeep';
 export const memberState = {
     //用户信息
     userInfo : {},
@@ -164,11 +163,13 @@ export const memberMutations = {
 export const memberActions = {
     //获取会员卡列表
     getCardListInfo ({ commit, dispatch }) {
+        const ajax = require('../api/index').default;
         return new Promise((resolve, reject) => {
             ajax.post('queryMemberCardList', {
                 memberId : this.getters.userInfo.memberId
             }).then(res => {
                 if (res.success) {
+                    debugger
                     let memberCardList = res.data ? res.data : [];
                     if (memberCardList.length > 0) {
                         //存储卡列表数据

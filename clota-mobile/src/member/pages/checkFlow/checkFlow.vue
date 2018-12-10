@@ -45,7 +45,7 @@
 
 <script>
     import checkItem from './components/check-item';
-    import ajax from '../../../api/index';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
     import Scroll from '@/components/scroll/scroll';
     export default {

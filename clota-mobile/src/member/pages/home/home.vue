@@ -43,6 +43,7 @@
                 {
                     title : 'integralDetail',
                     link : '/integralDetail',
+                    routeName : 'integralDetail',
                     iconClass : 'icon-my-points',
                     info : '',
                     params : {},
@@ -51,6 +52,7 @@
                 {
                     title : 'accountOfStoreValue',
                     link : '/account',
+                    routeName : 'account',
                     iconClass : 'icon-default-account',
                     info : '',
                     params : {},
@@ -59,6 +61,7 @@
                 {
                     title : 'myOrder',
                     link : '/order',
+                    routeName : 'order',
                     iconClass : 'icon-my-orders',
                     info : '',
                     params : {},
@@ -67,6 +70,7 @@
                 {
                     title : 'checkFlow',
                     link : '/checkFlow',
+                    routeName : 'checkFlow',
                     iconClass : 'icon-check-flow1',
                     info : '',
                     params : {},
@@ -75,6 +79,7 @@
                 {
                     title : 'memberCode',
                     link : '/memberCode',
+                    routeName : 'memberCode',
                     iconClass : 'icon-member-code',
                     info : '',
                     params : {},
@@ -91,6 +96,7 @@
                 {
                     title : 'memberRight',
                     link : '/memberRight',
+                    routeName : 'memberRight',
                     iconClass : 'icon-member-rights',
                     info : '',
                     params : {},
@@ -99,6 +105,7 @@
                 {
                     title : 'integralMall',
                     link : '/integralMall',
+                    routeName : 'integralMall',
                     iconClass : 'icon-integral-mall-select',
                     info : '',
                     params : {},

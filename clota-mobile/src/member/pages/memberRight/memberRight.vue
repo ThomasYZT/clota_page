@@ -127,7 +127,7 @@
 
 <script>
     import illustrationBoard from './components/illustrationBoard';
-    import ajax from '../../../api/index';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
     import noData from '@/components/noData/index.vue';
     export default {
