@@ -43,7 +43,10 @@
                         <div class="info-list5">
                             <span class="info-key">{{item[1].label}}：</span>
                                 <span class="info-val">
-                                <img class="classify-img" :src="item[1].value" alt="">
+                                <img v-for="(picture, imgIndex) in JSON.parse(item[1].value ? item[1].value : '[]')"
+                                     :key="imgIndex"
+                                     class="classify-img"
+                                     :src="picture" alt="">
                             </span>
                         </div>
                     </li>
@@ -330,8 +333,9 @@
                 }).then(res => {
                     if (res.status === 200) {
                         this.partnerTableData = res.data.channelParentListVos ? res.data.channelParentListVos : [];
-                        this.totalCount = res.data.parentNumber;
+                        this.totalCount = res.data.parentNumber ? res.data.parentNumber : 0;
                     } else {
+                        this.partnerTableData = [];
                         this.totalCount = 0;
                     }
                 });
@@ -496,6 +500,14 @@
                     .info-list5{
                         @include block_outline(40%, auto);
                         padding-left: 15px;
+                    }
+
+                    .info-list5 {
+                        img {
+                            float: left;
+                            margin-right: 10px;
+                            width: 200px;
+                        }
                     }
 
                     .info-list4{

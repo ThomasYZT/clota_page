@@ -87,7 +87,7 @@
                 //合作渠道数据
                 tableData : [],
                 //待审核个数
-                auditNumber : ''
+                auditNumber : 0
             };
         },
         methods : {
@@ -124,13 +124,13 @@
                     pageSize : this.pageSize
                 }).then(res => {
                     if (res.status === 200) {
-                        this.tableData = res.data.pageInfo.list ? res.data.pageInfo.list : [];
-                        this.totalCount = Number(res.data.pageInfo.totalRecord);
-                        this.auditNumber = res.data.auditNumber;
+                        this.tableData = res.data.list ? res.data.list : [];
+                        this.totalCount = res.data ? Number(res.data.totalRecord) : 0;
+                        this.auditNumber = res.data && res.data.other ? Number(res.data.other.auditNumber) : 0;
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
-                        this.auditNumber = '';
+                        this.auditNumber = 0;
                     }
                 });
             }

@@ -5,9 +5,13 @@
 <template>
     <div class="menu-tree">
         <div class="btn-wrapper">
-            <span class="add-btn">+ {{$t('addFile')}}</span>
+            <span class="add-btn" @click="addNewFolder">+ {{$t('addFile')}}</span>
         </div>
-        <el-tree :data="folderList" :props="defaultProps" icon-class="">
+        <el-tree :data="folderList"
+                 :props="defaultProps"
+                 lazy
+                 :load="loadFiles"
+                 icon-class="">
             <div class="menu-item" slot-scope="{node, data}">
                 <div class="label-wrapper">
                     <span v-if="data.isFolder">{{node.label}}</span>
@@ -25,7 +29,9 @@
         components : {},
         data () {
             return {
+                //文件夹列表数据
                 folderList : [],
+                //树节点固定字段设置
                 defaultProps : {
                     children : 'pageList',
                     label : 'name',
@@ -50,6 +56,36 @@
                         this.folderList = [];
                     }
                 })
+            },
+            /**
+             * 新增文件夹
+             */
+            addNewFolder () {
+
+            },
+            /**
+             * 加载文件
+             */
+            loadFiles (node, resolve) {
+                if (node && node.data && node.data.id) {
+                    ajax.post('pageList', {
+                        folderId : node.data.id,
+                    }).then((res) => {
+                        if (res.success && res.success === 200) {
+                            resolve(res.pageList ? res.pageList.map((item) => {
+                                return {
+                                    ...item,
+                                    leaf : true,
+                                }
+                            }) : []);
+                        } else {
+                            resolve([])
+                        }
+                    });
+                } else {
+                    resolve([]);
+                }
+
             }
         },
         created () {
