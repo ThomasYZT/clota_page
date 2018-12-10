@@ -28,7 +28,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{$t('stockType.' + [scope.row.stockType]) | contentFilter}}
+                    {{$t('stockType.' + scope.row.stockType) | contentFilter}}
                     {{$t(scope.row.stockNum) | contentFilter}}
                 </template>
             </el-table-column>

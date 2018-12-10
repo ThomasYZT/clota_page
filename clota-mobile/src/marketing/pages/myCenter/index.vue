@@ -18,7 +18,7 @@
         <!--提现金额-->
         <div class="cell-list" @click="toDepositDetail">
             <span class="icon iconfont icon-default-account"></span>
-            <span class="label-title">提现金额</span>
+            <span class="label-title">可提现金额</span>
             <span class="label-value"><span class="money">{{userInfo.canApplyWithdrawAmount | moneyFilter | contentFilter}}</span>元</span>
             <span class="iconfont icon-arrow"></span>
         </div>
