@@ -311,7 +311,7 @@
                     //取票状态
                     pickStatus : 'allStatus',
                     //是否分销
-                    allocationStatus : 'true',
+                    allocationStatus : 'false',
                     //退票状态
                     refundStatus : 'allStatus',
                     //所属景区
@@ -461,7 +461,7 @@
                 this.formData.orderDate = [new Date().addMonths(-1),new Date()];
                 this.formData.visitDate = [];
                 this.formData.pickStatus = 'allStatus';
-                this.formData.allocationStatus = 'true';
+                this.formData.allocationStatus = 'false';
                 this.formData.refundStatus = 'allStatus';
                 this.formData.scenicOrgId = 'all';
                 this.formData.orderChannel = 'allStatus';

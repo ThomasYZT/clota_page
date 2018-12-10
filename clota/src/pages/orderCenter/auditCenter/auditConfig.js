@@ -362,7 +362,7 @@ export const batchAudit = [
 //订单同步状态
 export const orderSyncStatus = [
     {
-        label : '-', //无状态
+        label : 'waitToSync', //待同步
         value : 'wait'
     },
     {
