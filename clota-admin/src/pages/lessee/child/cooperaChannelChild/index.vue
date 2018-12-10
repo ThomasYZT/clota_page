@@ -156,7 +156,7 @@
                     {
                         title : '合作伙伴名称',
                         minWidth : 150,
-                        field : 'orgName'
+                        field : 'name'
                     },
                 ],
                 //表单校验规则
