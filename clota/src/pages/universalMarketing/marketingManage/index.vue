@@ -40,10 +40,15 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-
-                    <i-input v-model.trim="modifiedSalePrice"
-                             ref="salePriceInput"
-                             v-if="currRowIndex==scope.$index"></i-input>
+                    <Form ref="form"
+                          v-if="currRowIndex == scope.$index"
+                          :model="modifyModel"
+                          :rules="ruleValidate">
+                        <FormItem prop="modifiedSalePrice">
+                            <i-input v-model.trim="modifyModel.modifiedSalePrice"
+                                     ref="salePriceInput"></i-input>
+                        </FormItem>
+                    </Form>
                     <span v-else>{{scope.row.salePrice | contentFilter}}</span>
                 </template>
             </el-table-column>
@@ -73,6 +78,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index';
     import { marketingProductHead } from './marketingManageConfig';
+    import { validator } from 'klwk-ui';
 
     export default {
         components : {
@@ -81,6 +87,19 @@
         },
         props : {},
         data () {
+            //校验是否为数字、且大于0、且大于销售政策产品单价
+            const validateNumber = (rule, value, callback) => {
+                if (value && !validator.isBothNumber(value)) {
+                    callback(new Error( this.$t('numError', { field : this.$t('终端售价') }) ));
+                } else {
+                    if (parseInt(this.modifyModel.settlePrice) >= parseInt(value)) {
+                        callback(new Error( this.$t('NoSmallerThan', { field1 : '终端售价', field2 : '销售政策产品单价' })));
+                    } else {
+                        callback();
+                    }
+                }
+            };
+
             return {
                 //表头配置
                 columnData : marketingProductHead,
@@ -98,12 +117,20 @@
                     pageNo : 1,
                     pageSize : 10,
                 },
-                //修改后的终端售价
-                modifiedSalePrice : '',
                 //表单验证
-                ruleValidate : [
-
-                ]
+                ruleValidate : {
+                    modifiedSalePrice : [
+                        { required : true, message : this.$t('inputField', { field : '终端售价' }), trigger : 'blur' },
+                        { validator : validateNumber },
+                    ]
+                },
+                //修改表单数据
+                modifyModel : {
+                    //修改后的终端售价
+                    modifiedSalePrice : '',
+                    //销售政策产品单价
+                    settlePrice : '',
+                }
             }
         },
         computed : {},
@@ -157,31 +184,37 @@
              */
             modifyPrice (scopeData) {
                 this.currRowIndex = scopeData.$index;
+                this.modifyModel.modifiedSalePrice = scopeData.row.salePrice;
+                this.modifyModel.settlePrice = scopeData.row.settlePrice;
             },
             /**
              * 取消修改终端售价
              **/
             cancelModifyPrice () {
                 this.currRowIndex = null;
-                this.modifiedSalePrice = '';
+                this.$refs.form.resetFields();
             },
             /**
              * 保存修改的终端售价
              * @param scopeRow
              */
             modifySalePrice (scopeRow) {
-                ajax.post('marketing-updateSalePrice', {
-                    id : scopeRow.id,
-                    salePrice : this.modifiedSalePrice
-                }).then(res => {
-                    if (res.success) {
-                        scopeRow.salePrice = this.modifiedSalePrice;
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
-                        this.cancelModifyPrice();
-                    } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        ajax.post('marketing-updateSalePrice', {
+                            id : scopeRow.id,
+                            salePrice : this.modifyModel.modifiedSalePrice
+                        }).then(res => {
+                            if (res.success) {
+                                scopeRow.salePrice = this.modifyModel.modifiedSalePrice;
+                                this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
+                                this.cancelModifyPrice();
+                            } else {
+                                this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
+                            }
+                        });
                     }
-                });
+                })
             }
         }
     };

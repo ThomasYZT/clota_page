@@ -1973,4 +1973,5 @@ export default {
     'product.needId.one' : '每个证件可预定多张票',
     'product.needId.more' : '每个证件只能预定一张票',
     'waitToSync' : '待同步',
+    'NoSmallerThan' : '{field1}不能低于{field2}',
 }
