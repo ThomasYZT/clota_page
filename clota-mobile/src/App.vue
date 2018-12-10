@@ -91,7 +91,7 @@
 <script>
     import { mapGetters } from 'vuex';
     import drag from '@/components/drag/index.vue';
-    import ajax from '@/api/index.js';
+    import ajax from '@/member/api/index.js';
 
     export default {
         name : 'app',
@@ -211,8 +211,8 @@
             }),
         },
         created () {
-            // this.getWxConfig();
-            this.$store.dispatch('getLocation');
+             this.getWxConfig();
+//            this.$store.dispatch('getLocation');
         },
         watch : {
             '$route' : {
