@@ -51,6 +51,17 @@
                         <span>{{scope.row.value}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column
+                    slot="column3"
+                    slot-scope="row"
+                    show-overflow-tooltip
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span class="progress" :style="{width : (scope.row.value/baseRate).toFixed(2) * 100 + 'px'}"></span>
+                    </template>
+                </el-table-column>
             </table-com>
         </div>
     </div>
@@ -72,6 +83,8 @@
                 columnData : businessHead,
                 //表格数据
                 tableData : [],
+                //交易量比例基准
+                baseRate : 0,
             }
         },
         computed : {},
@@ -91,8 +104,10 @@
                 }).then(res => {
                     if (res.success) {
                         this.tableData = res.data || [];
+                        this.baseRate = res.data.length > 0 && res.data[0].value ? Number(res.data[0].value) : 0;
                     } else {
                         this.tableData = [];
+                        this.baseRate = 0;
                     }
                 });
             },
@@ -132,6 +147,13 @@
         .table-list-area {
             /*padding: 0 30px;*/
             @include block_outline($height: calc(100% - 45px));
+
+            .progress {
+                display: inline-block;
+                height: 5px;
+                background: linear-gradient(-90deg, #0055B8 1%, #00B8C2 98%);
+                border-radius: 5px;
+            }
         }
     }
 </style>

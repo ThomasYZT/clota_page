@@ -12,9 +12,14 @@ export const businessHead = [
     },
     {
         title : 'tradeVolume', // 交易量
-        minWidth : 190,
+        minWidth : 100,
         field : 'value'
     },
+    {
+        title : '', // 交易量
+        minWidth : 150,
+        field : 'value'
+    }
 ];
 
 // 待处理事项列表表头
