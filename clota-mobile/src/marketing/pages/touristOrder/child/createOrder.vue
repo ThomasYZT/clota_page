@@ -315,38 +315,64 @@
              * 新增订单
              */
             addTouristOrder () {
-                 ajax.post('market_addVisitorOrder',{
-                     productInfos : JSON.stringify([{
-                         productId : this.productDetail.productId,
-                         policyId : this.productDetail.policyId,
-                         allocationId : this.productDetail.allocationId,
-                         price : this.productDetail.salePrice,
-                         actPrice : this.productDetail.salePrice,
-                         quantity : this.buyNum
-                     }]),
-                     orderVisitorProductVos : JSON.stringify(this.getTouristInfo()),
-                     playDate : this.playDate,
-                     saleRuleVos : JSON.stringify(this.getSaleRuleVos()),
-                     orderAmount : this.totalAmount,
-                     orderChannel : 'market',
-                     marketUserId : this.marketUserId,
-                     latitude : this.marketLatitude,
-                     longitude : this.marketLongitude,
-                 }).then(res => {
-                     if (res.success) {
-                         this.$router.replace({
-                             name : 'marketingCreateOrderToPay',
-                             params : {
-                                 productName : this.productDetail.productName,
-                                 totalAmount : this.totalAmount
-                             }
-                         });
-                     } else if (res.code && res.code !== '300') {
-                         this.$vux.toast.text(this.$t('errorMsg.' + res.code));
-                     } else {
-                         this.$vux.toast.text(this.$t('下单失败'));
-                     }
-                 });
+                localStorage.setItem('create-order-detail',JSON.stringify({
+                    productInfos : JSON.stringify([{
+                        productId : this.productDetail.productId,
+                        policyId : this.productDetail.policyId,
+                        allocationId : this.productDetail.allocationId,
+                        price : this.productDetail.salePrice,
+                        actPrice : this.productDetail.salePrice,
+                        quantity : this.buyNum
+                    }]),
+                    orderVisitorProductVos : JSON.stringify(this.getTouristInfo()),
+                    playDate : this.playDate,
+                    saleRuleVos : JSON.stringify(this.getSaleRuleVos()),
+                    orderAmount : this.totalAmount,
+                    orderChannel : 'market',
+                    marketUserId : this.marketUserId,
+                    latitude : this.marketLatitude,
+                    longitude : this.marketLongitude,
+                }));
+                this.$router.replace({
+                    name : 'marketingCreateOrderToPay',
+                    params : {
+                        productName : this.productDetail.productName,
+                        totalAmount : this.totalAmount,
+                    }
+                });
+                 // ajax.post('market_addVisitorOrder',{
+                 //     productInfos : JSON.stringify([{
+                 //         productId : this.productDetail.productId,
+                 //         policyId : this.productDetail.policyId,
+                 //         allocationId : this.productDetail.allocationId,
+                 //         price : this.productDetail.salePrice,
+                 //         actPrice : this.productDetail.salePrice,
+                 //         quantity : this.buyNum
+                 //     }]),
+                 //     orderVisitorProductVos : JSON.stringify(this.getTouristInfo()),
+                 //     playDate : this.playDate,
+                 //     saleRuleVos : JSON.stringify(this.getSaleRuleVos()),
+                 //     orderAmount : this.totalAmount,
+                 //     orderChannel : 'market',
+                 //     marketUserId : this.marketUserId,
+                 //     latitude : this.marketLatitude,
+                 //     longitude : this.marketLongitude,
+                 // }).then(res => {
+                 //     if (res.success) {
+                 //         this.$router.replace({
+                 //             name : 'marketingCreateOrderToPay',
+                 //             params : {
+                 //                 productName : this.productDetail.productName,
+                 //                 totalAmount : this.totalAmount,
+                 //                 orderId : res.data ? res.data : ''
+                 //             }
+                 //         });
+                 //     } else if (res.code && res.code !== '300') {
+                 //         this.$vux.toast.text(this.$t('errorMsg.' + res.code));
+                 //     } else {
+                 //         this.$vux.toast.text(this.$t('下单失败'));
+                 //     }
+                 // });
             }
         },
         computed : {

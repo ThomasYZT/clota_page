@@ -5,6 +5,8 @@
         <div class="success-wrap">
             <img class="suc-img" src="../../../../../assets/images/pay-success.svg" alt="">
             <div class="suc-label">您的新密码已生效!</div>
+            <x-button class="button"
+                      @click.native="back">{{$t('返回')}}</x-button>
         </div>
     </div>
 </template>
@@ -25,6 +27,14 @@
                         name : 'marketingSetting'
                     });
                 }
+            },
+            /**
+             * 返回上级页面
+             */
+            back () {
+                this.$router.replace({
+                    name : 'marketingSetting'
+                });
             }
         },
         beforeRouteEnter (to,from,next) {

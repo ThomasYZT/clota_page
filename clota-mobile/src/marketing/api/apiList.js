@@ -56,5 +56,11 @@ export default {
     //游客下单
     'market_addVisitorOrder' : '/market/marketUser/addVisitorOrder',
     //查询支付方式
-    'market_queryOnlinePayAccount' : '/external/account/queryOnlinePayAccount',
+    'market_queryExtOnlineAccount' : '/market/marketUser/queryExtOnlineAccount',
+    //在微信中调用微信支付
+    'market_getPayPageForOfficialAccount' : '/external/pay/getPayPageForOfficialAccountNoLogin',
+    //在微信外调用支付
+    'market_getPayPageForMobileNoLogin' : '/external/pay/getPayPageForMobileNoLogin',
+    //更新下单结果
+    'market_updateTransction' : '/market/marketUser/updateTransction',
 };

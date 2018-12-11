@@ -29,7 +29,7 @@ export const marketingState = {
         //是否正在获取位置信息
         isGettingLocation : true,
         //营销用户id
-        marketUserId : '1067659364082520064'
+        marketUserId : ''
     }
 };
 export const marketingGetters = {
@@ -43,7 +43,12 @@ export const marketingGetters = {
     },
     //组织id
     marketOrgId : state => {
-        return state.marketing.orgId;
+        let orgId = localStorage.getItem('orgId') ? localStorage.getItem('orgId') : '';
+        if ( state.marketing.orgId ) {
+            return state.marketing.orgId;
+        } else {
+            return orgId;
+        }
     },
     //营销级别id
     marketLevelId : state => {
@@ -83,7 +88,11 @@ export const marketingGetters = {
     },
     //营销用户id
     marketUserId : state => {
-        return state.marketing.marketUserId;
+        if (state.marketing.marketUserId) {
+            return state.marketing.marketUserId;
+        } else {
+            return localStorage.getItem('marketingUserId') ? localStorage.getItem('marketingUserId') : '';
+        }
     }
 };
 
@@ -98,6 +107,7 @@ export const marketMutations = {
     },
     //更新组织id
     marketUpdateOrgId (state,orgId) {
+        localStorage.setItem('orgId',orgId);
         state.marketing.orgId = orgId;
     },
     //更新levelId
@@ -135,6 +145,11 @@ export const marketMutations = {
     //更新获取位置信息状态
     marketUpdateIsGettingLocation (state,status) {
         state.marketing.isGettingLocation = status;
+    },
+    //更新营销用户id
+    marketUpdateMarketUserId (state,status) {
+        localStorage.setItem('marketingUserId',status);
+        state.marketing.marketUserId = status;
     }
 };
 

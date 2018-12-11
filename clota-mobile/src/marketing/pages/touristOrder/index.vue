@@ -8,7 +8,14 @@
             @change-active-date="changeAciveDate">
         </date-head>
         <div class="address-tips">
-            <span class="address"> {{$t('colonSetting',{ key : $t('地址') })}}{{marketLocationInfo | contentFilter}}</span>
+            <span class="address">
+                <popover placement="bottom">
+                    <div slot="content" class="popover-demo-content">
+                       {{marketLocationInfo | contentFilter}}
+                    </div>
+                    <span>{{$t('colonSetting',{ key : $t('地址') })}}{{marketLocationInfo | contentFilter}}</span>
+                </popover>
+            </span>
             <span class="re-get-location" @click="getLocation">
                 <span class="iconfont icon-fresh" :class="{ 'rotate' : marketIsGettingLocation }"></span>
                 <span class="label">{{$t('重新获取')}}</span>
@@ -109,9 +116,13 @@
                     pageSize : this.pageSize
                 }).then(res => {
                     if (res.success) {
-                        this.productList = res.data ? res.data.data : [];
+                        this.productList = res.data ? res.data.modelPagedList.data : [];
+                        document.title = res.data ? res.data.orgName : '';
+                        this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
                     } else {
                         this.productList = [];
+                        document.title = '';
+                        this.$store.commit('marketUpdateOrgId','');
                     }
                 });
             },
@@ -146,6 +157,15 @@
              */
             getLocation () {
                 this.$store.commit('marketUpdateIsGettingLocation',true);
+            },
+            /**
+             * 获取路由信息
+             * @param{Object} params 路由信息
+             */
+            getParams (params) {
+                if (params && params.marketUserId) {
+                    this.$store.commit('marketUpdateMarketUserId',params.marketUserId);
+                }
             }
         },
         computed : {
@@ -159,6 +179,11 @@
         },
         created () {
             this.queryProductList();
+        },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.getParams(to.query);
+            });
         }
     };
 </script>

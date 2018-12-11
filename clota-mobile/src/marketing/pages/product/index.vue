@@ -3,6 +3,7 @@
 <template>
     <div class="product-info">
         <div class="date-list">
+            <span>{{$t('colonSetting',{ key : $t('游玩日期') })}}</span>
             <span class="date-area" @click="choseDate">
             {{productDate}}
             <span class="iconfont icon-arrow-right"></span>
@@ -10,7 +11,12 @@
         </div>
         <div class="area-info">
             <template v-if="marketLocationInfo">
-                地址：{{marketLocationInfo}}
+                <popover placement="bottom">
+                    <div slot="content" class="popover-demo-content">
+                        {{marketLocationInfo | contentFilter}}
+                    </div>
+                    <span :class="$style.addInfo">{{$t('colonSetting',{ key : $t('地址') })}}{{marketLocationInfo | contentFilter}}</span>
+                </popover>
             </template>
             <span v-else class="re-get-location" @click="getLocation">
                 重新获取地理位置信息
@@ -267,5 +273,8 @@
         color: #046FDB;
         margin-left: 20px;
         padding-right: 10px;
+    }
+    .addInfo{
+        white-space: nowrap;
     }
 </style>

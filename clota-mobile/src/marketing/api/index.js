@@ -24,7 +24,7 @@ const instance = axios.create({
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
     if (response.data.message === '请先登录') {
-        localStorage.removeItem('token');
+        localStorage.removeItem('marketToken');
         router.push({
             name : 'marketingLogin',
             query : {
