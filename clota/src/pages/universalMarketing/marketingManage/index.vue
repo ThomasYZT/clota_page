@@ -145,11 +145,11 @@
              */
             queryList () {
                 let params = Object.assign({}, this.queryParams);
-                ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
-                    if (params[key].includes('all')) {
-                        params[key] = '';
-                    }
-                });
+                // ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
+                //     if (params[key].includes('all')) {
+                //         params[key] = '';
+                //     }
+                // });
                 ajax.post('marketing-queryMarketProductList',{
                     ...params
                 }).then(res => {
@@ -192,7 +192,9 @@
              **/
             cancelModifyPrice () {
                 this.currRowIndex = null;
-                this.$refs.form.resetFields();
+                if (this.$refs.form) {
+                    this.$refs.form.resetFields();
+                }
             },
             /**
              * 保存修改的终端售价

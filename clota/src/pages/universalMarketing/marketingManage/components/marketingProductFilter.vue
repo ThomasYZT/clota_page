@@ -116,7 +116,10 @@
             getMarketingTypes () {
                 ajax.post('marketing-typeList').then(res => {
                     if (res.success) {
-                        this.marketingTypes = this.marketingTypes.concat(res.data || []);
+                        this.marketingTypes = res.data ? res.data : [];
+                        this.filterParams.marketTypeId = this.marketingTypes.length > 0 ? this.marketingTypes[0].id : '';
+                    } else {
+                        this.marketingTypes = [];
                     }
                 });
             },
@@ -125,21 +128,18 @@
              * @param typeId
              **/
             getMarketingLevels (typeId) {
-                if (typeId.includes('all')) {
-                    this.marketingLevels = this.allMarketLevel;
-                } else {
-                    ajax.post('marketing-listLevel', {
-                        pageNo : 1,
-                        pageSize : 9999,
-                        typeId : typeId || this.filterParams.marketTypeId
-                    }).then(res => {
-                        if (res.success) {
-                            this.marketingLevels = res.data ? this.allMarketLevel.concat(res.data.data || []) : this.allMarketLevel;
-                        } else {
-                            this.marketingLevels = this.allMarketLevel;
-                        }
-                    });
-                }
+                ajax.post('marketing-listLevel', {
+                    pageNo : 1,
+                    pageSize : 9999,
+                    typeId : typeId || this.filterParams.marketTypeId
+                }).then(res => {
+                    if (res.success) {
+                        this.marketingLevels = res.data ? res.data.data : [];
+                        this.filterParams.marketLevelId = this.marketingLevels.length > 0 ? this.marketingLevels[0].id : '';
+                    } else {
+                        this.marketingLevels = [];
+                    }
+                });
             },
             getSalesPolicy () {
                 ajax.post('queryPolicy', {
@@ -147,10 +147,12 @@
                     pageSize : 9999,
                     selectType : 'from'
                 }).then(res => {
-                    if (res.success && res.data) {
-                        this.salesPolicy = res.data.data || [];
+                    if (res.success) {
+                        this.salesPolicy = res.data ? res.data.data : [];
                         //默认选中第一个政策
-                        this.filterParams.policyId = this.salesPolicy[0].id;
+                        this.filterParams.policyId = this.salesPolicy.length > 0 ? this.salesPolicy[0].id : '';
+                    } else {
+                        this.salesPolicy = [];
                     }
                 });
             },
