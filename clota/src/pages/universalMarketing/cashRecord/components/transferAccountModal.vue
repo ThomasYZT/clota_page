@@ -150,7 +150,7 @@
         computed : {
             //是否微信、支付宝付款方式
             isProxyBank () {
-                return this.withdrawInfo.accountType == 'wxPay' || this.withdrawInfo.accountType == 'aliPay';
+                return this.withdrawInfo.accountType === 'wxPay' || this.withdrawInfo.accountType === 'aliPay';
             }
         },
         created () {

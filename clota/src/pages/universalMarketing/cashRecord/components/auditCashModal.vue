@@ -165,7 +165,6 @@
                             this.$Message.success(this.$t('提现审核驳回'));
                             this.$refs.rejectModal.hide();
                         }
-
                         this.$emit('on-audited');
                     } else {
                         this.$Message.error(this.$t('提现审核失败'));
