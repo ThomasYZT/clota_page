@@ -248,7 +248,7 @@ export default {
     'friday' : '周五',
     'saturday' : '周六',
     'sunday' : '周日',
-    'after tomorrow' : '明天',
+    'after tomorrow' : '后天',
     'bracketSetting' : '（{content}）',
     'expire_score' : '积分失效',
     'activityMemberRightInfo' : '特点活动积分折扣权益说明',

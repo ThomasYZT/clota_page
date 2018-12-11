@@ -87,7 +87,6 @@
              * @param params
              */
             getParams () {
-                debugger
                 //微信
                 if (this.isWeixin()) {
                     this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
@@ -154,11 +153,11 @@
         },
         mounted () {
             //监听微信物理返回
-            let state = {
-                title : "title",
-                url : "#"
-            };
-            history.pushState(state, "title", "#");
+            // let state = {
+            //     title : "title",
+            //     url : "#"
+            // };
+            // history.pushState(state, "title", "#");
             window.addEventListener("popstate", (e) => {
                 clearInterval(this.intervalId);
             }, false);

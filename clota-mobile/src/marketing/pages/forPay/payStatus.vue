@@ -49,7 +49,7 @@
                 //微信内支付宝支付结果
                 if (params && params.status && params.payFormData) {
                     this.status = params.status;
-                    this.payFormData = params.payFormData;
+                    this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
                     if (params.status === 'success') {
                         //调用内部系统充值接口
                         this.rechargeAccount();
@@ -114,7 +114,8 @@
             createOrder () {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
                 ajax.post('market_addVisitorOrder',Object.assign({
-                    transctionId : this.payFormData.transactionId
+                    transctionId : this.payFormData.transactionId,
+                    orderId : this.payFormData.orderId
                 },createOrderParams)).then(res => {
 
                     if (res.success) {

@@ -47,8 +47,6 @@
                 productName : '',
                 //应付总额
                 totalAmount : '',
-                //订单id
-                orderId : '',
                 payFormData : {}
             };
         },
@@ -113,7 +111,6 @@
                 if (params && Object.keys(params).length > 0) {
                     this.productName = params.productName;
                     this.totalAmount = params.totalAmount;
-                    this.orderId = params.orderId;
                 } else {
                     this.$router.replace({
                         name : 'marketingTourist'
@@ -124,21 +121,22 @@
              * 在微信中调用微信支付
              */
             getPayPageForOfficialAccount () {
+                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
                 ajax.post('market_getPayPageForOfficialAccount', {
                     bizScene : 'order',
                     bizType : 'pay_order',
                     // bizId : this.orderId,
                     channelType : 'weixin',
-                    txnAmt : 0.01,
+                    txnAmt : this.totalAmount,
                     redirectUrl : this.getRedirectUrl(),
-                    orgId : this.marketOrgId
+                    orgId : this.marketOrgId,
+                    ...createOrderParams
                 }).then(res => {
                     if (res.success) {
                         //设置支付表单信息
                         this.payFormData.orderId = res.data ? res.data.bizId : '';
                         this.payFormData = res.data ? res.data : {};
                         this.payFormData.paymentTypeId = this.payType;
-                        this.payFormData.orderId = this.orderId;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
                         location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
                     }
@@ -157,22 +155,39 @@
              * 获取手机网页支付信息
              */
             getPayPageForMobile () {
+                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
                 ajax.post('market_getPayPageForMobileNoLogin', {
                     bizScene : 'order',
                     bizType : 'pay_order',
                     // bizId : this.orderId,
                     channelType : this.payType === 'wx' ? 'weixin' : 'alipay',
-                    txnAmt : 0.01,
+                    txnAmt : this.totalAmount,
                     redirectUrl : this.getRedirectUrl(),
-                    orgId : this.marketOrgId
+                    orgId : this.marketOrgId,
+                    ...createOrderParams
                 }).then(res => {
                     if (res.success) {
                         this.payFormData = res.data ? res.data : {};
                         this.payFormData.orderId = res.data ? res.data.bizId : '';
-
                         //设置支付表单信息
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
+                        location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay' +
+                            '?paymentTypeId=' + this.payType +
+                            '&amount=' + this.payFormData.txnAmt +
+                            '&txnType=' + this.payFormData.txnType +
+                            '&partnerId=' + this.payFormData.partnerId +
+                            '&channelId=' + this.payFormData.channelId +
+                            '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
+                            '&merchantId=' + this.payFormData.merchantId +
+                            '&txnAmt=' + this.payFormData.txnAmt +
+                            '&redirectUrl=' + this.payFormData.redirectUrl +
+                            '&txnShortDesc=' + this.payFormData.txnShortDesc +
+                            '&sign=' + this.payFormData.sign +
+                            '&currencyCode=' + this.payFormData.currencyCode +
+                            '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
+                            '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
+                            '&transactionId=' + this.payFormData.transactionId;
+                        // location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));
