@@ -129,7 +129,8 @@
             applyDeposit () {
                 if (!this.canDeposit) return;
                 ajax.post('market_orderSalaryWithdrawApply',{
-                    amount : this.accountDetail.canApplyWithdrawAmount
+                    amount : this.accountDetail.canApplyWithdrawAmount,
+                    orderIds : ''
                 }).then(res => {
                     if (res.success) {
                         this.$vux.toast.show({

@@ -20,7 +20,7 @@
             </div>
             <ul :class="$style.btnWrap">
                 <li :class="$style.reset" @click="reset">{{$t('重置')}}</li>
-                <li :class="$style.complete" @click="completeChoose">{{$t('完成')}}</li>
+                <li :class="[$style.complete]" @click="completeChoose">{{$t('完成')}}</li>
             </ul>
         </div>
     </popup>

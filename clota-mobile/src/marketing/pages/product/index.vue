@@ -208,7 +208,7 @@
         }
 
         .product-list{
-            @include block_outline($height : unquote('calc(100% - 70px)'));
+            @include block_outline($height : unquote('calc(100% - 65px)'));
 
             .flex-box{
                 background: transparent;
