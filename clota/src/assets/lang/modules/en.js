@@ -1863,7 +1863,7 @@ export default {
     'wethereContinueToDisableOrDel' : '是否继续禁用/删除？',
     'wethereSureToDisable' : '是否确认禁用？',
     'productCenter.editOrAddPolicyTip' : '以下产品为不可用状态，请点击确认后再次提交：',
-    'product.needId.one' : '每个证件可预定多张票',
-    'product.needId.more' : '每个证件只能预定一张票',
+    'product.needId.one' : '每个证件只能预定一张票',
+    'product.needId.more' : '每个证件可预定多张票',
     'waitToSync' : '待同步',
 }

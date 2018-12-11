@@ -104,7 +104,8 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('inNum')" prop="inNum"><!-- 可入园人数-->
-                            <Input v-model.trim="formData.inNum"
+                            <Input :disabled="formData.isGroup === 'true' ? true : false "
+                                   v-model.trim="formData.inNum"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
@@ -567,6 +568,9 @@
             isGroupChange ( val ) {
                 if (val === 'true') {
                     this.formData.needId = 'noRequired';
+                    this.formData.inNum = '1';
+                } else {
+                    this.formData.inNum = '';
                 }
             },
 
@@ -741,6 +745,10 @@
                     }
                     if (params.productPlayRuleVo) {
                         this.productPlayRuleVo = defaultsDeep([],params.productPlayRuleVo);
+                    }
+
+                    if (this.formData.isGroup === 'true') {
+                        this.formData.inNum = '1';
                     }
                 }
                 this.queryScenicOrgByAccountRole();
