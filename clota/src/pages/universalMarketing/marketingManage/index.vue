@@ -89,10 +89,10 @@
         data () {
             //校验是否为数字、且大于0、且大于销售政策产品单价
             const validateNumber = (rule, value, callback) => {
-                if (value && !validator.isBothNumber(value)) {
+                if (value && !validator.isNumber(value)) {
                     callback(new Error( this.$t('numError', { field : this.$t('终端售价') }) ));
                 } else {
-                    if (parseInt(this.modifyModel.settlePrice) >= parseInt(value)) {
+                    if (parseFloat(this.modifyModel.settlePrice) >= parseFloat(value)) {
                         callback(new Error( this.$t('NoSmallerThan', { field1 : '终端售价', field2 : '销售政策产品单价' })));
                     } else {
                         callback();
