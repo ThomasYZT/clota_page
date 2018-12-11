@@ -19,6 +19,12 @@ import './assets/scss/_iconfont.scss';
 import './assets/css/iconfont.css';
 import './assets/scss/_common.scss';
 
+//引入UE编辑器
+import '../static/UE/ueditor.config.js';
+import '../static/UE/ueditor.all.min.js';
+import '../static/UE/lang/zh-cn/zh-cn.js';
+import '../static/UE/ueditor.parse.min.js';
+
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin';
 

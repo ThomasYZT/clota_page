@@ -379,5 +379,9 @@ export default {
     'helperCenter' : '帮助中心',
     'addFile' : '新增文件夹',
     'folderName' : '文件夹名称',
+    'sureToDelFolderTip' : '注意：本文件夹下的页面将会被一同删除，是否继续？',
+    'getPageListFailure' : '获取文件列表失败',
+    'youHaveUnsavedFile' : '您有尚未保存的文件',
+    'pageTitle' : '页面标题',
 
 };

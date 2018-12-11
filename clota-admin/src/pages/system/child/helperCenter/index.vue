@@ -5,11 +5,11 @@
 <template>
     <div class="helper-center">
         <div class="menu-wrapper">
-            <menuTree></menuTree>
+            <menuTree :nowfileItem.sync="nowfileItem"></menuTree>
         </div>
 
         <div class="article-wrapper">
-            <editPanel></editPanel>
+            <editPanel :nowfileItem="nowfileItem"></editPanel>
         </div>
     </div>
 </template>
@@ -23,9 +23,15 @@
             editPanel
         },
         data () {
-            return {};
+            return {
+                nowfileItem : {
+                    name : '',
+                    type : '',
+                    folderId : ''
+                }
+            };
         },
-        methods : {}
+        methods : {},
     };
 </script>
 
