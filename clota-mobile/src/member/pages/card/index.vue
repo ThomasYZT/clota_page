@@ -110,7 +110,7 @@
     import memberInfo from './child/memberInfo';
     import useArea from './child/useArea';
     import useExplain from './child/use-explain';
-    import ajax from '@/api/index.js';
+    import ajax from '@/member/api/index.js';
     import noData from '@/components/noData/index.vue';
     export default {
         data () {

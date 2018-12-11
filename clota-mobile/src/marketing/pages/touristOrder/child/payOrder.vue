@@ -25,7 +25,7 @@
         <div class="btn-area">
             <x-button @click.native="recharge"
                       :disabled="payTypeList.length < 1">
-                {{$t('recharge')}}
+                {{$t('去支付')}}
             </x-button>
         </div>
     </div>
@@ -34,6 +34,7 @@
 <script>
     import ajax from '@/marketing/api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         data () {
@@ -45,7 +46,10 @@
                 //产品名称
                 productName : '',
                 //应付总额
-                totalAmount : ''
+                totalAmount : '',
+                //订单id
+                orderId : '',
+                payFormData : {}
             };
         },
         methods : {
@@ -53,13 +57,21 @@
              * 充值
              */
             recharge () {
-
+                if (this.isWeixin && this.payType === 'wx') {
+                    //在微信中调用微信支付
+                    this.getPayPageForOfficialAccount();
+                } else {
+                    this.getPayPageForMobile();
+                }
             },
             /**
              * 获取所有支付方式
              */
             queryAllPayType () {
-                ajax.post('market_queryOnlinePayAccount').then(res => {
+                ajax.post('market_queryExtOnlineAccount',{
+                    isPlatformAcc : false,
+                    orgId : this.marketOrgId
+                }).then(res => {
                     if (res.success) {
                         this.payTypeList = res.data && res.data.length > 0 ? res.data.map((item) => {
                             if (item.accountType === 'weixin') {
@@ -78,6 +90,7 @@
                                 };
                             }
                         }) : [];
+                        this.payType = this.payTypeList.length > 0 ? this.payTypeList[0].key : '';
                     } else {
                         this.payTypeList = [];
                     }
@@ -100,15 +113,81 @@
                 if (params && Object.keys(params).length > 0) {
                     this.productName = params.productName;
                     this.totalAmount = params.totalAmount;
+                    this.orderId = params.orderId;
                 } else {
                     this.$router.replace({
                         name : 'marketingTourist'
                     });
                 }
-            }
+            },
+            /**
+             * 在微信中调用微信支付
+             */
+            getPayPageForOfficialAccount () {
+                ajax.post('market_getPayPageForOfficialAccount', {
+                    bizScene : 'order',
+                    bizType : 'pay_order',
+                    // bizId : this.orderId,
+                    channelType : 'weixin',
+                    txnAmt : 0.01,
+                    redirectUrl : this.getRedirectUrl(),
+                    orgId : this.marketOrgId
+                }).then(res => {
+                    if (res.success) {
+                        //设置支付表单信息
+                        this.payFormData.orderId = res.data ? res.data.bizId : '';
+                        this.payFormData = res.data ? res.data : {};
+                        this.payFormData.paymentTypeId = this.payType;
+                        this.payFormData.orderId = this.orderId;
+                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                        location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
+                    }
+                });
+            },
+            /**
+             * 获取支付回调地址
+             * @return{String} 回调地址加密
+             */
+            getRedirectUrl () {
+                let router = this.$router;
+                let base = router.options.base;
+                return encodeURI(location.origin + base + '/marketing/tourist/createOrder/payResult');
+            },
+            /**
+             * 获取手机网页支付信息
+             */
+            getPayPageForMobile () {
+                ajax.post('market_getPayPageForMobileNoLogin', {
+                    bizScene : 'order',
+                    bizType : 'pay_order',
+                    // bizId : this.orderId,
+                    channelType : this.payType === 'wx' ? 'weixin' : 'alipay',
+                    txnAmt : 0.01,
+                    redirectUrl : this.getRedirectUrl(),
+                    orgId : this.marketOrgId
+                }).then(res => {
+                    if (res.success) {
+                        this.payFormData = res.data ? res.data : {};
+                        this.payFormData.orderId = res.data ? res.data.bizId : '';
+
+                        //设置支付表单信息
+                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                        location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
+                    } else {
+                        this.payFormData = {};
+                        this.$vux.toast.text(this.$t('payAbnormal'));
+                    }
+                });
+            },
         },
         created () {
             this.queryAllPayType();
+        },
+        computed : {
+            ...mapGetters({
+                marketOrgId : 'marketOrgId',
+                isWeixin : 'isWeixin',
+            })
         }
     };
 </script>
@@ -167,6 +246,21 @@
                 /deep/ .vux-radio-icon{
                     display: inline-block;
                     @include block_outline(18px,18px);
+                }
+
+                /deep/ .weui-cells{
+                    &::after,
+                    &::before{
+                        display: none;
+                    }
+                }
+
+                /deep/ .weui-cell:before{
+                    display: none;
+                }
+
+                /deep/ .weui-check__label{
+                    height: 40px!important;
                 }
             }
         }

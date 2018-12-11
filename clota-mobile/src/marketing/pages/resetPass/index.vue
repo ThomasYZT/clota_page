@@ -358,7 +358,17 @@
                     idno : this.formData.idNum,
                     orgId : this.marketOrgId
                 }).then(res => {
-                    if (res.success) {
+                    if (!res.success && res.code === 'MK013') {
+                        this.typeList = res.data ? res.data.map(item => {
+                            return {
+                                key : item.id,
+                                value : item.typeName
+                            };
+                        }) : [];
+                        if (this.typeList.length > 0) {
+                            this.formData.typeInfo = this.typeList[0]['key'];
+                        }
+                    } else if (res.success) {
                         this.typeList = res.data ? res.data.map(item => {
                             return {
                                 key : item.id,

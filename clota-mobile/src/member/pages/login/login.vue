@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import ajax from '../../../api/index';
+    import ajax from '@/member/api/index.js';
     import { validator } from 'klwk-ui';
     import { mapGetters, mapMutations, mapActions } from 'vuex';
 

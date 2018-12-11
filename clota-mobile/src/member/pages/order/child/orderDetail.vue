@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import ajax from '@/api/index.js';
+    import ajax from '@/member/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import noData from '@/components/noData/index.vue';
     export default {

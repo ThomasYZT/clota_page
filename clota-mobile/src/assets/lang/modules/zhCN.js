@@ -264,6 +264,7 @@ export default {
     'errorMsg.MK008' : '营销用户已存在',
     'errorMsg.S002' : '接口错误',
     'errorMsg.OD003' : '产品库存不足',
+    'errorMsg.A006' : '公司不存在',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'Complete information',
     'getActivate' : 'Immediately active',

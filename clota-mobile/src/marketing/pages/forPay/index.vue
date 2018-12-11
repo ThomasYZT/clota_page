@@ -73,7 +73,7 @@
             /**
              * 判断是否在微信浏览器
              */
-             isWeixin () {
+            isWeixin () {
                 let ua = navigator.userAgent.toLowerCase();
                 let isWeixin = ua.indexOf('micromessenger') != -1;
                 if (isWeixin) {
@@ -87,10 +87,10 @@
              * @param params
              */
             getParams () {
+                debugger
                 //微信
                 if (this.isWeixin()) {
                     this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
-                    alert(this.payFormData.paymentTypeId)
                     //微信内，公众号支付
                     if (this.payFormData.paymentTypeId === 'wx') {
                         //删除路由缓存数据
@@ -99,21 +99,19 @@
                             this.$refs.payForm.submit();
                         });
 
-                    //微信内支付宝支付，显示其他浏览器打开
+                        //微信内支付宝支付，显示其他浏览器打开
                     } else {
                         this.payFormData = querystring.parse(location.href.split('?')[1]);
                         this.isShowImg = true;
                         //开始轮询支付状态及支付结果
                         this.intervalId = setInterval(() => {
-                           this.queryConsumeUpdateBiz();
+                            this.queryConsumeUpdateBiz();
                         }, 5000);
                     }
 
-                //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
+                    //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
                 } else {
-                    this.payFormData = querystring.parse(location.href.split('?')[1]);
-                    localStorage.setItem('token', this.payFormData.token);
-                    localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                    this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
                     this.$nextTick(() => {
                         this.$refs.payForm.submit();
                     });
@@ -174,9 +172,9 @@
     .h5-pay {
         height: 100%;
 
-        /*.pay-form {*/
-            /*display: none;*/
-        /*}*/
+        .pay-form {
+            display: none;
+        }
 
         .img-wrapper {
             height: 100%;

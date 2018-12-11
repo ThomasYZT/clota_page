@@ -42,7 +42,7 @@
 <script>
     import Scroll from '@/components/scroll/scroll';
     import scoreItem from './components/scoreItem';
-    import ajax from '@/api/index';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
     import Vue from 'vue';
 

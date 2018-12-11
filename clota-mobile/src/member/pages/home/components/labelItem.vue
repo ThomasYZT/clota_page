@@ -7,7 +7,7 @@
       <cell :is-link="false"
             v-if="!(cardInfo.cardTypeId === '1' && (info.title === 'integralDetail' || info.title === 'integralMall'))"
             :title="$t(info.title)"
-            @click.native="toUrl(info.link,info.params)"
+            @click.native="toUrl(info.routeName,info.params)"
             class="cell">
           <i slot="icon"
              :style="{color: info.iconColor}"
@@ -48,14 +48,14 @@
         /**
          * 页面导航控制
          */
-        toUrl (url,params) {
+        toUrl (routeName,params) {
             if (this.cardInfo.status && this.cardInfo.status === 'frozen' && this.info.link === '/memberCode') {
                 this.$vux.toast.text(this.$t('thisCardIsFrozen'));
             } else {
                 if (params && Object.keys(params).length > 0) {
-                    this.$router.push({ path : url, query : params });
+                    this.$router.push({ name : routeName, query : params });
                 } else {
-                    this.$router.push({ path : url });
+                    this.$router.push({ name : routeName });
                 }
             }
 

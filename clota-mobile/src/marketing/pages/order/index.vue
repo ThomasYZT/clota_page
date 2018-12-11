@@ -12,6 +12,7 @@
                  <span class="end-date" @click="chooseEndDate">{{endDate | contentFilter}}</span>
                 <span class="iconfont icon-arrow-right"></span>
             </span>
+            <div class="bar"></div>
             <span class="product-filter" @click="productFilterShow = true">
                 产品
                 <img v-if="choosedProductInfo.length > 0" class="filter" src="../../../assets/images/icon-filter-activated.svg" alt="">
@@ -284,6 +285,20 @@
             font-size: $font_size_16px;
             color: $color_333;
             background: $color_fff;
+            display: flex;
+            flex-direction: row;
+
+            .bar{
+                flex: 1;
+                position: relative;
+
+                &:before{
+                    content : '';
+                    @include block_outline(0.5px,15px);
+                    @include absolute_pos(absolute,$left : 50%,$top : 13px);
+                    background:  #E1E1E1;
+                }
+            }
 
             .zhi{
                 padding: 0 10px;
@@ -297,14 +312,17 @@
             }
 
             .product-filter{
+                display: inline-block;
                 float: right;
                 font-size: $font_size_14px;
                 color: $color_333;
                 padding-left: 10px;
-                border-left: 0.5px solid #E1E1E1;
+                /*border-left: 0.5px solid #E1E1E1;*/
 
-                &::before{
-                    @include absolute_pos(absolute);
+                &:before{
+                    @include absolute_pos(absolute,$top : 5px);
+                    @include block_outline(0.5px,15px);
+                    background: #E1E1E1;
                 }
 
                 .filter{

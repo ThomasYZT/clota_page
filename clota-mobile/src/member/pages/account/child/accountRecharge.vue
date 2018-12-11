@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import ajax from '@/api/index.js';
+    import ajax from '@/member/api/index.js';
     import lifeCycle from '@/mixins/lifeCycleMixins.js';
     import common from '@/assets/js/common';
     import {mapGetters} from 'vuex';

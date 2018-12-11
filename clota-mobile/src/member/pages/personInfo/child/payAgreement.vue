@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import ajax from '../../../../api/index';
+    import ajax from '@/member/api/index.js';
     export default {
         components: {},
         data() {

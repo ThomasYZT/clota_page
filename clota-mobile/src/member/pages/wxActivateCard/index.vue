@@ -1,9 +1,8 @@
 <!--
-    会员注册
-    作者：杨泽涛
+    微信会员卡激活
 -->
 <template>
-    <div class="register">
+    <div class="wx-activate-card">
         <!-- 姓名 -->
         <x-input class="c-input"
                  :title="$t('name')"
@@ -87,7 +86,7 @@
                  v-model="formData.homeAddr"></x-input>
 
         <x-button class="button"
-                  @click.native="validate()">{{$t('register')}}</x-button>
+                  @click.native="validate()">{{$t('memberCardActivating')}}</x-button>
     </div>
 </template>
 
@@ -158,18 +157,18 @@
                             type : 'member_register',
                             companyCode : this.companyCode
                         }).then((res) => {
-                           if(!res.success) {
-                               this.$vux.toast.show({
-                                   text: this.$t('operateFail',{msg : this.$t('send')}),
-                                   type : 'cancel'
-                               });
-                           }else {
-                               this.timimg();
-                               this.isGetCode = true;
-                               this.$vux.toast.show({
-                                   text: this.$t('operateSuc',{msg : this.$t('send')})
-                               })
-                           }
+                            if(!res.success) {
+                                this.$vux.toast.show({
+                                    text: this.$t('operateFail',{msg : this.$t('send')}),
+                                    type : 'cancel'
+                                });
+                            }else {
+                                this.timimg();
+                                this.isGetCode = true;
+                                this.$vux.toast.show({
+                                    text: this.$t('operateSuc',{msg : this.$t('send')})
+                                })
+                            }
                         })
                     });
                 }
@@ -208,11 +207,28 @@
                 });
             },
             /**
+             * 查询会员信息
+             */
+            queryUnboundCard () {
+                ajax.post('queryUnboundCard', {
+//                    openId: this.wxUserInfo.openId
+                    openId: 'otFRn0sMyGYz3ddepD_I9pePtijA'
+                }).then((res) => {
+                    if(res.success) {
+                        if (res.data.status == 'wxCardStatus') {
+                            this.isShowCard = true;
+                            this.getWxMpCardId();
+                        }
+                    } else {
+                        this.$vux.toast.text(this.$t(res.code));
+                    }
+                });
+            },
+            /**
              * 注册会员
              */
             register() {
-                ajax.post('registerMemberCard', Object.assign({
-                    companyCode: this.companyCode,
+                ajax.post('wxActiveCard', Object.assign({
                     wxOpenId: 'otFRn0sMyGYz3ddepD_I9pePtijA'
 //                    wxOpenId: this.wxUserInfo.openId
                 }, this.formData)).then((res) => {
@@ -221,19 +237,12 @@
                         localStorage.setItem('token', res.data.token);
                         //存储用户信息
                         localStorage.setItem('userInfo', JSON.stringify(res.data));
-                        //更新用户信息
-                        this.$store.commit('updateUserInfo');
-                        //提示注册成功
-                        this.$vux.toast.text(this.$t('registSuccess'));
-                        //获取会员卡列表
-                        this.getCardListInfo().then(() => {
-                            this.$router.push({ name : 'home', query: { openId: res.data.openId }});
-                        });
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
                     }
                 });
             },
+
             /**
              * 输入验证
              */
@@ -350,6 +359,7 @@
                 let wxUserInfo = localStorage.getItem('wxUserInfo');
                 if (wxUserInfo && wxUserInfo.openId) {
                     this.wxUserInfo = wxUserInfo;
+                    this.queryUnboundCard();
                     return false;
                 }
                 ajax.post('getOAuth2UserInfo',{
@@ -358,7 +368,9 @@
                     companyCode : this.companyCode
                 }).then(res => {
                     if (res.success) {
-                        this.dataToLogin(res);
+                        this.wxUserInfo = res.data ? res.data : {};
+                        //存储token信息
+                        localStorage.setItem('wxUserInfo', this.wxUserInfo);
                     } else {
                         //错误信息为空，表示获取到了用户信息
                         if (!res.errcode) {
@@ -391,7 +403,7 @@
                 return obj;
             }
         },
-        computed :{
+        computed: {
             ...mapGetters({
                 lang : 'lang',
                 companyCode : 'companyCode'
@@ -404,7 +416,7 @@
     @import '~@/assets/scss/base';
     $img_base_url : '../../../assets/images/';
 
-    .register {
+    .wx-activate-card {
         height: 100%;
         width: 100%;
         color: #4A4A4A;

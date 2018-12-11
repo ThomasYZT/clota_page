@@ -5,7 +5,7 @@
         <div class="code-img">
             <qrcode
                 ref="qrCode"
-                :value="'test'"
+                :value="qrCodeInfo"
                 :size="200"
                 type="img"
                 @click.native="showPreImage">
@@ -62,8 +62,13 @@
         },
         computed : {
             ...mapGetters({
-                companyName : 'companyName'
-            })
+                companyName : 'companyName',
+                marketUserInfo : 'marketUserInfo',
+            }),
+            //二维码链接信息
+            qrCodeInfo () {
+                return location.origin + this.$router.options.base + '/marketing/tourist?marketUserId=' + this.marketUserInfo.id;
+            }
         }
 	};
 </script>

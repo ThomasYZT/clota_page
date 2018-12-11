@@ -3,8 +3,8 @@
     作者：杨泽涛
 -->
 <template>
-  <div class="home"
-       v-show="cardInfo && Object.keys(cardInfo).length > 0">
+    <!--v-show="cardInfo && Object.keys(cardInfo).length > 0"-->
+  <div class="home" >
       <swiper ref="swiper"
               :show-dots="cardInfoList.length > 1"
               class="home-swiper"
@@ -26,13 +26,28 @@
           </label-item>
       </div>
 
+      <!-- 卡包领取 -->
+      <x-dialog v-model="isShowCard"
+                class="dialog-crad-give"
+                :hide-on-blur="true">
+          <div class="txt">
+              <p class="title">添加会员卡</p>
+              <p>是否将会员卡加入微信卡包！</p>
+          </div>
+          <div class="opreta-btn">
+              <div class="no" @click="isShowCard=false;">不</div>
+              <div class="get" @click="getCard">领取卡包</div>
+          </div>
+      </x-dialog>
+
   </div>
 </template>
 
 <script>
-    import { mapMutations, mapGetters } from 'vuex';
+    import { mapMutations, mapGetters, mapActions } from 'vuex';
     import labelItem from './components/labelItem';
     import memberCard from './components/memberCard';
+    import ajax from '../../api/index';
     export default {
         components : {
             labelItem,
@@ -43,6 +58,7 @@
                 {
                     title : 'integralDetail',
                     link : '/integralDetail',
+                    routeName : 'integralDetail',
                     iconClass : 'icon-my-points',
                     info : '',
                     params : {},
@@ -51,6 +67,7 @@
                 {
                     title : 'accountOfStoreValue',
                     link : '/account',
+                    routeName : 'account',
                     iconClass : 'icon-default-account',
                     info : '',
                     params : {},
@@ -59,6 +76,7 @@
                 {
                     title : 'myOrder',
                     link : '/order',
+                    routeName : 'order',
                     iconClass : 'icon-my-orders',
                     info : '',
                     params : {},
@@ -67,6 +85,7 @@
                 {
                     title : 'checkFlow',
                     link : '/checkFlow',
+                    routeName : 'checkFlow',
                     iconClass : 'icon-check-flow1',
                     info : '',
                     params : {},
@@ -75,6 +94,7 @@
                 {
                     title : 'memberCode',
                     link : '/memberCode',
+                    routeName : 'memberCode',
                     iconClass : 'icon-member-code',
                     info : '',
                     params : {},
@@ -91,6 +111,7 @@
                 {
                     title : 'memberRight',
                     link : '/memberRight',
+                    routeName : 'memberRight',
                     iconClass : 'icon-member-rights',
                     info : '',
                     params : {},
@@ -99,6 +120,7 @@
                 {
                     title : 'integralMall',
                     link : '/integralMall',
+                    routeName : 'integralMall',
                     iconClass : 'icon-integral-mall-select',
                     info : '',
                     params : {},
@@ -117,14 +139,22 @@
                 labelList : labelList,
                 //会员卡列表数据
                 memberCardList : [],
+                // 展示卡包
+                isShowCard: false,
+                // 卡的拓展信息
+                cardExt: {}
             };
+        },
+        created () {
+            this.queryUnboundCard();
         },
         computed : {
             ...mapGetters([
                 'isLoading',
                 'userInfo',
                 'cardInfo',
-                'cardInfoList'
+                'cardInfoList',
+                'companyCode'
             ]),
             //当前卡索引
             cardIndex () {
@@ -143,6 +173,9 @@
         methods : {
             ...mapMutations([
                 'updateCardInfo',
+            ]),
+            ...mapActions([
+                'getCardListInfo'
             ]),
             /**
              *  会员卡切换
@@ -188,6 +221,84 @@
                             this.labelList[i].params = {};
                     }
                 }
+            },
+            /**
+             * 是否领取会员卡至微信卡包
+             */
+            queryUnboundCard () {
+                ajax.post('queryUnboundCard', {
+//                    openId: this.$route.query.openId
+                    openId: 'otFRn0sMyGYz3ddepD_I9pePtijA'
+                }).then((res) => {
+                    if(res.success) {
+                        if (res.data && res.data.wxCardStatus == 'wait') {
+                            this.isShowCard = true;
+                            this.getWxMpCardId();
+                            this.getCardListInfo();
+                        }
+                    } else {
+                        this.$vux.toast.text(this.$t(res.code));
+                    }
+                });
+            },
+            /**
+             * 获取卡Id
+             */
+            getWxMpCardId () {
+                ajax.post('getWxMpCardId').then((res) => {
+                    if(res.success) {
+                        this.getCardExt(res.data);
+                    } else {
+                        this.$vux.toast.text(this.$t(res.code));
+                    }
+                });
+            },
+            /**
+             * 获取卡的拓展信息
+             */
+            getCardExt (cardId) {
+                let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                ajax.post('getCardExt', {
+                    companyCode: this.companyCode,
+                    code: userInfo.cardCode,
+                    cardId: cardId,
+                    openId: this.$route.query.openId
+                }).then((res) => {
+                    if(res.success) {
+                        this.cardExt = res.data ? res.data : {};
+                    } else {
+                        this.$vux.toast.text(this.$t(res.code));
+                    }
+                });
+            },
+            /**
+             * 领取卡包
+             */
+            getCard () {
+                let cardExt = {
+                    code: this.cardExt.code,
+                    openid: this.cardExt.openId,
+                    timestamp: this.cardExt.timestamp,
+                    nonce_str: this.cardExt.nonceStr,
+                    signature: this.cardExt.signature
+                };
+                this.$wechat.addCard({
+                    cardList: [
+                        {
+                            cardId: this.cardExt.cardId,
+                            cardExt: JSON.stringify(cardExt)
+                        }
+                    ],
+                    success: res => {
+                        this.$vux.toast.text('领取成功');
+                    },
+                    fail: res => {
+                        this.$vux.toast.text('领取失败');
+                    },
+                    complete: () => {
+                        this.isShowCard = false;
+                    }
+                });
             },
         },
         watch : {
@@ -247,5 +358,39 @@
                 height: 200px !important;
             }
         }
+    }
+
+    .dialog-crad-give {
+        /deep/ .weui-dialog {
+            padding-top: 30px;
+            background: #FFFFFF;
+            border-radius: 14px;
+            .txt {
+                font-size: 15px;
+                color: #888888;
+                .title {
+                    font-size: 18px;
+                    color: #000000;
+                    margin-bottom: 9px;
+                }
+            }
+        }
+        .opreta-btn {
+            display: flex;
+            font-size: 18px;
+            color: #000000;
+            text-align: center;
+            border-top: 1px solid #DCDEE3;
+            margin-top: 16px;
+            > div {
+                flex: 1;
+                padding: 16px;
+                &.get {
+                    color: #046FDB;
+                    border-left: 1px solid #DCDEE3;
+                }
+            }
+        }
+
     }
 </style>

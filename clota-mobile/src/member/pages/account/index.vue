@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import ajax from '@/api/index.js';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
     export default {
         data () {

@@ -44,7 +44,7 @@
                     <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
                 </div>
                 <x-button class="button"
-                          :disabled="!marketINgCompanyCode"
+                          :disabled="!marketINgCompanyCode || !companyName"
                           @click.native="login">{{$t('login')}}</x-button>
                 <div class="to-register">
                     {{$t('没有账号?')}}<span class="login-label" @click="toRegister">去注册</span>
@@ -224,6 +224,13 @@
                     if (res.success) {
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
                         this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
+                    } else if (res.code && res.code !== '300') {
+                        this.$store.commit('marketUpdateCompanyName','');
+                        this.$store.commit('marketUpdateOrgId','');
+                        this.$vux.toast.show({
+                            text : this.$t('errorMsg.' + res.code),
+                            type : 'cancel'
+                        });
                     } else {
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');

@@ -135,7 +135,7 @@
 
 <script>
     import { genderEnum } from '@/assets/js/constVariable.js';
-    import ajax from '@/api/index.js';
+    import ajax from '@/member/api/index.js';
     import { mapGetters, mapMutations } from 'vuex';
     import { validator } from 'klwk-ui';
     import defaultsDeep from 'lodash/defaultsDeep';

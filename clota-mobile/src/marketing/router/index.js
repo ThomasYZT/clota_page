@@ -247,7 +247,7 @@ export const marketingRoutes = [
                 name : 'marketingTourist',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/index.vue'),
                 meta : {
-                    title : '广州长隆水上乐园',
+                    title : '',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -270,6 +270,28 @@ export const marketingRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/payOrder.vue'),
                 meta : {
                     title : '支付方式',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
+            },
+            //开始支付
+            {
+                path : 'tourist/createOrder/startPay',
+                name : 'marketingCreateOrderStartPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/index.vue'),
+                meta : {
+                    title : '支付方式',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
+            },
+            //支付结果
+            {
+                path : 'tourist/createOrder/payResult',
+                name : 'marketingCreateOrderPayResult',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/payStatus.vue'),
+                meta : {
+                    title : '支付结果',
                     hideTabbar : true,
                     notNeedCheck : true
                 }

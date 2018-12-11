@@ -40,7 +40,7 @@
 
 <script>
     import numKeyBoard from '@/components/numKeyBoard/index.vue';
-    import ajax from '@/api/index.js';
+    import ajax from '@/member/api/index.js';
     import {mapGetters} from 'vuex';
     import MD5 from 'crypto-js/md5';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';

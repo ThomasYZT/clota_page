@@ -6,6 +6,16 @@
 const apiList = {
     //会员注册
     registerMember : '/external/member/registerMember2',
+    // 会员注册&获取会员卡
+    registerMemberCard : '/external/member/addMemberAndCard',
+    // 获取卡Id
+    getWxMpCardId: '/wechat/mp/card/getWxMpCardId',
+    // 领取卡所需要的扩展信息
+    getCardExt: '/wechat/mp/card/getCardExt',
+    // 是否领取至微信卡包
+    queryUnboundCard: '/external/memberInfo/queryUnboundCard',
+    // 微信会员卡激活
+    wxActiveCard: '/wechat/mp/card/memberCard/activate',
     //获取验证码
     getCode : '/external/member/getPhoneVerificationCode',
     //会员登录
