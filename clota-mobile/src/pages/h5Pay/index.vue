@@ -151,6 +151,12 @@
                         name : 'account'
                     });
                 })
+            },
+            /**
+             * 删除定时器
+             */
+            clearIntervalInfo () {
+                clearInterval(this.intervalId);
             }
         },
         mounted () {
@@ -160,9 +166,10 @@
                 url : "#"
             };
             history.pushState(state, "title", "#");
-            window.addEventListener("popstate", (e) => {
-                clearInterval(this.intervalId);
-            }, false);
+            window.addEventListener("popstate", this.clearIntervalInfo, false);
+        },
+        beforeDestroy () {
+            window.removeEventListener("popstate", this.clearIntervalInfo);
         }
     };
 </script>
