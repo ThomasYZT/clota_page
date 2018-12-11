@@ -128,14 +128,18 @@
              */
             jumpToPages (scopeData) {
                 this.handleMatters(scopeData);
-                //TODO 问产品经理，查看跳转页面的逻辑？
                 /*let routerObj = {};
                 switch (scopeData.row.type) {
-                    case '' :
+                    case 'apply_product_online' :
+
+                    case 'apply_policy_online' :
+
+                    case 'create_team_order' :
                         routerObj = {
                             name : ''
                         }
                         break;
+                    default :
                 }
 
                 this.$router.push(routerObj);*/

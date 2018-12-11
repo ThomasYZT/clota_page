@@ -58,6 +58,8 @@ export default {
     //获取最近n次使用的银行卡付款账号类型
     'marketing-getRecentlyPayTypes' : '/market/manage/getRecentlyPayTypes',
     //下载图片
-    'downloadImage' : '/downloadImage'
+    'downloadImage' : '/downloadImage',
+    //根据营销级别获取相关政策
+    'getPolicyByMarketTypeAndLevel' : '/market/manage/getPolicyByMarketTypeAndLevel',
 
 }

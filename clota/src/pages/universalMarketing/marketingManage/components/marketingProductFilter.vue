@@ -83,14 +83,13 @@
         computed : {
             policyItem () {
                 return this.salesPolicy.find(item => {
-                    return this.filterParams.policyId == item.id;
+                    return this.filterParams.policyId === item.id;
                 });
             }
         },
         created () {
             this.resetFilter = JSON.stringify(this.filterParams);
             this.getMarketingTypes();
-            this.getSalesPolicy();
         },
         mounted () {
         },
@@ -98,6 +97,12 @@
             'filterParams.marketTypeId' : {
                 handler (val, oldVal) {
                     this.getMarketingLevels(val);
+                },
+                immediate : true
+            },
+            'filterParams.marketLevelId' : {
+                handler (val, oldVal) {
+                    this.getPolicyByMarketTypeAndLevel();
                 },
                 immediate : true
             },
@@ -136,19 +141,18 @@
                     if (res.success) {
                         this.marketingLevels = res.data ? res.data.data : [];
                         this.filterParams.marketLevelId = this.marketingLevels.length > 0 ? this.marketingLevels[0].id : '';
+                        this.getPolicyByMarketTypeAndLevel();
                     } else {
                         this.marketingLevels = [];
                     }
                 });
             },
-            getSalesPolicy () {
-                ajax.post('queryPolicy', {
-                    pageNo : 1,
-                    pageSize : 9999,
-                    selectType : 'from'
+            getPolicyByMarketTypeAndLevel () {
+                ajax.post('getPolicyByMarketTypeAndLevel', {
+                    levelId : this.filterParams.marketLevelId
                 }).then(res => {
                     if (res.success) {
-                        this.salesPolicy = res.data ? res.data.data : [];
+                        this.salesPolicy = res.data ? res.data : [];
                         //默认选中第一个政策
                         this.filterParams.policyId = this.salesPolicy.length > 0 ? this.salesPolicy[0].id : '';
                     } else {
@@ -156,6 +160,21 @@
                     }
                 });
             },
+            // getSalesPolicy () {
+            //     ajax.post('queryPolicy', {
+            //         pageNo : 1,
+            //         pageSize : 9999,
+            //         selectType : 'from'
+            //     }).then(res => {
+            //         if (res.success) {
+            //             this.salesPolicy = res.data ? res.data.data : [];
+            //             //默认选中第一个政策
+            //             this.filterParams.policyId = this.salesPolicy.length > 0 ? this.salesPolicy[0].id : '';
+            //         } else {
+            //             this.salesPolicy = [];
+            //         }
+            //     });
+            // },
             /**
              * 获取提现记录列表数据
              */
