@@ -144,12 +144,31 @@
             cancelPay () {
                 ajax.post('revocation', {
                     transactionId : this.payFormData.transactionId
-                }).then(() => {
+                }).then((res) => {
+                    if (res.success) {
+                        clearInterval(this.intervalId);
+                        this.$router.push({
+                            name : 'marketingTourist'
+                        });
+                    } else {
+                        this.$vux.toast.show({
+                            type : 'cancel',
+                            text : this.$t('取消支付失败')
+                        });
+                        this.$router.push({
+                            name : 'marketingTourist'
+                        });
+                    }
+                });
+            },
+            /**
+             * 清空定时器
+             */
+            physicalBack () {
+                if (this.intervalId) {
                     clearInterval(this.intervalId);
-                    this.$router.push({
-                        name : 'marketingTourist'
-                    });
-                })
+                    this.intervalId = null;
+                }
             }
         },
         mounted () {
@@ -159,9 +178,10 @@
             //     url : "#"
             // };
             // history.pushState(state, "title", "#");
-            window.addEventListener("popstate", (e) => {
-                clearInterval(this.intervalId);
-            }, false);
+            window.addEventListener("popstate", this.physicalBack, false);
+        },
+        beforeDestroy () {
+            window.removeEventListener("popstate", this.physicalBack);
         }
     };
 </script>
