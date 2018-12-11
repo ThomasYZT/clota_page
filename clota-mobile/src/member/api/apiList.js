@@ -16,6 +16,8 @@ const apiList = {
     queryUnboundCard: '/external/memberInfo/queryUnboundCard',
     // 微信会员卡激活
     wxActiveCard: '/wechat/mp/card/memberCard/activate',
+    // 激活会员卡查询微信信息
+    queryWxMemberInfo: '/external/memberInfo/queryWxMemberInfo',
     //获取验证码
     getCode : '/external/member/getPhoneVerificationCode',
     //会员登录

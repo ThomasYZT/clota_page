@@ -9,7 +9,8 @@ export const memberRouterDeal = (to, from, next) => {
         || to.name === 'activateInfo' //填写激活会员卡信息
         || to.name === 'h5Pay' //c端支付
         || to.name === 'payStatus' //c端支付结果
-    /* || to.name === 'mobileRegister'*/
+        || to.name === 'mobileRegister' // 会员注册
+        || to.name === 'wxActivateCard' // 微信会员卡激活
     ) {
         next();
     } else {//判断是否保存了用户信息和token，如果没有保存需要重新登录

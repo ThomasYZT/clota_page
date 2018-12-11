@@ -270,4 +270,11 @@ export default {
     'getActivate' : 'Immediately active',
     'identity' : '身份证',
     'passport' : '护照',
+    'addMemberCard': '添加会员卡',
+    'addMemberCardTxt': '是否将会员卡加入微信卡包',
+    'getCardBtn': '确定',
+    'getCardBtnNo': '取消',
+    'getCardSuccess': '领取成功',
+    'getCardFail': '领取失败',
+    'activateSuccess': '激活成功'
 };

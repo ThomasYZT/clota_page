@@ -186,6 +186,7 @@
                                     'getLocalImgData',
                                     'uploadImage',
                                     'addCard',
+                                    'closeWindow',
                                     'getLocation'
                                 ]
                             });

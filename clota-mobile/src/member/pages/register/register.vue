@@ -194,7 +194,9 @@
              * 查询所有证件类型
              */
             queryDocument () {
-                ajax.post('queryDocuments').then(res => {
+                ajax.post('queryDocuments', {
+                    orgId: this.wxUserInfo.orgId
+                }).then(res => {
                     if (res.success) {
                         this.idTypeList = res.data ? [res.data.data.map((item) => {
                             return {
@@ -213,8 +215,7 @@
             register() {
                 ajax.post('registerMemberCard', Object.assign({
                     companyCode: this.companyCode,
-                    wxOpenId: 'otFRn0sMyGYz3ddepD_I9pePtijA'
-//                    wxOpenId: this.wxUserInfo.openId
+                    wxOpenId: this.wxUserInfo.openId
                 }, this.formData)).then((res) => {
                     if(res.success) {
                         //存储token信息
@@ -337,7 +338,6 @@
             getParams () {
                 let queryParams = this.getUrlString(location.href);
                 if (queryParams && queryParams.code) {
-                    this.queryDocument();
                     this.getOAuth2UserInfo(queryParams.code);
                 }
             },
@@ -347,9 +347,10 @@
              */
             getOAuth2UserInfo (code) {
                 // 已经存在用户信息则不用获取
-                let wxUserInfo = localStorage.getItem('wxUserInfo');
+                let wxUserInfo = localStorage.getItem('wxUserInfo') ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
                 if (wxUserInfo && wxUserInfo.openId) {
                     this.wxUserInfo = wxUserInfo;
+                    this.queryDocument();
                     return false;
                 }
                 ajax.post('getOAuth2UserInfo',{
@@ -358,17 +359,20 @@
                     companyCode : this.companyCode
                 }).then(res => {
                     if (res.success) {
-                        this.dataToLogin(res);
+                        this.wxUserInfo = res.data ? res.data : {};
+                        //存储token信息
+                        localStorage.setItem('wxUserInfo', JSON.stringify(this.wxUserInfo));
                     } else {
                         //错误信息为空，表示获取到了用户信息
                         if (!res.errcode) {
                             this.wxUserInfo = res.data ? res.data : {};
                             //存储token信息
-                            localStorage.setItem('wxUserInfo', this.wxUserInfo);
+                            localStorage.setItem('wxUserInfo', JSON.stringify(this.wxUserInfo));
                         } else {
                             this.wxUserInfo = {};
                         }
                     }
+                    this.queryDocument();
                 });
             },
             /**

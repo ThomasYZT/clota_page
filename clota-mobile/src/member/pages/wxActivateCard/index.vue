@@ -154,7 +154,7 @@
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
                             phoneNum: this.formData.phoneNum,
-                            type : 'member_register',
+                            type : 'member_activate',
                             companyCode : this.companyCode
                         }).then((res) => {
                             if(!res.success) {
@@ -192,8 +192,10 @@
             /**
              * 查询所有证件类型
              */
-            queryDocument () {
-                ajax.post('queryDocuments').then(res => {
+            queryDocument (orgId) {
+                ajax.post('queryDocuments', {
+                    orgId: orgId
+                }).then(res => {
                     if (res.success) {
                         this.idTypeList = res.data ? [res.data.data.map((item) => {
                             return {
@@ -209,34 +211,38 @@
             /**
              * 查询会员信息
              */
-            queryUnboundCard () {
-                ajax.post('queryUnboundCard', {
-//                    openId: this.wxUserInfo.openId
-                    openId: 'otFRn0sMyGYz3ddepD_I9pePtijA'
+            queryWxMemberInfo () {
+                ajax.post('queryWxMemberInfo', {
+                    openId: this.openId
                 }).then((res) => {
-                    if(res.success) {
-                        if (res.data.status == 'wxCardStatus') {
-                            this.isShowCard = true;
-                            this.getWxMpCardId();
-                        }
+                    if(res.success && res.data) {
+                        let dataObj = res.data;
+                        this.formData.custName = dataObj.custName;
+                        this.formData.gender = dataObj.gender;
+                        this.formData.phoneNum = dataObj.phoneNum;
+                        this.formData.birthDay = dataObj.birthDay ? dataObj.birthDay.split(' ')[0] : '';
+                        this.formData.certificationType = dataObj.certificationType;
+                        this.formData.idCardNumber = dataObj.idCardNumber;
+                        this.formData.homeAddr = dataObj.homeAddr;
+                        this.gender[0] = dataObj.gender;
+                        this.gender = JSON.parse(JSON.stringify(this.gender));
+                        this.certificationType[0] = dataObj.certificationType;
+                        this.queryDocument(dataObj.orgId);
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
                     }
                 });
             },
             /**
-             * 注册会员
+             * 激活
              */
-            register() {
+            finishInfo() {
                 ajax.post('wxActiveCard', Object.assign({
-                    wxOpenId: 'otFRn0sMyGYz3ddepD_I9pePtijA'
-//                    wxOpenId: this.wxUserInfo.openId
+                    wxOpenId: this.openId
                 }, this.formData)).then((res) => {
                     if(res.success) {
-                        //存储token信息
-                        localStorage.setItem('token', res.data.token);
-                        //存储用户信息
-                        localStorage.setItem('userInfo', JSON.stringify(res.data));
+                        this.$vux.toast.text(this.$t('activateSuccess'));
+                        this.$wechat.closeWindow();
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
                     }
@@ -304,7 +310,7 @@
                     return;
                 }
 
-                this.register();
+                this.finishInfo();
             },
             /**
              * 手机号验证 验证手机号不为空 且为 手机号格式
@@ -345,43 +351,10 @@
              */
             getParams () {
                 let queryParams = this.getUrlString(location.href);
-                if (queryParams && queryParams.code) {
-                    this.queryDocument();
-                    this.getOAuth2UserInfo(queryParams.code);
+                if (queryParams && queryParams.openid) {
+                    this.openId = queryParams.openid;
+                    this.queryWxMemberInfo();
                 }
-            },
-            /**
-             * 获取微信用户信息
-             * @param{String} code 微信回调code
-             */
-            getOAuth2UserInfo (code) {
-                // 已经存在用户信息则不用获取
-                let wxUserInfo = localStorage.getItem('wxUserInfo');
-                if (wxUserInfo && wxUserInfo.openId) {
-                    this.wxUserInfo = wxUserInfo;
-                    this.queryUnboundCard();
-                    return false;
-                }
-                ajax.post('getOAuth2UserInfo',{
-                    code : code,
-                    lang : this.lang,
-                    companyCode : this.companyCode
-                }).then(res => {
-                    if (res.success) {
-                        this.wxUserInfo = res.data ? res.data : {};
-                        //存储token信息
-                        localStorage.setItem('wxUserInfo', this.wxUserInfo);
-                    } else {
-                        //错误信息为空，表示获取到了用户信息
-                        if (!res.errcode) {
-                            this.wxUserInfo = res.data ? res.data : {};
-                            //存储token信息
-                            localStorage.setItem('wxUserInfo', this.wxUserInfo);
-                        } else {
-                            this.wxUserInfo = {};
-                        }
-                    }
-                });
             },
             /**
              * 获取url的参数
