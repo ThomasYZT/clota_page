@@ -50,7 +50,8 @@
             </Select>
             <div class="float-right">
                 <Input v-model.trim="keywords"
-                       :placeholder="$t('inputField',{field: $t('salePolicyName')})"/>
+                       :placeholder="$t('inputField',{field: $t('salePolicyName')})"
+                       @on-enter="queryDistPolicyList"/>
                 <Button type="primary" @click="queryDistPolicyList">{{$t("query")}}</Button>
             </div>
         </div>

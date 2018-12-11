@@ -272,8 +272,7 @@
 
         /deep/ .input-field {
             width: 350px;
-            float: right;
-            padding-left: 23px;
+            padding-left: 30px;
             margin-top: 9px;
         }
 

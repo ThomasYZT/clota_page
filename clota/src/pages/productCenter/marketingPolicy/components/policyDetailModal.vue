@@ -174,6 +174,17 @@
                     :table-data="detail.policyItems"
                     :border="false">
                     <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template v-if="row.isShow === 'false'" slot-scope="scope">
+                            <span></span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="column3"
                         slot-scope="row"
                         :label="row.title"
@@ -271,6 +282,7 @@
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom';
     import { productColumn, refundColumn } from '../child/detailConfig';
+    import { mapGetters } from 'vuex';
     export default {
         components : {
             tableCom
@@ -280,8 +292,6 @@
                 show : false,
                 //week
                 weekList : ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                //产品列表表头
-                productColumn : productColumn,
                 //退改规则列表表头
                 refundColumn : refundColumn,
                 //分销详情数据
@@ -291,7 +301,28 @@
             };
         },
         computed : {
-
+            ...mapGetters([
+                'manageOrgs'
+            ]),
+            //产品列表表头
+            productColumn () {
+                if (this.manageOrgs.nodeType === 'partner') {
+                    return productColumn.map((item) => {
+                        if (item.field !== 'standardPrice') {
+                            return item;
+                        } else {
+                            return {
+                                title : '', // 景区成本价
+                                minWidth : 20,
+                                field : '',
+                                isShow : 'false'
+                            }
+                        }
+                    });
+                } else {
+                    return productColumn;
+                }
+            },
         },
         methods : {
             /**

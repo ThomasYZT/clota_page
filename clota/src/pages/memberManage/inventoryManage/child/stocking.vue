@@ -195,8 +195,7 @@
 
     .stocking {
         .btn-wrapper {
-            float: right;
-
+            display: inline-block;
             a {
                 display: inline-block;
                 padding: 4px 15px;
