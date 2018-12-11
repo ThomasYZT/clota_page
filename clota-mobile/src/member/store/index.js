@@ -169,7 +169,6 @@ export const memberActions = {
                 memberId : this.getters.userInfo.memberId
             }).then(res => {
                 if (res.success) {
-                    debugger
                     let memberCardList = res.data ? res.data : [];
                     if (memberCardList.length > 0) {
                         //存储卡列表数据
