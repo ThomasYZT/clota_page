@@ -36,7 +36,7 @@
              */
             findPageInfoById () {
                 ajax.post('findPageInfoById', {
-                    id : this.pageInfo.id
+                    id : this.pageInfo.folderId
                 }).then(res => {
                     if (res.success) {
                         this.pageContent = res.data ? res.data : {};

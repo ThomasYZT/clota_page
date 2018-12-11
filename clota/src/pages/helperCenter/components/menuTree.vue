@@ -11,7 +11,7 @@
                  icon-class="iconfont icon-file"
                  @node-click="showPage">
             <div class="menu-item" slot-scope="{ node, data }">
-                <span v-if="data.isFile">{{ node.label }}</span>
+                <span v-if="data.isFolder">{{ node.label }}</span>
                 <span v-else>{{ data.title }}</span>
             </div>
         </el-tree>
@@ -41,8 +41,10 @@
                 fileList : [],
                 //文件列表数据
                 pageList : [],
-                //当前选中项
+                //当前选中文件项
                 nowMenuItem : {},
+                //当前选中文件夹
+                nowFolderItem : {},
             };
         },
         methods : {
@@ -55,7 +57,8 @@
                         this.fileList = res.data ? res.data.map((item) => {
                             return {
                                 ...item,
-                                isFile : true
+                                isFolder : true,
+                                children : [],
                             }
                         }) : [];
                     } else {
@@ -73,13 +76,13 @@
                     ajax.post('queryPageInfoByFoldId', {
                         foldId : node.data.id
                     }).then(res => {
-                        const data = [{
-                            title : 'leaf',
-                            isLeaf : true,
-                            content : '<p>这里是文章内容</p>'
-                        }];
                         if (res.success) {
-                            resolve(data);
+                            resolve(res.data ? res.data.map(item => {
+                                return {
+                                    ...item,
+                                    isLeaf : true,
+                                }
+                            }) : []);
                         } else {
                             resolve([]);
                         }
