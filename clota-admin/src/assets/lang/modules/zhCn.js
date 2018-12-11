@@ -378,5 +378,6 @@ export default {
     'successTip' : '{tip}成功',
     'helperCenter' : '帮助中心',
     'addFile' : '新增文件夹',
+    'folderName' : '文件夹名称',
 
 };
