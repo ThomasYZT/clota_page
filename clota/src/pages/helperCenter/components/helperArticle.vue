@@ -4,7 +4,10 @@
 -->
 <template>
     <div class="helper-article">
-        <div v-if="Object.keys(pageInfo).length > 0" v-html="pageInfo.content"></div>
+        <template v-if="Object.keys(pageInfo).length > 0">
+            <h4 class="page-title">{{pageContent.title}}</h4>
+            <div class="page-content" v-html="pageContent.content"></div>
+        </template>
         <noDataTip v-else></noDataTip>
     </div>
 </template>
@@ -36,7 +39,7 @@
              */
             findPageInfoById () {
                 ajax.post('findPageInfoById', {
-                    id : this.pageInfo.folderId
+                    id : this.pageInfo.id
                 }).then(res => {
                     if (res.success) {
                         this.pageContent = res.data ? res.data : {};
@@ -64,5 +67,17 @@
         padding: 10px;
         @include block_outline();
         overflow: auto;
+
+        .page-title {
+            width: 100%;
+            height: 30px;
+            font-size: 16px;
+            line-height: 30px;
+            text-align: center;
+        }
+
+        .page-content {
+            padding: 20px;
+        }
     }
 </style>

@@ -8,6 +8,7 @@
                  :props="defaultProps"
                  :lazy="true"
                  :load="queryPageInfoByFoldId"
+                 :highlight-current="true"
                  icon-class="iconfont icon-file"
                  @node-click="showPage">
             <div class="menu-item" slot-scope="{ node, data }">
