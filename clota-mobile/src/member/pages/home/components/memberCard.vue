@@ -47,7 +47,7 @@
             <x-dialog v-model="isShowImg"
                       :hide-on-blur="true"
                       :dialog-style="{'max-width': '100%', width: '100%', 'background-color': 'transparent'}">
-                <img class="person-img" :src="userInfo.portrait ? userInfo.portrait : memberHeadImg" alt="">
+                <img :class="$style.modalImg" :src="userInfo.portrait ? userInfo.portrait : memberHeadImg" alt="">
             </x-dialog>
         </div>
     </div>
@@ -358,5 +358,10 @@
                 }
             }
         }
+    }
+</style>
+<style module>
+    .modalImg{
+        width: 100%;
     }
 </style>
