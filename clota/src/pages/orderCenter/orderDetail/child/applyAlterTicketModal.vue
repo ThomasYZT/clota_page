@@ -238,8 +238,15 @@
             handleSelectionChange(data) {
                 this.selectedTicket = data;
                 this.errMsg = '';
-                if(this.productInfo.allowAlter === 'false'){
-                    this.errMsg = this.$t('alterProductTip') + '。';    // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
+                // if(this.productInfo.allowAlter === 'false'){
+                //     this.errMsg = this.$t('alterProductTip');    // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
+                // }
+                for(let i = 0,j = data.length;i < j;i++){
+                    //如果景区退票的时候选择了已核销的产品需要给出提示
+                    if(data[i]['verifyStatus'] === 'true'){
+                        this.errMsg = this.$t('alterProductTip');  // 提示：您申请退票的产品中包含已核销的产品
+                        break;
+                    }
                 }
             },
             /**
