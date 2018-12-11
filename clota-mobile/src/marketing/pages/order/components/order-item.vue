@@ -13,7 +13,7 @@
                 <div class="order-num">{{$t('colonSetting',{ key : $t('数量') })}}{{orderDetail.productNum | contentFilter}}</div>
             </div>
             <div class="order-detail">
-                <div class="time-info">{{$t('colonSetting',{ key : $t('使用日期') })}}{{orderDetail.playDate | contentFilter}}</div>
+                <div class="time-info">{{$t('colonSetting',{ key : $t('使用日期') })}}{{orderDetail.playDate | timeFormat('yyyy-MM-dd') | contentFilter}}</div>
                 <div class="commission">{{$t('colonSetting',{ key : $t('佣金') })}}{{orderDetail.expectedSalary | moneyFilter | contentFilter}}</div>
             </div>
             <div class="detail-footer">
@@ -120,6 +120,7 @@
         }
 
         .content{
+            /*display: none;*/
             flex: 1;
         }
 
@@ -140,10 +141,10 @@
 
             .text-label{
                 @include absolute_pos(absolute,$top : -17px,$left : -26px);
-                width: 100%;
+                width: 64px;
                 text-align: center;
                 font-size: $font_size_11px;
-                transform: rotate(43deg) translate(1px,-4px);
+                transform: rotate(43deg) translate(3px,2px);
             }
         }
 
