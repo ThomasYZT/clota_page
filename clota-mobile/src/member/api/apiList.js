@@ -16,6 +16,8 @@ const apiList = {
     queryUnboundCard: '/external/memberInfo/queryUnboundCard',
     // 微信会员卡激活
     wxActiveCard: '/wechat/mp/card/memberCard/activate',
+    // 激活会员卡查询微信信息
+    queryWxMemberInfo: '/external/memberInfo/queryWxMemberInfo',
     //获取验证码
     getCode : '/external/member/getPhoneVerificationCode',
     //会员登录
@@ -46,9 +48,9 @@ const apiList = {
     checkCode : '/external/memberInfo/checkCode',
     //获取成长值
     getGrowthBalance : '/external/memberInfo/getGrowthBalance',
-    //查询所有证件类型（非登陆状态）
+    //查询所有证件类型（非登录状态）
     queryDocuments : '/external/memberInfo/queryDocuments',
-    //查询所有证件类型（登陆状态）
+    //查询所有证件类型（登录状态）
     queryDocument : '/external/memberInfo/queryDocument',
     //会员权益
     listMemberCardRate : '/external/memberInfo/listMemberCardRate',

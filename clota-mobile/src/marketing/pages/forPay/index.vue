@@ -110,7 +110,8 @@
 
                     //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
                 } else {
-                    this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
+                    this.payFormData = querystring.parse(location.href.split('?')[1]);
+                    // this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
                     this.$nextTick(() => {
                         this.$refs.payForm.submit();
                     });
@@ -128,7 +129,7 @@
                         clearInterval(this.intervalId);
                         //alert("查询支付状态")
                         this.$router.push({
-                            name : 'payStatus',
+                            name : 'marketingCreateOrderPayResult',
                             params : {
                                 status : res.data,
                                 payFormData : this.payFormData
@@ -143,12 +144,31 @@
             cancelPay () {
                 ajax.post('revocation', {
                     transactionId : this.payFormData.transactionId
-                }).then(() => {
+                }).then((res) => {
+                    if (res.success) {
+                        clearInterval(this.intervalId);
+                        this.$router.push({
+                            name : 'marketingTourist'
+                        });
+                    } else {
+                        this.$vux.toast.show({
+                            type : 'cancel',
+                            text : this.$t('取消支付失败')
+                        });
+                        this.$router.push({
+                            name : 'marketingTourist'
+                        });
+                    }
+                });
+            },
+            /**
+             * 清空定时器
+             */
+            physicalBack () {
+                if (this.intervalId) {
                     clearInterval(this.intervalId);
-                    this.$router.push({
-                        name : 'account'
-                    });
-                })
+                    this.intervalId = null;
+                }
             }
         },
         mounted () {
@@ -158,9 +178,10 @@
             //     url : "#"
             // };
             // history.pushState(state, "title", "#");
-            window.addEventListener("popstate", (e) => {
-                clearInterval(this.intervalId);
-            }, false);
+            window.addEventListener("popstate", this.physicalBack, false);
+        },
+        beforeDestroy () {
+            window.removeEventListener("popstate", this.physicalBack);
         }
     };
 </script>

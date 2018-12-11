@@ -13,7 +13,7 @@ export const memberState = {
     hashKey : '',
     //是否显示键盘
     showKeyBoard : false,
-    //用户是否登陆
+    //用户是否登录
     isLogin : false,
     //公司id
     companyCode : '',
@@ -74,7 +74,7 @@ export const memberGetters = {
             }
         }
     },
-    //是否登陆
+    //是否登录
     isLogin : state => {
         let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
         state.isLogin = userInfo && Object.keys(userInfo).length > 0;

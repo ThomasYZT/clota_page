@@ -47,7 +47,7 @@
         <x-button class="button"
                   @click.native="next">{{$t('下一步')}}</x-button>
         <div class="to-login">
-            {{$t('已有账号')}}<span class="login-label" @click="toLogin">去登陆</span>
+            {{$t('已有账号')}}<span class="login-label" @click="toLogin">去登录</span>
         </div>
     </div>
 </template>

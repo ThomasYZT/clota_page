@@ -3,7 +3,7 @@
 <template>
     <div class="product-info">
         <div class="date-list">
-            <span>{{$t('colonSetting',{ key : $t('游玩日期') })}}</span>
+            <span>{{$t('colonSetting',{ key : $t('选择游玩日期') })}}</span>
             <span class="date-area" @click="choseDate">
             {{productDate}}
             <span class="iconfont icon-arrow-right"></span>
@@ -164,6 +164,9 @@
         },
         created () {
             this.getProductListInfo();
+        },
+        beforeDestroy () {
+            this.$vux.datetime.hide();
         }
     };
 </script>
@@ -178,7 +181,7 @@
             line-height: 40px;
             font-size: $font_size_16px;
             color: #353B48;
-            padding-left: 20px;
+            padding-left: 14px;
             background: $color_fff;
 
             .date-area{

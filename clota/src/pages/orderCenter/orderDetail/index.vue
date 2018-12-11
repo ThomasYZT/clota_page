@@ -447,10 +447,14 @@
             /**
              * 获取路由参数
              * @param{Object} params 路由参数
+             * @param{Object} toRoute 去的路由
+             * @param{Object} fromRoute 来的路由
              */
-            getParams (params) {
-                if (params && Object.keys(params).length > 0) {
-                    // this.paramsDefault = params;
+            getParams (params,toRoute,fromRoute) {
+                if (params && Object.keys(params).length > 0 &&
+                    (fromRoute.name === 'individualSecondLevel' ||
+                    fromRoute.name === 'individualFirstLevel')) {
+                    this.paramsDefault = params;
                 }
             }
         },

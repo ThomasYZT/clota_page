@@ -238,8 +238,12 @@
             handleSelectionChange(data) {
                 this.selectedTicket = data;
                 this.errMsg = '';
-                if(this.productInfo.allowAlter === 'false'){
-                    this.errMsg = this.$t('alterProductTip') + '。';    // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
+                for(let i = 0,j = data.length;i < j;i++){
+                    //如果景区改签的时候选择了不能改签的产品需要给出提示
+                    if(data[i]['policyAlterRule'] === 'notAllow'){
+                        this.errMsg = this.$t('alterProductTip');  // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
+                        break;
+                    }
                 }
             },
             /**

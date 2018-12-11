@@ -125,7 +125,6 @@
                 ajax.post('market_getPayPageForOfficialAccount', {
                     bizScene : 'order',
                     bizType : 'pay_order',
-                    // bizId : this.orderId,
                     channelType : 'weixin',
                     txnAmt : this.totalAmount,
                     redirectUrl : this.getRedirectUrl(),
@@ -139,6 +138,9 @@
                         this.payFormData.paymentTypeId = this.payType;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
                         location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
+                    } else {
+                        this.payFormData = {};
+                        this.$vux.toast.text(this.$t('payAbnormal'));
                     }
                 });
             },
@@ -159,7 +161,6 @@
                 ajax.post('market_getPayPageForMobileNoLogin', {
                     bizScene : 'order',
                     bizType : 'pay_order',
-                    // bizId : this.orderId,
                     channelType : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.totalAmount,
                     redirectUrl : this.getRedirectUrl(),
@@ -187,7 +188,6 @@
                             '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
                             '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
                             '&transactionId=' + this.payFormData.transactionId;
-                        // location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));

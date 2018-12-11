@@ -268,6 +268,9 @@
         created () {
             this.queryOrderInfo('');
             this.queryProductInfo();
+        },
+        beforeDestroy () {
+            this.$vux.datetime.hide();
         }
     };
 </script>
@@ -316,8 +319,6 @@
                 float: right;
                 font-size: $font_size_14px;
                 color: $color_333;
-                padding-left: 10px;
-                /*border-left: 0.5px solid #E1E1E1;*/
 
                 &:before{
                     @include absolute_pos(absolute,$top : 5px);
@@ -342,6 +343,10 @@
         /deep/ .vux-tab-ink-bar{
             background: #046FDB;
             height: 2px!important;
+        }
+
+        /deep/ .vux-tab-selected{
+            color: #046FDB!important;
         }
 
         .content{

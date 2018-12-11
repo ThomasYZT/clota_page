@@ -569,7 +569,14 @@
         watch : {
             paramsDefault (newVal,oldVal) {
                 if (newVal && Object.keys(newVal).length > 0) {
-                    this.formData = this.paramsDefault;
+                    for (let item in this.paramsDefault) {
+                        if (item === 'orderDate') {
+                            this.formData['orderDate'][0] = this.paramsDefault.orderDate[0] ? new Date(this.paramsDefault.orderDate[0]) : '';
+                            this.formData['orderDate'][1] = this.paramsDefault.orderDate[1] ? new Date(this.paramsDefault.orderDate[1]) : '';
+                        } else {
+                            this.formData[item] = this.paramsDefault[item];
+                        }
+                    }
                 }
             }
         }

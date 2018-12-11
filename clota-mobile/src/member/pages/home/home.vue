@@ -31,12 +31,12 @@
                 class="dialog-crad-give"
                 :hide-on-blur="true">
           <div class="txt">
-              <p class="title">添加会员卡</p>
-              <p>是否将会员卡加入微信卡包！</p>
+              <p class="title">{{$t('addMemberCard')}}</p>
+              <p>{{$t('addMemberCardTxt')}}！</p>
           </div>
           <div class="opreta-btn">
-              <div class="no" @click="isShowCard=false;">不</div>
-              <div class="get" @click="getCard">领取卡包</div>
+              <div class="no" @click="isShowCard=false;">{{$t('getCardBtnNo')}}</div>
+              <div class="get" @click="getCard">{{$t('getCardBtn')}}</div>
           </div>
       </x-dialog>
 
@@ -154,7 +154,8 @@
                 'userInfo',
                 'cardInfo',
                 'cardInfoList',
-                'companyCode'
+                'companyCode',
+                'userInfo'
             ]),
             //当前卡索引
             cardIndex () {
@@ -227,11 +228,10 @@
              */
             queryUnboundCard () {
                 ajax.post('queryUnboundCard', {
-//                    openId: this.$route.query.openId
-                    openId: 'otFRn0sMyGYz3ddepD_I9pePtijA'
+                    openId: this.userInfo.openId
                 }).then((res) => {
                     if(res.success) {
-                        if (res.data && res.data.wxCardStatus == 'wait') {
+                        if (res.data && res.data!=null) {
                             this.isShowCard = true;
                             this.getWxMpCardId();
                             this.getCardListInfo();
@@ -257,12 +257,11 @@
              * 获取卡的拓展信息
              */
             getCardExt (cardId) {
-                let userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 ajax.post('getCardExt', {
                     companyCode: this.companyCode,
-                    code: userInfo.cardCode,
+                    code: this.userInfo.cardCode,
                     cardId: cardId,
-                    openId: this.$route.query.openId
+                    openId: this.userInfo.openId
                 }).then((res) => {
                     if(res.success) {
                         this.cardExt = res.data ? res.data : {};
@@ -290,10 +289,11 @@
                         }
                     ],
                     success: res => {
-                        this.$vux.toast.text('领取成功');
+                        console.log(res);
                     },
                     fail: res => {
-                        this.$vux.toast.text('领取失败');
+                        console.log(res);
+                        this.$vux.toast.text(this.$t('getCardFail'));
                     },
                     complete: () => {
                         this.isShowCard = false;

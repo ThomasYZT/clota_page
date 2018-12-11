@@ -15,7 +15,7 @@ export const transOrderOrg = (value) => {
         return value === channel.value;
     });
 
-    return orderChannel ? orderChannel.label : '-';
+    return orderChannel ? 'order.' + orderChannel.label : '-';
 };
 
 /**

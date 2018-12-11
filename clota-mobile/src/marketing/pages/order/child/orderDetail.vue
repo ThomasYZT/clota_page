@@ -14,7 +14,7 @@
                 </div>
                 <div class="detail-list">
                     <span class="key">{{$t('colonSetting',{ key : $t('使用日期') })}}</span>
-                    <span class="value">{{orderDetail.playDate | contentFilter}}</span>
+                    <span class="value">{{orderDetail.playDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
                 </div>
             </div>
             <div class="preorder-info">
