@@ -137,7 +137,7 @@ export const marketingRoutes = [
                 name : 'marketingOrderDetail',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/child/orderDetail.vue'),
                 meta : {
-                    title : '我的订单',
+                    title : '订单详情',
                     hideTabbar : true
                 }
             },

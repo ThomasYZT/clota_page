@@ -110,7 +110,8 @@
 
                     //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
                 } else {
-                    this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
+                    this.payFormData = querystring.parse(location.href.split('?')[1]);
+                    // this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
                     this.$nextTick(() => {
                         this.$refs.payForm.submit();
                     });
@@ -128,7 +129,7 @@
                         clearInterval(this.intervalId);
                         //alert("查询支付状态")
                         this.$router.push({
-                            name : 'payStatus',
+                            name : 'marketingCreateOrderPayResult',
                             params : {
                                 status : res.data,
                                 payFormData : this.payFormData
@@ -146,7 +147,7 @@
                 }).then(() => {
                     clearInterval(this.intervalId);
                     this.$router.push({
-                        name : 'account'
+                        name : 'marketingTourist'
                     });
                 })
             }

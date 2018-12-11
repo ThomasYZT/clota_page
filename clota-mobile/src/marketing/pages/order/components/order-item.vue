@@ -20,9 +20,6 @@
                 <div class="order-date">{{orderDetail.createdTime | contentFilter}}</div>
                 <div class="for-detail" @click="toDetail">{{$t('查看详情')}}</div>
             </div>
-            <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'unaudit'">
-                <span class="text-label">{{$t('待审')}}</span>
-            </div>
             <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'auditing'">
                 <span class="text-label">{{$t('审核中')}}</span>
             </div>
@@ -143,7 +140,8 @@
 
             .text-label{
                 @include absolute_pos(absolute,$top : -17px,$left : -26px);
-                width: 50px;
+                width: 100%;
+                text-align: center;
                 font-size: $font_size_11px;
                 transform: rotate(43deg) translate(1px,-4px);
             }

@@ -163,7 +163,8 @@
         }
 
         .tabbar-img{
-            @include block_outline(25px,25px);
+            @include block_outline(20px,20px);
+            margin-top: 5px;
         }
 
         .view-content{

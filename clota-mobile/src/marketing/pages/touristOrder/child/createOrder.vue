@@ -40,6 +40,7 @@
                     text-align="right"
                     :show-clear="false"
                     v-model.trim="formData[index].idNum"
+                    :placeholder="$t('请输入证件号码')"
                     placeholder-align="right">
                 </x-input>
                 <!-- 游客姓名 -->
@@ -48,6 +49,7 @@
                     text-align="right"
                     :show-clear="false"
                     v-model.trim="formData[index].name"
+                    :placeholder="$t('与证件名一致')"
                     placeholder-align="right">
                 </x-input>
                 <!-- 手机号 -->
@@ -57,6 +59,7 @@
                     :show-clear="false"
                     keyboard="tel"
                     v-model.trim="formData[index].phone"
+                    :placeholder="$t('用于接收取票验证短信')"
                     placeholder-align="right">
                 </x-input>
             </group>

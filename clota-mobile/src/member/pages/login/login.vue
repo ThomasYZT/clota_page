@@ -39,7 +39,7 @@
                 <!--<span @click="toRegister()">{{$t('register')}}</span>-->
             </p>
         </div>
-        <!-- 登陆按钮 -->
+        <!-- 登录按钮 -->
         <x-button class="button"
                   @click.native="login()">
             {{$t('login')}}
@@ -59,7 +59,7 @@
     export default {
         data () {
             return {
-                //登陆信息
+                //登录信息
                 loginInfo : {
                     //手机号
                     phoneNum : '',
@@ -122,7 +122,7 @@
                 }
             },
             /**
-             * 登陆
+             * 登录
              */
             login () {
                 this.validate(() => {

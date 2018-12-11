@@ -5,17 +5,20 @@
 <template>
     <div class="pay-status">
         <div class="status-wrapper">
-            <div class="status" v-if="isSuccess === true">
+            <div class="status" v-show="isSuccess === true">
                 <img class="status-icon" src="../../../assets/images/pay-success.svg" alt="">
-                <p class="status-message">{{$t('下单成功')}}</p>
+                <p class="status-message">{{$t('预定成功')}}</p>
+                <div class="success-label">
+                    {{$t('取票凭证将以短信形式发送到您指定的手机，请注意查收！')}}
+                </div>
             </div>
-            <div class="status" v-else-if="isSuccess === false">
+            <div class="status" v-show="isSuccess === false">
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
-                <p class="status-message">{{$t('下单失败')}}</p>
+                <p class="status-message">{{$t('预定失败')}}</p>
             </div>
 
             <!-- 返回按钮 -->
-            <x-button class="button" @click.native="toAccount">{{$t('返回产品列表')}}</x-button>
+            <x-button class="button" @click.native="toAccount">{{$t('继续预定')}}</x-button>
         </div>
     </div>
 </template>
@@ -51,8 +54,9 @@
                     this.status = params.status;
                     this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
                     if (params.status === 'success') {
+                        this.isSuccess = true;
                         //调用内部系统充值接口
-                        this.rechargeAccount();
+                        // this.rechargeAccount();
                     } else {
                         this.isSuccess = false;
                     }
@@ -93,7 +97,7 @@
                 // });
             },
             /**
-             * 若已登陆前往我的账户页面，否则为切换浏览器的情况，提示返回微信
+             * 若已登录前往我的账户页面，否则为切换浏览器的情况，提示返回微信
              */
             toAccount () {
                 this.$router.push({
@@ -115,9 +119,8 @@
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
                 ajax.post('market_addVisitorOrder',Object.assign({
                     transctionId : this.payFormData.transactionId,
-                    orderId : this.payFormData.orderId
+                    orderId : this.payFormData.bizId
                 },createOrderParams)).then(res => {
-
                     if (res.success) {
                         // this.$router.replace({
                         //     name : 'marketingCreateOrderToPay',
@@ -160,7 +163,7 @@
         height: 100%;
         .status-wrapper {
             width: 100%;
-            height: 300px;
+            height: 280px;
             position: absolute;
             top: 40%;
             margin-top: -150px;
@@ -175,7 +178,19 @@
                     margin-top: 20px;
                     font-size: 18px;
                 }
+
+                .success-label{
+                    width: calc(100% - 46px);
+                    margin: 10px auto 0;
+                    text-align: center;
+                    font-size: $font_size_14px;
+                    color: $color_999;
+                }
             }
+        }
+
+        .button{
+            margin-top: 50px;
         }
     }
 

@@ -164,6 +164,9 @@
         },
         created () {
             this.getProductListInfo();
+        },
+        beforeDestroy () {
+            this.$vux.datetime.hide();
         }
     };
 </script>

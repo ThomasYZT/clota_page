@@ -4,7 +4,7 @@ import store from "../../store/index";
 export const memberRouterDeal = (to, from, next) => {
     //无操作的路由
     if (
-        to.name === 'mobileLogin' //会员登陆
+        to.name === 'mobileLogin' //会员登录
         || to.name === 'activateCard' //激活会员卡
         || to.name === 'activateInfo' //填写激活会员卡信息
         || to.name === 'h5Pay' //c端支付
@@ -43,7 +43,7 @@ export const memberRoutes = [
         name : 'mobileLogin',
         component : () => import(/* webpackChunkName: "login" */ '../pages/index.vue'),
         children : [
-            //会员登陆
+            //会员登录
             {
                 path : 'login',
                 name : 'mobileLogin',

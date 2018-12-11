@@ -135,7 +135,7 @@
                             resolve();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('收款账户类型') }));
+                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('收款账户类型') }));
                         reject();
                     }
                 });
