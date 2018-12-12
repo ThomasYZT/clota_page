@@ -270,11 +270,12 @@ export default {
     'getActivate' : 'Immediately active',
     'identity' : '身份证',
     'passport' : '护照',
-    'addMemberCard': 'Add membership card',
-    'addMemberCardTxt': 'Whether to add membership card to WeChat card package',
-    'getCardBtn': 'confirm',
-    'getCardBtnNo': 'cancel',
-    'getCardSuccess': 'Get the success',
-    'getCardFail': 'Get the success',
-    'activateSuccess': 'Activate the success'
+    'addMemberCard' : 'Add membership card',
+    'addMemberCardTxt' : 'Whether to add membership card to WeChat card package',
+    'getCardBtn' : 'confirm',
+    'getCardBtnNo' : 'cancel',
+    'getCardSuccess' : 'Get the success',
+    'getCardFail' : 'Get the success',
+    'activateSuccess' : 'Activate the success',
+    'other' : '其它'
 };

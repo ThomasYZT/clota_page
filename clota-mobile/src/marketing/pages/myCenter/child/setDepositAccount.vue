@@ -6,13 +6,27 @@
         <div v-else class="warning-tips">{{$t('为保障您的资金安全，变更收款账户需要进行短信验证')}}</div>
         <group>
             <!-- 账户类型 -->
+            <!--<x-input-->
+                <!--v-show="stage === 1"-->
+                <!--:title="$t('收款账户类型')"-->
+                <!--text-align="right"-->
+                <!--:placeholder="$t('pleaseInputMsg')"-->
+                <!--:show-clear="false"-->
+                <!--v-model.trim="formData.accountType"-->
+                <!--placeholder-align="right">-->
+            <!--</x-input>-->
+            <popup-radio v-show="stage === 1"
+                         :title="$t('收款账户类型')"
+                         :options="accountTypeList"
+                         v-model="formData.accountType">
+            </popup-radio>
             <x-input
-                v-show="stage === 1"
-                :title="$t('收款账户类型')"
+                v-show="stage === 1 && formData.accountType === 'other'"
+                :title="$t('请输入收款账户类型')"
                 text-align="right"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
-                v-model.trim="formData.accountType"
+                v-model.trim="formData.otherAccountType"
                 placeholder-align="right">
             </x-input>
             <!-- 收款人姓名 -->
@@ -89,7 +103,9 @@
                     //收款账户
                     account : '',
                     //验证码
-                    code : ''
+                    code : '',
+                    //其它账户类型
+                    otherAccountType : ''
                 },
                 //计时时间
                 time : 60,
@@ -100,7 +116,25 @@
                 //当前手机号
                 mobile : '',
                 //定时器
-                timer : ''
+                timer : '',
+                //收款账户类型列表
+                accountTypeList : [
+                    //微信支付
+                    {
+                        key : 'wxPay',
+                        value : this.$t('微信')
+                    },
+                    //支付宝支付
+                    {
+                        key : 'aliPay',
+                        value : this.$t('支付宝')
+                    },
+                    //其它
+                    {
+                        key : 'other',
+                        value : this.$t('other')
+                    }
+                ]
             };
         },
         methods : {
@@ -128,11 +162,18 @@
              */
             validateAccountType () {
                 return new Promise((resolve,reject) => {
-                    if (this.formData && this.formData.accountType) {
-                        if (this.formData.accountType.length > 50) {
-                            this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('收款账户类型'),length : 50 }));
+                    if (this.formData && this.formData.accountType && this.formData.accountType !== 'other') {
+                        resolve();
+                    } else if (this.formData && this.formData.accountType && this.formData.accountType === 'other') {
+                        if (this.formData.otherAccountType) {
+                            if (this.formData.otherAccountType.length > 50) {
+                                this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('收款账户类型'),length : 50 }));
+                            } else {
+                                resolve();
+                            }
                         } else {
-                            resolve();
+                            this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('收款账户类型') }));
+                            reject();
                         }
                     } else {
                         this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('收款账户类型') }));
@@ -222,7 +263,15 @@
              */
             getParams (params) {
                 if (params && params.accountInfo && Object.keys(params.accountInfo).length > 0) {
-                    this.formData.accountType = params.accountInfo.accountType;
+                    this.formData.accountType = 'other';
+                    this.formData.otherAccountType = params.accountInfo.accountType;
+                    for (let i = 0,j = this.accountTypeList.length; i < j; i++) {
+                        if (this.accountTypeList[i]['key'] === params.accountInfo.accountType) {
+                            this.formData.accountType = params.accountInfo.accountType;
+                            this.formData.otherAccountType = '';
+                            break;
+                        }
+                    }
                     this.formData.name = params.accountInfo.name;
                     this.formData.account = params.accountInfo.account;
                     this.mobile = params.accountInfo.mobile;
@@ -244,7 +293,7 @@
              */
             updateAccountInfo () {
                 ajax.post('market_updateBankAccount',{
-                    accountType : this.formData.accountType,
+                    accountType : this.formData.accountType === 'other' ? this.formData.otherAccountType : this.formData.accountType,
                     accountInfo : this.formData.account,
                 }).then(res => {
                     if (res.success) {
@@ -361,5 +410,6 @@
                 color: #C5C5C5;
             }
         }
+
     }
 </style>

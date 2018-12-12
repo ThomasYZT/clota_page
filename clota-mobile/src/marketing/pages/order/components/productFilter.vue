@@ -15,7 +15,7 @@
                      :key="index"
                      @click="chooseProduct(item)">
                     <span class="iconfont icon-checked"
-                          :class="[choosedProductList.includes(item) ? $style.checked : '',$style.icon]"></span>{{item.printName | contentFilter}}
+                          :class="[choosedProductList.includes(item) ? $style.checked : '',$style.icon]"></span>{{item.productName | contentFilter}}
                 </div>
             </div>
             <ul :class="$style.btnWrap">
