@@ -31,6 +31,7 @@
 </template>
 
 <script>
+    import ajax from '@/marketing/api/index';
 	export default {
         props : {
             //是否显示单选框
@@ -59,12 +60,13 @@
              * 选择订单
              */
             choseOrderItem () {
-                //未审核和驳回可以再申请的可以申请提现
+                //未审核和驳回可以再申请的可以申请提现,已核销的和已退票的总和必须等于预定数量
                 if (this.showRadio &&
                     this.orderDetail.expectedSalary > 0 &&
+                    (this.orderDetail.verifiedNum + this.orderDetail.refundNum === this.orderDetail.productNum) &&
                     (this.orderDetail.withdrawStatus === 'reject' ||
                     this.orderDetail.withdrawStatus === 'unaudit')) {
-                    this.$emit('chose-item',this.orderDetail);
+                    this.checkCanWithdrawApply();
                 }
             },
             /**
@@ -75,6 +77,19 @@
                     name : 'marketingOrderDetail',
                     params : {
                         orderDtail : this.orderDetail
+                    }
+                });
+            },
+            /**
+             * 提现申请校验
+             */
+            checkCanWithdrawApply () {
+                ajax.post('market_checkCanWithdrawApply',{
+                    orderId : this.orderDetail.orderId,
+                    amount : this.orderDetail.expectedSalary
+                }).then(res => {
+                    if (res.success) {
+                        this.$emit('chose-item',this.orderDetail);
                     }
                 });
             }

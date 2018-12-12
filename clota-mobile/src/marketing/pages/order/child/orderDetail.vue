@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="deposit">
+        <div class="deposit" v-if="orderDetail.withdrawStatus !== 'success'">
             <div class="commission">
                 {{$t('colonSetting',{ key : $t('可提现佣金') })}}
                 <span class="money">{{orderDetail.expectedSalary | moneyFilter(2,'￥') | contentFilter}}</span>
@@ -127,8 +127,8 @@
              * 申请提现
              */
             applyDeposit () {
-                ajax.post('market_orderSalaryWithdrawApply',{
-                    orderIds : this.orderDetail.orderId,
+                ajax.post('market_singleOrderSalaryWithdrawApply',{
+                    orderId : this.orderDetail.orderId,
                     amount : this.orderDetail.expectedSalary
                 }).then(res => {
                     if (res.success) {
@@ -155,9 +155,10 @@
         computed : {
             //是否可以申请提现
             canApplyDeposit () {
-                //未审核或已拒绝可再次申请,佣金大于0，并且订单全部核销的才可以申请提现
+                //未审核或已拒绝可再次申请,佣金大于0，核销加退票数量等于预定数量，并且订单全部核销的才可以申请提现
                 if (this.orderDetail &&
                     this.orderDetail.verifiedNum > 0 &&
+                    this.orderDetail.verifiedNum + this.orderDetail.refundNum === this.orderDetail.productNum &&
                     (this.orderDetail.withdrawStatus === 'unaudit' || this.orderDetail.withdrawStatus === 'reject') &&
                     this.orderDetail.verifiedNum === this.orderDetail.productNum) {
                     return true;

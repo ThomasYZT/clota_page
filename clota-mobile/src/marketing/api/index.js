@@ -34,6 +34,10 @@ instance.interceptors.response.use(function (response) {
             store.commit('marketUpdateUserInfo');
         });
     }
+    //全局配置提示错误信息
+    if (!response.data.success && response.data.code && response.data.code !== '300' && response.data.code !== '100') {
+        store.dispatch('showToast','errorMsg.' + response.data.code);
+    }
     return response;
 }, function (error) {
     // Do something with response error

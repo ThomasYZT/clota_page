@@ -76,6 +76,10 @@
         <ticket-notice :choosedProductInfo="productDetail"
                        v-model="showProductNotice">
         </ticket-notice>
+        <!--游客下单失败提提-->
+        <tourist-order-error v-model="showErrorToast"
+                             :tourist-info="errorTouristInfo">
+        </tourist-order-error>
     </div>
 </template>
 
@@ -86,11 +90,13 @@
     import { validator } from 'klwk-ui';
     import common from '@/assets/js/common.js';
     import { mapGetters } from 'vuex';
+    import touristOrderError from '../components/touristOrderError';
 
     export default {
         mixins : [lifeCycleMixins],
         components : {
-            ticketNotice
+            ticketNotice,
+            touristOrderError
         },
         data () {
             return {
@@ -111,7 +117,11 @@
                 //游玩日期
                 playDate : '',
                 //购买数量
-                buyNum : 1
+                buyNum : 1,
+                //是否显示错误提示框
+                showErrorToast : false,
+                //下单错误的游客信息
+                errorTouristInfo : []
             };
         },
         methods : {
@@ -228,7 +238,7 @@
                 }).then(() => {
                     return this.validatePhone();
                 }).then(() => {
-                    this.validateOrderIsRight();
+                    this.checkExtProductSaleRule();
                 });
             },
             /**
@@ -376,6 +386,45 @@
                  //         this.$vux.toast.text(this.$t('下单失败'));
                  //     }
                  // });
+            },
+            /**
+             * 校验订单是否符合订票规则
+             */
+            checkExtProductSaleRule () {
+                ajax.post('market_checkExtProductSaleRule',{
+                    productSaleVo : JSON.stringify(this.formData.map(item => {
+                        if (this.acceptIdType.length > 0) {
+                            return {
+                                productId : this.productDetail.productId,
+                                productName : this.productDetail.productName,
+                                mobile : item.phone,
+                                visitorName : item.name,
+                                documentType : item.idType,
+                                documentId : item.idNum,
+                                count : this.productPolicy.needId === 'one' ? 1 : this.buyNum,
+                            };
+                        } else {
+                            return {
+                                productId : this.productDetail.productId,
+                                productName : this.productDetail.productName,
+                                mobile : item.phone,
+                                visitorName : item.name,
+                                count : this.productPolicy.needId === 'one' ? 1 : this.buyNum,
+                            };
+                        }
+                    }))
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data && res.data.length > 0) {
+                            this.errorTouristInfo = res.data;
+                            this.showErrorToast = true;
+                        } else {
+                            this.validateOrderIsRight();
+                        }
+                    } else {
+                        this.$vux.toast.text(this.$t('下单失败'));
+                    }
+                });
             }
         },
         computed : {
