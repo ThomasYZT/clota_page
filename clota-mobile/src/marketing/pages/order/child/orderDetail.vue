@@ -127,7 +127,7 @@
              * 申请提现
              */
             applyDeposit () {
-                ajax.post('market_orderSalaryWithdrawApply',{
+                ajax.post('market_singleOrderSalaryWithdrawApply',{
                     orderIds : this.orderDetail.orderId,
                     amount : this.orderDetail.expectedSalary
                 }).then(res => {

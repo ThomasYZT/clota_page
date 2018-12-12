@@ -67,4 +67,6 @@ export default {
     'market_checkExtProductSaleRule' : '/market/marketUser/checkExtProductSaleRule',
     //校验订单是否可以提现
     'market_checkCanWithdrawApply' : '/market/marketUser/checkCanWithdrawApply',
+    //订单详情申请提现
+    'market_singleOrderSalaryWithdrawApply' : '/market/marketUser/singleOrderSalaryWithdrawApply',
 };
