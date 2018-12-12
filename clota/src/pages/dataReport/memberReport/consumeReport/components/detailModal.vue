@@ -27,6 +27,7 @@
             :show-pagination="true"
             :total-count="totalCount"
             :ofset-height="204"
+            :table-com-min-height="250"
             :page-no-d.sync="filterData.pageNo"
             :page-size-d.sync="filterData.pageSize"
             @query-data="getData">
@@ -45,7 +46,7 @@
         </table-com>
 
         <div slot="footer" class="modal-footer">
-            <Button type="ghost" @click="toggle()" >{{$t("cancel")}}</Button>
+            <Button type="ghost" @click="toggle()" >{{$t("关闭")}}</Button>
         </div>
     </Modal>
 </template>
