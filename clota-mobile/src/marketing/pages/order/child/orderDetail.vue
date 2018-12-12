@@ -128,7 +128,7 @@
              */
             applyDeposit () {
                 ajax.post('market_singleOrderSalaryWithdrawApply',{
-                    orderIds : this.orderDetail.orderId,
+                    orderId : this.orderDetail.orderId,
                     amount : this.orderDetail.expectedSalary
                 }).then(res => {
                     if (res.success) {
