@@ -29,7 +29,9 @@ export const marketingState = {
         //是否正在获取位置信息
         isGettingLocation : true,
         //营销用户id
-        marketUserId : ''
+        marketUserId : '',
+        //公司地址
+        orgAddress : ''
     }
 };
 export const marketingGetters = {
@@ -93,6 +95,14 @@ export const marketingGetters = {
         } else {
             return localStorage.getItem('marketingUserId') ? localStorage.getItem('marketingUserId') : '';
         }
+    },
+    //公司地址
+    marketOrgAddress : state => {
+        if (state.marketing.orgAddress) {
+            return state.marketing.orgAddress;
+        } else {
+            return localStorage.getItem('marketOrgAddress');
+        }
     }
 };
 
@@ -150,6 +160,11 @@ export const marketMutations = {
     marketUpdateMarketUserId (state,status) {
         localStorage.setItem('marketingUserId',status);
         state.marketing.marketUserId = status;
+    },
+    //更新公司地址
+    marketUpdatOrgAddress (state,address) {
+        localStorage.setItem('marketOrgAddress',address);
+        state.marketing.orgAddress = address;
     }
 };
 

@@ -224,9 +224,11 @@
                     if (res.success) {
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
                         this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
+                        this.$store.commit('marketUpdatOrgAddress',res.data ? res.data.orgAddress : '');
                     } else if (res.code && res.code !== '300') {
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');
+                        this.$store.commit('marketUpdatOrgAddress','');
                         this.$vux.toast.show({
                             text : this.$t('errorMsg.' + res.code),
                             type : 'cancel'
@@ -234,6 +236,7 @@
                     } else {
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');
+                        this.$store.commit('marketUpdatOrgAddress','');
                     }
                 }).finally(() => {
                     this.$store.commit('marketUpdateCompanyCode',orgCode);

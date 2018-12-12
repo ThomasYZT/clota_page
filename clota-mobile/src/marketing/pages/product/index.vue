@@ -10,17 +10,12 @@
             </span>
         </div>
         <div class="area-info">
-            <template v-if="marketLocationInfo">
-                <popover placement="bottom">
-                    <div slot="content" class="popover-demo-content">
-                        {{marketLocationInfo | contentFilter}}
-                    </div>
-                    <span :class="$style.addInfo">{{$t('colonSetting',{ key : $t('地址') })}}{{marketLocationInfo | contentFilter}}</span>
-                </popover>
-            </template>
-            <span v-else class="re-get-location" @click="getLocation">
-                重新获取地理位置信息
-            </span>
+            <popover placement="bottom">
+                <div slot="content" class="popover-demo-content">
+                    {{marketOrgAddress | contentFilter}}
+                </div>
+                <span :class="$style.addInfo">{{$t('colonSetting',{ key : $t('地址') })}}{{marketOrgAddress | contentFilter}}</span>
+            </popover>
         </div>
         <div class="product-list">
             <scroll-wrap :item-data="productListData"
@@ -159,7 +154,7 @@
         computed : {
             ...mapGetters({
                 marketTypeId : 'marketTypeId',
-                marketLocationInfo : 'marketLocationInfo',
+                marketOrgAddress : 'marketOrgAddress',
             })
         },
         created () {
