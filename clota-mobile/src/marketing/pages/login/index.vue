@@ -105,6 +105,8 @@
                 this.validatePhone().then(() => {
                     return this.validatePassword();
                 }).then(() => {
+                    return this.validateCode();
+                }).then(() => {
                     this.queryUserType();
                     // ajax.post('market_login',{
                     //     mobile : this.formData.phoneNum,
@@ -184,10 +186,13 @@
              */
             validateCode () {
                 return new Promise((resolve,reject) => {
-                    resolve();
-                    if (this.formData.code === '') {
-                        this.$vux.toast.text(this.$t('pleaseInputValidCode'));
-                        reject();
+                    if (this.showValidateCode) {
+                        if (this.formData.code === '') {
+                            this.$vux.toast.text(this.$t('pleaseInputValidCode'));
+                            reject();
+                        } else {
+                            resolve();
+                        }
                     } else {
                         resolve();
                     }

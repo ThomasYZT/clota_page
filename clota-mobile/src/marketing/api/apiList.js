@@ -63,4 +63,6 @@ export default {
     'market_getPayPageForMobileNoLogin' : '/external/pay/getPayPageForMobileNoLogin',
     //更新下单结果
     'market_updateTransction' : '/market/marketUser/updateTransction',
+    //校验下单是否符合规则
+    'market_checkExtProductSaleRule' : '/market/marketUser/checkExtProductSaleRule',
 };
