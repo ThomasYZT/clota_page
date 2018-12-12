@@ -86,10 +86,9 @@
                 }
 
                 &.no-sider-bar {
-                    @include block_outline(unquote('calc(100% - 40px)'));
-                    margin-left: 20px;
+                    @include block_outline(unquote('calc(100%)'));
                     transition: all 0.1s;
-                    overflow: hidden;
+                    overflow: auto;
                 }
             }
 
