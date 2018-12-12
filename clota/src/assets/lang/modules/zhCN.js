@@ -1975,4 +1975,5 @@ export default {
     'waitToSync' : '待同步',
     'close' : '关闭',
     'NoSmallerThan' : '{field1}不能低于{field2}',
+    'imgSize' : '图片大小'
 }
