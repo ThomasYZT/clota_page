@@ -25,6 +25,7 @@
 <script>
     import ajax from '@/api/index.js';
     import lineChart from '../../components/line.vue';
+    import forEach from 'lodash/forEach';
 
     export default {
         components : {
@@ -46,41 +47,7 @@
                 //折线图数据
                 lineChartData : {
                     series : [],
-                    xAxisData : []
-                    /*"series":[
-                        {
-                            "data":[
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                7
-                            ],
-                            "name":"奇趣乐园",
-                            "smooth":"true",
-                            "stack":"总量",
-                            "type":"line"
-                        }
-                    ],
-                    "xAxisData":[
-                        "09-18周二",
-                        "09-19周三",
-                        "09-20周四",
-                        "09-21周五",
-                        "09-22周六",
-                        "09-23周日",
-                        "09-24周一",
-                        "09-25周二",
-                        "09-26周三",
-                        "09-27周四",
-                        "09-28周五"
-                    ]*/
+                    xAxisData : [],
                 }
             }
         },
@@ -102,15 +69,25 @@
              * 查询业绩指标数据
              */
             getPerformanceData () {
+                this.lineChartData = {
+                    series : [],
+                    xAxisData : [],
+                };
                 ajax.post('workbench-getScenicEchartOptionData',{
                     queryType : this.quotaType,
                     startDate : this.date[0] ? this.date[0].format('yyyy-MM-dd') : '',
                     endDate : this.date[1] ? this.date[1].format('yyyy-MM-dd') : ''
                 }).then(res => {
                     if (res.success && res.data) {
-//                        this.lineChartData.series = this.lineChartData.xAxisData = [];
+                        //this.lineChartData.series = this.lineChartData.xAxisData = [];
+                        if (res.data.series) {
+                            forEach(res.data.series, (scenicData) => {
+                                this.lineChartData.series.push(scenicData);
+                            });
+                        } else {
+                            this.lineChartData.series = [];
+                        }
 
-                        this.$set(this.lineChartData, 'series', res.data.series || []);
                         this.$set(this.lineChartData, 'xAxisData', res.data.xAxisData || []);
                     } else {
                         this.lineChartData = { series : [], xAxisData : [] };

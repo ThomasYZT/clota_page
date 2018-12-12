@@ -100,14 +100,14 @@ export default function (legendData, seriesData) {
             },
         });
     }*/
-    return defaultsDeep(pieBaseConfig, {
+    return defaultsDeep({
         legend : {
             data : legendData
         },
         series : [
             {
-                data : seriesOption
+                data : [...seriesOption]
             }
         ]
-    });
+    }, pieBaseConfig);
 }

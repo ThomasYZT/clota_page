@@ -20,14 +20,14 @@ const pieBaseConfig = {
             }
         },
         // formatter : '{b}<br />{a}: {c0}',
-        formatter : function (param) {
-            param = param[0];
-            // console.log(param)
-            return [
-                param.name + '<br />',
-                param.data + '<br/>',
-            ].join('');
-        },
+        // formatter : function (param) {
+        //     param = param[0];
+        //     // console.log(param)
+        //     return [
+        //         param.name + '<br />',
+        //         param.data + '<br/>',
+        //     ].join('');
+        // },
         backgroundColor : 'rgba(0,0,0,0.7)', // 背景
         padding : [8, 10], //内边距
         extraCssText : 'box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);', //添加阴影
@@ -120,14 +120,14 @@ export default function (xAxisData, seriesData, legendData) {
     };
     if (seriesData && seriesData.length > 0) {
         for (let i = 0, len = seriesData.length; i < len; i++) {
-            option.data = seriesData[i].data;
+            option.data = seriesData[i];
             seriesOption.push(option);
         }
     } else {
         seriesOption = [option];
     }
 
-    return defaultsDeep(pieBaseConfig, {
+    return defaultsDeep({
         legend : {
             data : legendData
         },
@@ -135,5 +135,5 @@ export default function (xAxisData, seriesData, legendData) {
             data : xAxisData
         }],
         series : seriesOption
-    });
+    }, pieBaseConfig);
 }
