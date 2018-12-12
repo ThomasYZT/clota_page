@@ -66,11 +66,18 @@
                             <li @click="cancelModifyPrice()">{{$t('cancel')}}</li>
                             <li @click="modifySalePrice(scope.row)">{{$t('save')}}</li>
                         </template>
-                        <li v-else @click="modifyPrice(scope)">{{$t('modify')}}</li>
+                        <template v-else>
+                            <li @click="modifyPrice(scope)">{{$t('modify')}}</li>
+                            <li @click="checkPolicyDetail(scope.row)">{{$t("marketingPolicyDetail")}}</li>
+                        </template>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
+
+
+        <!--查看销售政策详情弹窗-->
+        <policy-detail-modal ref="detailView"></policy-detail-modal>
     </div>
 </template>
 <script>
@@ -79,11 +86,13 @@
     import ajax from '@/api/index';
     import { marketingProductHead } from './marketingManageConfig';
     import { validator } from 'klwk-ui';
+    import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
 
     export default {
         components : {
             marketingProductFilter,
             tableCom,
+            policyDetailModal,
         },
         props : {},
         data () {
@@ -217,6 +226,14 @@
                         });
                     }
                 })
+            },
+            /**
+             * 查看销售政策详情
+             * @param {object} data
+             */
+            checkPolicyDetail (data) {
+                //显示弹窗
+                this.$refs.detailView.toggle(data, 'marketing');
             }
         }
     };

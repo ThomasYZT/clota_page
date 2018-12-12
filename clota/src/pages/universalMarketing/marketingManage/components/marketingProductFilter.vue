@@ -46,20 +46,16 @@
         </ul>
         <!--销售政策描述-->
         <div class="policy-desc">
-            {{$t('colonSetting', { key : $t('销售政策描述') })}}
+            <span>{{$t('colonSetting', { key : $t('销售政策描述') })}}</span>
             <span class="content">{{(policyItem ? policyItem.policyDesc : policyItem) | contentFilter}}</span>
-            <Button type="primary" @click="checkPolicyDetail">{{$t("viewDetail")}}</Button>
         </div>
-        <!--查看销售政策详情弹窗-->
-        <policy-detail-modal ref="detailView"></policy-detail-modal>
     </div>
 </template>
 <script>
     import ajax from '@/api/index';
-    import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
 
     export default {
-        components : { policyDetailModal },
+        components : {},
         props : {},
         data () {
             return {
@@ -187,17 +183,6 @@
             reset () {
                 this.filterParams = JSON.parse(this.resetFilter);
             },
-            /**
-             * 查看销售政策详情
-             */
-            checkPolicyDetail () {
-                //显示弹窗
-                if (this.policyItem) {
-                    this.$refs.detailView.toggle(this.policyItem, 'marketing');
-                } else {
-                    this.$Message.error(this.$t('selectField', { msg : this.$t('marketingPolicy') }));
-                }
-            }
         }
     };
 </script>
@@ -229,6 +214,7 @@
             margin-top: 10px;
             .content {
                 display: inline-block;
+                vertical-align: text-top;
                 width: 653px;
             }
         }

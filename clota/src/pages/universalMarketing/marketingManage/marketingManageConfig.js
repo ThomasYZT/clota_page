@@ -39,7 +39,7 @@ export const marketingProductHead = [
     },
     {
         title : 'operate',
-        width : 150,
+        width : 200,
         enWidth : 200,
     }
 ];

@@ -23,7 +23,7 @@
                         </i-col>
                         <i-col span="12">
                             <Form-item :label="$t('desc')+':'"><!--描述-->
-                                <div v-w-title="detail.policyDesc">{{detail.policyDesc | contentFilter}}</div>
+                                <div class="item-content" v-w-title="detail.productPolicy.policyDesc">{{detail.productPolicy.policyDesc | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -553,6 +553,10 @@
             /deep/ .ivu-timeline-item-tail{
                 left: 5px;
             }
+
+        }
+        .item-content {
+            word-wrap: break-word
         }
 
         .line {
