@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="deposit">
+        <div class="deposit" v-if="orderDetail.withdrawStatus !== 'success'">
             <div class="commission">
                 {{$t('colonSetting',{ key : $t('可提现佣金') })}}
                 <span class="money">{{orderDetail.expectedSalary | moneyFilter(2,'￥') | contentFilter}}</span>

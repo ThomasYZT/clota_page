@@ -31,6 +31,7 @@
 </template>
 
 <script>
+    import ajax from '@/marketing/api/index';
 	export default {
         props : {
             //是否显示单选框
@@ -64,7 +65,7 @@
                     this.orderDetail.expectedSalary > 0 &&
                     (this.orderDetail.withdrawStatus === 'reject' ||
                     this.orderDetail.withdrawStatus === 'unaudit')) {
-                    this.$emit('chose-item',this.orderDetail);
+                    this.checkCanWithdrawApply();
                 }
             },
             /**
@@ -75,6 +76,19 @@
                     name : 'marketingOrderDetail',
                     params : {
                         orderDtail : this.orderDetail
+                    }
+                });
+            },
+            /**
+             * 提现申请校验
+             */
+            checkCanWithdrawApply () {
+                ajax.post('market_checkCanWithdrawApply',{
+                    orderId : this.orderDetail.orderId,
+                    amount : this.orderDetail.expectedSalary
+                }).then(res => {
+                    if (res.success) {
+                        this.$emit('chose-item',this.orderDetail);
                     }
                 });
             }

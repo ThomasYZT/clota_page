@@ -65,4 +65,6 @@ export default {
     'market_updateTransction' : '/market/marketUser/updateTransction',
     //校验下单是否符合规则
     'market_checkExtProductSaleRule' : '/market/marketUser/checkExtProductSaleRule',
+    //校验订单是否可以提现
+    'market_checkCanWithdrawApply' : '/market/marketUser/checkCanWithdrawApply',
 };
