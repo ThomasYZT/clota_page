@@ -275,6 +275,7 @@ export default {
     'errorMsg.MK020' : '订单未到提现时间',
     'errorMsg.A003' : '验证码错误',
     'errorMsg.MK008' : '营销用户已存在',
+    'errorMsg.S001' : '参数为空',
     'errorMsg.S002' : '接口错误',
     'errorMsg.OD003' : '产品库存不足',
     'errorMsg.A006' : '公司不存在',
