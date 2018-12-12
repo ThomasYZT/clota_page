@@ -21,11 +21,6 @@
             :list="prevList"
             ref="previewer"
             @on-close="downLoadBtnShow = false">
-            <!--<template slot="button-before">-->
-                <!--<div class="down-load-img"  @click="downLoadImg($event)">-->
-                    <!--<span class="iconfont icon-alipay" ></span>-->
-                <!--</div>-->
-            <!--</template>-->
         </previewer>
         <transition name="fade">
             <div class="down-load-img"
