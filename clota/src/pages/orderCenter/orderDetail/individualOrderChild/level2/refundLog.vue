@@ -19,7 +19,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.reqAccName + "/" + scope.row.reqTime}}</span>
+                    <span>{{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter
+                        }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -30,7 +31,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.auditAccName + "/" + scope.row.auditTime}}</span>
+                    <span>{{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}</span>
                 </template>
             </el-table-column>
         </tableCom>

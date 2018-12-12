@@ -112,7 +112,7 @@ export const orderVerifyHead = [
     {
         title: 'productDetailNo',    // 产品明细编号
         width: 200,
-        field: 'orderDetailNo'
+        field: 'id'
     },
     {
         title: 'playDate',
