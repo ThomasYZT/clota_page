@@ -55,8 +55,10 @@
                     this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
                     if (params.status === 'success') {
                         this.isSuccess = true;
-                        //调用内部系统充值接口
-                        // this.rechargeAccount();
+                        if (this.payFormData.paymentTypeId === 'wx') {
+                            //调用内部系统充值接口
+                            this.rechargeAccount();
+                        }
                     } else {
                         this.isSuccess = false;
                     }
