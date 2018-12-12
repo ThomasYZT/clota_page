@@ -27,25 +27,17 @@
                                 <span class="info-val" v-w-title="salesUserInfo.name">{{salesUserInfo.name | contentFilter}}</span>
                             </div>
                         </i-col>
-                        <i-col span="8">
-                            <div class="node-info">
-                                <span class="info-key">{{$t('colonSetting', { key: $t('gender') })}}</span>
-                                <span class="info-val">{{$t(salesUserInfo.sex) | contentFilter}}</span>
-                            </div>
-                        </i-col>
+                        <!--<i-col span="8">-->
+                            <!--<div class="node-info">-->
+                                <!--<span class="info-key">{{$t('colonSetting', { key: $t('gender') })}}</span>-->
+                                <!--<span class="info-val">{{$t(salesUserInfo.sex) | contentFilter}}</span>-->
+                            <!--</div>-->
+                        <!--</i-col>-->
                         <i-col span="8">
                             <div class="node-info">
                                 <!--身份证号码-->
                                 <span class="info-key">{{$t('colonSetting', { key: $t('身份证号码') })}}</span>
                                 <span class="info-val">{{salesUserInfo.idno | contentFilter}}</span>
-                            </div>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="8">
-                            <div class="node-info">
-                                <span class="info-key">{{$t('colonSetting', { key: $t('birthday') })}}</span>
-                                <span class="info-val">{{salesUserInfo.birthday | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
@@ -55,6 +47,14 @@
                             </div>
                         </i-col>
                     </i-row>
+                    <!--<i-row>-->
+                        <!--<i-col span="8">-->
+                            <!--<div class="node-info">-->
+                                <!--<span class="info-key">{{$t('colonSetting', { key: $t('birthday') })}}</span>-->
+                                <!--<span class="info-val">{{salesUserInfo.birthday | contentFilter}}</span>-->
+                            <!--</div>-->
+                        <!--</i-col>-->
+                    <!--</i-row>-->
                 </div>
             </div>
             <!--收款账户信息-->

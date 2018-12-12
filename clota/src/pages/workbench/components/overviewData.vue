@@ -11,13 +11,13 @@
             <span class="label-name">{{labelName}}</span>
             <span class="number">{{labelNum}}</span>
             <span class="circle-rate">
-            <span class="rate">
+            <span class="rate" v-if="showRate">
                 <span class="iconfont"
                       :class="{'icon-up' : labelCurve === 'positive', 'icon-down' : !labelCurve || labelCurve === 'negative'}">
                 </span>
                 {{getRate(labelRate) | contentFilter }}%
             </span>
-            <span class="desc">{{$t('thanYestoday')}}</span>
+            <span class="desc" v-if="showRate">{{$t('thanYestoday')}}</span>
           </span>
         </div>
     </div>
@@ -58,6 +58,11 @@
             labelCurve : {
                 type : String,
                 default : 'negative'
+            },
+            //是否隐藏比上周数据
+            'show-rate' : {
+                type : Boolean,
+                default : true
             }
         },
         data () {

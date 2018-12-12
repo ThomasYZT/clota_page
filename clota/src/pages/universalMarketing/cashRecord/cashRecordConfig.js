@@ -16,7 +16,7 @@ export const cashRecordHead = [
         field : 'userName'
     },
     {
-        title : '用户手机号', // 用户手机号
+        title : '销售用户手机号', // 用户手机号
         width : 150,
         field : 'mobile'
     },
@@ -57,7 +57,7 @@ export const cashRecordHead = [
         field : 'checkAmount'
     },
     {
-        title : '佣金', // 佣金
+        title : '佣金总额', // 佣金
         width : 110,
         type : 'money',
         field : 'orderSalary'

@@ -1974,4 +1974,5 @@ export default {
     'product.needId.more' : '每个证件可预定多张票',
     'waitToSync' : '待同步',
     'NoSmallerThan' : '{field1}不能低于{field2}',
+    'imgSize' : '图片大小'
 }

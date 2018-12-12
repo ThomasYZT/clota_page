@@ -55,7 +55,7 @@
                     return [];
                 }
             },
-            //上传图片大小控制 单位M
+            //上传图片大小控制 单位Mb
             size : {
                 type : Number,
                 default : 1

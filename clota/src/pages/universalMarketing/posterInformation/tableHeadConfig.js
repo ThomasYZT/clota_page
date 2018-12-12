@@ -4,16 +4,16 @@ export const posterInfoHead = [
         minWidth : 100,
         field : 'posterName'
     },
-    {
-        title : 'industryType',
+    /*{
+        title : 'industryType', //业态类型不限时
         minWidth : 100,
         field : 'posterType'
-    },
-    {
-        title : 'scenePlace',
-        minWidth : 100,
-        field : 'orgName'
-    },
+    },*/
+    // {
+    //     title : 'scenePlace',
+    //     minWidth : 100,
+    //     field : 'orgName'
+    // },
     {
         title : 'createdTime',
         minWidth : 100,

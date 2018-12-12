@@ -33,9 +33,10 @@
             </overview-data>
             <!--未处理通知-->
             <overview-data :label-name="$t('unHandledNotice')"
-                      :label-num="itemsData.workBackNum.value"
-                      :icon="'icon-untreated'"
-                      :icon-color="'#479FF8'">
+                           :label-num="itemsData.workBackNum.value"
+                           :icon="'icon-untreated'"
+                           :icon-color="'#479FF8'"
+                           :show-rate="false">
             </overview-data>
         </div>
         <div class="quota-info-top">
