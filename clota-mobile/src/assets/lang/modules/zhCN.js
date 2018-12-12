@@ -277,5 +277,8 @@ export default {
     'getCardSuccess' : '领取成功',
     'getCardFail' : '领取失败',
     'activateSuccess' : '激活成功',
-    'other' : '其它'
+    'other' : '其它',
+    'driver' : '驾照',
+    'officer' : '军官证',
+    'police' : '警官证',
 };
