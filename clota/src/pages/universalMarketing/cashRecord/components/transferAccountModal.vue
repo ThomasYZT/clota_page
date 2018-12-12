@@ -53,7 +53,7 @@
                         :placeholder="$t('inputField', { field : $t('modeOfPayment') })"><!--请输入付款方式-->
                         <Option v-for="item in paymentTypeList"
                                 :value="$t(item.salaryPayment)"
-                                :key="item.id">{{ $t(item.salaryPayment) }}</Option>
+                                :key="item.id">{{ item.salaryPayment === 'wxPay' || item.salaryPayment === 'aliPay' ? $t(item.salaryPayment) : item.salaryPayment }}</Option>
                     </AutoComplete>
                     <!--<Select class="field-item"
                             v-model="transferParams.salaryPayment"
@@ -180,7 +180,7 @@
                 this.getRecentlyPayTypes(3);
                 this.withdrawInfo = data;
                 this.transferParams.marketOrderId = data.id;
-                this.transferParams.salaryPayment = this.isProxyBank ? this.$t(data.accountType) : data.accountType;
+                this.transferParams.salaryPayment = this.isProxyBank ? this.$t('marketing.cashRecord.' + data.accountType) : data.accountType;
 
                 //测试代码
                 /*this.withdrawInfo.accountType = 'aliPay';
