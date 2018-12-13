@@ -165,6 +165,7 @@
             getParams (params) {
                 if (params && params.marketUserId) {
                     this.$store.commit('marketUpdateMarketUserId',params.marketUserId);
+                    this.queryProductList();
                 }
             }
         },
@@ -176,9 +177,6 @@
                 marketLocationInfo : 'marketLocationInfo',
                 marketUserId : 'marketUserId',
             })
-        },
-        created () {
-            this.queryProductList();
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
