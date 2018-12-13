@@ -3,7 +3,7 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="code-register">
+    <div class="code-register" v-if="addable !== 'no-data'">
         <codeBox v-if="Object.keys(marketingTypeItem).length > 1 && addable"
                  :codeInfo="codeInfo"
                  @updateSuccess="updateSuccess"></codeBox>
@@ -35,7 +35,7 @@
             return {
                 codeInfo : {},
                 //是否可注册二维码
-                addable : false,
+                addable : 'no-data',
             };
         },
         methods : {
@@ -63,6 +63,7 @@
         watch : {
             marketingTypeItem : {
                 handler (newVal) {
+                    this.addable = 'no-data';
                     this.getListLevel();
                     this.codeInfo = {
                         registerUrl : newVal.registerUrl,
