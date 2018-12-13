@@ -16,12 +16,9 @@ export const memberState = {
     //用户是否登录
     isLogin : false,
     //公司id
-    companyCode : '',
+    companyCode : '10000059',
     //错误码
     errCode : '',
-    //companyCode : '1045244656750825472',
-    //companyCode : '1037976274619994114' //肖邦景区
-    //companyCode : '121321' //信鸥互联 测试环境
 };
 
 export const memberGetters = {
@@ -54,7 +51,6 @@ export const memberGetters = {
     },
     //公司id
     companyCode : state => {
-        return 'C2001';
         let companyCode = '';
         if (!state.companyCode) {
             let url = location.href;
