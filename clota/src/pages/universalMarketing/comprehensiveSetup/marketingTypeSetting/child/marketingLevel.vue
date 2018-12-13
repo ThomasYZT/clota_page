@@ -58,6 +58,10 @@
     import delModal from '@/components/delModal/index';
     export default {
         props : {
+            levelLength : {
+                type : Number,
+                defaut : 0,
+            },
             marketingTypeItem : {
                 type : Object,
                 defaut () {
@@ -98,6 +102,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
+                    this.$emit('update:levelLength', this.tableData.length);
                 });
             },
             /**

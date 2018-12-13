@@ -14,10 +14,13 @@
             <div class="view-wrapper">
                 <Tabs v-if="Object.keys(marketingTypeItem).length > 0" :animated="false" v-model="nowTab">
                     <TabPane :label="$t('marketingLevel')">
-                        <marketingLevel ref="marketingLevel" :marketingTypeItem="marketingTypeItem"></marketingLevel>
+                        <marketingLevel ref="marketingLevel"
+                                        :marketingTypeItem="marketingTypeItem"
+                                        :levelLength.sync="levelLength"></marketingLevel>
                     </TabPane>
                     <TabPane :label="$t('codeRegisterManage')">
                         <codeRegister :marketingTypeItem="marketingTypeItem"
+                                      :levelLength="levelLength"
                                       @updateSuccess="updateSuccess"></codeRegister>
                     </TabPane>
                     <TabPane :label="$t('cashSetting')">
@@ -56,7 +59,9 @@
                     id : ''
                 },
                 //当前选中的类别
-                nowItem : {}
+                nowItem : {},
+                //等级列表
+                levelLength : 0,
             };
         },
         methods : {

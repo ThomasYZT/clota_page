@@ -3,12 +3,13 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="code-register" v-if="addable !== 'no-data'">
-        <codeBox v-if="Object.keys(marketingTypeItem).length > 1 && addable"
+    <div class="code-register">
+        <codeBox v-if="Object.keys(marketingTypeItem).length > 1"
+                 v-show="levelLength > 0"
                  :codeInfo="codeInfo"
                  @updateSuccess="updateSuccess"></codeBox>
 
-        <div v-else class="code-box">
+        <div v-show="levelLength === 0" class="code-box">
             <div class="null-box">
                 <span>{{$t('pleaseAddMarketingLevelFirst')}}</span>
             </div>
@@ -18,9 +19,12 @@
 
 <script>
     import codeBox from '../components/codeBox';
-    import ajax from '@/api/index';
     export default {
         props : {
+            levelLength : {
+                type : Number,
+                default : 0,
+            },
             marketingTypeItem : {
                 type : Object,
                 default () {
@@ -34,8 +38,6 @@
         data () {
             return {
                 codeInfo : {},
-                //是否可注册二维码
-                addable : 'no-data',
             };
         },
         methods : {
@@ -45,26 +47,10 @@
             updateSuccess () {
                 this.$emit('updateSuccess', this.marketingTypeItem);
             },
-            //获取营销等级列表数据
-            getListLevel () {
-                ajax.post('marketing-listLevel', {
-                    typeId : this.marketingTypeItem.id,
-                    pageNo : 1,
-                    pageSize : 99,
-                }).then(res => {
-                    if (res.success && res.data) {
-                        res.data.data.length > 0 ? this.addable = true : this.addable = false;
-                    } else {
-                        this.addable = false;
-                    }
-                });
-            }
         },
         watch : {
             marketingTypeItem : {
                 handler (newVal) {
-                    this.addable = 'no-data';
-                    this.getListLevel();
                     this.codeInfo = {
                         registerUrl : newVal.registerUrl,
                         id : newVal.id,
