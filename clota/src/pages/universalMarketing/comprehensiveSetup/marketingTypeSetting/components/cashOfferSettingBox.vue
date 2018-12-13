@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="box-footer">
+        <div class="box-footer" v-if="canOperateMarketType">
             <template v-if="status === 'show'">
                 <div class="btn">
                     <i class="iconfont icon-edit"></i>
@@ -53,6 +53,7 @@
 <script>
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             cashOfferInfo : {
@@ -96,7 +97,14 @@
                 set : function (newVal) {
                     this.cashOfferInfo.status = newVal;
                 }
-            }
+            },
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            }),
+            //是否可以编辑营销类别
+            canOperateMarketType () {
+                return this.permissionInfo && 'operateMarketType' in this.permissionInfo;
+            },
         },
         methods : {
             /**
