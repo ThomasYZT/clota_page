@@ -297,7 +297,7 @@
                         this.isShowCard = false;
                     }
                 });
-            },
+            }
         },
         watch : {
             //切换了卡下面的子菜单也要更换

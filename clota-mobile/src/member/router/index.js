@@ -12,6 +12,7 @@ export const memberRouterDeal = (to, from, next) => {
         || to.name === 'mobileRegister' // 会员注册
         || to.name === 'wxActivateCard' // 微信会员卡激活
         || to.name === 'wxPay' // 微信支付
+        || to.name === 'getCardUrl' // 获取卡
     ) {
         next();
     } else {//判断是否保存了用户信息和token，如果没有保存需要重新登录
@@ -61,6 +62,15 @@ export const memberRoutes = [
                 component : () => import(/* webpackChunkName: "login" */ '../pages/register/register.vue'),
                 meta : {
                     title : 'register'
+                }
+            },
+            //卡领取
+            {
+                path : 'getCardUrl',
+                name : 'getCardUrl',
+                component : () => import(/* webpackChunkName: "login" */ '../pages/getCardUrl/getCardUrl.vue'),
+                meta : {
+                    title : 'getCardUrl'
                 }
             },
             //会员主页

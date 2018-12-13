@@ -217,15 +217,16 @@
                 }).then((res) => {
                     if(res.success && res.data) {
                         let dataObj = res.data;
-                        this.formData.custName = dataObj.custName;
-                        this.formData.gender = dataObj.gender;
-                        this.formData.phoneNum = dataObj.phoneNum;
+                        this.formData.custName = dataObj.custName?dataObj.custName:'';
+                        this.formData.gender = dataObj.gender?dataObj.gender:'';
+                        this.formData.phoneNum = dataObj.phoneNum?dataObj.phoneNum:'';
                         this.formData.birthDay = dataObj.birthDay ? dataObj.birthDay.split(' ')[0] : '';
-                        this.formData.certificationType = dataObj.certificationType;
-                        this.formData.idCardNumber = dataObj.idCardNumber;
-                        this.formData.homeAddr = dataObj.homeAddr;
+                        this.formData.certificationType = dataObj.certificationType?dataObj.certificationType:'';
+                        this.formData.idCardNumber = dataObj.idCardNumber?dataObj.idCardNumber:'';
+                        this.formData.homeAddr = dataObj.homeAddr?dataObj.homeAddr:'';
                         this.gender[0] = dataObj.gender;
                         this.gender = JSON.parse(JSON.stringify(this.gender));
+                        this.formData = JSON.parse(JSON.stringify(this.formData));
                         this.certificationType[0] = dataObj.certificationType;
                         this.queryDocument(dataObj.orgId);
                     } else {
@@ -238,7 +239,8 @@
              */
             finishInfo () {
                 ajax.post('wxActiveCard', Object.assign({
-                    wxOpenId: this.openId
+                    wxOpenId: this.openId,
+                    companyCode: this.companyCode
                 }, this.formData)).then((res) => {
                     if(res.success) {
                         this.$vux.toast.text(this.$t('activateSuccess'));
