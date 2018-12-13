@@ -1978,5 +1978,7 @@ export default {
     'imgSize' : '图片大小',
     'marketing.cashRecord.wxPay' : '微信',
     'marketing.cashRecord.aliPay' : '支付宝',
+    'pleaseSave' : '请保存{field}',
+    'allPeopleMarketSetting' : '全民营销设置',
 
 }

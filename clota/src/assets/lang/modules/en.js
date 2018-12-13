@@ -1976,4 +1976,6 @@ export default {
     'NoSmallerThan' : '{field1}不能低于{field2}',
     'close' : '关闭',
     'imgSize' : '图片大小',
+    'pleaseSave' : '请保存{field}',
+    'allPeopleMarketSetting' : '全民营销设置',
 }

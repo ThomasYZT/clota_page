@@ -1084,15 +1084,11 @@
                     this.$Message.warning(this.$t('selectField', { msg : this.$t('saleChannels') }));
                     return;
                 }
-
-                //全民营销
-                if (this.marketingData && this.marketingData.length < 1) {
-                    this.$Message.warning(this.$t('selectField', { msg : this.$t('addMarketLevel') }));
-                    return;
-                } else {
+                //全民营销验证是否选择了营销等级
+                if (this.marketingData && this.marketingData.length > 0) {
                     for (let i = 0, len = this.marketingData.length; i < len; i++) {
-                        if (!this.marketingData[i].levelId) {
-                            this.$Message.error(this.$t('selectField',  { msg : this.$t('marketingLevel') }));
+                        if (this.marketingData[i].editable) {
+                            this.$Message.error(this.$t('pleaseSave',  { field : this.$t('allPeopleMarketSetting') }));
                             return;
                         }
                     }
