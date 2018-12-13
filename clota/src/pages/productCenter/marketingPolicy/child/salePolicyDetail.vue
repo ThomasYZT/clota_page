@@ -330,6 +330,8 @@
         <!--新增备注弹窗-->
         <add-remark-modal ref="addRemarkModal"></add-remark-modal>
 
+        <!-- 审核确认弹窗 -->
+        <auditConfirmModal ref="auditConfirmModal"></auditConfirmModal>
     </div>
 </template>
 
@@ -342,6 +344,7 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { productColumn, saleChannelColumn, marketingColumn, refundColumn } from './detailConfig';
     import ajax from '@/api/index';
+    import auditConfirmModal from '../components/auditConfirmModal';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -350,6 +353,7 @@
             titleTemp,
             tableCom,
             addRemarkModal,
+            auditConfirmModal
         },
         data () {
             return {
@@ -413,6 +417,22 @@
 
             //审核操作
             auditProduct ( status ) {
+                if (status === 'auditing') {
+                    this.$refs.auditConfirmModal.toggle({
+                        type : 'audit',
+                        products : this.detail.policyItems,
+                        confirmCallback : () => {
+                            this.auditAPI(status);
+                        }
+                    });
+                } else {
+                    this.auditAPI(status);
+                }
+            },
+            /**
+             *  审核api
+             */
+            auditAPI (status) {
                 ajax.post('modifyPolicyStatus',{
                     policyIds : this.detail.productPolicy.id,
                     status : status,
@@ -426,7 +446,6 @@
                     }
                 });
             },
-
             //获取销售政策详情（包含销售组、产品）
             getPolicyInfo ( data ) {
                 ajax.post('getPolicyInfo', {

@@ -112,13 +112,13 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('minOrderNum')" prop="minNum"><!--每订单最小起订数-->
                             <Input v-model.trim="formData.minNum"
-                                   :placeholder="$t('inputField', {field: ''})"/>
+                                   :placeholder="$t('inputField', {field: $t('minOrderNum')})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('maxOrderNum')" prop="maxNum"><!--每订单最大限订数-->
                             <Input v-model.trim="formData.maxNum"
-                                   :placeholder="$t('inputField', {field: ''})"/>
+                                   :placeholder="$t('inputField', {field: $t('maxOrderNum')})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -364,9 +364,9 @@
                         callback();
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t(rule.field),length : 50 }));
+                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : 'maxOrderNum'),length : 50 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t(rule.field) }));
+                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : 'maxOrderNum') }));
                         }
                     });
                 } else {

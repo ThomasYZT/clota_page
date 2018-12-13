@@ -556,7 +556,7 @@
                 <Button type="primary"
                         :loading="loading"
                         @click="formValidateFunc">
-                    {{$t('commitCheck')}}
+                    {{$t('save')}}
                 </Button>
                 <Button type="ghost"
                         @click="goBack">
@@ -569,8 +569,6 @@
 
         <!--添加/修改产品-->
         <edit-product-modal ref="editProduct"></edit-product-modal>
-
-        <auditConfirmModal ref="auditConfirmModal"></auditConfirmModal>
     </div>
 </template>
 
@@ -580,7 +578,6 @@
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import editProductModal from './editProductModal.vue';
-    import auditConfirmModal from '../components/auditConfirmModal';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';
@@ -596,7 +593,6 @@
             titleTemp,
             tableCom,
             editProductModal,
-            auditConfirmModal
         },
         data () {
 
@@ -1175,19 +1171,14 @@
                         delete params.saleTime;
                         delete params.todaySaleTime;
 
-                        this.$refs.auditConfirmModal.toggle({
-                            type : 'audit',
-                            products : this.itemsData,
-                            confirmCallback : () => {
-                                //区分新增与修改
-                                if ( this.type === 'add' ) {
-                                    this.saveAndEditPolicy( 'addPolicy', params);
-                                }
-                                if ( this.type === 'modify' ) {
-                                    this.saveAndEditPolicy( 'modifyPolicy', params);
-                                }
-                            }
-                        });
+                        //区分新增与修改
+                        if ( this.type === 'add' ) {
+                            this.saveAndEditPolicy( 'addPolicy', params);
+                        }
+                        if ( this.type === 'modify' ) {
+                            this.saveAndEditPolicy( 'modifyPolicy', params);
+                        }
+
                     }
                 });
             },
@@ -1241,6 +1232,7 @@
              * @param data
              */
             initData (data) {
+                console.log(data)
                 let formData = pick(data.productPolicy, ['id','productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
                 'buyTicketNotes']);
                 formData.saleTime = [data.productPolicy.saleStartTime, data.productPolicy.saleEndTime];
@@ -1255,7 +1247,7 @@
                 //销售规则
                 formData.saleRule = data.productPolicy.saleRuleModel;
                 formData.saleRule.time = [data.productPolicy.saleRuleModel.startTime, data.productPolicy.saleRuleModel.endTime];
-                formData.saleRule.beforeDay = data.productPolicy.saleRuleModel.beforeDay ? Number(data.productPolicy.saleRuleModel.beforeDay) : 1;
+                formData.saleRule.beforeDay = data.productPolicy.saleRuleModel.beforeDay ? Number(data.productPolicy.saleRuleModel.beforeDay) : 0;
                 formData.saleRule.afterDay = data.productPolicy.saleRuleModel.afterDay ? Number(data.productPolicy.saleRuleModel.afterDay) : 1;
                 formData.saleRule.weekSold = data.productPolicy.saleRuleModel.weekSold ?
                     data.productPolicy.saleRuleModel.weekSold.split(',') : ['1','2','3','4','5'];
