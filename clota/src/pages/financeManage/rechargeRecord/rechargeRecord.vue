@@ -50,27 +50,27 @@
                     </Tooltip>
                 </template>
             </el-table-column>
-            <el-table-column
-                slot="column7"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    <span class="operate"
-                          v-if="scope.row.status === 'pending_audit' && scope.row.peerOrgId === manageOrgs.id"
-                          @click="handleAudit(scope.row)">{{$t('checked')}}
-                    </span>
-                    <span v-else>{{'-'}}</span>
-                </template>
-            </el-table-column>
+            <!--<el-table-column-->
+                <!--slot="column7"-->
+                <!--slot-scope="row"-->
+                <!--:label="row.title"-->
+                <!--:width="row.width"-->
+                <!--:min-width="row.minWidth">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<span class="operate"-->
+                          <!--v-if="scope.row.status === 'pending_audit' && scope.row.peerOrgId === manageOrgs.id"-->
+                          <!--@click="handleAudit(scope.row)">{{$t('checked')}}-->
+                    <!--</span>-->
+                    <!--<span v-else>{{'-'}}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </table-com>
 
         <!--审核充值 - 弹窗-->
-        <audit-recharge-modal ref="auditModal"
-                              @update-list="queryList"></audit-recharge-modal>
+        <!--<audit-recharge-modal ref="auditModal"-->
+                              <!--@update-list="queryList"></audit-recharge-modal>-->
         <!--撤回充值申请 - 弹窗-->
-        <recall-modal ref="recallModal"></recall-modal>
+        <!--<recall-modal ref="recallModal"></recall-modal>-->
     </div>
 </template>
 <script type="text/ecmascript-6">

@@ -227,6 +227,7 @@
                             <table-com
                                 :table-com-min-height="260"
                                 :column-data="columnData"
+                                :auto-height="true"
                                 :table-data="productPlayRuleVo"
                                 :row-class-name="rowClassName"
                                 :border="false">
@@ -276,7 +277,7 @@
             <!--底部操作-->
             <div class="footer">
                 <!--新增按钮-->
-                <template v-if="type === 'add'">
+                <template v-if="type === 'add' && canApplyAuditProduct">
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc"> <!--提交审核-->
@@ -288,7 +289,7 @@
                     </Button>
                 </template>
                 <!--修改按钮-->
-                <template v-if="type === 'modify'">
+                <template v-if="type === 'modify' && canModifyProduct">
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc">
@@ -321,6 +322,7 @@
     import { parkColumn } from './parkConfig';
     import { isTeamProduct, orderInfo, idType, productEffectSet, limitStore } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -791,8 +793,20 @@
 
         },
         computed : {
+            ...mapGetters([
+                'manageOrgs',
+                'permissionInfo',
+            ]),
             localeRouter () {
                 return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail'); // 新增票类 ： 修改票类信息
+            },
+            //是否可以提交审核信息
+            canApplyAuditProduct () {
+                return this.permissionInfo && 'addProduct' in this.permissionInfo;
+            },
+            //是否可以修改票类信息
+            canModifyProduct () {
+                return this.permissionInfo && 'addProduct' in this.permissionInfo;
             },
         },
     };

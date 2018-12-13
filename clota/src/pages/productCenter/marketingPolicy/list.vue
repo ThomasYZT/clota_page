@@ -10,33 +10,35 @@
         <!--tab栏 仅非合作伙伴可见-->
         <div class="tabs-wrap" v-if="role !== 'partner'">
             <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
-                <TabPane :label="$t('mySalePolicy')" name="created"></TabPane><!--我定义的销售政策-->
+                <TabPane v-if="hasMyPolicy" :label="$t('mySalePolicy')" name="created"></TabPane><!--我定义的销售政策-->
                 <!--仅公司不可见-->
                 <TabPane :label="$t('distributeSalePolicy')"
                          name="cancellation"
-                         v-if="role !== 'company'"></TabPane><!--分销给我的销售政策-->
+                         v-if="role !== 'company' && hasToMyPolicy"></TabPane><!--分销给我的销售政策-->
             </Tabs>
         </div>
 
         <!--按钮栏 仅非合作伙伴可见-->
         <div class="btn-wrap" v-if="tabsName === 'created' && role !== 'partner'">
-            <Button type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
-            <Button type="error"
-                    v-if="isDisabled"
-                    disabled>{{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon--right"></i></Button>
-            <el-dropdown @command="handleCommand" trigger="click" v-else>
+            <Button v-if="canAddSalePolicy" type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
+            <template v-if="dropdownList.length > 0">
+                <Button type="error"
+                        v-if="isDisabled"
+                        disabled>{{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon--right"></i></Button>
+                <el-dropdown @command="handleCommand" trigger="click" v-else>
                 <span class="el-dropdown-link">
                     {{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for="(item,index) in dropdownList"
-                                      :key="index"
-                                      v-show="(item.value === 'forbidden' && disenable) || (item.value === 'checkPass' && passable) || (item.value === 'commissioned' && openable) || (item.value === 'delete' && deletable) || (item.value === 'reject' && rebuttable) || (item.value === 'commitCheck' && auditable)"
-                                      :command="item.value">
-                        {{$t(item.name)}}
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item v-for="(item,index) in dropdownList"
+                                          :key="index"
+                                          v-show="(item.value === 'forbidden' && disenable) || (item.value === 'checkPass' && passable) || (item.value === 'commissioned' && openable) || (item.value === 'delete' && deletable) || (item.value === 'reject' && rebuttable) || (item.value === 'commitCheck' && auditable)"
+                                          :command="item.value">
+                            {{$t(item.name)}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </template>
             <!--<span class="tips float-right">{{$t('defaultPolicyType')}}</span>&lt;!&ndash;业态目前为默认ticket&ndash;&gt;-->
         </div>
 
@@ -67,7 +69,7 @@
             :page-no-d.sync="myPolicyParams.pageNo"
             :page-size-d.sync="myPolicyParams.pageSize"
             :border="true"
-            :column-check="true"
+            :column-check="dropdownList.length > 0"
             @query-data="queryMyPolicyList"
             @selection-change="changeSelection">
             <!--:filters="filterList"-->
@@ -125,7 +127,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li class="normal" @click="check(scope.row)">{{$t('check')}}</li><!--查看-->
-                        <li class="normal" @click="distribute(scope.row)">{{$t('distribution')}}</li><!--分销-->
+                        <li v-if="canAddAllocation" class="normal" @click="distribute(scope.row)">{{$t('distribution')}}</li><!--分销-->
                     </ul>
                 </template>
             </el-table-column>
@@ -173,6 +175,7 @@
                 //当前账号角色
                 role : '',
                 //当前tap值
+                // tabsName : 'created',
                 tabsName : 'created',
                 // 表格表头字段名
                 myPolicyHead : myPolicyHead,
@@ -213,14 +216,14 @@
                     { text: '未启用', value: '未启用' },
                 ],*/
                 // 下拉列表数据
-                dropdownList : [
-                    { name : 'checkPass', value : 'checkPass' },//审核通过
-                    { name : 'commissioned', value : 'commissioned' },//启用
-                    { name : 'forbidden', value : 'forbidden' },//禁用
-                    { name : 'delete', value : 'delete' },//删除
-                    { name : 'reject', value : 'reject' },//驳回
-                    { name : 'commitCheck', value : 'commitCheck' }//提交审核
-                ],
+                // dropdownList : [
+                //     { name : 'checkPass', value : 'checkPass' },//审核通过
+                //     { name : 'commissioned', value : 'commissioned' },//启用
+                //     { name : 'forbidden', value : 'forbidden' },//禁用
+                //     { name : 'delete', value : 'delete' },//删除
+                //     { name : 'reject', value : 'reject' },//驳回
+                //     { name : 'commitCheck', value : 'commitCheck' }//提交审核
+                // ],
                 // 业态类型数据
                 policyTypeList : [],
                 //能否进行批量操作
@@ -242,14 +245,71 @@
         },
         computed : {
             ...mapGetters([
-                'manageOrgs'
-            ])
+                'manageOrgs',
+                'permissionInfo',
+            ]),
+            //是否有我的销售政策
+            hasMyPolicy () {
+                return this.permissionInfo && 'queryPolicyList' in this.permissionInfo;
+            },
+            //是否有分销给我的销售政策
+            hasToMyPolicy () {
+                return this.permissionInfo && 'queryAllocation' in this.permissionInfo;
+            },
+            //新建/修改/提交审核我定义的销售政策
+            canAddSalePolicy () {
+                return this.permissionInfo && 'addAndModifyPolicy' in this.permissionInfo;
+            },
+            //是否可以删除政策
+            canDelPolicy () {
+                return this.permissionInfo && 'deletePolicy' in this.permissionInfo;
+            },
+            //是否可以审核政策
+            canAuditPolicy () {
+                return this.permissionInfo && 'auditPolicy' in this.permissionInfo;
+            },
+            //是否可以提交审核
+            canApplyAuditPolicy () {
+                return this.permissionInfo && 'applyAuditPolicy' in this.permissionInfo;
+            },
+            //是否可以禁用政策
+            canDisabledPolicy () {
+                return this.permissionInfo && 'disablePolicy' in this.permissionInfo;
+            },
+            //是否可以新建分销
+            canAddAllocation () {
+                return this.permissionInfo && 'addAllocation' in this.permissionInfo;
+            },
+            //批量操作类型
+            dropdownList () {
+                let result = [];
+                if (this.canAuditPolicy) {
+                    result.push({ name : 'checkPass', value : 'checkPass' });//审核通过
+                    result.push({ name : 'reject', value : 'reject' });//驳回
+                }
+                if (this.canApplyAuditPolicy) {
+                    result.push({ name : 'commitCheck', value : 'commitCheck' });//提交审核
+                }
+                if (this.canDelPolicy) {
+                    result.push({ name : 'delete', value : 'delete' });//删除
+                }
+                if (this.canDisabledPolicy) {
+                    result.push({ name : 'forbidden', value : 'forbidden' });//禁用
+                    result.push({ name : 'commissioned', value : 'commissioned' });//启用
+                }
+                return result;
+            }
         },
         created () {
 
             //设置当前角色
             this.role = this.manageOrgs.nodeType;
-            if (this.role === 'partner') {
+            // if (this.role === 'partner') {
+            //     this.tabsName = 'cancellation';
+            // }
+            if (this.hasMyPolicy) {
+                this.tabsName = 'created';
+            } else if (this.hasToMyPolicy) {
                 this.tabsName = 'cancellation';
             }
             if (this.role === 'partner' || this.role === 'scenic') {
@@ -332,7 +392,7 @@
 
             // 新建销售政策
             addPolicy () {
-
+                if (!this.canAddSalePolicy) return;
                 //业态目前为默认ticket
                 /* if(this.$refs.addSalePolicyModal){
                     this.$refs.addSalePolicyModal.show();
@@ -463,6 +523,7 @@
              *  分销操作
              */
             distribute (data) {
+                if (!this.canAddAllocation) return;
                 this.$refs.distributionModal.toggle(data);
             },
             /**

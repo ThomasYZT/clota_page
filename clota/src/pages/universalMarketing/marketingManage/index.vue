@@ -54,6 +54,7 @@
             </el-table-column>
 
             <el-table-column
+                v-if="canModifyMarketPrice || canQueryMarketPolicy"
                 slot="column6"
                 slot-scope="row"
                 :label="row.title"
@@ -67,8 +68,8 @@
                             <li @click="modifySalePrice(scope.row)">{{$t('save')}}</li>
                         </template>
                         <template v-else>
-                            <li @click="modifyPrice(scope)">{{$t('modify')}}</li>
-                            <li @click="checkPolicyDetail(scope.row)">{{$t("marketingPolicyDetail")}}</li>
+                            <li @click="modifyPrice(scope)" v-if="canModifyMarketPrice">{{$t('modify')}}</li>
+                            <li @click="checkPolicyDetail(scope.row)" v-if="canQueryMarketPolicy">{{$t("marketingPolicyDetail")}}</li>
                         </template>
                     </ul>
                 </template>
@@ -86,6 +87,7 @@
     import ajax from '@/api/index';
     import { marketingProductHead } from './marketingManageConfig';
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
     import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
 
     export default {
@@ -142,7 +144,19 @@
                 }
             }
         },
-        computed : {},
+        computed : {
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以查询销售政策详情
+            canQueryMarketPolicy () {
+                return this.permissionInfo && 'queryMarketPolicy' in this.permissionInfo;
+            },
+            //是否可以修改终端售价
+            canModifyMarketPrice () {
+                return this.permissionInfo && 'modifyMarketPrice' in this.permissionInfo;
+            }
+        },
         created () {
         },
         mounted () {
@@ -192,6 +206,7 @@
              * @param scopeData  行数据，row  column  $index  store
              */
             modifyPrice (scopeData) {
+                if (!this.canModifyMarketPrice) return;
                 this.currRowIndex = scopeData.$index;
                 this.modifyModel.modifiedSalePrice = scopeData.row.salePrice;
                 this.modifyModel.settlePrice = scopeData.row.settlePrice;
@@ -232,6 +247,7 @@
              * @param {object} data
              */
             checkPolicyDetail (data) {
+                if (!this.canQueryMarketPolicy) return;
                 //显示弹窗
                 this.$refs.detailView.toggle(data, 'marketing');
             }

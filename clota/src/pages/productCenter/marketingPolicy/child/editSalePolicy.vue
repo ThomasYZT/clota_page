@@ -552,7 +552,7 @@
             </Form>
 
             <!--底部操作-->
-            <div class="footer">
+            <div class="footer" v-if="canAddSalePolicy">
                 <Button type="primary"
                         :loading="loading"
                         @click="formValidateFunc">
@@ -585,6 +585,7 @@
     import { productColumn, selectSaleChannelColumn, marketingColumn, dateListColumn, refundColumn } from './editPolicyConfig';
     import { policyValidity, playDeadline, returnRule, alterRule, specialHoliday, configVariable } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -1442,9 +1443,17 @@
             }
         },
         computed : {
+            ...mapGetters([
+                'manageOrgs',
+                'permissionInfo',
+            ]),
             localeRouter () {
                 return this.type === 'add' ? this.$t('addSalePolicy') : this.$t('modifySalePolicy'); // 新建销售政策 ： 修改销售政策
             },
+            //新建/修改/提交审核我定义的销售政策
+            canAddSalePolicy () {
+                return this.permissionInfo && 'addAndModifyPolicy' in this.permissionInfo;
+            }
         },
     };
 </script>

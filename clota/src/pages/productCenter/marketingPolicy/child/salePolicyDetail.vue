@@ -9,7 +9,7 @@
 
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="localeRouter">
+            locale-router="marketingPolicyDetail">
         </bread-crumb-head>
 
         <div class="container">
@@ -307,16 +307,18 @@
             <!--已驳回-->
             <template v-if="detail.productPolicy.auditStatus === 'rejected' || detail.productPolicy.auditStatus === 'not_enabled'">
                 <Button type="primary"
+                        v-if="canApplyAuditPolicy"
                         @click="auditProduct('auditing')">{{$t('commitCheck')}}</Button><!--提交审核-->
                 <Button type="ghost"
+                        v-if="canModifyPolicy"
                         @click="modify">{{$t('modify')}}</Button><!--修  改-->
             </template>
             <!--已启用-->
-            <template v-if="detail.productPolicy.auditStatus === 'enabled'">
+            <template v-if="detail.productPolicy.auditStatus === 'enabled' && canDisabledPolicy">
                 <Button type="primary" @click="auditProduct('not_enabled')">{{$t('disabled')}}</Button><!--禁用-->
             </template>
             <!--待审核-->
-            <template v-if="detail.productPolicy.auditStatus === 'auditing'">
+            <template v-if="detail.productPolicy.auditStatus === 'auditing' && canAuditPolicy">
                 <Button type="primary" @click="auditProduct('enabled')">{{$t('checkPass')}}</Button><!--审核通过-->
                 <Button type="ghost" class="active-btn" @click="auditProduct('rejected')">{{$t('reject')}}</Button><!--驳回-->
             </template>
@@ -345,6 +347,7 @@
     import { productColumn, saleChannelColumn, marketingColumn, refundColumn } from './detailConfig';
     import ajax from '@/api/index';
     import auditConfirmModal from '../components/auditConfirmModal';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -385,9 +388,25 @@
             };
         },
         computed : {
-            localeRouter () {
-                return this.$t('marketingPolicyDetail'); // 销售政策详情
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以提交审核
+            canApplyAuditPolicy () {
+                return this.permissionInfo && 'applyAuditPolicy' in this.permissionInfo;
             },
+            //是否可以修改政策
+            canModifyPolicy () {
+                return this.permissionInfo && 'addAndModifyPolicy' in this.permissionInfo;
+            },
+            //是否可以禁用政策
+            canDisabledPolicy () {
+                return this.permissionInfo && 'disablePolicy' in this.permissionInfo;
+            },
+            //是否可以审核政策
+            canAuditPolicy () {
+                return this.permissionInfo && 'auditPolicy' in this.permissionInfo;
+            }
         },
         methods : {
 
@@ -417,6 +436,7 @@
 
             //审核操作
             auditProduct ( status ) {
+                if (!this.canApplyAuditPolicy) return;
                 if (status === 'auditing') {
                     this.$refs.auditConfirmModal.toggle({
                         type : 'audit',

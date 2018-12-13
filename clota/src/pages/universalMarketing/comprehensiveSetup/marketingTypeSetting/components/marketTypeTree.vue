@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="market-type-tree">
-        <p class="add-btn">
+        <p class="add-btn" v-if="canOperateMarketType">
             <span @click="add">+{{$t('addNewMarketingType')}}</span>
         </p>
         <el-tree ref="elTree"
@@ -19,7 +19,7 @@
                     <span v-w-title="node.label" v-if="data.type !== 'edit' && data.type !== 'add'">{{node.label}}</span>
                     <Input v-else v-model="data.label" :placeholder="$t('inputField', { field : $t('marketType') })" style="width: 130px;"></Input>
                 </div>
-                <div class="tool-box">
+                <div class="tool-box" v-if="canOperateMarketType">
                     <template v-if="data.type === 'edit' || data.type === 'add'">
                         <span @click.stop="save(data)" class="save">{{$t('save')}}</span>
                         <span @click.stop="cancel(data)" class="cancel">{{$t('cancel')}}</span>
@@ -48,6 +48,7 @@
     import ajax from '@/api/index';
     import forEach from 'lodash/forEach';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             marketingTypeItem : {
@@ -305,7 +306,16 @@
                 },
                 immediate : true
             }
-        }
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以编辑营销类别
+            canOperateMarketType () {
+                return this.permissionInfo && 'operateMarketType' in this.permissionInfo;
+            },
+        },
     };
 </script>
 
