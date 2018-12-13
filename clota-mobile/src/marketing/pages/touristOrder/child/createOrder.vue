@@ -183,6 +183,9 @@
                             } else if (this.formData[i].idNum.length > 50) {
                                 this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('idCard'),length : 50 }));
                                 reject();
+                            } else if (!(/^\w+$/.test(this.formData[i].idNum))) {
+                                this.$vux.toast.text(this.$t('请输入正确证件号'));
+                                reject();
                             }
                         }
                         resolve();

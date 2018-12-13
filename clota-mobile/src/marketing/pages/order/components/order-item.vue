@@ -107,6 +107,7 @@
         display: flex;
         flex-direction: row;
         /*float: left;*/
+        overflow: hidden;
 
         .radio-wrap{
             @include block_outline(20px);
@@ -148,7 +149,6 @@
             border-left: 22px solid transparent;
             border-top: 22px solid #F9AD49;
             border-bottom: 22px solid transparent;
-            overflow: hidden;
 
             &.err{
                 border-right: 22px solid $color_err;
