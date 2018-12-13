@@ -6,6 +6,8 @@
             <img class="suc-img" src="../../../../assets/images/pay-success.svg" alt="">
             <div class="suc-label">{{$t('您的提现申请已提交!')}}</div>
             <div class="wait-tips">{{$t('请耐心等待景区审核。')}}</div>
+            <x-button class="button"
+                      @click.native="back">{{$t('返回')}}</x-button>
         </div>
     </div>
 </template>
@@ -26,6 +28,12 @@
                         name : 'marketingOrder'
                     });
                 }
+            },
+            /**
+             * 返回
+             */
+            back () {
+                this.$router.back();
             }
         },
         beforeRouteEnter (to,from,next){
@@ -64,6 +72,10 @@
                 font-size: $font_size_14px;
                 color: $color_999;
             }
+        }
+
+        .button{
+            margin-top: 30px;
         }
     }
 </style>
