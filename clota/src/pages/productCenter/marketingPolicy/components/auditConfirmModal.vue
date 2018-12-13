@@ -110,11 +110,12 @@
                     }
                     this.visible = true;
                 } else {
+                    this.visible = false;
                     this.productIds = '';
                     this.products = [];
                     this.tableData = [];
                     this.confirmCallback = function () {};
-                    this.visible = false;
+
                 }
             },
             /**
