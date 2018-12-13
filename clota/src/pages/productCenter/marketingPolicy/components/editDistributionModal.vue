@@ -14,8 +14,8 @@
                   v-if="detail">
                 <div class="tool"
                      v-if="!editable">
-                    <Button type="primary" @click="changeSelectable" >{{$t("modify")}}</Button>
-                    <Button type="error" @click="deleteDistribution()" >{{$t("deleteSalePrice")}}</Button>
+                    <Button type="primary" v-if="canModifyAllocation" @click="changeSelectable" >{{$t("modify")}}</Button>
+                    <Button type="error" v-if="canDeleteAllocation" @click="deleteDistribution()" >{{$t("deleteSalePrice")}}</Button>
                 </div>
                 <div class="tool"
                      v-else>
@@ -184,6 +184,7 @@
     import tableCom from '@/components/tableCom/tableCom';
     import tipModal from '../../components/tipModal';
     import { saleChannelColumn, detailParentDistributePriceConfig } from '../child/detailConfig';
+    import { mapGetters } from 'vuex';
     export default {
         components : {
             tableCom,
@@ -386,6 +387,7 @@
              * 删除分销
              */
             deleteDistribution () {
+                if (!this.canDeleteAllocation) return;
                 ajax.post('deletePolicyAllocation',{
                     allocationId : this.detail.allocationId
                 }).then((res) => {
@@ -460,6 +462,7 @@
              *  改变选择框可选状态
              */
             changeSelectable () {
+                if (!this.canModifyAllocation) return;
                 this.editable = !this.editable;
             },
             /**
@@ -498,6 +501,19 @@
                     width : 180,
                 }
             );
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以用修改分销
+            canModifyAllocation () {
+                return this.permissionInfo && 'modifyAllocation' in this.permissionInfo;
+            },
+            //是否可以删除分销
+            canDeleteAllocation () {
+                return this.permissionInfo && 'deleteAllocation' in this.permissionInfo;
+            }
         }
     };
 </script>

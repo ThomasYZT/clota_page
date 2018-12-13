@@ -95,7 +95,7 @@
                 <span>{{$t('myDistribute')}}</span>
             </div>
 
-            <div class="button-wrapper">
+            <div class="button-wrapper" v-if="canAddAllocation">
                 <span @click="distribute" class="btn">+ {{ $t('add') + $t('distribution')}}</span>
             </div>
 
@@ -151,6 +151,7 @@
     import { detailParentDistributePriceConfig, myDistributeConfig } from './detailConfig';
     import ajax from '@/api/index';
     import editDistributeModal from '../components/editDistributionModal';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -317,6 +318,7 @@
              *  分销操作
              */
             distribute () {
+                if (!this.canAddAllocation) return;
                 this.$refs.distributionModal.toggle(this.listItem);
             },
             /**
@@ -357,6 +359,15 @@
                     }
                 });
             },
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以新建分销
+            canAddAllocation () {
+                return this.permissionInfo && 'addAllocation' in this.permissionInfo;
+            },
         }
     };
 </script>
@@ -368,14 +379,14 @@
         height: 100%;
 
         .content {
-            height: 100%;
+            height: calc(100% - 60px);
 
             .title-wrap {
                 position: relative;
                 height: 75px;
 
                 h3 {
-                    margin: 25px 34px;
+                    padding: 25px 34px;
                     font-size: 20px;
                     line-height: 28px;
                     color: #000;

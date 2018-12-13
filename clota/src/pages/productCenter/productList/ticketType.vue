@@ -8,8 +8,10 @@
     <div class="ticket-type">
         <div class="operation-box" v-if="role === 'scenic'">
             <Button type="primary"
+                    v-if="canAddProduct"
                     @click="$router.push({name: 'addTicket', params: { type: 'add'}})">+ {{$t('add')}}</Button>
             <Button type="error"
+                    v-if="cacnDelProduct"
                     :disabled="selectedRow.length > 0 ? false : true"
                     @click="batchDel">{{$t('del')}}</Button>
         </div>
@@ -23,7 +25,7 @@
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
-            :column-check="role === 'scenic'"
+            :column-check="role === 'scenic' && cacnDelProduct"
             :default-sort="{prop: 'updatedTime', order: 'descending'}"
             @sort-change="handleSortChanged"
             @query-data="queryList"
@@ -119,8 +121,17 @@
         },
         computed : {
             ...mapGetters([
-                'manageOrgs'
-            ])
+                'manageOrgs',
+                'permissionInfo',
+            ]),
+            //是否可以新增票类信息
+            canAddProduct () {
+                return this.permissionInfo && 'addProduct' in this.permissionInfo;
+            },
+            //是否可以删除票类信息
+            cacnDelProduct () {
+                return this.permissionInfo && 'deleteProduct' in this.permissionInfo;
+            }
         },
         props : {},
         data () {
@@ -186,6 +197,7 @@
             },
             // 批量删除
             batchDel () {
+                if ( !this.cacnDelProduct ) return ;
                 let ids = this.selectedRow.map(item => item.id).join(',');
                 this.delUnits = this.selectedRow.map(item => item.productName).join(',');
                 this.$refs.delModal.show({
