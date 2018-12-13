@@ -79,10 +79,14 @@
                     endDate : this.date[1] ? this.date[1].format('yyyy-MM-dd') : ''
                 }).then(res => {
                     if (res.success && res.data) {
-                        //this.lineChartData.series = this.lineChartData.xAxisData = [];
                         if (res.data.series) {
                             forEach(res.data.series, (scenicData) => {
-                                this.lineChartData.series.push(scenicData);
+                                this.lineChartData.series.push(scenicData.map(item => {
+                                    return {
+                                        name : item.name,
+                                        value : item.value,
+                                    };
+                                }));
                             });
                         } else {
                             this.lineChartData.series = [];
