@@ -193,6 +193,8 @@
             hide () {
                 this.$refs.formValidate.resetFields();
                 this.visible = false;
+                this.recentPayTypes = [];
+                this.paymentTypeList = [];
             },
             /**
              * 点击提交转账流水
@@ -239,7 +241,7 @@
                                 return item.value == this.withdrawInfo.accountType;
                             });
                         } else {
-                            this.paymentTypeList = [...proxyBankList, ...this.recentPayTypes];
+                            this.paymentTypeList = this.recentPayTypes;
                         }
                     }
                 });
