@@ -108,35 +108,6 @@
                     return this.validateCode();
                 }).then(() => {
                     this.queryUserType();
-                    // ajax.post('market_login',{
-                    //     mobile : this.formData.phoneNum,
-                    //     password : MD5(this.formData.password).toString(),
-                    //     typeId : this.marketTypeId,
-                    //     orgId : this.marketOrgId,
-                    //     levelId : this.marketLevelId,
-                    // }).then(res => {
-                    //     if (res.success) {
-                    //         this.$store.commit('marketUpdateToken',res.data);
-                    //         this.$store.dispatch('marketGetUserInfo').then(() => {
-                    //             this.$router.push({
-                    //                 name : 'marketingProduct'
-                    //             });
-                    //         });
-                    //         sessionStorage.setItem('loginErr',0);
-                    //     } else if (res.code && res.code !== '300') {
-                    //         this.$vux.toast.show({
-                    //             text : this.$t('errorMsg.' + res.code),
-                    //             type : 'cancel'
-                    //         });
-                    //         this.setLoginErrNum();
-                    //     } else {
-                    //         this.$vux.toast.show({
-                    //             text : this.$t('operateFail',{ msg : this.$t('login') }),
-                    //             type : 'cancel'
-                    //         });
-                    //         this.setLoginErrNum();
-                    //     }
-                    // });
                 });
             },
             /**

@@ -1,7 +1,7 @@
 <!--选择所属类别-->
 
 <template>
-    <popup :value="value" v-transfer-dom>
+    <popup :value="value" v-transfer-dom :hide-on-blur="false">
         <!-- group already has a top border, so we need to hide header's bottom border-->
         <popup-header
             :left-text="$t('cancel')"
@@ -50,6 +50,7 @@
              * 确定选择所属类别
              */
             confirm () {
+                this.$emit('input',false);
                 this.$emit('choose-type',this.typeChoosed);
             }
         }

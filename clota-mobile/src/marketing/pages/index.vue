@@ -156,6 +156,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .marketing{
+        position: relative;
         @include block_outline();
 
         .amap-demo{
