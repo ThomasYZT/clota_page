@@ -236,7 +236,7 @@
             /**
              * 激活
              */
-            finishInfo() {
+            finishInfo () {
                 ajax.post('wxActiveCard', Object.assign({
                     wxOpenId: this.openId
                 }, this.formData)).then((res) => {
@@ -309,7 +309,6 @@
                     this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('idCard') }));
                     return;
                 }
-
                 this.finishInfo();
             },
             /**
@@ -318,7 +317,7 @@
              */
             phoneValidate(callback) {
                 if(this.formData.phoneNum === '') {
-                    this.$vux.toast.text(this.$t('pleaseEnterMobile'))
+                    this.$vux.toast.text(this.$t('pleaseEnterMobile'));
                     return;
                 } else {
                     var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;

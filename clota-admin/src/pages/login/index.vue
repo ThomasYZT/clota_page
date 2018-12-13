@@ -60,6 +60,7 @@
 <script>
     import ajax from '@/api/index.js';
     import { commonFunc } from 'klwk-ui';
+    import MD5 from 'crypto-js/md5';
     export default {
         data () {
             return {
@@ -111,7 +112,7 @@
                         this.saveAccount();
                         ajax.post('login', {
                             loginName : this.formData.account,
-                            password : this.formData.password,
+                            password : MD5(this.formData.password).toString(),
                             validateCode : this.formData.verifyCode
                         }, {
                             headers : {

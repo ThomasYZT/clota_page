@@ -92,10 +92,11 @@
 </template>
 
 <script>
+    //
     import ajax from '../../api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { genderEnum } from '@/assets/js/constVariable.js';
-    import { mapGetters, mapActions } from 'vuex';
+    import { mapGetters, mapMutations, mapActions } from 'vuex';
     import { validator } from 'klwk-ui';
 
     export default {
@@ -144,6 +145,9 @@
         methods: {
             ...mapActions([
                 'getCardListInfo'
+            ]),
+            ...mapMutations([
+                'updateUserInfo'
             ]),
             /**
              * 获取验证码
@@ -220,15 +224,13 @@
                     if(res.success) {
                         //存储token信息
                         localStorage.setItem('token', res.data.token);
-                        //存储用户信息
-                        localStorage.setItem('userInfo', JSON.stringify(res.data));
-                        //更新用户信息
-                        this.$store.commit('updateUserInfo');
+                        //存储本地、vuex用户信息
+                        this.updateUserInfo(res.data);
                         //提示注册成功
                         this.$vux.toast.text(this.$t('registSuccess'));
                         //获取会员卡列表
                         this.getCardListInfo().then(() => {
-                            this.$router.push({ name : 'home', query: { openId: res.data.openId }});
+                            this.$router.push({ name : 'home'});
                         });
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
@@ -337,8 +339,13 @@
              */
             getParams () {
                 let queryParams = this.getUrlString(location.href);
+                console.log(queryParams)
                 if (queryParams && queryParams.code) {
                     this.getOAuth2UserInfo(queryParams.code);
+                } else if (queryParams && queryParams.openId) {
+                    this.wxUserInfo.openId = queryParams.openId;
+                    this.wxUserInfo.orgId = queryParams.orgId;
+                    this.queryDocument();
                 }
             },
             /**
@@ -347,7 +354,7 @@
              */
             getOAuth2UserInfo (code) {
                 // 已经存在用户信息则不用获取
-                let wxUserInfo = localStorage.getItem('wxUserInfo') ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
+                let wxUserInfo = localStorage.getItem('wxUserInfo') && localStorage.getItem('wxUserInfo')!=={} ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
                 if (wxUserInfo && wxUserInfo.openId) {
                     this.wxUserInfo = wxUserInfo;
                     this.queryDocument();

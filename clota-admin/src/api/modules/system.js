@@ -19,6 +19,8 @@ export default {
     'resetPassword' : 'user/resetPassword.json',
     //启/停用账户信息
     'switchAccount' : 'user/switchAccount.json',
+    //根据登录名查询账户信息
+    'getForName' : 'user/getUserForName.json',
 
 
     /***********************************系统公告***********************************/

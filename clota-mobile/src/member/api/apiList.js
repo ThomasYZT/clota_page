@@ -18,6 +18,8 @@ const apiList = {
     wxActiveCard: '/wechat/mp/card/memberCard/activate',
     // 激活会员卡查询微信信息
     queryWxMemberInfo: '/external/memberInfo/queryWxMemberInfo',
+    // 微信统一下单
+    payUnifiedorder: '//wechat/mp/pay/unifiedorder',
     //获取验证码
     getCode : '/external/member/getPhoneVerificationCode',
     //会员登录

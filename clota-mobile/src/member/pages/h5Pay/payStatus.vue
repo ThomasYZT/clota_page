@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import { querystring } from 'vux'
+    import { querystring } from 'vux';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
     import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';

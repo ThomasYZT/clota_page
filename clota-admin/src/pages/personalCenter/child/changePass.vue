@@ -31,6 +31,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import MD5 from 'crypto-js/md5';
     export default {
         data () {
             //校验新密码
@@ -124,8 +125,8 @@
                 this.isSaving = true;
                 ajax.post('modifyPassword',{
                     loginName : this.loginName,
-                    oldPassword : this.formData.password,
-                    newPassword : this.formData.newPassword
+                    oldPassword : MD5(this.formData.password).toString(),
+                    newPassword : MD5(this.formData.newPassword).toString()
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('修改密码成功');

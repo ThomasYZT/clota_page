@@ -36,7 +36,7 @@
             </p>
             <p class="register-entry">
                 <!-- 注册入口暂时屏蔽 -->
-                <!--<span @click="toRegister()">{{$t('register')}}</span>-->
+                <span @click="toRegister()">{{$t('register')}}</span>
             </p>
         </div>
         <!-- 登录按钮 -->
@@ -258,8 +258,9 @@
             toRegister () {
                 this.$router.replace({
                     name : 'mobileRegister',
-                    params : {
-                        openId : this.wxUserInfo.openId
+                    query : {
+                        openId : this.wxUserInfo.openId,
+                        orgId: this.wxUserInfo.orgId
                     }
                 });
             },

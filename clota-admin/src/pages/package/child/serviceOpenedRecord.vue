@@ -33,7 +33,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row['term']}}个月
+                        {{scope.row['term'] ? `${scope.row['term']}个月` : '' | contentFilter}}
                     </template>
                 </el-table-column>
             </table-com>

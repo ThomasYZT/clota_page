@@ -129,6 +129,24 @@
                     callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('email') }));
                 }
             };
+            //校验登录名是否可用
+            const validateAccountName = (rule,value,callback) => {
+                ajax.post('getForName',{
+                    name : value
+                }).then(res => {
+                    if (res.status === 200) {
+                        if (res.data === 'false') {
+                            callback();
+                        } else {
+                            callback('账户名已使用，请更换用户名');
+                        }
+                    } else {
+                        callback('账户名校验失败');
+                    }
+                }).catch(() => {
+                    callback('账户名校验异常');
+                });
+            };
             return {
                 //上级路由列表
                 beforeRouterList : [
@@ -158,6 +176,7 @@
                         { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('account') }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('account'), length : 20 }), trigger : 'blur' },
+                        { validator : validateAccountName,trigger : 'blur' }
                     ],
                     nickName : [
                         { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('name') }), trigger : 'blur' },
@@ -215,7 +234,6 @@
                     if (valid) {
                         this.addLoading = true;
                         if (this.type === 'add') {
-                            console.log(this.formData);
                             this.addUser(this.formData);
                         } else {
                             let params = {
@@ -225,7 +243,6 @@
                                 email : this.formData.email,
                                 roleId : this.formData.roleId,
                             };
-                            console.log(params);
                             this.updateUser(params);
                         }
                     }
@@ -297,7 +314,7 @@
                         name : 'account'
                     });
                 }
-            }
+            },
         },
     };
 </script>

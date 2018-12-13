@@ -154,8 +154,7 @@
                 'userInfo',
                 'cardInfo',
                 'cardInfoList',
-                'companyCode',
-                'userInfo'
+                'companyCode'
             ]),
             //当前卡索引
             cardIndex () {
@@ -233,7 +232,7 @@
                     if(res.success) {
                         if (res.data && res.data!=null) {
                             this.isShowCard = true;
-                            this.getWxMpCardId();
+                            this.getWxMpCardId(res.data.cardCode);
                             this.getCardListInfo();
                         }
                     } else {
@@ -244,10 +243,10 @@
             /**
              * 获取卡Id
              */
-            getWxMpCardId () {
+            getWxMpCardId (cardCode) {
                 ajax.post('getWxMpCardId').then((res) => {
                     if(res.success) {
-                        this.getCardExt(res.data);
+                        this.getCardExt(res.data, cardCode);
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
                     }
@@ -256,10 +255,10 @@
             /**
              * 获取卡的拓展信息
              */
-            getCardExt (cardId) {
+            getCardExt (cardId, cardCode) {
                 ajax.post('getCardExt', {
                     companyCode: this.companyCode,
-                    code: this.userInfo.cardCode,
+                    code: cardCode,
                     cardId: cardId,
                     openId: this.userInfo.openId
                 }).then((res) => {
@@ -292,7 +291,6 @@
                         console.log(res);
                     },
                     fail: res => {
-                        console.log(res);
                         this.$vux.toast.text(this.$t('getCardFail'));
                     },
                     complete: () => {
