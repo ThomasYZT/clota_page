@@ -42,14 +42,14 @@
                 </div>
             </div>
         </div>
-
-        <div v-transfer-dom>
-            <x-dialog v-model="isShowImg"
-                      :hide-on-blur="true"
-                      :dialog-style="{'max-width': '100%', width: '100%', 'background-color': 'transparent'}">
-                <img :class="$style.modalImg" :src="userInfo.portrait ? userInfo.portrait : memberHeadImg" alt="">
-            </x-dialog>
-        </div>
+        <!--预览图片-->
+        <previewer
+            v-transfer-dom
+            class="poster-preview"
+            :options="options"
+            :list="prevList"
+            ref="previewer">
+        </previewer>
     </div>
 </template>
 
@@ -67,8 +67,16 @@
         },
         data () {
             return {
-                //是否放大显示头像
-                isShowImg : false,
+                options : {
+                    getThumbBoundsFn : (index) => {
+                        let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+                        let thumbnail = null;
+                        let rect = null;
+                        thumbnail = this.$el.querySelector('.person-img');
+                        rect = thumbnail.getBoundingClientRect();
+                        return { x : rect.left, y : rect.top + pageYScroll, w : rect.width };
+                    }
+                },
             };
         },
         computed : {
@@ -77,6 +85,13 @@
                 userInfo : 'userInfo',
                 cardInfo : 'cardInfo'
             }),
+            //预览图片列表
+            prevList () {
+                return [{
+                    src : this.userInfo.portrait ? this.userInfo.portrait : this.memberHeadImg,
+                    w : '100%',
+                }];
+            },
             //vip卡类名
             memberVipCardClass () {
                 let cardType = '';
@@ -152,7 +167,9 @@
              *  放大显示头像
              */
             showImg () {
-                this.isShowImg = true;
+                this.$nextTick(() =>{
+                    this.$refs.previewer.show(0);
+                });
             },
             /**
              * 跳转入园二维码
@@ -363,5 +380,10 @@
 <style module>
     .modalImg{
         width: 100%;
+    }
+</style>
+<style>
+    .poster-preview .pswp__bg{
+        background: rgba(0,0,0,0.5)!important;
     }
 </style>

@@ -55,7 +55,7 @@
                 </div>
                 <div class="receipt-type">
                     <span class="key">{{$t('colonSetting',{ key : $t('收款方式') })}}</span>
-                    <span class="value">{{accountDetail.accountType}}</span>
+                    <span class="value">{{accountType}}</span>
                 </div>
                 <div class="receipt-type">
                     <span class="key">{{$t('colonSetting',{ key : $t('收款账户名') })}}</span>
@@ -183,6 +183,14 @@
                     this.accountDetail.canApplyWithdrawAmount > 0 &&
                     !validator.isEmpty(this.accountDetail.accountType) &&
                     !validator.isEmpty(this.accountDetail.accountInfo) );
+            },
+            //账号类别
+            accountType () {
+                if (this.accountDetail.accountType === 'wxPay' || this.accountDetail.accountType === 'aliPay' ) {
+                    return this.$t(this.accountDetail.accountType);
+                } else {
+                    return this.accountDetail.accountType;
+                }
             }
         }
     };

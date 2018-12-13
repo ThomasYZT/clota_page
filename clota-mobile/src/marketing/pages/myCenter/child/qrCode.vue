@@ -10,6 +10,9 @@
                 type="img"
                 @click.native="showPreImage">
             </qrcode>
+            <div class="re-get-qrcode" v-if="!haveUserInfo">
+                <span @click="getQrcode">{{$t('重新获取')}}</span>
+            </div>
         </div>
         <div class="scene-name">{{companyName}}</div>
         <div class="buy-ticket-tips">{{$t('扫码购票入口')}}</div>
@@ -58,6 +61,14 @@
                 this.$nextTick(() =>{
                     this.$refs.previewer.show(0);
                 });
+            },
+            /**
+             * 重新获取二维码参数
+             */
+            getQrcode () {
+                this.$store.dispatch('marketGetUserInfo').then(res => {
+                    this.$store.dispatch('marketGetLoginData');
+                });
             }
         },
         computed : {
@@ -68,6 +79,10 @@
             //二维码链接信息
             qrCodeInfo () {
                 return location.origin + this.$router.options.base + '/marketing/tourist?marketUserId=' + this.marketUserInfo.id;
+            },
+            //是否保存了用户信息
+            haveUserInfo () {
+                return this.marketUserInfo && this.marketUserInfo.id;
             }
         }
 	};
@@ -79,9 +94,20 @@
         background: $color_fff;
 
         .code-img{
+            position: relative;
             @include block_outline(200px,263px);
             padding-top: 63px;
             margin: 0 auto;
+
+            .re-get-qrcode{
+                @include absolute_pos(absolute,63px,0,0,0);
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $color_fff;
+                font-size: $font_size_16px;
+            }
         }
 
         .scene-name{
