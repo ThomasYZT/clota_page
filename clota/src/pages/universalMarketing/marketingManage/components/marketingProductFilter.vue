@@ -45,10 +45,10 @@
             </li>
         </ul>
         <!--销售政策描述-->
-        <div class="policy-desc">
-            <span>{{$t('colonSetting', { key : $t('销售政策描述') })}}</span>
-            <span class="content">{{(policyItem ? policyItem.policyDesc : policyItem) | contentFilter}}</span>
-        </div>
+        <!--<div class="policy-desc">-->
+            <!--<span>{{$t('colonSetting', { key : $t('销售政策描述') })}}</span>-->
+            <!--<span class="content">{{(policyItem ? policyItem.policyDesc : policyItem) | contentFilter}}</span>-->
+        <!--</div>-->
     </div>
 </template>
 <script>
@@ -77,11 +77,11 @@
             }
         },
         computed : {
-            policyItem () {
-                return this.salesPolicy.find(item => {
-                    return this.filterParams.policyId === item.id;
-                });
-            }
+            // policyItem () {
+            //     return this.salesPolicy.find(item => {
+            //         return this.filterParams.policyId === item.id;
+            //     });
+            // }
         },
         created () {
             this.resetFilter = JSON.stringify(this.filterParams);
