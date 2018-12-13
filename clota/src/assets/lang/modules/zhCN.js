@@ -1980,5 +1980,6 @@ export default {
     'marketing.cashRecord.aliPay' : '支付宝',
     'pleaseSave' : '请保存{field}',
     'allPeopleMarketSetting' : '全民营销设置',
+    'pleaseAddMarketingLevelFirst' : '请先新增营销等级',
 
 }

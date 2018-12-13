@@ -1978,4 +1978,5 @@ export default {
     'imgSize' : '图片大小',
     'pleaseSave' : '请保存{field}',
     'allPeopleMarketSetting' : '全民营销设置',
+    'pleaseAddMarketingLevelFirst' : '请先新增营销等级',
 }

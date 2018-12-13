@@ -14,13 +14,15 @@
             <div class="view-wrapper">
                 <Tabs v-if="Object.keys(marketingTypeItem).length > 0" :animated="false" v-model="nowTab">
                     <TabPane :label="$t('marketingLevel')">
-                        <marketingLevel :marketingTypeItem="marketingTypeItem"></marketingLevel>
+                        <marketingLevel ref="marketingLevel" :marketingTypeItem="marketingTypeItem"></marketingLevel>
                     </TabPane>
                     <TabPane :label="$t('codeRegisterManage')">
-                        <codeRegister :marketingTypeItem="marketingTypeItem" @updateSuccess="updateSuccess"></codeRegister>
+                        <codeRegister :marketingTypeItem="marketingTypeItem"
+                                      @updateSuccess="updateSuccess"></codeRegister>
                     </TabPane>
                     <TabPane :label="$t('cashSetting')">
-                        <cashOfferSettings :marketingTypeItem="marketingTypeItem" @updateSuccess="updateSuccess"></cashOfferSettings>
+                        <cashOfferSettings :marketingTypeItem="marketingTypeItem"
+                                           @updateSuccess="updateSuccess"></cashOfferSettings>
                     </TabPane>
                 </Tabs>
                 <noDataTip v-else></noDataTip>
@@ -65,10 +67,10 @@
             updateSuccess (nowItem) {
                 this.isUpdate = true;
                 this.nowItem = nowItem;
-            }
+            },
         },
-        created () {
-
+        mounted () {
+            console.log(this.$refs.marketingLevel.tableData)
         }
     };
 </script>
