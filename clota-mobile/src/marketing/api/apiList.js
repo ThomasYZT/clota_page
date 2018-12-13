@@ -69,4 +69,6 @@ export default {
     'market_checkCanWithdrawApply' : '/market/marketUser/checkCanWithdrawApply',
     //订单详情申请提现
     'market_singleOrderSalaryWithdrawApply' : '/market/marketUser/singleOrderSalaryWithdrawApply',
+    //下载图片
+    'market_downloadImage' : '/downloadImage',
 };

@@ -24,7 +24,7 @@
             <div :class="$style.content">
                 <swiper v-model="dateIndex"
                         height="287px"
-                        :loop="true"
+                        :loop="swiperLoop"
                         v-if="value"
                         :threshold="70"
                         :aspect-ratio="10"
@@ -44,11 +44,11 @@
                                         $style.dateCol,
                                         !day.label ? $style.dateDisable : '',
                                         day.completeVal === chooseDate ? $style.dateActive : '',
-                                        day.disabled ? $style.disabled : '',
+                                        day.disabled ? $style.dateDisable : '',
                                         ]"
                                             v-for="(day,dayIndex) in date"
                                             :key="dayIndex" @click="choseDay(day)">
-                                            {{day.val}}
+                                            {{day.label ? day.val : ''}}
                                         </li>
                                     </ul>
                                 </li>
@@ -84,7 +84,9 @@
                 dateIndex : 2,
                 dateSuffer : 1,
                 //当前选择的日期
-                chooseDate : ''
+                chooseDate : '',
+                //是否可以循环滚动
+                swiperLoop : true
             };
         },
         methods : {
