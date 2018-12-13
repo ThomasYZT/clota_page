@@ -62,7 +62,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <!--审核状态为“待审核”时，操作按钮：审核-->
-                        <li v-if="scope.row.withdrawStatus=='auditing'"
+                        <li v-if="scope.row.withdrawStatus=='auditing' && canAuditWithdraw"
                             @click="showModal('auditCashModal', scope.row)">{{$t('checked')}}</li>
                         <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
                         <li v-else-if="scope.row.withdrawStatus=='pass'"
@@ -92,6 +92,7 @@
     import ajaxConfig from '@/config/index.js';
     import apiList from '@/api/apiList.js';
     import querystring from 'querystring';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -134,7 +135,15 @@
                 },
             }
         },
-        computed : {},
+        computed : {
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以审核提现记录
+            canAuditWithdraw () {
+                return this.permissionInfo && 'auditWithdraw' in this.permissionInfo;
+            }
+        },
         created () {
         },
         mounted () {

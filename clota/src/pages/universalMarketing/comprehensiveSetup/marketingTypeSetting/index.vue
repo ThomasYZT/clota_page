@@ -40,6 +40,7 @@
     import codeRegister from './child/codeRegister';
     import marketingLevel from './child/marketingLevel';
     import noDataTip from '../../../../components/noDataTip/noData-tip';
+    import { mapGetters } from 'vuex';
     export default {
         components : {
             marketTypeTree,
@@ -76,7 +77,16 @@
         },
         mounted () {
             console.log(this.$refs.marketingLevel.tableData)
-        }
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以编辑营销类别
+            canOperateMarketType () {
+                return this.permissionInfo && 'operateMarketType' in this.permissionInfo;
+            },
+        },
     };
 </script>
 

@@ -5,8 +5,16 @@
 <template>
     <div class="poster-information">
         <div class="btn-area">
-            <Button type="primary" class="ivu-btn-108px" @click="uploadPoster">{{$t('uploadPoster')}}</Button>
-            <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+            <template v-if="canddAndDelPoster">
+                <Button type="primary" class="ivu-btn-108px" @click="uploadPoster">{{$t('uploadPoster')}}</Button>
+                <Button type="default"
+                        :class="{disabled : chosedColomn.length === 0}"
+                        class="ivu-btn-108px error"
+                        :disabled="chosedColomn.length === 0"
+                        @click="deleteBatch()">
+                    {{$t('deleteBatch')}}
+                </Button>
+            </template>
 
             <Input class="input-field"
                    v-model.trim="filterData.keyword"
@@ -57,7 +65,7 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <li><span @click="download(scope.row.posterUrl)">{{$t('download')}}</span></li>
-                            <li class="red-label" @click="deleteBatch(scope.row.id)">{{$t('del')}}</li>
+                            <li v-if="canddAndDelPoster" class="red-label" @click="deleteBatch(scope.row.id)">{{$t('del')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -84,6 +92,8 @@
     import delModal from '../../../components/delModal/index';
     import ajaxConfig from '@/config/index.js';
     import apiList from '@/api/apiList.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {
             tableCom,
@@ -113,6 +123,13 @@
                     '&url=' + this.imgUrl +
                     '&name=' + 'image.' + this.imgUrl.substring(this.imgUrl.lastIndexOf(".") + 1, this.imgUrl.length);
             },
+            ...mapGetters({
+                permissionInfo : 'permissionInfo'
+            }),
+            //是否可以上传和删除海报
+            canddAndDelPoster () {
+                return this.permissionInfo && 'operatePoster' in this.permissionInfo;
+            }
         },
         methods : {
             /**
@@ -199,6 +216,7 @@
 
         .btn-area {
             padding: 14px 30px;
+            overflow: auto;
 
             /deep/ .error {
                 background-color: #EB6751;

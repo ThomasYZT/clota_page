@@ -17,7 +17,7 @@ export default {
         path : '/universalMarketing',
         component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/dataReport/index.vue'),
         meta : {
-            _name : 'report', //todo 暂时用数据报表一级菜单权限
+            _name : 'market',
             menuName : 'universalMarketing',
             rightPath : topMenuName + '.' + 'universalMarketing',
             isMenu : true
@@ -30,7 +30,7 @@ export default {
                 name : 'posterInformation',
                 meta : {
                     menuName : 'posterInformation', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'market-poster',
                     iconClass : 'icon-diamond',
                     rightPath : topMenuName + '.' + 'posterInformation',
                     isMenu : true,
@@ -43,7 +43,7 @@ export default {
                 name : 'comprehensiveSetup',
                 meta : {
                     menuName : 'comprehensiveSetup', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'market-setting',
                     iconClass : 'icon-diamond',
                     rightPath : topMenuName + '.' + 'comprehensiveSetup',
                     isMenu : true,
@@ -56,7 +56,7 @@ export default {
                         name : 'marketingTypeSetting',
                         meta : {
                             menuName : 'marketingTypeSetting', //lang.config.js 里面的语言键值
-                            _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                            _name : 'market-setting_type',
                             rightPath : topMenuName + '.' + 'marketingTypeSetting',
                             isMenu : true,
                         },
@@ -68,7 +68,7 @@ export default {
                         name : 'marketingPositionSetting',
                         meta : {
                             menuName : 'marketingPositionSetting', //lang.config.js 里面的语言键值
-                            _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                            _name : 'market-setting_position',
                             rightPath : topMenuName + '.' + 'marketingPositionSetting',
                             isMenu : true,
                         },
@@ -82,7 +82,7 @@ export default {
                 name : 'cashRecord',
                 meta : {
                     menuName : 'cashRecord', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'market-withdraw',
                     iconClass : 'icon-diamond',
                     rightPath : topMenuName + '.' + 'cashRecord',
                     isMenu : true,
@@ -95,7 +95,7 @@ export default {
                 name : 'marketingProductManage',
                 meta : {
                     menuName : 'marketingProductManage', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'market-product',
                     iconClass : 'icon-diamond',
                     rightPath : topMenuName + '.' + 'marketingProductManage',
                     isMenu : true,
@@ -108,7 +108,7 @@ export default {
                 name : 'salesUserInfo',
                 meta : {
                     menuName : 'salesUserInfo', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'market-user',
                     iconClass : 'icon-diamond',
                     rightPath : topMenuName + '.' + 'salesUserInfo',
                     isMenu : true,
