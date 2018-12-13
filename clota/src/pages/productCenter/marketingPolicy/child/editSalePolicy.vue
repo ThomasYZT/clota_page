@@ -1215,6 +1215,7 @@
              * @param data
              */
             initData (data) {
+                console.log(data)
                 let formData = pick(data.productPolicy, ['id','productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
                 'buyTicketNotes']);
                 formData.saleTime = [data.productPolicy.saleStartTime, data.productPolicy.saleEndTime];
@@ -1229,7 +1230,7 @@
                 //销售规则
                 formData.saleRule = data.productPolicy.saleRuleModel;
                 formData.saleRule.time = [data.productPolicy.saleRuleModel.startTime, data.productPolicy.saleRuleModel.endTime];
-                formData.saleRule.beforeDay = data.productPolicy.saleRuleModel.beforeDay ? Number(data.productPolicy.saleRuleModel.beforeDay) : 1;
+                formData.saleRule.beforeDay = data.productPolicy.saleRuleModel.beforeDay ? Number(data.productPolicy.saleRuleModel.beforeDay) : 0;
                 formData.saleRule.afterDay = data.productPolicy.saleRuleModel.afterDay ? Number(data.productPolicy.saleRuleModel.afterDay) : 1;
                 formData.saleRule.weekSold = data.productPolicy.saleRuleModel.weekSold ?
                     data.productPolicy.saleRuleModel.weekSold.split(',') : ['1','2','3','4','5'];
