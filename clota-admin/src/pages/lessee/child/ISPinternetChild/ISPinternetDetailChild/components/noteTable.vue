@@ -201,15 +201,17 @@
             getSmsBuyRecord () {
                 ajax.post('getSmsPurchaseRecords',{
                     id : this.searchParams.id,
-                    pageNo : this.smsBuyRecordPageNo,
+                    page : this.smsBuyRecordPageNo,
                     pageSize : this.smsBuyRecordPageSize
                 }).then(res => {
                     if (res.status === 200) {
                         this.smsBuyRecord = res.data.list ? res.data.list : [];
                         this.smsBuyTotal = res.data.otherData ? res.data.otherData.totals : '';
+                        this.smsBuyRecordTotal = res.data ? Number(res.data.totalRecord) : '';
                     } else {
                         this.smsBuyRecord = [];
                         this.smsBuyTotal = '';
+                        this.smsBuyRecordTotal = 0;
                     }
                 });
             },
@@ -219,17 +221,19 @@
             getSmsSendRecord () {
                 ajax.post('getSmsConsumeRecords',{
                     id : this.searchParams.id,
-                    pageNo : this.smsBuyRecordPageNo,
+                    page : this.smsBuyRecordPageNo,
                     pageSize : this.smsBuyRecordPageSize
                 }).then(res => {
                     if (res.status === 200) {
                         this.smsSendRecord = res.data.list ? res.data.list : [];
-                        this.smsSurplusTotal = res.data.otherData ? res.data.otherData.smsSurplusTotal : '';
-                        this.sendSmsTotals = res.data.otherData ? res.data.otherData.sendSmsTotals : '';
+                        this.smsSurplusTotal = res.data.other ? res.data.other.smsSurplusTotal : '';
+                        this.sendSmsTotals = res.data.other ? res.data.other.sendSmsTotals : '';
+                        this.smsSendRecordTotal = res.data ? Number(res.data.totalRecord) : '';
                     } else {
                         this.smsSendRecord = [];
                         this.smsSurplusTotal = '';
                         this.sendSmsTotals = '';
+                        this.smsSendRecordTotal = 0;
                     }
                 });
             }
