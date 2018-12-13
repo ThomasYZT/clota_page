@@ -258,7 +258,7 @@
             toRegister () {
                 this.$router.replace({
                     name : 'mobileRegister',
-                    params : {
+                    query : {
                         openId : this.wxUserInfo.openId,
                         orgId: this.wxUserInfo.orgId
                     }

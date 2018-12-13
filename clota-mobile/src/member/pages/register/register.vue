@@ -92,6 +92,7 @@
 </template>
 
 <script>
+    //
     import ajax from '../../api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { genderEnum } from '@/assets/js/constVariable.js';
@@ -338,6 +339,7 @@
              */
             getParams () {
                 let queryParams = this.getUrlString(location.href);
+                console.log(queryParams)
                 if (queryParams && queryParams.code) {
                     this.getOAuth2UserInfo(queryParams.code);
                 } else if (queryParams && queryParams.openId) {

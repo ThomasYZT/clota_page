@@ -125,7 +125,8 @@
         },
         computed :{
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                companyCode : 'companyCode'
             })
         }
     }
