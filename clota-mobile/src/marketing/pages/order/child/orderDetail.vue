@@ -159,8 +159,7 @@
                 if (this.orderDetail &&
                     this.orderDetail.verifiedNum > 0 &&
                     this.orderDetail.verifiedNum + this.orderDetail.refundNum === this.orderDetail.productNum &&
-                    (this.orderDetail.withdrawStatus === 'unaudit' || this.orderDetail.withdrawStatus === 'reject') &&
-                    this.orderDetail.verifiedNum === this.orderDetail.productNum) {
+                    (this.orderDetail.withdrawStatus === 'unaudit' || this.orderDetail.withdrawStatus === 'reject')) {
                     return true;
                 } else {
                     return false;
