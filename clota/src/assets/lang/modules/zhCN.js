@@ -1981,5 +1981,5 @@ export default {
     'pleaseSave' : '请保存{field}',
     'allPeopleMarketSetting' : '全民营销设置',
     'pleaseAddMarketingLevelFirst' : '请先新增营销等级',
-
+    'thisPartnerHasNotSettingAccount' : '该合作伙伴暂未配置在线收款账户',
 }
