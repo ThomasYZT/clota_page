@@ -76,30 +76,6 @@ export default function (legendData, seriesData) {
     } else {
         seriesOption = [option];
     }
-
-    /*for (let i = 0, j = seriesData.length; i < j; i++) {
-        data.push({
-            value : seriesData[i].value,
-            name : seriesData[i].name,
-            label : {
-                normal : {
-                    formatter : '{b|{b}}{per|{d}%}  ',
-                    rich : {
-                        b : {
-                            color : '#666666',
-                            fontSize : 12,
-                            lineHeight : 20,
-                            padding : [2, 4],
-                        },
-                        per : {
-                            color : '#666666',
-                            fontSize : 12,
-                        }
-                    }
-                }
-            },
-        });
-    }*/
     return defaultsDeep({
         legend : {
             data : legendData

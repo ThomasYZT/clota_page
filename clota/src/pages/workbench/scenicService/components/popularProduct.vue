@@ -8,7 +8,7 @@
     <div class="popular-product">
         <div class="header-box">
             <span class="title">{{$t('popularProduct')}}</span>
-            <DatePicker type="date"
+            <DatePicker type="month"
                         v-model.trim="date"
                         :editable="false"
                         :clearable="false"
@@ -25,8 +25,7 @@
 </template>
 <script>
     import ajax from '@/api/index.js';
-    import column from '../../components/column.vue';
-    import forEach from 'lodash/forEach';
+    import column from '../../components/column.vue'
     export default {
         components : {
             column
@@ -60,10 +59,9 @@
                     xAxisData : []
                 };
                 ajax.post('workbench-getGoodSaleProduct',{
-                    date : this.date.format('yyyy-MM-dd'),
+                    date : this.date.format('yyyy-MM'),
                 }).then(res => {
                     if (res.success && res.data) {
-//                        this.columnChartData = res.data || { series : [], xAxisData : [] };
                         this.columnChartData.series.push({
                             name : this.$t('salesQty'),
                             data : res.data.map(item => {

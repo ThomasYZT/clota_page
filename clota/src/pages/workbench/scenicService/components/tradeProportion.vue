@@ -8,7 +8,7 @@
     <div class="trade-proportion">
         <div class="header-box">
             <span class="title">{{$t('tradeProportion')}}</span>
-            <DatePicker type="date"
+            <DatePicker type="month"
                         v-model.trim="date"
                         :editable="false"
                         :clearable="false"
@@ -70,7 +70,7 @@
                     legend : []
                 };
                 ajax.post('workbench-getSaleAmountRatio',{
-                    date : this.date.format('yyyy-MM-dd'),
+                    date : this.date.format('yyyy-MM'),
                 }).then(res => {
                     if (res.success && res.data) {
                         forEach(res.data, (value, key) => {

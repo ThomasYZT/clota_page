@@ -10,6 +10,8 @@ const columnBaseConfig = {
             textStyle : {
                 color : '#999'
             },
+            rotate : -30,
+            fontSize : 10,
         },
         axisTick : {
             // show : false
