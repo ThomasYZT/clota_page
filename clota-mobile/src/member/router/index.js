@@ -11,6 +11,7 @@ export const memberRouterDeal = (to, from, next) => {
         || to.name === 'payStatus' //c端支付结果
         || to.name === 'mobileRegister' // 会员注册
         || to.name === 'wxActivateCard' // 微信会员卡激活
+        || to.name === 'wxPay' // 微信支付
     ) {
         next();
     } else {//判断是否保存了用户信息和token，如果没有保存需要重新登录
@@ -275,6 +276,15 @@ export const memberRoutes = [
                     title : 'memberCardActivating'
                 }
             },
+            //填写微信卡包激活信息
+            {
+                path : 'wxActivateCard',
+                name : 'wxActivateCard',
+                component : () => import(/* webpackChunkName: "integralMall" */'../pages/wxActivateCard/index.vue'),
+                meta : {
+                    title : 'memberCardActivating'
+                }
+            },
             //h5支付跳转页
             {
                 path : 'h5Pay',
@@ -300,6 +310,15 @@ export const memberRoutes = [
                 component : () => import(/* webpackChunkName: "integralMall" */'../pages/scenicCode/index.vue'),
                 meta : {
                     title : 'scenicCode'
+                }
+            },
+            //跳转入园二维码
+            {
+                path : 'wxPay',
+                name : 'wxPay',
+                component : () => import(/* webpackChunkName: "integralMall" */'../pages/wxPay/wxPay.vue'),
+                meta : {
+                    title : 'wxPay'
                 }
             }
         ],
