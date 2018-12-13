@@ -1,14 +1,16 @@
 import defaultsDeep from 'lodash/defaultsDeep';
-
+import common from '../../../assets/js/common';
+import i18n from '../../../assets/lang/lang.config';
 const pieBaseConfig = {
+    color : ['#0055B8', '#00B6C2', '#F8AAC4', '#FBC826', '#FB7A89'],
     legend : {
-        bottom : 10,
-        itemGap : 5,
-        itemWidth : 5,
-        /*textStyle : {
-            color : '#fff',
-            fontSize : '10'
-        },*/
+        orient : 'horizontal',
+        bottom : 5,
+        pageButtonGap : 10,
+        lineHeight : 17,
+        itemGap : 30,
+        itemWidth : 16,
+        itemHeight : 2,
         data : []
     },
     tooltip : {
@@ -19,15 +21,16 @@ const pieBaseConfig = {
                 color : '#E8E8E8'
             }
         },
-        // formatter : '{b}<br />{a}: {c0}',
-        // formatter : function (param) {
-        //     param = param[0];
-        //     // console.log(param)
-        //     return [
-        //         param.name + '<br />',
-        //         param.data + '<br/>',
-        //     ].join('');
-        // },
+        formatter : function (param) {
+            let html = '';
+            let date = param.length > 0 && param[0].data && param[0].data.time ? param[0].data.time : '';
+            let week = common.getWeekDay(new Date(date));
+            html += `<p>${date} ${i18n.messages[i18n.locale][week]}</p>`;
+            param.forEach(item => {
+                html += `<p><span style='color:${item.color}'>${item.data.name} : </span> <span>${item.data.value}</span></p>`;
+            });
+            return html;
+        },
         backgroundColor : 'rgba(0,0,0,0.7)', // 背景
         padding : [8, 10], //内边距
         extraCssText : 'box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);', //添加阴影
@@ -102,7 +105,6 @@ export default function (xAxisData, seriesData, legendData) {
         showSymbol : false, //是否显示 symbol, 如果 false 则只有在 tooltip hover 的时候显示
         itemStyle : {
             normal : {
-                color : '#00B6C2',
                 lineStyle : {
                     width : 2,
                     type : 'solid' //'dotted'虚线 'solid'实线
@@ -118,11 +120,10 @@ export default function (xAxisData, seriesData, legendData) {
         },
         data : [],
     };
-    if (seriesData && seriesData.length > 0) {
-        for (let i = 0, len = seriesData.length; i < len; i++) {
-            option.data = seriesData[i];
-            seriesOption.push(option);
-        }
+    if (seriesData) {
+        seriesData.forEach(item => {
+            seriesOption.push(defaultsDeep(item, option))
+        })
     } else {
         seriesOption = [option];
     }

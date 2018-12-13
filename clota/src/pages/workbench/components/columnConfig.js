@@ -44,13 +44,17 @@ const columnBaseConfig = {
         }
     },
     tooltip : {
-        "trigger" : "item",
-        "textStyle" : {
+        trigger : 'item',
+        textStyle : {
             "fontSize" : 12
-        },
-        "formatter" : "{b0}: {c0}"
+        }
     },
-    series : []
+    series : [
+        {
+            barWidth : 14,
+            barMaxWidth : 14
+        }
+    ]
 };
 
 export default function (xAxisData, seriesData) {
@@ -90,10 +94,10 @@ export default function (xAxisData, seriesData) {
         seriesOption = [option];
     }
 
-    return defaultsDeep(columnBaseConfig, {
+    return defaultsDeep({
         xAxis : {
             data : xAxisData
         },
         series : seriesOption
-    });
+    }, columnBaseConfig);
 }

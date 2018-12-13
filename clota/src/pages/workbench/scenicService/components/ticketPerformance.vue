@@ -18,7 +18,7 @@
             </RadioGroup>
         </div>
         <div class="chart-area">
-            <line-chart :line-data="lineData" @on-change="getLineChartData"></line-chart>
+            <line-chart :line-data="lineChartData" @on-change="getLineChartData"></line-chart>
         </div>
     </div>
 </template>
@@ -48,22 +48,10 @@
                 lineChartData : {
                     series : [],
                     xAxisData : [],
+                    legend : []
                 }
             }
         },
-        computed : {
-            lineData () {
-                let selectedLegend = this.quotaList.find(item => {
-                    return item.value == this.quotaType;
-                });
-                return Object.assign({}, this.lineChartData, { legend : [this.$t(selectedLegend.label)] });
-            }
-        },
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询业绩指标数据
@@ -72,6 +60,7 @@
                 this.lineChartData = {
                     series : [],
                     xAxisData : [],
+                    legend : []
                 };
                 ajax.post('workbench-getScenicEchartOptionData',{
                     queryType : this.quotaType,
@@ -80,21 +69,31 @@
                 }).then(res => {
                     if (res.success && res.data) {
                         if (res.data.series) {
-                            forEach(res.data.series, (scenicData) => {
-                                this.lineChartData.series.push(scenicData.map(item => {
-                                    return {
-                                        name : item.name,
-                                        value : item.value,
-                                    };
-                                }));
+                            //serie数据
+                            forEach(res.data.series, (scenicData, scenicName) => {
+                                this.lineChartData.series.push({
+                                    name : scenicName,
+                                    data : scenicData.map(item => {
+                                        return {
+                                            name : item.name,
+                                            value : item.value,
+                                            time : item.date,
+                                        };
+                                    }),
+                                });
+                                //legend数据
+                                this.lineChartData.legend.push({
+                                    name : scenicName,
+                                    icon : 'rect',
+                                });
                             });
                         } else {
                             this.lineChartData.series = [];
                         }
-
+                        //xAxisData数据
                         this.$set(this.lineChartData, 'xAxisData', res.data.xAxisData || []);
                     } else {
-                        this.lineChartData = { series : [], xAxisData : [] };
+                        this.lineChartData = { series : [], xAxisData : [], legend : [] };
                     }
                 });
             },

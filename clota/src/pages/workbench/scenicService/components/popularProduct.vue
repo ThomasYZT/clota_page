@@ -26,7 +26,7 @@
 <script>
     import ajax from '@/api/index.js';
     import column from '../../components/column.vue';
-
+    import forEach from 'lodash/forEach';
     export default {
         components : {
             column
@@ -38,24 +38,8 @@
                 date : new Date(),
                 //畅销产品柱状图表数据
                 columnChartData : {
-                    /*"series":[
-                        {
-                            "data":[
-                                20,
-                                20,
-                                15
-                            ],
-                            "name":null,
-                            "smooth":null,
-                            "stack":null,
-                            "type":"bar"
-                        }
-                    ],
-                    "xAxisData":[
-                        "国庆嗨翻天（团队票）",
-                        "国庆大酬宾（团队票）",
-                        "[元旦三人行（真团队）]"
-                    ]*/
+                    series : [],
+                    xAxisData : []
                 }
             }
         },
@@ -71,13 +55,25 @@
              * 查询畅销产品数据
              */
             getPopularProducts () {
+                this.columnChartData = {
+                    series : [],
+                    xAxisData : []
+                };
                 ajax.post('workbench-getGoodSaleProduct',{
                     date : this.date.format('yyyy-MM-dd'),
                 }).then(res => {
                     if (res.success && res.data) {
 //                        this.columnChartData = res.data || { series : [], xAxisData : [] };
-                        this.$set(this.columnChartData, 'series', res.data.series || []);
-                        this.$set(this.columnChartData, 'xAxisData', res.data.xAxisData || []);
+                        this.columnChartData.series.push({
+                            name : this.$t('salesQty'),
+                            data : res.data.map(item => {
+                                return item.value;
+                            }),
+                            type : "bar",
+                        });
+                        this.columnChartData.xAxisData = res.data.map(item => {
+                            return item.name;
+                        });
                     } else {
                         this.columnChartData = { series : [], xAxisData : [] };
                     }
