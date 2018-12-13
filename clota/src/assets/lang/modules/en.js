@@ -1866,4 +1866,6 @@ export default {
     'product.needId.one' : '每个证件只能预定一张票',
     'product.needId.more' : '每个证件可预定多张票',
     'waitToSync' : '待同步',
+    'close' : '关闭',
+    'thisPartnerHasNotSettingAccount' : '该合作伙伴暂未配置在线收款账户',
 }
