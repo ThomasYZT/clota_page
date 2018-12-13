@@ -27,7 +27,9 @@
                  v-transfer-dom
                  v-if="downLoadBtnShow"
                  @click="downLoadImg($event)">
-                <img class="download-svg" src="../../../../assets/images/icon-download.svg" alt="">
+                <a :href="downLoadA">
+                    <img class="download-svg" src="../../../../assets/images/icon-download.svg" alt="">
+                </a>
             </div>
         </transition>
     </div>
@@ -55,7 +57,9 @@
                     }
                 },
                 //下载按钮是否显示
-                downLoadBtnShow : false
+                downLoadBtnShow : false,
+                //图片序列
+                imgIndex : ''
             };
         },
         components : {
@@ -69,6 +73,7 @@
              */
             showPrivewImg (index) {
                 this.$nextTick(() =>{
+                    this.imgIndex = index;
                     this.$refs.previewer.show(index);
                     this.downLoadBtnShow = true;
                 });
@@ -77,10 +82,11 @@
              * 下载图片
              */
             downLoadImg () {
-                this.$vux.alert.show({
-                    title : this.$t('提示'),
-                    content : this.$t('长按保存图片哦')
-                });
+                window.open(this.downLoadA);
+                // this.$vux.alert.show({
+                //     title : this.$t('提示'),
+                //     content : this.$t('长按保存图片哦')
+                // });
             },
             /**
              * 获取路由参数
@@ -123,6 +129,10 @@
                         w : width,
                     };
                 });
+            },
+            //图片下载链接
+            downLoadA () {
+                return this.posterData[this.imgIndex]['posterUrl'];
             }
         }
     };
@@ -136,8 +146,8 @@
 </style>
 <style>
     .poster-preview .pswp__bg{
-        background: rgba(0,0,0,0.5)!important;
-    }
+           background: rgba(0,0,0,0.5)!important;
+       }
     .down-load-img{
         position: fixed;
         bottom : 20px;

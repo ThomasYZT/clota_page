@@ -20,7 +20,8 @@ const instance = axios.create({
         'Accept' : 'application/json'
     }
 });
-
+//不需要提示的code
+let codeExclude = ['MK013'];
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
     if (response.data.message === '请先登录') {
@@ -35,7 +36,11 @@ instance.interceptors.response.use(function (response) {
         });
     }
     //全局配置提示错误信息
-    if (!response.data.success && response.data.code && response.data.code !== '300' && response.data.code !== '100') {
+    if (!response.data.success &&
+        response.data.code &&
+        response.data.code !== '300' &&
+        response.data.code !== '100' &&
+        !codeExclude.includes(response.data.code)) {
         store.dispatch('showToast','errorMsg.' + response.data.code);
     }
     return response;
