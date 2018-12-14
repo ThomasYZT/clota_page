@@ -1612,7 +1612,7 @@ export default {
     'payType.cash': '现金',
     'txnStatus.doing': '进行中',
     'txnStatus.success': '成功',
-    'txnStatus.fai': '失败',
+    'txnStatus.fail': '失败',
     'txnStatus.abnormal': '异常',
     'txnStatus.unknown': '未知',
     'txnStatus.cancelled': '已撤销',
@@ -2013,6 +2013,8 @@ export default {
     'privalige.market-withdraw' : '提现记录管理',
     'privalige.queryAndExportWithdraw' : '查看/导出',
     'privalige.auditWithdraw' : '审核',
+    'privalige.market-setting' : '综合设置',
+    'privalige.operateMarketType' : '编辑',
     'privalige.market-setting_position' : '营销地理位置设置',
     'privaligequeryMarketPosition' : '查看',
     'privalige.operateMarketPosition' : '编辑',
@@ -2025,5 +2027,6 @@ export default {
     'privalige.applyAlter' : '申请改签',
     'privalige.orderCheckerQuery' : '查询',
     'privalige.orderChecker' : '核销',
+    'privalige.queryMarketPosition' : '查询',
 
 }
