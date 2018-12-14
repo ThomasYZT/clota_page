@@ -27,7 +27,7 @@ export const marketingState = {
         //纬度
         latitude : '',
         //是否正在获取位置信息
-        isGettingLocation : true,
+        isGettingLocation : false,
         //营销用户id
         marketUserId : '',
         //公司地址

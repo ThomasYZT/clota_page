@@ -182,7 +182,10 @@
             next(vm => {
                 vm.getParams(to.query);
             });
-        }
+        },
+        mounted () {
+            this.$store.commit('marketUpdateIsGettingLocation',true);
+        },
     };
 </script>
 <style lang="scss" scoped>
