@@ -291,7 +291,6 @@
                     this.visible = true;
                     this.haslevelList = addParams.haslevelList;
                     this.typeId = addParams.typeId;
-                    console.log(this.testRange)
 
                 //编辑
                 } else if (type && type === 'edit' && editParams) {
@@ -375,7 +374,6 @@
                 this.levelId = '';
                 this.typeId = '';
                 this.type = '';
-                this.extremeValue = [];
                 this.visible = false;
             },
         }

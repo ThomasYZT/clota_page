@@ -21,6 +21,19 @@
                   @selection-change="selectionChange"
                   @query-data="getData">
             <el-table-column
+                slot="column3"
+                slot-scope="row"
+                show-overflow-tooltip
+                fixed="right"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span v-if="tableData.length === scope.$index + 1">-</span>
+                    <span v-else>{{scope.row.levelAmount}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 v-if="canOperateMarketType"
                 slot="column5"
                 slot-scope="row"
