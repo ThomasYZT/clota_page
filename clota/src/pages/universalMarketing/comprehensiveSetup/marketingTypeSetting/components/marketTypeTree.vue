@@ -4,8 +4,8 @@
 -->
 <template>
     <div class="market-type-tree">
-        <p class="add-btn" v-if="canOperateMarketType">
-            <span @click="add">+{{$t('addNewMarketingType')}}</span>
+        <p class="add-btn" >
+            <span v-if="canOperateMarketType" @click="add">+{{$t('addNewMarketingType')}}</span>
         </p>
         <el-tree ref="elTree"
                  :data="typeList"

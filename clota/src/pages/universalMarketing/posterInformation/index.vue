@@ -28,7 +28,7 @@
             <tableCom :column-data="columnData"
                       :table-data="tableData"
                       :border="true"
-                      :column-check="true"
+                      :column-check="canddAndDelPoster"
                       :show-pagination="true"
                       :total-count="totalCount"
                       :ofset-height="120"
