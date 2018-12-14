@@ -339,7 +339,6 @@
                                 :table-com-min-height="260"
                                 :column-data="marketingColumn"
                                 :table-data="marketingData"
-                                :show-pagination="true"
                                 :total-count="total"
                                 :page-no-d.sync="queryParams.pageNo"
                                 :page-size-d.sync="queryParams.pageSize"
