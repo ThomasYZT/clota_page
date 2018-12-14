@@ -49,7 +49,7 @@ export default {
      * 获取域名
      */
     getHost (urlKey) {
-        return baseUrl + api[urlKey] || '';
+        return config.HOST + '/' + baseUrl + api[urlKey] || '';
     },
     /**
      * 获取token参数

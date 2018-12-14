@@ -15,7 +15,7 @@
             :total-count="total"
             :page-no-d.sync="sysListParams.page"
             :page-size-d.sync="sysListParams.pageSize"
-            :border="false"
+            :border="true"
             @query-data="queryList">
              <el-table-column
                 slot="columnimages"
@@ -199,7 +199,6 @@
     @import '~@/assets/scss/base';
     .notice{
         @include block_outline();
-        @include padding_place();
         padding: 0 30px;
 
         .create-notice{

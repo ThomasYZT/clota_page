@@ -119,9 +119,7 @@
                     //内容
                     content : '',
                     //图片(可多张)
-                    images : [
-                        'https://clotam.oss-cn-beijing.aliyuncs.com/notice/20180907/7b983b6e123b4ab59697bddd2a9c3e67.jpg'
-                    ],
+                    images : [],
                 },
                 //表单校验规则
                 ruleValidate : {
