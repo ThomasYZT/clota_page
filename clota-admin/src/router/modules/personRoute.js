@@ -8,7 +8,7 @@
  * subMenuType 二级菜单标志，值唯一，标识为二级菜单
  */
 export default {
-    server : {
+    personInfo : {
         path : '/personInfo',
         name : 'person',
         component : () => import(/* webpackChunkName: "login" */ '../../pages/personalCenter/index.vue'),

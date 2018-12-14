@@ -53,7 +53,6 @@
                             this.pieData.legend = legend;
                         }
                     }
-                   console.log(res);
                 }).finally(() => {
                     this.pieShow = true;
                 });
