@@ -32,7 +32,8 @@
                                     :placeholder="$t('selectField', { msg : $t('level') })"
                                     show-name
                                     style="width:200px">
-                                <Option v-for="item in levelList"
+                                <Option v-if="!item.disable"
+                                        v-for="item in levelList"
                                         :disabled="item.disable"
                                         :value="item.value"
                                         :key="item.value">{{ item.label }}
@@ -46,8 +47,14 @@
                                    style="width:200px;"
                                    v-model.trim="formData.levelUpMoney"
                                    :placeholder="$t('inputField', { field : $t('levelUpMoney') })"/>
+                            <div v-if="extremeValue.length === 2">
+                                <span v-if="extremeValue[0] || extremeValue[1]" class="level-amount-tip">{{$t('colonSetting', { key : $t('range') })}}</span>
+                                <span v-if="extremeValue[0] && extremeValue[1]">{{extremeValue[0] | moneyFilter | contentFilter}} ~ {{extremeValue[1] | moneyFilter | contentFilter}}</span>
+                                <span v-else-if="extremeValue[0] && !extremeValue[1]"> > {{extremeValue[0] | moneyFilter | contentFilter}}</span>
+                                <span v-else-if="!extremeValue[0] && extremeValue[1]"> < {{extremeValue[1] | moneyFilter | contentFilter}}</span>
+                                <span v-else></span>
+                            </div>
                         </FormItem>
-
                     </i-col>
                 </i-row>
             </Form>
@@ -243,6 +250,31 @@
                     });
                     return lvList;
                 }
+            },
+            //最大值最小值范围
+            extremeValue () {
+                if (this.haslevelList.length > 0) {
+                    let biggerMix = 100,
+                        smallerMax = 0,
+                        biggerMixItem,
+                        smallerMaxItem;
+                    this.haslevelList.forEach((item) => {
+                        if (item.level > parseInt(this.formData.level)) {
+                            if (item.level < biggerMix) {
+                                biggerMix = item.level;
+                                biggerMixItem = item;
+                            }
+                        } else if (item.level < parseInt(this.formData.level)) {
+                            if (item.level > smallerMax) {
+                                smallerMax = item.level;
+                                smallerMaxItem = item;
+                            }
+                        }
+                    });
+                    return [smallerMaxItem ? smallerMaxItem.levelAmount : null, biggerMixItem ? biggerMixItem.levelAmount : null];
+                } else {
+                    return [];
+                }
             }
         },
         methods : {
@@ -259,6 +291,7 @@
                     this.visible = true;
                     this.haslevelList = addParams.haslevelList;
                     this.typeId = addParams.typeId;
+                    console.log(this.testRange)
 
                 //编辑
                 } else if (type && type === 'edit' && editParams) {
@@ -342,6 +375,7 @@
                 this.levelId = '';
                 this.typeId = '';
                 this.type = '';
+                this.extremeValue = [];
                 this.visible = false;
             },
         }
@@ -353,5 +387,9 @@
 
     /deep/ .ivu-select-item-disabled {
         color: $color_gray;
+    }
+
+    .level-amount-tip {
+        color: $color_yellow;
     }
 </style>
