@@ -2030,4 +2030,5 @@ export default {
     'privalige.queryMarketPosition' : '查询',
     'selectMarketingOrSaleChannel' : '请选择销售渠道或新增营销等级',
     'financeRecharge' : '账户充值',
+    'driverAddSuccess' : '保存司机信息',
 }
