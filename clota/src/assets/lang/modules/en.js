@@ -1868,4 +1868,5 @@ export default {
     'waitToSync' : '待同步',
     'close' : '关闭',
     'thisPartnerHasNotSettingAccount' : '该合作伙伴暂未配置在线收款账户',
+    'financeRecharge' : '账户充值',
 }

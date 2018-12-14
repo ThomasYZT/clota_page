@@ -48,6 +48,17 @@ export default {
                     isMenu : true
                 },
             },
+            financeRecharge : {
+                // 财务管理 -- 付款账户管理 -- 充值
+                path : '/financeManage/financeRecharge',
+                name : 'financeRecharge',
+                component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/paymentAccount/child/recharge.vue'),
+                meta : {
+                    _name : 'payment-account-manage',
+                    menuName : 'financeRecharge', //lang.config.js 里面的语言键值
+                    rightPath : topMenuName + '.' + 'financeRecharge',
+                },
+            },
 
             collectionManage : {
                 // 财务管理 -- 收款账户管理
