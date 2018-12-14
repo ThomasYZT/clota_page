@@ -436,7 +436,6 @@
 
             //审核操作
             auditProduct ( status ) {
-                if (!this.canApplyAuditPolicy) return;
                 if (status === 'auditing') {
                     this.$refs.auditConfirmModal.toggle({
                         type : 'audit',
