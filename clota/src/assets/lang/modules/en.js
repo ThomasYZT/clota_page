@@ -1980,4 +1980,5 @@ export default {
     'allPeopleMarketSetting' : '全民营销设置',
     'pleaseAddMarketingLevelFirst' : '请先新增营销等级',
     'thisPartnerHasNotSettingAccount' : '该合作伙伴暂未配置在线收款账户',
+    'selectMarketingOrSaleChannel' : '请选择销售渠道或新增营销等级',
 }

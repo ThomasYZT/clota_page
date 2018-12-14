@@ -1075,9 +1075,9 @@
                     return;
                 }
 
-                //渠道
-                if (this.selectedRow && this.selectedRow.length < 1) {
-                    this.$Message.warning(this.$t('selectField', { msg : this.$t('saleChannels') }));
+                //渠道和营销等级至少选填其一
+                if (this.selectedRow && this.selectedRow.length < 1 && this.marketingData && this.marketingData.length < 1) {
+                    this.$Message.warning(this.$t('selectMarketingOrSaleChannel'));
                     return;
                 }
                 //全民营销验证是否选择了营销等级
@@ -1099,9 +1099,9 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = defaultsDeep({}, this.formData);
-                        params.groupIds = this.selectedRow.map( item => {
+                        params.groupIds = this.selectedRow.length > 0 ? this.selectedRow.map( item => {
                             return item.id;
-                        }).join(',');
+                        }).join(',') : '';
                         params.itemsData = JSON.stringify(defaultsDeep([], this.itemsData));
 
                         params.saleRule.weekSold = this.formData.saleRule.weekSold && this.formData.saleRule.weekSold.length > 0 ?
