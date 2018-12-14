@@ -9,7 +9,7 @@
                 <span>{{$t('smsSetting')}}</span>
             </Radio>
             <Radio :label="2">
-                <span>{{$t('2')}}</span>
+                <span>{{$t('m_mail')}}</span>
             </Radio>
         </RadioGroup>
         <!--运维警报发送方式-->

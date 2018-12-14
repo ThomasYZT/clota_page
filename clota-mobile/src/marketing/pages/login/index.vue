@@ -346,6 +346,9 @@
             next(vm => {
                 vm.getParams(to.query);
             });
+        },
+        created () {
+            this.setLoginErrNum();
         }
     };
 </script>

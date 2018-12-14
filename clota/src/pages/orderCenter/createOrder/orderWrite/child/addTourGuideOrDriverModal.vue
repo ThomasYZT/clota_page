@@ -321,10 +321,10 @@
                     }).then(res => {
                         if(res.success){
                             this.$set(this.tableData[index],'editType','');
-                            this.$Message.success( this.$t('successTip', {tip: this.$t('saveGuideInfo')}) );    // 保存导游信息成功
+                            this.$Message.success( this.$t('successTip', {tip: this.$t('driverAddSuccess')}) );    // 保存司机信息成功
                             this.freshData(index,'modify');
                         }else{
-                            this.$Message.error( this.$t('failureTip', {tip: this.$t('saveGuideInfo')}) );    // 保存导游信息失败
+                            this.$Message.error( this.$t('failureTip', {tip: this.$t('driverAddSuccess')}) );    // 保存司机信息失败
                         }
                     });
                 });
