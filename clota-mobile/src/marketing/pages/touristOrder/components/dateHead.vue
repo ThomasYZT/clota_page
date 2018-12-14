@@ -13,7 +13,10 @@
             </div>
         </div>
         <div class="all-date" @click="showAllDate">
-            <div class="date-other" v-if="dateBiggerThan5Days">{{activeDate.format('MM-dd')}}</div>
+            <div class="date-other" v-if="dateBiggerThan5Days">
+                <span>{{activeDate.format('yyyy')}}</span>
+                <span>{{activeDate.format('MM-dd')}}</span>
+            </div>
             <template v-else>
                 <div>全部</div>
                 <div>日期</div>
@@ -126,7 +129,11 @@
                 background: #046FDB;
                 color: $color_fff;
                 border-radius: 4px;
-                line-height: 40px;
+                /*line-height: 40px;*/
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
             }
         }
 
