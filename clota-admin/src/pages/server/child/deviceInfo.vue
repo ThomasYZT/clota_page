@@ -90,8 +90,10 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import timeAlong from './deviceInfoChild/timeAlong';
     import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             timeAlong
