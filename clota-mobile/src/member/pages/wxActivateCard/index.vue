@@ -59,7 +59,7 @@
             v-model="formData.birthDay">
         </datetime>
         <!-- 证件类型 -->
-        <div>
+        <div style="border-top: 1px solid #F5F5F5;">
             <popup-picker :title="$t('cardType')"
                           :data="idTypeList"
                           show-name
@@ -215,8 +215,9 @@
                 ajax.post('queryWxMemberInfo', {
                     openId: this.openId
                 }).then((res) => {
-                    if(res.success && res.data) {
-                        let dataObj = res.data;
+                    if(res.success) {
+                        let dataObj = res.data ? res.data : {};
+                        console.log(dataObj)
                         this.formData.custName = dataObj.custName?dataObj.custName:'';
                         this.formData.gender = dataObj.gender?dataObj.gender:'';
                         this.formData.phoneNum = dataObj.phoneNum?dataObj.phoneNum:'';
@@ -224,10 +225,10 @@
                         this.formData.certificationType = dataObj.certificationType?dataObj.certificationType:'';
                         this.formData.idCardNumber = dataObj.idCardNumber?dataObj.idCardNumber:'';
                         this.formData.homeAddr = dataObj.homeAddr?dataObj.homeAddr:'';
-                        this.gender[0] = dataObj.gender;
+                        if (dataObj.gender) { this.gender[0] = dataObj.gender }
+                        if (dataObj.certificationType) { this.certificationType[0] = dataObj.certificationType; }
                         this.gender = JSON.parse(JSON.stringify(this.gender));
                         this.formData = JSON.parse(JSON.stringify(this.formData));
-                        this.certificationType[0] = dataObj.certificationType;
                         this.queryDocument(dataObj.orgId);
                     } else {
                         this.$vux.toast.text(this.$t(res.code));

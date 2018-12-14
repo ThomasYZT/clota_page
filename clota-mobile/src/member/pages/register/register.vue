@@ -60,7 +60,7 @@
             v-model="formData.birthDay">
         </datetime>
         <!-- 证件类型 -->
-        <div>
+        <div style="border-top: 1px solid #F5F5F5;">
             <popup-picker :title="$t('cardType')"
                           :data="idTypeList"
                           show-name
