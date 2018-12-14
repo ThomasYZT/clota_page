@@ -15,6 +15,7 @@
                 <div class="list-wrap">
                     <ul>
                         <li v-for="(item,index) in provinceData"
+                            :key="index"
                             :class="{'active': operateData.provinceid === item.provinceid }"
                             @click="chooseProvince($event,item)">
                             <span class="name" v-w-title="item.province">{{item.province}}</span>
@@ -35,6 +36,7 @@
                 <div class="list-wrap">
                     <ul>
                         <li v-for="(item,index) in cityData"
+                            :key="index"
                             :class="{'active': operateData.cityid === item.cityid }"
                             @click="chooseCity($event,item)">
                             <span class="name" v-w-title="item.city">{{item.city}}</span>
@@ -49,25 +51,26 @@
                 <div class="title">{{$t('areaTitle')}}</div>
                 <div class="btn-area">
                     <Input v-model.trim="areaListParams.area"
+                           @on-enter="queryList"
                            :placeholder="$t('validateError.pleaseInput', {msg: $t('areaName')})"/>
                     <Button type="primary"
                             class="ivu-btn-90px"
                             @click="queryList">{{$t('query')}}</Button>
                     <Button type="primary"
+                            :disabled="!this.operateData.cityid"
                             class="ivu-btn-90px"
                             @click="addArea">+ {{$t('addArea')}}</Button>
                 </div>
                 <div class="list-wrap">
                     <table-com
-                        v-if="areaListParams.cityid ? true : false"
-                        :ofsetHeight="118"
+                        :ofsetHeight="168"
                         :show-pagination="true"
                         :column-data="regionHead"
                         :table-data="tableData"
                         :total-count="total"
                         :page-no-d.sync="areaListParams.page"
                         :page-size-d.sync="areaListParams.pageSize"
-                        :border="false"
+                        :border="true"
                         @query-data="queryList">
                         <el-table-column
                             slot="columnoperate"
@@ -75,6 +78,7 @@
                             :prop="row.field"
                             :key="row.index"
                             :width="row.width"
+                            fixed="right"
                             :min-width="row.minWidth"
                             show-overflow-tooltip
                             slot-scope="row">
@@ -176,9 +180,11 @@
                 ajax.post('provinceList', {}).then(res => {
                     if (res.status === 200) {
                         this.provinceData = res.data || [];
-                        this.operateData.province = res.data[0].province;
-                        this.operateData.provinceid = res.data[0].provinceid;
-                        this.queryCityList(res.data[0]);
+                        if (res.data.length > 0) {
+                            this.operateData.province = res.data[0].province;
+                            this.operateData.provinceid = res.data[0].provinceid;
+                            this.queryCityList(res.data[0]);
+                        }
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));
                     }
@@ -187,16 +193,16 @@
             /**
              * 查询城市列表
              */
-            queryCityList ( data, flag ) {
+            queryCityList ( data ) {
                 ajax.post('cityList', {
                     provinceid : data.provinceid
                 }).then(res => {
                     if (res.status === 200) {
                         this.cityData = res.data || [];
-                        this.operateData.city = res.data[0].city;
-                        this.operateData.cityid = res.data[0].cityid;
-                        this.areaListParams.cityid = res.data[0].cityid;
-                        if (flag) {
+                        if (this.cityData.length > 0) {
+                            this.operateData.city = res.data[0].city;
+                            this.operateData.cityid = res.data[0].cityid;
+                            this.areaListParams.cityid = res.data[0].cityid;
                             this.queryList();
                         }
                     } else {
@@ -208,6 +214,7 @@
              * 查询区县列表
              */
             queryList () {
+                if (!this.operateData.cityid) return;
                 ajax.post('areaList', this.areaListParams).then(res => {
                     if (res.status === 200) {
                         this.tableData = res.data.list || [];
@@ -225,7 +232,11 @@
                 event.stopPropagation();
                 this.operateData.province = data.province;
                 this.operateData.provinceid = data.provinceid;
-                this.queryCityList(data, true);
+                this.tableData = [];
+                this.operateData.city = '';
+                this.operateData.cityid = '';
+                this.areaListParams.cityid = '';
+                this.queryCityList(data);
             },
             chooseCity (event, data) {
                 event.stopPropagation();

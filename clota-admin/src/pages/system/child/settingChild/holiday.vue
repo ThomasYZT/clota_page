@@ -5,6 +5,7 @@
         <div class="btn-area">
             <div class="search-by-word">
                 <Input v-model.trim="holidayListParams.holidayName"
+                       @on-enter="queryList"
                        :placeholder="$t('validateError.pleaseInput', { msg: $t('holidayName')})"/>
                 <Button type="primary"
                         class="ivu-btn-90px"
@@ -25,7 +26,7 @@
             :total-count="total"
             :page-no-d.sync="holidayListParams.page"
             :page-size-d.sync="holidayListParams.pageSize"
-            :border="false"
+            :border="true"
             @selection-change="handleSelectionChange"
             @query-data="queryList">
             <el-table-column
@@ -33,8 +34,7 @@
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
-                :width="row.width"
-                :min-width="row.minWidth"
+                :width="90"
                 show-overflow-tooltip
                 type="selection"
                 slot-scope="row">

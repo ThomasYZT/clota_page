@@ -4,7 +4,7 @@
 export const unitHead = [
     {
         title : ' ',
-        minWidth : 80,
+        minWidth : 180,
         field : 'select',
     },
     {

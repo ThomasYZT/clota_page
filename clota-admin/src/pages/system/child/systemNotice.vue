@@ -55,6 +55,7 @@
                 :prop="row.field"
                 :key="row.index"
                 :width="row.width"
+                fixed="right"
                 :min-width="row.minWidth"
                 show-overflow-tooltip
                 slot-scope="row">
