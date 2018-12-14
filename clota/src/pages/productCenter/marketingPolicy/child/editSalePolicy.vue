@@ -109,20 +109,32 @@
                             </Select>
                             <!--<br/>-->
                             <!--日历视图-->
-                            <DatePicker
-                                v-model="formData.saleRule.specifiedTime"
-                                multiple
-                                format="yyyy-MM-dd"
-                                type="date"
-                                :placeholder="$t('selectField', {msg: ''})"
-                                :disabled="formData.saleRule.dateType === 'custom' ? false : true"
-                                transfer
-                                :clearable="false"
-                                :editable="false"
-                                :confirm="false"
-                                @on-change="changeSaleSelectTime"
-                                style="width: 230px;margin-left: 15px;">
-                            </DatePicker>
+                            <!--<br/>-->
+                            <!--日历视图-->
+                            <!--<DatePicker-->
+                            <!--v-model="formData.saleRule.specifiedTime"-->
+                            <!--multiple-->
+                            <!--format="yyyy-MM-dd"-->
+                            <!--type="date"-->
+                            <!--:placeholder="$t('selectField', {msg: ''})"-->
+                            <!--:disabled="formData.saleRule.dateType === 'custom' ? false : true"-->
+                            <!--transfer-->
+                            <!--:clearable="false"-->
+                            <!--:editable="false"-->
+                            <!--:confirm="false"-->
+                            <!--@on-change="changeSaleSelectTime"-->
+                            <!--style="width: 230px;margin-left: 15px;">-->
+                            <!--</DatePicker>-->
+                            <el-date-picker type="dates"
+                                            v-model="formData.saleRule.specifiedTime"
+                                            :clearable="false"
+                                            :editable="false"
+                                            :placeholder="$t('selectField', {msg: ''})"
+                                            @change="changeSaleSelectTime"
+                                            :disabled="formData.saleRule.dateType === 'custom' ? false : true"
+                                            style="width: 230px;height:28px;margin-left: 15px;"
+                                            format="yyyy-MM-dd">
+                            </el-date-picker>
                             <span class="blue" v-if="showSaleDatePicker" @click="showDateType('showSaleDatePicker', false)">{{$t('toList')}}</span>
                             <span class="blue" v-else @click="showDateType('showSaleDatePicker', true)">{{$t('toDate')}}</span>
                             <!--列表视图-->
@@ -212,20 +224,33 @@
                             </Select>
                             <!--<br/>-->
                             <!--日历视图-->
-                            <DatePicker
-                                v-if="showPlayDatePicker"
-                                v-model="formData.playRule.specifiedTime"
-                                multiple
-                                format="yyyy-MM-dd"
-                                type="date"
-                                :placeholder="$t('selectField', {msg: ''})"
-                                :disabled="formData.playRule.dateType === 'custom' ? false : true"
-                                transfer
-                                :clearable="false"
-                                :editable="false"
-                                @on-change="changePlaySelectTime"
-                                style="width: 230px;margin-left: 15px;">
-                            </DatePicker>
+                            <!--<br/>-->
+                            <!--日历视图-->
+                            <!--<DatePicker-->
+                            <!--v-if="showPlayDatePicker"-->
+                            <!--v-model="formData.playRule.specifiedTime"-->
+                            <!--multiple-->
+                            <!--format="yyyy-MM-dd"-->
+                            <!--type="date"-->
+                            <!--:placeholder="$t('selectField', {msg: ''})"-->
+                            <!--:disabled="formData.playRule.dateType === 'custom' ? false : true"-->
+                            <!--transfer-->
+                            <!--:clearable="false"-->
+                            <!--:editable="false"-->
+                            <!--@on-change="changePlaySelectTime"-->
+                            <!--style="width: 230px;margin-left: 15px;">-->
+                            <!--</DatePicker>-->
+                            <el-date-picker v-if="showPlayDatePicker"
+                                            type="dates"
+                                            v-model="formData.playRule.specifiedTime"
+                                            :clearable="false"
+                                            :editable="false"
+                                            :placeholder="$t('selectField', {msg: ''})"
+                                            :disabled="formData.playRule.dateType === 'custom' ? false : true"
+                                            @change="changePlaySelectTime"
+                                            style="width: 230px;height:28px;margin-left: 15px;"
+                                            format="yyyy-MM-dd">
+                            </el-date-picker>
                             <span class="blue" v-if="showPlayDatePicker" @click="showDateType('showPlayDatePicker', false)">{{$t('toList')}}</span>
                             <span class="blue" v-else @click="showDateType('showPlayDatePicker', true)">{{$t('toDate')}}</span>
                             <!--列表视图-->
@@ -899,7 +924,10 @@
                         this.formData.saleRule.dateType = 'custom';
                     }
                 }
-                this.getDateList(val,'saleDate');
+                let datelist = val.map((item) => {
+                    return item.format('YYYY-MM-DD');
+                }).join(',');
+                this.getDateList(datelist, 'saleDate');
                 this.$refs.formValidate.validateField('specifiedSaleDateSold');
             },
 
@@ -911,7 +939,10 @@
                         this.formData.playRule.dateType = 'custom';
                     }
                 }
-                this.getDateList(val,'playDate');
+                let datelist = val.map((item) => {
+                    return item.format('YYYY-MM-DD');
+                }).join(',');
+                this.getDateList(datelist,'playDate');
                 this.$refs.formValidate.validateField('specifiedPlayDateSold');
             },
 
@@ -1449,7 +1480,12 @@
                     .date-table-wrap{
                         width: 400px;
                     }
-
+                    /deep/ .el-input__inner {
+                        height: 100%;
+                    }
+                    /deep/ .el-input__icon {
+                        line-height: 28px;
+                    }
                 }
 
             }
