@@ -13,8 +13,11 @@
             </div>
         </div>
         <div class="all-date" @click="showAllDate">
-            <div>全部</div>
-            <div>日期</div>
+            <div class="date-other" v-if="dateBiggerThan5Days">{{activeDate.format('MM-dd')}}</div>
+            <template v-else>
+                <div>全部</div>
+                <div>日期</div>
+            </template>
         </div>
     </div>
 </template>
@@ -90,6 +93,10 @@
                     });
                 }
                 return result;
+            },
+            //全部日期更换为选择的日期是否显示
+            dateBiggerThan5Days () {
+                return this.activeDate > new Date().addDays(4);
             }
         }
     };
@@ -113,6 +120,14 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
+
+            .date-other{
+                @include block_outline(40px,40px);
+                background: #046FDB;
+                color: $color_fff;
+                border-radius: 4px;
+                line-height: 40px;
+            }
         }
 
         .date-wrap{
@@ -135,10 +150,6 @@
                 &.active{
                     background: #046FDB;
                     color: $color_fff;
-                }
-
-                .label{
-
                 }
             }
         }
