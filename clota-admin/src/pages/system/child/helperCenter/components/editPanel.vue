@@ -16,7 +16,7 @@
                         <Input v-model="formData.title" :placeholder="$t('inputField', { field : this.$t('pageTitle') } )" style="width:400px;"></Input>
                     </FormItem>
                     <FormItem label="" :label-width="0" class="edit-form-item">
-                        <UE :defaultMsg="defaultMsg" :config="config" id="ue" ref="ue"></UE>
+                        <!--<UE :defaultMsg="defaultMsg" :config="config" id="ue" ref="ue"></UE>-->
                     </FormItem>
                 </Form>
             </div>
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-    import UE from '@/components/ue/ue.vue';
     import noDataTip from '@/components/noDataTip/noData-tip';
     import ajax from '@/api/index';
     export default {
@@ -53,7 +52,6 @@
         },
         components : {
             noDataTip,
-            UE
         },
         data () {
             return {
