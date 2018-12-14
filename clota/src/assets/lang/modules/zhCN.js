@@ -1999,6 +1999,7 @@ export default {
     'privalige.queryPolicyList' : '查询',
     'privalige.queryAllocation' : '查询',
     'privalige.addAllocation' : '新建分销',
+    'privalige.deleteAllocation' : '删除分销',
     'privalige.market' : '全民营销',
     'privalige.market-poster' : '海报管理',
     'privalige.queryPoster' : '查询',
@@ -2017,6 +2018,12 @@ export default {
     'privalige.operateMarketPosition' : '编辑',
     'privalige.market-setting_type' : '营销类别设置',
     'privalige.queryMarketType' : '查询',
-    'privalige.operateMarketType' : '编辑',
+    'privalige.orderDetail' : '查询订单明细',
+    'privalige.syncOTA' : '同步到OTA',
+    'privalige.resendSms' : '重发短信',
+    'privalige.applyRefund' : '申请退票',
+    'privalige.applyAlter' : '申请改签',
+    'privalige.orderCheckerQuery' : '查询',
+    'privalige.orderChecker' : '核销',
 
 }

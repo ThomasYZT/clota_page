@@ -25,7 +25,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.orderNo}}</span>
+                    <span :class="{ 'to-one-level' : canShowOrderDetail }" @click="toOrderDetail(scope.row)">{{scope.row.orderNo}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -194,13 +194,13 @@
                 :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
+                        <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual' && canApplyRefund"
                             :class="{disabled : !judgeCanReturn(scope.row)}"
                             @click="refundTicket(scope.row)">{{$t('return')}}</li><!--退票-->
-                        <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
+                        <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual' && canApplyAlter"
                             :class="{disabled : !judgeCanAlter(scope.row)}"
                             @click="alterTicket(scope.row)">{{$t('alter')}}</li><!--改签-->
-                        <li @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
+                        <li v-if="canShowOrderDetail" @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
                     </ul>
                 </template>
             </el-table-column>
@@ -230,6 +230,7 @@
     import { transSyncStatus,transSMSStatus,transPaymentStatus } from '../commFun.js';
     import debounce from 'lodash/debounce';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -332,6 +333,7 @@
              * @param data
              */
             toOrderDetail (data) {
+                if (!this.canShowOrderDetail) return;
                 if (data['orderType'] === 'individual') {
                     // 散客订单详情
                     this.$router.push({
@@ -356,7 +358,7 @@
              * @param data
              */
             refundTicket (data) {
-                if (!this.judgeCanReturn(data)) return;
+                if (!this.judgeCanReturn(data) || !this.canApplyRefund) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
                     if (res.success) {
@@ -381,7 +383,7 @@
              * @param  data 订单信息
              */
             alterTicket (data) {
-                if (!this.judgeCanAlter(data)) return;
+                if (!this.judgeCanAlter(data) || !this.canApplyAlter) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
                     if (res.success) {
@@ -411,6 +413,7 @@
              * @param rowData
              */
             toDetail (rowData) {
+                if (!this.canShowOrderDetail) return;
                 if (rowData.orderType === 'team') {
                     this.$router.push({
                         name : 'teamOrderDetail',
@@ -459,6 +462,21 @@
             }
         },
         computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //权限是否允许申请退票操作
+            canApplyRefund () {
+                return this.permissionInfo && 'applyRefund' in this.permissionInfo;
+            },
+            //权限是否允许申请改签操作
+            canApplyAlter () {
+                return this.permissionInfo && 'applyAlter' in this.permissionInfo;
+            },
+            //是否可以查看订单明细
+            canShowOrderDetail () {
+                return this.permissionInfo && 'orderDetail' in this.permissionInfo;
+            },
             //是否可以显示退票按钮和改签按钮，
             returnTicketMenuShow () {
                 //散客非分销订单

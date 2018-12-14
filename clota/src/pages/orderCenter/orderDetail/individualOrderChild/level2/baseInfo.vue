@@ -50,6 +50,7 @@
 <script>
     import ajax from '../../../../../api/index'
     import { transSMSStatus } from '../../../commFun'
+    import { mapGetters } from 'vuex';
     export default {
         props: {
             'baseInfo': {
@@ -62,6 +63,13 @@
             }
         },
         computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //权限是否允许可以重发短信
+            perMissioncanResendSms () {
+                return this.permissionInfo && 'resendSms' in this.permissionInfo;
+            },
             //机构对应订单角色
             orderOrgType() {
                 if(Object.keys(this.baseInfo).length > 0 && this.baseInfo.orderOrgType) {
@@ -80,7 +88,8 @@
             canResendMsg () {
                 //景区下，审核成功，取票前可重发短信
                 return this.viewType === 'scenic' &&
-                    (this.baseInfo.quantity > this.baseInfo.quantityPicked) ;
+                    (this.baseInfo.quantity > this.baseInfo.quantityPicked) &&
+                    this.perMissioncanResendSms;
             },
         },
         data() {
