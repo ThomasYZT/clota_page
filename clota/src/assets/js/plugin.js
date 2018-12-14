@@ -36,6 +36,7 @@ import {
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
 import TableColumn from 'element-ui/lib/table-column';
+import elDatePicker from 'element-ui/lib/date-picker';
 // import Scrollbar from 'element-ui/lib/scrollbar';
 import Pagination from 'element-ui/lib/pagination';
 import Dropdown from 'element-ui/lib/dropdown';
@@ -88,6 +89,7 @@ plugin.install = function (Vue, options) {
     Vue.use(elCollapse);
     Vue.use(elCollapseItem);
     Vue.use(Loading);
+    Vue.use(elDatePicker);
 
     //iview按需引入
     Vue.component('Button',Button);
