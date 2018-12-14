@@ -40,6 +40,32 @@
                             {{scoped.row[item.field] | contentFilter}}
                         </template>
                     </el-table-column>
+                    <!--日期-->
+                    <el-table-column
+                        v-else-if="item.type === 'date'"
+                        :label="$t(item.title)"
+                        :prop="item.field"
+                        show-overflow-tooltip
+                        :key="index"
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
+                        <template slot-scope="scoped">
+                            {{scoped.row[item.field] | timeFormat('yyyy-MM-dd') | contentFilter}}
+                        </template>
+                    </el-table-column>
+                    <!--日期时间-->
+                    <el-table-column
+                        v-else-if="item.type === 'dateTime'"
+                        :label="$t(item.title)"
+                        :prop="item.field"
+                        show-overflow-tooltip
+                        :key="index"
+                        :width="getColumnWidth(item)"
+                        :min-width="getColumnMinWidth(item)">
+                        <template slot-scope="scoped">
+                            {{scoped.row[item.field] | timeFormat('yyyy-MM-dd HH:mm:ss') | contentFilter}}
+                        </template>
+                    </el-table-column>
                     <!--普通列-->
                     <el-table-column
                         v-else

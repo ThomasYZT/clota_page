@@ -141,6 +141,10 @@
                                 this.errMessage = 'accountOPassError';
                                 this.showErrMessage = true;
                                 this.changeCode();
+                            } else if (res.message === 'User is inactived!') {
+                                this.errMessage = 'accountInvalid';
+                                this.showErrMessage = true;
+                                this.changeCode();
                             } else {
                                 this.errMessage = res.message || 'loginError.accountError';
                                 this.showErrMessage = true;

@@ -36,7 +36,7 @@ export default {
     readyDeal : '待处理',
     auditTrue : '审核通过',
     auditFalse : '审核不通过',
-    lessPlaceholder : '输入公司ID或租户名称',
+    lessPlaceholder : '输入任意信息查询',
     auditStatus : {
         waitAudit : '待审核',
         audited : '已审核',
@@ -383,5 +383,6 @@ export default {
     'getPageListFailure' : '获取文件列表失败',
     'youHaveUnsavedFile' : '您有尚未保存的文件',
     'pageTitle' : '页面标题',
+    'accountInvalid' : '账户未激活',
 
 };

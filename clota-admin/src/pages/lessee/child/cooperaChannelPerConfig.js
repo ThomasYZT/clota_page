@@ -26,15 +26,16 @@ export const columns = {
             minWidth : 100,
             field : 'managerAccount'
         },
-        {
-            title : '身份证',
-            minWidth : 150,
-            field : 'attach'
-        },
+        // {
+        //     title : '身份证',
+        //     minWidth : 150,
+        //     field : 'attach'
+        // },
         {
             title : '注册时间',
-            width : 180,
-            field : 'createdTime'
+            width : 200,
+            field : 'createdTime',
+            type : 'dateTime'
         },
         {
             title : '操作',
@@ -73,19 +74,20 @@ export const columns = {
             minWidth : 100,
             field : 'managerAccount'
         },
-        {
-            title : '身份证',
-            minWidth : 150,
-            field : 'attach'
-        },
+        // {
+        //     title : '身份证',
+        //     minWidth : 150,
+        //     field : 'attach'
+        // },
         {
             title : '注册时间',
-            width : 180,
-            field : 'createdTime'
+            width : 200,
+            field : 'createdTime',
+            type : 'dateTime'
         },
         {
             title : '受理客服',
-            minWidth : 100,
+            minWidth : 150,
             field : 'businessAccount'
         },
         {
@@ -112,7 +114,7 @@ export const columns = {
         },
         {
             title : '身份证号',
-            minWidth : 150,
+            minWidth : 200,
             field : 'certificateNumber'
         },
         {
@@ -120,24 +122,25 @@ export const columns = {
             minWidth : 100,
             field : 'loginName'
         },
-        {
-            title : '身份证',
-            minWidth : 220,
-            field : 'attach'
-        },
+        // {
+        //     title : '身份证',
+        //     minWidth : 220,
+        //     field : 'attach'
+        // },
         {
             title : '注册时间',
-            width : 180,
-            field : 'createdTime'
+            width : 200,
+            field : 'createdTime',
+            type : 'dateTime'
         },
         {
             title : '受理客服',
-            minWidth : 100,
+            minWidth : 150,
             field : 'businessAccount'
         },
         {
             title : '驳回原因',
-            minWidth : 100,
+            minWidth : 200,
             field : 'reason'
         },
         {

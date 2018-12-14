@@ -16,7 +16,7 @@
                 </div>
                 <div class="audit-area" v-if="showAuditBtn">
                     <Button type="primary" @click="auditPass">审核通过</Button>
-                    <Button type="ghost" class="ivu-btn-90px" @click="reject">驳回</Button>
+                    <Button type="error" class="ivu-btn-90px" @click="reject">驳回</Button>
                 </div>
             </div>
             <ul class="cooper-detail">
