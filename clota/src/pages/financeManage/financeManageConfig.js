@@ -40,12 +40,12 @@ export const rechargeHead = [
         title: 'systemStatus',        // 系统状态
         minWidth: 120,
         field: 'status'
-    }
-    /*{
+    },
+    {
         title: 'operate',       // 操作
         minWidth: 120,
         field: ''
-    },*/
+    },
 ];
 
 // 付款账户管理表头
