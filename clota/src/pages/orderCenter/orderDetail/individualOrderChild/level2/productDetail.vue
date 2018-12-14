@@ -24,9 +24,11 @@
             <!--中间分销商不可退票和改签-->
             <div class="btn-wrapper" v-if="viewType !== 'allocation'">
                 <Button class="ivu-btn-88px ivu-hollow-out-blue"
+                        v-if="canApplyAlter"
                         :disabled="!canAlterTicket"
                         @click="applyChange()">{{$t('applyForUpgrade')}}</Button>
                 <Button class="ivu-btn-88px ivu-hollow-out-blue"
+                        v-if="canApplyRefund"
                         :disabled="!canRefundTicket"
                         @click="applyRefund()">{{$t('ApplyForRefund')}}</Button>
             </div>
@@ -39,7 +41,7 @@
                       :table-com-min-height="250"
                       :border="true"
                       :auto-height="true"
-                      :columnCheck="true"
+                      :columnCheck="canApplyAlter || canApplyRefund"
                       :selectable="selectable"
                       @selection-change="selectionChange">
                 <el-table-column
@@ -167,7 +169,9 @@
     import ticketChangingModal from '../components/ticketChangingModal'
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
-    import { transRescheduleStatus, transVerifyStatus } from '../../../commFun'
+    import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
+    import { mapGetters } from 'vuex';
+
     export default {
         components: {
             tableCom,
@@ -285,7 +289,18 @@
                 }else{
                     return this.chosedData.every(item => item.alterRule === 'true');
                 }
-            }
+            },
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //权限是否允许申请退票操作
+            canApplyRefund () {
+                return this.permissionInfo && 'applyRefund' in this.permissionInfo;
+            },
+            //权限是否允许申请改签操作
+            canApplyAlter () {
+                return this.permissionInfo && 'applyAlter' in this.permissionInfo;
+            },
 
         },
         methods: {
@@ -300,6 +315,7 @@
              * 申请改签
              */
             applyChange() {
+                if (!this.canApplyAlter) return;
                 if(this.chosedData.length > 0) {
                     this.$refs.ticketChangingModal.toggle({
                         chosedData: this.chosedData,
@@ -311,6 +327,7 @@
              * 申请退票
              */
             applyRefund() {
+                if (!this.canApplyRefund) return;
                 if(this.chosedData.length > 0) {
                     this.$refs.refundModal.toggle({
                         chosedData: this.chosedData,

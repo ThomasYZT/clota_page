@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="marketing-level">
-        <div class="btn-area">
+        <div class="btn-area" v-if="canOperateMarketType">
             <Button type="primary" class="ivu-btn-108px" @click="add">{{$t('add') + $t('level')}}</Button>
             <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
         </div>
@@ -13,7 +13,7 @@
                   :column-data="columnData"
                   :table-data="tableData"
                   :border="true"
-                  :column-check="true"
+                  :column-check="canOperateMarketType"
                   :total-count="totalCount"
                   :ofset-height="180"
                   :page-no-d.sync="filterData.pageNo"
@@ -21,6 +21,7 @@
                   @selection-change="selectionChange"
                   @query-data="getData">
             <el-table-column
+                v-if="canOperateMarketType"
                 slot="column5"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -56,6 +57,7 @@
     import { marketingLevelHead } from '../../tableHeadConfig';
     import addMarketingLevelModal from '../components/addMarketingLevelModal';
     import delModal from '@/components/delModal/index';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             levelLength : {
@@ -186,7 +188,16 @@
                 immediate : true,
                 deep : true
             }
-        }
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo',
+            ]),
+            //是否可以编辑营销类别
+            canOperateMarketType () {
+                return this.permissionInfo && 'operateMarketType' in this.permissionInfo;
+            },
+        },
     };
 </script>
 

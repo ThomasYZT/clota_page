@@ -18,7 +18,7 @@
                 <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
                 <span class="yellow-span" v-else-if="detail.auditStatus === 'auditing'">{{$t('waitChecking')}}</span><!--待审核-->
                 <span class="red-span" v-else-if="detail.auditStatus === 'rejected'">{{$t('rejected')}}</span><!--已驳回-->
-                <span class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
+                <span v-if="canApplyAuditProduct" class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
             </div>
 
             <!--表单信息-->
@@ -260,7 +260,7 @@
 
         <div class="footer">
             <!--已驳回-->
-            <template v-if="detail.auditStatus === 'rejected' || detail.auditStatus === 'not_enabled'">
+            <template v-if="(detail.auditStatus === 'rejected' || detail.auditStatus === 'not_enabled') && canApplyAuditProduct">
                 <Button type="primary"
                         @click="auditProduct('PRODUCT_APPLY')">{{$t('commitCheck')}}</Button><!--提交审核-->
                 <Button type="ghost"
@@ -268,17 +268,26 @@
             </template>
             <!--已启用-->
             <template v-else-if="detail.auditStatus === 'enabled' && manageOrgs.nodeType !== 'partner'">
-                <Button type="primary" @click="auditProduct('PRODUCT_DISABLE')">{{$t('disabled')}}</Button><!--禁用-->
+                <Button v-if="canDisabledProduct"
+                        type="primary"
+                        @click="auditProduct('PRODUCT_DISABLE')">{{$t('disabled')}}</Button><!--禁用-->
             </template>
             <!--待审核-->
             <template v-else-if="detail.auditStatus === 'auditing'">
-                <Button type="primary" @click="auditProduct('PRODUCT_AUDIT_PASS')">{{$t('checkPass')}}</Button><!--审核通过-->
-                <Button type="error" @click="auditProduct('PRODUCT_REVOCATION')">{{$t('revocation')}}</Button><!--撤回-->
-                <Button type="ghost" class="active-btn" @click="auditProduct('PRODUCT_AUDIT_REJECT')">{{$t('reject')}}</Button><!--驳回-->
+                <Button v-if="canAuditProduct"
+                        type="primary"
+                        @click="auditProduct('PRODUCT_AUDIT_PASS')">{{$t('checkPass')}}</Button><!--审核通过-->
+                <Button v-if="canRecalProduct"
+                        type="error"
+                        @click="auditProduct('PRODUCT_REVOCATION')">{{$t('revocation')}}</Button><!--撤回-->
+                <Button v-if="canAuditProduct"
+                        type="ghost"
+                        class="active-btn"
+                        @click="auditProduct('PRODUCT_AUDIT_REJECT')">{{$t('reject')}}</Button><!--驳回-->
             </template>
             <Button type="ghost" @click="goBack">{{$t('back')}}</Button><!--返回-->
             <!--待审核--填写备注-->
-            <template v-if="detail.auditStatus === 'auditing'">
+            <template v-if="detail.auditStatus === 'auditing' && canAuditProduct">
                 <span class="blue" @click="showRemarkModal">{{$t('fillNote')}}</span>
             </template>
         </div>
@@ -347,8 +356,25 @@
         },
         computed : {
             ...mapGetters([
-                'manageOrgs'
+                'manageOrgs',
+                'permissionInfo',
             ]),
+            //是否可以审核和驳回产品
+            canAuditProduct () {
+                return this.permissionInfo && 'auditProduct' in this.permissionInfo;
+            },
+            //是否可以撤回产品审核
+            canRecalProduct () {
+                return this.permissionInfo && 'addProduct' in this.permissionInfo;
+            },
+            //是否可以禁用产品
+            canDisabledProduct () {
+                return this.permissionInfo && 'pauseProduct' in this.permissionInfo;
+            },
+            //是否可以在驳回后提交审核和修改
+            canApplyAuditProduct () {
+                return this.permissionInfo && 'addProduct' in this.permissionInfo;
+            },
         },
         methods : {
 
@@ -365,6 +391,7 @@
 
             //修改
             modify () {
+                if (!this.canApplyAuditProduct) return;
                 this.$router.push({
                     name : 'addTicket',
                     params : {

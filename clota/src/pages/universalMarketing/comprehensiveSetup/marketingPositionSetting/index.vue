@@ -5,8 +5,10 @@
 <template>
     <div class="marketing-position-setting">
         <div class="btn-area">
-            <Button type="primary" class="ivu-btn-108px" @click="add">{{$t('add')}}</Button>
-            <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+            <template v-if="canEditPosition">
+                <Button type="primary" class="ivu-btn-108px" @click="add">{{$t('add')}}</Button>
+                <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+            </template>
 
             <Input class="input-field"
                    v-model.trim="filterData.keyword"
@@ -19,7 +21,7 @@
         <tableCom :column-data="columnData"
                   :table-data="tableData"
                   :border="true"
-                  :column-check="true"
+                  :column-check="canEditPosition"
                   :show-pagination="true"
                   :total-count="totalCount"
                   :ofset-height="120"
@@ -39,6 +41,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                v-if="canEditPosition"
                 slot="column6"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -95,8 +98,13 @@
         },
         computed : {
             ...mapGetters([
-                'manageOrgs'
-            ])
+                'manageOrgs',
+                'permissionInfo',
+            ]),
+            //是否可以编辑地理位置信息
+            canEditPosition () {
+                return this.permissionInfo && 'operateMarketPosition' in this.permissionInfo;
+            }
         },
         methods : {
             /**
@@ -176,6 +184,7 @@
     .marketing-position-setting {
         .btn-area {
             padding: 14px 30px;
+            overflow: auto;
 
             /deep/ .error {
                 background-color: #EB6751;

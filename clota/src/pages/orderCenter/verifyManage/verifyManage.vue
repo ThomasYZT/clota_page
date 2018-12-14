@@ -22,6 +22,7 @@
             <div class="result-container" v-if="tableData.orderInfoList && tableData.orderInfoList.length>0">
                 <div class="list-sign">{{$t('listForTicketSN')}}
                     <Button type="primary"
+                            v-if="canOrderChecker"
                             class="batch-verify"
                             :disabled="chosenRowData.ticket.length<=0"
                             @click="handleCommand('ticket')">{{$t('batchVerify')}}</Button><!--批量核销-->
@@ -31,7 +32,7 @@
                     :show-pagination="false"
                     :column-data="ticketColumnData"
                     :table-data="tableData.orderInfoList"
-                    :column-check="true"
+                    :column-check="canOrderChecker"
                     :selectable="setSelectable"
                     :border="true"
                     @selection-change="changeTicketSelection">
@@ -171,6 +172,7 @@
                     </el-table-column>
 
                     <el-table-column
+                        v-if="canOrderChecker"
                         slot="column17"
                         slot-scope="row"
                         :label="row.title"
@@ -301,6 +303,7 @@
                     </el-table-column>
 
                     <el-table-column
+                        v-if="canOrderChecker"
                         slot="column17"
                         slot-scope="row"
                         :label="row.title"
@@ -331,6 +334,7 @@
     import ajax from '@/api/index'
     import verifyModal from './child/verifyModal.vue';
     import {transOrderOrg, transSyncStatus, transSMSStatus, transVerifyStatus, transPickStatus} from '../commFun';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {tableCom, noDataTip, verifyModal},
@@ -361,7 +365,15 @@
                 },
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //权限是否允许核销订单
+            canOrderChecker () {
+                return this.permissionInfo && 'orderChecker' in this.permissionInfo;
+            },
+        },
         created() {
         },
         mounted() {
@@ -409,6 +421,7 @@
              * @param type - 类型  'ticket'-根据取票串码核销 | 'verify'-根据核销串码核销
              **/
             showModal(data, isBatch, type) {
+                if (!this.canOrderChecker) return;
                 if (data.verifyRule == 'true') {
                     this.$refs['verifyModal'].show({
                         list: isBatch ? data : [data],
@@ -418,6 +431,7 @@
                 }
             },
             handleCommand(type) {
+                if (!this.canOrderChecker) return;
                 if (this.chosenRowData[type].length<=0) {
                     this.$Message.error(this.$t('selectChannelOperate'));
                     return;

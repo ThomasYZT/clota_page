@@ -68,7 +68,7 @@
 
         <!-- 底部按钮区域 -->
         <transition name="fade">
-            <div class="box-footer" v-if="boxStatus !== 'null'">
+            <div class="box-footer" v-if="boxStatus !== 'null' && canOperateMarketType">
                 <template v-if="boxStatus === 'show'">
                     <div class="btn"><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
                     <div class="btn"><span class="warn-btn" @click="del">{{$t('del')}}</span></div>
@@ -123,7 +123,8 @@
         },
         computed : {
             ...mapGetters([
-                'manageOrgs'
+                'manageOrgs',
+                'permissionInfo',
             ]),
             boxStatus : {
                 get : function () {
@@ -132,7 +133,11 @@
                 set : function (newVal) {
                     this.codeInfo.status = newVal;
                 }
-            }
+            },
+            //是否可以编辑营销类别
+            canOperateMarketType () {
+                return this.permissionInfo && 'operateMarketType' in this.permissionInfo;
+            },
         },
         methods : {
             /**
@@ -224,7 +229,7 @@
                 }
             },
             deep : true
-        }
+        },
     };
 </script>
 

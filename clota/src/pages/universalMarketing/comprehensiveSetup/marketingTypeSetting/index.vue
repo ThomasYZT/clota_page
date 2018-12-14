@@ -73,9 +73,6 @@
                 this.isUpdate = true;
                 this.nowItem = nowItem;
             },
-        },
-        mounted () {
-            console.log(this.$refs.marketingLevel.tableData)
         }
     };
 </script>

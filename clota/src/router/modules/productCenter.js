@@ -91,7 +91,7 @@ export default {
                 component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/editSalePolicy.vue'),
                 meta : {
                     menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
-                    _name : 'product-policy',
+                    _name : 'addAndModifyPolicy',
                     rightPath : topMenuName + '.' + 'marketingPolicy',
                 },
             },
