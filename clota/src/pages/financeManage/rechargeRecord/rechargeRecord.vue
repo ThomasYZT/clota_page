@@ -25,6 +25,16 @@
             :border="true"
             @query-data="queryList">
             <el-table-column
+                slot="column3"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row.paymentType ? 'payType.' + scope.row.paymentType : '-')}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column6"
                 slot-scope="row"
                 :label="row.title"
@@ -60,20 +70,24 @@
                     <span :class="[scope.row.status]">{{scope.row.status ? $t('bizStatus.' + scope.row.status) : '-'}}</span>
                 </template>
             </el-table-column>
-            <!--<el-table-column-->
-                <!--slot="column7"-->
-                <!--slot-scope="row"-->
-                <!--:label="row.title"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth">-->
-                <!--<template slot-scope="scope">-->
+            <el-table-column
+                slot="column8"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
                     <!--<span class="operate"-->
                           <!--v-if="scope.row.status === 'pending_audit' && scope.row.peerOrgId === manageOrgs.id"-->
                           <!--@click="handleAudit(scope.row)">{{$t('checked')}}-->
                     <!--</span>-->
                     <!--<span v-else>{{'-'}}</span>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+                    <ul class="operate-list" v-if="scope.row.txnStatus !=='success' && scope.row.txnStatus !=='fail' && scope.row.txnStatus !=='cancelled'">
+                        <li class="operate" @click="query(scope.row)">{{$t('orgStructQuery')}}</li><!--查询-->
+                    </ul>
+                    <span v-else>-</span>
+                </template>
+            </el-table-column>
         </table-com>
 
         <!--审核充值 - 弹窗-->
@@ -160,6 +174,21 @@
             handleRecall(scopeRow) {
                 this.$refs.recallModal.show({item: scopeRow});
             },
+            /**
+             * 查询
+             * @param {*} data
+             */
+            query (data) {
+                ajax.post('queryConsumeUpdateBiz' , {
+                    transactionId : data.transactionId
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('searchPayResult') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('searchPayResult') }));
+                    }
+                })
+            }
         }
     };
 </script>
@@ -213,5 +242,17 @@
     }
     /deep/ .ivu-timeline-item-head {
         background-color: #404040;
+    }
+
+    .doing {
+        color: $color_yellow;
+    }
+
+    .success {
+        color: $color_green;
+    }
+
+    .fail {
+        color: $color_red;
     }
 </style>
