@@ -69,6 +69,8 @@ export const memberGetters = {
             } else {
                 return companyCode;
             }
+        } else {
+            return state.companyCode;
         }
     },
     //是否登录
