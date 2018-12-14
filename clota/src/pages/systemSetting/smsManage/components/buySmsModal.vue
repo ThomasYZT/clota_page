@@ -163,8 +163,6 @@
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
-                    //redirectUrl : ''
-                    //redirectUrl : encodeURI('https://www.baidu.com/')/*encodeURI(location.origin + '/#/systemSetting/smsManage/payStatus')*/,
                 }).then(res => {
                     if (res.success) {
                         const { href } = this.$router.resolve({

@@ -293,7 +293,7 @@
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc">
-                        {{$t('commitCheck')}}
+                        {{$t('save')}}
                     </Button>
                     <Button type="ghost"
                             @click="goBack"><!--放弃修改-->
@@ -601,7 +601,10 @@
                             }
                             rule.push(obj);
                         });
-
+                        //启用状态票修改完进入审核中状态
+                        if (this.type === 'modify' && this.formData.auditStatus === 'enabled') {
+                            this.formData.auditStatus = 'auditing';
+                        }
                         let params = {
                             //产品
                             productJson : JSON.stringify({
@@ -669,7 +672,6 @@
                     }
                 });
             },
-
             //修改可游玩园区
             modify ( data, index ) {
                 this.$refs.editPark.show({

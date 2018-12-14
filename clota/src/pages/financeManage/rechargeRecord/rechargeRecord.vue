@@ -32,7 +32,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <Tooltip placement="bottom" :transfer="true">
-                        <div v-html="statusFilter(scope.row.status)"></div>
+                        <span :class="[scope.row.txnStatus]">{{scope.row.txnStatus ? $t('txnStatus.' + scope.row.txnStatus) : '-'}}</span>
                         <div slot="content">
                             <Timeline>
                                 <TimelineItem v-for="(item, index) in scope.row.auditRecordVos"
@@ -48,6 +48,16 @@
                             </Timeline>
                         </div>
                     </Tooltip>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column7"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span :class="[scope.row.status]">{{scope.row.status ? $t('bizStatus.' + scope.row.status) : '-'}}</span>
                 </template>
             </el-table-column>
             <!--<el-table-column-->
@@ -130,27 +140,6 @@
                     }
                 });
             },
-
-            /**
-             * 充值状态过滤器
-             * params  status - 状态code
-             **/
-            statusFilter: function(status) {
-                let statusHtml = ``;
-                switch (status) {
-                    case 'valid' :
-                        statusHtml = `<span class="status-recharge pass">${this.$t('checkPass')}</span>`;
-                        break;
-                    case 'pending_audit' :
-                        statusHtml = `<span class="status-recharge pending">${this.$t('waitChecking')}</span>`;
-                        break;
-                    case 'rejected' :
-                        statusHtml = `<span class="status-recharge reject">${this.$t('rejected')}</span>`;
-                        break;
-                }
-                return statusHtml;
-            },
-
             // 搜索信息
             handleSearch() {
                 this.queryParams.pageNo = 1;

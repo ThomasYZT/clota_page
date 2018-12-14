@@ -57,8 +57,8 @@
                     });
                 } else {
                     this.$router.push({
-                        name : 'buySms'
-                    })
+                        name : 'rechargeRecord'
+                    });
                 }
             }
         }

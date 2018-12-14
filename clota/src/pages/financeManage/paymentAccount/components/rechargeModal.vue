@@ -154,6 +154,7 @@
              */
             queryOnlineAccount () {
                 ajax.post('queryOnlineAccount', {
+                    isPlatformAcc : false,
                     orgId : this.formData.peerOrgId,
                 }).then(res => {
                     if (res.success) {
@@ -225,12 +226,12 @@
                 }).then(res => {
                     if (res.success) {
                         const { href } = this.$router.resolve({
-                            name : 'rechargeRecord',
+                            name : 'financeRecharge',
                             params : {
                                 payFormData : res.data
                             },
                         });
-                        sessionStorage.setItem('smsPay', JSON.stringify({ payFormData : res.data }));
+                        sessionStorage.setItem('financeRecharge', JSON.stringify({ payFormData : res.data }));
                         window.open(href);
                         this.payModalShow = true;
                         this.hide();

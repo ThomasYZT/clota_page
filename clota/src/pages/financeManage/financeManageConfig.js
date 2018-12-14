@@ -24,7 +24,7 @@ export const rechargeHead = [
     {
         title: 'transactionSerialNumber',      // 交易流水号
         minWidth: 210,
-        field: 'tpOrderNo'
+        field: 'merchantTxnNo'
     },
     {
         title: 'remark',      // 备注
@@ -32,10 +32,15 @@ export const rechargeHead = [
         field: 'remark'
     },
     {
-        title: 'status',        // 状态
+        title: 'paymentStatus',        // 支付状态
+        minWidth: 120,
+        field: 'txnStatus'
+    },
+    {
+        title: 'systemStatus',        // 系统状态
         minWidth: 120,
         field: 'status'
-    },
+    }
     /*{
         title: 'operate',       // 操作
         minWidth: 120,

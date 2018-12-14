@@ -2028,6 +2028,6 @@ export default {
     'privalige.orderCheckerQuery' : '查询',
     'privalige.orderChecker' : '核销',
     'privalige.queryMarketPosition' : '查询',
-
     'selectMarketingOrSaleChannel' : '请选择销售渠道或新增营销等级',
+    'financeRecharge' : '账户充值',
 }
