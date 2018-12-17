@@ -181,32 +181,36 @@
                 </i-col>
             </i-row>
             <i-row>
-                <!--<i-col span="6">-->
-                    <!--&lt;!&ndash;营销状态&ndash;&gt;-->
-                    <!--<FormItem label="营销状态" >-->
-                        <!--<Select v-model.trim="formData.marketTypeId"-->
-                                <!--style="max-width: 200px">-->
-                            <!--<Option v-for="item  in orderChannelList"-->
-                                    <!--:key="item.value"-->
-                                    <!--:value="item.value">-->
-                                <!--{{$t(item.label)}}-->
-                            <!--</Option>-->
-                        <!--</Select>-->
-                    <!--</FormItem>-->
-                <!--</i-col>-->
-                <!--<i-col span="6">-->
-                    <!--&lt;!&ndash;营销级别&ndash;&gt;-->
-                    <!--<FormItem label="营销级别" >-->
-                        <!--<Select v-model.trim="formData.marketLevelId"-->
-                                <!--style="max-width: 200px">-->
-                            <!--<Option v-for="item  in verifyStatusList"-->
-                                    <!--:key="item.value"-->
-                                    <!--:value="item.value">-->
-                                <!--{{$t(item.label)}}-->
-                            <!--</Option>-->
-                        <!--</Select>-->
-                    <!--</FormItem>-->
-                <!--</i-col>-->
+                <i-col span="6">
+                    <!--营销类别-->
+                    <FormItem label="营销类别" >
+                        <Select v-model.trim="formData.marketTypeId"
+                                :disabled="formData.orderChannel !== 'market'"
+                                style="max-width: 200px"
+                                @on-change="marketTypeChange">
+                            <Option v-for="item  in marketTypeListFull"
+                                    :key="item.id"
+                                    :value="item.id">
+                                {{$t(item.typeName)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+                <i-col span="6">
+                    <!--营销级别-->
+                    <FormItem label="营销级别" >
+                        <Select v-model.trim="formData.marketLevelId"
+                                :disabled="formData.orderChannel !== 'market'"
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
+                            <Option v-for="item  in marketLevelListFull"
+                                    :key="item.id"
+                                    :value="item.id">
+                                {{$t(item.levelName)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
                 <i-col span="6">
                     <!--审核状态-->
                     <FormItem :label="$t('auditStatus')" >
@@ -337,9 +341,9 @@
                     //支付状态
                     paymentStatus : 'allStatus',
                     //营销类别
-                    marketTypeId : '',
+                    marketTypeId : 'all',
                     //营销级别
-                    marketLevelId : '',
+                    marketLevelId : 'all',
                     //关键字
                     keyword : ''
                 },
@@ -362,7 +366,11 @@
                 //支付状态
                 payStatusList : payStatusList,
                 //下单企业是否禁用
-                orderTaskDisabled : false
+                orderTaskDisabled : false,
+                //营销类别列表
+                marketTypeList : [],
+                //营销级别列表
+                marketLevelList  : []
             };
         },
         methods : {
@@ -474,8 +482,8 @@
                 this.formData.abnormalStatus = false;
                 this.formData.auditStatus = 'allStatus';
                 this.formData.paymentStatus = 'allStatus';
-                this.formData.marketTypeId = '';
-                this.formData.marketLevelId = '';
+                this.formData.marketTypeId = 'all';
+                this.formData.marketLevelId = 'all';
                 this.formData.keyword = '';
                 this.orderTypeChange();
                 this.searchProductList();
@@ -489,6 +497,45 @@
                 this.orderTaskDisabled = false;
                 this.formData.orderOrgId = '';
                 this.orderTypeChange();
+            },
+            /**
+             * 查询营销类别信息
+             */
+            queryMarketList () {
+                ajax.post('queryTypeList',{
+                    orgId : this.formData.orderOrgId
+                }).then(res => {
+                    if (res.success) {
+                        this.marketTypeList = res.data ? res.data : [];
+                    } else {
+                        this.marketTypeList = [];
+                    }
+                });
+            },
+            /**
+             * 营销类别改变，重新获取营销级别
+             */
+            marketTypeChange () {
+                this.queryLevelByTypeId();
+                this.searchProductList();
+            },
+            /**
+             * 根据营销类别获取营销级别信息
+             */
+            queryLevelByTypeId () {
+                if (this.formData.orderOrgId === 'all' || !this.formData.orderOrgId) {
+                    this.marketLevelList = [];
+                    return;
+                }
+                ajax.post('queryLevelByTypeId',{
+                    typeId : this.formData.marketTypeId
+                }).then(res => {
+                    if (res.success) {
+                        this.marketLevelList = res.data ? res.data : [];
+                    } else {
+                        this.marketLevelList = [];
+                    }
+                });
             }
         },
         created () {
@@ -535,8 +582,8 @@
                     auditStatus : this.formData.auditStatus === 'allStatus' ? '' : this.formData.auditStatus,
                     paymentStatus : this.formData.paymentStatus === 'allStatus' ? '' : this.formData.paymentStatus,
                     abnormalStatus : this.formData.abnormalStatus,
-                    marketTypeId : this.formData.marketTypeId,
-                    marketLevelId : this.formData.marketLevelId,
+                    marketTypeId : this.formData.marketTypeId !== 'all' ? this.formData.marketTypeId : '',
+                    marketLevelId : this.formData.marketLevelId !== 'all' ? this.formData.marketLevelId : '',
                     keyword : this.formData.keyword,
                     // orderOrgName : this.orderOrgName,
                 };
@@ -564,6 +611,20 @@
             //下单渠道
             orderChannelList () {
                 return this.formData.allocationStatus === 'true' ? distributorChannelList : notDistributorChannelList;
+            },
+            //营销类别选择
+            marketTypeListFull () {
+                return [].concat([{
+                    id : 'all',
+                    typeName : 'all'
+                }],this.marketTypeList);
+            },
+            //营销级别选择
+            marketLevelListFull () {
+                return [].concat([{
+                    id : 'all',
+                    levelName : 'all'
+                }],this.marketLevelList);
             }
         },
         watch : {
@@ -577,6 +638,16 @@
                             this.formData[item] = this.paramsDefault[item];
                         }
                     }
+                }
+            },
+            //监视下单企业变化，重新获取营销级别和营销类别信息
+            'formData.orderOrgId' (newVal,oldVal) {
+                this.formData.marketTypeId = 'all';
+                this.formData.marketLevelId = 'all';
+                this.marketTypeList = [];
+                this.marketLevelList = [];
+                if (newVal) {
+                    this.queryMarketList();
                 }
             }
         }

@@ -4,17 +4,17 @@
 export const regionHead = [
     {
         title : 'areaNo',
-        minWidth : 100,
+        minWidth : 150,
         field : 'id'
     },
     {
         title : 'areaName',
-        minWidth : 100,
+        minWidth : 150,
         field : 'area'
     },
     {
         title : 'areaRemark',
-        minWidth : 140,
+        minWidth : 150,
         field : 'remarks'
     },
     {

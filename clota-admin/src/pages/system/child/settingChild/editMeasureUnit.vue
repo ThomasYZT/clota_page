@@ -27,7 +27,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="22">
-                        <FormItem :label="$t('remark')">
+                        <FormItem :label="$t('remark')" prop="remarks">
                             <Input v-model.trim="formData.remarks"
                                    :placeholder="$t('inputPlaceholder')"
                                    type="textarea"/>

@@ -22,7 +22,7 @@ export const columns = [
     },
     {
         title : '社会信用代码',
-        minWidth : 150,
+        minWidth : 200,
         field : 'certificateNumber'
     },
     {
@@ -32,12 +32,13 @@ export const columns = [
     },
     {
         title : '注册时间',
-        minWidth : 180,
-        field : 'createdTime'
+        minWidth : 200,
+        field : 'createdTime',
+        type : 'dateTime'
     },
     {
         title : '受理客服',
-        minWidth : 100,
+        minWidth : 150,
         field : 'businessAccount'
     },
     {

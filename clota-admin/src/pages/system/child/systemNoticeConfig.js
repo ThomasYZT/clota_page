@@ -4,22 +4,22 @@
 export const systemHead = [
     {
         title : 'code',
-        minWidth : 100,
+        minWidth : 220,
         field : 'id'
     },
     {
         title : 'title',
-        minWidth : 100,
+        minWidth : 150,
         field : 'title'
     },
     {
         title : 'desc',
-        minWidth : 280,
+        minWidth : 250,
         field : 'content'
     },
     {
         title : 'noticeContent',
-        minWidth : 150,
+        minWidth : 200,
         field : 'images'
     },
     {
@@ -29,7 +29,7 @@ export const systemHead = [
     },
     {
         title : 'publishTime',
-        minWidth : 120,
+        minWidth : 180,
         field : 'releaseTime'
     },
     {
@@ -39,7 +39,7 @@ export const systemHead = [
     },
     {
         title : 'operate',
-        minWidth : 150,
+        width : 170,
         field : 'operate'
     },
 ];

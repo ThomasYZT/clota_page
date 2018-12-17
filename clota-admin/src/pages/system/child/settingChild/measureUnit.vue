@@ -18,7 +18,7 @@
             :total-count="total"
             :page-no-d.sync="unitListParams.page"
             :page-size-d.sync="unitListParams.pageSize"
-            :border="false"
+            :border="true"
             @selection-change="handleSelectionChange"
             @query-data="queryList">
             <el-table-column
@@ -26,8 +26,7 @@
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
-                :width="row.width"
-                :min-width="row.minWidth"
+                :width="90"
                 show-overflow-tooltip
                 type="selection"
                 slot-scope="row">
@@ -70,7 +69,7 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info" v-if="scoped.row.builtin === 'no'">
                         <template v-if="scoped.row.status === 'normal'">
-                            <li class="normal" @click="disabledUnit(scoped.row)">{{$t('disabled')}}</li>
+                            <li class="normal red-label" @click="disabledUnit(scoped.row)">{{$t('disabled')}}</li>
                         </template>
                         <template v-else>
                             <li class="normal" @click="openUnit(scoped.row)">{{$t('startUsing')}}</li>
@@ -217,7 +216,7 @@
                     ids : data
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.$Message.success(this.$t('delete') + this.$t('success'));
                         this.queryList();
                     } else {
                         this.$Message.error(res.message || this.$t('fail'));

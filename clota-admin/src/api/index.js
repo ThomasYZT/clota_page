@@ -16,9 +16,9 @@ if (process.env.NODE_ENV === 'development') {
     // baseUrl = '/clota_dev/'
     baseUrl = '';
 } else {
-    baseUrl = '';
+    baseUrl = '/';
 }
-
+console.log(config.HOST)
 const instance = axios.create({
     baseURL : config.HOST,
     validateStatus : function (status) {

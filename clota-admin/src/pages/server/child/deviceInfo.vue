@@ -25,7 +25,7 @@
                     <!-- 系统描述 -->
                     <li class="arg-list">
                         <span class="key">{{$t('systemDesc')}}：</span>
-                        <span class="val">{{serverDetail.description}}</span>
+                        <span class="val val-special">{{serverDetail.description}}</span>
                     </li>
                 </ul>
                 <ul class="detail-list">
@@ -90,8 +90,10 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import timeAlong from './deviceInfoChild/timeAlong';
     import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             timeAlong
@@ -215,7 +217,8 @@
                     @include block_outline(33.33%, auto);
 
                     .arg-list {
-                        @include block_outline($height: 30px);
+                        width: 100%;
+                        min-height: 30px;
                         padding: 4px;
                         line-height: 22px;
                         font-size: $font_size_14px;
@@ -230,6 +233,12 @@
                             flex: 1;
                             @include overflow_tip();
                             color: $color_666;
+
+                            &.val-special{
+                                overflow: auto;
+                                white-space: normal;
+                                word-break: break-all;
+                            }
                         }
                     }
                 }

@@ -5,6 +5,7 @@
         <div class="btn-area">
             <div class="search-by-word">
                 <Input v-model.trim="channelListParams.channelName"
+                       @on-enter="searchList"
                        :placeholder="$t('validateError.pleaseInput', { msg: $t('channelName')})"/>
                 <Button type="primary"
                         class="ivu-btn-90px"
@@ -26,7 +27,7 @@
             :total-count="total"
             :page-no-d.sync="channelListParams.page"
             :page-size-d.sync="channelListParams.pageSize"
-            :border="false"
+            :border="true"
             @selection-change="handleSelectionChange"
             @query-data="queryList">
             <el-table-column
@@ -34,8 +35,7 @@
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
-                :width="row.width"
-                :min-width="row.minWidth"
+                :width="90"
                 show-overflow-tooltip
                 type="selection"
                 slot-scope="row">
@@ -65,7 +65,7 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info">
                         <template v-if="scoped.row.status === 'normal'">
-                            <li class="normal" @click="disabledChannel(scoped.row)">{{$t('disabled')}}</li>
+                            <li class="normal red-label" @click="disabledChannel(scoped.row)">{{$t('disabled')}}</li>
                         </template>
                         <template v-else>
                             <li class="normal" @click="openChannel(scoped.row)">{{$t('startUsing')}}</li>

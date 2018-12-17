@@ -18,8 +18,7 @@
                         <!--服务器名称-->
                         <FormItem :label="$t('serverName')" prop="serverName">
                             <Input v-model="formData.serverName"
-                                   style="width: 280px"
-                                   :maxlength="50"/>
+                                   style="width: 280px"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
@@ -34,16 +33,14 @@
                         <!--应用服务-->
                         <FormItem :label="$t('usingService')" prop="usingService">
                             <Input v-model="formData.usingService"
-                                   style="width: 280px"
-                                   :maxlength="50"/>
+                                   style="width: 280px"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--系统-->
                         <FormItem :label="$t('system')" prop="system">
                             <Input v-model="formData.system"
-                                   style="width: 280px"
-                                   :maxlength="50"/>
+                                   style="width: 280px"/>
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -143,7 +140,7 @@
                             if (!res.data) {
                                 callback();
                             } else {
-                                    callback(this.$t('fieldExist',{ filed : this.$t('serverName') }));
+                                callback(this.$t('fieldExist',{ filed : this.$t('serverName') }));
                             }
                         } else {
                             callback(this.$t('checkFail',{ filed : this.$t('serverName') }) );
@@ -188,6 +185,11 @@
                             validator : validateServerName,
                             trigger : 'blur'
                         },
+                        {
+                            max : 50,
+                            message : this.$t('errorMaxLength',{ field : this.$t('serverName'),length : 50 }),
+                            trigger : 'blur'
+                        }
                     ],
                     IPname : [
                         {
@@ -197,10 +199,20 @@
                         },
                     ],
                     usingService : [
-                        { required : true,message : this.$t('validateError.pleaseInput', { msg : this.$t('usingService') }),trigger : 'blur' }
+                        { required : true,message : this.$t('validateError.pleaseInput', { msg : this.$t('usingService') }),trigger : 'blur' },
+                        {
+                            max : 50,
+                            message : this.$t('errorMaxLength',{ field : this.$t('usingService'),length : 50 }),
+                            trigger : 'blur'
+                        }
                     ],
                     system : [
-                        { required : true,message : this.$t('validateError.pleaseInput', { msg : this.$t('system') }),trigger : 'blur' }
+                        { required : true,message : this.$t('validateError.pleaseInput', { msg : this.$t('system') }),trigger : 'blur' },
+                        {
+                            max : 50,
+                            message : this.$t('errorMaxLength',{ field : this.$t('system'),length : 50 }),
+                            trigger : 'blur'
+                        }
                     ],
                     systemType : [
                         { required : true,message : this.$t('validateError.pleaseSelect', { msg : this.$t('systemType') }),trigger : 'change' }

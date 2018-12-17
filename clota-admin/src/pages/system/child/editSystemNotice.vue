@@ -162,10 +162,10 @@
                             title : this.formData.title,
                             content : this.formData.content,
                             images : this.formData.images.join(';'),
-                            picturePath : this.formData.images.join(';'),
+                            picturePath : this.formData.images.join(';')
                         };
                         if (this.type === 'add') {
-                            this.addNotice(this.formData);
+                            this.addNotice(params);
                         } else {
                             params.id = this.formData.id;
                             this.updateNotice(params);

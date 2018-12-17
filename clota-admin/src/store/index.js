@@ -124,15 +124,15 @@ export default new Vuex.Store({
     actions : {
         //获取用户权限信息
         getUserRight (store, route) {
-            ajax.get('getPrivileges').then(res => {
-                if (res.status === 200) {
-
-                } else {
-
-                }
-            }).catch(err => {
-                this.$Message.error(this.$t('interfaceError'));
-            });
+            // ajax.get('getPrivileges').then(res => {
+            //     if (res.status === 200) {
+			//
+            //     } else {
+			//
+            //     }
+            // }).catch(err => {
+            //     this.$Message.error(this.$t('interfaceError'));
+            // });
             return new Promise((resolve, reject) => {
                 let data = {
                     'index' : 'allow',
@@ -144,6 +144,7 @@ export default new Vuex.Store({
                     'log' : 'allow',
                 };
                 let routers = childDeepClone(routerClect, data);
+                console.log(routers)
                 routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
                 //重新设置路由信息
                 resetRouter(routers);

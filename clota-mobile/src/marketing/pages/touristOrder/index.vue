@@ -165,8 +165,8 @@
             getParams (params) {
                 if (params && params.marketUserId) {
                     this.$store.commit('marketUpdateMarketUserId',params.marketUserId);
-                    this.queryProductList();
                 }
+                this.queryProductList();
             }
         },
         computed : {
