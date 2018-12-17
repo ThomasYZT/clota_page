@@ -389,6 +389,7 @@
 
                     <Form-item prop="timesCheck">
                         <table-com
+                            auto-height
                             :table-com-min-height="250"
                             :column-data="proGroupColumnHead"
                             :table-data="playPoint"

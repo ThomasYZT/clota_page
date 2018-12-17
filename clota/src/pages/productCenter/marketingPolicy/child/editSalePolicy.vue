@@ -53,12 +53,14 @@
                     <div class="ivu-form-item-wrap single" v-if="formData.saleRule.type === 'playBeforeSold'">
                         <Form-item :label="$t('aheadDays')"><!--提前天数(M)-->
                             <InputNumber :max="365"
-                                         :min="0"
+                                         :min="1"
+                                         :editable="false"
                                          v-model.trim="formData.saleRule.beforeDay"
                                          :placeholder="$t('inputField', {field: ''})">
                             </InputNumber>
                             <span class="split">{{$t('To')}}</span>
                             <InputNumber :max="365"
+                                         :editable="false"
                                          :min="formData.saleRule.beforeDay || 0"
                                          v-model.trim="formData.saleRule.afterDay"
                                          :placeholder="$t('inputField', {field: ''})">
@@ -135,8 +137,8 @@
                                             style="width: 230px;height:28px;margin-left: 15px;"
                                             format="yyyy-MM-dd">
                             </el-date-picker>
-                            <span class="blue" v-if="showSaleDatePicker" @click="showDateType('showSaleDatePicker', false)">{{$t('toList')}}</span>
-                            <span class="blue" v-else @click="showDateType('showSaleDatePicker', true)">{{$t('toDate')}}</span>
+                            <span class="blue" v-if="showSaleDatePicker" @click="showDateType('showSaleDatePicker', false)">{{$t('expandDateList')}}</span>
+                            <span class="blue" v-else @click="showDateType('showSaleDatePicker', true)">{{$t('rollUpDateList')}}</span>
                             <!--列表视图-->
                             <div class="date-table-wrap" v-if="!showSaleDatePicker">
                                 <table-com
@@ -240,8 +242,7 @@
                             <!--@on-change="changePlaySelectTime"-->
                             <!--style="width: 230px;margin-left: 15px;">-->
                             <!--</DatePicker>-->
-                            <el-date-picker v-if="showPlayDatePicker"
-                                            type="dates"
+                            <el-date-picker type="dates"
                                             v-model="formData.playRule.specifiedTime"
                                             :clearable="false"
                                             :editable="false"
@@ -251,8 +252,8 @@
                                             style="width: 230px;height:28px;margin-left: 15px;"
                                             format="yyyy-MM-dd">
                             </el-date-picker>
-                            <span class="blue" v-if="showPlayDatePicker" @click="showDateType('showPlayDatePicker', false)">{{$t('toList')}}</span>
-                            <span class="blue" v-else @click="showDateType('showPlayDatePicker', true)">{{$t('toDate')}}</span>
+                            <span class="blue" v-if="showPlayDatePicker" @click="showDateType('showPlayDatePicker', false)">{{$t('expandDateList')}}</span>
+                            <span class="blue" v-else @click="showDateType('showPlayDatePicker', true)">{{$t('rollUpDateList')}}</span>
                             <!--列表视图-->
                             <div class="date-table-wrap" v-if="!showPlayDatePicker">
                                 <table-com
@@ -528,6 +529,9 @@
                                         </template>
                                     </el-table-column>
                                 </table-com>
+                                <p class="remark">1、若退票免手续费，则无需设置任何档位。</p>
+                                <p class="remark">2、各档费率应覆盖产品提前销售的时间。例如，产品提前30天销售，则设置退票费率档位应覆盖游玩日期当之前30天。</p>
+                                <p class="remark">3、游客在设置的费率期限外申请退票，系统将按免手续费处理。</p>
                             </template>
                         </Form-item>
                     </div>
@@ -697,8 +701,8 @@
                     //销售规则
                     saleRule : {
                         "type" : "playBeforeSold",//期限类型（游玩日期前M天可售-playBeforeSold，指定期间-specifiedPeriodSold，指定日期-specifiedDateSold）
-                        "beforeDay" : 0,//提前天数前
-                        "afterDay" : 365,//提前天数后
+                        "beforeDay" : 1,//提前天数前
+                        "afterDay" : 30,//提前天数后
                         "time" : [new Date(),new Date().addDays(7)],//开始时间startTime-结束时间endTime
                         "dateType" : 'custom',//日期类型
                         "startTime" : "",//开始时间
@@ -1519,6 +1523,13 @@
                 color: $color_red;
             }
 
+        }
+
+        .remark {
+            color: $color_yellow;
+            &:last-child {
+                margin-bottom: 20px;
+            }
         }
 
     }

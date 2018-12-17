@@ -791,7 +791,7 @@ export default {
     'updateStatus': 'update status',
     'To': 'to',
     'policyValidity': 'policy saleable period',
-    'aheadDays': 'cash withdrawal days (M)',
+    'aheadDays': 'cash withdrawal days (N)',
     'saleDayTime': 'time available for sale every day',
     'saleTodayTime': 'daily ticket sales time',
     'playDeadline': 'Play time limit',
@@ -1869,4 +1869,6 @@ export default {
     'close' : '关闭',
     'thisPartnerHasNotSettingAccount' : '该合作伙伴暂未配置在线收款账户',
     'financeRecharge' : '账户充值',
+    'expandDateList' : '展开日期清单',
+    'rollUpDateList' : '收起日期清单',
 }
