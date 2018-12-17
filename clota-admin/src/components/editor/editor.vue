@@ -6,6 +6,7 @@
     <div class="editor">
         <!-- 图片上传组件辅助-->
         <el-upload
+            v-show="false"
             class="avatar-uploader"
             :action="serverUrl"
             :headers="headers"
