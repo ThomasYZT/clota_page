@@ -516,6 +516,7 @@
              * 营销类别改变，重新获取营销级别
              */
             marketTypeChange () {
+                this.formData.marketLevelId = 'all';
                 this.queryLevelByTypeId();
                 this.searchProductList();
             },
