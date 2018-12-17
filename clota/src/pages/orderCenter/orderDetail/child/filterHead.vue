@@ -503,7 +503,7 @@
              */
             queryMarketList () {
                 ajax.post('queryTypeList',{
-                    orgId : this.formData.orderOrgId
+                    orgId : this.formData.scenicOrgId
                 }).then(res => {
                     if (res.success) {
                         this.marketTypeList = res.data ? res.data : [];
@@ -640,8 +640,8 @@
                     }
                 }
             },
-            //监视下单企业变化，重新获取营销级别和营销类别信息
-            'formData.orderOrgId' (newVal,oldVal) {
+            //监视所属景区变化，重新获取营销级别和营销类别信息
+            'formData.scenicOrgId' (newVal,oldVal) {
                 this.formData.marketTypeId = 'all';
                 this.formData.marketLevelId = 'all';
                 this.marketTypeList = [];
