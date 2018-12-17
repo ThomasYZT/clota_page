@@ -7,7 +7,6 @@
         <template v-if="nowfileItem.type === 'new-file' || nowfileItem.type === 'edit-file'">
             <div class="form-wrapper">
                 <Form ref="form"
-                      inline
                       label-position="left"
                       :label-width="300"
                       :model="formData"
@@ -16,7 +15,7 @@
                         <Input v-model="formData.title" :placeholder="$t('inputField', { field : this.$t('pageTitle') } )" style="width:400px;"></Input>
                     </FormItem>
                     <FormItem label="" :label-width="0" class="edit-form-item">
-                        <!--<UE :defaultMsg="defaultMsg" :config="config" id="ue" ref="ue"></UE>-->
+                        <editor :value.sync="formData.content"></editor>
                     </FormItem>
                 </Form>
             </div>
@@ -27,8 +26,8 @@
             </div>
         </template>
         <template v-else-if="nowfileItem.type === 'show-file'">
-            <h4>{{nowfileItem.name}}</h4>
-            <div v-html="nowfileItem.content"></div>
+            <h4 class="page-title">{{nowfileItem.name}}</h4>
+            <div class="page-content" v-html="content"></div>
         </template>
         <template v-else>
             <div class="no-data-wrapper">
@@ -41,6 +40,7 @@
 <script>
     import noDataTip from '@/components/noDataTip/noData-tip';
     import ajax from '@/api/index';
+    import editor from '@/components/editor/editor';
     export default {
         props : {
             nowfileItem : {
@@ -52,6 +52,7 @@
         },
         components : {
             noDataTip,
+            editor
         },
         data () {
             return {
@@ -61,13 +62,15 @@
                 formData : {
                     folderId : '',
                     title : '',
-                    picsIDs : []
+                    picsIDs : [],
+                    content : '',
                 },
                 defaultMsg : '',
                 config : {
                     initialFrameWidth : null,
                     initialFrameHeight : 400
                 },
+                content : '',
             };
         },
         methods : {
@@ -75,19 +78,44 @@
                 ajax.post('addPage', {
                     folderId : this.nowfileItem.folderId,
                     title : this.formData.title,
-                    content : this.$refs.ue.getUEContent(),
+                    content : this.formData.content,
                 }).then(res => {
-                    if (res.status === 200) {
+                    if (res.status === 200 && res.data) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        this.$emit('updatePageList', {
+                            folderId : this.nowfileItem.folderId,
+                            fileId : res.data.id,
+                        })
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
                     }
                 })
             },
             cancel () {
-
+                this.$emit('cancel', this.nowfileItem);
+            },
+            getPageInfo () {
+                ajax.get('pageInfo', {
+                    id : this.nowfileItem.id
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.content = res.data ? res.data.content : '';
+                    } else {
+                        this.content = '';
+                    }
+                })
             }
         },
+        watch : {
+            nowfileItem : {
+                handler (newVal) {
+                    if (newVal.type === 'show-file') {
+                        this.getPageInfo();
+                    }
+                },
+                deep : true,
+            }
+        }
     };
 </script>
 
@@ -95,6 +123,7 @@
     @import '~@/assets/scss/base';
 
     .edit-panel {
+        position: relative;
         width: 100%;
         height: 100%;
 
@@ -113,12 +142,16 @@
             }
 
             .edit-form-item {
+                width: 100%;
                /deep/ .ivu-form-item-content {
                    margin-left: 0 !important;
                }
             }
         }
         .btn-wrapper {
+            width: 100%;
+            position: absolute;
+            bottom: 10px;
             text-align: center;
 
             .ivu-btn-90px {
@@ -131,6 +164,15 @@
             height: 100%;
             position: relative;
         }
+    }
+
+    .page-title {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .page-content {
+        padding: 10px;
     }
 
 </style>

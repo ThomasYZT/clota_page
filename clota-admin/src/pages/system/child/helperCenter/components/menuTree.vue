@@ -8,12 +8,13 @@
             <span class="add-btn" @click="addNewFolder">+ {{$t('addFile')}}</span>
         </div>
         <el-tree ref="elTree"
+                 node-key="id"
                  :data="folderList"
                  :props="defaultProps"
                  icon-class="iconfont icon-file"
                  @node-click="nodeClick"
                  @current-change="currentChange">
-            <div class="menu-item" :class="{ 'new-file' : data.type === 'new-file' }" slot-scope="{node, data}">
+            <div class="menu-item" :class="{ 'selected-file' : (data.id === nowfileItem.id) && (data.type !== 'no_file') }" slot-scope="{node, data}">
                 <div class="label-wrapper">
                     <!-- 文件夹 -->
                     <template v-if="data.isFolder">
@@ -63,6 +64,20 @@
         props : {
             //当前选择的文件
             nowfileItem : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+            //取消保存的文件
+            cancelFile : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+            //更新信息
+            updateInfo : {
                 type : Object,
                 default () {
                     return {};
@@ -158,6 +173,7 @@
              * @param {object} data
              */
             editFolder (data) {
+                this.$refs.elTree.store.nodesMap[data.id].expanded = false;
                 forEach(this.folderList, (item, index) => {
                     if (item.id === data.id) {
                         this.$set(this.folderList[index],'type','edit');
@@ -252,40 +268,44 @@
             /**
              * 查询页面列表数据
              * @param {object} data
+             * @param {function} callback
              */
-            findPageList (data) {
-                ajax.get('pageList', {
-                    folderId : data.id
-                }).then(res => {
-                    if (res.status === 200) {
-                        forEach(this.folderList, (item, index) => {
-                            if (item.id === data.id) {
-                                this.folderList[index].pageList = res.data && res.data.pageList ? res.data.pageList.map((item) => {
-                                    return {
-                                        name : item.title,
-                                        type : 'show-file',
-                                        ...item
-                                    }
-                                }) : [];
-                                this.folderList[index].pageList.push({
+            findPageList (data, callback) {
+                    ajax.get('pageList', {
+                        folderId : data.id
+                    }).then(res => {
+                        if (res.status === 200) {
+                            forEach(this.folderList, (item, index) => {
+                                if (item.id === data.id) {
+                                    this.folderList[index].pageList = res.data && res.data.pageList ? res.data.pageList.map((item) => {
+                                        return {
+                                            name : item.title,
+                                            type : 'show-file',
+                                            ...item
+                                        }
+                                    }) : [];
+                                    this.folderList[index].pageList.push({
+                                        name : '+新增文件',
+                                        type : 'no_file',
+                                        folderId : data.id
+                                    });
+                                    return false;
+                                }
+                            });
+                            if (callback) {
+                                callback();
+                            }
+                        } else {
+                            this.folderList[index].pageList = [
+                                {
                                     name : '+新增文件',
                                     type : 'no_file',
                                     folderId : data.id
-                                });
-                                return false;
-                            }
-                        });
-                    } else {
-                        this.folderList[index].pageList = [
-                            {
-                                name : '+新增文件',
-                                type : 'no_file',
-                                folderId : data.id
-                            },
-                        ]
-                        this.$Message.error(this.$t('getPageListFailure'));
-                    }
-                })
+                                },
+                            ]
+                            this.$Message.error(this.$t('getPageListFailure'));
+                        }
+                    });
             },
             /**
              * 节点被点击时的回掉
@@ -293,13 +313,18 @@
              * @param {object} node
              */
             nodeClick (data, node) {
-                if (data.isFolder) {
-                    this.findPageList(data);
+                if (data.isFolder && data.type !== 'add' && data.type !== 'edit') {
+                    if (this.$refs.elTree.store.nodesMap[data.id].expanded) {
+                        this.findPageList(data);
+                    }
                 } else {
+                    this.$emit('update:nowfileItem', data);
+                    if (this.$refs.elTree.store.nodesMap[data.id]) {
+                        this.$refs.elTree.store.nodesMap[data.id].expanded = false;
+                    }
+
                     if (data.type === 'no_file') {
                         this.addFile(data);
-                    } else if (data.type === 'show-file') {
-                        this.$emit('update:nowfileItem', data);
                     }
                 }
             },
@@ -308,17 +333,7 @@
              * @param data
              */
             addFile (data) {
-                let status = true;
-                forEach(this.folderList, (folder) => {
-                    forEach(folder.pageList, (page) => {
-                        if (page.type === 'new-file') {
-                            status = false;
-                            this.$Message.warning(this.$t('youHaveUnsavedFile'));
-                            return false;
-                        }
-                    })
-                })
-                if (status) {
+                if (this.validEditFile()) {
                     forEach(this.folderList, (item, index) => {
                         if (item.id === data.folderId) {
                             this.folderList[index].pageList.pop();
@@ -331,16 +346,95 @@
                             this.folderList[index].pageList.push({
                                 name : '+新增文件',
                                 type : 'no_file',
-                                folderId : data.id
+                                folderId : data.folderId
                             });
-                            this.$emit('update:nowfileItem', this.folderList[index].pageList[this.folderList[index].pageList.length - 2]);
+                            this.$nextTick(() => {
+                                //console.log(this.folderList[index].pageList[this.folderList[index].pageList.length - 2])
+                                this.$emit('update:nowfileItem', this.folderList[index].pageList[this.folderList[index].pageList.length - 2]);
+                            });
+                            return false;
                         }
                     });
                 }
+            },
+            /**
+             * 检查是否有正在编辑的文件
+             * @return {boolean}
+             */
+            validEditFile () {
+                let status = true;
+                forEach(this.folderList, (folder) => {
+                    forEach(folder.pageList, (page) => {
+                        if (page.type === 'new-file') {
+                            status = false;
+                            this.$Message.warning(this.$t('youHaveUnsavedFile'));
+                            return false;
+                        }
+                    })
+                });
+                return status;
+            },
+            /**
+             * 取消保存文件
+             */
+            revoke () {
+                let status = false;
+                forEach(this.folderList, (folder) => {
+                    if (status) {
+                        return false;
+                    } else {
+                        forEach(folder.pageList, (page, index) => {
+                            if (page.type === 'new-file') {
+                                folder.pageList.splice(index, 1);
+                                this.$emit('update:nowfileItem', {});
+                                status = true;
+                                return false;
+                            }
+                        });
+                    }
+                });
+            },
+            /**
+             * 新增文件跟新列表信息
+             * @param {object} data
+             */
+            updateInfoList (data) {
+                //查询文件列表数据
+                this.findPageList({
+                    id : data.folderId,
+                }, () => {
+                    this.$emit('update:nowfileItem', {
+                        ...this.folderList.find(item => {
+                            return item.id === data.folderId;
+                        }).pageList.find(item => {
+                            return item.id === data.fileId;
+                        })
+                    })
+                });
+                //展开要更新的文件夹
+                this.$refs.elTree.store.nodesMap[data.folderId].expanded = true;
             }
         },
         created () {
             this.findfolderList();
+        },
+        watch : {
+            cancelFile : {
+                handler (file) {
+                    if (Object.keys(file).length > 0) {
+                        this.revoke();
+                    }
+                },
+                deep : true,
+            },
+            updateInfo : {
+                handler (newVal) {
+                    if (Object.keys(newVal).length > 0) {
+                        this.updateInfoList(newVal);
+                    }
+                },
+                deep : true,
+            }
         }
     };
 </script>
@@ -383,7 +477,10 @@
                 }
 
                 .add-file-btn {
+                    padding: 2px;
                     display: inline-block;
+                    border-radius: 3px;
+                    font-size: 12px;
                     border: 1px dotted $color_gray;
                 }
 
@@ -443,8 +540,9 @@
             }
         }
 
-        .new-file {
+        .selected-file {
             background-color: #f5f7fa;
+            border-radius: 5px;
         }
     }
 

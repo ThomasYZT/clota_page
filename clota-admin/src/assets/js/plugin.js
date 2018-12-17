@@ -44,6 +44,8 @@ import {
 import confirmModal from '../../components/confirmModal/index';
 import selectTree from '../../components/selectTree/index';
 
+//引入富文本编辑
+import VueQuillEditor from 'vue-quill-editor';
 
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
@@ -108,6 +110,9 @@ plugin.install = function (Vue, options) {
     Vue.component('TimelineItem',TimelineItem);
     Vue.component('Upload',Upload);
     Vue.prototype.$Message = Message;
+
+    //引入富文本编辑器组件
+    Vue.use(VueQuillEditor)
 
     //自定义全局组件
     Vue.component('confirmModal',confirmModal);
