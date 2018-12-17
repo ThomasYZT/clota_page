@@ -66,6 +66,10 @@ export default {
     //获取产品可预定日期
     'getProductPolicyPlayDate': '/order/getProductPolicyPlayDate',
     //通知游客取票
-    'noticeVisitorToPick': '/order/noticeVisitorToPick'
+    'noticeVisitorToPick': '/order/noticeVisitorToPick',
+    //查询营销类别
+    'queryTypeList': '/market/type/typeList',
+    //查询营销级别
+    'queryLevelByTypeId': '/market/type/queryLevelByTypeId',
 
 }
