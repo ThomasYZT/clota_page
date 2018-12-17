@@ -349,7 +349,6 @@
                                 folderId : data.folderId
                             });
                             this.$nextTick(() => {
-                                //console.log(this.folderList[index].pageList[this.folderList[index].pageList.length - 2])
                                 this.$emit('update:nowfileItem', this.folderList[index].pageList[this.folderList[index].pageList.length - 2]);
                             });
                             return false;

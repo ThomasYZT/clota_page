@@ -127,6 +127,10 @@
                     if (newVal.type === 'show-file') {
                         this.getPageInfo();
                     }
+
+                    if (this.$refs.form) {
+                        this.$refs.form.resetFields();
+                    }
                 },
                 deep : true,
             }
