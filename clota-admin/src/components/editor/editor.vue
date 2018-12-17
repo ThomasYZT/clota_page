@@ -7,7 +7,6 @@
         <quill-editor
             ref="myQuillEditor"
             :options="editorOption"
-            :placeholder="'11111111111'"
             @change="onEditorChange($event)">
         </quill-editor>
     </div>

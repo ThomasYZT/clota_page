@@ -384,5 +384,6 @@ export default {
     'youHaveUnsavedFile' : '您有尚未保存的文件',
     'pageTitle' : '页面标题',
     'accountInvalid' : '账户未激活',
+    'pageContent' : '页面内容'
 
 };

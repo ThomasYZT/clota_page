@@ -65,18 +65,31 @@
         background: $color_fff;
 
         .menu-wrapper {
+            height: 100%;
             width: 25%;
             padding: 0 10px;
             flex: 1 0;
             flex-basis: 25%;
+            overflow: auto;
             border-right: 1px solid $color_gray;
+        }
+        .menu-wrapper::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
         }
 
         .article-wrapper {
+            height: 100%;
             width: 75%;
             padding: 0 20px;
             flex: 1 0;
             flex-basis: 75%;
+            overflow: auto;
+        }
+
+        .article-wrapper::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
         }
     }
 </style>
