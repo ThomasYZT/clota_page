@@ -86,7 +86,7 @@ export default {
     'switchUnit' : 'unit/switch.json',
 
     //查询节假日列表
-    'holidayList' : 'holiday/list.json',
+    'holidayList' : 'holiday/naneLike.json',
     //添加节假日
     'addHoliday' : 'holiday/add.json',
     //修改节假日

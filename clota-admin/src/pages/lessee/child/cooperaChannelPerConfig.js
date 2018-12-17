@@ -146,7 +146,8 @@ export const columns = {
         {
             title : '驳回时间',
             width : 200,
-            field : 'auditTime'
+            field : 'auditTime',
+            type : 'dateTime'
         },
         {
             title : '操作',
