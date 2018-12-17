@@ -791,7 +791,7 @@ export default {
     'updateStatus': '更新状态',
     'To': '至',
     'policyValidity': '政策可售期',
-    'aheadDays': '提前天数(M)',
+    'aheadDays': '提前天数(N)',
     'saleDayTime': '每日可售时间',
     'saleTodayTime': '当日票可售时间',
     'playDeadline': '游玩期限',
@@ -2032,4 +2032,6 @@ export default {
     'financeRecharge' : '账户充值',
     'driverAddSuccess' : '保存司机信息',
     'range' : '范围',
+    'expandDateList' : '展开日期清单',
+    'rollUpDateList' : '收起日期清单',
 }

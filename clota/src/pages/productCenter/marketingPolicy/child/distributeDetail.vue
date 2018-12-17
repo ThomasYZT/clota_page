@@ -400,6 +400,7 @@
                     line-height: 28px;
                     color: #2F70DF;
                     font-size: 14px;
+                    cursor: pointer;
                 }
             }
 
