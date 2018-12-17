@@ -523,7 +523,7 @@
              * 根据营销类别获取营销级别信息
              */
             queryLevelByTypeId () {
-                if (this.formData.orderOrgId === 'all' || !this.formData.orderOrgId) {
+                if (this.formData.scenicOrgId === 'all' || !this.formData.scenicOrgId) {
                     this.marketLevelList = [];
                     return;
                 }
