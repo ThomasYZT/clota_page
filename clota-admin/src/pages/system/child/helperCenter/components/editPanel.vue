@@ -30,6 +30,9 @@
             <div class="page-content">
                 <p class="content" v-html="content"></p>
             </div>
+            <div class="btn-wrapper">
+                <Button type="error" class="ivu-btn-90px" @click="del">删除</Button>
+            </div>
         </template>
         <template v-else>
             <div class="no-data-wrapper">
@@ -119,6 +122,24 @@
                         this.content = '';
                     }
                 });
+            },
+            /**
+             * 删除文件
+             */
+            del () {
+                ajax.post('deletePage', {
+                    id : this.nowfileItem.id
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('delete') }));
+                        this.$emit('updatePageList', {
+                            folderId : this.nowfileItem.folderId,
+                            fileId : '',
+                        });
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('delete') }));
+                    }
+                })
             }
         },
         watch : {

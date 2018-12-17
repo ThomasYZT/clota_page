@@ -281,6 +281,7 @@
                                         return {
                                             name : item.title,
                                             type : 'show-file',
+                                            folderId : data.id,
                                             ...item
                                         }
                                     }) : [];
@@ -398,17 +399,17 @@
              * @param {object} data
              */
             updateInfoList (data) {
+                console.log(data)
                 //查询文件列表数据
                 this.findPageList({
                     id : data.folderId,
                 }, () => {
-                    this.$emit('update:nowfileItem', {
-                        ...this.folderList.find(item => {
-                            return item.id === data.folderId;
-                        }).pageList.find(item => {
-                            return item.id === data.fileId;
-                        })
-                    })
+                    let item = this.folderList.find(item => {
+                        return item.id === data.folderId;
+                    }).pageList.find(item => {
+                        return item.id === data.fileId;
+                    });
+                    this.$emit('update:nowfileItem', data.fileId ? item : {});
                 });
                 //展开要更新的文件夹
                 this.$refs.elTree.store.nodesMap[data.folderId].expanded = true;
