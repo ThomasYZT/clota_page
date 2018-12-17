@@ -4,6 +4,18 @@
 -->
 <template>
     <div class="editor">
+        <!-- 图片上传组件辅助-->
+        <el-upload
+            class="avatar-uploader"
+            :action="serverUrl"
+            :headers="headers"
+            name="file"
+            :show-file-list="false"
+            :on-success="uploadSuccess"
+            :on-error="uploadError"
+            :before-upload="beforeUpload">
+        </el-upload>
+
         <quill-editor
             ref="myQuillEditor"
             :options="editorOption"
@@ -18,6 +30,7 @@
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
+    import ajax from '@//api/index';
     export default {
         props : {
             value : {
@@ -32,38 +45,82 @@
             return {
                 editorOption : {
                     modules : {
-                        toolbar : [
-                            ['bold', 'italic', 'underline', 'strike'],
-                            ['blockquote', 'code-block'],
-                            [{ 'header' : 1 }, { 'header' : 2 }],
-                            [{ 'list' : 'ordered' }, { 'list' : 'bullet' }],
-                            [{ 'script' : 'sub' }, { 'script' : 'super' }],
-                            [{ 'indent' : '-1' }, { 'indent' : '+1' }],
-                            [{ 'direction' : 'rtl' }],
-                            [{ 'size' : ['small', false, 'large', 'huge'] }],
-                            [{ 'header' : [1, 2, 3, 4, 5, 6, false] }],
-                            [{ 'font' : [] }],
-                            [{ 'color' : [] }, { 'background' : [] }],
-                            [{ 'align' : [] }],
-                            ['clean'],
-                            ['link', 'image']
-                        ],
+                        toolbar : {
+                            container : [
+                                ['bold', 'italic', 'underline', 'strike'],
+                                ['blockquote', 'code-block'],
+                                [{ 'header' : 1 }, { 'header' : 2 }],
+                                [{ 'list' : 'ordered' }, { 'list' : 'bullet' }],
+                                [{ 'script' : 'sub' }, { 'script' : 'super' }],
+                                [{ 'indent' : '-1' }, { 'indent' : '+1' }],
+                                [{ 'direction' : 'rtl' }],
+                                [{ 'size' : ['small', false, 'large', 'huge'] }],
+                                [{ 'header' : [1, 2, 3, 4, 5, 6, false] }],
+                                [{ 'font' : [] }],
+                                [{ 'color' : [] }, { 'background' : [] }],
+                                [{ 'align' : [] }],
+                                ['clean'],
+                                ['link', 'image']
+                            ],
+                            handlers : {
+                                'image' : function (value) {
+                                    if (value) {
+                                        document.querySelector('.el-upload__input').click();
+                                    } else {
+                                        this.quill.format('image', false);
+                                    }
+                                }
+                            }
+                        }
                     },
-                    placeholder : this.$t('inputPlaceholder')
-                }
+                    placeholder : this.$t('inputPlaceholder'),
+
+                },
             };
+        },
+        computed : {
+            headers () {
+                return {
+                    token : ajax.getToken()
+                };
+            },
+            serverUrl () {
+                return ajax.getHost('uploadPicture');
+            },
+            editor () {
+                return this.$refs.myQuillEditor.quill;
+            },
         },
         methods : {
             // 内容改变事件
             onEditorChange ({ html }) {
-                this.$emit('update:value', html)
+                this.$emit('update:value', html);
             },
+            // 富文本图片上传前
+            beforeUpload () {
+                this.$store.commit('changePromisings','add');
+            },
+            uploadSuccess (res) {
+                let quill = this.$refs.myQuillEditor.quill;
+                if (res.status === 200 && res.data) {
+                    // 获取光标所在位置
+                    let length = quill.getSelection().index;
+                    // 插入图片  res.info为服务器返回的图片地址
+                    quill.insertEmbed(length, 'image', res.data.imageUrls && res.data.imageUrls.length > 0 ? res.data.imageUrls[0].url : '');
+                    // 调整光标到最后
+                    quill.setSelection(length + 1);
+                } else {
+                    this.$Message.error(this.$t('failureTip', { tip : this.$t('insertImg') }));
+                }
+                this.$store.commit('changePromisings','del');
+            },
+
+            // 富文本图片上传失败
+            uploadError () {
+                this.$store.commit('changePromisings','del');
+                this.$Message.error(this.$t('failureTip', { tip : this.$t('insertImg') }));
+            }
         },
-        computed : {
-            editor () {
-                return this.$refs.myQuillEditor.quill;
-            },
-        }
     };
 </script>
 

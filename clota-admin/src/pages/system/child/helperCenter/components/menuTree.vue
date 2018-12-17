@@ -14,7 +14,7 @@
                  icon-class="iconfont icon-file"
                  @node-click="nodeClick"
                  @current-change="currentChange">
-            <div class="menu-item" :class="{ 'selected-file' : (data.id === nowfileItem.id) && (data.type !== 'no_file') }" slot-scope="{node, data}">
+            <div class="menu-item" :class="{ 'selected-file' : (data.id === nowfileItem.id) && (data.type !== 'no_file') && !data.isFolder }" slot-scope="{node, data}">
                 <div class="label-wrapper">
                     <!-- 文件夹 -->
                     <template v-if="data.isFolder">

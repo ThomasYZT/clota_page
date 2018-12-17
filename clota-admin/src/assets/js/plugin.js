@@ -12,7 +12,7 @@ import DropdownMenu from 'element-ui/lib/dropdown-menu';
 import DropdownItem from 'element-ui/lib/dropdown-item';
 import tooltip from 'element-ui/lib/tooltip';
 import Tree from 'element-ui/lib/tree';
-
+import ElUpload from 'element-ui/lib/upload';
 //按需引入iview组件
 import {
     Button,
@@ -70,6 +70,7 @@ plugin.install = function (Vue, options) {
     Vue.use(DropdownItem);
     Vue.use(tooltip);
     Vue.use(Tree);
+    Vue.use(ElUpload);
 
     //iview按需引入
     Vue.component('Button',Button);
