@@ -51,7 +51,6 @@ export const memberGetters = {
     },
     //公司id
     companyCode : state => {
-        // return 'C2001';
         let companyCode = '';
         if (!state.companyCode) {
             let url = location.href;

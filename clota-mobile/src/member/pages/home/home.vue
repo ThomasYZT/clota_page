@@ -32,7 +32,7 @@
                 :hide-on-blur="true">
           <div class="txt">
               <p class="title">{{$t('addMemberCard')}}</p>
-              <p>{{$t('addMemberCardTxt')}}！</p>
+              <p>{{$t('addMemberCardTxtOne') + cardExt.length + $t('addMemberCardTxtTwo')}}！</p>
           </div>
           <div class="opreta-btn">
               <div class="no" @click="isShowCard=false;">{{$t('getCardBtnNo')}}</div>
@@ -142,7 +142,7 @@
                 // 展示卡包
                 isShowCard: false,
                 // 卡的拓展信息
-                cardExt: {}
+                cardExt: []
             };
         },
         created () {
@@ -227,12 +227,12 @@
              */
             queryUnboundCard () {
                 ajax.post('queryUnboundCard', {
-                    openId: this.userInfo.openId
+                    memberId: this.userInfo.memberId
                 }).then((res) => {
                     if(res.success) {
-                        if (res.data && res.data!=null) {
+                        if (res.data && res.data.length!=0) {
                             this.isShowCard = true;
-                            this.getWxMpCardId(res.data.cardCode);
+                            this.getCardExt();
                             this.getCardListInfo();
                         }
                     } else {
@@ -241,29 +241,15 @@
                 });
             },
             /**
-             * 获取卡Id
-             */
-            getWxMpCardId (cardCode) {
-                ajax.post('getWxMpCardId').then((res) => {
-                    if(res.success) {
-                        this.getCardExt(res.data, cardCode);
-                    } else {
-                        this.$vux.toast.text(this.$t(res.code));
-                    }
-                });
-            },
-            /**
              * 获取卡的拓展信息
              */
-            getCardExt (cardId, cardCode) {
-                ajax.post('getCardExt', {
-                    companyCode: this.companyCode,
-                    code: cardCode,
-                    cardId: cardId,
-                    openId: this.userInfo.openId
+            getCardExt () {
+                ajax.post('getBatchCardExt', {
+                    openId: this.userInfo.openId,
+                    memberId: this.userInfo.memberId
                 }).then((res) => {
                     if(res.success) {
-                        this.cardExt = res.data ? res.data : {};
+                        this.cardExt = res.data ? res.data : [];
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
                     }
@@ -273,20 +259,21 @@
              * 领取卡包
              */
             getCard () {
-                let cardExt = {
-                    code: this.cardExt.code,
-                    openid: this.cardExt.openId,
-                    timestamp: this.cardExt.timestamp,
-                    nonce_str: this.cardExt.nonceStr,
-                    signature: this.cardExt.signature
-                };
+                let cardList = [];
+                this.cardExt.forEach(item => {
+                    cardList.push({
+                        cardId: item.cardId,
+                        cardExt: JSON.stringify({
+                            code: item.code,
+                            openid: item.openId,
+                            timestamp: item.timestamp,
+                            nonce_str: item.nonceStr,
+                            signature: item.signature
+                        })
+                    });
+                });
                 this.$wechat.addCard({
-                    cardList: [
-                        {
-                            cardId: this.cardExt.cardId,
-                            cardExt: JSON.stringify(cardExt)
-                        }
-                    ],
+                    cardList: cardList,
                     success: res => {
                         console.log(res);
                     },

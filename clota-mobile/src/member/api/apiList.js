@@ -12,6 +12,8 @@ const apiList = {
     getWxMpCardId: '/wechat/mp/card/getWxMpCardId',
     // 领取卡所需要的扩展信息
     getCardExt: '/wechat/mp/card/getCardExt',
+    // 获取批量卡的扩展信息
+    getBatchCardExt: '/wechat/mp/card/getBatchCardExt',
     // 是否领取至微信卡包
     queryUnboundCard: '/external/memberInfo/queryUnboundCard',
     // 微信会员卡激活
@@ -19,7 +21,7 @@ const apiList = {
     // 激活会员卡查询微信信息
     queryWxMemberInfo: '/external/memberInfo/queryWxMemberInfo',
     // 微信统一下单
-    payUnifiedorder: '//wechat/mp/pay/unifiedorder',
+    payUnifiedorder: '/wechat/mp/pay/unifiedorder',
     //获取验证码
     getCode : '/external/member/getPhoneVerificationCode',
     //会员登录

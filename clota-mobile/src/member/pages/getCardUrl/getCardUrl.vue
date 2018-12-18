@@ -43,7 +43,7 @@
                 let wxUserInfo = localStorage.getItem('wxUserInfo') && localStorage.getItem('wxUserInfo')!=={} ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
                 if (wxUserInfo && wxUserInfo.openId) {
                     this.wxUserInfo = wxUserInfo;
-                    this.queryUnboundCard();
+                    this.getCardExt();
                     return false;
                 }
                 ajax.post('getOAuth2UserInfo',{
@@ -65,7 +65,7 @@
                             this.wxUserInfo = {};
                         }
                     }
-                    this.queryUnboundCard();
+                    this.getCardExt();
                 });
             },
             /**
@@ -88,39 +88,11 @@
                 return obj;
             },
             /**
-             * 是否领取会员卡至微信卡包
-             */
-            queryUnboundCard () {
-                ajax.post('queryUnboundCard', {
-                    openId: this.wxUserInfo.openId
-                }).then((res) => {
-                    if(res.success) {
-                        this.getWxMpCardId(res.data ? res.data.cardCode : '');
-                    } else {
-                        this.$vux.toast.text(this.$t(res.code));
-                    }
-                });
-            },
-            /**
-             * 获取卡Id
-             */
-            getWxMpCardId (cardCode) {
-                ajax.post('getWxMpCardId').then((res) => {
-                    if(res.success) {
-                        this.getCardExt(res.data, cardCode);
-                    } else {
-                        this.$vux.toast.text(this.$t(res.code));
-                    }
-                });
-            },
-            /**
              * 获取卡的拓展信息
              */
-            getCardExt (cardId, cardCode) {
+            getCardExt () {
                 ajax.post('getCardExt', {
                     companyCode: this.companyCode,
-                    code: cardCode,
-                    cardId: cardId,
                     openId: this.wxUserInfo.openId
                 }).then((res) => {
                     if(res.success) {

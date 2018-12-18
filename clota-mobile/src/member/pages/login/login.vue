@@ -215,6 +215,8 @@
                         //错误信息为空，表示获取到了用户信息
                         if (!res.errcode) {
                             this.wxUserInfo = res.data ? res.data : {};
+                            //存储token信息
+                            localStorage.setItem('wxUserInfo', JSON.stringify(this.wxUserInfo));
                         } else {
                             this.wxUserInfo = {};
                         }
@@ -257,11 +259,7 @@
              */
             toRegister () {
                 this.$router.replace({
-                    name : 'mobileRegister',
-                    query : {
-                        openId : this.wxUserInfo.openId,
-                        orgId: this.wxUserInfo.orgId
-                    }
+                    name : 'mobileRegister'
                 });
             },
             /**
@@ -269,10 +267,7 @@
              */
             activateCard () {
                 this.$router.push({
-                    name : 'activateCard',
-                    params : {
-                        openId : this.wxUserInfo.openId
-                    }
+                    name : 'activateCard'
                 });
             },
             /**
