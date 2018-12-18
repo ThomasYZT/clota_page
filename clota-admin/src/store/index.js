@@ -144,7 +144,6 @@ export default new Vuex.Store({
                     'log' : 'allow',
                 };
                 let routers = childDeepClone(routerClect, data);
-                console.log(routers)
                 routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
                 //重新设置路由信息
                 resetRouter(routers);

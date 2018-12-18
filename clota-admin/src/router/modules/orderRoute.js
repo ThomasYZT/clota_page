@@ -8,26 +8,48 @@
  * subMenuType 二级菜单标志，值唯一，标识为二级菜单
  */
 export default {
-    //订单列表
     orderIndex : {
         path : '/order',
-        name : 'order',
-        component : () => import(/* webpackChunkName: "order" */ '../../pages/order/index.vue'),
+        component : () => import(/* webpackChunkName : "order" */'../../pages/order/index.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        },
+        children : {
+            //订单列表
+            order : {
+                path : 'list',
+                name : 'orderList',
+                component : () => import(/* webpackChunkName: "order" */ '../../pages/order/order.vue'),
+                meta : {
+                    _name : 'order',
+                    menuName : 'order',
+                    lightMenu : 'order',
+                }
+            },
+            //订单详情
+            orderDetail : {
+                path : 'orderDetail',
+                name : 'orderDetail',
+                component : () => import(/* webpackChunkName: "order" */ '../../pages/order/child/orderDetail.vue'),
+                meta : {
+                    _name : 'order',
+                    menuName : 'order',
+                    lightMenu : 'order',
+                }
+            }
+        }
+    },
+    //团队订单详情
+    teamOrderDetail : {
+        path : '/orderDetail/team',
+        name : 'teamOrderDetail',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/teamOrderDetail.vue'),
         meta : {
             _name : 'order',
             menuName : 'order',
             lightMenu : 'order',
         }
     },
-    //订单详情
-    orderDetail : {
-        path : '/orderDetail',
-        name : 'orderDetail',
-        component : () => import(/* webpackChunkName: "order" */ '../../pages/order/child/orderDetail.vue'),
-        meta : {
-            _name : 'order',
-            menuName : 'order',
-            lightMenu : 'order',
-        }
-    }
 };

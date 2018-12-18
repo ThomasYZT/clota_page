@@ -136,19 +136,11 @@ export const monthEnum = [
 export const orderType = [
     {
         label : 'FIT',//散客
-        value : 'FIT'
+        value : 'individual'
     },
     {
         label : 'team',//团队
         value : 'team'
-    },
-    {
-        label : 'customer',//大客户
-        value : 'customer'
-    },
-    {
-        label : 'all',//全部
-        value : 'all'
     }
 ];
 //审核状态
@@ -374,3 +366,204 @@ export const isIpv6 = function (val) {
     let reg = /^([\\da-fA-F]{1,4}:){7}([\\da-fA-F]{1,4})$/;
     return reg.test(val);
 };
+
+//取票状态
+export const takeTicketStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : 'noHaveTickets', //未取票
+        value : 'none'
+    },
+    {
+        label : 'haveSomeTickets', //部分取票
+        value : 'some'
+    },
+    {
+        label : 'haveAllTickets', //全部取票
+        value : 'all'
+    }
+];
+//退票状态
+export const refundStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : 'waitChecking', //待审核
+        value : 'wait'
+    },
+    {
+        label : 'order.no_refund', //未退票
+        value : 'none'
+    },
+    {
+        label : 'someRefund', //部分退票
+        value : 'some'
+    },
+    {
+        label : 'allRefund', //全部退票
+        value : 'all'
+    }
+];
+
+//改签状态
+export const rescheduleStatus = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : 'waitChecking', //待审核
+        value : 'wait'
+    },
+    {
+        label : 'order.no_alter', //未改签
+        value : 'none'
+    },
+    {
+        label : 'someAlter', //部分改签
+        value : 'some'
+    },
+    {
+        label : 'allAlter', //全部改签
+        value : 'all'
+    }
+];
+
+//同步状态
+export const synchronizationList = [
+    {
+        label : 'all',
+        value : 'allStatus'
+    },
+    {
+        label : 'syncSucceed', // 同步成功
+        value : 'success'
+    },
+    {
+        label : 'syncFailed', // 同步失败
+        value : 'failure'
+    }
+];
+
+//核销状态列表
+export const verifyStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus' //全部状态
+    },
+    {
+        label : 'noConsumed', //未核销
+        value : 'none'
+    },
+    {
+        label : 'someVerified', //部分核销
+        value : 'some'
+    },
+    {
+        label : 'allVerified', //全部核销
+        value : 'all'
+    }
+];
+
+// 下单渠道--分销商下的下单渠道
+export const distributorChannelList = [
+    {
+        label : 'all',
+        value : 'allStatus'
+    },
+    {
+        label : 'OTA',//ota
+        value : 'OTA'
+    },
+    {
+        label : 'tour',//旅行社
+        value : 'tour'
+    },
+    {
+        label : 'scenic',//景区
+        value : 'scenic'
+    }
+];
+
+// 下单渠道--非分销商下的下单渠道
+export const notDistributorChannelList = [
+    {
+        label : 'all',
+        value : 'allStatus'
+    },
+    {
+        label : 'market',//全民营销
+        value : 'market'
+    },
+    {
+        label : 'OTA',//ota
+        value : 'OTA'
+    },
+    {
+        label : 'tour',//旅行社
+        value : 'tour'
+    },
+    {
+        label : 'scenic',//景区
+        value : 'scenic'
+    }
+];
+
+//审核状态列表
+export const auditStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus'
+    },
+    {
+        label : 'audited',//已审核
+        value : 'true'
+    },
+    {
+        label : 'notAudited',//未审核
+        value : 'false'
+    }
+];
+
+//支付状态列表
+export const payStatusList = [
+    {
+        label : 'all',
+        value : 'allStatus'
+    },
+    {
+        label : 'paid',//已支付
+        value : 'true'
+    },
+    {
+        label : 'unPaid',//未支付
+        value : 'false'
+    }
+];
+
+//短信发送状态
+export const smsStatusList = [
+    {
+        label : 'waitingSend', // 待发送
+        value : 'wait'
+    },
+    {
+        label : 'success', // 成功
+        value : 'success'
+    },
+    {
+        label : 'failure', // 失败
+        value : 'failure'
+    },
+    {
+        label : 'isRending', // 发送中
+        value : 'doing'
+    },
+];
+
+
