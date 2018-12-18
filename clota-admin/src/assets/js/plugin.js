@@ -15,6 +15,7 @@ import Tree from 'element-ui/lib/tree';
 import ElUpload from 'element-ui/lib/upload';
 //按需引入iview组件
 import {
+    Steps,
     Button,
     Input,
     Menu,
@@ -73,6 +74,8 @@ plugin.install = function (Vue, options) {
     Vue.use(ElUpload);
 
     //iview按需引入
+    Vue.component('Steps',Steps);
+    Vue.component('Step',Steps.Step);
     Vue.component('Button',Button);
     Vue.component('Input',Input);
     Vue.component('iInput',Input);

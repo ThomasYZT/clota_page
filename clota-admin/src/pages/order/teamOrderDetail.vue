@@ -12,8 +12,7 @@
                        :product-info-list="productInfoList">
             </base-info>
             <!--产品信息-->
-            <product-info :product-info-list="productInfoList"
-                          :view-type="viewType">
+            <product-info :product-info-list="productInfoList">
             </product-info>
             <!--游客信息-->
             <tourist-info :visitor-list="visitorList">
@@ -29,13 +28,8 @@
                                :product-info-list="productInfoList">
             </order-particulars>
             <!--订单操作日志-->
-            <!--<order-operate-log :order-record-list="orderRecordList"-->
-                               <!--v-if="viewType !== 'allocation'">-->
-            <!--</order-operate-log>-->
-            <!--分销佣金-->
-            <commission v-if="viewType === 'allocation'"
-                        :allocationCommission="allocationCommission">
-            </commission>
+            <order-operate-log :order-record-list="orderRecordList">
+            </order-operate-log>
         </div>
     </div>
 </template>
@@ -49,10 +43,8 @@
     import tourGuideInfo from './teamOrderChild/tourGuideInfo';
     import driverInfo from './teamOrderChild/driverInfo';
     import orderParticulars from './teamOrderChild/orderParticulars';
-    // import orderOperateLog from '../components/operateLog';
-    import commission from './teamOrderChild/commission';
+    import orderOperateLog from './components/operateLog';
     import ajax from '@/api/index.js';
-    import common from '@/assets/js/common.js';
 
     export default {
         mixins : [lifeCycelMixins],
@@ -64,13 +56,10 @@
             tourGuideInfo,
             driverInfo,
             orderParticulars,
-            // orderOperateLog,
-            commission
+            orderOperateLog,
         },
         data () {
             return {
-                //订单id
-                orderId : '',
                 //上级路由列表
                 beforeRouterList : [
                     {
@@ -85,7 +74,9 @@
                 //产品信息
                 productInfoList : [],
                 //游客信息
-                visitorListInfo : []
+                visitorListInfo : [],
+                //订单操作日志
+                orderRecordList : []
             };
         },
         methods : {
@@ -98,33 +89,12 @@
                     this.orderDetailInfo = params.orderDetail;
                     this.queryGroupDistributionInformation();
                     this.queryOrderPlacer();
+                    this.queryOperationLog();
                 } else {
                     this.$router.push({
                         name : 'orderList'
                     });
                 }
-                // if (params && params.orderId) {
-                //     this.orderId = params.orderId;
-                //     this.queryTeamOrderDetail();
-                // } else {
-                //     this.$router.push({
-                //         name : 'orderList'
-                //     });
-                // }
-            },
-            /**
-             * 查询团队订单详情
-             */
-            queryTeamOrderDetail () {
-                ajax.post('queryTeamOrderDetail',{
-                    orderId : this.orderId
-                }).then(res => {
-                    if (res.success) {
-                        this.orderDetailInfo = res.data ? res.data : {};
-                    } else {
-                        this.orderDetailInfo = {};
-                    }
-                });
             },
             /**
              * 查询团队订单产品详情
@@ -151,6 +121,20 @@
                         this.visitorListInfo = res.data ? res.data : [];
                     } else {
                         this.visitorListInfo = [];
+                    }
+                });
+            },
+            /**
+             * 查询订单操作日志信息
+             */
+            queryOperationLog () {
+                ajax.post('queryOperationLog',{
+                    orderDetailNo : this.orderDetailInfo.orderDetailNo
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.orderRecordList = res.data ? res.data : [];
+                    } else {
+                        this.orderRecordList = [];
                     }
                 });
             }
@@ -189,13 +173,13 @@
                 }
             },
             //订单操作日志
-            orderRecordList () {
-                if (this.orderDetailInfo && this.orderDetailInfo.orderRecordList) {
-                    return this.orderDetailInfo.orderRecordList;
-                } else {
-                    return [];
-                }
-            },
+            // orderRecordList () {
+            //     if (this.orderDetailInfo && this.orderDetailInfo.orderRecordList) {
+            //         return this.orderDetailInfo.orderRecordList;
+            //     } else {
+            //         return [];
+            //     }
+            // },
             //基本信息
             baseInfo () {
                 if (this.orderDetailInfo && this.orderDetailInfo.baseInfo) {
@@ -204,22 +188,6 @@
                     return {};
                 }
             },
-            //视图
-            viewType () {
-                if (this.orderDetailInfo && this.orderDetailInfo.orderOrgType) {
-                    return this.orderDetailInfo.orderOrgType;
-                } else {
-                    return '';
-                }
-            },
-            // 分销佣金
-            allocationCommission () {
-                if (this.orderDetailInfo && common.isNotEmpty(this.orderDetailInfo.allocationCommission)) {
-                    return this.orderDetailInfo.allocationCommission;
-                } else {
-                    return '';
-                }
-            }
         }
     };
 </script>

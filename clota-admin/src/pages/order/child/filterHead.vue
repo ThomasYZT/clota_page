@@ -97,12 +97,11 @@
                     <FormItem :label="$t('orderOrg')" >
                         <Select v-model.trim="formData.orderOrgId"
                                 style="max-width: 260px"
-                                :disabled="orderTaskDisabled"
                                 @on-change="searchProductList">
-                            <Option v-for="item  in orderTakeList"
+                            <Option v-for="item  in orderChannelInfo"
                                     :key="item.id"
                                     :value="item.id">
-                                {{item.orgName}}
+                                {{$t(item.orgName)}}
                             </Option>
                         </Select>
                     </FormItem>
@@ -112,7 +111,7 @@
                     <FormItem :label="$t('orderChannel')" >
                         <Select v-model.trim="formData.orderChannel"
                                 style="max-width: 260px"
-                                @on-change="searchProductList">
+                                @on-change="channelChange">
                             <Option v-for="item  in orderChannelList"
                                     :key="item.value"
                                     :value="item.value">
@@ -197,20 +196,6 @@
                         </Select>
                     </FormItem>
                 </i-col>
-                <!--<i-col span="6">-->
-                    <!--&lt;!&ndash;审核状态&ndash;&gt;-->
-                    <!--<FormItem :label="$t('auditStatusFilter')" >-->
-                        <!--<Select v-model.trim="formData.auditStatus"-->
-                                <!--style="max-width: 200px"-->
-                                <!--@on-change="searchProductList">-->
-                            <!--<Option v-for="item  in auditStatusList"-->
-                                    <!--:key="item.value"-->
-                                    <!--:value="item.value">-->
-                                <!--{{$t(item.label)}}-->
-                            <!--</Option>-->
-                        <!--</Select>-->
-                    <!--</FormItem>-->
-                <!--</i-col>-->
                 <i-col span="6">
                     <!--支付状态-->
                     <FormItem :label="$t('paymentStatus')" >
@@ -237,13 +222,28 @@
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="8">
-                    <!--团队订单预审核状态-->
-                    <FormItem :label="$t('团队订单预审核状态')" :label-width="150">
-                        <Select v-model.trim="formData.productType"
-                                style="max-width: 260px"
-                                @on-change="searchProductList">
-                            <Option value="ticket">{{$t('tickets')}}</Option>
+                <!--<i-col span="8">-->
+                    <!--&lt;!&ndash;团队订单预审核状态&ndash;&gt;-->
+                    <!--<FormItem :label="$t('团队订单预审核状态')" :label-width="150">-->
+                        <!--<Select v-model.trim="formData.productType"-->
+                                <!--style="max-width: 260px"-->
+                                <!--@on-change="searchProductList">-->
+                            <!--<Option value="ticket">{{$t('tickets')}}</Option>-->
+                        <!--</Select>-->
+                    <!--</FormItem>-->
+                <!--</i-col>-->
+
+                <i-col span="6">
+                <!--团队订单预审核状态-->
+                    <FormItem :label="$t('团队订单预审核状态')" :label-width="150" >
+                        <Select v-model.trim="formData.auditStatus"
+                            style="max-width: 200px"
+                            @on-change="searchProductList">
+                            <Option v-for="item  in auditStatusList"
+                                :key="item.value"
+                                :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
                         </Select>
                     </FormItem>
                 </i-col>
@@ -282,13 +282,11 @@
         rescheduleStatus,
         synchronizationList,
         verifyStatusList,
-        distributorChannelList,
         notDistributorChannelList,
-        // auditStatusList,
+        auditStatusList,
         payStatusList,
     } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import { mapGetters } from 'vuex';
     import debounce from 'lodash/debounce';
     export default {
         props : {
@@ -323,7 +321,7 @@
                     //核销状态
                     verifyStatus : 'allStatus',
                     //下单企业
-                    orderOrgId : '',
+                    orderOrgId : 'all',
                     //业态类型
                     productType : 'ticket',
                     //订单类型
@@ -331,7 +329,7 @@
                     //是否是异常订单
                     abnormalStatus : false,
                     //审核状态
-                    // auditStatus : 'allStatus',
+                    auditStatus : 'allStatus',
                     //支付状态
                     paymentStatus : 'allStatus',
                     //营销类别
@@ -356,11 +354,9 @@
                 //核销状态
                 verifyStatusList : verifyStatusList,
                 //审核状态
-                // auditStatusList : auditStatusList,
+                auditStatusList : auditStatusList,
                 //支付状态
                 payStatusList : payStatusList,
-                //下单企业是否禁用
-                orderTaskDisabled : false,
                 //营销类别列表
                 marketTypeList : [],
                 //营销级别列表
@@ -397,7 +393,7 @@
                     this.orderTakeList = [];
                     return;
                 }
-                this.formData.orderOrgId = '';
+                this.formData.orderOrgId = 'all';
                 ajax.post('getOrderCompany',{
                     scenicId : this.formData.scenicOrgId,
                 }).then(res => {
@@ -406,20 +402,9 @@
                     } else {
                         this.orderTakeList = [];
                     }
-                    //如果所属景区不是当前登录景区,且是否分销选择了否，那么下单企业必须是当前景区，且不可修改
-                    if (this.formData.scenicOrgId === this.manageOrgs.id) {
-                        this.orderTaskDisabled = false;
-                    } else {
-                        if (!this.formData.orderOrgId && this.orderTakeList.length > 0) {
-                            this.formData.orderOrgId = this.orderTakeList[0].id;
-                        }
-                        //所属景区不为全部，下单企业不可选
-                        if (this.formData.scenicOrgId !== 'all') {
-                            this.orderTaskDisabled = true;
-                        } else {
-                            this.orderTaskDisabled = false;
-                        }
-                    }
+                    // if (!this.formData.orderOrgId && this.orderTakeList.length > 0) {
+                    //     this.formData.orderOrgId = this.orderTakeList[0].id;
+                    // }
                     this.searchProductList();
                 });
             },
@@ -461,11 +446,11 @@
                 this.formData.syncStatus = 'allStatus';
                 this.formData.rescheduleStatus = 'allStatus';
                 this.formData.verifyStatus = 'allStatus';
-                this.formData.orderOrgId = '';
+                this.formData.orderOrgId = 'all';
                 this.formData.productType = 'ticket';
                 this.formData.orderType = 'allStatus';
                 this.formData.abnormalStatus = false;
-                // this.formData.auditStatus = 'allStatus';
+                this.formData.auditStatus = 'allStatus';
                 this.formData.paymentStatus = 'allStatus';
                 this.formData.marketTypeId = 'all';
                 this.formData.marketLevelId = 'all';
@@ -491,6 +476,7 @@
              * 营销类别改变，重新获取营销级别
              */
             marketTypeChange () {
+                this.formData.marketLevelId = 'all';
                 this.queryLevelByTypeId();
                 this.searchProductList();
             },
@@ -503,7 +489,8 @@
                     return;
                 }
                 ajax.post('getMarketLevel',{
-                    typeId : this.formData.marketTypeId
+                    typeId : this.formData.marketTypeId,
+                    scenicId : this.formData.scenicOrgId
                 }).then(res => {
                     if (res.status === 200) {
                         this.marketLevelList = res.data ? res.data : [];
@@ -511,6 +498,14 @@
                         this.marketLevelList = [];
                     }
                 });
+            },
+            /**
+             * 下单渠道修改
+             */
+            channelChange () {
+                this.formData.marketLevelId = 'all';
+                this.formData.marketTypeId = 'all';
+                this.searchProductList();
             }
         },
         created () {
@@ -520,9 +515,6 @@
             this.orderTypeChange();
         },
         computed : {
-            ...mapGetters({
-                manageOrgs : 'manageOrgs'
-            }),
             //下单企业名字
             orderOrgName () {
                 if (this.orderTakeList && this.orderTakeList.length > 0) {
@@ -549,11 +541,11 @@
                     verifyStatus : this.formData.verifyStatus === 'allStatus' ? '' : this.formData.verifyStatus,
                     rescheduleStatus : this.formData.rescheduleStatus === 'allStatus' ? '' : this.formData.rescheduleStatus,
                     scenicOrgId : this.formData.scenicOrgId !== 'all' ? this.formData.scenicOrgId : '',
-                    channelId : this.formData.orderOrgId,
+                    orderOrgId : this.formData.orderOrgId !== 'all' ? this.formData.orderOrgId : '',
                     orderChannel : this.formData.orderChannel === 'allStatus' ? '' : this.formData.orderChannel,
                     productType : this.formData.productType,
                     syncStatus : this.formData.syncStatus === 'allStatus' ? '' : this.formData.syncStatus,
-                    // auditStatus : this.formData.auditStatus === 'allStatus' ? '' : this.formData.auditStatus,
+                    auditStatus : this.formData.auditStatus === 'allStatus' ? '' : this.formData.auditStatus,
                     paymentStatus : this.formData.paymentStatus === 'allStatus' ? '' : this.formData.paymentStatus,
                     abnormalStatus : this.formData.abnormalStatus,
                     marketTypeId : this.formData.marketTypeId !== 'all' ? this.formData.marketTypeId : '',
@@ -599,6 +591,13 @@
                     id : 'all',
                     levelName : 'all'
                 }],this.marketLevelList);
+            },
+            //下单企业信息
+            orderChannelInfo () {
+                return [].concat([{
+                    id : 'all',
+                    orgName : 'all'
+                }],this.orderTakeList);
             }
         },
         watch : {

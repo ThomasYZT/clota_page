@@ -17,5 +17,9 @@ export default {
     'queryOrderPlacer' : 'order/queryOrderPlacer.json',
     //查询产品明细
     'groupProductDetail' : 'order/groupProductDetail.json',
+    //订单操作日志
+    'queryOperationLog' : 'order/queryOperationLog.json',
+    //查询散客产品明细信息
+    'queryIndividualProductDetail' : 'order/querySecondOrder.json',
 
 };

@@ -182,14 +182,14 @@
                 fixed="right"
                 :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
-                    <ul class="operate-list">
-                        <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
+                    <ul class="operate-info">
+                        <li class="normal" v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
                             :class="{disabled : !judgeCanReturn(scope.row)}"
                             @click="refundTicket(scope.row)">{{$t('return')}}</li><!--退票-->
-                        <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
+                        <li class="normal" v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
                             :class="{disabled : !judgeCanAlter(scope.row)}"
                             @click="alterTicket(scope.row)">{{$t('alter')}}</li><!--改签-->
-                        <li @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
+                        <li class="normal"  @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
                     </ul>
                 </template>
             </el-table-column>
@@ -287,28 +287,59 @@
              * 查询订单ajax请求
              */
             queryListAjax () {
-                ajax.post('querySecondOrder',{
+                let params = {
                     createdStartTime : this.queryParams.orderStartDate,
                     createdEndTime : this.queryParams.orderEndDate,
                     startOriginVisitDate : this.queryParams.visitStartDate,
                     endOriginVisitDate : this.queryParams.visitEndDate,
-                    orderType : this.queryParams.orderType,
-                    // orgName : this.queryParams.scenicOrgId,
-                    // placeOrderOrgName : this.queryParams.orderOrgId,
-                    pickStatus : this.queryParams.pickStatus,
-                    refundStatus : this.queryParams.refundStatus,
-                    // verifyStatus : this.queryParams.verifyStatus,
-                    // syncStatus : this.queryParams.syncStatus,
-                    // rescheduleStatus : this.queryParams.rescheduleStatus,
-                    // orderChannel : this.queryParams.orderChannel,
-                    // typeName : this.queryParams.marketTypeId,
-                    // levelName : this.queryParams.marketLevelId,
-                    // auditStatus : this.queryParams.auditStatus,
-                    // paymentStatus : this.queryParams.paymentStatus,
-                    // onlyAbnormalOrder : this.queryParams.abnormalStatus,
                     keyword : this.queryParams.keyword,
                     page : this.queryParams.page,
                     pageSize : this.queryParams.pageSize,
+                };
+                if (this.queryParams.orderType) {
+                    Object.assign(params,{ orderType : this.queryParams.orderType });
+                }
+                if (this.queryParams.pickStatus) {
+                    Object.assign(params,{ pickStatus : this.queryParams.pickStatus });
+                }
+                if (this.queryParams.refundStatus) {
+                    Object.assign(params,{ refundStatus : this.queryParams.refundStatus });
+                }
+                if (this.queryParams.scenicOrgId) {
+                    Object.assign(params,{ orgId : this.queryParams.scenicOrgId });
+                }
+                if (this.queryParams.orderOrgId) {
+                    Object.assign(params,{ placeOrderOrgId : this.queryParams.orderOrgId });
+                }
+                if (this.queryParams.orderChannel) {
+                    Object.assign(params,{ orderChannel : this.queryParams.orderChannel });
+                }
+                if (this.queryParams.verifyStatus) {
+                    Object.assign(params,{ verifyStatus : this.queryParams.verifyStatus });
+                }
+                if (this.queryParams.rescheduleStatus) {
+                    Object.assign(params,{ rescheduleStatus : this.queryParams.rescheduleStatus });
+                }
+                if (this.queryParams.marketTypeId) {
+                    Object.assign(params,{ typeId : this.queryParams.marketTypeId });
+                }
+                if (this.queryParams.marketLevelId) {
+                    Object.assign(params,{ levelId : this.queryParams.marketLevelId });
+                }
+                if (this.queryParams.paymentStatus) {
+                    Object.assign(params,{ paymentStatus : this.queryParams.paymentStatus });
+                }
+                if (this.queryParams.auditStatus) {
+                    Object.assign(params,{ auditStatus : this.queryParams.auditStatus });
+                }
+                if (this.queryParams.syncStatus) {
+                    Object.assign(params,{ syncStatus : this.queryParams.syncStatus });
+                }
+                if (this.queryParams.abnormalStatus === true) {
+                    Object.assign(params,{ onlyAbnormalOrder : true });
+                }
+                ajax.post('querySecondOrder',{
+                    ...params,
                 }).then(res => {
                     if (res.status === 200) {
                         this.tableData = res.data ? res.data.list : [];
@@ -345,9 +376,9 @@
                 if (data['orderType'] === 'individual') {
                     // 散客订单详情
                     this.$router.push({
-                        name : 'individualFirstLevel',
+                        name : 'individualOrderDetail1Level',
                         params : {
-                            orderId : data.orderId
+                            orderDetail : data
                         }
                     });
                 } else {
@@ -466,7 +497,7 @@
              */
             getParams (params,toRoute,fromRoute) {
                 if (params && Object.keys(params).length > 0 &&
-                    (fromRoute.name === 'individualSecondLevel' ||
+                    (fromRoute.name === 'teamOrderDetail' ||
                         fromRoute.name === 'individualFirstLevel')) {
                     this.paramsDefault = params;
                 }

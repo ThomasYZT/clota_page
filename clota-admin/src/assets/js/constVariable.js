@@ -522,11 +522,11 @@ export const auditStatusList = [
     },
     {
         label : 'audited',//已审核
-        value : 'true'
+        value : 'success'
     },
     {
         label : 'notAudited',//未审核
-        value : 'false'
+        value : 'audit'
     }
 ];
 

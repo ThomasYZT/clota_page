@@ -52,4 +52,15 @@ export default {
             lightMenu : 'order',
         }
     },
+    //散客订单一级详情
+    individualOneLevelOrderDetail : {
+        path : '/orderDetail/individual/oneLevel',
+        name : 'individualOrderDetail1Level',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/individualOrderDetail1Level.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
+    },
 };

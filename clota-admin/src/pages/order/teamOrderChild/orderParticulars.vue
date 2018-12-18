@@ -5,7 +5,7 @@
         <div class="title">{{$t('orderDetailInformation')}}</div>
         <Form ref="formInline" :model="formData" :rules="ruleInline" inline>
             <FormItem prop="user" :label="$t('productName')" :label-width="80">
-                <Select v-model="formData.productId"
+                <Select v-model="formData.productName"
                         style="width: 180px"
                         @on-change="queryOrderTicketDetail">
                     <Option v-for="item in productList"
@@ -43,6 +43,17 @@
             :table-com-min-height="250"
             :border="true"
             :auto-height="true">
+            <el-table-column
+                slot="columnpickStatus"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.pickStatus === 'true' ? $t('haveTickets') : $t('noHaveTickets')}}
+                </template>
+            </el-table-column>
         </table-com>
     </div>
 </template>
@@ -75,8 +86,8 @@
                 columnData : columnData,
                 //查询条件
                 formData : {
-                    //产品id
-                    productId : 'all',
+                    //产品名称
+                    productName : 'all',
                     //关键字
                     keyword : '',
                     //是否取票
@@ -97,7 +108,7 @@
              */
             queryOrderTicketDetail () {
                 ajax.post('groupProductDetail',{
-                    productId : this.formData.productId === 'all' ? '' : this.formData.productId,
+                    productName : this.formData.productName === 'all' ? '' : this.formData.productName,
                     pickStatus : this.formData.pickStatus,
                     keyword : this.formData.keyword,
                     orderNo : this.orderNo,
@@ -113,7 +124,7 @@
              * 重置筛选条件
              */
             reset () {
-                this.formData.productId = 'all';
+                this.formData.productName = 'all';
                 this.formData.keyword = '';
                 this.formData.pickStatus = 'true';
                 this.queryOrderTicketDetail();
