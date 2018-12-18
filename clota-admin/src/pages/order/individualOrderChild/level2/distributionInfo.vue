@@ -8,11 +8,6 @@
 
         <div class="content">
             <span class="info-list">{{$t('marketingPolicy')}}： {{allocationInfo.policyName}}</span>
-            <!--中间分销商可见-->
-            <template v-if="viewType === 'allocation'">
-                <span class="info-list" >{{$t('EstimatedDistributionBrokerage')}}： {{allocationInfo.allocationCommission | moneyFilter | contentFilter}}</span>
-                <span class="info-list">{{$t('RefundFeeIncome')}}： {{totalRefundFee | moneyFilter | contentFilter}}</span>
-            </template>
 
             <div class="rank-wrapper">
                 <div class="rank-progress" v-for="(item,index) in distributionLinks"
@@ -21,7 +16,7 @@
                         <div class="stress-info">
                             <span>{{item.settlePrice | moneyFilter}}</span>
                         </div>
-                        <img  src="../../../../../assets/images/arrow.svg">
+                        <img  src="../../../../assets/images/arrow.svg">
                     </div>
                     <div class="price-board" v-w-title="item.content">
                         {{item.content}}
@@ -39,11 +34,11 @@
 <script>
 
     export default {
-        props: {
-            allocationInfo: {
-                type: Object,
-                default() {
-                    return {}
+        props : {
+            allocationInfo : {
+                type : Object,
+                default () {
+                    return {};
                 }
             },
             //退票手续费收入
@@ -52,41 +47,41 @@
                 default : 0
             },
             //当前查看详情角色
-            'view-type': {
-                type: String,
-                default: ''
+            'view-type' : {
+                type : String,
+                default : ''
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {},
+        methods : {},
         computed : {
             //分销价格链路表
             distributionLinks () {
-                if(this.allocationInfo && this.allocationInfo.settleLink){
+                if (this.allocationInfo && this.allocationInfo.settleLink) {
                     let settleLink = this.allocationInfo.settleLink;
-                    if(settleLink.length > 0){
+                    if (settleLink.length > 0) {
                         let costPriceInfo = {
                             ...settleLink[0],
                             settlePrice : settleLink[0]['inPrice'],
-                            content : this.viewType === 'scenic' ? this.$t('scenicUnitPrice') :this.$t('myPrimeCost')
+                            content : this.$t('scenicUnitPrice')
                         };
                         return [].concat(costPriceInfo,settleLink.map(item => {
                             return {
                                 ...item,
                                 content : item.orgName + this.$t('allowcationPriceOf')
-                            }
+                            };
                         }));
-                    }else{
+                    } else {
                         return [];
                     }
-                }else{
+                } else {
                     return [];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

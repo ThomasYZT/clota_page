@@ -20,6 +20,10 @@ export default {
     //订单操作日志
     'queryOperationLog' : 'order/queryOperationLog.json',
     //查询散客产品明细信息
-    'queryIndividualProductDetail' : 'order/querySecondOrder.json',
+    'queryIndividualProductDetail' : 'order/queryIndividualProductDetail.json',
+    //查询退票日志
+    'queryRefundLog' : 'order/queryRefundLog.json',
+    //查询核销日志
+    'queryVerificationLog' : 'order/queryVerificationLog.json',
 
 };

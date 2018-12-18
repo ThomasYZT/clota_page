@@ -246,7 +246,6 @@
                     visitStartDate : '',
                     visitEndDate : '',
                     orderType : '',
-                    allocationStatus : '',
                     pickStatus : '',
                     refundStatus : '',
                     verifyStatus : '',
@@ -461,7 +460,7 @@
                     });
                 } else if (rowData.orderType === 'individual') {
                     this.$router.push({
-                        name : 'individualSecondLevel',
+                        name : 'individualOrderDetail2Level',
                         params : {
                             productDetail : rowData
                         }
@@ -498,7 +497,7 @@
             getParams (params,toRoute,fromRoute) {
                 if (params && Object.keys(params).length > 0 &&
                     (fromRoute.name === 'teamOrderDetail' ||
-                        fromRoute.name === 'individualFirstLevel')) {
+                        fromRoute.name === 'individualOrderDetail1Level')) {
                     this.paramsDefault = params;
                 }
             }
@@ -510,13 +509,7 @@
             //是否可以显示退票按钮和改签按钮，
             returnTicketMenuShow () {
                 //散客非分销订单
-                if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')
-                    && this.queryParams.allocationStatus === 'false') {
-                    return {
-                        show : true,
-                        width : 170,
-                    };
-                } else if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '') && this.queryParams.orderChannel === 'market') {
+                if (this.queryParams.orderType === 'individual' || this.queryParams.orderType === '') {
                     return {
                         show : true,
                         width : 170,

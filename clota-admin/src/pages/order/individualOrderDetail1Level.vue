@@ -48,9 +48,9 @@
                 //上级路由列表
                 beforeRouterList : [
                     {
-                        name : this.$t('reserveOrderDetail'),
+                        name : 'reserveOrderDetail',
                         router : {
-                            name : 'reserveOrderDetail'
+                            name : 'orderList'
                         }
                     }
                 ],
@@ -68,7 +68,7 @@
             getParams (params) {
                 if (params && params.orderDetail && Object.keys(params.orderDetail).length > 0) {
                     this.orderDetailInfo = params.orderDetail;
-                    this.queryIndividualProductDetail();
+                    this.querySecondOrder();
                     this.queryOrderPlacer();
                     //路由中获取到参数后立马调用数据接口
                     // this.queryindividualOrderDetail();
@@ -93,10 +93,10 @@
                 });
             },
             /**
-             * 查询产品明细信息
+             * 查询订单明细信息
              */
-            queryIndividualProductDetail () {
-                ajax.post('queryIndividualProductDetail',{
+            querySecondOrder () {
+                ajax.post('querySecondOrder',{
                     orderNo : this.orderDetailInfo.orderNo,
                 }).then(res => {
                     if (res.status === 200) {

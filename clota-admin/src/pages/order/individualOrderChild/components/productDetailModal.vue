@@ -236,7 +236,7 @@
 
 <script>
     import ajax from '@/api/index';
-    import operateLog from '../../../components/operateLog';
+    import operateLog from '../../components/operateLog';
     export default {
         props :{
             //当前查看详情角色

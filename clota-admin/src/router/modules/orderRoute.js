@@ -62,5 +62,15 @@ export default {
             menuName : 'order',
             lightMenu : 'order',
         }
+    },//散客订单二级详情
+    individualTwoLevelOrderDetail : {
+        path : '/orderDetail/individual/twoLevel',
+        name : 'individualOrderDetail2Level',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/individualOrderDetail2Level.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
     },
 };

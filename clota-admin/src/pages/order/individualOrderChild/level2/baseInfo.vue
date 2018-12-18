@@ -11,26 +11,21 @@
                 <ul class="list">
                     <li class="col">{{$t('orderDetailNo')}}：{{baseInfo.orderDetailNo | contentFilter}}</li>
                     <li class="col">{{$t('OTAOrderNo')}}：{{baseInfo.thirdOrderNo | contentFilter}}</li>
-                    <li class="col">{{$t('orderTime')}}：{{baseInfo.orderTime}}</li>
+                    <li class="col">{{$t('orderTime')}}：{{baseInfo.createdTime | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">{{$t('scenePlace')}}：{{baseInfo.scenic | contentFilter}}</li>
-                    <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleOrg | contentFilter}} </li>
+                    <li class="col">{{$t('scenePlace')}}：{{baseInfo.orgName | contentFilter}}</li>
+                    <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleAgency | contentFilter}} </li>
                     <li class="col">{{$t('orderChannel')}}：{{baseInfo.orderChannel ? $t('order.' + baseInfo.orderChannel) : '' | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">
                 <ul class="list">
-                    <li class="col">{{$t('orderOrg')}}：{{baseInfo.channel | contentFilter}}</li>
-                    <!--仅下单企业和景区视图可见字段-->
-                    <li v-if="orderOrgType === 'channel' || orderOrgType === 'scenic'"
-                        class="col">{{$t('SN')}}：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
-                    <!--仅景区视图字段-->
-                    <li v-if="orderOrgType === 'scenic'" class="col">{{$t('smsStatus')}}：{{$t(transSMSStatus(baseInfo.smsStatus)) | contentFilter}}</li>
-                    <!--仅分销商视图字段-->
-                    <li v-if="orderOrgType === 'allocation'" class="col">{{$t('reserveNum')}}：{{baseInfo.quantity | contentFilter}}</li>
+                    <li class="col">{{$t('orderOrg')}}：{{baseInfo.placeOrderOrgName | contentFilter}}</li>
+                    <li class="col">{{$t('SN')}}：<span class="code">{{baseInfo.serialNo | contentFilter}}</span></li>
+                    <li class="col">{{$t('smsStatus')}}：{{$t(transSMSStatus(baseInfo.smsStatus)) | contentFilter}}</li>
 
                 </ul>
             </li>
@@ -48,65 +43,43 @@
 </template>
 
 <script>
-    import ajax from '../../../../../api/index'
-    import { transSMSStatus } from '../../commFun'
-    import { mapGetters } from 'vuex';
+    import ajax from '@/api/index.js';
+    import { transSMSStatus } from '../../commFun';
     export default {
-        props: {
-            'baseInfo': {
-                type: Object,
-                default: {}
+        props : {
+            'baseInfo' : {
+                type : Object,
+                default : {}
             },
-            'view-type': {
-                type: String,
-                default: ''
-            }
         },
-        computed: {
-            ...mapGetters([
-                'permissionInfo'
-            ]),
-            //权限是否允许可以重发短信
-            perMissioncanResendSms () {
-                return this.permissionInfo && 'resendSms' in this.permissionInfo;
-            },
-            //机构对应订单角色
-            orderOrgType() {
-                if(Object.keys(this.baseInfo).length > 0 && this.baseInfo.orderOrgType) {
-                    return this.baseInfo.orderOrgType;
-                }else {
-                    return '';
-                }
-            },
+        computed : {
             //是否异常显示
             auditResultImg () {
-                if(this.baseInfo.smsStatus === 'failure' || this.baseInfo.syncStatus === 'failure'){
-                    return require('../../../../../assets/images/icon-abnormal.svg');
+                if (this.baseInfo.smsStatus === 'failure' || this.baseInfo.syncStatus === 'failure') {
+                    return require('../../../../assets/images/icon-abnormal.svg');
                 }
             },
             //是否可以重发短信
             canResendMsg () {
                 //景区下，审核成功，取票前可重发短信
-                return this.viewType === 'scenic' &&
-                    (this.baseInfo.quantity > this.baseInfo.quantityPicked) &&
-                    this.perMissioncanResendSms;
+                return (this.baseInfo.quantity > this.baseInfo.quantityPicked);
             },
         },
-        data() {
+        data () {
             return {
                 //转换短信发送状态
-                transSMSStatus: transSMSStatus
-            }
+                transSMSStatus : transSMSStatus
+            };
         },
-        methods: {
+        methods : {
             //查看上级订单
-            toUpDetail() {
+            toUpDetail () {
                 this.$router.push({
-                    name: 'individualFirstLevel',
+                    name : 'individualOrderDetail1Level',
                     params : {
-                        orderId : this.baseInfo.orderId
+                        orderDetail : this.baseInfo
                     }
-                })
+                });
             },
             /**
              * 给导游重发短信
@@ -115,15 +88,15 @@
                 ajax.post('noticeVisitorToPick',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{ tip: this.$t('sending') }));
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{ tip: this.$t('sending') }));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('sending') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('sending') }));
                     }
                 });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -177,7 +177,7 @@
              */
             toSecondLevelOrderDetail (data) {
                 this.$router.push({
-                    name : 'individualSecondLevel',
+                    name : 'individualOrderDetail2Level',
                     params : {
                         productDetail : data
                     }

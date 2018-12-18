@@ -12,13 +12,13 @@
                   :border="true"
                   :auto-height="true">
             <el-table-column
-                slot="column1"
+                slot="columnoperatorAndTime"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.operator + "/" + scope.row.operatedTime}}</span>
+                    <span>{{scope.row.operator | contentFilter}}"/"{{scope.row.operatedTime | contentFilter}}</span>
                 </template>
             </el-table-column>
         </tableCom>
@@ -27,26 +27,26 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom';
-    import { verifyTicketLogListHead } from './secondLevelDetailConfig'
+    import { verifyTicketLogListHead } from './secondLevelDetailConfig';
     export default {
-        props: {
-            verifyTicketLogList: {
-                type: Array,
-                default() {
+        props : {
+            verifyTicketLogList : {
+                type : Array,
+                default () {
                     return [];
                 }
             }
         },
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
-                verifyTicketLogListHead: verifyTicketLogListHead
-            }
+                verifyTicketLogListHead : verifyTicketLogListHead
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

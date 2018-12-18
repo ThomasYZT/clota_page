@@ -12,26 +12,25 @@
                   :border="true"
                   :auto-height="true">
             <el-table-column
-                slot="column1"
+                slot="columnoparaterAndTime"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.reqAccName | contentFilter}}/{{scope.row.reqTime | contentFilter
-                        }}</span>
+                    <span>{{scope.row.nickName | contentFilter}}/{{scope.row.reqTime | contentFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column3"
+                slot="columnAuoditorAndTime"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.auditAccName | contentFilter}}/{{scope.row.auditTime | contentFilter}}</span>
+                    <span>{{scope.row.auditNickName | contentFilter}}/{{scope.row.auditTime | contentFilter}}</span>
                 </template>
             </el-table-column>
         </tableCom>
@@ -41,26 +40,26 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom';
-    import { refundAlterListHead } from './secondLevelDetailConfig'
+    import { refundAlterListHead } from './secondLevelDetailConfig';
     export default {
-        props: {
-            refundAlterList: {
-                type: Array,
+        props : {
+            refundAlterList : {
+                type : Array,
                 default () {
                     return [];
                 }
             }
         },
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
-                refundAlterListHead: refundAlterListHead
-            }
+                refundAlterListHead : refundAlterListHead
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>
