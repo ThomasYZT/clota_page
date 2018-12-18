@@ -56,8 +56,8 @@
                     if (params.status === 'success') {
                         this.isSuccess = true;
                         if (this.payFormData.paymentTypeId === 'wx') {
-                            //调用内部系统充值接口
-                            this.rechargeAccount();
+                            //下单
+                            this.createOrder();
                         }
                     } else {
                         this.isSuccess = false;
@@ -68,35 +68,12 @@
                     let data = querystring.parse(location.href.split('?')[1]);
                     if (data && data.RespCode === '00') {
                         this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
-                        //调用内部系统充值接口
-                        this.rechargeAccount();
+                        //下单
+                        this.createOrder();
                     } else {
                         this.isSuccess = false;
                     }
                 }
-            },
-            /**
-             * 内部系统储值账户充值
-             */
-            rechargeAccount () {
-                this.createOrder();
-                // ajax.post('market_updateTransction', {
-                //     // memberId : this.payFormData.memberId,
-                //     // cardId : this.payFormData.cardId,
-                //     // accountTypeId : this.payFormData.accountTypeId,
-                //     // // paymentTypeId : this.payFormData.paymentTypeId,
-                //     // paymentType : this.payFormData.paymentTypeId === 'wx' ? 'weixin' : 'alipay',
-                //     // amount : this.payFormData.amount,
-                //     // remark : this.payFormData.remark,
-                //     orderId : this.payFormData.orderId,
-                //     transctionId : this.payFormData.transactionId
-                // }).then(res => {
-                //     if (res.success) {
-                //         this.isSuccess = true;
-                //     } else {
-                //         this.isSuccess = false;
-                //     }
-                // });
             },
             /**
              * 若已登录前往我的账户页面，否则为切换浏览器的情况，提示返回微信
@@ -124,14 +101,6 @@
                     orderId : this.payFormData.bizId
                 },createOrderParams)).then(res => {
                     if (res.success) {
-                        // this.$router.replace({
-                        //     name : 'marketingCreateOrderToPay',
-                        //     params : {
-                        //         productName : this.productDetail.productName,
-                        //         totalAmount : this.totalAmount,
-                        //         orderId : res.data ? res.data : ''
-                        //     }
-                        // });
                         this.isSuccess = true;
                     } else if (res.code && res.code !== '300') {
                         this.isSuccess = false;
