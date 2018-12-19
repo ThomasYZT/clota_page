@@ -158,7 +158,9 @@
                         this.formData.code = '';
                         this.stage = 'scan';
                     },300);
-                    this.revocation();
+                    if (this.stage === 'search') {
+                        this.revocation();
+                    }
                 } else {
                     this.$nextTick(() => {
                         let ele = this.$el.querySelector('#payCodeInput .ivu-input');
