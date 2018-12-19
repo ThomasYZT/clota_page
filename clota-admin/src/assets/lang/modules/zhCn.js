@@ -372,6 +372,7 @@ export default {
     'payStatus.success' : '成功',
     'payStatus.fail' : '失败',
     'payStatus.cancelled' : '已取消',
+    'payStatus.unknown' : '未知',
     'alipay' : '支付宝',
     'weixin' : '微信',
     'failureTip' : '{tip}失败',

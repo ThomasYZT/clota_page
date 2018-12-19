@@ -47,7 +47,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{$t('payStatus.' + scope.row.status)}}
+                        {{$t('payStatus.' + scope.row.payStatus)}}
                     </template>
                 </el-table-column>
                 <el-table-column
