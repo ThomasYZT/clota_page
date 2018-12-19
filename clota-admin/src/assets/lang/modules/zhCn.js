@@ -535,4 +535,6 @@ export default {
     'AuoditorAndTime' : '审核操作员/时间',
     'operatorAndTime' : '操作员/时间',
     'errorFormat' : '{field}格式错误',
+    'scenicUnitPrice' : '景区分配单价',
+    'allowcationPriceOf' : '的分销价格',
 };

@@ -219,7 +219,7 @@
                     orderDetailNo : this.productDetail.orderDetailNo,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.allocationInfo = res.data ? res.data[0] : {};
+                        this.allocationInfo = res.data ? res.data : {};
                     } else {
                         this.allocationInfo = {};
                     }

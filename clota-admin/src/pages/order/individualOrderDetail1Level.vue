@@ -70,27 +70,11 @@
                     this.orderDetailInfo = params.orderDetail;
                     this.querySecondOrder();
                     this.queryOrderPlacer();
-                    //路由中获取到参数后立马调用数据接口
-                    // this.queryindividualOrderDetail();
                 } else {
                     this.$router.push({
                         name : 'reserveOrderDetail'
                     });
                 }
-            },
-            /**
-             * 查询团队订单详情
-             */
-            queryindividualOrderDetail () {
-                ajax.post('queryFirstIndividualOrderDetail',{
-                    orderId : this.orderId
-                }).then(res => {
-                    if (res.success) {
-                        this.orderDetailInfo = res.data ? res.data : {};
-                    } else {
-                        this.orderDetailInfo = {};
-                    }
-                });
             },
             /**
              * 查询订单明细信息
@@ -149,12 +133,13 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        background: $color_fff;
         border-radius : 4px;
-        @include padding_place();
+        background: #f5f7fa;
 
         .content{
-            padding: 0 20px;
+            padding: 20px 20px 0 20px;
+            background: $color_fff;
+            margin-top: 10px;
         }
     }
 </style>
