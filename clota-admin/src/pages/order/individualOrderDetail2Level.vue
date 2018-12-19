@@ -91,7 +91,9 @@
                 //退票日志
                 refundAlterList : [],
                 //核销日志列表
-                verifyTicketLogList : []
+                verifyTicketLogList : [],
+                //分销信息
+                allocationInfo : {}
             };
         },
         methods : {
@@ -109,6 +111,7 @@
                     this.queryIndividualProductDetail();
                     this.queryRefundLog();
                     this.queryVerificationLog();
+                    this.queryDistributionInformation();
                 } else {
                     this.$router.push({
                         name : 'individualFirstLevel'
@@ -207,6 +210,20 @@
                         this.verifyTicketLogList = [];
                     }
                 });
+            },
+            /**
+             * 查询分销信息
+             */
+            queryDistributionInformation () {
+                ajax.post('queryDistributionInformation',{
+                    orderDetailNo : this.productDetail.orderDetailNo,
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.allocationInfo = res.data ? res.data[0] : {};
+                    } else {
+                        this.allocationInfo = {};
+                    }
+                });
             }
         },
         computed : {
@@ -218,14 +235,14 @@
                     return 0;
                 }
             },
-            //分销信息
-            allocationInfo () {
-                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
-                    return this.orderDetailInfo.allocationInfo;
-                } else {
-                    return {};
-                }
-            },
+            // //分销信息
+            // allocationInfo () {
+            //     if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
+            //         return this.orderDetailInfo.allocationInfo;
+            //     } else {
+            //         return {};
+            //     }
+            // },
             //基本信息
             baseInfo () {
                 if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
@@ -281,12 +298,14 @@
         @include block_outline();
         min-width: $content_min_width;
         overflow: auto;
-        background: $color_fff;
         border-radius : 4px;
+        background: #f5f7fa;
         @include padding_place();
 
         .content{
-            padding: 0 20px;
+            padding: 20px 20px 0 20px;
+            background: $color_fff;
+            margin-top: 10px;
         }
     }
 </style>

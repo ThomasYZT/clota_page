@@ -25,5 +25,9 @@ export default {
     'queryRefundLog' : 'order/queryRefundLog.json',
     //查询核销日志
     'queryVerificationLog' : 'order/queryVerificationLog.json',
+    //查询分销信息
+    'queryDistributionInformation' : 'order/queryDistributionInformation.json',
+    //重发短信
+    'resendSMS' : 'order/resendSMS.json',
 
 };

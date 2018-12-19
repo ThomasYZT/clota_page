@@ -82,13 +82,13 @@
                 });
             },
             /**
-             * 给导游重发短信
+             * 给游客重发短信
              */
             reSendMsg () {
-                ajax.post('noticeVisitorToPick',{
+                ajax.post('resendSMS',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('sending') }));
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('sending') }));
@@ -107,6 +107,7 @@
         margin: 10px 0 6px;
         padding: 2px 0 16px 0;
         position: relative;
+        background: #f5f7fa;
 
         .title{
             position: relative;
