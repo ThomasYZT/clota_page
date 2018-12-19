@@ -85,6 +85,6 @@ export const verifyTicketLogListHead = [
     },
     {
         title : 'productDetailNo',
-        field : 'ticketIds'
+        field : 'ticketId'
     }
 ];

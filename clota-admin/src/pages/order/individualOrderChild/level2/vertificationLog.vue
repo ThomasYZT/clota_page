@@ -7,7 +7,7 @@
         <div class="title">{{$t('verifyLog')}}</div>
 
         <tableCom :column-data="verifyTicketLogListHead"
-                  :table-data="verifyTicketLogList"
+                  :table-data="verifyTicketLogListDeal"
                   :table-com-min-height="250"
                   :border="true"
                   :auto-height="true">
@@ -18,7 +18,7 @@
                 :label="row.title"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.operator | contentFilter}}"/"{{scope.row.operatedTime | contentFilter}}</span>
+                    <span>{{scope.row.nickName | contentFilter}}/{{scope.row.createdTime | contentFilter}}</span>
                 </template>
             </el-table-column>
         </tableCom>
@@ -30,6 +30,7 @@
     import { verifyTicketLogListHead } from './secondLevelDetailConfig';
     export default {
         props : {
+            //核销产品数据
             verifyTicketLogList : {
                 type : Array,
                 default () {
@@ -45,7 +46,21 @@
                 verifyTicketLogListHead : verifyTicketLogListHead
             };
         },
-        methods : {}
+        computed : {
+            //核销日志数据处理
+            verifyTicketLogListDeal () {
+                return this.verifyTicketLogList.map(item => {
+                    let contents = item.contents ? JSON.parse(item.contents) : {};
+                    return {
+                        ...item,
+                        //核销数量
+                        verifyNum : contents.verifyNum,
+                        //产品明细编号
+                        ticketId : contents.ticketId,
+                    };
+                });
+            }
+        }
     };
 </script>
 
