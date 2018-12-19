@@ -471,7 +471,7 @@ export default new Vuex.Store({
                 orgId : store.getters.manageOrgs.id
             }).then(res => {
                 if (res.success) {
-                    onlineAccountList = res.data ? res.data.map(item => {
+                    onlineAccountList = res.data ? res.data.filter(item => item.useStatus === 'enabled').map(item => {
                         return {
                             ...item,
                             value : item.accountType,
