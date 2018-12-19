@@ -143,9 +143,11 @@
             <h3 style="margin-top: 35px;">{{$t('paymentMethod')}}</h3>
             <Form-item prop="payType" label="收款方式" >
                 <RadioGroup v-model="cardParam.payType">
-                    <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
-                    <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                    <Radio label="cash">{{$t('_cash')}}</Radio><!--现金-->
+                    <Radio v-for="(item,index) in payAccountList"
+                           :key="index"
+                           :label="item.value">
+                        {{$t('onlineAccount.' + item.value)}}
+                    </Radio>
                 </RadioGroup>
             </Form-item>
         </Form>
@@ -251,6 +253,7 @@
     import setPasswordModal from '../components/setPasswordModal';
     import confirmMemberInfo from '../components/confirmDetailModal';
     import loopForPayResult from '../../../../components/loopForPayResult/loopForPayResult';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -346,7 +349,7 @@
                     "remark" : "",//备注
                     "homeAddr" : "",//家庭地址
                     "tradePassword" : "",//支付密码
-                    "payType" : "weixin",//收款方式
+                    "payType" : "cash",//收款方式
                     "companyName" : "",//企业名称
                     "tpNo" : "",//物理卡号
                     "tpCardNo" : "",//卡面号
@@ -430,7 +433,7 @@
                 //支付查询结果是否显示
                 payModalShow : false,
                 //内部交易id
-                transctionId : ''
+                transctionId : '',
             };
         },
         created () {
@@ -584,7 +587,10 @@
                     }
                 }
                 return '';
-            }
+            },
+            ...mapGetters([
+                'payAccountList'
+            ])
         }
     };
 </script>

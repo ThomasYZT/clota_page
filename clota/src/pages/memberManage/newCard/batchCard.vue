@@ -61,9 +61,11 @@
                                    label="收款方式"
                                    :rules="{ required : true,trigger : 'change' }" >
                             <RadioGroup v-model="cardParam.payType">
-                                <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
-                                <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                                <Radio label="cash">{{$t('_cash')}}</Radio><!--支付宝-->
+                                <Radio v-for="(item,index) in payAccountList"
+                                       :key="index"
+                                       :label="item.value">
+                                    {{$t('onlineAccount.' + item.value)}}
+                                </Radio>
                             </RadioGroup>
                         </Form-item>
                     </Form>
@@ -152,7 +154,7 @@
                 tableData : [],
                 cardParam : {
                     // 收款方式
-                    payType : 'weixin',
+                    payType : 'cash',
                     qrCode : "",//扫码结果
                 },
                 //会员卡信息
@@ -175,7 +177,8 @@
                 }
             },
             ...mapGetters({
-                cardReadEnabled : 'cardReadEnabled'
+                cardReadEnabled : 'cardReadEnabled',
+                payAccountList : 'payAccountList',
             }),
             //选择的会员卡信息
             cardInfo () {

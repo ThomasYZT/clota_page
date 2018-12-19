@@ -2055,4 +2055,7 @@ export default {
     'apply_recharge' : '申请充值',
     'pass_recharge' : '通过充值申请',
     'reject_recharge' : '驳回充值申请',
+    'onlineAccount.weixin' : '微信',
+    'onlineAccount.alipay' : '支付宝',
+    'onlineAccount.cash' : '现金',
 }
