@@ -497,7 +497,8 @@
             getParams (params,toRoute,fromRoute) {
                 if (params && Object.keys(params).length > 0 &&
                     (fromRoute.name === 'teamOrderDetail' ||
-                        fromRoute.name === 'individualOrderDetail1Level')) {
+                        fromRoute.name === 'individualOrderDetail1Level' ||
+                        fromRoute.name === 'individualOrderDetail2Level')) {
                     this.paramsDefault = params;
                 }
             }
