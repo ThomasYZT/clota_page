@@ -36,7 +36,7 @@ export default {
     readyDeal : '待处理',
     auditTrue : '审核通过',
     auditFalse : '审核不通过',
-    lessPlaceholder : '输入任意信息查询',
+    lessPlaceholder : '输入公司ID或租户名称',
     auditStatus : {
         waitAudit : '待审核',
         audited : '已审核',
@@ -275,7 +275,7 @@ export default {
     errorEmpty : '{msg}不能为空',
     errorMaxLength : '{field}不能超过{length}个字符',
     errorMinLength : '{field}不能少于{length}字符',
-    fieldTypeError : '{field}不能为负数',
+    fieldTypeError : '{field}不能为负数或零',
     decimalError : '{field}小数位最多2位',
     rangeError : '{field}必须大于{min}，且小于{max}',
     rangeBitError : '{field}必须大于{min}位，且小于{max}位',

@@ -142,11 +142,10 @@
                 </i-row>
             </Form>
             <div class="footer">
-                <Button type="primary"
-                        @click="save('close')"
-                        class="ivu-btn-min"
+                <Button @click="save('close')"
+                        class="ivu-btn-min btn-margin"
                         :loading="addLoading">{{$t('保存，暂不启用')}}</Button>
-                <Button @click="save('open')" class="ivu-btn-min">{{$t('保存，立即启用')}}</Button>
+                <Button type="primary" @click="save('open')" class="ivu-btn-min">{{$t('保存，立即启用')}}</Button>
             </div>
         </div>
     </div>
@@ -479,7 +478,7 @@
             text-align: center;
             margin-top: 40px;
 
-            /deep/ .ivu-btn-primary {
+            /deep/ .btn-margin {
                 margin-right: 18px;
             }
         }

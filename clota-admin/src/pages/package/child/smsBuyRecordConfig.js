@@ -24,7 +24,7 @@ export const smsBuyHead = [
         field : 'price'
     },
     {
-        title : '套餐短息数量',
+        title : '套餐短信数量',
         minWidth : 140,
         field : 'smsCount'
     },

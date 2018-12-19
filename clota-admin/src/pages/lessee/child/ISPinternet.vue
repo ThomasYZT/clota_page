@@ -3,9 +3,7 @@
 <template>
     <div class="isp-internet">
         <div class="create-lessee">
-            <Button type="primary">
-                <span @click="addLess">新建租户</span>
-            </Button>
+            <Button type="primary" @click="addLess">{{$t('新建集团/公司租户')}}</Button>
             <div class="search">
                 <Input type="text"
                        v-model.trim="keyWord"

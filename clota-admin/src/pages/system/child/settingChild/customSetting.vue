@@ -16,10 +16,10 @@
                 <template slot="footer" slot-scope="scoped">
                     <Button type="primary"
                             class="ivu-btn-90px"
-                            @click="save(scoped.rowData)">{{$t('save')}}</Button>
+                            @click="save(scoped.rowData,scoped.validateFunc)">{{$t('save')}}</Button>
                     <Button type="ghost"
                             class="ivu-btn-90px"
-                            @click="cancel">{{$t('cancel')}}</Button>
+                            @click="cancel(scoped.resetValidFunc)">{{$t('cancel')}}</Button>
                 </template>
             </component>
         </div>
@@ -89,8 +89,10 @@
             },
             /**
              * 保存设置
+             * @param data 表单数据
+             * @param validateFunc 校验表单方法
              */
-            save ( data ) {
+            save ( data,validateFunc ) {
                 let params = {
                     id : data.id,
                     msgMaintainSendMode : data.msgMaintainSendMode,
@@ -100,13 +102,22 @@
                     warningLogSizeVal : data.warningLogSizeVal,
                     warningUseRatioVal : data.warningUseRatioVal,
                 };
-                console.log(params);
-                this.updateSetting(params);
+                if (validateFunc) {
+                    validateFunc().then(() => {
+                        this.updateSetting(params);
+                    });
+                } else {
+                    this.updateSetting(params);
+                }
             },
             /**
              * 取消还原设置
+             * @param{Function} resetValidFunc 重置表单校验规则
              */
-            cancel () {
+            cancel (resetValidFunc) {
+                if (resetValidFunc) {
+                    resetValidFunc();
+                }
                 this.getSetting();
             },
             /**
