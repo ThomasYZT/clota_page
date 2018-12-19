@@ -21,12 +21,12 @@ export const salesUserHead = [
         minWidth : 130,
         field : 'inviteCode'
     },
-    {
+    /*{
         title : '佣金总额', // 佣金总额
         width : 110,
         type : 'money',
         field : 'salary'
-    },
+    },*/
     {
         title : 'totalMoney', // 累计销售额
         width : 130,

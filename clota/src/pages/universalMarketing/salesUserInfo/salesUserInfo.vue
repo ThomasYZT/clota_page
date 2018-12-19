@@ -18,7 +18,7 @@
             @query-data="queryList">
 
             <el-table-column
-                slot="column9"
+                slot="column8"
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
