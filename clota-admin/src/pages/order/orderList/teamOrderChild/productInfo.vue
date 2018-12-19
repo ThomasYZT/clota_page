@@ -67,7 +67,7 @@
                 if (rowData.productName) {
                     return JSON.parse(rowData.productName).join(',');
                 } else {
-                    return  '';
+                    return '';
                 }
             }
         },

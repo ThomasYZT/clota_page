@@ -26,20 +26,20 @@
 <script>
 
     export default {
-        props: {
-            visitor: {
-                type: Object,
-                default() {
+        props : {
+            visitor : {
+                type : Object,
+                default () {
                     return {};
                 }
             }
         },
-        computed: {
+        computed : {
             //证件类型
-            cardType() {
-                if(Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
+            cardType () {
+                if (Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
                     let type = JSON.parse(this.visitor.documentInfo);
-                    if(type.length != 0){
+                    if (type.length != 0) {
                         switch (type[0].type) {
                             case 'identity':
                                 return 'identity';
@@ -55,28 +55,28 @@
                                 return 'licence';
                         }
                     } else {
-                        return ''
+                        return '';
                     }
                 } else {
-                    return ''
+                    return '';
                 }
             },
             //证件号码
-            cardNum() {
-                if(Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
+            cardNum () {
+                if (Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
                     let documentInfo = JSON.parse(this.visitor.documentInfo);
-                    if(documentInfo.length !== 0){
+                    if (documentInfo.length !== 0) {
                         return documentInfo[0].data;
                     }
                 }
             }
         },
-        components: {},
-        data() {
-            return {}
+        components : {},
+        data () {
+            return {};
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

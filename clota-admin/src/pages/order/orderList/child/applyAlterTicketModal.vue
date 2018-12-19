@@ -23,7 +23,7 @@
                 :height="224"
                 @selection-change="handleSelectionChange">
                 <el-table-column
-                    slot="column0"
+                    slot="columncheck"
                     slot-scope="row"
                     :selectable="selectableFunc"
                     :label="row.title"
@@ -34,7 +34,7 @@
                 </el-table-column>
                 <!--游玩日期-->
                 <el-table-column
-                    slot="column2"
+                    slot="columnvisitDate"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -46,7 +46,7 @@
                 </el-table-column>
                 <!--取票状态-->
                 <el-table-column
-                    slot="column3"
+                    slot="columnpickStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -60,7 +60,7 @@
                 </el-table-column>
                 <!--核销状态-->
                 <el-table-column
-                    slot="column4"
+                    slot="columnverifyStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -74,7 +74,7 @@
                 </el-table-column>
                 <!--退票状态-->
                 <el-table-column
-                    slot="column5"
+                    slot="columnrefundStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -88,7 +88,7 @@
                 </el-table-column>
                 <!--改签状态-->
                 <el-table-column
-                    slot="column6"
+                    slot="columnrescheduleStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -102,7 +102,7 @@
                 </el-table-column>
                 <!--同步状态-->
                 <el-table-column
-                    slot="column8"
+                    slot="columnsyncStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -149,14 +149,14 @@
             //绑定modal的v-modal值
             value : {
                 type : Boolean,
-                default() {
+                default () {
                     return false;
                 }
             },
             //订单详情
             orderDetail : {
                 type : Object,
-                default() {
+                default () {
                     return '';
                 }
             },
@@ -171,7 +171,7 @@
         components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
@@ -186,14 +186,14 @@
                     ]
                 },
                 //表单数据
-                formData :{
+                formData : {
                     alterDate : ''
                 },
                 //可以改签的日期
                 canAlterDate : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 隐藏模态框
              */
@@ -203,17 +203,17 @@
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                     this.getProductPolicyPlayDate();
-                }else{
+                } else {
                     this.$refs.formValidate.resetFields();
                 }
             },
@@ -222,10 +222,10 @@
              */
             confirm () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        if(this.selectedTicket.length > 0){
+                    if (valid) {
+                        if (this.selectedTicket.length > 0) {
                             this.saveOrderProductRefundAlter();
-                        }else{
+                        } else {
                             this.$Message.warning(this.$t('PleaseSelectTheProductToBeModified'));
                         }
                     }
@@ -235,13 +235,13 @@
              * 选择的产品信息
              * @param data
              */
-            handleSelectionChange(data) {
+            handleSelectionChange (data) {
                 this.selectedTicket = data;
                 this.errMsg = '';
-                for(let i = 0,j = data.length;i < j;i++){
+                for (let i = 0,j = data.length; i < j; i++) {
                     //如果景区改签的时候选择了不能改签的产品需要给出提示
-                    if(data[i]['policyAlterRule'] === 'notAllow'){
-                        this.errMsg = this.$t('alterProductTip');  // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
+                    if (data[i]['policyAlterRule'] === 'notAllow') {
+                        this.errMsg = this.$t('alterProductTip'); // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
                         break;
                     }
                 }
@@ -251,7 +251,7 @@
              * @param data
              * @returns {boolean}
              */
-            selectableFunc(data){
+            selectableFunc (data) {
                 return data.alterRule === 'true';
             },
             //同步状态
@@ -267,12 +267,13 @@
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                     reqType : 'alter',
                     afterAlterDate : this.formData.alterDate.format('yyyy-MM-dd'),
+                    orgId : this.orderDetail.orgId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));
                         this.cancel();
                         this.$emit('fresh-data');
-                    }else{
+                    } else {
                         this.$Message.error(this.$t('TheApplicationForAlterationFail'));
                     }
                 });
@@ -284,9 +285,9 @@
                 ajax.post('getProductPolicyPlayDate',{
                     visitorProductId : this.orderDetail.visitorProductId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.canAlterDate = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.canAlterDate = [];
                     }
                 });
@@ -295,27 +296,27 @@
         computed : {
             //订单下的产品信息
             tableData () {
-                if(this.productInfo && this.productInfo.length > 0){
+                if (this.productInfo && this.productInfo.length > 0) {
                     return this.productInfo;
-                }else{
-                    return  [];
+                } else {
+                    return [];
                 }
             },
             //日期插件配置参数
             dateOptions () {
                 return {
-                    disabledDate : (date) =>  {
-                        if(date){
+                    disabledDate : (date) => {
+                        if (date) {
                             return !this.canAlterDate.includes(date.format('yyyy-MM-dd 00:00:00'));
                         }
                         return true;
                     }
-                }
+                };
             }
         },
         created () {
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

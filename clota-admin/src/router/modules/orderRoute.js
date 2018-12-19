@@ -52,7 +52,18 @@ export default {
             },
         }
     },
-    //团队订单详情
+    //团队订单详情 -- 团队订单预审核
+    teamOrderDetailPreAudit : {
+        path : '/order/teamOrder/detail',
+        name : 'preAduitTeamOrderDetail',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/teamOrderDetail.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
+    },
+    //团队订单详情 -- 订单查询
     teamOrderDetail : {
         path : '/orderDetail/team',
         name : 'teamOrderDetail',

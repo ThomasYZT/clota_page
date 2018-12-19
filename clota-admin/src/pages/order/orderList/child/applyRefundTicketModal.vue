@@ -241,9 +241,10 @@
                     visitorProductId : this.orderDetail.visitorProductId,
                     productId : this.selectedTicket[0]['productId'],
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
-                    reqType : 'refund'
+                    reqType : 'refund',
+                    orgId : this.orderDetail.orgId
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('ApplicationForRefundSuccess')); // 发起退票申请成功
                         this.cancel();
                         this.$emit('fresh-data');
@@ -261,7 +262,7 @@
                     orderId : this.orderDetail.orderId,
                     orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.refundFee = res.data ? res.data : 0;
                     } else {
                         this.refundFee = 0;

@@ -40,19 +40,19 @@
 </template>
 
 <script>
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
     export default {
-        components: {},
-        data() {
+        components : {},
+        data () {
             return {
                 //是否显示模态框
-                visible: false,
+                visible : false,
                 //已选择的行数据
-                chosedData: [],
+                chosedData : [],
                 //申请改签数量
-                num: 0,
-                baseInfo: {},
-                orderTicketIds: '',
+                num : 0,
+                baseInfo : {},
+                orderTicketIds : '',
                 //可以改签的日期
                 canAlterDate : [],
                 //表单校验规则
@@ -64,19 +64,19 @@
                 //表单数据
                 formData : {
                     //改签日期
-                    afterAlterDate: '',
+                    afterAlterDate : '',
                 }
-            }
+            };
         },
-        methods: {
-            toggle(data) {
-                if(!this.visible && data) {
+        methods : {
+            toggle (data) {
+                if (!this.visible && data) {
                     this.chosedData = data.chosedData;
                     this.baseInfo = data.baseInfo;
                     this.num = this.chosedData.length;
                     this.orderTicketIds = data.chosedData.map(item => item.id).join(',');
                     this.getProductPolicyPlayDate();
-                }else {
+                } else {
                     this.chosedData = [];
                     this.num = 0;
                     this.baseInfo = {};
@@ -87,26 +87,26 @@
             /**
              * 确认改签
              */
-            save() {
+            save () {
                 this.$refs.formRef.validate(valid => {
-                    if(valid) {
+                    if (valid) {
                         ajax.post('saveOrderProductRefundAlter', {
-                            reqType: 'alter',
-                            orderId: this.baseInfo.orderId,
-                            visitorProductId: this.baseInfo.visitorProductId,
-                            productId: this.baseInfo.productId,
-                            reqOrderTicketIds: this.orderTicketIds,
-                            afterAlterDate: this.formData.afterAlterDate.format('yyyy-MM-dd')
+                            reqType : 'alter',
+                            orderId : this.baseInfo.orderId,
+                            visitorProductId : this.baseInfo.visitorProductId,
+                            productId : this.baseInfo.productId,
+                            reqOrderTicketIds : this.orderTicketIds,
+                            afterAlterDate : this.formData.afterAlterDate.format('yyyy-MM-dd')
                         }).then(res => {
-                            if(res.success) {
-                                this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));    // 发起改签申请成功
+                            if (res.success) {
+                                this.$Message.success(this.$t('TheApplicationForAlterationSuccess')); // 发起改签申请成功
                                 this.toggle();
                                 this.$emit('fresh-data');
-                            }else {
-                                this.$Message.error(this.$t('TheApplicationForAlterationFail'));    // 发起改签申请失败
+                            } else {
+                                this.$Message.error(this.$t('TheApplicationForAlterationFail')); // 发起改签申请失败
                                 this.toggle();
                             }
-                        })
+                        });
                     }
                 });
             },
@@ -117,9 +117,9 @@
                 ajax.post('getProductPolicyPlayDate',{
                     visitorProductId : this.baseInfo.visitorProductId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.canAlterDate = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.canAlterDate = [];
                     }
                 });
@@ -128,8 +128,8 @@
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === false){
+            visibleChange (type) {
+                if (type === false) {
                     this.$refs.formRef.resetFields();
                 }
             },
@@ -138,16 +138,16 @@
             //日期插件配置参数
             dateOptions () {
                 return {
-                    disabledDate : (date) =>  {
-                        if(date){
+                    disabledDate : (date) => {
+                        if (date) {
                             return !this.canAlterDate.includes(date.format('yyyy-MM-dd 00:00:00'));
                         }
                         return true;
                     }
-                }
+                };
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
