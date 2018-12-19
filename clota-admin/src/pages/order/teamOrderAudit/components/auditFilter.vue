@@ -112,25 +112,28 @@
             </i-row>
             <i-row>
                 <i-col span="6" style="float:right;text-align: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
+                    <Button type="primary"
+                            class="ivu-btn-90px"
+                            @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->
+                    <Button type="ghost"
+                            class="ivu-btn-90px reset"
+                            @click="reset">{{$t('reset')}}</Button><!--重置-->
                 </i-col>
             </i-row>
         </Form>
     </div>
 </template>
 <script type="text/ecmascript-6">
-//    import {orderChannelEnum, paymentStatusEnum} from '../auditConfig';
     import { notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
 
     export default {
-        components : {},
         props : {
             // 审核名称
             auditName : {
                 type : String,
+                default : ''
             }
         },
         data () {
@@ -163,7 +166,7 @@
                 // 支付状态
                 paymentList : payStatusList,
                 // 下单时间范围
-                orderTimeRange : [],
+                orderTimeRange : [new Date().addMonths(-1), new Date()],
                 // 游玩日期范围
                 visitDateRange : [],
                 // 重置使用的初始筛选条件
@@ -190,28 +193,21 @@
             this.querySceneicData();
             this.resetFormData = JSON.stringify(this.formData);
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 下单时间选择变化后的处理
-             * @param date   范围日期
-             * @param dateType   日期格式
              */
-            changeOrderTime (date, dateType) {
-                this.formData.orderStartDate = date[0];
-                this.formData.orderEndDate = date[1];
+            changeOrderTime () {
+                this.formData.orderStartDate = this.orderTimeRange[0];
+                this.formData.orderEndDate = this.orderTimeRange[1];
                 this.searchAuditList();
             },
             /**
              * 游玩日期选择变化后的处理
-             * @param date   范围日期
-             * @param dateType   日期格式
              */
-            changeVisitDate (date, dateType) {
-                this.formData.visitStartDate = date[0];
-                this.formData.visitEndDate = date[1];
+            changeVisitDate () {
+                this.formData.visitStartDate = this.visitDateRange[0];
+                this.formData.visitEndDate = this.visitDateRange[1];
                 this.searchAuditList();
             },
             /**
@@ -225,18 +221,16 @@
                         queryParams[key] = '';
                     }
                 });
-
                 this.$emit('on-filter', queryParams);
             },
             /**
              * 重置筛选条件
              */
             reset () {
-                this.$refs.formCustom.resetFields();
                 this.formData = JSON.parse(this.resetFormData);
-                this.orderTimeRange = [];
+                this.orderTimeRange = [new Date().addMonths(-1), new Date()];
                 this.visitDateRange = [];
-                this.searchAuditList();
+                this.changeOrderTime();
             },
             /**
              * 查询所有所属景区信息

@@ -28,25 +28,14 @@
             :column-data="columnData"
             :table-data="tableData"
             :total-count="totalCount"
-            :page-no-d.sync="queryParams.pageNo"
+            :page-no-d.sync="queryParams.page"
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
             :column-check="true"
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
-                slot="column1"
-                slot-scope="row"
-                show-overflow-tooltip
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{ scope.row.originVisitDate | timeFormat('yyyy-MM-dd') }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column4"
+                slot="columnorderChannel"
                 slot-scope="row"
                 show-overflow-tooltip
                 :label="row.title"
@@ -57,7 +46,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column5"
+                slot="columnproductName"
                 slot-scope="row"
                 show-overflow-tooltip
                 :label="row.title"
@@ -68,18 +57,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column7"
-                slot-scope="row"
-                show-overflow-tooltip
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.orderAmount | moneyFilter}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column8"
+                slot="columnpaymentStatus"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -89,7 +67,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column9"
+                slot="columnoperate"
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
@@ -106,9 +84,13 @@
         </table-com>
 
         <!--通过模态框-->
-        <audit-pass-modal ref="auditPassModal" @on-audit-pass="queryList"></audit-pass-modal>
+        <audit-pass-modal ref="auditPassModal"
+                          @on-audit-pass="queryList">
+        </audit-pass-modal>
         <!--驳回模态框-->
-        <audit-reject-modal ref="auditRejectModal" @on-audit-pass="queryList"></audit-reject-modal>
+        <audit-reject-modal ref="auditRejectModal"
+                            @on-audit-pass="queryList">
+        </audit-reject-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -141,7 +123,7 @@
                 // 获取数据的请求参数
                 queryParams : {
                     auditStatus : 'audit', // 只查询待审核的订单
-                    pageNo : 1, // 当前页码数
+                    page : 1, // 当前页码数
                     pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
                 // 已勾选的数据
@@ -162,12 +144,38 @@
              * 查询所有团队订单审核信息
              */
             queryList () {
-                ajax.post('queryTeamOrder',{
-                    ...this.queryParams
+                let params = {
+                    createdStartTime : this.queryParams.orderStartDate ? this.queryParams.orderStartDate.format('yyyy-MM-dd 00:00:00') : '',
+                    createdEndTime : this.queryParams.orderEndDate ? this.queryParams.orderEndDate.format('yyyy-MM-dd 23:59:59') : '',
+                    startOriginVisitDate : this.queryParams.visitStartDate ? this.queryParams.visitStartDate.format('yyyy-MM-dd 00:00:00') : '',
+                    endOriginVisitDate : this.queryParams.visitEndDate ? this.queryParams.visitEndDate.format('yyyy-MM-dd 23:59:59') : '',
+                    keyword : this.queryParams.keyword,
+                    page : this.queryParams.page,
+                    pageSize : this.queryParams.pageSize,
+                    auditStatus : 'audit',
+                    orderType : 'team',
+                };
+                if (this.queryParams.orderChannel) {
+                    Object.assign(params,{ orderChannel : this.queryParams.orderChannel });
+                }
+                if (this.queryParams.paymentStatus) {
+                    Object.assign(params,{ paymentStatus : this.queryParams.paymentStatus });
+                }
+                if (this.queryParams.productType) {
+                    Object.assign(params,{ productType : this.queryParams.productType });
+                }
+                if (this.queryParams.scenicOrgId && this.queryParams.scenicOrgId !== 'all') {
+                    Object.assign(params,{ orgId : this.queryParams.scenicOrgId });
+                }
+                if (this.queryParams.channelId) {
+                    Object.assign(params,{ placeOrderOrgId : this.queryParams.channelId });
+                }
+                ajax.post('querySecondOrder',{
+                    ...params,
                 }).then(res => {
-                    if (res.success && res.data) {
-                        this.tableData = res.data.data || [];
-                        this.totalCount = res.data.totalRow || 0;
+                    if (res.status === 200) {
+                        this.tableData = res.data ? res.data.list : [];
+                        this.totalCount = res.data ? Number(res.data.totalRecord) : 0;
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
@@ -242,6 +250,9 @@
                     case 'reject' :
                         auditModal = 'auditRejectModal';
                         break;
+                    default :
+                        auditModal = 'auditPassModal';
+                        break;
                 }
 
                 this.$refs[auditModal].show({
@@ -251,7 +262,7 @@
             },
             /**
              * 跳转至团队订单详情
-             * @param scopeRow
+             * @param{Object} scopeRow 订单详情数据
              */
             goTeamOrderDetail (scopeRow) {
                 this.$router.push({
@@ -261,10 +272,17 @@
             },
             /**
              * 获取产品名称
-             * @param rowData 订单详情数据
+             * @param{Object} rowData 订单详情数据
              */
             getProductName (rowData) {
-                return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
+                if (rowData.productName) {
+                    if (rowData.productName.slice(0,1) === '[') {
+                        return JSON.parse(rowData.productName).join(',');
+                    } else {
+                        return rowData.productName;
+                    }
+                }
+                return '';
             }
         }
     };
@@ -273,6 +291,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .group-order {
+
         .divide-line {
             display: inline-block;
             width: 1px;
@@ -282,10 +301,9 @@
             background: #E1E1E1;
         }
         .batch-audit {
-            @include block_outline();
+            overflow: auto;
             margin-bottom: 10px;
             padding-left: 20px;
-            line-height: 1;
         }
 
         .operate-btn {

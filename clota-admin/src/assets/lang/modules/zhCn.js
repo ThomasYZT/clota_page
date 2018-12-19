@@ -542,4 +542,8 @@ export default {
     'cancellationCharge' : '退票手续费',
     'visitorNum' : '游客人数',
     'orderOrgAmount' : '下单企业订单金额',
+    'passed' : '通过',
+    'reject' : '驳回',
+    'productActPrice' : '产品小计',
+    'PRODUCT_AUDIT_REJECT': '驳回申请',
 };

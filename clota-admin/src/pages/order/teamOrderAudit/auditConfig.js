@@ -8,18 +8,19 @@ export const groupOrderHead = [
     {
         title : 'playDate', // 游玩日期
         minWidth : 130,
-        field : 'originVisitDate'
+        field : 'originVisitDate',
+        type : 'date'
     },
     {
         title : 'orderTime', // 下单时间
         minWidth : 200,
-        field : 'orderTime'
+        field : 'createdTime'
     },
     {
         title : 'orderOrg', // 下单企业
         width : 200,
         enWidth : 180,
-        field : 'orderOrgName'
+        field : 'placeOrderOrgName'
     },
     {
         title : 'orderChannel', // 下单渠道
@@ -43,7 +44,7 @@ export const groupOrderHead = [
         title : 'orderOrgAmount', // 下单企业订单金额
         width : 160,
         enWidth : 180,
-        field : 'orderAmount'
+        field : 'orderAmount',
     },
     {
         title : 'paymentStatus', // 支付状态
@@ -55,6 +56,7 @@ export const groupOrderHead = [
         title : 'operate',
         width : 180,
         enWidth : 230,
+        field : 'operate',
     }
 ];
 
