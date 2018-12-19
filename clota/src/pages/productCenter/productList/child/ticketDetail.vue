@@ -160,18 +160,18 @@
                             </Form-item>
                         </i-col>
                     </i-row>
-                    <i-row>
-                        <i-col span="12">
-                            <Form-item :label="$t('stockType')+'：'"><!--限制库存-->
-                                <div v-w-title="$t(detail.stockType)">{{ $t(detail.stockType) | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('stockNum')+'：'"><!--库存数量-->
-                                <div>{{ detail.stockNum | contentFilter}}</div>
-                            </Form-item>
-                        </i-col>
-                    </i-row>
+                    <!--<i-row>-->
+                        <!--<i-col span="12">-->
+                            <!--<Form-item :label="$t('stockType')+'：'">&lt;!&ndash;限制库存&ndash;&gt;-->
+                                <!--<div v-w-title="$t(detail.stockType)">{{ $t(detail.stockType) | contentFilter}}</div>-->
+                            <!--</Form-item>-->
+                        <!--</i-col>-->
+                        <!--<i-col span="12">-->
+                            <!--<Form-item :label="$t('stockNum')+'：'">&lt;!&ndash;库存数量&ndash;&gt;-->
+                                <!--<div>{{ detail.stockNum | contentFilter}}</div>-->
+                            <!--</Form-item>-->
+                        <!--</i-col>-->
+                    <!--</i-row>-->
                 </div>
 
                 <!--产品有效性-->
