@@ -62,7 +62,7 @@
     import vertificationLog from './individualOrderChild/level2/vertificationLog';
     import distributionInfo from './individualOrderChild/level2/distributionInfo';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import operateLog from './components/operateLog';
+    import operateLog from '../components/operateLog';
 
     export default {
         mixins : [lifeCycelMixins],

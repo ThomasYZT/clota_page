@@ -36,7 +36,7 @@
 
 <script>
     import { touristHead } from './touristConfig';
-    import tableCom from '../../../lessee/child/organization/tableCom';
+    import tableCom from '@/components/tableCom/tableCom';
     import operateModal from './touristChild/operateModal';
     export default {
         props : {

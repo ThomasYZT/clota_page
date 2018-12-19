@@ -43,7 +43,7 @@
     import tourGuideInfo from './teamOrderChild/tourGuideInfo';
     import driverInfo from './teamOrderChild/driverInfo';
     import orderParticulars from './teamOrderChild/orderParticulars';
-    import orderOperateLog from './components/operateLog';
+    import orderOperateLog from '../components/operateLog';
     import ajax from '@/api/index.js';
 
     export default {

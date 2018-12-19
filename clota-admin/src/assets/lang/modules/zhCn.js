@@ -537,4 +537,9 @@ export default {
     'errorFormat' : '{field}格式错误',
     'scenicUnitPrice' : '景区分配单价',
     'allowcationPriceOf' : '的分销价格',
+    'visitTime' : '游玩时间',
+    'reqRefundForProducts' : '您正在申请对以下产品进行退票',
+    'cancellationCharge' : '退票手续费',
+    'visitorNum' : '游客人数',
+    'orderOrgAmount' : '下单企业订单金额',
 };

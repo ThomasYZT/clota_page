@@ -44,7 +44,7 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import { transSMSStatus } from '../../commFun';
+    import { transSMSStatus } from '../../../commFun';
     export default {
         props : {
             'baseInfo' : {
@@ -56,7 +56,7 @@
             //是否异常显示
             auditResultImg () {
                 if (this.baseInfo.smsStatus === 'failure' || this.baseInfo.syncStatus === 'failure') {
-                    return require('../../../../assets/images/icon-abnormal.svg');
+                    return require('../../../../../assets/images/icon-abnormal.svg');
                 }
             },
             //是否可以重发短信

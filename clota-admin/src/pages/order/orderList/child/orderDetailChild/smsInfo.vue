@@ -1,12 +1,12 @@
-<!--退票信息-->
+<!--短信信息-->
 
 <template>
     <div class="product-info">
         <table-com
             :table-data="tableData"
-            :column-data="refundTicketHead"
+            :column-data="smsHead"
             :is-pack-up="true"
-            :title="$t('退票信息')"
+            :title="$t('短信信息')"
             :show-page="true"
             :total="totalCount"
             @get-new-data="getSubCompany">
@@ -15,16 +15,16 @@
 </template>
 
 <script>
-    import { refundTicketHead } from './refundTickConfig';
-    import tableCom from '../../../lessee/child/organization/tableCom';
+    import { smsHead } from './smsInfoConfig';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     export default {
         components : {
             tableCom,
         },
         data () {
             return {
-                //退票信息表头配置
-                refundTicketHead : refundTicketHead,
+                //短信息表头配置
+                smsHead : smsHead,
                 //表格数据
                 tableData : [
                     {

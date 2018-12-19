@@ -16,7 +16,7 @@
 
 <script>
     import { driverHead } from './driverConfig.js';
-    import tableCom from '../../../lessee/child/organization/tableCom';
+    import tableCom from '@/components/tableCom/tableCom';
     export default {
         components : {
             tableCom,

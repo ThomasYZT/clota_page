@@ -15,6 +15,11 @@
     .red-label{
         color: $color_err;
     }
+
+    .disabled{
+        cursor: not-allowed!important;
+        color: $color_999!important;
+    }
 }
 
 .text-overflow-tip{

@@ -16,7 +16,7 @@
                         <div class="stress-info">
                             <span>{{item.settlePrice | moneyFilter}}</span>
                         </div>
-                        <img  src="../../../../assets/images/arrow.svg">
+                        <img  src="../../../../../assets/images/arrow.svg">
                     </div>
                     <div class="price-board" v-w-title="item.content">
                         {{item.content}}

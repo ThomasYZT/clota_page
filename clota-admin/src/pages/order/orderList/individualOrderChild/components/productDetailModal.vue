@@ -236,66 +236,66 @@
 
 <script>
     import ajax from '@/api/index';
-    import operateLog from '../../components/operateLog';
+    import operateLog from '../../../components/operateLog';
     export default {
-        props :{
+        props : {
             //当前查看详情角色
-            'view-type': {
-                type: String,
-                default: ''
+            'view-type' : {
+                type : String,
+                default : ''
             }
         },
-        components: {
+        components : {
             operateLog
         },
-        data() {
+        data () {
             return {
                 //是否显示
-                visibile: false,
+                visibile : false,
                 //产品明细列表项数据
-                listItem: {},
+                listItem : {},
                 //产品明细数据--接口数据
-                productDetail: {}
-            }
+                productDetail : {}
+            };
         },
-        computed: {
+        computed : {
             //订单详情
-            orderInfo() {
-                if(Object.keys(this.productDetail).length > 0 && this.productDetail.orderInfo) {
+            orderInfo () {
+                if (Object.keys(this.productDetail).length > 0 && this.productDetail.orderInfo) {
                     return this.productDetail.orderInfo;
-                }else {
-                    return {}
+                } else {
+                    return {};
                 }
             },
             //产品信息
-            ticketInfo() {
-                if(Object.keys(this.productDetail).length > 0 && this.productDetail.ticketInfo) {
+            ticketInfo () {
+                if (Object.keys(this.productDetail).length > 0 && this.productDetail.ticketInfo) {
                     return this.productDetail.ticketInfo;
-                }else {
-                    return {}
+                } else {
+                    return {};
                 }
             },
             //游客信息
-            visitor() {
-                if(Object.keys(this.productDetail).length > 0 && this.productDetail.visitor) {
+            visitor () {
+                if (Object.keys(this.productDetail).length > 0 && this.productDetail.visitor) {
                     return this.productDetail.visitor;
-                }else {
-                    return {}
+                } else {
+                    return {};
                 }
             },
             //订单日志
-            orderRecordList() {
-                if(Object.keys(this.productDetail).length > 0 && this.productDetail.orderRecordList) {
+            orderRecordList () {
+                if (Object.keys(this.productDetail).length > 0 && this.productDetail.orderRecordList) {
                     return this.productDetail.orderRecordList;
-                }else {
+                } else {
                     return [];
                 }
             },
             //证件类型
-            cardType() {
-                if(Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
+            cardType () {
+                if (Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
                     let type = JSON.parse(this.visitor.documentInfo);
-                    if(type.length != 0){
+                    if (type.length != 0) {
                         switch (type[0].type) {
                             case 'identity':
                                 return 'identity';
@@ -311,31 +311,31 @@
                                 return 'licence';
                         }
                     } else {
-                        return ''
+                        return '';
                     }
                 } else {
-                    return ''
+                    return '';
                 }
             },
             //证件号码
-            cardNum() {
-                if(Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
+            cardNum () {
+                if (Object.keys(this.visitor).length > 0 && this.visitor.documentInfo) {
                     let documentInfo = JSON.parse(this.visitor.documentInfo);
-                    if(documentInfo.length !== 0){
+                    if (documentInfo.length !== 0) {
                         return documentInfo[0].data;
                     }
                 }
             }
         },
-        methods: {
+        methods : {
             /**
              * 显示/隐藏模态框
              */
-            toggle(detail) {
-                if(!this.visibile && detail) {
+            toggle (detail) {
+                if (!this.visibile && detail) {
                     this.listItem = detail;
-                    this.getData()
-                }else {
+                    this.getData();
+                } else {
                     this.listItem = {};
                     this.productDetail = {};
                 }
@@ -344,17 +344,17 @@
             /**
              * 获取模态框数据
              */
-            getData() {
+            getData () {
                 ajax.post('queryThirdIndividualOrderDetail',{
-                    ticketId: this.listItem.id
+                    ticketId : this.listItem.id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.productDetail = res.data;
                     }
-                })
+                });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

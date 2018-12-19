@@ -56,7 +56,7 @@
 </template>
 
 <script>
-    import tableCom from '../../../lessee/child/organization/tableCom';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import { comVerify,productVerify } from './verifyProConfig';
     export default {
         props : {

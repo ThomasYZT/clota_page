@@ -141,7 +141,7 @@
     import ticketChangingModal from '../components/ticketChangingModal';
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
-    import { transRescheduleStatus, transVerifyStatus } from '../../commFun';
+    import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
     import { mapGetters } from 'vuex';
 
     export default {

@@ -1,4 +1,4 @@
-<!--申请改签-->
+<!--申请退票-->
 
 <template>
     <Modal
@@ -11,11 +11,13 @@
         class="refund-ticket"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title">{{$t('applyForUpgrade')}}</span>
+            <!--申请退票-->
+            <span class="title">{{$t('ApplyForRefund')}}</span>
         </div>
         <div class="target-body">
             <ul class="tourist-info">
-                <li><span class="key">{{$t('YouAreApplyingToChangeTheFollowingProducts')}}：</span></li>
+                <!--您正在申请对以下产品进行退票-->
+                <li><span class="key">{{$t('reqRefundForProducts')}}：</span></li>
             </ul>
             <table-com
                 :column-data="columnData"
@@ -23,7 +25,7 @@
                 :height="224"
                 @selection-change="handleSelectionChange">
                 <el-table-column
-                    slot="column0"
+                    slot="columncheck"
                     slot-scope="row"
                     :selectable="selectableFunc"
                     :label="row.title"
@@ -34,7 +36,7 @@
                 </el-table-column>
                 <!--游玩日期-->
                 <el-table-column
-                    slot="column2"
+                    slot="columnvisitDate"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -46,7 +48,7 @@
                 </el-table-column>
                 <!--取票状态-->
                 <el-table-column
-                    slot="column3"
+                    slot="columnpickStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -54,13 +56,14 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span :class="{'blue-lable' : scope.row.pickStatus === 'true'}">
+                            <!--{{scope.row.pickStatus === 'true' ? $t('已取票') : $t('未取票')}}-->
                             {{scope.row.pickStatus === 'true' ? $t('haveTickets') : $t('noHaveTickets')}}
                         </span>
                     </template>
                 </el-table-column>
                 <!--核销状态-->
                 <el-table-column
-                    slot="column4"
+                    slot="columnverifyStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -68,13 +71,14 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span :class="{'blue-lable' : scope.row.verifyStatus === 'true'}">
+                            <!--{{scope.row.verifyStatus === 'true' ? $t('已核销') : $t('未核销')}}-->
                             {{scope.row.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed')}}
                         </span>
                     </template>
                 </el-table-column>
                 <!--退票状态-->
                 <el-table-column
-                    slot="column5"
+                    slot="columnrefundStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -88,7 +92,7 @@
                 </el-table-column>
                 <!--改签状态-->
                 <el-table-column
-                    slot="column6"
+                    slot="columnrescheduleStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -102,7 +106,7 @@
                 </el-table-column>
                 <!--同步状态-->
                 <el-table-column
-                    slot="column8"
+                    slot="columnsyncStatus"
                     show-overflow-tooltip
                     slot-scope="row"
                     :label="row.title"
@@ -115,16 +119,8 @@
                     </template>
                 </el-table-column>
             </table-com>
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
-                <FormItem :label="$t('applyForUpgradeTo')" prop="alterDate">
-                    <DatePicker type="date"
-                                :editable="false"
-                                :options="dateOptions"
-                                style="width: 180px"
-                                v-model.trim="formData.alterDate">
-                    </DatePicker>
-                </FormItem>
-            </Form>
+            <!--退票手续费-->
+            <div class="service-charge">{{$t('cancellationCharge')}}：<span class="charge">{{refundFee | moneyFilter}} {{$t('yuan')}}</span></div>
             <div class="err-message" v-if="errMsg">{{errMsg}}</div>
         </div>
         <div slot="footer">
@@ -142,21 +138,19 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './applyRefundTicketConfig';
     import ajax from '@/api/index.js';
-    import { transSyncStatus } from '../commFun';
+    import { transSyncStatus } from '../../commFun';
 
     export default {
         props : {
             //绑定modal的v-modal值
             value : {
                 type : Boolean,
-                default() {
-                    return false;
-                }
+                default : false
             },
             //订单详情
             orderDetail : {
                 type : Object,
-                default() {
+                default () {
                     return '';
                 }
             },
@@ -171,7 +165,7 @@
         components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
@@ -179,21 +173,11 @@
                 selectedTicket : [],
                 //错误信息
                 errMsg : '',
-                //表单校验规则
-                ruleValidate : {
-                    alterDate : [
-                        { required : true,message : this.$t('selectField',{ msg : this.$t('alterDate') }),trigger : 'change',type : 'date' }
-                    ]
-                },
-                //表单数据
-                formData :{
-                    alterDate : ''
-                },
-                //可以改签的日期
-                canAlterDate : []
-            }
+                //退票费
+                refundFee : 0
+            };
         },
-        methods: {
+        methods : {
             /**
              * 隐藏模态框
              */
@@ -203,45 +187,37 @@
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
-                    this.getProductPolicyPlayDate();
-                }else{
-                    this.$refs.formValidate.resetFields();
-                }
+            visibleChange (type) {
+
             },
             /**
              * 确定退票
              */
             confirm () {
-                this.$refs.formValidate.validate(valid => {
-                    if(valid){
-                        if(this.selectedTicket.length > 0){
-                            this.saveOrderProductRefundAlter();
-                        }else{
-                            this.$Message.warning(this.$t('PleaseSelectTheProductToBeModified'));
-                        }
-                    }
-                });
+                if (this.selectedTicket.length > 0) {
+                    this.saveOrderProductRefundAlter();
+                } else {
+                    this.$Message.warning(this.$t('selectField', { sg : this.$t('productNeedsRefund') })); // 请选择需要退票的产品
+                }
             },
             /**
              * 选择的产品信息
              * @param data
              */
-            handleSelectionChange(data) {
+            handleSelectionChange (data) {
                 this.selectedTicket = data;
                 this.errMsg = '';
-                for(let i = 0,j = data.length;i < j;i++){
-                    //如果景区改签的时候选择了不能改签的产品需要给出提示
-                    if(data[i]['policyAlterRule'] === 'notAllow'){
-                        this.errMsg = this.$t('alterProductTip');  // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
+                for (let i = 0,j = data.length; i < j; i++) {
+                    //如果景区退票的时候选择了已核销的产品需要给出提示
+                    if (data[i]['verifyStatus'] === 'true') {
+                        this.errMsg = this.$t('refundProductTip'); // 提示：您申请退票的产品中包含已核销的产品
                         break;
                     }
                 }
@@ -251,8 +227,8 @@
              * @param data
              * @returns {boolean}
              */
-            selectableFunc(data){
-                return data.alterRule === 'true';
+            selectableFunc (data) {
+                return data.returnRule === 'true';
             },
             //同步状态
             transSyncStatus : transSyncStatus,
@@ -265,29 +241,30 @@
                     visitorProductId : this.orderDetail.visitorProductId,
                     productId : this.selectedTicket[0]['productId'],
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
-                    reqType : 'alter',
-                    afterAlterDate : this.formData.alterDate.format('yyyy-MM-dd'),
+                    reqType : 'refund'
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));
+                    if (res.success) {
+                        this.$Message.success(this.$t('ApplicationForRefundSuccess')); // 发起退票申请成功
                         this.cancel();
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error(this.$t('TheApplicationForAlterationFail'));
+                    } else {
+                        this.$Message.error(this.$t('ApplicationForRefundFail')); // 发起退票申请失败
                     }
                 });
             },
             /**
-             * 获取产品可预定日期
+             * 获取退票手续费
              */
-            getProductPolicyPlayDate () {
-                ajax.post('getProductPolicyPlayDate',{
-                    visitorProductId : this.orderDetail.visitorProductId,
+            getRefundProcedureFee () {
+                ajax.post('getRefundProcedureFee',{
+                    orderProductId : this.selectedTicket[0]['orderProductId'],
+                    orderId : this.orderDetail.orderId,
+                    orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                 }).then(res => {
-                    if(res.success){
-                        this.canAlterDate = res.data ? res.data : [];
-                    }else{
-                        this.canAlterDate = [];
+                    if (res.success) {
+                        this.refundFee = res.data ? res.data : 0;
+                    } else {
+                        this.refundFee = 0;
                     }
                 });
             }
@@ -295,31 +272,27 @@
         computed : {
             //订单下的产品信息
             tableData () {
-                if(this.productInfo && this.productInfo.length > 0){
+                if (this.productInfo && this.productInfo.length > 0) {
                     return this.productInfo;
-                }else{
-                    return  [];
+                } else {
+                    return [];
                 }
             },
-            //日期插件配置参数
-            dateOptions () {
-                return {
-                    disabledDate : (date) =>  {
-                        if(date){
-                            return !this.canAlterDate.includes(date.format('yyyy-MM-dd 00:00:00'));
-                        }
-                        return true;
-                    }
-                }
-            }
         },
-        created () {
+        watch : {
+            selectedTicket (newVal) {
+                if (newVal && newVal.length > 0) {
+                    this.getRefundProcedureFee();
+                } else {
+                    this.refundFee = 0;
+                }
+            },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
-    @import '~@/assets/scss/base';
+	@import '~@/assets/scss/base';
     .refund-ticket{
 
         /deep/ .ivu-modal-body{
@@ -348,10 +321,6 @@
 
         .target-body{
             padding: 0 30px;
-
-            /deep/ .ivu-form-item{
-                margin-top: 20px;
-            }
 
             .blue-lable{
                 color: $color_blue;

@@ -27,9 +27,9 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './touristInfoConfig';
+    import { columnData } from './touristInfoConfig';
     export default {
-        props :{
+        props : {
             //游客列表
             'visitor-list' : {
                 type : Array,
@@ -38,17 +38,17 @@
                 }
             }
         },
-        components :{
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData
-            }
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

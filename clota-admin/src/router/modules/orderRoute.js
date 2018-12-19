@@ -21,7 +21,7 @@ export default {
             order : {
                 path : 'list',
                 name : 'orderList',
-                component : () => import(/* webpackChunkName: "order" */ '../../pages/order/order.vue'),
+                component : () => import(/* webpackChunkName: "order" */ '../../pages/order/orderList/order.vue'),
                 meta : {
                     _name : 'order',
                     menuName : 'order',
@@ -32,20 +32,31 @@ export default {
             orderDetail : {
                 path : 'orderDetail',
                 name : 'orderDetail',
-                component : () => import(/* webpackChunkName: "order" */ '../../pages/order/child/orderDetail.vue'),
+                component : () => import(/* webpackChunkName: "order" */ '../../pages/order/orderList/child/orderDetail.vue'),
                 meta : {
                     _name : 'order',
                     menuName : 'order',
                     lightMenu : 'order',
                 }
-            }
+            },
+            //团队订单预审核
+            teamOrderAudit : {
+                path : 'teamOrder/audit',
+                name : 'teamOrderAudit',
+                component : () => import(/* webpackChunkName: "order" */'../../pages/order/teamOrderAudit/index.vue'),
+                meta : {
+                    _name : 'order',
+                    menuName : 'order',
+                    lightMenu : 'order',
+                }
+            },
         }
     },
     //团队订单详情
     teamOrderDetail : {
         path : '/orderDetail/team',
         name : 'teamOrderDetail',
-        component : () => import(/* webpackChunkName: "order" */'../../pages/order/teamOrderDetail.vue'),
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/teamOrderDetail.vue'),
         meta : {
             _name : 'order',
             menuName : 'order',
@@ -56,21 +67,22 @@ export default {
     individualOneLevelOrderDetail : {
         path : '/orderDetail/individual/oneLevel',
         name : 'individualOrderDetail1Level',
-        component : () => import(/* webpackChunkName: "order" */'../../pages/order/individualOrderDetail1Level.vue'),
-        meta : {
-            _name : 'order',
-            menuName : 'order',
-            lightMenu : 'order',
-        }
-    },//散客订单二级详情
-    individualTwoLevelOrderDetail : {
-        path : '/orderDetail/individual/twoLevel',
-        name : 'individualOrderDetail2Level',
-        component : () => import(/* webpackChunkName: "order" */'../../pages/order/individualOrderDetail2Level.vue'),
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/individualOrderDetail1Level.vue'),
         meta : {
             _name : 'order',
             menuName : 'order',
             lightMenu : 'order',
         }
     },
+    //散客订单二级详情
+    individualTwoLevelOrderDetail : {
+        path : '/orderDetail/individual/twoLevel',
+        name : 'individualOrderDetail2Level',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/individualOrderDetail2Level.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
+    }
 };

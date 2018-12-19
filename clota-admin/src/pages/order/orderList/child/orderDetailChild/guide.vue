@@ -1,12 +1,12 @@
-<!--产品信息-->
+<!--导游信息-->
 
 <template>
     <div class="product-info">
         <table-com
             :table-data="tableData"
-            :column-data="productHead"
+            :column-data="guidHead"
             :is-pack-up="true"
-            :title="$t('产品信息')"
+            :title="$t('导游信息')"
             :show-page="true"
             :total="totalCount"
             @get-new-data="getSubCompany">
@@ -15,16 +15,16 @@
 </template>
 
 <script>
-    import { productHead } from './productConfig';
-    import tableCom from '../../../lessee/child/organization/tableCom';
+    import { guidHead } from './guidConfig';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     export default {
         components : {
-            tableCom
+            tableCom,
         },
         data () {
             return {
-                //下属景区表头配置
-                productHead : productHead,
+                //导游信息表头配置
+                guidHead : guidHead,
                 //表格数据
                 tableData : [
                     {
@@ -40,7 +40,7 @@
                         status : 'pause'
                     }
                 ],
-                //下属景区总数
+                //导游总数
                 totalCount : 100,
             };
         },

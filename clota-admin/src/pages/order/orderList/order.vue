@@ -216,7 +216,7 @@
     import applyRefundTicket from './child/applyRefundTicketModal';
     import ajax from '@/api/index.js';
     import applyAlterTicketModal from './child/applyAlterTicketModal';
-    import { transSyncStatus,transSMSStatus,transPaymentStatus } from './commFun.js';
+    import { transSyncStatus,transSMSStatus,transPaymentStatus } from '../commFun.js';
     import debounce from 'lodash/debounce';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { mapGetters } from 'vuex';
@@ -399,11 +399,11 @@
                 if (!this.judgeCanReturn(data)) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
-                    if (res.success) {
-                        this.orderProductInfo = res.data;
+                    if (res.status === 200) {
+                        this.orderProductInfo = res.data ? res.data : [];
                         this.refundTicketModalShow = true;
                     } else {
-                        this.orderProductInfo = {};
+                        this.orderProductInfo = [];
                     }
                 });
             },
@@ -412,8 +412,8 @@
              * @param  data 订单信息
              */
             queryOrderTicketList (data) {
-                return ajax.post('queryRefundAndAlterTicketList',{
-                    visitorProductId : data.visitorProductId
+                return ajax.post('queryIndividualProductDetail',{
+                    orderDetailNo : data.orderDetailNo
                 });
             },
             /**

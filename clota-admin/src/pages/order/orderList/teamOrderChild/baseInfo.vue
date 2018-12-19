@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import { transPaymentStatus,transSMSStatus } from '../commFun';
+    import { transPaymentStatus,transSMSStatus } from '../../commFun';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -115,11 +115,11 @@
             //审核结果图片
             auditResultImg () {
                 if (this.baseInfo.auditStatus === 'success') {
-                    return require('../../../assets/images/icon-audit-success.svg');
+                    return require('../../../../assets/images/icon-audit-success.svg');
                 } else if (this.baseInfo.auditStatus === 'audit') {
-                    return require('../../../assets/images/icon-wait-audit.svg');
+                    return require('../../../../assets/images/icon-wait-audit.svg');
                 } else {
-                    return require('../../../assets/images/icon-audit-fail.svg');
+                    return require('../../../../assets/images/icon-audit-fail.svg');
                 }
             }
         }

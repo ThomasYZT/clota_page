@@ -145,7 +145,7 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './orderDetailListConfig.js';
-    import { transSyncStatus, transSMSStatus } from '../../commFun.js';
+    import { transSyncStatus, transSMSStatus } from '../../../commFun.js';
 
     export default {
         props : {
