@@ -226,6 +226,8 @@ export default {
                         reject('errorMinLength');
                     } else if (numStr.length > maxLength) {
                         reject('errorMaxLength');
+                    } else if (numStr.indexOf('.') !== -1) {
+                        reject('integetError');
                     } else {
                         if (Number.parseInt(value) === Number.parseFloat(value)) {
                             //使用自定义正则表达式

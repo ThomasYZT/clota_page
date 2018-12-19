@@ -7,12 +7,10 @@
             <Form ref="formValidate" :model="copySettingData" :rules="ruleValidate"  >
                 <FormItem prop="smsMaxCount">
                     {{$t('smsSingleMaxCount')}}
-                    <!--<InputNumber :min="1"-->
-                                 <!--:max="9999"-->
-                                 <!--v-model.trim="copySettingData.smsMaxCount"-->
-                                 <!--:placeholder="$t('inputPlaceholder')">-->
-                    <!--</InputNumber>-->
-                    <Input style="width: 100px;" type="text" v-model.trim="copySettingData.smsMaxCount" />
+                    <Input style="width: 100px;"
+                           type="text"
+                           v-model.trim="copySettingData.smsMaxCount"
+                           :placeholder="$t('inputPlaceholder')" />
                     {{$t('word')}}
                 </FormItem>
             </Form>

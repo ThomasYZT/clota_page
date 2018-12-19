@@ -533,5 +533,6 @@ export default {
     'oparaterAndTime' : '申请操作员/时间',
     'TicketRefundsApproved' : '退票审核通过',
     'AuoditorAndTime' : '审核操作员/时间',
-    'operatorAndTime': '操作员/时间',
+    'operatorAndTime' : '操作员/时间',
+    'errorFormat' : '{field}格式错误',
 };
