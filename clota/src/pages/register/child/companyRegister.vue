@@ -36,8 +36,10 @@
                     </FormItem>
                     <!-- 营业执照附件 -->
                     <FormItem label="营业执照附件" prop="attach">
-                        <img-uploader  @upload-success="uploadSuc2"
+                        <img-uploader  ref="imgUpload"
+                                       @upload-success="uploadSuc2"
                                        @remove-img="removeIDimg2"
+                                       :format="['png','jpg']"
                                        :quantity-limit="1"></img-uploader>
                     </FormItem>
                     <!-- 邮箱地址 -->
@@ -46,7 +48,7 @@
                     </FormItem>
                     <!--地点-->
                     <FormItem :label="$t('location')" prop="place">
-                        <city-plugin @select="placeSelect2" style="width: 280px;">
+                        <city-plugin ref="citySelect" @select="placeSelect2" style="width: 280px;">
                         </city-plugin>
                     </FormItem>
                     <!-- 详细地址 -->
@@ -218,6 +220,7 @@
              */
             uploadSuc2(data) {
                 this.formDataCompany.attach = data;
+                this.$refs.companyForm.validateField('attach');
             },
 
             /**
@@ -225,6 +228,7 @@
              */
             removeIDimg2(data) {
                 this.formDataCompany.attach = data;
+                this.$refs.companyForm.validateField('attach');
             },
 
             /**
@@ -235,7 +239,18 @@
                 this.formDataCompany.province = value.province ? value.province.provinceid : '';
                 this.formDataCompany.city = value.city ? value.city.cityid : '';
                 this.formDataCompany.district = value.area ? value.area.areaid : '';
-            }
+            },
+            /**
+             *  表单重置 个人注册
+             */
+            reset() {
+                this.$refs['companyForm'].resetFields();
+                this.$refs.imgUpload.reset();
+                this.$refs.citySelect.reset();
+                this.formData.province = '';
+                this.formData.city = '';
+                this.formData.district = '';
+            },
         }
     }
 </script>

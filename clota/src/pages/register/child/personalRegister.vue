@@ -35,8 +35,10 @@
                     </FormItem>
                     <!-- 身份证照片 -->
                     <FormItem label="身份证照片" prop="attach">
-                        <img-uploader @upload-success="uploadSuc"
+                        <img-uploader ref="imgUpload"
+                                      @upload-success="uploadSuc"
                                       @remove-img="removeIDimg"
+                                      :format="['png','jpg']"
                                       :quantity-limit="2"></img-uploader>
                     </FormItem>
                     <!-- 邮箱地址 -->
@@ -45,7 +47,7 @@
                     </FormItem>
                     <!--地点-->
                     <FormItem :label="$t('location')" prop="place">
-                        <city-plugin @select="placeSelect" style="width: 280px;">
+                        <city-plugin ref="citySelect" @select="placeSelect" style="width: 280px;">
                         </city-plugin>
                     </FormItem>
                     <!-- 详细地址 -->
@@ -212,23 +214,29 @@
                 })
             },
             /**
-             *  表单充值 个人注册
+             *  表单重置 个人注册
              */
             reset() {
                 this.$refs['personalForm'].resetFields();
-                this.$refs['companyForm'].resetFields();
+                this.$refs.imgUpload.reset();
+                this.$refs.citySelect.reset();
+                this.formData.province = '';
+                this.formData.city = '';
+                this.formData.district = '';
             },
             /**
              * 上传图片成功 个人注册
              */
             uploadSuc(data) {
                 this.formData.attach = data;
+                this.$refs.personalForm.validateField('attach');
             },
             /**
              * 删除身份证照片 个人注册
              */
             removeIDimg(data) {
                 this.formData.attach = data;
+                this.$refs.personalForm.validateField('attach');
             },
             /**
              * 省市县选择 个人注册

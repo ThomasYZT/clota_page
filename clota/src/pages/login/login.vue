@@ -37,11 +37,11 @@
                         <Form-item class="auto-reme">
                             <Checkbox v-model="rememberAccount">{{ $t("rememberAccount") }}</Checkbox>
                             <!--会员3期暂时去掉-->
-                            <!--<p class="register-entry"-->
-                               <!--@click="toRegist()">-->
-                                <!--<span class="entry-tip">{{$t('noAccount')}}</span>-->
-                                <!--{{$t('partnerRegister')}}-->
-                            <!--</p>-->
+                            <p class="register-entry"
+                               @click="toRegist()">
+                                <span class="entry-tip">{{$t('noAccount')}}</span>
+                                {{$t('partnerRegister')}}
+                            </p>
                         </Form-item>
                         <div class="error-area">
                             {{errMsg}}

@@ -10,9 +10,9 @@
                     <img src="../../assets/images/logo.svg" alt="">
                 </div>
                 <div class="lang">
-                    <span @click="changeLang('zh-CN')">中文</span>
-                    <span>|</span>
-                    <span @click="changeLang('en')">English</span>
+                    <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">中文</span>
+                    <span class="lang-split-line">|</span>
+                    <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">English</span>
                 </div>
             </div>
 
@@ -42,6 +42,7 @@
 <script>
     import companyRegister from './child/companyRegister';
     import personalRegister from './child/personalRegister';
+    import { mapGetters } from 'vuex';
     export default {
         components: {
             companyRegister,
@@ -49,6 +50,11 @@
         },
         data() {
             return {}
+        },
+        computed: {
+            ...mapGetters({
+                lang : 'lang'
+            })
         },
         methods: {
             //改变语言
@@ -83,24 +89,24 @@
                 }
                 .lang {
                     float: right;
-                    span {
+                    .lang-list{
                         float: left;
-                        &:first-child {
+                        font-size: $font_size_16px;
+                        cursor: pointer;
+                        color: #9d9d9d;
+
+                        &.active{
                             font-size: $font_size_18px;
                             color: $color_333;
-                            margin-right: 10px;
-                            cursor: pointer;
                         }
-                        &:nth-child(2) {
-                            font-size: $font_size_18px;
-                            color: $color_3F3F3F;
-                            margin-right: 10px;
-                        }
-                        &:last-child {
-                            font-size: $font_size_14px;
-                            color: $color_3F3F3F;
-                            cursor: pointer;
-                        }
+                    }
+                    &.active{
+                        font-size: $font_size_18px;
+                        color: $color_333;
+                    }
+                    .lang-split-line{
+                        float: left;
+                        margin : 0 10px;
                     }
                 }
             }
