@@ -218,8 +218,8 @@
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
-                    bizScene : 'account_recharge',
-                    bizType : 'recharge',
+                    bizScene : 'org_account',
+                    bizType : 'account_recharge',
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
