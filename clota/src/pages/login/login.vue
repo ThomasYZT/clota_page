@@ -46,13 +46,13 @@
                         <div class="error-area">
                             {{errMsg}}
                         </div>
-                        <Form-item>
-                            <div class="submit"
-                                 :class="{'is-loging' : isLoging}"
-                                 @click="handleSubmit('formInline')">
-                                {{ isLoging ? $t('loging') : $t("login") }}
-                            </div>
-                        </Form-item>
+                        <!--<Form-item>-->
+                            <!--<div class="submit"-->
+                                 <!--:class="{'is-loging' : isLoging}"-->
+                                 <!--@click="handleSubmit('formInline')">-->
+                                <!--{{ isLoging ? $t('loging') : $t("login") }}-->
+                            <!--</div>-->
+                        <!--</Form-item>-->
                     </Form>
                 </div>
             </div>
