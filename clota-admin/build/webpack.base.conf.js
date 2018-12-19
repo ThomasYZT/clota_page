@@ -55,7 +55,7 @@ module.exports = {
                 test: /\.js$/,
                 // loader: 'babel-loader',
                 loader: 'happypack/loader?id=happy-babel-js',
-                include: [resolve('src'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/_iview@2.14.3@iview/src')]
+                include: [resolve('src'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/iview/src')]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
