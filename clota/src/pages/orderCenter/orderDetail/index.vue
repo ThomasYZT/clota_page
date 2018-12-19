@@ -262,7 +262,7 @@
                     refundStatus : '',
                     verifyStatus : '',
                     rescheduleStatus : '',
-                    scenicOrgId : '',
+                    scenicId : '',
                     channelId : '',
                     orderChannel : '',
                     productType : '',
