@@ -52,6 +52,8 @@
             <!-- 生日 -->
             <datetime
                 class="c-input"
+                start-date="1970-01-01"
+                :end-date="endDate"
                 :confirm-text="$t('confirm')"
                 :cancel-text="$t('cancel')"
                 :title="$t('birthday')"
@@ -153,10 +155,14 @@
                     code : '',
                     //公司编码
                     companyCode : '',
+                    //微信openid
+                    wxOpenId : '',
                     //实体卡id
                     id : ''
                 },
-                memberCardList : []
+                memberCardList : [],
+                //当前时间
+                endDate: new Date().format('yyyy-MM-dd')
             };
         },
         computed : {
@@ -333,7 +339,7 @@
                         //提示注册成功
                         this.$vux.toast.show({
                             type : 'success',
-                            text : this.$t('registSuccess')
+                            text : this.$t('activateSuccess')
                         });
                     } else {
                         if (res.code === 'A004') {
