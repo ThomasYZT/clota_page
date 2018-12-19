@@ -45,23 +45,23 @@ export const pendingMattersHead = [
 export const allPendingMattersHead = [
     {
         title : 'index', // 序号
-        width : 70,
+        minWidth : 70,
         field : ''
     },
     {
         title : 'mattersExplain', // 事项说明
-        minWidth : 110,
+        minWidth : 300,
         field : 'content'
     },
     {
         title : 'mattersType', // 事项类别
-        width : 110,
+        minWidth : 100,
         field : 'classify'
     },
     {
         title : 'operate',
-        width : 200,
-        enWidth : 230,
+        width : 130,
+        field : ''
     }
 ];
 

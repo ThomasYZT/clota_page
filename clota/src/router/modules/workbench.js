@@ -17,7 +17,7 @@ export default {
         path : '/workbench',
         component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/index.vue'),
         meta : {
-            _name : 'report', //todo 暂时用数据报表一级菜单权限
+            _name : 'workbench', //todo 暂时用数据报表一级菜单权限
             menuName : 'workbench',
             rightPath : topMenuName + '.' + 'workbench',
             isMenu : true
@@ -30,7 +30,7 @@ export default {
                 name : 'scenicService',
                 meta : {
                     menuName : 'scenicWorkbench', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'workbench',
                     rightPath : topMenuName + '.' + 'scenicService',
                     isMenu : true,
                     hasSideBar : false,
@@ -43,7 +43,7 @@ export default {
                 name : 'cooperPartner',
                 meta : {
                     menuName : 'partnerWorkbench', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'workbench',
                     rightPath : topMenuName + '.' + 'cooperPartner',
                     isMenu : true,
                     hasSideBar : false,
@@ -56,7 +56,7 @@ export default {
                 name : 'company',
                 meta : {
                     menuName : 'companyWorkbench', //lang.config.js 里面的语言键值
-                    _name : 'member-report', //todo 暂时用数据报表二级菜单权限
+                    _name : 'workbench', //todo 暂时用数据报表二级菜单权限
                     rightPath : topMenuName + '.' + 'company',
                     isMenu : true,
                     hasSideBar : false,

@@ -34,6 +34,63 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="column1"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span>{{scope.row.type ? $t('colonSetting', { key : $t( 'penddingMatter.' + scope.row.type) }) : '-'}}</span>
+                    <!-- 产品 -->
+                    <template v-if="scope.row.type.includes('product')">
+                        <span>{{scope.row.content.productName | contentFilter}}</span>
+                        <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                    </template>
+                    <!-- 销售政策 -->
+                    <template v-else-if="scope.row.type.includes('policy')">
+                        <span>{{scope.row.content.policyName | contentFilter}}</span>
+                        <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                    </template>
+                    <!-- 充值 -->
+                    <template v-else-if="scope.row.type.includes('recharge')">
+                        {{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}
+                        <span v-if="scope.row.type.includes('apply')">{{$t('apply_recharge')}}</span>
+                        <span v-else-if="scope.row.type.includes('pass')">{{$t('apply_recharge')}}</span>
+                        <span v-else-if="scope.row.type.includes('reject')">{{$t('reject_recharge')}}</span>
+                        <span>{{$t('colonSetting', { key : $t('money') })}}{{scope.row.content.amount | moneyFilter | contentFilter}}</span>
+                    </template>
+                    <!-- 退票 -->
+                    <template v-else-if="scope.row.type.includes('refund')">
+                        <template v-if="scope.row.type.includes('apply')">
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
+                            <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                        </template>
+                        <template v-else>
+                            <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
+                        </template>
+                    </template>
+                    <!-- 改签 -->
+                    <template v-else-if="scope.row.type.includes('alter')">
+                        <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
+                        <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                    </template>
+                    <!-- 团队订单 -->
+                    <template v-else-if="scope.row.type.includes('team')">
+                        <template v-if="scope.row.type.includes('create')">
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
+                            <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                        </template>
+                        <template v-else>
+                            <span v-if="scope.row.type.includes('pass')">{{$t('passed')}}</span>
+                            <span v-else>{{$t('reject')}}</span>
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
+                        </template>
+                    </template>
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column2"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -41,7 +98,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{$t('pendingMatters.' + scope.row.classify)}}
+                    {{scope.row.classify ? $t('pendingMatters.' + scope.row.classify) : '-' }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -49,6 +106,7 @@
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
+                :width="row.width"
                 fixed="right">
                 <template slot-scope="scope">
                     <ul class="operate-list">
@@ -66,6 +124,8 @@
     import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { allPendingMattersHead } from '../workbenchConfig';
+    import { routerPackage } from '../scenicService/util';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -81,8 +141,10 @@
                 tableData : [],
             }
         },
-        computed : {},
-        created () {
+        computed : {
+            ...mapGetters([
+                'routerInfo'
+            ])
         },
         methods : {
             /**
@@ -91,7 +153,12 @@
             getAllPendingMatters () {
                 ajax.post('workbench-queryUnfinishedWorkBack').then(res => {
                     if (res.success) {
-                        this.tableData = res.data || [];
+                        this.tableData = res.data.filter((item) => {
+                            if (item.finishStatus === "false") {
+                                item.content = item.content ? JSON.parse(item.content) : '';
+                            }
+                            return item.finishStatus === "false";
+                        }) || [];
                     } else {
                         this.tableData = [];
                     }
@@ -127,23 +194,15 @@
              * 查看待处理事项：跳转至对应的页面
              */
             jumpToPages (scopeData) {
-                this.handleMatters(scopeData);
-                /*let routerObj = {};
-                switch (scopeData.row.type) {
-                    case 'apply_product_online' :
-
-                    case 'apply_policy_online' :
-
-                    case 'create_team_order' :
-                        routerObj = {
-                            name : ''
-                        }
-                        break;
-                    default :
+                let routerObj = routerPackage(scopeData.row.type, this.routerInfo);
+                if (routerObj) {
+                    this.$router.push(routerObj);
+                    this.handleMatters();
+                } else {
+                    this.$Message.warning(this.$t('accountPrivaligeError'));
                 }
+            },
 
-                this.$router.push(routerObj);*/
-            }
         }
     };
 </script>
