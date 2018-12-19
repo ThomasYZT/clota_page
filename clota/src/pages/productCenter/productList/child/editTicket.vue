@@ -170,29 +170,29 @@
                             <span>{{$t('paper')}}</span>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('stockType')"><!--限制库存-->
-                            <Select v-model="formData.stockType"
-                                    :placeholder="$t('selectField', {msg: ''})">
-                                <Option v-for="(item,index) in enumData.stockType"
-                                        :key="index"
-                                        :value="item.value">
-                                    {{$t(item.label)}}
-                                </Option>
-                            </Select>
-                        </Form-item>
-                    </div>
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('stockNum')" prop="stockNum"><!-- 库存数量-->
-                            <template v-if="formData.stockType !== 'is_no_limit'">
-                                <Input v-model.trim="formData.stockNum"
-                                       :placeholder="$t('inputField', {field: ''})"/>
-                            </template>
-                            <span v-else>
-                                {{$t('disableSet')}}
-                            </span>
-                        </Form-item>
-                    </div>
+                    <!--<div class="ivu-form-item-wrap">-->
+                        <!--<Form-item :label="$t('stockType')">&lt;!&ndash;限制库存&ndash;&gt;-->
+                            <!--<Select v-model="formData.stockType"-->
+                                    <!--:placeholder="$t('selectField', {msg: ''})">-->
+                                <!--<Option v-for="(item,index) in enumData.stockType"-->
+                                        <!--:key="index"-->
+                                        <!--:value="item.value">-->
+                                    <!--{{$t(item.label)}}-->
+                                <!--</Option>-->
+                            <!--</Select>-->
+                        <!--</Form-item>-->
+                    <!--</div>-->
+                    <!--<div class="ivu-form-item-wrap">-->
+                        <!--<Form-item :label="$t('stockNum')" prop="stockNum">&lt;!&ndash; 库存数量&ndash;&gt;-->
+                            <!--<template v-if="formData.stockType !== 'is_no_limit'">-->
+                                <!--<Input v-model.trim="formData.stockNum"-->
+                                       <!--:placeholder="$t('inputField', {field: ''})"/>-->
+                            <!--</template>-->
+                            <!--<span v-else>-->
+                                <!--{{$t('disableSet')}}-->
+                            <!--</span>-->
+                        <!--</Form-item>-->
+                    <!--</div>-->
                 </div>
 
                 <!--产品有效性-->
@@ -201,6 +201,7 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('productEffSet')" prop="productEffSet"><!--产品有效性设置-->
                             <Select v-model="formData.productEffSet"
+                                    :disabled="!productEffSetEnable"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.productEffSet"
                                         :key="index"
@@ -320,7 +321,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import { parkColumn } from './parkConfig';
-    import { isTeamProduct, orderInfo, idType, productEffectSet, limitStore } from '@/assets/js/constVariable';
+    import { isTeamProduct, orderInfo, idType, productEffectSet, /*limitStore*/ } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 
@@ -458,8 +459,8 @@
                     limitByIdNum : '',//身份证件购票限制
                     limitByMobileDay : '',//手机号购票限制
                     limitByMobileNum : '',//手机号购票限制
-                    stockType : '',//限制库存
-                    stockNum : '',//库存数量
+                    //stockType : '',//限制库存
+                    //stockNum : '',//库存数量
                     //产品有效性
                     productEffSet : 'since_the_play',//产品有效性设置
                 },
@@ -526,10 +527,10 @@
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' }
                     ],
-                    stockNum : [
-                        { validator : validateMethod.emoji, trigger : 'blur' },
-                        { validator : validateNumber, trigger : 'blur' }
-                    ],
+                    // stockNum : [
+                    //     { validator : validateMethod.emoji, trigger : 'blur' },
+                    //     { validator : validateNumber, trigger : 'blur' }
+                    // ],
                     limitByIdDay : [
                         { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('limitByIdDay'), length : 10 }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
@@ -557,8 +558,10 @@
                     //产品有效性设置
                     productEffSet : productEffectSet,
                     //限制库存
-                    stockType : limitStore,
+                    //stockType : limitStore,
                 },
+                //产品有效性是否可设置
+                productEffSetEnable : false,
             };
         },
         created () {
@@ -571,8 +574,12 @@
                 if (val === 'true') {
                     this.formData.needId = 'noRequired';
                     this.formData.inNum = '1';
+                    this.formData.productEffSet = 'since_the_play';
+                    this.productEffSetEnable = false;
                 } else {
                     this.formData.inNum = '';
+                    this.formData.productEffSet = 'since_the_play';
+                    this.productEffSetEnable = true;
                 }
             },
 
@@ -642,8 +649,8 @@
                                 needAllId : '',
                                 needId : this.formData.needId || '',
                                 productId : this.formData.productId || '',
-                                stockNum : this.formData.stockNum || '',
-                                stockType : this.formData.stockType || '',
+                                //stockNum : this.formData.stockNum || '',
+                                //stockType : this.formData.stockType || '',
                             }),
                             //游玩
                             playRuleJson : JSON.stringify(rule),
