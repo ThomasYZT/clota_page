@@ -57,7 +57,7 @@
                     <i-col span="11">
                         <!--发送状态-->
                         <FormItem :label="$t('colonSetting',{ key : $t('sendStatus')})">
-                            <span class="form-value">{{$t( scope.row.status === 'success' ? 'success' : 'fail')}}</span>
+                            <span class="form-value">{{$t(formData.sendStatus === 'success' ? 'success' : 'fail')}}</span>
                         </FormItem>
                     </i-col>
                 </i-row>
