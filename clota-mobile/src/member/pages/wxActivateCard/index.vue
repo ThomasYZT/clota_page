@@ -53,6 +53,7 @@
         <datetime
             class="c-input"
             start-date="1970-01-01"
+            :end-date="endDate"
             :confirm-text="$t('confirm')"
             :cancel-text="$t('cancel')"
             :title="$t('birthday')"
@@ -138,7 +139,9 @@
                 // 按钮是否禁用
                 isGetCode: false,
                 //微信用户信息
-                wxUserInfo : {}
+                wxUserInfo : {},
+                //当前时间
+                endDate: new Date().format('yyyy-MM-dd')
             }
         },
         methods: {
