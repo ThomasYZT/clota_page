@@ -144,9 +144,7 @@
                     payType: '',
                     remark: '',
                 };
-                this.title = '';
                 this.payInfo = {};
-                this.showContent = false;
             },
             /**
              * 控制模态框状态
