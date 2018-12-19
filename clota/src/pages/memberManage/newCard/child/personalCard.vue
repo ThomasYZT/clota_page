@@ -144,6 +144,7 @@
             <Form-item prop="payType" label="收款方式" >
                 <RadioGroup v-model="cardParam.payType">
                     <Radio v-for="(item,index) in payAccountList"
+                           :disabled="selectedCard.salePrice <= 0"
                            :key="index"
                            :label="item.value">
                         {{$t('onlineAccount.' + item.value)}}
@@ -591,6 +592,14 @@
             ...mapGetters([
                 'payAccountList'
             ])
+        },
+        watch : {
+            //监听会员卡售价的大小，如果小于0，只能选择现金支付
+            'selectedCard.salePrice' (newVal,oldVal) {
+                if (!newVal) {
+                    this.cardParam.payType = 'cash';
+                }
+            }
         }
     };
 </script>
