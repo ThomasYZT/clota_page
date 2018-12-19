@@ -41,23 +41,23 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <Tooltip placement="bottom" :transfer="true">
-                        <span :class="[scope.row.txnStatus]">{{scope.row.txnStatus ? $t('txnStatus.' + scope.row.txnStatus) : '-'}}</span>
-                        <div slot="content">
-                            <Timeline>
-                                <TimelineItem v-for="(item, index) in scope.row.auditRecordVos"
-                                              :key="index"
-                                              :color="item.rechargeStatus === 'pending_audit' ? 'green' : item.rechargeStatus === 'rejected' ? 'red' : 'blue'">
-                                    <span v-if="item.rechargeStatus === 'pending_audit'">{{$t('finance.pending_audit')}}</span>
-                                    <span v-else-if="item.rechargeStatus === 'rejected'">{{$t('finance.rejected')}}</span>
-                                    <span v-else-if="item.rechargeStatus === 'valid'">{{$t('finance.valid')}}</span>
-                                    <span v-else>-</span>
-                                    <span>{{item.orgName | contentFilter}}/{{item.updateUser | contentFilter}}</span>
-                                    <p>{{item.updatedTime | contentFilter}}</p>
-                                </TimelineItem>
-                            </Timeline>
-                        </div>
-                    </Tooltip>
+                    <span :class="[scope.row.txnStatus]">{{scope.row.txnStatus ? $t('txnStatus.' + scope.row.txnStatus) : '-'}}</span>
+                    <!--<Tooltip placement="bottom" :transfer="true">-->
+                        <!--<div slot="content">-->
+                            <!--<Timeline>-->
+                                <!--<TimelineItem v-for="(item, index) in scope.row.auditRecordVos"-->
+                                              <!--:key="index"-->
+                                              <!--:color="item.rechargeStatus === 'pending_audit' ? 'green' : item.rechargeStatus === 'rejected' ? 'red' : 'blue'">-->
+                                    <!--<span v-if="item.rechargeStatus === 'pending_audit'">{{$t('finance.pending_audit')}}</span>-->
+                                    <!--<span v-else-if="item.rechargeStatus === 'rejected'">{{$t('finance.rejected')}}</span>-->
+                                    <!--<span v-else-if="item.rechargeStatus === 'valid'">{{$t('finance.valid')}}</span>-->
+                                    <!--<span v-else>-</span>-->
+                                    <!--<span>{{item.orgName | contentFilter}}/{{item.updateUser | contentFilter}}</span>-->
+                                    <!--<p>{{item.updatedTime | contentFilter}}</p>-->
+                                <!--</TimelineItem>-->
+                            <!--</Timeline>-->
+                        <!--</div>-->
+                    <!--</Tooltip>-->
                 </template>
             </el-table-column>
             <el-table-column
@@ -185,6 +185,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('searchPayResult') }));
+                        this.queryList();
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('searchPayResult') }));
                     }
