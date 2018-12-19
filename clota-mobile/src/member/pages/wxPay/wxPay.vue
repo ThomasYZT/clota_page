@@ -31,6 +31,7 @@
                 let payParams = Object.assign({
                     openid: this.wxUserInfo.openId
                 }, this.goodInfo);
+                console.log(JSON.stringify(payParams))
                 ajax.post('payUnifiedorder', JSON.stringify(payParams), { headers: {
                     'Content-Type': 'application/json;charset-UTF-8'
                 }}).then((res) => {

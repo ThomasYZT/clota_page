@@ -53,6 +53,7 @@
         <!-- 生日 -->
         <datetime
             class="c-input"
+            start-date="1970-01-01"
             :confirm-text="$t('confirm')"
             :cancel-text="$t('cancel')"
             :title="$t('birthday')"
@@ -297,7 +298,6 @@
                     this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('idCard') }));
                     return;
                 }
-
                 this.register();
             },
             /**
@@ -339,13 +339,7 @@
              */
             getParams () {
                 let queryParams = this.getUrlString(location.href);
-                if (queryParams && queryParams.code) {
-                    this.getOAuth2UserInfo(queryParams.code);
-                } else if (queryParams && queryParams.openId) {
-                    this.wxUserInfo.openId = queryParams.openId;
-                    this.wxUserInfo.orgId = queryParams.orgId;
-                    this.queryDocument();
-                }
+                this.getOAuth2UserInfo(queryParams.code);
             },
             /**
              * 获取微信用户信息

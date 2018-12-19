@@ -75,16 +75,6 @@
                 :text="$t('loading')">
             </loading>
         </div>
-
-        <tabbar v-if="isTabbarShow && cardInfo.cardTypeId !== '1'"
-                v-model="actived">
-            <tabbar-item v-for="(item, index) in tabbarList"
-                         :key="index"
-                         :link="item.link">
-                <i slot="icon" :class="item.icon"></i>
-                <span slot="label">{{$t(item.label)}}</span>
-            </tabbar-item>
-        </tabbar>
     </div>
 </template>
 
@@ -115,23 +105,6 @@
                 pageShow : true,
                 //是否显示顶部返回首页的图标
                 //showTopBanner: true
-                //底部导航栏
-                tabbarList : [
-                    {
-                        label : 'myMember',
-                        link : '/home',
-                        icon : 'iconfont icon-mymember'
-                    },
-                    {
-                        label : 'integralMall',
-                        link : '/integralMall',
-                        icon : 'iconfont icon-integral-mall'
-                    }
-                ],
-                //tab选中状态
-                actived : 0,
-                //是否显示底部导航栏
-                isTabbarShow : false
             };
         },
         methods : {
@@ -206,37 +179,22 @@
                 lang : 'lang',
                 isLoading : 'isLoading',
                 showNetworkError : 'showNetworkError',
-                cardInfo : 'cardInfo',
                 errCode : 'errCode',
                 isWeixin : 'isWeixin'
             }),
         },
         created () {
              this.getWxConfig();
-//            this.$store.dispatch('getLocation');
         },
         watch : {
             '$route' : {
                 handler (newVal) {
-                    this.actived = this.tabbarList.findIndex((i) => {
-                        if (newVal.path === '/exchangeRecord') {
-                            return i.link === '/integralMall';
-                        } else {
-                            return i.link === newVal.path;
-                        }
-                    });
                     if (newVal && newVal.meta && newVal.meta.title) {
                         document.title = this.$t(newVal.meta.title);
                     } else {
                         document.title = '';
                     }
                     this.$store.commit('updateKeyBoardStatus',false);
-
-                    if (newVal.name === 'home' || newVal.name === 'integralMall' || newVal.name === 'exchangeRecord') {
-                        this.isTabbarShow = true;
-                    } else {
-                        this.isTabbarShow = false;
-                    }
                 },
                 immediate : true
             },

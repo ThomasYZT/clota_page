@@ -63,7 +63,7 @@
             }
         },
         computed : {
-            //同比上周，当前指标是上升，还是下降
+            //同比昨天，当前指标是上升，还是下降
             labelCurve () {
                 if (this.labelRate === '-') {
                     return '-';
@@ -89,7 +89,7 @@
         @include card();
         float: left;
         margin-right: 20px;
-        padding: 16px 30px;
+        padding: 16px 5px 16px 30px;
 
         &:nth-last-of-type(1) {
             margin-right: 0;
@@ -133,6 +133,10 @@
 
                 .rate {
                     color: $color_353B5E;
+
+                    .iconfont{
+                        vertical-align: middle;
+                    }
 
                     .icon-arrow-up{
                         display: inline-block;

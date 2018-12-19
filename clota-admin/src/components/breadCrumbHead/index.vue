@@ -9,7 +9,7 @@
                 :key="index">
                 {{$t(item.name)}}
             </BreadcrumbItem>
-            <BreadcrumbItem>{{localeRouter}}</BreadcrumbItem>
+            <BreadcrumbItem>{{$t(localeRouter)}}</BreadcrumbItem>
         </Breadcrumb>
     </div>
 </template>

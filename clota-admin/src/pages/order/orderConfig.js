@@ -1,89 +1,106 @@
 
-
-export const orderHead = [
+//表头配置
+export const columnData = [
     {
-        title : '订单号',
-        minWidth : 100,
-        field : 'rate'
+        title : 'orderId',
+        width : 215,
+        field : 'orderNo'
     },
     {
-        title : '游玩日期',
-        minWidth : 100,
-        field : 'rate'
+        title : 'orderDetailNo',
+        width : 200,
+        field : 'orderDetailNo'
     },
     {
-        title : '下单日期',
-        minWidth : 100,
-        field : 'rate'
+        title : 'playDate',
+        minWidth : 136,
+        field : 'originVisitDate'
     },
     {
-        title : '产品信息',
-        minWidth : 100,
-        field : 'rate'
+        title : 'orderTime',
+        width : 190,
+        field : 'createdTime'
     },
     {
-        title : '购买数量',
-        minWidth : 100,
-        field : 'rate'
+        title : 'scenePlace',
+        width : 200,
+        field : 'orgName'
     },
     {
-        title : '订单金额',
-        minWidth : 100,
-        field : 'rate'
+        title : 'orderChannel',
+        width : 130,
+        enWidth : 180,
+        field : 'orderChannel'
     },
     {
-        title : '所属景区',
-        minWidth : 200,
-        field : 'rate'
+        title : 'orderOrg',
+        width : 200,
+        field : 'placeOrderOrgName'
     },
     {
-        title : '发售机构',
-        minWidth : 200,
-        field : 'rate'
+        title : 'productName',
+        width : 250,
+        field : 'productName'
     },
     {
-        title : '下单企业',
-        minWidth : 200,
-        field : 'rate'
+        title : 'productQuantity',
+        width : 130,
+        enWidth : 180,
+        field : 'quantity'
     },
     {
-        title : '下单渠道',
-        minWidth : 200,
-        field : 'rate'
+        title : 'orderAmount',
+        width : 130,
+        enWidth : 180,
+        field : 'orderAmount'
     },
     {
-        title : '订单类型',
-        minWidth : 100,
-        field : 'rate'
+        title : 'smsStatus',
+        width : 130,
+        enWidth : 180,
+        field : 'smsStatus'
     },
     {
-        title : '审核状态',
-        minWidth : 100,
-        field : 'rate'
+        title : 'syncStatus',
+        width : 130,
+        enWidth : 180,
+        field : 'syncStatus'
     },
     {
-        title : '支付状态',
-        minWidth : 100,
-        field : 'rate'
+        title : 'paymentStatus',
+        width : 130,
+        enWidth : 180,
+        field : 'paymentStatus'
     },
     {
-        title : '支付状态',
-        minWidth : 100,
-        field : 'rate'
+        title : 'auditStatusFilter',
+        width : 130,
+        enWidth : 180,
+        field : 'auditStatus'
     },
     {
-        title : '核销状态',
-        minWidth : 190,
-        field : 'rate'
+        title : 'ticketPickNum',
+        width : 200,
+        field : 'quantityPicked'
     },
     {
-        title : '退票状态',
-        minWidth : 190,
-        field : 'rate'
+        title : 'verificationNum',
+        width : 200,
+        field : 'quantityVerified'
     },
     {
-        title : '同步状态',
-        minWidth : 100,
-        field : 'rate',
+        title : 'quantityRefunded',
+        width : 200,
+        field : 'quantityRefunded'
     },
+    {
+        title : 'quantityRescheduled',
+        width : 200,
+        field : 'quantityRescheduled'
+    },
+    {
+        title : 'operate',
+        width : 170,
+        field : 'operate'
+    }
 ];

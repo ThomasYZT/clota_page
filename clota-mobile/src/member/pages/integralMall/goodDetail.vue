@@ -212,7 +212,6 @@
             .tab-pane {
                 width: 100%;
                 padding: 24px;
-                margin-bottom: 50px;
 
                 .decs-item {
                     width: 100%;
@@ -237,7 +236,7 @@
         }
 
         .button {
-            position: fixed;
+            position: sticky;
             bottom: 0;
             width: 100%;
             height: 49px;

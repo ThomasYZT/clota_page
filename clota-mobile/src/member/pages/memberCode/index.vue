@@ -100,7 +100,6 @@
                         let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
                         let thumbnail = null;
                         let rect = null;
-                        console.log(this.$refs)
                         if(index === 0){
                             thumbnail = this.$refs.barcode.$el;
                         }else if(index === 1){

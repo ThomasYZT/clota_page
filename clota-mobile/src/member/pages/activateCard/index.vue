@@ -105,13 +105,8 @@
              * @param{Object} params 路由参数
              */
             getParams (params) {
-                if (params && params.openId) {
-                    this.openId = params.openId;
-                } else {
-                    // this.$router.push({
-                    //     name : 'login'
-                    // });
-                }
+                let wxUserInfo = localStorage.getItem('wxUserInfo') && localStorage.getItem('wxUserInfo')!=={} ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
+                this.openId = wxUserInfo.openId;
             },
         }
     };

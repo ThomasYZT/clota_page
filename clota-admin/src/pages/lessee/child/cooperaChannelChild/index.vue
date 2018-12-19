@@ -42,7 +42,7 @@
                         </div>
                         <div class="info-list5">
                             <span class="info-key">{{item[1].label}}：</span>
-                                <span class="info-val">
+                            <span class="info-val">
                                 <img v-for="(picture, imgIndex) in JSON.parse(item[1].value ? item[1].value : '[]')"
                                      :key="imgIndex"
                                      class="classify-img"
@@ -205,8 +205,7 @@
                         this.$refs.passForm.validate(valid => {
                             if (valid) {
                                 this.auditPartner({
-                                    auditStatus : 'success',
-                                    email : this.formData.email
+                                    auditStatus : 'success'
                                 });
                             }
                         });
@@ -318,9 +317,11 @@
                                 res.data.attach);
                         }
                         this.auditStatus = res.data.auditStatus;
+                        this.formData.email = res.data.email;
                     } else {
                         this.cooperaPerDetail.name = '';
                         this.auditStatus = '';
+                        this.formData.email = '';
                     }
                 });
             },
@@ -346,7 +347,8 @@
              */
             auditPartner (params) {
                 ajax.post('auditPartner',Object.assign({
-                    id : this.channelId
+                    id : this.channelId,
+                    email : this.formData.email
                 },params)).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('审核成功');
@@ -371,7 +373,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .coopera-channel-detail{
         @include block_outline();
         overflow: auto;

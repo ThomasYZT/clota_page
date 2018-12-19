@@ -30,6 +30,7 @@ const createLintingRule = () => ({
 
 let webpackConfig = smp.wrap({
     context: path.resolve(__dirname, '../'),
+    devServer: { disableHostCheck: true, },
     entry: {
         app: './src/main.js'
     },
