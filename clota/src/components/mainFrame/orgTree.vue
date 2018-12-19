@@ -22,25 +22,25 @@
 
 <script>
     import common from '@/assets/js/common';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        data() {
+        data () {
             return {
                 //筛选组织的关键字
                 filterValue : '',
                 //props配置
-                defaultProps: {
-                    children: 'children',
-                    label: 'orgName'
+                defaultProps : {
+                    children : 'children',
+                    label : 'orgName'
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 过滤组织树数据
              * @param e
              */
-            filter(e){
+            filter (e) {
                 this.$refs.tree.filter(e);
             },
             /**
@@ -49,7 +49,7 @@
              * @param data
              * @returns {boolean}
              */
-            filterNode(value, data) {
+            filterNode (value, data) {
                 if (!value) return true;
                 return data && data.orgName && data.orgName.indexOf(value) !== -1;
             },
@@ -57,7 +57,7 @@
              * 获取选中的组织
              * @returns {string | null}
              */
-            getChoseOrg (){
+            getChoseOrg () {
                 return this.manageOrgs;
             },
             /**
@@ -65,9 +65,9 @@
              * @param data
              * @param node
              */
-            orgChose (data,node){
-                if(data.disabled) return;
-                if(data.id !== this.manageOrgs.id){
+            orgChose (data,node) {
+                if (data.disabled) return;
+                if (data.id !== this.manageOrgs.id) {
                     this.$store.dispatch('resetNodeChosed',data).then(route => {
                         this.$router.replace({
                             path : route.path
@@ -84,29 +84,29 @@
             /**
              * 菜单组织树
              */
-            menuRenderContent (h, {root, node, data}) {
+            menuRenderContent (h, { root, node, data }) {
                 return h('div', {
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
                     },
-                    class: {
-                        'title-wrap': true,
+                    class : {
+                        'title-wrap' : true,
                         'disabled' : data.disabled
                     },
                 }, [
                     h('span', {
-                        class: {
-                            'title-class': true
+                        class : {
+                            'title-class' : true
                         },
-                        directives: [
+                        directives : [
                             {
-                                name: 'w-title',
-                                value: data.orgName
+                                name : 'w-title',
+                                value : data.orgName
                             }
                         ],
                     }, data.orgName)
-                ])
+                ]);
             },
         },
         mounted () {
@@ -128,7 +128,7 @@
                 this.$refs.tree.filter(newVal);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

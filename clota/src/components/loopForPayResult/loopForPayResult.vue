@@ -154,8 +154,10 @@
             visibleChange (type) {
                 if (type === false) {
                     clearInterval(this.timer);
-                    this.formData.code = '';
-                    this.stage = 'scan';
+                    setTimeout(() => {
+                        this.formData.code = '';
+                        this.stage = 'scan';
+                    },300);
                 } else {
                     this.$nextTick(() => {
                         let ele = this.$el.querySelector('#payCodeInput .ivu-input');

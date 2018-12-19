@@ -59,9 +59,11 @@
                             <!--</Option>-->
                             <!--</Select>-->
                             <RadioGroup v-model="formData.paymentTypeId">
-                                <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
-                                <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                                <Radio label="cash">{{$t('_cash')}}</Radio><!--现金-->
+                                <Radio v-for="(item,index) in payAccountList"
+                                       :key="index"
+                                       :label="item.value">
+                                    {{$t('onlineAccount.' + item.value)}}
+                                </Radio>
                             </RadioGroup>
                         </Form-item>
                     </div>
@@ -141,7 +143,7 @@
                 formData : {
                     amount : '',//储值金额
                     totalAmount : '',//实际增加金额
-                    paymentTypeId : 'weixin',//支付方式
+                    paymentTypeId : 'cash',//支付方式
                     remark : '',
                 },
                 //表单校验
@@ -289,12 +291,13 @@
                     this.accountInfo = {};
                     this.formData.totalAmount = '';
                 }
-            }
+            },
 
         },
         computed : {
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                payAccountList : 'payAccountList',
             })
         }
     };

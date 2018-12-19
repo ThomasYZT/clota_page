@@ -33,6 +33,7 @@
     import selectCard from './components/selectCardType.vue';
     import personalCard from './child/personalCard.vue';
     import ownerCard from './child/ownerCard.vue';
+    import ajax from '@/api/index';
 
     export default {
         components : {
@@ -73,8 +74,8 @@
                         this.selectedCard = {};
                         break;
                 }
-            }
-        }
+            },
+        },
     };
 </script>
 

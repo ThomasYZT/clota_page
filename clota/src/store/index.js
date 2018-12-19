@@ -78,7 +78,17 @@ export default new Vuex.Store({
         //当前账号拥有的所有组织结构信息,
         manageOrgList : [],
         //当前浏览器是否支持读卡器，如果支持，是否启用
-        cardReadEnabled : false
+        cardReadEnabled : false,
+        //全部支付方式
+        payAccountList : [],
+        //在线支付方式
+        onlineAccountList : [],
+        //固定支付方式
+        staticPayAccount : [{
+            value : 'cash',
+            label : 'cash'
+        }]
+
     },
     getters : {
         //左侧菜单是否收起
@@ -141,7 +151,19 @@ export default new Vuex.Store({
         hashKey : state => {
             return state.hashKey;
         },
-        cardReadEnabled : state => state.cardReadEnabled
+        cardReadEnabled : state => state.cardReadEnabled,
+        //全部支付方式
+        payAccountList : state => {
+            return [].concat(state.onlineAccountList,state.staticPayAccount);
+        },
+        //在线支付方式
+        onlineAccountList : state => {
+            return state.onlineAccountList;
+        },
+        //固定支付方式
+        staticPayAccount : state => {
+            return state.staticPayAccount;
+        }
     },
     mutations : {
         //更新左侧菜单是否收起
@@ -203,6 +225,7 @@ export default new Vuex.Store({
                 let orgInfoStorage = localStorage.getItem('manageOrg');
                 state.manageOrgs = orgInfoStorage ? JSON.parse(orgInfoStorage) : {};
             }
+            this.dispatch('getOnlineAccountList');
             localStorage.setItem('orgIndex',state.manageOrgs ? state.manageOrgs['id'] : '');
         },
         //更改皮肤
@@ -221,6 +244,10 @@ export default new Vuex.Store({
         //更新读卡器是否可用的状态
         updateCardReadEnabled (state,isEnabled) {
             state.cardReadEnabled = isEnabled;
+        },
+        //修改在线支付方式
+        updateOnlineAccountList (state,onlineAccountList) {
+            state.onlineAccountList = onlineAccountList;
         }
     },
     actions : {
@@ -266,40 +293,6 @@ export default new Vuex.Store({
                     store.dispatch('showErrToast','rightGetError');
                 });
             });
-            // return ajax.post('getPrivilege',{
-            //     orgId : store.getters.manageOrgs.id
-            // }).then(res =>{
-            //     if (res.success) {
-            //         sessionStorage.setItem('token',res.data ? res.data.token : '');
-            //         return new Promise((resolve, reject) => {
-            //             let privCode = {};
-            //             let privateData = res.data.privileges;
-            //             //获取账号的菜单权限
-            //             for (let i = 0,j = privateData.length; i < j; i++) {
-            //                 privCode[privateData[i]['privCode']] = 'allow';
-            //             }
-            //             let routers = childDeepClone(routerClect, privCode);
-            //             routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
-            //             //重新设置路由信息
-            //             resetRouter(routers);
-            //             store.commit('updatePermissionInfo',privCode);
-            //             store.commit('updateRouteInfo',routers);
-            //             // 如果有权限，则跳转到有权限的第一个页面
-            //             if (routers.length > 0) {
-            //                 resolve(routers[0]);
-            //             } else {
-            //                 reject();
-            //             }
-            //         }).catch(err => {
-            //             console.log(err);
-            //         });
-            //     } else {
-            //         store.dispatch('showErrToast','rightGetError');
-            //         return new Promise().reject();
-            //     }
-            // }).catch(() => {
-            //     store.dispatch('showErrToast','rightGetError');
-            // });
         },
         //获取用户信息
         getUserInfo (store,{ userInfo,route }) {
@@ -455,46 +448,6 @@ export default new Vuex.Store({
                                         window.rd.dc_exit();
                                         resolve(result);
                                     }
-                                    // if (st !== 0) {
-                                    //     window.rd.dc_exit();
-                                    //     reject('dcLoadKeyError');
-                                    // } else {
-                                    //     window.rd.put_bstrSBuffer_asc = "31323334353637383930313233343536";
-                                    //     st = window.rd.dc_write(2);
-                                    //     if (st !== 0) {
-                                    //         window.rd.dc_exit();
-                                    //         reject('dcWriteError');
-                                    //     } else {
-                                    //         st = window.rd.dc_read(2);
-                                    //         if (st !== 0) {
-                                    //             window.rd.dc_exit();
-                                    //             reject('dcReadError');
-                                    //         } else {
-                                    //             window.rd.put_bstrSBuffer_asc = "30303030303030303030303030303030";
-                                    //             st = window.rd.dc_write(2);
-                                    //             if (st !== 0) {
-                                    //                 window.rd.dc_exit();
-                                    //                 reject('dcWriteError');
-                                    //             } else {
-                                    //                 st = window.rd.dc_read(2);
-                                    //                 if (st !== 0) {
-                                    //                     window.rd.dc_exit();
-                                    //                     reject('dcReadError');
-                                    //                 } else {
-                                    //                     //读取成功，蜂鸣器响一次
-                                    //                     st = window.rd.dc_beep(5);
-                                    //                     if (st !== 0) {
-                                    //                         window.rd.dc_exit();
-                                    //                         reject('dcBeepError');
-                                    //                     } else {
-                                    //                         window.rd.dc_exit();
-                                    //                         resolve(result);
-                                    //                     }
-                                    //                 }
-                                    //             }
-                                    //         }
-                                    //     }
-                                    // }
                                 }
                             }
 
@@ -506,6 +459,30 @@ export default new Vuex.Store({
                     store.commit('updateCardReadEnabled',false);
                 }
             });
-        }
+        },
+        /**
+         * 获取在线支付方式
+         * @param{Object} store
+         */
+        getOnlineAccountList : debounce(function (store) {
+            let onlineAccountList = [];
+            ajax.post('queryOnlineAccount',{
+                isPlatformAcc : false,
+                orgId : store.getters.manageOrgs.id
+            }).then(res => {
+                if (res.success) {
+                    onlineAccountList = res.data ? res.data.map(item => {
+                        return {
+                            ...item,
+                            value : item.accountType,
+                            label : item.accountType,
+                        };
+                    }) : [];
+                } else {
+                    onlineAccountList = [];
+                }
+                this.commit('updateOnlineAccountList',onlineAccountList);
+            });
+        },200)
     }
 });

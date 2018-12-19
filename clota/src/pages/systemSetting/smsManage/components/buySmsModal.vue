@@ -29,13 +29,13 @@
                         <span>{{formData.provider | contentFilter}}</span>
                     </Form-item>
                     <!--支付方式-->
-                    <Form-item :label="$t('payType') + '：'" prop="">
+                    <Form-item :label="$t('payType') + '：'" prop="payType">
                         <RadioGroup v-model="formData.payType" @on-change="onTypeChanged">
-                            <!--<Radio label="zfb">{{$t('ailiPay')}}</Radio>&lt;!&ndash;支付宝&ndash;&gt;-->
-                            <!--<Radio label="wx">{{$t('wechatPay')}}</Radio>&lt;!&ndash;微信支付&ndash;&gt;-->
-                            <Radio v-for="(item, index) in payTypeList"
+                            <Radio v-for="(item,index) in onlineAccountList"
                                    :key="index"
-                                   :label="item.accountType">{{$t('payType.' + item.accountType)}}</Radio>
+                                   :label="item.value">
+                                {{$t('onlineAccount.' + item.value)}}
+                            </Radio>
                         </RadioGroup>
                     </Form-item>
 
@@ -64,6 +64,7 @@
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
     import loopForPayResult from '../../../../components/loopForPayResult/loopForPayResult';
+    import { mapGetters } from 'vuex';
 
     export default {
         props: ['row-data'],
@@ -83,10 +84,14 @@
                 },
                 //校验规则
                 ruleValidate: {
-
+                    payType : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{ msg : this.$t('payType') }),
+                            trigger : 'blur'
+                        }
+                    ]
                 },
-                //支付方式列表数据
-                payTypeList : [],
                 //支付方式附带信息
                 payInfo : {},
                 //是否显示支付状态模态框
@@ -102,7 +107,6 @@
             show ( data ) {
                 if( data ){
                     this.formData = defaultsDeep({}, data.item, this.formData);
-                    this.queryOnlineAccount();
                 }
                 this.visible = true;
             },
@@ -122,33 +126,37 @@
 
             //
             onTypeChanged(data) {
-                this.payInfo = this.payTypeList.find(item => {
+                this.payInfo = this.onlineAccountList.find(item => {
                     return item.accountType === data;
                 });
             },
 
             // 立即购买
             buyNow ( params ) {
-                ajax.post('orderBuySmsPackage', {
-                    smsPackageId: params.id,
-                    payType : this.formData.payType,
-                }).then(res => {
-                    if( res.success ) {
-                        if (res.data) {
-                            this.payNow({
-                                bizId : res.data,
-                                merchantId : this.payInfo.merchantId,
-                                partnerId : this.payInfo.partnerId,
-                                payType : this.formData.payType,
-                                payMoney : this.formData.price
-                            });
-                        } else {
-                            this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
-                        }
-                    } else {
-                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        ajax.post('orderBuySmsPackage', {
+                            smsPackageId: params.id,
+                            payType : this.formData.payType,
+                        }).then(res => {
+                            if( res.success ) {
+                                if (res.data) {
+                                    this.payNow({
+                                        bizId : res.data,
+                                        merchantId : this.payInfo.merchantId,
+                                        partnerId : this.payInfo.partnerId,
+                                        payType : this.formData.payType,
+                                        payMoney : this.formData.price
+                                    });
+                                } else {
+                                    this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
+                                }
+                            } else {
+                                this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
+                            }
+                        })
                     }
-                })
+                });
             },
 
             /**
@@ -181,21 +189,6 @@
                     }
                 })
             },
-            queryOnlineAccount () {
-                ajax.post('queryOnlineAccount', {
-                    isPlatformAcc : true,
-                    PageNo : 1,
-                    PageSize : 100
-                }).then(res => {
-                    if (res.success && res.data && res.data.length > 0) {
-                        this.payTypeList = res.data;
-                        this.formData.payType = this.payTypeList[0].accountType;
-                        this.payInfo = this.payTypeList[0];
-                    } else {
-                        this.payTypeList = [];
-                    }
-                })
-            },
             /**
              * 开启查询支付结果
              * @param{Object} transctionId 内部交易id
@@ -212,6 +205,11 @@
                 this.hide();
             },
         },
+        computed : {
+            ...mapGetters([
+                'onlineAccountList'
+            ])
+        }
     }
 </script>
 

@@ -25,10 +25,10 @@
                         <Form-item :label="$t('payType')" prop="payType">
                             <RadioGroup v-model="formData.payType"
                                         @on-change="payTypeChange">
-                                <Radio v-for="(item, index) in accountList"
+                                <Radio v-for="(item,index) in onlineAccountList"
                                        :key="index"
-                                       :label="item.accountType">
-                                    {{item.accountType ? $t('payType.' + item.accountType) : ''}}
+                                       :label="item.value">
+                                    {{$t('onlineAccount.' + item.value)}}
                                 </Radio>
                             </RadioGroup>
                         </Form-item>
@@ -70,6 +70,7 @@
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
     import loopForPayResult from '@/components/loopForPayResult/loopForPayResult';
+    import { mapGetters } from 'vuex';
 
     export default {
         props: ['row-data'],
@@ -106,8 +107,6 @@
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('payType')}), trigger: 'blur' },
                     ]
                 },
-                //在线支付账户列表
-                accountList : [],
                 //模态框标题
                 title : '',
                 //是否显示模态框内容
@@ -128,10 +127,11 @@
              *  显示模态框
              */
             show ( data ) {
+                this.visible = true;
                 if( data ){
                     this.formData = defaultsDeep(this.formData, data.item );
-                    this.queryOnlineAccount();
                 }
+                this.controlModal();
             },
             /**
              *  关闭模态框
@@ -144,32 +144,15 @@
                     payType: '',
                     remark: '',
                 };
-                this.accountList = [];
                 this.title = '';
                 this.payInfo = {};
                 this.showContent = false;
             },
             /**
-             * 获取在线支付账户列表
-             */
-            queryOnlineAccount () {
-                ajax.post('queryOnlineAccount', {
-                    isPlatformAcc : false,
-                    orgId : this.formData.peerOrgId,
-                }).then(res => {
-                    if (res.success) {
-                        this.accountList = res.data ? res.data : [];
-                    } else {
-                        this.accountList = [];
-                    }
-                    this.controlModal();
-                });
-            },
-            /**
              * 控制模态框状态
              */
             controlModal () {
-                if (this.accountList.length > 0) {
+                if (this.onlineAccountList.length > 0) {
                     this.title = 'topUp';
                     this.showContent = true;
                 } else {
@@ -261,11 +244,16 @@
              * @param { string } item
              */
             payTypeChange (payType) {
-                this.payInfo = this.accountList.find((account) => {
+                this.payInfo = this.onlineAccountList.find((account) => {
                     return account.accountType === payType;
                 });
             }
         },
+        computed : {
+            ...mapGetters([
+                'onlineAccountList'
+            ])
+        }
     }
 </script>
 
