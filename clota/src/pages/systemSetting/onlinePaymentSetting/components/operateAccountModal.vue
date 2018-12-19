@@ -81,7 +81,7 @@
             confirm () {
                 this.visible = false;
                 this.$refs.delModal.show({
-                    text : '',
+                    title : this.$t('notice'),
                     confirmCallback: () => {
                         this.updateOnlineAccount();
                     },
@@ -103,6 +103,7 @@
                         this.$Message.success(this.$t('successTip', { tip : this.$t('operate') }));
                         this.toggle();
                         this.visible = false;
+                        this.$store.dispatch('getOnlineAccountList');
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('operate') }));
                     }

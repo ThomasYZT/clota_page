@@ -15,6 +15,7 @@
 <script>
     import mainFrame from '@/components/mainFrame/mainFrame';
     import { mapGetters } from 'vuex';
+    import ajax from '@/api/index';
 
     export default {
         name : 'app',
@@ -36,7 +37,7 @@
                 this.$nextTick(() => {
                     this.isRouterActive = true;
                 });
-            }
+            },
         },
         computed : {
             noFrame () {
@@ -46,11 +47,8 @@
             ...mapGetters({
                 skinType : 'skinType',
                 hashKey : 'hashKey',
-                lang : 'lang'
+                lang : 'lang',
             }),
-        },
-        created () {
-            // this.$store.commit('updateManageOrgs',JSON.parse(localStorage.getItem('manageOrgs')));
         },
         mounted () {
             this.$nextTick(() => {

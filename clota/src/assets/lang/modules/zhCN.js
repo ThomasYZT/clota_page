@@ -1871,4 +1871,7 @@ export default {
     'financeRecharge' : '账户充值',
     'expandDateList' : '展开日期清单',
     'rollUpDateList' : '收起日期清单',
+    'onlineAccount.weixin' : '微信',
+    'onlineAccount.alipay' : '支付宝',
+    'onlineAccount.cash' : '现金',
 }

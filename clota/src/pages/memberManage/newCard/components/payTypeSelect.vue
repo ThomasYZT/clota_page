@@ -6,9 +6,11 @@
         <Form :model="formData" label-position="top">
             <FormItem label="收款方式" prop="payType" :rules="{ required : true,trigger : 'change' }">
                 <RadioGroup v-model="formData.payType" @on-change="payTypeChange">
-                    <Radio label="weixin">{{$t('weChat')}}</Radio><!--微信-->
-                    <Radio label="alipay">{{$t('ailiPay')}}</Radio><!--支付宝-->
-                    <Radio label="cash">{{$t('_cash')}}</Radio><!--支付宝-->
+                    <Radio v-for="(item,index) in payAccountList"
+                           :key="index"
+                           :label="item.value">
+                        {{$t('onlineAccount.' + item.value)}}
+                    </Radio>
                 </RadioGroup>
             </FormItem>
         </Form>
@@ -16,12 +18,13 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
     export default {
         data () {
             return {
                 formData : {
                     //支付方式
-                    payType : 'weixin',
+                    payType : 'cash',
                 }
             };
         },
@@ -41,6 +44,11 @@
         },
         created () {
             this.setPayType();
+        },
+        computed : {
+            ...mapGetters([
+                'payAccountList'
+            ])
         }
     };
 </script>
