@@ -138,9 +138,9 @@
                 //表单数据
                 formData : {
                     // 下单起始日期
-                    orderStartDate : '',
+                    orderStartDate : new Date().addMonths(-1),
                     // 下单结束日期
-                    orderEndDate : '',
+                    orderEndDate : new Date(),
                     // 游玩起始日期
                     visitStartDate : '',
                     // 游玩结束日期
@@ -187,7 +187,6 @@
             }
         },
         created () {
-            // this.queryOrderOrgList();
             this.querySceneicData();
             this.resetFormData = JSON.stringify(this.formData);
         },
@@ -268,20 +267,14 @@
                     this.orderTakeList = [];
                     return;
                 }
-                this.formData.orderOrgId = 'all';
+                this.formData.channelId = 'all';
                 ajax.post('getOrderCompany',{
                     scenicId : this.formData.scenicOrgId,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.orderTakeList = res.data ? [].concat([{
-                            id : 'all',
-                            orgName : this.$t('all')
-                        }],res.data) : [];
+                        this.orderTakeList = res.data ? res.data : [];
                     } else {
-                        this.orderTakeList = [{
-                            id : 'all',
-                            orgName : this.$t('all')
-                        }];
+                        this.orderTakeList = [];
                     }
                     this.searchAuditList();
                 });
