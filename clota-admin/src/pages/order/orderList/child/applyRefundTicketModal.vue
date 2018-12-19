@@ -237,9 +237,9 @@
              */
             saveOrderProductRefundAlter () {
                 ajax.post('saveOrderProductRefundAlter',{
-                    orderId : this.orderDetail.orderId,
+                    orderId : this.orderDetail.id,
                     visitorProductId : this.orderDetail.visitorProductId,
-                    productId : this.selectedTicket[0]['productId'],
+                    productId : this.orderDetail.productId,
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                     reqType : 'refund',
                     orgId : this.orderDetail.orgId
@@ -258,8 +258,8 @@
              */
             getRefundProcedureFee () {
                 ajax.post('getRefundProcedureFee',{
-                    orderProductId : this.selectedTicket[0]['orderProductId'],
-                    orderId : this.orderDetail.orderId,
+                    orderProductId : this.orderDetail.orderProductId,
+                    orderId : this.orderDetail.id,
                     orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                 }).then(res => {
                     if (res.status === 200) {

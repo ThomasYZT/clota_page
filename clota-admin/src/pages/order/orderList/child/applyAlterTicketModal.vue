@@ -261,15 +261,15 @@
              */
             saveOrderProductRefundAlter () {
                 ajax.post('saveOrderProductRefundAlter',{
-                    orderId : this.orderDetail.orderId,
+                    orderId : this.orderDetail.id,
                     visitorProductId : this.orderDetail.visitorProductId,
-                    productId : this.selectedTicket[0]['productId'],
+                    productId : this.orderDetail.productId,
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                     reqType : 'alter',
                     afterAlterDate : this.formData.alterDate.format('yyyy-MM-dd'),
                     orgId : this.orderDetail.orgId
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('TheApplicationForAlterationSuccess'));
                         this.cancel();
                         this.$emit('fresh-data');

@@ -561,4 +561,13 @@ export default {
     'ApplicationForRefundFail' : '发起退票申请失败',
     'YouAreApplyingToChangeTheFollowingProducts' : '您正在申请对以下产品进行改签',
     'alterDate' : '改签日期',
+    'individualProductDetail' : '散客产品明细',
+    'orderInfo' : '订单信息',
+    'verifyTime' : '核销时间',
+    'refundTime' : '退票时间',
+    'modifyTime' : '改签时间',
+    'syncTime' : '同步时间',
+    'orderLog' : '订单日志',
+    'TheApplicationForAlterationSuccess' : '发起改签申请成功',
+    'TheApplicationForAlterationFail' : '发起改签申请失败',
 };

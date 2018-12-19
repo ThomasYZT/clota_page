@@ -123,7 +123,8 @@
 
         <!--散客产品明细模态框-->
         <productDetailModal ref="productDetailModal"
-                            :viewType="viewType"></productDetailModal>
+                            :viewType="viewType">
+        </productDetailModal>
         <!--退票申请 模态框-->
         <refundModal ref="refundModal"
                      @fresh-data="$emit('fresh-data')">

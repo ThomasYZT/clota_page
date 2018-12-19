@@ -23,7 +23,7 @@
                     <Row>
                         <i-col span="10">
                             <FormItem :label="$t('orderNo')+'：'">
-                                {{orderInfo.orderNo | contentFilter}}
+                                {{orderInfo.id | contentFilter}}
                             </FormItem>
                         </i-col>
                         <i-col span="10">
