@@ -95,7 +95,7 @@
                 <i-col span="6">
                     <!--所属景区-->
                     <FormItem :label="$t('scenePlace')">
-                        <Select v-model.trim="formData.scenicOrgId"
+                        <Select v-model.trim="formData.scenicId"
                                 style="max-width: 200px"
                                 @on-change="sceneChange">
                             <Option v-for="item  in belongScene"
@@ -319,7 +319,7 @@
                     //退票状态
                     refundStatus : 'allStatus',
                     //所属景区
-                    scenicOrgId : 'all',
+                    scenicId : 'all',
                     //下单渠道
                     orderChannel : 'allStatus',
                     //同步状态
@@ -388,7 +388,7 @@
                             orgName : this.$t('all')
                         }],res.data) : [];
                         this.orderTakeList = [];
-                        if (this.formData.scenicOrgId !== 'all') {
+                        if (this.formData.scenicId !== 'all') {
                             this.sceneChange();
                         } else {
                             this.search();
@@ -402,13 +402,13 @@
              * 所属景区改变，查询下单企业信息
              */
             sceneChange () {
-                if (!this.formData.scenicOrgId) {
+                if (!this.formData.scenicId) {
                     this.orderTakeList = [];
                     return;
                 }
                 this.formData.orderOrgId = '';
                 ajax.post('getOrderOrgList',{
-                    scenicId : this.formData.scenicOrgId,
+                    scenicId : this.formData.scenicId,
                     allocationStatus : this.formData.allocationStatus
                 }).then(res => {
                     if (res.success) {
@@ -417,7 +417,7 @@
                         this.orderTakeList = [];
                     }
                     //如果所属景区不是当前登录景区,且是否分销选择了否，那么下单企业必须是当前景区，且不可修改
-                    if (this.formData.scenicOrgId === this.manageOrgs.id) {
+                    if (this.formData.scenicId === this.manageOrgs.id) {
                         this.orderTaskDisabled = false;
                     } else {
                         if (this.formData.allocationStatus === 'false') {
@@ -425,7 +425,7 @@
                                 this.formData.orderOrgId = this.orderTakeList[0].id;
                             }
                             //所属景区不为全部，下单企业不可选
-                            if (this.formData.scenicOrgId !== 'all') {
+                            if (this.formData.scenicId !== 'all') {
                                 this.orderTaskDisabled = true;
                             } else {
                                 this.orderTaskDisabled = false;
@@ -471,7 +471,7 @@
                 this.formData.pickStatus = 'allStatus';
                 this.formData.allocationStatus = 'false';
                 this.formData.refundStatus = 'allStatus';
-                this.formData.scenicOrgId = 'all';
+                this.formData.scenicId = 'all';
                 this.formData.orderChannel = 'allStatus';
                 this.formData.syncStatus = 'allStatus';
                 this.formData.rescheduleStatus = 'allStatus';
@@ -493,7 +493,7 @@
              */
             allocationStatusChange () {
                 this.formData.orderChannel = 'allStatus';
-                this.formData.scenicOrgId = 'all';
+                this.formData.scenicId = 'all';
                 this.orderTaskDisabled = false;
                 this.formData.orderOrgId = '';
                 this.orderTypeChange();
@@ -503,7 +503,7 @@
              */
             queryMarketList () {
                 ajax.post('queryTypeList',{
-                    orgId : this.formData.scenicOrgId
+                    orgId : this.formData.scenicId
                 }).then(res => {
                     if (res.success) {
                         this.marketTypeList = res.data ? res.data : [];
@@ -524,7 +524,7 @@
              * 根据营销类别获取营销级别信息
              */
             queryLevelByTypeId () {
-                if (this.formData.scenicOrgId === 'all' || !this.formData.scenicOrgId) {
+                if (this.formData.scenicId === 'all' || !this.formData.scenicId) {
                     this.marketLevelList = [];
                     return;
                 }
@@ -575,7 +575,7 @@
                     refundStatus : this.formData.refundStatus === 'allStatus' ? '' : this.formData.refundStatus,
                     verifyStatus : this.formData.verifyStatus === 'allStatus' ? '' : this.formData.verifyStatus,
                     rescheduleStatus : this.formData.rescheduleStatus === 'allStatus' ? '' : this.formData.rescheduleStatus,
-                    scenicOrgId : this.formData.scenicOrgId !== 'all' ? this.formData.scenicOrgId : '',
+                    scenicId : this.formData.scenicId !== 'all' ? this.formData.scenicId : '',
                     channelId : this.formData.orderOrgId,
                     orderChannel : this.formData.orderChannel === 'allStatus' ? '' : this.formData.orderChannel,
                     productType : this.formData.productType,
@@ -642,7 +642,7 @@
                 }
             },
             //监视所属景区变化，重新获取营销级别和营销类别信息
-            'formData.scenicOrgId' (newVal,oldVal) {
+            'formData.scenicId' (newVal,oldVal) {
                 this.formData.marketTypeId = 'all';
                 this.formData.marketLevelId = 'all';
                 this.marketTypeList = [];

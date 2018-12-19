@@ -2,7 +2,7 @@
 
 <template>
     <div id="app" :class="skinType">
-        <router-view v-if="noFrame"/>
+        <router-view v-if="noFrame && isRouterActive"/>
         <main-frame v-else >
             <transition name="el-fade-in">
                 <router-view :key="hashKey" v-if="isRouterActive">

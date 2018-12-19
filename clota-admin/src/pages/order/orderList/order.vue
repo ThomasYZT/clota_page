@@ -13,34 +13,34 @@
             :border="true"
             :show-pagination="true"
             :total-count="totalCount"
-            :ofset-height="315"
-            :page-no-d.sync="queryParams.pageNo"
+            :ofset-height="325"
+            :page-no-d.sync="queryParams.page"
             :page-size-d.sync="queryParams.pageSize"
             @query-data="queryList">
             <el-table-column
-                slot="column0"
+                slot="columnorderNo"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span :class="{ 'to-one-level' : canShowOrderDetail }" @click="toOrderDetail(scope.row)">{{scope.row.orderNo}}</span>
+                    <span class="to-one-level" @click="toOrderDetail(scope.row)">{{scope.row.orderNo}}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column2"
+                slot="columnoriginVisitDate"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.visitDate | timeFormat('yyyy-MM-dd')}}
+                    {{scope.row.originVisitDate | timeFormat('yyyy-MM-dd')}}
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column5"
+                slot="columnorderChannel"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -51,7 +51,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column7"
+                slot="columnproductName"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -62,18 +62,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column9"
-                show-overflow-tooltip
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.orderOrgType === 'allocation' ? scope.row.settleAmount : scope.row.amount | moneyFilter | contentFilter}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column10"
+                slot="columnsmsStatus"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -89,7 +78,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column11"
+                slot="columnsyncStatus"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -102,7 +91,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column12"
+                slot="columnpaymentStatus"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -115,7 +104,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column13"
+                slot="columnauditStatus"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -131,7 +120,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column14"
+                slot="columnquantityPicked"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -145,7 +134,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column15"
+                slot="columnquantityVerified"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -159,7 +148,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column16"
+                slot="columnquantityRefunded"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -173,7 +162,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column17"
+                slot="columnquantityRescheduled"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -186,21 +175,21 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column18"
+                slot="columnoperate"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
                 :width="returnTicketMenuShow.width">
                 <template slot-scope="scope">
-                    <ul class="operate-list">
-                        <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual' && canApplyRefund"
+                    <ul class="operate-info">
+                        <li class="normal" v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
                             :class="{disabled : !judgeCanReturn(scope.row)}"
                             @click="refundTicket(scope.row)">{{$t('return')}}</li><!--退票-->
-                        <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual' && canApplyAlter"
+                        <li class="normal" v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
                             :class="{disabled : !judgeCanAlter(scope.row)}"
                             @click="alterTicket(scope.row)">{{$t('alter')}}</li><!--改签-->
-                        <li v-if="canShowOrderDetail" @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
+                        <li class="normal"  @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
                     </ul>
                 </template>
             </el-table-column>
@@ -250,19 +239,18 @@
                 totalCount : 0,
                 //筛选条件
                 queryParams : {
-                    pageNo : 1,
+                    page : 1,
                     pageSize : 10,
                     orderStartDate : '',
                     orderEndDate : '',
                     visitStartDate : '',
                     visitEndDate : '',
                     orderType : '',
-                    allocationStatus : '',
                     pickStatus : '',
                     refundStatus : '',
                     verifyStatus : '',
                     rescheduleStatus : '',
-                    scenicId : '',
+                    scenicOrgId : '',
                     channelId : '',
                     orderChannel : '',
                     productType : '',
@@ -298,12 +286,63 @@
              * 查询订单ajax请求
              */
             queryListAjax () {
-                ajax.post('getOrderList',{
-                    ...this.queryParams
+                let params = {
+                    createdStartTime : this.queryParams.orderStartDate,
+                    createdEndTime : this.queryParams.orderEndDate,
+                    startOriginVisitDate : this.queryParams.visitStartDate,
+                    endOriginVisitDate : this.queryParams.visitEndDate,
+                    keyword : this.queryParams.keyword,
+                    page : this.queryParams.page,
+                    pageSize : this.queryParams.pageSize,
+                };
+                if (this.queryParams.orderType) {
+                    Object.assign(params,{ orderType : this.queryParams.orderType });
+                }
+                if (this.queryParams.pickStatus) {
+                    Object.assign(params,{ pickStatus : this.queryParams.pickStatus });
+                }
+                if (this.queryParams.refundStatus) {
+                    Object.assign(params,{ refundStatus : this.queryParams.refundStatus });
+                }
+                if (this.queryParams.scenicOrgId) {
+                    Object.assign(params,{ orgId : this.queryParams.scenicOrgId });
+                }
+                if (this.queryParams.orderOrgId) {
+                    Object.assign(params,{ placeOrderOrgId : this.queryParams.orderOrgId });
+                }
+                if (this.queryParams.orderChannel) {
+                    Object.assign(params,{ orderChannel : this.queryParams.orderChannel });
+                }
+                if (this.queryParams.verifyStatus) {
+                    Object.assign(params,{ verifyStatus : this.queryParams.verifyStatus });
+                }
+                if (this.queryParams.rescheduleStatus) {
+                    Object.assign(params,{ rescheduleStatus : this.queryParams.rescheduleStatus });
+                }
+                if (this.queryParams.marketTypeId) {
+                    Object.assign(params,{ typeId : this.queryParams.marketTypeId });
+                }
+                if (this.queryParams.marketLevelId) {
+                    Object.assign(params,{ levelId : this.queryParams.marketLevelId });
+                }
+                if (this.queryParams.paymentStatus) {
+                    Object.assign(params,{ paymentStatus : this.queryParams.paymentStatus });
+                }
+                if (this.queryParams.auditStatus) {
+                    Object.assign(params,{ auditStatus : this.queryParams.auditStatus });
+                }
+                if (this.queryParams.syncStatus) {
+                    Object.assign(params,{ syncStatus : this.queryParams.syncStatus });
+                }
+                if (this.queryParams.abnormalStatus === true) {
+                    Object.assign(params,{ onlyAbnormalOrder : true });
+                }
+                ajax.post('querySecondOrder',{
+                    ...params,
                 }).then(res => {
-                    if (res.success) {
-                        this.tableData = res.data ? res.data.data : [];
-                        this.totalCount = res.data.totalRow;
+                    if (res.status === 200) {
+                        this.tableData = res.data ? res.data.list : [];
+                        this.totalCount = res.data ? Number(res.data.totalRecord) : 0;
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
@@ -333,13 +372,12 @@
              * @param data
              */
             toOrderDetail (data) {
-                if (!this.canShowOrderDetail) return;
                 if (data['orderType'] === 'individual') {
                     // 散客订单详情
                     this.$router.push({
-                        name : 'individualFirstLevel',
+                        name : 'individualOrderDetail1Level',
                         params : {
-                            orderId : data.orderId
+                            orderDetail : data
                         }
                     });
                 } else {
@@ -347,7 +385,7 @@
                     this.$router.push({
                         name : 'teamOrderDetail',
                         params : {
-                            orderId : data.orderId
+                            orderDetail : data
                         }
                     });
                 }
@@ -358,14 +396,14 @@
              * @param data
              */
             refundTicket (data) {
-                if (!this.judgeCanReturn(data) || !this.canApplyRefund) return;
+                if (!this.judgeCanReturn(data)) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
-                    if (res.success) {
-                        this.orderProductInfo = res.data;
+                    if (res.status === 200) {
+                        this.orderProductInfo = res.data ? res.data : [];
                         this.refundTicketModalShow = true;
                     } else {
-                        this.orderProductInfo = {};
+                        this.orderProductInfo = [];
                     }
                 });
             },
@@ -374,8 +412,8 @@
              * @param  data 订单信息
              */
             queryOrderTicketList (data) {
-                return ajax.post('queryRefundAndAlterTicketList',{
-                    visitorProductId : data.visitorProductId
+                return ajax.post('queryIndividualProductDetail',{
+                    orderDetailNo : data.orderDetailNo
                 });
             },
             /**
@@ -383,7 +421,7 @@
              * @param  data 订单信息
              */
             alterTicket (data) {
-                if (!this.judgeCanAlter(data) || !this.canApplyAlter) return;
+                if (!this.judgeCanAlter(data)) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
                     if (res.success) {
@@ -413,7 +451,6 @@
              * @param rowData
              */
             toDetail (rowData) {
-                if (!this.canShowOrderDetail) return;
                 if (rowData.orderType === 'team') {
                     this.$router.push({
                         name : 'teamOrderDetail',
@@ -423,7 +460,7 @@
                     });
                 } else if (rowData.orderType === 'individual') {
                     this.$router.push({
-                        name : 'individualSecondLevel',
+                        name : 'individualOrderDetail2Level',
                         params : {
                             productDetail : rowData
                         }
@@ -442,7 +479,11 @@
              */
             getProductName (rowData) {
                 if (rowData.orderType === 'team') {
-                    return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
+                    if (rowData.productName && rowData.productName.slice(0,1) === '[') {
+                        return JSON.parse(rowData.productName).join(',');
+                    } else {
+                        return rowData.productName;
+                    }
                 } else {
                     return rowData.productName;
                 }
@@ -455,8 +496,9 @@
              */
             getParams (params,toRoute,fromRoute) {
                 if (params && Object.keys(params).length > 0 &&
-                    (fromRoute.name === 'individualSecondLevel' ||
-                    fromRoute.name === 'individualFirstLevel')) {
+                    (fromRoute.name === 'teamOrderDetail' ||
+                        fromRoute.name === 'individualOrderDetail1Level' ||
+                        fromRoute.name === 'individualOrderDetail2Level')) {
                     this.paramsDefault = params;
                 }
             }
@@ -465,28 +507,10 @@
             ...mapGetters([
                 'permissionInfo'
             ]),
-            //权限是否允许申请退票操作
-            canApplyRefund () {
-                return this.permissionInfo && 'applyRefund' in this.permissionInfo;
-            },
-            //权限是否允许申请改签操作
-            canApplyAlter () {
-                return this.permissionInfo && 'applyAlter' in this.permissionInfo;
-            },
-            //是否可以查看订单明细
-            canShowOrderDetail () {
-                return this.permissionInfo && 'orderDetail' in this.permissionInfo;
-            },
             //是否可以显示退票按钮和改签按钮，
             returnTicketMenuShow () {
                 //散客非分销订单
-                if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')
-                    && this.queryParams.allocationStatus === 'false') {
-                    return {
-                        show : true,
-                        width : 170,
-                    };
-                } else if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '') && this.queryParams.orderChannel === 'market') {
+                if (this.queryParams.orderType === 'individual' || this.queryParams.orderType === '') {
                     return {
                         show : true,
                         width : 170,
@@ -506,7 +530,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .order-detail{
         @include block_outline();
         min-width: $content_min_width;

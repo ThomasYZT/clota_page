@@ -502,6 +502,20 @@
                 this.curVal = this.select.value = (this.select.province && this.select.province.province || '')
                     + (this.select.city && this.select.city.city || '')
                     + (this.select.area && this.select.area.area || '')
+            },
+            /**
+             * 重置
+             */
+            reset () {
+                console.log("111111")
+                // 选择结果
+                this.select = {
+                    province: null,
+                    city: null,
+                    area: null,
+                    value: ''
+                };
+                this.curVal = '';
             }
         },
         created () {

@@ -34,7 +34,7 @@
                         label : '订单查询'
                     },
                     {
-                        name : 'cooperaChannelOrg',
+                        name : 'teamOrderAudit',
                         label : '团队订单预审核'
                     },
                     {
