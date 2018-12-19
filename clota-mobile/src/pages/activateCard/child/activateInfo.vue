@@ -153,8 +153,6 @@
                     code : '',
                     //公司编码
                     companyCode : '',
-                    //微信openid
-                    wxOpenId : '',
                     //实体卡id
                     id : ''
                 },
@@ -327,6 +325,8 @@
                 this.formData.companyCode = this.companyCode;
                 ajax.post('activationMemberCard', {
                     ...this.formData,
+                    //微信openid
+                    wxOpenId : this.openId,
                 }).then(res => {
                     if (res.success) {
                         this.dataToLogin(res)
@@ -398,8 +398,6 @@
                 localStorage.setItem('token', res.data.token);
                 //存储本地、vuex用户信息
                 this.updateUserInfo(res.data);
-                //更新登陆状态
-                this.updateLoginStatus();
                 //获取用卡列表信息
                 this.getCardList();
             },
@@ -426,7 +424,7 @@
                     this.$router.push({ name : 'home' });
                 });
             }
-        }
+        },
     };
 </script>
 
