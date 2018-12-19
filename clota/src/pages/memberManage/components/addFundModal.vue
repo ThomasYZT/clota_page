@@ -60,6 +60,7 @@
                             <!--</Select>-->
                             <RadioGroup v-model="formData.paymentTypeId">
                                 <Radio v-for="(item,index) in payAccountList"
+                                       :disabled="!(formData.amount > 0)"
                                        :key="index"
                                        :label="item.value">
                                     {{$t('onlineAccount.' + item.value)}}
@@ -299,6 +300,14 @@
                 lang : 'lang',
                 payAccountList : 'payAccountList',
             })
+        },
+        watch : {
+            //监听增加储值金额数值如果小于0，收款方式不可选且默认为现金支付
+            'formData.amount' (newVal) {
+                if (!(newVal && newVal > 0)) {
+                    this.formData.paymentTypeId = 'cash';
+                }
+            }
         }
     };
 </script>
