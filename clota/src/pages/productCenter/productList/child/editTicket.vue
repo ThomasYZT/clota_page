@@ -367,9 +367,9 @@
                         callback();
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : 'maxOrderNum'),length : 50 }));
+                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : rule.field === 'maxNum' ? 'maxOrderNum' : rule.field),length : 50 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : 'maxOrderNum') }));
+                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : rule.field === 'maxNum' ? 'maxOrderNum' : rule.field) }));
                         }
                     });
                 } else {
@@ -799,7 +799,15 @@
                     }
                 });
             },
-
+            /**
+             * 库存限制改变
+             */
+            stockTypeChange () {
+                this.formData.stockNum = '';
+                this.$nextTick(() => {
+                    this.$refs.formValidate.validateField('stockNum');
+                })
+            }
         },
         computed : {
             ...mapGetters([
