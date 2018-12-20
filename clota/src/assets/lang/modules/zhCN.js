@@ -2059,4 +2059,5 @@ export default {
     'onlineAccount.alipay' : '支付宝',
     'onlineAccount.cash' : '现金',
     'chargeBack' : '团队订单退单审核',
+    'expiresStatus' : '过期状态',
 }
