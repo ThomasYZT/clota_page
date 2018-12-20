@@ -204,7 +204,7 @@
                 if (this.selectedTicket.length > 0) {
                     this.saveOrderProductRefundAlter();
                 } else {
-                    this.$Message.warning(this.$t('selectField', { sg : this.$t('productNeedsRefund') })); // 请选择需要退票的产品
+                    this.$Message.warning(this.$t('selectField', { msg : this.$t('productNeedsRefund') })); // 请选择需要退票的产品
                 }
             },
             /**
@@ -260,7 +260,7 @@
                 ajax.post('getRefundProcedureFee',{
                     orderProductId : this.orderDetail.orderProductId,
                     orderId : this.orderDetail.id,
-                    orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
+                    orderTicketsIds : this.selectedTicket.map(item => item.id).join(','),
                 }).then(res => {
                     if (res.status === 200) {
                         this.refundFee = res.data ? res.data : 0;

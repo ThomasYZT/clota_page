@@ -452,7 +452,7 @@ export default {
     'verificationNum' : '核销数量',
     'quantityRefunded' : '退票数量',
     'quantityRescheduled' : '改签数量',
-    'waitToSync' : '待同步',
+    'waitToSync' : '-',
     'checkPass' : '审核通过',
     'checkNoPass' : '审核不通过',
     'details' : '详情',
@@ -570,4 +570,6 @@ export default {
     'orderLog' : '订单日志',
     'TheApplicationForAlterationSuccess' : '发起改签申请成功',
     'TheApplicationForAlterationFail' : '发起改签申请失败',
+    'productNeedsRefund' : '需要退票的产品',
+    'refundToBeReviewed' : '退票待审核',
 };

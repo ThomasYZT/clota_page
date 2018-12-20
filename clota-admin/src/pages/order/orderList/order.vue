@@ -498,7 +498,8 @@
                 if (params && Object.keys(params).length > 0 &&
                     (fromRoute.name === 'teamOrderDetail' ||
                         fromRoute.name === 'individualOrderDetail1Level' ||
-                        fromRoute.name === 'individualOrderDetail2Level')) {
+                        fromRoute.name === 'individualOrderDetail2Level' ||
+                        fromRoute.name === 'orderList')) {
                     this.paramsDefault = params;
                 }
             }

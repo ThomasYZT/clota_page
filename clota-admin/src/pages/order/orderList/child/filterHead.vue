@@ -420,12 +420,6 @@
             /**
              * 触发查询产品列表
              */
-            // searchProductList () {
-            //     this.$emit('search-product',{
-            //         searchParams : this.paramsObj,
-            //         formData : this.formData
-            //     });
-            // },
             searchProductList : debounce (function () {
                 this.$emit('search-product',{
                     searchParams : this.paramsObj,
@@ -601,17 +595,27 @@
             }
         },
         watch : {
-            paramsDefault (newVal,oldVal) {
-                if (newVal && Object.keys(newVal).length > 0) {
-                    for (let item in this.paramsDefault) {
-                        if (item === 'orderDate') {
-                            this.formData['orderDate'][0] = this.paramsDefault.orderDate[0] ? new Date(this.paramsDefault.orderDate[0]) : '';
-                            this.formData['orderDate'][1] = this.paramsDefault.orderDate[1] ? new Date(this.paramsDefault.orderDate[1]) : '';
-                        } else {
-                            this.formData[item] = this.paramsDefault[item];
+            paramsDefault : {
+                handler (newVal,oldVal) {
+                    if (newVal && Object.keys(newVal).length > 0) {
+                        for (let item in this.paramsDefault) {
+                            if (item === 'orderDate') {
+                                this.$set(this.formData['orderDate'],0,this.paramsDefault.orderDate[0] ? new Date(this.paramsDefault.orderDate[0]) : '');
+                                this.$set(this.formData['orderDate'],1,this.paramsDefault.orderDate[1] ? new Date(this.paramsDefault.orderDate[1]) : '');
+                            } else if (item === 'visitDate') {
+                                this.$set(this.formData['visitDate'],0,this.paramsDefault.visitDate[0] ? new Date(this.paramsDefault.visitDate[0]) : '');
+                                this.$set(this.formData['visitDate'],1,this.paramsDefault.visitDate[1] ? new Date(this.paramsDefault.visitDate[1]) : '');
+                            } else {
+                                this.$set(this.formData,item,this.paramsDefault[item]);
+                            }
                         }
+                    } else {
+                        this.$set(this.formData,'orderDate',[new Date().addMonths(-1),new Date()]);
+                        this.$set(this.formData,'visitDate',[]);
                     }
-                }
+                    this.searchProductList();
+                },
+                immediate : true
             },
             //监视所属景区变化，重新获取营销级别和营销类别信息
             'formData.scenicOrgId' (newVal,oldVal) {
