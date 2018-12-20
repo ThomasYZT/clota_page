@@ -71,6 +71,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import loopForPayResult from '@/components/loopForPayResult/loopForPayResult';
     import { mapGetters } from 'vuex';
+    import common from '@/assets/js/common';
 
     export default {
         props: ['row-data'],
@@ -82,6 +83,21 @@
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
                         callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                    } else {
+                        callback();
+                    }
+                },
+                validateMoney : (rule,value,callback) => {
+                    if (value) {
+                        common.validateMoney(value).then(() => {
+                            callback();
+                        }).catch(err => {
+                            if (err === 'errorMaxLength') {
+                                callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
+                            } else {
+                                callback(this.$t(err,{ field : this.$t(rule.field) }));
+                            }
+                        });
                     } else {
                         callback();
                     }
@@ -102,6 +118,7 @@
                     rechargeAmount: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('rechargeAmount')}), trigger: 'blur' },
                         { validator: validateMethod.emoji, trigger: 'blur' },
+                        { validator: validateMethod.validateMoney, trigger: 'blur' },
                     ],
                     payType : [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('payType')}), trigger: 'blur' },
