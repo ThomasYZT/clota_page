@@ -45,7 +45,7 @@
                     <ul>
                         <li>{{$t('rejectedNum')}}：<span class="red">{{rejectProducts.length | contentFilter}}</span></li><!--驳回数量-->
                         <li>{{$t('passedNum')}}：<span class="green">{{passedProducts.length | contentFilter}}</span></li><!--通过数量-->
-                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{Number(baseInfo.reqNum) | contentFilter}}</span></li><!--申请数量-->
+                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{rejectProducts.length | contentFilter}}</span></li><!--申请数量-->
                     </ul>
                 </div>
                 <!--退票手续费-->
@@ -200,27 +200,20 @@
              */
             confirmAudit () {
                 let auditParams = {
-                    orderId : '',
-                    visitorProductId : '',
-                    productId : '',
-                    passOrderTicketIds : this.passedProducts.map(item => item.id).join(','),
-                    rejectOrderTicketIds : this.rejectProducts.map(item => item.id).join(','),
+                    // passOrderTicketIds : this.passedProducts.map(item => item.id).join(','),
+                    // rejectOrderTicketIds : this.rejectProducts.map(item => item.id).join(','),
                     reqType : '', // 申请类型（退票-refund，改签-alter）
-                    afterAlterDate : '', // 改签的时候，需要将改签后的日期传上
                     remark : this.auditRemark,
                 };
-                if (this.tableData.length) {
-                    Object.assign(auditParams, {
-                        orderId : this.tableData[0].orderId,
-                        visitorProductId : this.tableData[0].visitorProductId,
-                        productId : this.tableData[0].productId,
-                    });
-                }
-
                 if (this.isRefund) {
                     auditParams.reqType = 'refund';
                 } else if (this.isAlter) {
                     auditParams.reqType = 'alter';
+                }
+                if (this.passedProducts && this.passedProducts.length > 0) {
+                    auditParams['refundId'] = this.passedProducts.map(item => item.id).join(',');
+                } else if (this.rejectProducts && this.rejectProducts.length > 0) {
+                    auditParams['refundId'] = this.rejectProducts.map(item => item.id).join(',');
                 }
 
                 if (this.auditRemark.length <= 500) {

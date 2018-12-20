@@ -40,8 +40,18 @@
                       :table-com-min-height="250"
                       :border="true"
                       :auto-height="true"
-                      :columnCheck="true"
                       @selection-change="selectionChange">
+                <el-table-column
+                    slot="columncheck"
+                    slot-scope="row"
+                    :label="row.title"
+                    fixed="left"
+                    :selectable="canSelectProduct"
+                    show-overflow-tooltip
+                    type="selection"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                </el-table-column>
                 <el-table-column
                     slot="columnpickStatus"
                     show-overflow-tooltip
@@ -130,14 +140,6 @@
                             :visitor-info="visitor"
                             :order-detail="baseInfo">
         </productDetailModal>
-        <!--&lt;!&ndash;退票申请 模态框&ndash;&gt;-->
-        <!--<refundModal ref="refundModal"-->
-                     <!--@fresh-data="$emit('fresh-data')">-->
-        <!--</refundModal>-->
-        <!--&lt;!&ndash;改签申请 模态框&ndash;&gt;-->
-        <!--<ticketChangingModal ref="ticketChangingModal"-->
-                             <!--@fresh-data="$emit('fresh-data')">-->
-        <!--</ticketChangingModal>-->
 
         <!--审核确认弹框-->
         <confirm-audit-modal ref="confirmAuditModal"
@@ -313,6 +315,14 @@
             },
             onAuditConfirmed (auditParams) {
                 console.log(auditParams)
+            },
+            /**
+             * 判断是否可以选择产品
+             * @param{Object} row 选择的产品信息
+             * @param{Numbere} index 选择的产品序列
+             */
+            canSelectProduct (row,index) {
+                return false;
             }
         },
         mounted () {

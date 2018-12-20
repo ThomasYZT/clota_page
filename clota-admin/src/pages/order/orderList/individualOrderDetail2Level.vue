@@ -176,10 +176,17 @@
              * 查询产品明细信息
              */
             queryIndividualProductDetail () {
-                ajax.post('queryIndividualProductDetail',{
+                let params = {
                     orderDetailNo : this.productDetail.orderDetailNo,
                     pageSize : 99999,
                     page : 1
+                };
+                //如果是在审核退改签的页面需要传入refundId参数
+                if (this.productDetailForAudit) {
+                    Object.assign(params,{ refundId : this.productDetail.refundId });
+                }
+                ajax.post('queryIndividualProductDetail',{
+                    ...params
                 }).then(res => {
                     if (res.status === 200) {
                         this.ticketList = res.data ? res.data.list : [];
@@ -276,12 +283,21 @@
                             }
                         }
                     ];
-                } else if (this.$route.name === 'indOrderAuditDetail') { //从散客订单审核页面跳转过来
+                } else if (this.$route.name === 'refundAuditRefundOrderDetail') { //从散客订单退票审核页面跳转过来
                     return [
                         {
                             name : '散客退票审核订单', // 散客退票审核订单
                             router : {
                                 name : 'indRefundOrderAudit'
+                            }
+                        }
+                    ];
+                } else if (this.$route.name === 'alterAuditRefundOrderDetail') { //从散客订单改签审核页面跳转过来
+                    return [
+                        {
+                            name : '散客改签审核订单', // 散客改签审核订单
+                            router : {
+                                name : 'indAlterOrderAudit'
                             }
                         }
                     ];
@@ -295,7 +311,7 @@
             },
             //包含审核退票改签的产品明细是否显示
             productDetailForAudit () {
-                return this.$route.name === 'indOrderAuditDetail';
+                return this.$route.name === 'alterAuditRefundOrderDetail' || this.$route.name === 'refundAuditRefundOrderDetail';
             }
         }
     };

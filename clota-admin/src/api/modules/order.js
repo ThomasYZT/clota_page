@@ -39,7 +39,9 @@ export default {
     'getProductPolicyPlayDate' : 'order/getProductPolicyPlayDate.json',
     //查询产品操作日志
     'queryTicketOperationLog' : 'order/queryTicketOperationLog.json',
-    //退改签审核
+    //散客订单退改签审核
     'updateIndividualOrderRefundAlterAudit' : 'order/updateIndividualOrderRefundAlterAudit.json',
+    //散客产品退改签审核
+    'updateProductRefundAlterAudit' : 'order/updateProductRefundAlterAudit.json',
 
 };

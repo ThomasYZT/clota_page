@@ -132,7 +132,7 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { bulkRefundHead, batchAudit } from './indRefundAuditConfig';
+    import { bulkRefundHead, batchAudit,bulkAlterHead } from './indRefundAuditConfig';
     import ajax from '@/api/index';
     import { configVariable, notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
@@ -151,8 +151,6 @@
         props : {},
         data () {
             return {
-                //表头配置
-                columnData : bulkRefundHead,
                 //表格数据
                 tableData : [],
                 //总条数
@@ -175,7 +173,19 @@
                 paramsDefault : {}
             };
         },
-        computed : {},
+        computed : {
+            //表头配置
+            columnData () {
+                //散客退票审核列表表头
+                if (this.$route.name === 'indRefundOrderAudit') {
+                    return bulkRefundHead;
+                } else if (this.$route.name === 'indAlterOrderAudit') { //散客改签审核列表表头
+                    return bulkAlterHead;
+                } else {
+                    return [];
+                }
+            }
+        },
         created () {
         },
         methods : {
@@ -192,9 +202,13 @@
                     page : this.queryParams.page,
                     pageSize : this.queryParams.pageSize,
                     orderType : 'individual',
-                    refundStatus : 'wait',
-                    refundAlter : 'refund',
                 };
+                //如果当前是散客退票审核页面
+                if (this.$route.name === 'indRefundOrderAudit') {
+                    Object.assign(params,{ refundStatus : 'wait', refundAlter : 'refund' });
+                } else if (this.$route.name === 'indAlterOrderAudit') { //如果当前是散客改签待审核页面
+                    Object.assign(params,{ rescheduleStatus : 'wait', refundAlter : 'alter' });
+                }
                 if (this.queryParams.orderChannel) {
                     Object.assign(params,{ orderChannel : this.queryParams.orderChannel });
                 }
@@ -288,9 +302,9 @@
              */
             goTeamOrderDetail (scopeRow) {
                 this.$router.push({
-                    name : 'indOrderAuditDetail',
+                    name : this.$route.name === 'indRefundOrderAudit' ? 'refundAuditRefundOrderDetail' : 'alterAuditRefundOrderDetail',
                     params : {
-                        productDetail : scopeRow
+                        productDetail : scopeRow,
                     },
                 });
             },

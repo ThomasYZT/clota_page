@@ -119,9 +119,20 @@ export default {
         }
     },
     //散客订单二级详情 --- 退票审核
-    auditRefundOrderDetail : {
-        path : '/indOrder/audit/detail',
-        name : 'indOrderAuditDetail',
+    refundAuditRefundOrderDetail : {
+        path : '/indOrder/refundAudit/detail',
+        name : 'refundAuditRefundOrderDetail',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/individualOrderDetail2Level.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
+    },
+    //散客订单二级详情 --- 改签审核
+    alterAuditRefundOrderDetail : {
+        path : '/indOrder/alterAudit/detail',
+        name : 'alterAuditRefundOrderDetail',
         component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/individualOrderDetail2Level.vue'),
         meta : {
             _name : 'order',

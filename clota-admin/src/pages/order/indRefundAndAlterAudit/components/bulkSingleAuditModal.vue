@@ -149,7 +149,7 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         ajax.post('updateIndividualOrderRefundAlterAudit', {
-                            refundIds : this.orderData.items.map(item => item.productRefundAlterId).join(','),
+                            refundIds : this.orderData.items.map(item => item.refundId).join(','),
                             remark : this.formData.auditRemark,
                             audit : this.orderData.type,
                             reqType : this.reqType
