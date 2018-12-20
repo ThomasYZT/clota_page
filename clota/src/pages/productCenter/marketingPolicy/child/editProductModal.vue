@@ -37,7 +37,6 @@
                             </template>
                             <template v-else>
                                 <Select v-model="formData.productId"
-                                        transfer
                                         :disabled="type === 'check'"
                                         :placeholder="$t('selectField', {msg: ''})"
                                         @on-change="changeChooseProduct">
@@ -72,7 +71,7 @@
                                             :key="index"
                                             :value="item.value">
                                         {{$t(item.label)}}
-                                </Option>
+                                    </Option>
                                 </Select>
                             </FormItem>
                         </i-col>

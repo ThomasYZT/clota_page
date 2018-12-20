@@ -171,27 +171,27 @@
                         </Form-item>
                     </div>
                     <!--<div class="ivu-form-item-wrap">-->
-                        <!--<Form-item :label="$t('stockType')">&lt;!&ndash;限制库存&ndash;&gt;-->
-                            <!--<Select v-model="formData.stockType"-->
-                                    <!--:placeholder="$t('selectField', {msg: ''})">-->
-                                <!--<Option v-for="(item,index) in enumData.stockType"-->
-                                        <!--:key="index"-->
-                                        <!--:value="item.value">-->
-                                    <!--{{$t(item.label)}}-->
-                                <!--</Option>-->
-                            <!--</Select>-->
-                        <!--</Form-item>-->
+                    <!--<Form-item :label="$t('stockType')">&lt;!&ndash;限制库存&ndash;&gt;-->
+                    <!--<Select v-model="formData.stockType"-->
+                    <!--:placeholder="$t('selectField', {msg: ''})">-->
+                    <!--<Option v-for="(item,index) in enumData.stockType"-->
+                    <!--:key="index"-->
+                    <!--:value="item.value">-->
+                    <!--{{$t(item.label)}}-->
+                    <!--</Option>-->
+                    <!--</Select>-->
+                    <!--</Form-item>-->
                     <!--</div>-->
                     <!--<div class="ivu-form-item-wrap">-->
-                        <!--<Form-item :label="$t('stockNum')" prop="stockNum">&lt;!&ndash; 库存数量&ndash;&gt;-->
-                            <!--<template v-if="formData.stockType !== 'is_no_limit'">-->
-                                <!--<Input v-model.trim="formData.stockNum"-->
-                                       <!--:placeholder="$t('inputField', {field: ''})"/>-->
-                            <!--</template>-->
-                            <!--<span v-else>-->
-                                <!--{{$t('disableSet')}}-->
-                            <!--</span>-->
-                        <!--</Form-item>-->
+                    <!--<Form-item :label="$t('stockNum')" prop="stockNum">&lt;!&ndash; 库存数量&ndash;&gt;-->
+                    <!--<template v-if="formData.stockType !== 'is_no_limit'">-->
+                    <!--<Input v-model.trim="formData.stockNum"-->
+                    <!--:placeholder="$t('inputField', {field: ''})"/>-->
+                    <!--</template>-->
+                    <!--<span v-else>-->
+                    <!--{{$t('disableSet')}}-->
+                    <!--</span>-->
+                    <!--</Form-item>-->
                     <!--</div>-->
                 </div>
 
@@ -228,7 +228,6 @@
                             <table-com
                                 :table-com-min-height="260"
                                 :column-data="columnData"
-                                :auto-height="true"
                                 :table-data="productPlayRuleVo"
                                 :row-class-name="rowClassName"
                                 :border="false">
@@ -252,7 +251,7 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                       {{$t(scope.row.saleType) | contentFilter}}
+                                        {{$t(scope.row.saleType) | contentFilter}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -278,19 +277,19 @@
             <!--底部操作-->
             <div class="footer">
                 <!--新增按钮-->
-                <template v-if="type === 'add' && canApplyAuditProduct">
+                <template v-if="type === 'add'">
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc"> <!--提交审核-->
-                            {{$t('commitCheck')}}
+                        {{$t('commitCheck')}}
                     </Button>
                     <Button type="ghost"
                             @click="goBack"><!--放弃新增-->
-                            {{$t("giveUpAdd")}}
+                        {{$t("giveUpAdd")}}
                     </Button>
                 </template>
                 <!--修改按钮-->
-                <template v-if="type === 'modify' && canModifyProduct">
+                <template v-if="type === 'modify'">
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc">
@@ -323,7 +322,6 @@
     import { parkColumn } from './parkConfig';
     import { isTeamProduct, orderInfo, idType, productEffectSet, /*limitStore*/ } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
-    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -741,7 +739,7 @@
             rowClassName (row) {
                 if (!row.row.check) {
                     return '';
-                   /* return 'error-tr';*/
+                    /* return 'error-tr';*/
                 }
             },
 
@@ -787,7 +785,7 @@
             //查询权限下的园区
             queryScenicOrgByAccountRole () {
                 ajax.post('queryScenicOrgByAccountRole', {
-                    privCode : '"addProduct"',
+                    privCode : 'addProduct',
                 }).then(res => {
                     if (res.success) {
                         this.parkList = res.data || [];
@@ -802,20 +800,8 @@
 
         },
         computed : {
-            ...mapGetters([
-                'manageOrgs',
-                'permissionInfo',
-            ]),
             localeRouter () {
                 return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail'); // 新增票类 ： 修改票类信息
-            },
-            //是否可以提交审核信息
-            canApplyAuditProduct () {
-                return this.permissionInfo && 'addProduct' in this.permissionInfo;
-            },
-            //是否可以修改票类信息
-            canModifyProduct () {
-                return this.permissionInfo && 'addProduct' in this.permissionInfo;
             },
         },
     };
