@@ -194,11 +194,11 @@ export const transSMSStatus = (status) => {
  */
 export const canRefundTicket = (orderOrgType,rowData) => {
     //景区下，已退票、退票待审核，改签待审核，同步失败的不可退票
-    if(orderOrgType === 'scenic'){
+    if (orderOrgType === 'scenic') {
         return rowData.rescheduleStatus !== 'alter_audit' &&
             rowData.refundStatus === 'no_refund' &&
             rowData.syncStatus !== 'failure';
-    }else if(orderOrgType === 'channel'){
+    } else if (orderOrgType === 'channel') {
         //下单企业下，已核销，已退票/退票待审核、改签待审核，同步失败不可退票
         return rowData.rescheduleStatus !== 'alter_audit' &&
             rowData.refundStatus === 'no_refund' &&
@@ -217,11 +217,11 @@ export const canRefundTicket = (orderOrgType,rowData) => {
 export const canAlterTicket = (orderOrgType,rowData) => {
     //景区下,已退票、退票待审核，改签待审核的不可改签
     //已改签的要判断可改签的次数
-    if(orderOrgType === 'scenic'){
+    if (orderOrgType === 'scenic') {
         return rowData.rescheduleStatus !== 'alter_audit' &&
             rowData.refundStatus === 'no_refund' &&
             rowData.syncStatus !== 'failure';
-    }else if(orderOrgType === 'channel'){
+    } else if (orderOrgType === 'channel') {
         //下单企业下，已核销，已退票/退票待审核、已改签/改签待审核、同步失败的不可改签
         return rowData.rescheduleStatus !== 'alter_audit' &&
             rowData.refundStatus === 'no_refund' &&
@@ -233,4 +233,4 @@ export const canAlterTicket = (orderOrgType,rowData) => {
 
 export const auditCenter = (orderOrgType,rowData) => {
 
-}
+};

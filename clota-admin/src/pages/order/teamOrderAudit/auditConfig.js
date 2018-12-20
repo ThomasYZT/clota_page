@@ -76,12 +76,14 @@ export const orderProductHead = [
     {
         title : 'settlePrice', // 产品单价
         width : 100,
-        field : 'price'
+        field : 'price',
+        type : 'money'
     },
     {
         title : 'productActPrice', // 产品小计
         width : 100,
-        field : 'actAmount'
+        field : 'totalPrice',
+        type : 'money'
     },
 ];
 
@@ -97,17 +99,19 @@ export const batchAuditHead = [
         title : 'orderOrg',
         miWidth : 150,
         enWidth : 160,
-        field : 'orderOrgName'
+        field : 'placeOrderOrgName'
     },
     {
         title : 'playDate',
         width : 130,
-        field : 'originVisitDate'
+        field : 'originVisitDate',
+        type : 'date'
     },
     {
         title : 'orderAmount', // 订单金额
         width : 120,
-        field : 'orderAmount'
+        field : 'orderAmount',
+        type : 'money'
     },
 ];
 

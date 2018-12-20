@@ -127,6 +127,7 @@
     import { notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
+    import debounce from 'lodash/debounce';
 
     export default {
         props : {
@@ -134,6 +135,13 @@
             auditName : {
                 type : String,
                 default : ''
+            },
+            //默认筛选条件
+            'params-default' : {
+                type : Object,
+                default () {
+                    return {};
+                }
             }
         },
         data () {
@@ -141,9 +149,9 @@
                 //表单数据
                 formData : {
                     // 下单起始日期
-                    orderStartDate : new Date().addMonths(-1),
+                    orderStartDate : '',
                     // 下单结束日期
-                    orderEndDate : new Date(),
+                    orderEndDate : '',
                     // 游玩起始日期
                     visitStartDate : '',
                     // 游玩结束日期
@@ -166,7 +174,7 @@
                 // 支付状态
                 paymentList : payStatusList,
                 // 下单时间范围
-                orderTimeRange : [new Date().addMonths(-1), new Date()],
+                orderTimeRange : [],
                 // 游玩日期范围
                 visitDateRange : [],
                 // 重置使用的初始筛选条件
@@ -213,16 +221,16 @@
             /**
              * emit事件：on-filter，在父组件查询审核列表
              */
-            searchAuditList () {
+            searchAuditList : debounce(function () {
                 let keys = ['channelId', 'orderChannel', 'productType', 'paymentStatus'];
                 let queryParams = Object.assign({}, this.formData);
                 keys.forEach((key, i) => {
-                    if (queryParams[key].includes('all')) {
+                    if (queryParams[key] && queryParams[key].includes('all')) {
                         queryParams[key] = '';
                     }
                 });
                 this.$emit('on-filter', queryParams);
-            },
+            },200),
             /**
              * 重置筛选条件
              */
@@ -274,6 +282,39 @@
                 });
             },
         },
+        watch : {
+            //根据默认参数设置筛选条件
+            paramsDefault : {
+                handler (newVal,oldVal) {
+                    if (newVal && Object.keys(newVal).length > 0) {
+                        for (let item in this.paramsDefault) {
+                            if (item === 'visitStartDate') {
+                                this.$set(this.formData,'visitStartDate',this.paramsDefault.visitStartDate ? new Date(String(this.paramsDefault.visitStartDate)) : '');
+                                this.$set(this.visitDateRange,0,this.paramsDefault.visitStartDate ? new Date(String(this.paramsDefault.visitStartDate)) : '');
+                            } else if (item === 'visitEndDate') {
+                                this.$set(this.formData,'visitEndDate',this.paramsDefault.visitEndDate ? new Date(String(this.paramsDefault.visitEndDate)) : '');
+                                this.$set(this.visitDateRange,1,this.paramsDefault.visitEndDate ? new Date(String(this.paramsDefault.visitEndDate)) : '');
+                            } else if (item === 'orderStartDate') {
+                                this.$set(this.formData,'orderStartDate',this.paramsDefault.orderStartDate ? new Date(String(this.paramsDefault.orderStartDate)) : '');
+                                this.$set(this.orderTimeRange,0,this.paramsDefault.orderStartDate ? new Date(String(this.paramsDefault.orderStartDate)) : '');
+                            } else if (item === 'orderEndDate') {
+                                this.$set(this.formData,'orderEndDate',this.paramsDefault.orderEndDate ? new Date(String(this.paramsDefault.orderEndDate)) : '');
+                                this.$set(this.orderTimeRange,1,this.paramsDefault.orderEndDate ? new Date(String(this.paramsDefault.orderEndDate)) : '');
+                            } else {
+                                this.formData[item] = this.paramsDefault[item];
+                            }
+                        }
+                    } else {
+                        this.$set(this.formData,'orderStartDate',new Date().addMonths(-1));
+                        this.$set(this.orderTimeRange,0,new Date().addMonths(-1));
+                        this.$set(this.formData,'orderEndDate',new Date());
+                        this.$set(this.orderTimeRange,1,new Date());
+                    }
+                    this.searchAuditList();
+                },
+                immediate : true
+            },
+        }
 
     };
 </script>

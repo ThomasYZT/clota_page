@@ -61,14 +61,14 @@
         data () {
             return {
                 //上级路由列表
-                beforeRouterList : [
-                    {
-                        name : 'orderList', // 订单查询
-                        router : {
-                            name : 'orderList'
-                        }
-                    }
-                ],
+                // beforeRouterList : [
+                //     {
+                //         name : 'orderList', // 订单查询
+                //         router : {
+                //             name : 'orderList'
+                //         }
+                //     }
+                // ],
                 //订单详情
                 orderDetailInfo : {},
                 //产品信息
@@ -140,14 +140,6 @@
             }
         },
         computed : {
-            //产品列表
-            // productInfoList () {
-            //     if (this.orderDetailInfo && this.orderDetailInfo.productInfoList) {
-            //         return this.orderDetailInfo.productInfoList;
-            //     } else {
-            //         return [];
-            //     }
-            // },
             //游客信息
             visitorList () {
                 if (this.visitorListInfo && this.visitorListInfo.length > 0) {
@@ -172,14 +164,6 @@
                     return [];
                 }
             },
-            //订单操作日志
-            // orderRecordList () {
-            //     if (this.orderDetailInfo && this.orderDetailInfo.orderRecordList) {
-            //         return this.orderDetailInfo.orderRecordList;
-            //     } else {
-            //         return [];
-            //     }
-            // },
             //基本信息
             baseInfo () {
                 if (this.orderDetailInfo && this.orderDetailInfo.baseInfo) {
@@ -188,6 +172,28 @@
                     return {};
                 }
             },
+            //上级路由信息
+            beforeRouterList () {
+                if (this.$route.name === 'teamOrderDetail') {
+                    return [
+                        {
+                            name : 'orderList', // 订单查询
+                            router : {
+                                name : 'orderList'
+                            }
+                        }
+                    ];
+                } else if (this.$route.name === 'preAduitTeamOrderDetail') {
+                    return [
+                        {
+                            name : '团队订单预审核', // 团队订单预审核
+                            router : {
+                                name : 'teamOrderAudit'
+                            }
+                        }
+                    ];
+                }
+            }
         }
     };
 </script>

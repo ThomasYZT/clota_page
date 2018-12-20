@@ -374,3 +374,68 @@ export const orderSyncStatus = [
         value : 'failure'
     },
 ];
+//团队订单退单
+export const teamOrderChargeBack = [
+    {
+        title : 'orderId', // 订单号
+        width : 200,
+        field : 'orderNo'
+    },
+    {
+        title : 'playDate', // 游玩日期
+        minWidth : 130,
+        field : 'originVisitDate'
+    },
+    {
+        title : 'orderTime', // 下单时间
+        minWidth : 200,
+        field : 'orderTime'
+    },
+    {
+        title : 'orderOrg', // 下单企业
+        width : 200,
+        enWidth : 180,
+        field : 'orderOrgName'
+    },
+    {
+        title : 'orderChannel', // 下单渠道
+        width : 130,
+        enWidth : 150,
+        field : 'orderChannel'
+    },
+    {
+        title : 'productName', // 产品名称
+        width : 230,
+        enWidth : 280,
+        field : 'productName'
+    },
+    {
+        title : 'visitorNum', // 游客人数
+        width : 100,
+        enWidth : 180,
+        field : 'visitorNum'
+    },
+    {
+        title : 'orderOrgAmount', // 下单企业订单金额
+        width : 160,
+        enWidth : 180,
+        field : 'orderAmount'
+    },
+    {
+        title : 'paymentStatus', // 支付状态
+        width : 110,
+        enWidth : 130,
+        field : 'paymentStatus'
+    },
+    {
+        title : 'expiresStatus', // 过期状态
+        width : 110,
+        enWidth : 130,
+        field : 'expiresStatus'
+    },
+    {
+        title : 'operate',
+        width : 180,
+        enWidth : 230,
+    }
+]

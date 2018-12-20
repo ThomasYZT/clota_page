@@ -10,33 +10,30 @@
             <ul class="table-info">
                 <li class="row">
                     <ul class="list">
-                        <li class="col">{{$t('productName')}}： {{productName | contentFilter}}</li>
+                        <li class="col">{{$t('productName')}}： {{baseInfo.productName | contentFilter}}</li>
                         <!--中间分销商不可见产品单价-->
-                        <li class="col" >{{$t('settlePrice')}}： {{productPrice | moneyFilter | contentFilter}}</li>
+                        <li class="col" >{{$t('settlePrice')}}： {{baseInfo.price | moneyFilter | contentFilter}}</li>
                     </ul>
                 </li>
             </ul>
-            <!--中间分销商不可退票和改签-->
-            <div class="btn-wrapper" v-if="viewType !== 'allocation'">
+            <div class="btn-wrapper" >
                 <Button class="ivu-btn-88px ivu-hollow-out-blue"
-                        v-if="canApplyAlter"
                         :disabled="!canAlterTicket"
                         @click="applyChange()">{{$t('applyForUpgrade')}}</Button>
                 <Button class="ivu-btn-88px ivu-hollow-out-blue"
-                        v-if="canApplyRefund"
                         :disabled="!canRefundTicket"
                         @click="applyRefund()">{{$t('ApplyForRefund')}}</Button>
             </div>
         </div>
 
-        <div class="table-wrapper" v-if="viewType !== 'allocation'">
+        <div class="table-wrapper">
             <tableCom ref="productTable"
                       :column-data="tableColumn"
                       :table-data="ticketList"
                       :table-com-min-height="250"
                       :border="true"
                       :auto-height="true"
-                      :columnCheck="canApplyAlter || canApplyRefund"
+                      :columnCheck="true"
                       @selection-change="selectionChange">
                 <el-table-column
                     slot="columnpickStatus"
@@ -123,7 +120,9 @@
 
         <!--散客产品明细模态框-->
         <productDetailModal ref="productDetailModal"
-                            :viewType="viewType"></productDetailModal>
+                            :visitor-info="visitor"
+                            :order-detail="baseInfo">
+        </productDetailModal>
         <!--退票申请 模态框-->
         <refundModal ref="refundModal"
                      @fresh-data="$emit('fresh-data')">
@@ -142,7 +141,6 @@
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
     import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
-    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -159,16 +157,6 @@
                     return [];
                 }
             },
-            //产品价格
-            productPrice : {
-                type : Number,
-                default : null
-            },
-            //产品名称
-            productName : {
-                type : String,
-                default : ''
-            },
             //订单基本信息
             baseInfo : {
                 type : Object,
@@ -176,15 +164,12 @@
                     return {};
                 }
             },
-            //机构对应订单角色
-            orderOrgType : {
-                type : String,
-                default : ''
-            },
-            //当前查看详情角色
-            'view-type' : {
-                type : String,
-                default : ''
+            //游客信息
+            visitor : {
+                type : Object,
+                default () {
+                    return {};
+                }
             }
         },
         data () {
@@ -262,17 +247,6 @@
                     return this.chosedData.every(item => item.alterRule === 'true');
                 }
             },
-            ...mapGetters([
-                'permissionInfo'
-            ]),
-            //权限是否允许申请退票操作
-            canApplyRefund () {
-                return this.permissionInfo && 'applyRefund' in this.permissionInfo;
-            },
-            //权限是否允许申请改签操作
-            canApplyAlter () {
-                return this.permissionInfo && 'applyAlter' in this.permissionInfo;
-            },
 
         },
         methods : {
@@ -287,7 +261,6 @@
              * 申请改签
              */
             applyChange () {
-                if (!this.canApplyAlter) return;
                 if (this.chosedData.length > 0) {
                     this.$refs.ticketChangingModal.toggle({
                         chosedData : this.chosedData,
@@ -299,7 +272,6 @@
              * 申请退票
              */
             applyRefund () {
-                if (!this.canApplyRefund) return;
                 if (this.chosedData.length > 0) {
                     this.$refs.refundModal.toggle({
                         chosedData : this.chosedData,

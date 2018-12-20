@@ -13,14 +13,13 @@
                 <!--下单企业-->
                 <span style="float: left;margin-right: 60px;">
                     {{$t('orderOrg')}}：
-                    <span class="org-name" v-w-title="orderData.items[0].orderOrgName">
-                        {{orderData.items[0].orderOrgName | contentFilter}}
+                    <span class="org-name" v-w-title="placeOrderOrgName">
+                        {{placeOrderOrgName | contentFilter}}
                     </span>
                 </span>
                 <!--游玩日期-->
                 <span>{{$t('playDate')}}：
-                    <!--<span class="org-name">{{orderData.items[0] ? new Date(orderData.items[0].originVisitDate).format('yyyy-MM-dd') : '-'}}</span>-->
-                    <span class="org-name">{{orderData.items[0].originVisitDate | timeFormat('yyyy-MM-dd')}}</span>
+                    <span class="org-name">{{originVisitDate | timeFormat('yyyy-MM-dd')}}</span>
                 </span>
             </div>
             <div class="table-wrap">
@@ -32,23 +31,14 @@
                         :table-data="tableData"
                         :border="false">
                         <el-table-column
-                            slot="column2"
+                            slot="columnproductName"
                             slot-scope="row"
+                            show-overflow-tooltip
                             :label="row.title"
                             :width="row.width"
                             :min-width="row.minWidth">
                             <template slot-scope="scope">
-                                {{scope.row.price | moneyFilter}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column3"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="row.width"
-                            :min-width="row.minWidth">
-                            <template slot-scope="scope">
-                                {{scope.row.actAmount | moneyFilter}}
+                                {{ getProductName(scope.row) }}
                             </template>
                         </el-table-column>
                     </table-com>
@@ -65,24 +55,14 @@
                         :table-data="tableData"
                         :border="false">
                         <el-table-column
-                            slot="column2"
+                            slot="columnproductName"
                             slot-scope="row"
+                            show-overflow-tooltip
                             :label="row.title"
                             :width="row.width"
                             :min-width="row.minWidth">
                             <template slot-scope="scope">
-                                <!--{{new Date(scope.row.originVisitDate).format('yyyy-MM-dd') | contentFilter}}-->
-                                {{scope.row.originVisitDate | timeFormat('yyyy-MM-dd')}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column3"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="row.width"
-                            :min-width="row.minWidth">
-                            <template slot-scope="scope">
-                                {{scope.row.orderAmount | moneyFilter}}
+                                {{ getProductName(scope.row) }}
                             </template>
                         </el-table-column>
                     </table-com>
@@ -117,64 +97,78 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {orderProductHead, batchAuditHead} from '../auditConfig';
+    import { orderProductHead, batchAuditHead } from '../auditConfig';
     import sum from 'lodash/sum';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: [],
-        components: {
+        props : [],
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
-                title: '',
+                visible : false,
+                title : '',
                 //表头配置
                 columnData : orderProductHead,
                 //批量表头配置
                 batchColumnData : batchAuditHead,
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //订单数据
-                orderData: {
-                    items: [],
-                    isBatch: false
+                orderData : {
+                    items : [],
+                    isBatch : false
                 },
                 //审核备注
-                auditRemark: ''
-            }
+                auditRemark : ''
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             }),
-            orderAmountSum() {
+            orderAmountSum () {
                 if (this.orderData.isBatch && this.orderData.items.length) {
                     return sum(this.orderData.items.map(item => item.orderAmount));
                 } else {
                     return '-';
                 }
             },
+            //下单企业名称
+            placeOrderOrgName () {
+                if (this.orderData && this.orderData.items && this.orderData.items.length > 0) {
+                    return this.orderData.items[0].placeOrderOrgName;
+                }
+                return '';
+            },
+            //游玩日期
+            originVisitDate () {
+                if (this.orderData && this.orderData.items && this.orderData.items.length > 0) {
+                    return this.orderData.items[0].originVisitDate;
+                }
+                return '';
+            }
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 if (data) {
                     this.orderData = data;
                     if (data.isBatch) {
                         this.tableData = data.items;
-                        this.title = 'teamBatchCheckReject';    // 团队订单批量驳回申请
+                        this.title = 'teamBatchCheckReject'; // 团队订单批量驳回申请
                     } else {
-                        this.title = 'PRODUCT_AUDIT_REJECT';    // 驳回申请
-                        this.getOrderProducts(data.items[0].id);
+                        this.title = 'checkPass'; // 审核通过
+                        this.getOrderProducts(data.items[0].orderNo);
                     }
                 }
 
                 this.visible = true;
             },
             //关闭模态框
-            hide() {
+            hide () {
                 this.auditRemark = '';
                 this.orderData.items = [];
                 this.tableData = [];
@@ -183,37 +177,54 @@
 
             /**
              * 获取订单下的产品
-             * @param id  订单id
+             * @param orderNo  订单id
              */
-            getOrderProducts(id) {
-                ajax.post('queryOrderProductByOrderId', {
-                    orderId: id
+            getOrderProducts (orderNo) {
+                ajax.post('queryGroupDistributionInformation', {
+                    orderNo : orderNo,
                 }).then(res => {
-                    if(res.success && res.data){
+                    if (res.status === 200) {
                         this.tableData = res.data || [];
+                    } else {
+                        this.tableData = [];
                     }
                 });
             },
-            auditReject() {
-                if (this.auditRemark.length>500) {
+            auditReject () {
+                if (this.auditRemark.length > 500) {
                     return;
                 }
-
-                ajax.post('auditTeamOrder', {
-                    orderIds: this.orderData.items.map(item => item.id).join(','),
-                    remark: this.auditRemark,
-                    auditStatus: 'reject',
+                ajax.post('updateGroupOrderAudit', {
+                    orderId : this.orderData.items.map(item => item.id).join(','),
+                    remark : this.auditRemark,
+                    audit : 'reject',
                 }).then(res => {
-                    if(res.success){
-                        this.hide();
-                        this.$Message.success(this.$t('orderRejected'));    // 订单已驳回
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('orderRejected')); // 订单已驳回
                         this.$emit('on-audit-pass');
+                    } else {
+                        this.$Message.error(res.message || this.$t('orderRejectedFailed')); // 订单驳回失败
                     }
+                    this.hide();
                 });
             },
+            /**
+             * 获取产品名称
+             * @param{Object} rowData 订单详情数据
+             */
+            getProductName (rowData) {
+                if (rowData.productName) {
+                    if (rowData.productName.slice(0,1) === '[') {
+                        return JSON.parse(rowData.productName).join(',');
+                    } else {
+                        return rowData.productName;
+                    }
+                }
+                return '';
+            }
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

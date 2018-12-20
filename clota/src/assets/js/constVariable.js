@@ -738,6 +738,22 @@ export const  proxyBankList = [
         salaryPayment : 'payType.alipay', //支付宝
         id : 'aliPay'
     },
+];
+
+//团队订单退单审核 --- 过期状态
+export const expiresStatus = [
+    {
+        label : 'all',  //全部
+        value : 'all',
+    },
+    {
+        label : 'expired',  //已过期
+        value : 'expired',
+    },
+    {
+        label : 'notExpired',  //未过期
+        value : 'notExpired',
+    }
 ]
 
 

@@ -5,15 +5,16 @@
 <template>
     <Modal v-model="visible"
            :title="$t('ApplyForRefund')"
-           class-name="vertical-center-modal"
+           class-name="vertical-center-modal apply-refund-modal"
            width="420">
 
         <Form :label-width="150"
+              style="display: flex;min-height: 120px;flex-direction: column;justify-content: center"
               label-position="right">
-            <FormItem :label="$t('ApplyForRefundNum')">
+            <FormItem :label="$t('ApplyForRefundNum')" style="margin-bottom: 10px;">
                 {{num}}
             </FormItem>
-            <FormItem :label="$t('cancellationCharge')">
+            <FormItem :label="$t('cancellationCharge')" style="margin-bottom: 10px;">
                 {{fee | moneyFilter}}
             </FormItem>
         </Form>
@@ -26,37 +27,37 @@
 </template>
 
 <script>
-    import tableCom from '@/components/tableCom/tableCom'
-    import ajax from '@/api/index'
+    import tableCom from '@/components/tableCom/tableCom';
+    import ajax from '@/api/index';
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //模态框隐藏显示状态
-                visible: false,
+                visible : false,
                 //申请退票数量
-                num: 0,
+                num : 0,
                 //退票手续费
-                fee: '',
+                fee : '',
                 //选择的数据
-                chosedData: [],
-                baseInfo: {},
-                orderTicketIds: ''
-            }
+                chosedData : [],
+                baseInfo : {},
+                orderTicketIds : ''
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示/隐藏 申请退票模态框
              */
-            toggle(data) {
-                if(!this.visible && data) {
+            toggle (data) {
+                if (!this.visible && data) {
                     this.chosedData = data.chosedData;
                     this.baseInfo = data.baseInfo;
                     this.num = this.chosedData.length;
                     this.getFee(this.chosedData);
-                }else {
+                } else {
                     this.chosedData = [];
                     this.num = 0;
                     this.baseInfo = {};
@@ -67,57 +68,65 @@
             /**
              * 获取退票手续费
              */
-            getFee(chosedData) {
+            getFee (chosedData) {
                 this.orderTicketIds = chosedData.map(item => item.id).join(',');
                 ajax.post('getRefundProcedureFee', {
-                    orderProductId: chosedData[0].orderProductId,
-                    orderTicketIds: this.orderTicketIds,
-                    orderId: this.baseInfo.orderId,
+                    orderTicketsIds : this.orderTicketIds,
+                    orderProductId : this.baseInfo.orderProductId,
+                    orderId : this.baseInfo.id,
                 }).then(res => {
-                    if(res.success) {
-                        this.fee = res.data;
+                    if (res.status === 200) {
+                        this.fee = res.data ? res.data : 0;
+                    } else {
+                        this.fee = 0;
                     }
-                })
+                });
             },
             /**
              * 确认退票
              */
-            save() {
+            save () {
                 ajax.post('saveOrderProductRefundAlter', {
-                    reqType: 'refund',
-                    orderId: this.baseInfo.orderId,
-                    visitorProductId: this.baseInfo.visitorProductId,
-                    productId: this.baseInfo.productId,
-                    reqOrderTicketIds: this.orderTicketIds,
+                    orderId : this.baseInfo.id,
+                    visitorProductId : this.baseInfo.visitorProductId,
+                    productId : this.baseInfo.productId,
+                    reqOrderTicketIds : this.orderTicketIds,
+                    reqType : 'refund',
+                    orgId : this.baseInfo.orgId
                 }).then(res => {
-                    if(res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('ApplicationForRefundSuccess'));
                         this.toggle();
                         this.$emit('fresh-data');
-                    }else {
+                    } else {
                         this.$Message.error(this.$t('ApplicationForRefundFail'));
                         this.toggle();
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .apply-refund-modal{
 
-    .refund-info {
-        margin-top: 10px;
-        .warn-info {
-            color: $color_F7981C_080;
+        /deep/ .ivu-modal-body {
+            margin-bottom: 0!important;
+        }
+
+        .refund-info {
+            margin-top: 10px;
+            .warn-info {
+                color: $color_F7981C_080;
+            }
+        }
+
+        .btn-wrapper {
+            .btn-88px {
+                width: 88px;
+            }
         }
     }
-
-    .btn-wrapper {
-        .btn-88px {
-            width: 88px;
-        }
-    }
-
 </style>

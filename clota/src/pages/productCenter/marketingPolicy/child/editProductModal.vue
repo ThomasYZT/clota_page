@@ -68,7 +68,7 @@
                                             :key="index"
                                             :value="item.value">
                                         {{$t(item.label)}}
-                                </Option>
+                                    </Option>
                                 </Select>
                             </FormItem>
                         </i-col>

@@ -3,6 +3,7 @@
     <div class="group-order">
         <!--筛选条件-->
         <audit-filter :audit-name="'group'"
+                      :params-default="paramsDefault"
                       @on-filter="filterAuditList">
         </audit-filter>
         <!--批量审核-->
@@ -23,7 +24,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="235"
+            :ofsetHeight="250"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -101,8 +102,10 @@
     import { configVariable, notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             auditFilter,
             tableCom,
@@ -118,8 +121,6 @@
                 tableData : [],
                 //总条数
                 totalCount : 0,
-                //表格是否显示
-//                tableShow : false,
                 // 获取数据的请求参数
                 queryParams : {
                     auditStatus : 'audit', // 只查询待审核的订单
@@ -133,7 +134,9 @@
                 //选择的产品列表
                 productList : [],
                 //批量审核
-                batchAudit : batchAudit
+                batchAudit : batchAudit,
+                //默认筛选条件信息
+                paramsDefault : {}
             };
         },
         computed : {},
@@ -233,6 +236,7 @@
              */
             filterAuditList (paramsObj) {
                 Object.assign(this.queryParams, paramsObj);
+                this.updateStorgeInfo(paramsObj);
                 this.queryList();
             },
             /**
@@ -266,8 +270,10 @@
              */
             goTeamOrderDetail (scopeRow) {
                 this.$router.push({
-                    name : 'teamOrderDetail',
-                    params : { orderId : scopeRow.id },
+                    name : 'preAduitTeamOrderDetail',
+                    params : {
+                        orderDetail : scopeRow
+                    },
                 });
             },
             /**
@@ -283,6 +289,18 @@
                     }
                 }
                 return '';
+            },
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由参数
+             * @param{Object} toRoute 去的路由
+             * @param{Object} fromRoute 来的路由
+             */
+            getParams (params,toRoute,fromRoute) {
+                if (params && Object.keys(params).length > 0 &&
+                    (fromRoute.name === 'preAduitTeamOrderDetail')) {
+                    this.paramsDefault = params;
+                }
             }
         }
     };

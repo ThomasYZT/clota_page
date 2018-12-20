@@ -13,13 +13,13 @@
                 <!--下单企业-->
                 <span style="float: left;margin-right: 60px;">
                     {{$t('orderOrg')}}：
-                    <span class="org-name" v-w-title="orderData.items[0].orderOrgName">
-                        {{orderData.items[0].orderOrgName | contentFilter}}
+                    <span class="org-name" v-w-title="placeOrderOrgName">
+                        {{placeOrderOrgName | contentFilter}}
                     </span>
                 </span>
                 <!--游玩日期-->
                 <span>{{$t('playDate')}}：
-                    <span class="org-name">{{orderData.items[0].originVisitDate | timeFormat('yyyy-MM-dd')}}</span>
+                    <span class="org-name">{{originVisitDate | timeFormat('yyyy-MM-dd')}}</span>
                 </span>
             </div>
             <div class="table-wrap">
@@ -31,23 +31,14 @@
                         :table-data="tableData"
                         :border="false">
                         <el-table-column
-                            slot="column2"
+                            slot="columnproductName"
                             slot-scope="row"
+                            show-overflow-tooltip
                             :label="row.title"
                             :width="row.width"
                             :min-width="row.minWidth">
                             <template slot-scope="scope">
-                                {{scope.row.price | moneyFilter}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column3"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="row.width"
-                            :min-width="row.minWidth">
-                            <template slot-scope="scope">
-                                {{scope.row.actAmount | moneyFilter}}
+                                {{ getProductName(scope.row) }}
                             </template>
                         </el-table-column>
                     </table-com>
@@ -63,26 +54,6 @@
                         :column-data="batchColumnData"
                         :table-data="tableData"
                         :border="false">
-                        <el-table-column
-                            slot="column2"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="row.width"
-                            :min-width="row.minWidth">
-                            <template slot-scope="scope">
-                                {{scope.row.originVisitDate | timeFormat('yyyy-MM-dd')}}
-                            </template>
-                        </el-table-column>
-                        <!--<el-table-column-->
-                            <!--slot="column3"-->
-                            <!--slot-scope="row"-->
-                            <!--:label="row.title"-->
-                            <!--:width="row.width"-->
-                            <!--:min-width="row.minWidth">-->
-                            <!--<template slot-scope="scope">-->
-                                <!--{{scope.row.orderAmount | moneyFilter}}-->
-                            <!--</template>-->
-                        <!--</el-table-column>-->
                     </table-com>
                     <!--订单金额合计-->
                     <div class="order-amount">
@@ -154,6 +125,20 @@
                     return '-';
                 }
             },
+            //下单企业名称
+            placeOrderOrgName () {
+                if (this.orderData && this.orderData.items && this.orderData.items.length > 0) {
+                    return this.orderData.items[0].placeOrderOrgName;
+                }
+                return '';
+            },
+            //游玩日期
+            originVisitDate () {
+                if (this.orderData && this.orderData.items && this.orderData.items.length > 0) {
+                    return this.orderData.items[0].originVisitDate;
+                }
+                return '';
+            }
         },
         methods : {
 
@@ -165,7 +150,7 @@
                         this.title = 'teamBatchCheckPass'; // 团队订单批量审核通过
                     } else {
                         this.title = 'checkPass'; // 审核通过
-                        this.getOrderProducts(data.items[0].id);
+                        this.getOrderProducts(data.items[0].orderNo);
                     }
                 }
 
@@ -181,13 +166,13 @@
 
             /**
              * 获取订单下的产品
-             * @param id  订单id
+             * @param orderNo  订单id
              */
-            getOrderProducts (id) {
-                ajax.post('queryOrderProductByOrderId', {
-                    orderId : id
+            getOrderProducts (orderNo) {
+                ajax.post('queryGroupDistributionInformation', {
+                    orderNo : orderNo,
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.tableData = res.data || [];
                     } else {
                         this.tableData = [];
@@ -198,21 +183,34 @@
                 if (this.auditRemark.length > 500) {
                     return;
                 }
-
-                ajax.post('auditTeamOrder', {
-                    orderIds : this.orderData.items.map(item => item.id).join(','),
+                ajax.post('updateGroupOrderAudit', {
+                    orderId : this.orderData.items.map(item => item.id).join(','),
                     remark : this.auditRemark,
-                    auditStatus : 'success',
+                    audit : 'success',
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('orderCheckPassed')); // 订单审核通过
                         this.$emit('on-audit-pass');
                     } else {
-                        this.$Message.error(this.$t('orderCheckFailure')); // 订单审核失败
+                        this.$Message.error(res.message || this.$t('orderCheckFailure')); // 订单审核失败
                     }
                     this.hide();
                 });
             },
+            /**
+             * 获取产品名称
+             * @param{Object} rowData 订单详情数据
+             */
+            getProductName (rowData) {
+                if (rowData.productName) {
+                    if (rowData.productName.slice(0,1) === '[') {
+                        return JSON.parse(rowData.productName).join(',');
+                    } else {
+                        return rowData.productName;
+                    }
+                }
+                return '';
+            }
 
         },
     };

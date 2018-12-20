@@ -456,7 +456,8 @@
             getParams (params,toRoute,fromRoute) {
                 if (params && Object.keys(params).length > 0 &&
                     (fromRoute.name === 'individualSecondLevel' ||
-                    fromRoute.name === 'individualFirstLevel')) {
+                    fromRoute.name === 'individualFirstLevel' ||
+                    fromRoute.name === 'teamOrderDetail')) {
                     this.paramsDefault = params;
                 }
             }
