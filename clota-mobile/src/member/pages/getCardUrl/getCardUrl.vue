@@ -114,23 +114,26 @@
                     nonce_str: this.cardExt.nonceStr,
                     signature: this.cardExt.signature
                 };
-                this.$wechat.addCard({
-                    cardList: [
-                        {
-                            cardId: this.cardExt.cardId,
-                            cardExt: JSON.stringify(cardExt)
+                this.$wechat.ready(() => {
+                    this.$wechat.addCard({
+                        cardList: [
+                            {
+                                cardId: this.cardExt.cardId,
+                                cardExt: JSON.stringify(cardExt)
+                            }
+                        ],
+                        success: res => {
+                            console.log(res);
+                        },
+                        fail: res => {
+                            this.$vux.toast.text(this.$t('getCardFail'));
+                        },
+                        complete: () => {
+                            this.isShowCard = false;
                         }
-                    ],
-                    success: res => {
-                        console.log(res);
-                    },
-                    fail: res => {
-                        this.$vux.toast.text(this.$t('getCardFail'));
-                    },
-                    complete: () => {
-                        this.isShowCard = false;
-                    }
-                });
+                    });
+                })
+
             }
         },
         computed :{
