@@ -2058,4 +2058,5 @@ export default {
     'onlineAccount.weixin' : '微信',
     'onlineAccount.alipay' : '支付宝',
     'onlineAccount.cash' : '现金',
+    'chargeBack' : '团队订单退单审核',
 }

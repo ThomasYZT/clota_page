@@ -186,6 +186,18 @@ export default {
                             isMenu : false
                         },
                     },
+                    chargeBack : {
+                        //预定中心--审核中心--团队订单退单审核
+                        path : '/order/audit/chargeBack',
+                        name : 'chargeBack',
+                        component : () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/chargeBack.vue'),
+                        meta : {
+                            menuName : 'chargeBack', //lang.config.js 里面的语言键值
+                            _name : 'individual-alter',
+                            rightPath : topMenuName + '.' + 'chargeBack',
+                            isMenu : true
+                        },
+                    }
                 }
             },
             //核销管理
