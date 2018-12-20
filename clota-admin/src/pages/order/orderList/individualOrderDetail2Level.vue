@@ -22,9 +22,7 @@
                 需要传入产品名称、产品单价、产品明细列表数据、基础信息(包含产品明细id，退票、改签时用到)、机构对应订单角色(用于判断是否可对所有产品进行改签和退票)
             -->
             <productDetail  :ticketList="ticketList"
-                            :orderOrgType="orderOrgType"
-                            :productName="productDetail.productName"
-                            :productPrice="productDetail.price"
+                            :visitor="touristInfo"
                             :baseInfo="productDetail"
                             @fresh-data="freshData">
             </productDetail>
@@ -235,14 +233,6 @@
                     return 0;
                 }
             },
-            // //分销信息
-            // allocationInfo () {
-            //     if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
-            //         return this.orderDetailInfo.allocationInfo;
-            //     } else {
-            //         return {};
-            //     }
-            // },
             //基本信息
             baseInfo () {
                 if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
@@ -257,14 +247,6 @@
                     return this.orderDetailInfo.visitor;
                 } else {
                     return {};
-                }
-            },
-            //机构对应订单角色
-            orderOrgType () {
-                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
-                    return this.orderDetailInfo.baseInfo.orderOrgType;
-                } else {
-                    return '';
                 }
             },
             //面包屑路由信息

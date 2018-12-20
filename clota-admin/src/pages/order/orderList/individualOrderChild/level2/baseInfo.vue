@@ -61,8 +61,8 @@
             },
             //是否可以重发短信
             canResendMsg () {
-                //景区下，审核成功，取票前可重发短信
-                return (this.baseInfo.quantity > this.baseInfo.quantityPicked);
+                //未取票数量大于0则可以重新发送短信
+                return this.baseInfo.quantity - this.baseInfo.quantityRefunded - this.baseInfo.quantityVerified > 0;
             },
         },
         data () {

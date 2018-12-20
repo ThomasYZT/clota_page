@@ -86,9 +86,7 @@
              */
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
-                    console.log(params);
                     this.orderDetailInfo = params.orderDetail;
-                    console.log( this.orderDetailInfo);
                     this.queryGroupDistributionInformation();
                     this.queryOrderPlacer();
                     this.queryOperationLog();

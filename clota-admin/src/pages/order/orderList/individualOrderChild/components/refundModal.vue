@@ -5,15 +5,16 @@
 <template>
     <Modal v-model="visible"
            :title="$t('ApplyForRefund')"
-           class-name="vertical-center-modal"
+           class-name="vertical-center-modal apply-refund-modal"
            width="420">
 
         <Form :label-width="150"
+              style="display: flex;min-height: 120px;flex-direction: column;justify-content: center"
               label-position="right">
-            <FormItem :label="$t('ApplyForRefundNum')">
+            <FormItem :label="$t('ApplyForRefundNum')" style="margin-bottom: 10px;">
                 {{num}}
             </FormItem>
-            <FormItem :label="$t('cancellationCharge')">
+            <FormItem :label="$t('cancellationCharge')" style="margin-bottom: 10px;">
                 {{fee | moneyFilter}}
             </FormItem>
         </Form>
@@ -70,12 +71,14 @@
             getFee (chosedData) {
                 this.orderTicketIds = chosedData.map(item => item.id).join(',');
                 ajax.post('getRefundProcedureFee', {
-                    orderProductId : chosedData[0].orderProductId,
-                    orderTicketIds : this.orderTicketIds,
-                    orderId : this.baseInfo.orderId,
+                    orderTicketsIds : this.orderTicketIds,
+                    orderProductId : this.baseInfo.orderProductId,
+                    orderId : this.baseInfo.id,
                 }).then(res => {
-                    if (res.success) {
-                        this.fee = res.data;
+                    if (res.status === 200) {
+                        this.fee = res.data ? res.data : 0;
+                    } else {
+                        this.fee = 0;
                     }
                 });
             },
@@ -84,13 +87,14 @@
              */
             save () {
                 ajax.post('saveOrderProductRefundAlter', {
-                    reqType : 'refund',
-                    orderId : this.baseInfo.orderId,
+                    orderId : this.baseInfo.id,
                     visitorProductId : this.baseInfo.visitorProductId,
                     productId : this.baseInfo.productId,
                     reqOrderTicketIds : this.orderTicketIds,
+                    reqType : 'refund',
+                    orgId : this.baseInfo.orgId
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('ApplicationForRefundSuccess'));
                         this.toggle();
                         this.$emit('fresh-data');
@@ -106,18 +110,23 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .apply-refund-modal{
 
-    .refund-info {
-        margin-top: 10px;
-        .warn-info {
-            color: $color_F7981C_080;
+        /deep/ .ivu-modal-body {
+            margin-bottom: 0!important;
+        }
+
+        .refund-info {
+            margin-top: 10px;
+            .warn-info {
+                color: $color_F7981C_080;
+            }
+        }
+
+        .btn-wrapper {
+            .btn-88px {
+                width: 88px;
+            }
         }
     }
-
-    .btn-wrapper {
-        .btn-88px {
-            width: 88px;
-        }
-    }
-
 </style>
