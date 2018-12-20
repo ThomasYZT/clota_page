@@ -572,4 +572,12 @@ export default {
     'TheApplicationForAlterationFail' : '发起改签申请失败',
     'productNeedsRefund' : '需要退票的产品',
     'refundToBeReviewed' : '退票待审核',
+    'pNameAndReverseNum' : '产品名称|预定数量',
+    'unitPriceAndSubtotal' : '产品单价|小计金额',
+    'visitorAndMobilePhone' : '游客|手机号',
+    'visitDateAfterAlter' : '申请改签后游玩日期',
+    'requestNum' : '申请数量',
+    'unitPrice' : '单价',
+    'subtotal' : '小计',
+    'requestTime' : '申请时间',
 };
