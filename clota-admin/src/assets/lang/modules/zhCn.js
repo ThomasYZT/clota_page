@@ -580,4 +580,10 @@ export default {
     'unitPrice' : '单价',
     'subtotal' : '小计',
     'requestTime' : '申请时间',
+    'PleaseSelectTheProductToBeModified' : '请选择需要改签的产品',
+    'applyForUpgradeNum' : '申请改签数量',
+    'ModificationToBeReviewed' : '改签待审核',
+    'confirmAuditRes' : '审核结果确认',
+    'auditResult' : '审核结果',
+    'rejectAll' : '全部驳回',
 };

@@ -35,5 +35,11 @@ export default {
     'getRefundProcedureFee' : 'order/getRefundProcedureFee.json',
     //散客产品退改申请
     'saveOrderProductRefundAlter' : 'order/saveOrderProductRefundAlter.json',
+    //获取产品可改签时间
+    'getProductPolicyPlayDate' : 'order/getProductPolicyPlayDate.json',
+    //查询产品操作日志
+    'queryTicketOperationLog' : 'order/queryTicketOperationLog.json',
+    //退改签审核
+    'updateIndividualOrderRefundAlterAudit' : 'order/updateIndividualOrderRefundAlterAudit.json',
 
 };

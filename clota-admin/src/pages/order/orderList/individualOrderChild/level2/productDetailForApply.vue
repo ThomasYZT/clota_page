@@ -1,7 +1,4 @@
-<!--
-    散客二级订单--产品明细
-    作者：杨泽涛
--->
+<!--订单明细，包含申请退票和改签功能-->
 <template>
     <div class="product-detail">
         <div class="title">{{$t('productDetail')}}</div>

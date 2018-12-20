@@ -17,15 +17,20 @@
             <touristInfo :visitor="touristInfo">
             </touristInfo>
 
-            <!--产品明细-->
-            <!--
-                需要传入产品名称、产品单价、产品明细列表数据、基础信息(包含产品明细id，退票、改签时用到)、机构对应订单角色(用于判断是否可对所有产品进行改签和退票)
-            -->
-            <productDetail  :ticketList="ticketList"
+            <!--产品明细,包含申请退票和改签-->
+            <product-detail-for-apply  :ticketList="ticketList"
+                            v-if="productDetailForApply"
                             :visitor="touristInfo"
                             :baseInfo="productDetail"
                             @fresh-data="freshData">
-            </productDetail>
+            </product-detail-for-apply>
+            <!--产品明细,包含审核退票和改签-->
+            <product-detail-for-audit  :ticketList="ticketList"
+                                       v-if="productDetailForAudit"
+                                       :visitor="touristInfo"
+                                       :baseInfo="productDetail"
+                                       @fresh-data="freshData">
+            </product-detail-for-audit>
 
             <!--分销信息-->
             <distributionInfo :totalRefundFee="totalRefundFee"
@@ -54,7 +59,8 @@
     import lifeCycelMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/api/index.js';
     import baseInfo from './individualOrderChild/level2/baseInfo';
-    import productDetail from './individualOrderChild/level2/productDetail';
+    import productDetailForApply from './individualOrderChild/level2/productDetailForApply';
+    import productDetailForAudit from './individualOrderChild/level2/productDetailForAudit';
     import refundLog from './individualOrderChild/level2/refundLog';
     import touristInfo from './individualOrderChild/level2/touristInfo';
     import vertificationLog from './individualOrderChild/level2/vertificationLog';
@@ -67,12 +73,13 @@
         components : {
             baseInfo,
             operateLog,
-            productDetail,
+            productDetailForApply,
             refundLog,
             touristInfo,
             vertificationLog,
             distributionInfo,
-            breadCrumbHead
+            breadCrumbHead,
+            productDetailForAudit
         },
         data () {
             return {
@@ -251,23 +258,44 @@
             },
             //面包屑路由信息
             beforeRouterList () {
-                return [
-                    {
-                        name : 'reserveOrderDetail', // 订单查询
-                        router : {
-                            name : 'orderList'
-                        }
-                    },
-                    {
-                        name : 'orderDetail', // 订单详情
-                        router : {
-                            name : 'individualOrderDetail1Level',
-                            params : {
-                                orderDetail : this.productDetail
+                if (this.$route.name === 'individualOrderDetail2Level') { //从订单查询页面跳转过来
+                    return [
+                        {
+                            name : 'reserveOrderDetail', // 订单查询
+                            router : {
+                                name : 'orderList'
+                            }
+                        },
+                        {
+                            name : 'orderDetail', // 订单详情
+                            router : {
+                                name : 'individualOrderDetail1Level',
+                                params : {
+                                    orderDetail : this.productDetail
+                                }
                             }
                         }
-                    }
-                ];
+                    ];
+                } else if (this.$route.name === 'indOrderAuditDetail') { //从散客订单审核页面跳转过来
+                    return [
+                        {
+                            name : '散客退票审核订单', // 散客退票审核订单
+                            router : {
+                                name : 'indRefundOrderAudit'
+                            }
+                        }
+                    ];
+                } else {
+                    return [];
+                }
+            },
+            //包含申请退票改签的产品明细是否显示
+            productDetailForApply () {
+                return this.$route.name === 'individualOrderDetail2Level';
+            },
+            //包含审核退票改签的产品明细是否显示
+            productDetailForAudit () {
+                return this.$route.name === 'indOrderAuditDetail';
             }
         }
     };

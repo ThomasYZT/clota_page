@@ -90,3 +90,30 @@ export const batchAudit = [
     { label : 'passed', value : 'success' }, // 通过
     { label : 'reject', value : 'reject' }, // 驳回
 ];
+
+// 散客订单--批量审核--订单列表表头
+export const bulkBatchAuditHead = [
+    {
+        title : 'orderDetailNo', // 订单明细编号
+        width : 210,
+        field : 'orderDetailNo'
+    },
+    {
+        title : 'orderOrg', // 下单企业
+        minWidth : 130,
+        enWidth : 180,
+        field : 'placeOrderOrgName'
+    },
+    {
+        title : 'productName',
+        minWidth : 130,
+        enWidth : 180,
+        field : 'productName'
+    },
+    {
+        title : 'requestNum', // 申请数量
+        width : 100,
+        enWidth : 130,
+        field : 'reqNum'
+    },
+];

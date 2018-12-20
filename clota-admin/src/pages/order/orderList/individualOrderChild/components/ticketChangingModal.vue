@@ -91,14 +91,15 @@
                 this.$refs.formRef.validate(valid => {
                     if (valid) {
                         ajax.post('saveOrderProductRefundAlter', {
-                            reqType : 'alter',
-                            orderId : this.baseInfo.orderId,
+                            orderId : this.baseInfo.id,
                             visitorProductId : this.baseInfo.visitorProductId,
                             productId : this.baseInfo.productId,
                             reqOrderTicketIds : this.orderTicketIds,
-                            afterAlterDate : this.formData.afterAlterDate.format('yyyy-MM-dd')
+                            afterAlterDate : this.formData.afterAlterDate.format('yyyy-MM-dd 00:00:00'),
+                            reqType : 'alter',
+                            orgId : this.baseInfo.orgId
                         }).then(res => {
-                            if (res.success) {
+                            if (res.status === 200) {
                                 this.$Message.success(this.$t('TheApplicationForAlterationSuccess')); // 发起改签申请成功
                                 this.toggle();
                                 this.$emit('fresh-data');
@@ -117,7 +118,7 @@
                 ajax.post('getProductPolicyPlayDate',{
                     visitorProductId : this.baseInfo.visitorProductId,
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.canAlterDate = res.data ? res.data : [];
                     } else {
                         this.canAlterDate = [];
