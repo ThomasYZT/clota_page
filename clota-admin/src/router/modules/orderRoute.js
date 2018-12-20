@@ -50,6 +50,17 @@ export default {
                     lightMenu : 'order',
                 }
             },
+            //散客订单退票审核
+            indOrderAudit : {
+                path : 'indOrder/audit',
+                name : 'indOrderAudit',
+                component : () => import(/* webpackChunkName: "order" */'../../pages/order/indRefundAudit/index.vue'),
+                meta : {
+                    _name : 'order',
+                    menuName : 'order',
+                    lightMenu : 'order',
+                }
+            },
         }
     },
     //团队订单详情 -- 团队订单预审核

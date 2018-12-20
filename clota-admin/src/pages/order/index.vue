@@ -38,7 +38,7 @@
                         label : '团队订单预审核'
                     },
                     {
-                        name : 'cooperaChannelPer',
+                        name : 'indOrderAudit',
                         label : '散客退票审核'
                     },
                     {
