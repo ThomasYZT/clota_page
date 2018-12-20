@@ -37,7 +37,27 @@
             :column-check="true"
             @query-data="queryList"
             @selection-change="changeSelection">
+            <el-table-column
+                slot="column10"
+                slot-scope="row"
+                :label="row.title"
+                fixed="right"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span><!--通过-->
+                    <span class="divide-line"></span>
+                    <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
+                    <span class="divide-line"></span>
+                    <span class="operate-btn blue" @click="goTeamOrderDetail(scope.row)">{{$t('details')}}</span>
+                </template>
+            </el-table-column>
         </table-com>
+
+        <!--通过模态框-->
+        <audit-pass-modal ref="auditPassModal" @on-audit-pass="queryList"></audit-pass-modal>
+        <!--驳回模态框-->
+        <audit-reject-modal ref="auditRejectModal" @on-audit-pass="queryList"></audit-reject-modal>
     </div>
 </template>
 
@@ -45,10 +65,14 @@
     import backAuditFilter from './components/backAuditFilter';
     import tableCom from '@/components/tableCom/tableCom';
     import {teamOrderChargeBack, batchAudit} from './auditConfig';
+    import auditPassModal from './components/groupAuditPassModal.vue';
+    import auditRejectModal from './components/groupAuditRejectModal.vue';
     export default {
         components: {
             tableCom,
-            backAuditFilter
+            backAuditFilter,
+            auditPassModal,
+            auditRejectModal
         },
         data() {
             return {
@@ -110,7 +134,39 @@
              */
             changeSelection (rows) {
                 this.chosenRowData = rows;
-            }
+            },
+            /**
+             * 单个/批量 通过审核（驳回申请）的模态框
+             * @param data - 被审核的行数据
+             * @param isBatch - 是否批量操作  Boolean
+             * @param type - 类型  'pass' | 'reject'
+             **/
+            showAuditModal(data, isBatch, type) {
+                let auditModal = '';
+                switch (type) {
+                    case 'pass' :
+                        auditModal = 'auditPassModal';
+                        break;
+                    case 'reject' :
+                        auditModal = 'auditRejectModal';
+                        break;
+                }
+
+                this.$refs[auditModal].show({
+                    items: isBatch ? data : [data],
+                    isBatch: isBatch
+                });
+            },
+            /**
+             * 跳转至团队订单详情
+             * @param scopeRow
+             */
+            goTeamOrderDetail(scopeRow) {
+                this.$router.push({
+                    name: 'teamOrderDetail',
+                    params: {orderId: scopeRow.id},
+                });
+            },
         }
     }
 </script>
@@ -118,6 +174,29 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .charge-back {
+
+        .divide-line {
+            display: inline-block;
+            width: 1px;
+            height: 14px;
+            margin: 0 5px;
+            margin-bottom: -2px;
+            background: #E1E1E1;
+        }
+        .operate-btn {
+            cursor: pointer;
+        }
+
+        .order-num {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .blue {
+            color: $color_blue;
+        }
+        .red {
+            color: $color_red;
+        }
         .batch-audit {
             @include block_outline();
             margin-bottom: 10px;

@@ -228,6 +228,7 @@
                             <table-com
                                 :table-com-min-height="260"
                                 :column-data="columnData"
+                                :auto-height="true"
                                 :table-data="productPlayRuleVo"
                                 :row-class-name="rowClassName"
                                 :border="false">
@@ -251,7 +252,7 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        {{$t(scope.row.saleType) | contentFilter}}
+                                       {{$t(scope.row.saleType) | contentFilter}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -277,15 +278,15 @@
             <!--底部操作-->
             <div class="footer">
                 <!--新增按钮-->
-                <template v-if="type === 'add'">
+                <template v-if="type === 'add' && canApplyAuditProduct">
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc"> <!--提交审核-->
-                        {{$t('commitCheck')}}
+                            {{$t('commitCheck')}}
                     </Button>
                     <Button type="ghost"
                             @click="goBack"><!--放弃新增-->
-                        {{$t("giveUpAdd")}}
+                            {{$t("giveUpAdd")}}
                     </Button>
                 </template>
                 <!--修改按钮-->
@@ -322,6 +323,7 @@
     import { parkColumn } from './parkConfig';
     import { isTeamProduct, orderInfo, idType, productEffectSet, /*limitStore*/ } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -739,7 +741,7 @@
             rowClassName (row) {
                 if (!row.row.check) {
                     return '';
-                    /* return 'error-tr';*/
+                   /* return 'error-tr';*/
                 }
             },
 
@@ -785,7 +787,7 @@
             //查询权限下的园区
             queryScenicOrgByAccountRole () {
                 ajax.post('queryScenicOrgByAccountRole', {
-                    privCode : 'addProduct',
+                    privCode : '"addProduct"',
                 }).then(res => {
                     if (res.success) {
                         this.parkList = res.data || [];
@@ -800,8 +802,20 @@
 
         },
         computed : {
+            ...mapGetters([
+                'manageOrgs',
+                'permissionInfo',
+            ]),
             localeRouter () {
                 return this.type === 'add' ? this.$t('addTicket') : this.$t('editDetail'); // 新增票类 ： 修改票类信息
+            },
+            //是否可以提交审核信息
+            canApplyAuditProduct () {
+                return this.permissionInfo && 'addProduct' in this.permissionInfo;
+            },
+            //是否可以修改票类信息
+            canModifyProduct () {
+                return this.permissionInfo && 'addProduct' in this.permissionInfo;
             },
         },
     };
