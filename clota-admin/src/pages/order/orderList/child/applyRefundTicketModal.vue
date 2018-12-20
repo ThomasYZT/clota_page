@@ -237,13 +237,14 @@
              */
             saveOrderProductRefundAlter () {
                 ajax.post('saveOrderProductRefundAlter',{
-                    orderId : this.orderDetail.orderId,
+                    orderId : this.orderDetail.id,
                     visitorProductId : this.orderDetail.visitorProductId,
-                    productId : this.selectedTicket[0]['productId'],
+                    productId : this.orderDetail.productId,
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
-                    reqType : 'refund'
+                    reqType : 'refund',
+                    orgId : this.orderDetail.orgId
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('ApplicationForRefundSuccess')); // 发起退票申请成功
                         this.cancel();
                         this.$emit('fresh-data');
@@ -257,11 +258,11 @@
              */
             getRefundProcedureFee () {
                 ajax.post('getRefundProcedureFee',{
-                    orderProductId : this.selectedTicket[0]['orderProductId'],
-                    orderId : this.orderDetail.orderId,
+                    orderProductId : this.orderDetail.orderProductId,
+                    orderId : this.orderDetail.id,
                     orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.refundFee = res.data ? res.data : 0;
                     } else {
                         this.refundFee = 0;

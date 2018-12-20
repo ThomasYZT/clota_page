@@ -29,5 +29,11 @@ export default {
     'queryDistributionInformation' : 'order/queryDistributionInformation.json',
     //重发短信
     'resendSMS' : 'order/resendSMS.json',
+    //团队订单预审核
+    'updateGroupOrderAudit' : 'order/updateGroupOrderAudit.json',
+    //获取退票手续费
+    'getRefundProcedureFee' : 'order/getRefundProcedureFee.json',
+    //散客产品退改申请
+    'saveOrderProductRefundAlter' : 'order/saveOrderProductRefundAlter.json',
 
 };

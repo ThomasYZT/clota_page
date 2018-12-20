@@ -424,7 +424,7 @@
                 if (!this.judgeCanAlter(data)) return;
                 this.currentData = data;
                 this.queryOrderTicketList(data).then((res) => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.orderProductInfo = res.data;
                         this.alterTicketModalShow = true;
                     } else {
@@ -455,7 +455,7 @@
                     this.$router.push({
                         name : 'teamOrderDetail',
                         params : {
-                            orderId : rowData.orderId
+                            orderDetail : rowData
                         }
                     });
                 } else if (rowData.orderType === 'individual') {

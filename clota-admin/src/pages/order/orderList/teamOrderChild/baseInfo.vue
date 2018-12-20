@@ -90,10 +90,10 @@
              * 给导游重发短信
              */
             reSendMsg () {
-                ajax.post('noticeGuidesAuditResult',{
+                ajax.post('resendSMS',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('sending') })); // 发送成功
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('sending') })); // 发送失败

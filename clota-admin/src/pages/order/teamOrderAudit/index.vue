@@ -266,8 +266,10 @@
              */
             goTeamOrderDetail (scopeRow) {
                 this.$router.push({
-                    name : 'teamOrderDetail',
-                    params : { orderId : scopeRow.id },
+                    name : 'preAduitTeamOrderDetail',
+                    params : {
+                        orderDetail : scopeRow
+                    },
                 });
             },
             /**

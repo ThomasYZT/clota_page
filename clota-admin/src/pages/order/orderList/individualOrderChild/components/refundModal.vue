@@ -26,37 +26,37 @@
 </template>
 
 <script>
-    import tableCom from '@/components/tableCom/tableCom'
-    import ajax from '@/api/index'
+    import tableCom from '@/components/tableCom/tableCom';
+    import ajax from '@/api/index';
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //模态框隐藏显示状态
-                visible: false,
+                visible : false,
                 //申请退票数量
-                num: 0,
+                num : 0,
                 //退票手续费
-                fee: '',
+                fee : '',
                 //选择的数据
-                chosedData: [],
-                baseInfo: {},
-                orderTicketIds: ''
-            }
+                chosedData : [],
+                baseInfo : {},
+                orderTicketIds : ''
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示/隐藏 申请退票模态框
              */
-            toggle(data) {
-                if(!this.visible && data) {
+            toggle (data) {
+                if (!this.visible && data) {
                     this.chosedData = data.chosedData;
                     this.baseInfo = data.baseInfo;
                     this.num = this.chosedData.length;
                     this.getFee(this.chosedData);
-                }else {
+                } else {
                     this.chosedData = [];
                     this.num = 0;
                     this.baseInfo = {};
@@ -67,41 +67,41 @@
             /**
              * 获取退票手续费
              */
-            getFee(chosedData) {
+            getFee (chosedData) {
                 this.orderTicketIds = chosedData.map(item => item.id).join(',');
                 ajax.post('getRefundProcedureFee', {
-                    orderProductId: chosedData[0].orderProductId,
-                    orderTicketIds: this.orderTicketIds,
-                    orderId: this.baseInfo.orderId,
+                    orderProductId : chosedData[0].orderProductId,
+                    orderTicketIds : this.orderTicketIds,
+                    orderId : this.baseInfo.orderId,
                 }).then(res => {
-                    if(res.success) {
+                    if (res.success) {
                         this.fee = res.data;
                     }
-                })
+                });
             },
             /**
              * 确认退票
              */
-            save() {
+            save () {
                 ajax.post('saveOrderProductRefundAlter', {
-                    reqType: 'refund',
-                    orderId: this.baseInfo.orderId,
-                    visitorProductId: this.baseInfo.visitorProductId,
-                    productId: this.baseInfo.productId,
-                    reqOrderTicketIds: this.orderTicketIds,
+                    reqType : 'refund',
+                    orderId : this.baseInfo.orderId,
+                    visitorProductId : this.baseInfo.visitorProductId,
+                    productId : this.baseInfo.productId,
+                    reqOrderTicketIds : this.orderTicketIds,
                 }).then(res => {
-                    if(res.success) {
+                    if (res.success) {
                         this.$Message.success(this.$t('ApplicationForRefundSuccess'));
                         this.toggle();
                         this.$emit('fresh-data');
-                    }else {
+                    } else {
                         this.$Message.error(this.$t('ApplicationForRefundFail'));
                         this.toggle();
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

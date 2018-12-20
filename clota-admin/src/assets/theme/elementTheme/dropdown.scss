@@ -1,0 +1,13 @@
+@import "~element-ui/packages/theme-chalk/src/mixins/mixins";
+@import "@/assets/scss/_variable.scss";
+
+@include b(dropdown-menu) {
+    @include e(item) {
+
+        &:not(.is-disabled):hover, &:focus {
+            background-color: $color_blue;
+            color: $color_fff;
+        }
+    }
+}
+
