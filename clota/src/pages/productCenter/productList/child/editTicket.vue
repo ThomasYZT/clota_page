@@ -173,6 +173,7 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('stockType')"><!--限制库存-->
                             <Select v-model="formData.stockType"
+                                    @on-change="stockTypeChange"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.stockType"
                                         :key="index"
@@ -183,7 +184,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('stockNum')" prop="stockNum"><!-- 库存数量-->
+                        <Form-item v-if="formData.stockType" :label="$t('stockNum')" prop="stockNum"><!-- 库存数量-->
                             <template v-if="formData.stockType !== 'is_no_limit'">
                                 <Input v-model.trim="formData.stockNum"
                                        :placeholder="$t('inputField', {field: ''})"/>
@@ -366,9 +367,9 @@
                         callback();
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : 'maxOrderNum'),length : 50 }));
+                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : rule.field === 'maxNum' ? 'maxOrderNum' : rule.field),length : 50 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : 'maxOrderNum') }));
+                            callback(this.$t(err,{ field : this.$t(rule.field === 'minNum' ? 'minOrderNum' : rule.field === 'maxNum' ? 'maxOrderNum' : rule.field) }));
                         }
                     });
                 } else {
@@ -792,7 +793,15 @@
                     }
                 });
             },
-
+            /**
+             * 库存限制改变
+             */
+            stockTypeChange () {
+                this.formData.stockNum = '';
+                this.$nextTick(() => {
+                    this.$refs.formValidate.validateField('stockNum');
+                })
+            }
         },
         computed : {
             ...mapGetters([
