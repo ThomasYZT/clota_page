@@ -28,7 +28,7 @@
                     <span>{{manageOrgs.orgName}}</span>
                 </div>
                 <i-row>
-                    <i-col span="24">
+                    <i-col span="12">
                         <FormItem :label="$t('chooseProduct')" prop="productId"><!--选择产品-->
                             <template v-if="type === 'modify'">
                                 <Input :value="formData.productName"
@@ -50,6 +50,11 @@
                             </template>
                         </FormItem>
                     </i-col>
+                    <i-col span="12" v-if="Object.keys(productInfo).length > 0">
+                        <FormItem :label="$t('productEffect')" prop="productId"><!--产品有效性-->
+                            <span>{{$t(productInfo.productEffSet)}}</span>
+                        </FormItem>
+                    </i-col>
                 </i-row>
 
                 <template v-if="formData.productId">
@@ -59,10 +64,9 @@
 
                     <i-row>
                         <i-col span="12">
-                            <FormItem :label="$t('stockType')"><!--限制库存-->
-                                <Select v-model="productDetail.productSaleVo.stockType"
-                                        v-if="productDetail.productSaleVo && productDetail.productSaleVo.stockType"
-                                        disabled
+                            <FormItem :label="$t('stockType')" prop="stockType"><!--限制库存-->
+                                <Select v-model="formData.stockType"
+                                        @on-change="changeStockType"
                                         :placeholder="$t('selectField', {msg: ''})">
                                     <Option v-for="(item,index) in enumData.limitStore"
                                             :key="index"
@@ -73,11 +77,17 @@
                             </FormItem>
                         </i-col>
                         <i-col span="12">
-                            <FormItem :label="$t('stockNum')" prop="stockNum"><!--库存数量-->
-                                <Input v-model.trim="formData.stockNum"
-                                       :disabled="type === 'check'"
-                                       :placeholder="$t('inputField', {field: ''})"/>
-                            </FormItem>
+                            <template v-if="formData.stockType">
+                                <FormItem :label="$t('stockNum')" prop="stockNum"><!--库存数量-->
+                                    <Input v-if="formData.stockType !== 'is_no_limit'"
+                                           v-model.trim="formData.stockNum"
+                                           :disabled="type === 'check'"
+                                           :placeholder="$t('inputField', {field: ''})"/>
+                                    <span v-else>
+                                        {{$t('disableSet')}}
+                                    </span>
+                                </FormItem>
+                            </template>
                         </i-col>
                     </i-row>
                     <i-row>
@@ -208,10 +218,16 @@
             };
             //校验库存数量
             const validateStockNum = (rule,value,callback) => {
-                if (this.productDetail.productSaleVo.stockType !== 'is_no_limit' && value && this.productDetail.productSaleVo.stockNum) {
-                    if ( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ) {
+                if (this.formData.stockType && this.formData.stockType != "is_no_limit"/* && value && this.productDetail.productSaleVo.stockNum*/) {
+                    /*if ( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ) {
                         //console.log(Number(value), Number(this.productDetail.productSaleVo.stockNum))
                         callback(this.$t('errorGreaterThan',{ small : this.$t('stockNum'),big : this.$t('upLevelStockName') + this.productDetail.productSaleVo.stockNum }));
+                    } else {
+                        callback();
+                    }*/
+                    console.log(value)
+                    if (!value) {
+                        callback(this.$t('errorEmpty', { msg : this.$t('stockNum') }));
                     } else {
                         callback();
                     }
@@ -259,6 +275,9 @@
                 ruleValidate : {
                     productId : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('chooseProduct') }), trigger : 'change' }, // 不能为空
+                    ],
+                    stockType : [
+                        { required : true, message : this.$t('selectField', { msg : this.$t('stockType') }), trigger : 'change' }, // 不能为空
                     ],
                     stockNum : [
                         { validator : validateMethod.emoji, trigger : 'blur' },
@@ -319,6 +338,18 @@
                             this.formData.standardPrice = this.productInfo.standardPrice;
                             this.findProductById(this.productInfo);
                         }
+                        //改变限制库存选择列表
+                        if (this.productInfo.productEffSet === 'same_to_policy') {
+                            this.enumData = {
+                                limitStore : limitStore.filter((item) => {
+                                    return item.value !== 'everyday'
+                                })
+                            };
+                        } else {
+                            this.enumData = {
+                                limitStore : limitStore,
+                            };
+                        }
                     }
                 }
             },
@@ -330,7 +361,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.productDetail = res.data || {};
-                        this.formData.stockType = res.data.productSaleVo.stockType;
+                        //this.formData.stockType = res.data.productSaleVo.stockType;
                         if (!bool) {
                             this.formData.itemRule = [];
                             if (res.data && res.data.productPlayRuleVo && res.data.productPlayRuleVo.length > 0) {
@@ -439,6 +470,14 @@
                 this.productInfo = {};
                 this.productDetail = {};
             },
+            /**
+             * 更改困存限制
+             * @param {string} val
+             */
+            changeStockType (val) {
+                this.formData.stockNum = '';
+                this.$refs.formValidate.validateField('stockNum');
+            }
 
         }
     };
