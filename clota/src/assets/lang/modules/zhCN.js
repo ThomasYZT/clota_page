@@ -1110,7 +1110,7 @@ export default {
     'noAccount': '没有账号?',
     'partnerRegister': '合作伙伴注册',
     'personalRegist': '个人注册',
-    'companyRegist': '公司注册',
+    'companyRegist': '企业注册',
     'submit': '提交',
     'identiImg': '身份证照片',
     'product-list': '产品列表',
@@ -2060,4 +2060,8 @@ export default {
     'onlineAccount.cash' : '现金',
     'chargeBack' : '团队订单退单审核',
     'expiresStatus' : '过期状态',
+    'submitSuccess' : '提交成功',
+    'hasKnown' : '知道了',
+    'fileFormatOnlyIs' : '上传的文件格式只能为：{format}',
+    'mostUploadPic' : '最多上传{num}个文件',
 }

@@ -84,7 +84,7 @@
                     <!--</span>-->
                     <!--<span v-else>{{'-'}}</span>-->
                     <ul class="operate-list" v-if="scope.row.txnStatus !=='success' && scope.row.txnStatus !=='fail' && scope.row.txnStatus !=='cancelled'">
-                        <li class="operate" @click="query(scope.row)">{{$t('orgStructQuery')}}</li><!--查询-->
+                        <li class="operate" @click="query(scope.row)">{{$t('updateStatus')}}</li><!--查询-->
                     </ul>
                     <span v-else>-</span>
                 </template>
@@ -184,10 +184,10 @@
                     transactionId : data.transactionId
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('searchPayResult') }));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('updateStatus') }));
                         this.queryList();
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('searchPayResult') }));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('updateStatus') }));
                     }
                 })
             }

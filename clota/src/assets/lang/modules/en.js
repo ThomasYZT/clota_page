@@ -2060,4 +2060,8 @@ export default {
     'onlineAccount.cash' : '现金',
     'chargeBack' : '团队订单退单审核',
     'expiresStatus' : '过期状态',
+    'submitSuccess' : '提交成功',
+    'hasKnown' : '知道了',
+    'fileFormatOnlyIs' : '上传的文件格式只能为：{format}',
+    'mostUploadPic' : '最多上传{num}个文件',
 }
