@@ -28,7 +28,8 @@ export const memberRouterDeal = (to, from, next) => {
                         wxCard.wxCardLogin({ cardId : query.card_id, openId : query.openid, encryptCode : query.encrypt_code }).then((res) => {
                             store.commit('updateCardInfo',res);
                             next({
-                                name : query.root
+                                name : query.root,
+                                query : {},
                             });
                         }).catch(() => {
                             next({
