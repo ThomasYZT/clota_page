@@ -25,7 +25,7 @@ export default {
                 name : 'operationLog',
                 component : () => import(/* webpackChunkName: "log" */ '../../pages/log/child/operationLog.vue'),
                 meta : {
-                    _name : 'log',
+                    _name : 'menu-opbk',
                     menuName : 'operationLog',
                     lightMenu : 'log',
                     showInMenu : true,
@@ -39,7 +39,7 @@ export default {
                 name : 'sassLog',
                 component : () => import(/* webpackChunkName: "log" */ '../../pages/log/child/operationLog.vue'),
                 meta : {
-                    _name : 'log',
+                    _name : 'menu-saas',
                     menuName : 'sassLog',
                     lightMenu : 'log',
                     showInMenu : true,

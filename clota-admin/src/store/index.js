@@ -25,7 +25,7 @@ const childDeepClone = (childrenList, data) => {
                     children.push({
                         path : '',
                         redirect : {
-                            name : children[0].name ? children[0].name : children[0].meat._name
+                            name : children[0].name ? children[0].name : children[0].meta._name
                         }
                     });
                     router['children'] = children;

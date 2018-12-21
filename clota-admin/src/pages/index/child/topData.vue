@@ -56,7 +56,7 @@
              */
             getRate (val) {
                 if (common.isNotEmpty(val)) {
-                    return Number(val).toFixed(2);
+                    return Number(val * 100).toFixed(2);
                 } else {
                     return '';
                 }
@@ -68,9 +68,9 @@
                 if (this.labelRate === '-') {
                     return '-';
                 } else {
-                    if (this.labelRate > 1) {
+                    if (this.labelRate > 0) {
                         return 'up';
-                    } else if (this.labelRate < 1) {
+                    } else if (this.labelRate < 0) {
                         return 'down';
                     } else {
                         return '';
@@ -128,11 +128,12 @@
                 .desc {
                     float: left;
                     font-size: $font_size_12px;
-                    @include block_outline(50%);
                 }
 
                 .rate {
                     color: $color_353B5E;
+                    max-width: 50%;
+                    @include overflow_tip();
 
                     .iconfont{
                         vertical-align: middle;
@@ -152,6 +153,7 @@
 
                 .desc {
                     color: $color_999;
+                    margin-left: 10px;
                 }
             }
         }
