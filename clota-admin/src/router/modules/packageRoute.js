@@ -13,9 +13,10 @@ export default {
         path : '/service',
         component : () => import(/* webpackChunkName: "package" */ '../../pages/package/index.vue'),
         meta : {
-            _name : 'package',
+            _name : 'service',
             menuName : 'serve',
             lightMenu : 'package',
+            isMenu : true
         },
         children : {
             //服务套餐
@@ -24,20 +25,21 @@ export default {
                 name : 'packageList',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/packageInfo.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     menuName : 'serverPackage',
                     lightMenu : 'package',
                     showInMenu : true,
-                    subMenuType : 'packageList'
+                    subMenuType : 'packageList',
+                    isMenu : true
                 },
             },
-            //新增/编辑账号
+            //新增/编辑服务套餐
             editPackage : {
                 path : '/service/edit',
                 name : 'editPackage',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editPackage.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     menuName : 'serverPackage',
                     lightMenu : 'package',
                     showInMenu : false,
@@ -50,11 +52,12 @@ export default {
                 name : 'notePackageInfo',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/notePackageInfo.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     menuName : 'notePackage',
                     lightMenu : 'package',
                     showInMenu : true,
-                    subMenuType : 'notePackage'
+                    subMenuType : 'notePackage',
+                    isMenu : true
                 },
             },
             //新建/编辑短信套餐
@@ -63,7 +66,7 @@ export default {
                 name : 'editnotePackage',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/editNotePackage.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     lightMenu : 'package',
                     showInMenu : false,
                     subMenuType : 'notePackage'
@@ -75,11 +78,12 @@ export default {
                 name : 'serviceOpendRecord',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/serviceOpenedRecord.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     menuName : 'serviceOpenRecord',
                     lightMenu : 'package',
                     showInMenu : true,
-                    subMenuType : 'serviceOpendRecord'
+                    subMenuType : 'serviceOpendRecord',
+                    isMenu : true
                 },
             },
             //短信购买记录
@@ -88,11 +92,12 @@ export default {
                 name : 'smsBuyRecord',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsBuyRecord.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     menuName : 'smsBuyRecord',
                     lightMenu : 'package',
                     showInMenu : true,
-                    subMenuType : 'smsBuyRecord'
+                    subMenuType : 'smsBuyRecord',
+                    isMenu : true
                 },
             },
             //短信发送记录
@@ -101,11 +106,12 @@ export default {
                 name : 'smsSendRecord',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendRecord.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     menuName : 'smsSendRecord',
                     lightMenu : 'package',
                     showInMenu : true,
-                    subMenuType : 'smsSendRecord'
+                    subMenuType : 'smsSendRecord',
+                    isMenu : true
                 },
             },
             //短信发送详情
@@ -114,7 +120,7 @@ export default {
                 name : 'smsSendRecordDetail',
                 component : () => import(/* webpackChunkName: "package" */ '../../pages/package/child/smsSendDetail.vue'),
                 meta : {
-                    _name : 'package',
+                    _name : 'service',
                     menuName : '',
                     lightMenu : 'package',
                     showInMenu : false,

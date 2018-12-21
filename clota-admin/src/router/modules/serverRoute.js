@@ -16,6 +16,7 @@ export default {
             _name : 'server',
             menuName : 'server',
             lightMenu : 'server',
+            isMenu : true
         }
     },
     //服务器详情

@@ -294,6 +294,7 @@
                     keyword : this.queryParams.keyword,
                     page : this.queryParams.page,
                     pageSize : this.queryParams.pageSize,
+                    orderBy : 'created_time'
                 };
                 if (this.queryParams.orderType) {
                     Object.assign(params,{ orderType : this.queryParams.orderType });
@@ -465,7 +466,7 @@
                     this.$router.push({
                         name : 'individualOrderDetail2Level',
                         params : {
-                            productDetail : rowData
+                            orderDetailInfo : rowData
                         }
                     });
                 }

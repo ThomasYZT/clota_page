@@ -41,11 +41,6 @@
                     return {};
                 }
             },
-            //退票手续费收入
-            totalRefundFee : {
-                type : [String,Number],
-                default : 0
-            },
             //当前查看详情角色
             'view-type' : {
                 type : String,

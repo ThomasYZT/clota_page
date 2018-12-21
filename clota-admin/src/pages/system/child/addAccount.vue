@@ -131,21 +131,25 @@
             };
             //校验登录名是否可用
             const validateAccountName = (rule,value,callback) => {
-                ajax.post('getForName',{
-                    name : value
-                }).then(res => {
-                    if (res.status === 200) {
-                        if (res.data === 'false') {
-                            callback();
+                if (this.type === 'add') {
+                    ajax.post('getForName',{
+                        name : value
+                    }).then(res => {
+                        if (res.status === 200) {
+                            if (res.data === 'false') {
+                                callback();
+                            } else {
+                                callback('账户名已使用，请更换用户名');
+                            }
                         } else {
-                            callback('账户名已使用，请更换用户名');
+                            callback('账户名校验失败');
                         }
-                    } else {
-                        callback('账户名校验失败');
-                    }
-                }).catch(() => {
-                    callback('账户名校验异常');
-                });
+                    }).catch(() => {
+                        callback('账户名校验异常');
+                    });
+                } else {
+                    callback();
+                }
             };
             return {
                 //上级路由列表

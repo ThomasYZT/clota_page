@@ -16,6 +16,7 @@ export default {
             _name : 'log',
             menuName : 'log',
             lightMenu : 'log',
+            isMenu : true
         },
         children : {
             //运维后台操作日志
@@ -28,7 +29,8 @@ export default {
                     menuName : 'operationLog',
                     lightMenu : 'log',
                     showInMenu : true,
-                    subMenuType : 'operate'
+                    subMenuType : 'operate',
+                    isMenu : true
                 },
             },
             //sass平台操作日志
@@ -41,7 +43,8 @@ export default {
                     menuName : 'sassLog',
                     lightMenu : 'log',
                     showInMenu : true,
-                    subMenuType : 'sass'
+                    subMenuType : 'sass',
+                    isMenu : true
                 },
             }
         }

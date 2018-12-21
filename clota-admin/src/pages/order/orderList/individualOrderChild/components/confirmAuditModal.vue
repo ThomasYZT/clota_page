@@ -123,11 +123,11 @@
             }),
             // 是否散客退票
             isRefund () {
-                return (this.$route.query.reqType == 'refund') || (this.$route.name == 'bulkRefundDetail');
+                return this.$route.name === 'refundAuditRefundOrderDetail';
             },
             // 是否散客改签
             isAlter () {
-                return (this.$route.query.reqType == 'alter') || (this.$route.name == 'bulkChangeDetail');
+                return this.$route.name === 'alterAuditRefundOrderDetail';
             },
             //产品列表 - 通过
             passedProducts () {
@@ -185,12 +185,14 @@
             getRefundProcedureFee () {
                 if (this.tableData.length) {
                     ajax.post('getRefundProcedureFee', {
-                        orderId : this.baseInfo.orderId,
-                        orderProductId : this.tableData[0].orderProductId,
-                        orderTicketIds : this.passedProducts.map(item => item.id).join(','), // 只传审核结果为通过的id
+                        orderProductId : this.baseInfo.orderProductId,
+                        orderId : this.baseInfo.id,
+                        orderTicketsIds : this.passedProducts.map(item => item.id).join(','),
                     }).then(res => {
-                        if (res.success) {
-                            this.refundProcedureFee = res.data;
+                        if (res.status === 200) {
+                            this.refundProcedureFee = res.data ? res.data : 0;
+                        } else {
+                            this.refundProcedureFee = 0;
                         }
                     });
                 }

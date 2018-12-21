@@ -13,9 +13,10 @@ export default {
         path : '/lessee',
         component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/index.vue'),
         meta : {
-            _name : 'lessee',
+            _name : 'tanent',
             menuName : 'lessee',
             lightMenu : 'lessee',
+            isMenu : true
         },
         children : {
             //服务提供商
@@ -24,7 +25,7 @@ export default {
                 name : 'ISPinternet',
                 component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternet'),
                 meta : {
-                    _name : 'lessee',
+                    _name : 'tanent',
                     menuName : 'lessee',
                     lightMenu : 'lessee',
                 },
@@ -35,7 +36,7 @@ export default {
                 name : 'cooperaChannelOrg',
                 component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelOrg'),
                 meta : {
-                    _name : 'lessee',
+                    _name : 'tanent',
                     menuName : 'lessee',
                     lightMenu : 'lessee',
                 },
@@ -46,7 +47,7 @@ export default {
                 name : 'cooperaChannelPer',
                 component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelPer'),
                 meta : {
-                    _name : 'lessee',
+                    _name : 'tanent',
                     menuName : 'lessee',
                     lightMenu : 'lessee',
                 },
@@ -59,7 +60,7 @@ export default {
         name : 'addLess',
         component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/addLess.vue'),
         meta : {
-            _name : 'lessee',
+            _name : 'tanent',
             menuName : 'lessee',
             lightMenu : 'lessee',
         },
@@ -70,7 +71,7 @@ export default {
         name : 'ISPinternetDetail',
         component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/ISPinternetChild/ISPinternetDetail.vue'),
         meta : {
-            _name : 'lessee',
+            _name : 'tanent',
             menuName : 'lessee',
             lightMenu : 'lessee',
         },
@@ -81,7 +82,7 @@ export default {
         name : 'cooperaChannelPerDetail',
         component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelChild/index.vue'),
         meta : {
-            _name : 'lessee',
+            _name : 'tanent',
             menuName : 'lessee',
             lightMenu : 'lessee',
         },

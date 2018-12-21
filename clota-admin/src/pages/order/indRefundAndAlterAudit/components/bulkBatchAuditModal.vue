@@ -74,11 +74,12 @@
             }),
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
             reqType () {
-                if (this.$route.name == 'auditBulkRefund') {
+                if (this.$route.name === 'indRefundOrderAudit') {
                     return 'refund';
-                } else if (this.$route.name == 'auditBulkChange') {
+                } else if (this.$route.name === 'indAlterOrderAudit') {
                     return 'alter';
                 }
+                return '';
             },
         },
         methods : {

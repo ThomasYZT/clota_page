@@ -13,9 +13,10 @@ export default {
         name : 'index',
         component : () => import(/* webpackChunkName: "index" */ '../../pages/index/index.vue'),
         meta : {
-            _name : 'index',
+            _name : 'home',
             menuName : 'index',
-            lightMenu : 'index',
+            lightMenu : 'home',
+            isMenu : true
         }
     },
     rankDetail : {
@@ -23,9 +24,9 @@ export default {
         name : 'rankDetail',
         component : () => import(/* webpackChunkName: "index" */ '../../pages/index/child/rankList/index.vue'),
         meta : {
-            _name : 'index',
+            _name : 'home',
             menuName : 'index',
-            lightMenu : 'index',
+            lightMenu : 'home'
         }
     }
 };
