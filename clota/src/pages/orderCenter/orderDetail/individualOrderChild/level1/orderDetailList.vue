@@ -135,6 +135,8 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span class="token-ticket">{{$t('consumed')}}：{{scope.row.quantityVerified ? scope.row.quantityVerified : 0}}</span>
+                    <!--过期核销-->
+                    <span class="token-ticket">{{$t('expiredVerify')}}：{{scope.row.quantityOverdue ? scope.row.quantityOverdue : 0}}</span>
                     <span class="not-token-ticket">{{$t('noConsumed')}}：{{scope.row.quantity - scope.row.quantityVerified}}</span>
                 </template>
             </el-table-column>
@@ -318,6 +320,9 @@
 
         .not-token-ticket{
             color: $color_999;
+            margin-left: 15px;
+        }
+        .token-ticket:not(:first-child) {
             margin-left: 15px;
         }
 

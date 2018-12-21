@@ -71,5 +71,7 @@ export default {
     'queryTypeList': '/market/type/typeList',
     //查询营销级别
     'queryLevelByTypeId': '/market/type/queryLevelByTypeId',
+    //团队订单申请取消订单
+    'applyCancelTeamOrder' : '/order/applyCancelTeamOrder',
 
 }

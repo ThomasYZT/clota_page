@@ -42,7 +42,7 @@ export const columnData = [
     },
     {
         title: 'verificationNum',
-        minWidth: 200,
+        minWidth: 300,
         field: 'quantityVerified'
     },
     {

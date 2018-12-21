@@ -154,6 +154,8 @@
                 <template slot-scope="scope">
                     <!--已核销-->
                     <span class="token-ticket">{{$t('consumed')}}：{{scope.row.quantityVerified ? scope.row.quantityVerified : 0}}</span>
+                    <!--过期核销-->
+                    <span class="token-ticket">{{$t('expiredVerify')}}：{{scope.row.quantityOverdue ? scope.row.quantityOverdue : 0}}</span>
                     <!--未核销-->
                     <span class="not-token-ticket">{{$t('noConsumed')}}：{{scope.row.quantity - scope.row.quantityVerified}}</span>
                 </template>
@@ -191,7 +193,7 @@
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
-                :width="returnTicketMenuShow.width">
+                :width="(returnTicketMenuShow.show || returnTeamMenuShow.show) ? 170 : 80">
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual' && canApplyRefund"
@@ -200,6 +202,9 @@
                         <li v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual' && canApplyAlter"
                             :class="{disabled : !judgeCanAlter(scope.row)}"
                             @click="alterTicket(scope.row)">{{$t('alter')}}</li><!--改签-->
+                        <li v-if="returnTeamMenuShow.show && scope.row.orderType === 'team'"
+                            :class="{disabled : !judgeCanCancelOrder(scope.row)}"
+                            @click="cancelOrder(scope.row)">{{$t('cancelOrder')}}</li><!--取消订单-->
                         <li v-if="canShowOrderDetail" @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
                     </ul>
                 </template>
@@ -217,6 +222,11 @@
                                   :orderDetail="currentData"
                                   @fresh-data="queryList">
         </apply-alter-ticket-modal>
+
+        <!-- 申请取消订单 -->
+        <applyCancelOrderModal ref="applyCancelOrderModal">
+
+        </applyCancelOrderModal>
     </div>
 </template>
 
@@ -231,6 +241,7 @@
     import debounce from 'lodash/debounce';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { mapGetters } from 'vuex';
+    import applyCancelOrderModal from './child/applyCancelOrderModal';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -238,7 +249,8 @@
             filterHead,
             tableCom,
             applyRefundTicket,
-            applyAlterTicketModal
+            applyAlterTicketModal,
+            applyCancelOrderModal
         },
         data () {
             return {
@@ -409,6 +421,12 @@
                 return rowData.alterRule === 'true';
             },
             /**
+             *  判断是否可以取消订单
+             */
+            judgeCanCancelOrder (rowData) {
+                return rowData.canCancle === 'true';
+            },
+            /**
              * 跳转到订单详情
              * @param rowData
              */
@@ -460,6 +478,13 @@
                     fromRoute.name === 'teamOrderDetail')) {
                     this.paramsDefault = params;
                 }
+            },
+            /**
+             * 取消订单
+             * @param {object} rowData
+             */
+            cancelOrder (rowData) {
+                this.$refs.applyCancelOrderModal.toggle(rowData);
             }
         },
         computed : {
@@ -487,12 +512,27 @@
                         show : true,
                         width : 170,
                     };
-                } else if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '') && this.queryParams.orderChannel === 'market') {
+                } else if ((this.queryParams.orderType === 'individual' || this.queryParams.orderType === '')
+                    && this.queryParams.orderChannel === 'market') {
                     return {
                         show : true,
                         width : 170,
                     };
                 } else {//散客全民营销订单
+                    return {
+                        show : false,
+                        width : 80,
+                    };
+                }
+            },
+            //是否显示取消团队订单按钮
+            returnTeamMenuShow () {
+                if (this.queryParams.orderType === '' || this.queryParams.orderType === 'team') {
+                    return {
+                        show : true,
+                        width : 170
+                    };
+                } else {
                     return {
                         show : false,
                         width : 80,
@@ -531,6 +571,9 @@
 
         .not-token-ticket{
             color: $color_999;
+            margin-left: 15px;
+        }
+        .token-ticket:not(:first-child) {
             margin-left: 15px;
         }
 

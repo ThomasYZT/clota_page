@@ -43,6 +43,17 @@
                       :page-size-d.sync="queryParams.pageSize"
                       @selection-change="colomnSelect"
                       @query-data="getListData">
+                <!-- 兑换时所需积分 -->
+                <el-table-column
+                    slot="column4"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span class="inline-btn" @click="adjustCredits(scope.row)">{{scope.row.requiredCredits | contentFilter}}</span>
+                    </template>
+                </el-table-column>
                 <!-- 商品状态 -->
                 <el-table-column
                     slot="column3"
@@ -86,6 +97,9 @@
 
         <!--商品详情模态框-->
         <good-detail-modal ref="goodDetailModal" @updateSuccess="getListData"></good-detail-modal>
+
+        <!-- 调整兑换时所需积分 -->
+        <adjustCreditsModal ref="adjustCreditsModal" @updateSuccess="getListData"></adjustCreditsModal>
     </div>
 </template>
 
@@ -98,6 +112,7 @@
     import getGoodModal from './components/getGoodModal';
     import goodDetailModal from './components/goodDetailModal';
     import forEach from 'lodash/forEach';
+    import adjustCreditsModal from './components/adjustCreditsModal';
     export default {
         components : {
             toolBox,
@@ -105,6 +120,7 @@
             delModal,
             getGoodModal,
             goodDetailModal,
+            adjustCreditsModal
         },
         data () {
             return {
@@ -255,6 +271,13 @@
                 } else {
                     this.goodsStatus = '';
                 }
+            },
+            /**
+             *  调整兑换时所需积分
+             *  @param {object} rowData
+             */
+            adjustCredits (rowData) {
+                this.$refs.adjustCreditsModal.toggle(rowData);
             }
         }
     };
@@ -306,6 +329,11 @@
             }
             .sleep:after {
                 background: $color_gray;
+            }
+
+            .inline-btn {
+                color: $color_blue;
+                cursor: pointer;
             }
         }
 

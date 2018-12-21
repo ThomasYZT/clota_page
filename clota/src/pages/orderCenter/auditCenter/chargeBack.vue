@@ -67,6 +67,7 @@
     import {teamOrderChargeBack, batchAudit} from './auditConfig';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
+    import ajax from '@/api/index';
     export default {
         components: {
             tableCom,
@@ -80,6 +81,7 @@
                 columnData : teamOrderChargeBack,
                 // 获取数据的请求参数
                 queryParams: {
+                    auditStatus: 'audit',   // 只查询待审核的订单
                     pageNo: 1,
                     pageSize: 10,
                 },
@@ -104,15 +106,17 @@
              * 获取列表数据
              */
             queryList () {
-                // ajax.post('').then(res => {
-                //     if (res.success) {
-                //
-                //     } else {
-                //
-                //     }
-                // });
-                this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},];
-                this.totalCount = 20;
+                ajax.post('queryTeamOrder', {
+                    ...this.queryParams
+                }).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
             },
             handleCommand(dropItem) {
                 if (this.chosenRowData.length<=0) {

@@ -2060,4 +2060,7 @@ export default {
     'onlineAccount.cash' : '现金',
     'chargeBack' : '团队订单退单审核',
     'expiresStatus' : '过期状态',
+    'expiredVerify' : '过期核销',
+    'exchangePointsRequiredSetting' : '兑换时所需积分设置',
+    'applyCancelOrder' : '申请取消订单',
 }
