@@ -16,7 +16,7 @@
                 </Menu>
             </div>
             <div class="table-info">
-                <router-view>
+                <router-view :key="$route.name">
                 </router-view>
             </div>
         </div>
@@ -38,11 +38,11 @@
                         label : '团队订单预审核'
                     },
                     {
-                        name : 'indOrderAudit',
+                        name : 'indRefundOrderAudit',
                         label : '散客退票审核'
                     },
                     {
-                        name : 'cooperaChannelPer',
+                        name : 'indAlterOrderAudit',
                         label : '散客改签审核'
                     }
                 ]

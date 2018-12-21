@@ -1,7 +1,4 @@
-<!--
-    散客二级订单--产品明细
-    作者：杨泽涛
--->
+<!--订单明细，包含审核退票和改签功能-->
 <template>
     <div class="product-detail">
         <div class="title">{{$t('productDetail')}}</div>
@@ -17,12 +14,22 @@
                 </li>
             </ul>
             <div class="btn-wrapper" >
-                <Button class="ivu-btn-88px ivu-hollow-out-blue"
-                        :disabled="!canAlterTicket"
-                        @click="applyChange()">{{$t('applyForUpgrade')}}</Button>
-                <Button class="ivu-btn-88px ivu-hollow-out-blue"
-                        :disabled="!canRefundTicket"
-                        @click="applyRefund()">{{$t('ApplyForRefund')}}</Button>
+                <!--<Button class="ivu-btn-88px ivu-hollow-out-blue"-->
+                        <!--:disabled="!canAlterTicket"-->
+                        <!--@click="applyChange()">{{$t('applyForUpgrade')}}</Button>-->
+                <!--<Button class="ivu-btn-88px ivu-hollow-out-blue"-->
+                        <!--:disabled="!canRefundTicket"-->
+                        <!--@click="applyRefund()">{{$t('ApplyForRefund')}}</Button>-->
+                <Button type="primary"
+                        style="width: 88px; margin-right: 5px;"
+                        :disabled="chosedData.length < 1"
+                        @click="showAuditModal('pass')">{{$t('passed')}}
+                </Button>
+                <Button type="error"
+                        style="width: 88px;"
+                        :disabled="chosedData.length < 1"
+                        @click="showAuditModal('reject')">{{$t('rejectAll')}}
+                </Button><!--全部驳回-->
             </div>
         </div>
 
@@ -33,8 +40,18 @@
                       :table-com-min-height="250"
                       :border="true"
                       :auto-height="true"
-                      :columnCheck="true"
                       @selection-change="selectionChange">
+                <el-table-column
+                    slot="columncheck"
+                    slot-scope="row"
+                    :label="row.title"
+                    fixed="left"
+                    :selectable="canSelectProduct"
+                    show-overflow-tooltip
+                    type="selection"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                </el-table-column>
                 <el-table-column
                     slot="columnpickStatus"
                     show-overflow-tooltip
@@ -123,14 +140,13 @@
                             :visitor-info="visitor"
                             :order-detail="baseInfo">
         </productDetailModal>
-        <!--退票申请 模态框-->
-        <refundModal ref="refundModal"
-                     @fresh-data="$emit('fresh-data')">
-        </refundModal>
-        <!--改签申请 模态框-->
-        <ticketChangingModal ref="ticketChangingModal"
-                             @fresh-data="$emit('fresh-data')">
-        </ticketChangingModal>
+
+        <!--审核确认弹框-->
+        <confirm-audit-modal ref="confirmAuditModal"
+                             :base-info="baseInfo"
+                             :visitor-info="visitor"
+                             @on-audit-confirmed="onAuditConfirmed">
+        </confirm-audit-modal>
     </div>
 </template>
 
@@ -141,13 +157,15 @@
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
     import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
+    import confirmAuditModal from '../components/confirmAuditModal';
 
     export default {
         components : {
             tableCom,
             productDetailModal,
             refundModal,
-            ticketChangingModal
+            ticketChangingModal,
+            confirmAuditModal
         },
         props : {
             //产品明细列表数据
@@ -285,6 +303,27 @@
             selectionChange (data) {
                 this.chosedData = data;
             },
+            /**
+             * 弹出审核确认的模态框
+             **/
+            showAuditModal (auditType) {
+                this.$refs['confirmAuditModal'].show({
+                    productList : this.chosedData,
+                    passList : this.chosedData,
+                    type : auditType
+                });
+            },
+            onAuditConfirmed (auditParams) {
+                console.log(auditParams)
+            },
+            /**
+             * 判断是否可以选择产品
+             * @param{Object} row 选择的产品信息
+             * @param{Numbere} index 选择的产品序列
+             */
+            canSelectProduct (row,index) {
+                return false;
+            }
         },
         mounted () {
 

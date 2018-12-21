@@ -107,8 +107,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span><!--通过-->
+                    <!--通过-->
+                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span>
                     <span class="divide-line"></span>
+                    <!--驳回-->
                     <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
                     <span class="divide-line"></span>
                     <span class="operate-btn blue" @click="goTeamOrderDetail(scope.row)">{{$t('details')}}</span>
@@ -116,25 +118,26 @@
             </el-table-column>
         </table-com>
 
-        <!--&lt;!&ndash;通过模态框&ndash;&gt;-->
-        <!--<audit-pass-modal ref="auditPassModal"-->
-                          <!--@on-audit-pass="queryList">-->
-        <!--</audit-pass-modal>-->
-        <!--驳回模态框-->
-        <!--<audit-reject-modal ref="auditRejectModal"-->
-                            <!--@on-audit-pass="queryList">-->
-        <!--</audit-reject-modal>-->
+        <!--批量（通过/驳回）模态框-->
+        <bulk-batch-audit-modal ref="bulkBatchAuditModal"
+                                @on-audited="queryList">
+        </bulk-batch-audit-modal>
+
+        <!--单个（通过/驳回）模态框-->
+        <bulk-single-audit-modal ref="bulkSingleAuditModal"
+                                 @on-audited="queryList">
+        </bulk-single-audit-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { bulkRefundHead, batchAudit } from './indRefundAuditConfig';
+    import { bulkRefundHead, batchAudit,bulkAlterHead } from './indRefundAuditConfig';
     import ajax from '@/api/index';
     import { configVariable, notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
-    // import auditPassModal from './components/groupAuditPassModal.vue';
-    // import auditRejectModal from './components/groupAuditRejectModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import bulkBatchAuditModal from './components/bulkBatchAuditModal.vue';
+    import bulkSingleAuditModal from './components/bulkSingleAuditModal.vue';
     import { transSyncStatus } from '../commFun';
 
     export default {
@@ -142,13 +145,12 @@
         components : {
             auditFilter,
             tableCom,
-            // auditRejectModal
+            bulkBatchAuditModal,
+            bulkSingleAuditModal
         },
         props : {},
         data () {
             return {
-                //表头配置
-                columnData : bulkRefundHead,
                 //表格数据
                 tableData : [],
                 //总条数
@@ -171,7 +173,19 @@
                 paramsDefault : {}
             };
         },
-        computed : {},
+        computed : {
+            //表头配置
+            columnData () {
+                //散客退票审核列表表头
+                if (this.$route.name === 'indRefundOrderAudit') {
+                    return bulkRefundHead;
+                } else if (this.$route.name === 'indAlterOrderAudit') { //散客改签审核列表表头
+                    return bulkAlterHead;
+                } else {
+                    return [];
+                }
+            }
+        },
         created () {
         },
         methods : {
@@ -188,9 +202,13 @@
                     page : this.queryParams.page,
                     pageSize : this.queryParams.pageSize,
                     orderType : 'individual',
-                    refundStatus : 'wait',
-                    refundAlter : 'refund',
                 };
+                //如果当前是散客退票审核页面
+                if (this.$route.name === 'indRefundOrderAudit') {
+                    Object.assign(params,{ refundStatus : 'wait', refundAlter : 'refund' });
+                } else if (this.$route.name === 'indAlterOrderAudit') { //如果当前是散客改签待审核页面
+                    Object.assign(params,{ rescheduleStatus : 'wait', refundAlter : 'alter' });
+                }
                 if (this.queryParams.orderChannel) {
                     Object.assign(params,{ orderChannel : this.queryParams.orderChannel });
                 }
@@ -230,13 +248,18 @@
                     this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
-                switch (dropItem.value) {
-                    case 'success' :
-                        this.showAuditModal(this.chosenRowData, true, 'pass');
-                        break;
-                    case 'reject' :
-                        this.showAuditModal(this.chosenRowData, true, 'reject');
-                        break;
+                if (dropItem.value === 'success') {
+                    this.$refs['bulkBatchAuditModal'].show({
+                        items : this.chosenRowData,
+                        isBatch : true,
+                        type : 'pass'
+                    });
+                } else if (dropItem.value === 'reject') {
+                    this.$refs['bulkBatchAuditModal'].show({
+                        items : this.chosenRowData,
+                        isBatch : true,
+                        type : 'reject'
+                    });
                 }
             },
             /**
@@ -267,33 +290,21 @@
              * @param type - 类型  'pass' | 'reject'
              **/
             showAuditModal (data, isBatch, type) {
-                let auditModal = '';
-                switch (type) {
-                    case 'pass' :
-                        auditModal = 'auditPassModal';
-                        break;
-                    case 'reject' :
-                        auditModal = 'auditRejectModal';
-                        break;
-                    default :
-                        auditModal = 'auditPassModal';
-                        break;
-                }
-
-                this.$refs[auditModal].show({
+                this.$refs['bulkSingleAuditModal'].show({
                     items : isBatch ? data : [data],
-                    isBatch : isBatch
+                    isBatch : isBatch,
+                    type : type
                 });
             },
             /**
-             * 跳转至团队订单详情
+             * 跳转至散客订单详情
              * @param{Object} scopeRow 订单详情数据
              */
             goTeamOrderDetail (scopeRow) {
                 this.$router.push({
-                    name : 'preAduitTeamOrderDetail',
+                    name : this.$route.name === 'indRefundOrderAudit' ? 'refundAuditRefundOrderDetail' : 'alterAuditRefundOrderDetail',
                     params : {
-                        orderDetail : scopeRow
+                        productDetail : scopeRow,
                     },
                 });
             },

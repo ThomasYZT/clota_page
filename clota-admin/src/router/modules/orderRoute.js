@@ -51,10 +51,21 @@ export default {
                 }
             },
             //散客订单退票审核
-            indOrderAudit : {
-                path : 'indOrder/audit',
-                name : 'indOrderAudit',
-                component : () => import(/* webpackChunkName: "order" */'../../pages/order/indRefundAudit/index.vue'),
+            indRefundOrderAudit : {
+                path : 'indOrder/refund/audit',
+                name : 'indRefundOrderAudit',
+                component : () => import(/* webpackChunkName: "order" */'../../pages/order/indRefundAndAlterAudit/index.vue'),
+                meta : {
+                    _name : 'order',
+                    menuName : 'order',
+                    lightMenu : 'order',
+                }
+            },
+            //散客订单改签审核
+            indAlterOrderAudit : {
+                path : 'indOrder/alter/audit',
+                name : 'indAlterOrderAudit',
+                component : () => import(/* webpackChunkName: "order" */'../../pages/order/indRefundAndAlterAudit/index.vue'),
                 meta : {
                     _name : 'order',
                     menuName : 'order',
@@ -96,10 +107,32 @@ export default {
             lightMenu : 'order',
         }
     },
-    //散客订单二级详情
+    //散客订单二级详情 --- 订单查询
     individualTwoLevelOrderDetail : {
         path : '/orderDetail/individual/twoLevel',
         name : 'individualOrderDetail2Level',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/individualOrderDetail2Level.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
+    },
+    //散客订单二级详情 --- 退票审核
+    refundAuditRefundOrderDetail : {
+        path : '/indOrder/refundAudit/detail',
+        name : 'refundAuditRefundOrderDetail',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/individualOrderDetail2Level.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
+    },
+    //散客订单二级详情 --- 改签审核
+    alterAuditRefundOrderDetail : {
+        path : '/indOrder/alterAudit/detail',
+        name : 'alterAuditRefundOrderDetail',
         component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/individualOrderDetail2Level.vue'),
         meta : {
             _name : 'order',

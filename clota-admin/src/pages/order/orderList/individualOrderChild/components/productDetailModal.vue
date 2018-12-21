@@ -82,7 +82,7 @@
                     <Row>
                         <i-col span="10">
                             <FormItem :label="$t('scenePlace')+'：'">
-                                {{ticketInfo.scenic | contentFilter}}
+                                {{listItem.orgName | contentFilter}}
                             </FormItem>
                         </i-col>
                     </Row>
@@ -118,7 +118,7 @@
                         </i-col>
                         <i-col span="10">
                             <FormItem :label="$t('ticketTime')+'：'">
-                                {{ticketInfo.pickTime | contentFilter}}
+                                {{listItem.pickTime | contentFilter}}
                             </FormItem>
                         </i-col>
                     </Row>
@@ -130,7 +130,7 @@
                         </i-col>
                         <i-col span="10">
                             <FormItem :label="$t('verifyTime')+'：'">
-                                {{ticketInfo.verifyTime | contentFilter}}
+                                {{listItem.verifyTime | contentFilter}}
                             </FormItem>
                         </i-col>
                     </Row>
@@ -144,7 +144,7 @@
                         </i-col>
                         <i-col span="10">
                             <FormItem :label="$t('refundTime')+'：'">
-                                {{ticketInfo.refundTime | contentFilter}}
+                                {{listItem.refundTime | contentFilter}}
                             </FormItem>
                         </i-col>
                     </Row>
@@ -162,7 +162,7 @@
                         </i-col>
                         <i-col span="10">
                             <FormItem :label="$t('modifyTime')+'：'">
-                                {{ticketInfo.rescheduleTime | contentFilter}}
+                                {{listItem.rescheduleTime | contentFilter}}
                             </FormItem>
                         </i-col>
                     </Row>
@@ -176,7 +176,7 @@
                         </i-col>
                         <i-col span="10">
                             <FormItem :label="$t('syncTime')+'：'">
-                                {{ticketInfo.syncTime | contentFilter}}
+                                {{listItem.syncTime | contentFilter}}
                             </FormItem>
                         </i-col>
                     </Row>
@@ -264,7 +264,9 @@
                 //产品明细列表项数据
                 listItem : {},
                 //产品明细数据--接口数据
-                productDetail : {}
+                productDetail : {},
+                //产品操作日志
+                orderRecordList : []
             };
         },
         computed : {
@@ -274,22 +276,6 @@
                     return this.productDetail.orderInfo;
                 } else {
                     return {};
-                }
-            },
-            //产品信息
-            ticketInfo () {
-                if (Object.keys(this.productDetail).length > 0 && this.productDetail.ticketInfo) {
-                    return this.productDetail.ticketInfo;
-                } else {
-                    return {};
-                }
-            },
-            //订单日志
-            orderRecordList () {
-                if (Object.keys(this.productDetail).length > 0 && this.productDetail.orderRecordList) {
-                    return this.productDetail.orderRecordList;
-                } else {
-                    return [];
                 }
             },
             //证件类型
@@ -323,7 +309,7 @@
             toggle (detail) {
                 if (!this.visibile && detail) {
                     this.listItem = detail;
-                    this.getData();
+                    this.queryTicketOperationLog();
                 } else {
                     this.listItem = {};
                     this.productDetail = {};
@@ -331,14 +317,16 @@
                 this.visibile = !this.visibile;
             },
             /**
-             * 获取模态框数据
+             * 获取产品操作日志
              */
-            getData () {
-                ajax.post('queryThirdIndividualOrderDetail',{
-                    ticketId : this.listItem.id
+            queryTicketOperationLog () {
+                ajax.post('queryTicketOperationLog',{
+                    orderTicketId : this.listItem.id
                 }).then(res => {
-                    if (res.success) {
-                        this.productDetail = res.data;
+                    if (res.status === 200) {
+                        this.orderRecordList = res.data ? res.data : [];
+                    } else {
+                        this.orderRecordList = [];
                     }
                 });
             },
@@ -417,10 +405,6 @@
                 width: 50%;
                 transform: translateY(50%);
             }
-        }
-        .step-wrapper {
-            width: 50%;
-            margin: 0 auto;
         }
     }
 </style>
