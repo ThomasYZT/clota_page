@@ -8,18 +8,11 @@
                 <li class="row">
                     <ul class="list">
                         <li class="col">{{$t('productName')}}： {{baseInfo.productName | contentFilter}}</li>
-                        <!--中间分销商不可见产品单价-->
                         <li class="col" >{{$t('settlePrice')}}： {{baseInfo.price | moneyFilter | contentFilter}}</li>
                     </ul>
                 </li>
             </ul>
             <div class="btn-wrapper" >
-                <!--<Button class="ivu-btn-88px ivu-hollow-out-blue"-->
-                        <!--:disabled="!canAlterTicket"-->
-                        <!--@click="applyChange()">{{$t('applyForUpgrade')}}</Button>-->
-                <!--<Button class="ivu-btn-88px ivu-hollow-out-blue"-->
-                        <!--:disabled="!canRefundTicket"-->
-                        <!--@click="applyRefund()">{{$t('ApplyForRefund')}}</Button>-->
                 <Button type="primary"
                         style="width: 88px; margin-right: 5px;"
                         :disabled="chosedData.length < 1"
@@ -153,18 +146,17 @@
 <script>
     import productDetailModal from '../components/productDetailModal';
     import refundModal from '../components/refundModal';
-    import ticketChangingModal from '../components/ticketChangingModal';
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
     import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
     import confirmAuditModal from '../components/confirmAuditModal';
+    import ajax from '@/api/index';
 
     export default {
         components : {
             tableCom,
             productDetailModal,
             refundModal,
-            ticketChangingModal,
             confirmAuditModal
         },
         props : {
@@ -249,22 +241,6 @@
                 });
                 return _obj;
             },
-            //选择的票是否能退
-            canRefundTicket () {
-                if (!this.chosedData || this.chosedData.length < 1) {
-                    return false;
-                } else {
-                    return this.chosedData.every(item => item.returnRule === 'true');
-                }
-            },
-            //选择的票是否能改签
-            canAlterTicket () {
-                if (!this.chosedData || this.chosedData.length < 1) {
-                    return false;
-                } else {
-                    return this.chosedData.every(item => item.alterRule === 'true');
-                }
-            },
 
         },
         methods : {
@@ -274,17 +250,6 @@
              */
             thirdLevelOrderDetail (data) {
                 this.$refs.productDetailModal.toggle(data);
-            },
-            /**
-             * 申请改签
-             */
-            applyChange () {
-                if (this.chosedData.length > 0) {
-                    this.$refs.ticketChangingModal.toggle({
-                        chosedData : this.chosedData,
-                        baseInfo : this.baseInfo
-                    });
-                }
             },
             /**
              * 申请退票
@@ -313,16 +278,31 @@
                     type : auditType
                 });
             },
+            /**
+             * 获取审核结果的参数
+             * @param{Object} auditParams 审核结果参数
+             */
             onAuditConfirmed (auditParams) {
-                console.log(auditParams)
+                ajax.post('updateProductRefundAlterAudit',{
+                    reqType : auditParams.reqType,
+                    audit : auditParams.audit,
+                    refundId : this.baseInfo.refundId,
+                    productIds : auditParams.productIds,
+                    remark : auditParams.remark
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('auditSuccess'));
+                    } else {
+                        this.$Message.error(this.$t('auditFailure'));
+                    }
+                });
             },
             /**
              * 判断是否可以选择产品
              * @param{Object} row 选择的产品信息
-             * @param{Numbere} index 选择的产品序列
              */
-            canSelectProduct (row,index) {
-                return false;
+            canSelectProduct (row) {
+                return row.checkStatus === 'true';
             }
         },
         mounted () {

@@ -152,7 +152,15 @@
                     orderNo : this.productDetail.orderNo,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.touristInfo = res.data ? res.data[0] : {};
+                        if (res.data) {
+                            for (let i = 0,j = res.data.length; i < j; i++) {
+                                if (res.data[i]['visitorType'] === 'visitor') {
+                                    this.touristInfo = res.data[i];
+                                    return;
+                                }
+                            }
+                        }
+                        this.touristInfo = {};
                     } else {
                         this.touristInfo = {};
                     }

@@ -298,6 +298,9 @@
                 if (this.queryParams.orderType) {
                     Object.assign(params,{ orderType : this.queryParams.orderType });
                 }
+                if (this.queryParams.productType) {
+                    Object.assign(params,{ productType : this.queryParams.productType });
+                }
                 if (this.queryParams.pickStatus) {
                     Object.assign(params,{ pickStatus : this.queryParams.pickStatus });
                 }

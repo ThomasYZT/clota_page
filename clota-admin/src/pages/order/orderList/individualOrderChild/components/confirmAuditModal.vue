@@ -200,8 +200,6 @@
              */
             confirmAudit () {
                 let auditParams = {
-                    // passOrderTicketIds : this.passedProducts.map(item => item.id).join(','),
-                    // rejectOrderTicketIds : this.rejectProducts.map(item => item.id).join(','),
                     reqType : '', // 申请类型（退票-refund，改签-alter）
                     remark : this.auditRemark,
                 };
@@ -211,9 +209,11 @@
                     auditParams.reqType = 'alter';
                 }
                 if (this.passedProducts && this.passedProducts.length > 0) {
-                    auditParams['refundId'] = this.passedProducts.map(item => item.id).join(',');
+                    auditParams['productIds'] = this.passedProducts.map(item => item.id).join(',');
+                    auditParams['audit'] = 'suuccess';
                 } else if (this.rejectProducts && this.rejectProducts.length > 0) {
-                    auditParams['refundId'] = this.rejectProducts.map(item => item.id).join(',');
+                    auditParams['productIds'] = this.rejectProducts.map(item => item.id).join(',');
+                    auditParams['audit'] = 'reject';
                 }
 
                 if (this.auditRemark.length <= 500) {

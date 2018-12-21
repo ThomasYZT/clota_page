@@ -77,6 +77,20 @@
                         </Select>
                     </FormItem>
                 </i-col>
+                <i-col span="6" v-if="auditName=='group'">
+                    <!--支付状态-->
+                    <FormItem :label="$t('paymentStatus')" >
+                        <Select v-model="formData.paymentStatus"
+                                style="max-width: 260px"
+                                @on-change="searchAuditList">
+                            <Option v-for="item in paymentList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
                 <i-col span="6">
                     <!--业态类型-->
                     <FormItem :label="$t('industryType')" >
@@ -110,7 +124,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import { notDistributorChannelList } from '@/assets/js/constVariable';
+    import { notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
     import debounce from 'lodash/debounce';
@@ -155,6 +169,8 @@
                 },
                 // 下单渠道列表
                 orderChannelList : notDistributorChannelList,
+                // 支付状态
+                paymentList : payStatusList,
                 // 下单时间范围
                 orderTimeRange : [],
                 // 游玩日期范围

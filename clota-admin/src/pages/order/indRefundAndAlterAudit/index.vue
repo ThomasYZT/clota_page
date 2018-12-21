@@ -330,7 +330,8 @@
              */
             getParams (params,toRoute,fromRoute) {
                 if (params && Object.keys(params).length > 0 &&
-                    (fromRoute.name === 'preAduitTeamOrderDetail')) {
+                    (fromRoute.name === 'refundAuditRefundOrderDetail' ||
+                    fromRoute.name === 'alterAuditRefundOrderDetail')) {
                     this.paramsDefault = params;
                 }
             },
