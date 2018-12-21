@@ -229,7 +229,7 @@
         </apply-alter-ticket-modal>
 
         <!-- 申请取消订单 -->
-        <applyCancelOrderModal ref="applyCancelOrderModal">
+        <applyCancelOrderModal ref="applyCancelOrderModal" @applySuccess="queryList">
 
         </applyCancelOrderModal>
     </div>

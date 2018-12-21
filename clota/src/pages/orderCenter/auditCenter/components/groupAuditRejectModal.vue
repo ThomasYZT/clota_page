@@ -142,7 +142,9 @@
                     isBatch: false
                 },
                 //审核备注
-                auditRemark: ''
+                auditRemark: '',
+                //审核状态
+                auditStatus : '',
             }
         },
         computed: {
@@ -169,6 +171,9 @@
                         this.title = 'PRODUCT_AUDIT_REJECT';    // 驳回申请
                         this.getOrderProducts(data.items[0].id);
                     }
+                    if (data.auditStatus) {
+                        this.auditStatus = data.auditStatus;
+                    }
                 }
 
                 this.visible = true;
@@ -180,7 +185,6 @@
                 this.tableData = [];
                 this.visible = false;
             },
-
             /**
              * 获取订单下的产品
              * @param id  订单id
@@ -202,7 +206,7 @@
                 ajax.post('auditTeamOrder', {
                     orderIds: this.orderData.items.map(item => item.id).join(','),
                     remark: this.auditRemark,
-                    auditStatus: 'reject',
+                    auditStatus:  this.auditStatus ? this.auditStatus : 'success',
                 }).then(res => {
                     if(res.success){
                         this.hide();

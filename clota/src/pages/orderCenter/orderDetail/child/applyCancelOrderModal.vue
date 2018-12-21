@@ -64,6 +64,7 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('cancelOrder') }));
                         this.toggle();
+                        this.$emit('applySuccess');
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('cancelOrder') }));
                     }
@@ -77,7 +78,15 @@
     @import '~@/assets/scss/base';
 
     .apply-cancel-order-modal {
+        .tip {
+            width: 80%;
+            margin: 20px auto 0;
+            text-align: center;
+            font-size: 14px;
+        }
+    }
 
-        height: 280px;
+    /deep/ .ivu-modal-body {
+        min-height: 164px;
     }
 </style>
