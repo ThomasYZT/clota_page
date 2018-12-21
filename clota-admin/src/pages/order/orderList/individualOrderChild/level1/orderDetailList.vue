@@ -13,14 +13,14 @@
             :auto-height="true">
             <!--订单明细编号-->
             <el-table-column
-                slot="columnid"
+                slot="columnorderDetailNo"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="to-one-level" @click="toSecondLevelOrderDetail(scope.row)">{{scope.row.id | contentFilter}}</span>
+                    <span class="to-one-level" @click="toSecondLevelOrderDetail(scope.row)">{{scope.row.orderDetailNo | contentFilter}}</span>
                 </template>
             </el-table-column>
             <!--产品名称/预定数量-->

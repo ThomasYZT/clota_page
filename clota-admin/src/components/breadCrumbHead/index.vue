@@ -1,17 +1,19 @@
 <!--面包屑导航条-->
 
 <template>
-    <div class="bread-crumb-head">
-        <Breadcrumb>
-            <BreadcrumbItem
-                :to="item.router"
-                v-for="(item,index) in beforeRouterList"
-                :key="index">
-                {{$t(item.name)}}
-            </BreadcrumbItem>
-            <BreadcrumbItem>{{$t(localeRouter)}}</BreadcrumbItem>
-        </Breadcrumb>
-    </div>
+    <Affix :offset-top="56" >
+        <div class="bread-crumb-head">
+            <Breadcrumb>
+                <BreadcrumbItem
+                    :to="item.router"
+                    v-for="(item,index) in beforeRouterList"
+                    :key="index">
+                    {{$t(item.name)}}
+                </BreadcrumbItem>
+                <BreadcrumbItem>{{$t(localeRouter)}}</BreadcrumbItem>
+            </Breadcrumb>
+        </div>
+    </Affix>
 </template>
 
 <script>

@@ -30,8 +30,17 @@
                       :table-com-min-height="250"
                       :border="true"
                       :auto-height="true"
-                      :columnCheck="true"
                       @selection-change="selectionChange">
+                <el-table-column
+                    slot="columncheck"
+                    slot-scope="row"
+                    :label="row.title"
+                    fixed="left"
+                    show-overflow-tooltip
+                    type="selection"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                </el-table-column>
                 <el-table-column
                     slot="columnpickStatus"
                     show-overflow-tooltip
