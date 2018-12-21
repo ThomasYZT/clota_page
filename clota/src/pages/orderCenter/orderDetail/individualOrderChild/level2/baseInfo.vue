@@ -88,7 +88,7 @@
             canResendMsg () {
                 //景区下，审核成功，取票前可重发短信
                 return this.viewType === 'scenic' &&
-                    (this.baseInfo.quantity > this.baseInfo.quantityPicked) &&
+                    (this.baseInfo.quantity - this.baseInfo.quantityRefunded - this.baseInfo.quantityPicked > 0) &&
                     this.perMissioncanResendSms;
             },
         },
