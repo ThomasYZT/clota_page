@@ -111,7 +111,7 @@
                         </i-col>
                         <!--游玩期限 = 指定期间可售-->
                         <i-col span="12">
-                            <Form-item :label="$t('weekSold')+':'"><!--每周可玩日期-->
+                            <Form-item :label="$t('weekPlay')+':'"><!--每周可玩日期-->
                                 <div>
                                     {{showWeek(detail.productPolicy.playRuleModel.weekSold) | contentFilter}}
                                 </div>

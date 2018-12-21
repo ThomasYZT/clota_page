@@ -353,6 +353,7 @@
                 this.$router.push({
                     name : 'ticketDetail',
                     params : {
+                        role : 'other_org',
                         info : _obj
                     }
                 });

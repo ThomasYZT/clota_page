@@ -1874,4 +1874,8 @@ export default {
     'onlineAccount.weixin' : '微信',
     'onlineAccount.alipay' : '支付宝',
     'onlineAccount.cash' : '现金',
+    'submitSuccess' : '提交成功',
+    'hasKnown' : '知道了',
+    'fileFormatOnlyIs' : '上传的文件格式只能为：{format}',
+    'mostUploadPic' : '最多上传{num}个文件',
 }
