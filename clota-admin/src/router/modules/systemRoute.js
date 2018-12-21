@@ -16,6 +16,7 @@ export default {
             _name : 'system',
             menuName : 'system',
             lightMenu : 'system',
+            isMenu : true
         },
         children : {
             //账号管理
@@ -28,7 +29,8 @@ export default {
                     menuName : 'accountName',
                     lightMenu : 'system',
                     showInMenu : true,
-                    subMenuType : 'account'
+                    subMenuType : 'account',
+                    isMenu : true
                 },
             },
             //系统公告
@@ -41,7 +43,8 @@ export default {
                     menuName : 'systemNotice',
                     lightMenu : 'system',
                     showInMenu : true,
-                    subMenuType : 'notice'
+                    subMenuType : 'notice',
+                    isMenu : true
                 },
             },
             //新增/编辑系统公告
@@ -78,7 +81,8 @@ export default {
                     menuName : 'setting',
                     lightMenu : 'system',
                     showInMenu : true,
-                    subMenuType : 'setting'
+                    subMenuType : 'setting',
+                    isMenu : true
                 },
                 children : {
                     //通用设置
@@ -201,7 +205,8 @@ export default {
                     menuName : 'helperCenter',
                     lightMenu : 'system',
                     showInMenu : true,
-                    subMenuType : 'helperCenter'
+                    subMenuType : 'helperCenter',
+                    isMenu : true
                 },
             }
         }

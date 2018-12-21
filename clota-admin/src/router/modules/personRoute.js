@@ -13,9 +13,8 @@ export default {
         name : 'person',
         component : () => import(/* webpackChunkName: "login" */ '../../pages/personalCenter/index.vue'),
         meta : {
-            _name : 'server',
             menuName : 'server',
-            lightMenu : 'server',
+            isStaticMenu : true
         }
     },
 };

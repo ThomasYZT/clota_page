@@ -15,6 +15,7 @@ export default {
             _name : 'order',
             menuName : 'order',
             lightMenu : 'order',
+            isMenu : true
         },
         children : {
             //订单列表
