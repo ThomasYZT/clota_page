@@ -1,4 +1,5 @@
 import store from "../../store/index";
+import { wxCard } from './third-access';
 
 //会员页面路由进入前的处理
 export const memberRouterDeal = (to, from, next) => {
@@ -15,28 +16,52 @@ export const memberRouterDeal = (to, from, next) => {
         || to.name === 'getCardUrl' // 获取卡
     ) {
         next();
-    } else {//判断是否保存了用户信息和token，如果没有保存需要重新登录
+    } else {
+        //判断是否保存了用户信息和token，如果没有保存需要重新登录
         //获取保存到本地的用户信息、当前选择的卡信息
-        let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
-        if (token && store.getters.userInfo && Object.keys(store.getters.userInfo).length > 0) {
-            //判断vuex中是否保存了当前卡信息，如果没有保存则重新获取会员卡信息
-            if (store.getters.cardInfo && Object.keys(store.getters.cardInfo).length > 0 && store.getters.cardInfoList && store.getters.cardInfoList.length > 0) {
-                next();
+            let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+            if (token && store.getters.userInfo && Object.keys(store.getters.userInfo).length > 0) {
+                if (to.query && Object.keys(to.query).length > 0) {
+                    //此处为从微信卡包菜单中直接登陆进入会员系统(当且仅当cardId,encrypt_code,root三个参数都存在时)
+                    let query = to.query;
+                    if (query.card_id && query.openid && query.root && query.encrypt_code) {
+                        wxCard.wxCardLogin({ cardId : query.card_id, openId : query.openid, encryptCode : query.encrypt_code }).then((res) => {
+                            store.commit('updateCardInfo',res);
+                            next({
+                                name : query.root
+                            });
+                        }).catch(() => {
+                            next({
+                                name : 'mobileLogin',
+                            });
+                        });
+                    } else {
+                        next({
+                            name : 'mobileLogin',
+                        });
+                    }
+                } else {
+                    //此处为正常登陆进入会员系统
+                    //判断vuex中是否保存了当前卡信息，如果没有保存则重新获取会员卡信息
+                    if (store.getters.cardInfo && Object.keys(store.getters.cardInfo).length > 0 && store.getters.cardInfoList && store.getters.cardInfoList.length > 0) {
+                        next();
+                    } else {
+                        //接口更新卡列表信息，更新vuex数据
+                        store.dispatch('getCardListInfo').then(() => {
+                            next();
+                        }).catch(() => {
+                            next({
+                                name : 'mobileLogin'
+                            });
+                        });
+                    }
+                }
             } else {
-                //接口更新卡列表信息，更新vuex数据
-                store.dispatch('getCardListInfo').then(() => {
-                    next();
-                }).catch(() => {
-                    next({
-                        name : 'mobileLogin'
-                    });
+                next({
+                    name : 'mobileLogin'
                 });
             }
-        } else {
-            next({
-                name : 'mobileLogin'
-            });
-        }
+
     }
 };
 //会员路由页面
