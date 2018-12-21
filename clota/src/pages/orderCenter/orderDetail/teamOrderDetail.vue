@@ -9,6 +9,7 @@
         <div class="content">
             <!--基本信息-->
             <base-info :base-info="baseInfo"
+                       :is-over-due="isOverdue"
                        :product-info-list="productInfoList"
                        :view-type="viewType">
             </base-info>
@@ -201,6 +202,14 @@
             allocationCommission () {
                 if(this.orderDetailInfo && common.isNotEmpty(this.orderDetailInfo.allocationCommission)){
                     return this.orderDetailInfo.allocationCommission;
+                }else{
+                    return '';
+                }
+            },
+            // 是否过期
+            isOverdue () {
+                if(this.orderDetailInfo && this.orderDetailInfo.isOverdue){
+                    return this.orderDetailInfo.isOverdue;
                 }else{
                     return '';
                 }

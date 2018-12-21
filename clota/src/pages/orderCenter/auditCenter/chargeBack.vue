@@ -209,11 +209,11 @@
                 switch (type) {
                     case 'pass' :
                         auditModal = 'auditPassModal';
-                        auditStatus = 'cancel_pass';
+                        auditStatus = 'cancel_success';
                         break;
                     case 'reject' :
                         auditModal = 'auditRejectModal';
-                        auditStatus = 'success';
+                        auditStatus = 'cancel_reject';
                         break;
                 }
 

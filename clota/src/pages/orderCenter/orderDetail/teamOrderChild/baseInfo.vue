@@ -167,6 +167,11 @@
                     return [];
                 }
             },
+            //订单是否过期
+            'is-over-due' : {
+                type : String,
+                default : ''
+            }
         },
         data() {
             return {}
@@ -201,12 +206,30 @@
             },
             //审核结果图片
             auditResultImg () {
-                if(this.baseInfo.auditStatus === 'success'){
-                    return require('../../../../assets/images/icon-audit-success.svg');
-                }else if(this.baseInfo.auditStatus === 'audit'){
-                    return require('../../../../assets/images/icon-wait-audit.svg');
-                }else{
-                    return require('../../../../assets/images/icon-audit-fail.svg');
+                //团队订单 已过期
+                if (this.isOverdue === 'true') {
+                    if (this.baseInfo.auditStatus === 'cancel_audit' || this.baseInfo.auditStatus === 'cancel_success') {
+                        if (this.baseInfo.auditStatus === 'cancel_audit') {
+                            return require('../../../../assets/images/icon-cancel-wait-audit.svg');
+                        } else {
+                            return require('../../../../assets/images/icon-canceled.svg');
+                        }
+                    } else {
+                        return require('../../../../assets/images/icon-past-due.svg');
+                    }
+                } else {
+                //团队订单 未过期
+                    if (this.baseInfo.auditStatus === 'success') {
+                        return require('../../../../assets/images/icon-audit-success.svg');
+                    } else if(this.baseInfo.auditStatus === 'audit') {
+                        return require('../../../../assets/images/icon-wait-audit.svg');
+                    } else if (this.baseInfo.auditStatus === 'reject') {
+                        return require('../../../../assets/images/icon-audit-fail.svg');
+                    } else if (this.baseInfo.auditStatus === 'cancel_audit') {
+                        return require('../../../../assets/images/icon-cancel-wait-audit.svg');
+                    } else {
+                        return require('../../../../assets/images/icon-canceled.svg');
+                    }
                 }
             }
         }
