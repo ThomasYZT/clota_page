@@ -18,7 +18,7 @@
                 <ul class="list">
                     <li class="col">{{$t('scenePlace')}}：{{baseInfo.scenic | contentFilter}}</li>
                     <li class="col">{{$t('sellingOrg')}}：{{baseInfo.saleOrg | contentFilter}} </li>
-                    <li class="col">{{$t('orderChannel')}}：{{$t(baseInfo.orderChannel) | contentFilter}}</li>
+                    <li class="col">{{$t('orderChannel')}}：{{$t('order.' + baseInfo.orderChannel) | contentFilter}}</li>
                 </ul>
             </li>
             <li class="row">

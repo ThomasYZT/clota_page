@@ -1972,7 +1972,7 @@ export default {
     'productCenter.addPolicyMarketingTip' : '说明：各营销类别的销售用户只允许销售散客产品。',
     'product.needId.one' : '每个证件只能预定一张票',
     'product.needId.more' : '每个证件可预定多张票',
-    'waitToSync' : '待同步',
+    'waitToSync' : '-',
     'NoSmallerThan' : '{field1}不能低于{field2}',
     'close' : '关闭',
     'imgSize' : '图片大小',

@@ -197,7 +197,7 @@
                 //景区下，审核成功，取票前可重发短信
                 return this.viewType === 'scenic' &&
                     this.baseInfo.auditStatus === 'success' &&
-                    this.productInfoList.every(item => item.quantity > item.quantityPicked) ;
+                    this.productInfoList.some(item => item.quantityPicked + item.quantityRefunded === 0) ;
             },
             //审核结果图片
             auditResultImg () {
