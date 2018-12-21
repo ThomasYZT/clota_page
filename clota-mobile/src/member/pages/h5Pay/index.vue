@@ -90,7 +90,7 @@
                 //微信
                 if (this.isWeixin()) {
                     this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
-                    alert(this.payFormData.paymentTypeId)
+                    //alert(this.payFormData.paymentTypeId)
                     //微信内，公众号支付
                     if (this.payFormData.paymentTypeId === 'wx') {
                         //删除路由缓存数据
@@ -181,9 +181,9 @@
     .h5-pay {
         height: 100%;
 
-        /*.pay-form {*/
-            /*display: none;*/
-        /*}*/
+        .pay-form {
+            display: none;
+        }
 
         .img-wrapper {
             height: 100%;

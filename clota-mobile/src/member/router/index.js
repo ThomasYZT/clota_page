@@ -42,6 +42,7 @@ export const memberRouterDeal = (to, from, next) => {
 //会员路由页面
 export const memberRoutes = [
     {
+        module : 'member',
         path : '/member',
         name : 'mobileLogin',
         component : () => import(/* webpackChunkName: "login" */ '../pages/index.vue'),
