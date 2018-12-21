@@ -179,7 +179,7 @@
                 this.$router.push({
                     name : 'individualOrderDetail2Level',
                     params : {
-                        productDetail : data
+                        orderDetailInfo : data
                     }
                 });
             }

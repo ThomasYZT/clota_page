@@ -304,7 +304,7 @@
                 this.$router.push({
                     name : this.$route.name === 'indRefundOrderAudit' ? 'refundAuditRefundOrderDetail' : 'alterAuditRefundOrderDetail',
                     params : {
-                        productDetail : scopeRow,
+                        orderDetailInfo : scopeRow,
                     },
                 });
             },

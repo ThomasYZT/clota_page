@@ -10,7 +10,7 @@
         </bread-crumb-head>
         <div class="content">
             <!--订单基本信息-->
-            <baseInfo :baseInfo="productDetail">
+            <baseInfo :baseInfo="orderDetailInfo">
             </baseInfo>
 
             <!--游客信息-->
@@ -21,20 +21,19 @@
             <product-detail-for-apply  :ticketList="ticketList"
                             v-if="productDetailForApply"
                             :visitor="touristInfo"
-                            :baseInfo="productDetail"
+                            :baseInfo="orderDetailInfo"
                             @fresh-data="freshData">
             </product-detail-for-apply>
             <!--产品明细,包含审核退票和改签-->
             <product-detail-for-audit  :ticketList="ticketList"
                                        v-if="productDetailForAudit"
                                        :visitor="touristInfo"
-                                       :baseInfo="productDetail"
+                                       :baseInfo="orderDetailInfo"
                                        @fresh-data="freshData">
             </product-detail-for-audit>
 
             <!--分销信息-->
-            <distributionInfo :totalRefundFee="totalRefundFee"
-                              :allocationInfo="allocationInfo">
+            <distributionInfo :allocationInfo="allocationInfo">
             </distributionInfo>
 
             <!--退票日志-->
@@ -107,10 +106,8 @@
              * @param{Object} params 路由参数
              */
             getParams (params) {
-                if (params && params.productDetail) {
-                    this.productDetail = params.productDetail;
-                    this.getSecondLevelOrderDetailInfo();
-                    // this.getOrderTicketList();
+                if (params && params.orderDetailInfo) {
+                    this.orderDetailInfo = params.orderDetailInfo;
                     this.queryOrderPlacer();
                     this.queryOperationLog();
                     this.queryIndividualProductDetail();
@@ -124,24 +121,9 @@
                 }
             },
             /**
-             * 获取二级订单详情数据
-             */
-            getSecondLevelOrderDetailInfo () {
-                ajax.post('querySecondIndividualOrderDetail', {
-                    visitorProductId : this.productDetail.visitorProductId
-                }).then(res => {
-                    if (res.success) {
-                        this.orderDetailInfo = res.data;
-                    } else {
-                        this.orderDetailInfo = {};
-                    }
-                });
-            },
-            /**
              * 刷新页面数据
              */
             freshData () {
-                this.getSecondLevelOrderDetailInfo();
                 this.queryIndividualProductDetail();
             },
             /**
@@ -149,7 +131,7 @@
              */
             queryOrderPlacer () {
                 ajax.post('queryOrderPlacer',{
-                    orderNo : this.productDetail.orderNo,
+                    orderNo : this.orderDetailInfo.orderNo,
                 }).then(res => {
                     if (res.status === 200) {
                         if (res.data) {
@@ -171,7 +153,7 @@
              */
             queryOperationLog () {
                 ajax.post('queryOperationLog',{
-                    orderDetailNo : this.productDetail.orderDetailNo
+                    orderDetailNo : this.orderDetailInfo.orderDetailNo
                 }).then(res => {
                     if (res.status === 200) {
                         this.orderRecordList = res.data ? res.data : [];
@@ -185,13 +167,13 @@
              */
             queryIndividualProductDetail () {
                 let params = {
-                    orderDetailNo : this.productDetail.orderDetailNo,
+                    orderDetailNo : this.orderDetailInfo.orderDetailNo,
                     pageSize : 99999,
                     page : 1
                 };
                 //如果是在审核退改签的页面需要传入refundId参数
                 if (this.productDetailForAudit) {
-                    Object.assign(params,{ refundId : this.productDetail.refundId });
+                    Object.assign(params,{ refundId : this.orderDetailInfo.refundId });
                 }
                 ajax.post('queryIndividualProductDetail',{
                     ...params
@@ -208,7 +190,7 @@
              */
             queryRefundLog () {
                 ajax.post('queryRefundLog',{
-                    orderDetailNo : this.productDetail.orderDetailNo,
+                    orderDetailNo : this.orderDetailInfo.orderDetailNo,
                 }).then(res => {
                     if (res.status === 200) {
                         this.refundAlterList = res.data ? res.data : [];
@@ -222,7 +204,7 @@
              */
             queryVerificationLog () {
                 ajax.post('queryVerificationLog',{
-                    orderDetailNo : this.productDetail.orderDetailNo,
+                    orderDetailNo : this.orderDetailInfo.orderDetailNo,
                 }).then(res => {
                     if (res.status === 200) {
                         this.verifyTicketLogList = res.data ? res.data : [];
@@ -236,7 +218,7 @@
              */
             queryDistributionInformation () {
                 ajax.post('queryDistributionInformation',{
-                    orderDetailNo : this.productDetail.orderDetailNo,
+                    orderDetailNo : this.orderDetailInfo.orderDetailNo,
                 }).then(res => {
                     if (res.status === 200) {
                         this.allocationInfo = res.data ? res.data : {};
@@ -247,30 +229,6 @@
             }
         },
         computed : {
-            //退票手续费收入
-            totalRefundFee () {
-                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.totalRefundFee) {
-                    return this.orderDetailInfo.totalRefundFee;
-                } else {
-                    return 0;
-                }
-            },
-            //基本信息
-            baseInfo () {
-                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
-                    return this.orderDetailInfo.baseInfo;
-                } else {
-                    return {};
-                }
-            },
-            //游客信息
-            visitor () {
-                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.visitor) {
-                    return this.orderDetailInfo.visitor;
-                } else {
-                    return {};
-                }
-            },
             //面包屑路由信息
             beforeRouterList () {
                 if (this.$route.name === 'individualOrderDetail2Level') { //从订单查询页面跳转过来
@@ -286,7 +244,7 @@
                             router : {
                                 name : 'individualOrderDetail1Level',
                                 params : {
-                                    orderDetail : this.productDetail
+                                    orderDetail : this.orderDetailInfo
                                 }
                             }
                         }

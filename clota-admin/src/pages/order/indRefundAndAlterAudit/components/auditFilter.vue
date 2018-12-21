@@ -165,7 +165,9 @@
                     // 关键字查询：游客姓名/手机号/订单号/订单明细编号
                     keyword : '',
                     //所属景区
-                    scenicOrgId : 'all'
+                    scenicOrgId : 'all',
+                    //支付状态
+                    paymentStatus : 'allStatus'
                 },
                 // 下单渠道列表
                 orderChannelList : notDistributorChannelList,
@@ -220,7 +222,7 @@
              * emit事件：on-filter，在父组件查询审核列表
              */
             searchAuditList : debounce(function () {
-                let keys = ['channelId', 'orderChannel', 'productType'];
+                let keys = ['channelId', 'orderChannel', 'productType','paymentStatus'];
                 let queryParams = Object.assign({}, this.formData);
                 keys.forEach((key, i) => {
                     if (queryParams[key] && queryParams[key].includes('all')) {
