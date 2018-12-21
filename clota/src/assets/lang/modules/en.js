@@ -2063,4 +2063,6 @@ export default {
     'expiredVerify' : '过期核销',
     'exchangePointsRequiredSetting' : '兑换时所需积分设置',
     'applyCancelOrder' : '申请取消订单',
+    'cancelWaitChecking' : '退单待审',
+    'cancelPass' : '退单审核通过',
 }

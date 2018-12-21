@@ -140,7 +140,9 @@
                     isBatch: false
                 },
                 //审核备注
-                auditRemark: ''
+                auditRemark: '',
+                //审核状态
+                auditStatus : '',
             }
         },
         computed: {
@@ -167,6 +169,9 @@
                         this.title = 'checkPass';   // 审核通过
                         this.getOrderProducts(data.items[0].id);
                     }
+                    if (data.auditStatus) {
+                        this.auditStatus = data.auditStatus;
+                    }
                 }
 
                 this.visible = true;
@@ -176,6 +181,7 @@
                 this.auditRemark = '';
                 this.orderData.items = [];
                 this.tableData = [];
+                this.auditStatus = '';
                 this.visible = false;
             },
 
@@ -202,7 +208,7 @@
                 ajax.post('auditTeamOrder', {
                     orderIds: this.orderData.items.map(item => item.id).join(','),
                     remark: this.auditRemark,
-                    auditStatus: 'success',
+                    auditStatus: this.auditStatus ? this.auditStatus : 'success',
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('orderCheckPassed'));     // 订单审核通过

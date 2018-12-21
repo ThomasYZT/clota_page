@@ -431,7 +431,7 @@ export const teamOrderChargeBack = [
         title : 'expiresStatus', // 过期状态
         width : 110,
         enWidth : 130,
-        field : 'expiresStatus'
+        field : 'overdueStatus'
     },
     {
         title : 'operate',

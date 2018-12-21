@@ -122,12 +122,17 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <!--审核通过-->
+                    <!--预审核通过-->
                     <span class="status-suc" v-if="scope.row.auditStatus === 'success'">{{$t('checkPass')}}</span>
-                    <!--待审核-->
+                    <!--预定待审核-->
                     <span class="status-wait" v-else-if="scope.row.auditStatus === 'audit'">{{$t('waitChecking')}}</span>
-                    <!--审核不通过-->
-                    <span class="status-fail" v-else>{{$t('checkNoPass')}}</span>
+                    <!--预审核不通过-->
+                    <span class="status-fail" v-else-if="scope.row.auditStatus === 'reject'">{{$t('checkNoPass')}}</span>
+                    <!--退单待审-->
+                    <span class="status-wait" v-else-if="scope.row.auditStatus === 'cancel_audit'">{{$t('cancelWaitChecking')}}</span>
+                    <!--退单审核通过-->
+                    <span class="status-suc" v-else-if="scope.row.auditStatus === 'cancel_success'">{{$t('cancelPass')}}</span>
+                    <span v-else>-</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -484,6 +489,7 @@
              * @param {object} rowData
              */
             cancelOrder (rowData) {
+                if (!this.judgeCanCancelOrder(rowData)) return;
                 this.$refs.applyCancelOrderModal.toggle(rowData);
             }
         },

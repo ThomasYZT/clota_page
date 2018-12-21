@@ -38,6 +38,63 @@
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
+                slot="column4"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ $t(transOrderOrg(scope.row.orderChannel)) }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ getProductName(scope.row) }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column7"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.orderAmount | moneyFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column8"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ $t(transPaymentStatus(scope.row.paymentStatus)) }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column9"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <!-- 已过期 -->
+                    <span v-if="scope.row.overdueStatus === 'overdue'">{{$t('expired')}}</span>
+                    <!-- 未过期 -->
+                    <span v-else-if="scope.row.overdueStatus === 'not_overdue'">{{$t('notExpired')}}</span>
+                    <span v-else>-</span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column10"
                 slot-scope="row"
                 :label="row.title"
@@ -67,6 +124,7 @@
     import {teamOrderChargeBack, batchAudit} from './auditConfig';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
+    import { notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
     export default {
         components: {
@@ -81,7 +139,7 @@
                 columnData : teamOrderChargeBack,
                 // 获取数据的请求参数
                 queryParams: {
-                    auditStatus: 'audit',   // 只查询待审核的订单
+                    auditStatus: 'cancel_audit',   // 只查询退单待审的订单
                     pageNo: 1,
                     pageSize: 10,
                 },
@@ -147,18 +205,22 @@
              **/
             showAuditModal(data, isBatch, type) {
                 let auditModal = '';
+                let auditStatus = '';
                 switch (type) {
                     case 'pass' :
                         auditModal = 'auditPassModal';
+                        auditStatus = 'cancel_pass';
                         break;
                     case 'reject' :
                         auditModal = 'auditRejectModal';
+                        auditStatus = 'success';
                         break;
                 }
 
                 this.$refs[auditModal].show({
                     items: isBatch ? data : [data],
-                    isBatch: isBatch
+                    isBatch: isBatch,
+                    auditStatus : auditStatus,
                 });
             },
             /**
@@ -170,6 +232,37 @@
                     name: 'teamOrderDetail',
                     params: {orderId: scopeRow.id},
                 });
+            },
+            /**
+             * 下单渠道的code转换
+             * @param value 下单渠道code
+             * @returns {string}
+             */
+            transOrderOrg(value) {
+                let orderChannel = notDistributorChannelList.find((channel, i) => {
+                    return value === channel.value;
+                });
+
+                return orderChannel ? `order.${orderChannel.label}` : '-';
+            },
+            /**
+             * 获取产品名称
+             * @param rowData 订单详情数据
+             */
+            getProductName(rowData) {
+                return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
+            },
+            /**
+             * 支付状态的code转换
+             * @param status  支付状态code
+             * @returns {string}
+             */
+            transPaymentStatus(status) {
+                let paymentStatus = payStatusList.find((payment, i) => {
+                    return status === payment.value;
+                });
+
+                return paymentStatus ? paymentStatus.label : '-';
             },
         }
     }
