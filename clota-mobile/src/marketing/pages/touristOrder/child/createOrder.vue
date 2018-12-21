@@ -306,6 +306,13 @@
                     }
                     result.push(baseInfo);
                 }
+                //游客信息大于0，添加第一个作为下单人
+                if (result.length > 0) {
+                    result.push({
+                        ...result[0],
+                        visitorType : 'payer'
+                    });
+                }
                 return result;
             },
             /**
