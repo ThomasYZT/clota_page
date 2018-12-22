@@ -188,6 +188,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.tableData.splice(scopeData.$index, 1);
+                        this.$emit("updateWorkBackNum");
                     }
                 });
             },

@@ -59,7 +59,10 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="progress" :style="{width : (scope.row.value/baseRate).toFixed(2) * 100 + 'px'}"></span>
+                        <span class="progress"
+                              :style="{width : (scope.row.value/baseRate).toFixed(2) * 100 === 0 ? (1 + 'px') : ((scope.row.value/baseRate).toFixed(2) * 100 + 'px')}">
+
+                        </span>
                     </template>
                 </el-table-column>
             </table-com>
