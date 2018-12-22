@@ -399,7 +399,6 @@
 
                     .status{
                         display: inline-block;
-                        @include block_outline(60px);
                         font-size: $font_size_14px;
                         vertical-align: top;
                     }

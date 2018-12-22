@@ -12,7 +12,7 @@
                         @on-change="dateChange">
             </DatePicker>
         </div>
-        <div class="top-data">
+        <div class="top-data" v-if="canShowDataMarket">
             <!--今日登陆-->
             <top-data :label-name="$t('todayLogin')"
                       :label-rate="logCountData.contrastWithYesterday"
@@ -43,18 +43,18 @@
         </div>
         <div class="abnormal">
             <!--异常事件报警-->
-            <abnormal-warn>
+            <abnormal-warn v-if="canShowErrorEvent" :class="{ 'full-width' : !canShowLessChart }">
             </abnormal-warn>
             <!--租户所在地饼图-->
-            <lessee-place>
+            <lessee-place v-if="canShowLessChart">
             </lessee-place>
         </div>
         <div class="server-info">
             <!--服务器列表-->
-            <server-list>
+            <server-list v-if="canShowServer" :class="{ 'full-width' : !canShowOrderLink }">
             </server-list>
             <!--排行榜-->
-            <rank-list>
+            <rank-list v-if="canShowOrderLink">
             </rank-list>
         </div>
     </div>
@@ -67,6 +67,7 @@
     import serverList from './child/serverList';
     import rankList from './child/rankList';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -198,6 +199,31 @@
             this.getOrderCount();
             this.getTenantCount();
             this.getServerCount();
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否显示数据大盘
+            canShowDataMarket () {
+                return this.permissionInfo && this.permissionInfo['home-dataMarket'] === 'allow';
+            },
+            //是否可以显示异常事件报警
+            canShowErrorEvent () {
+                return this.permissionInfo && this.permissionInfo['home-alert'] === 'allow';
+            },
+            //是否可以显示服务器列表
+            canShowServer () {
+                return this.permissionInfo && this.permissionInfo['home-serverList'] === 'allow';
+            },
+            //是否可以显示租户所在地
+            canShowLessChart () {
+                return this.permissionInfo && this.permissionInfo['home-tanentMarket'] === 'allow';
+            },
+            //是否可以显示订单排行榜
+            canShowOrderLink () {
+                return this.permissionInfo && this.permissionInfo['home-rankingList'] === 'allow';
+            }
         }
     };
 </script>
@@ -227,6 +253,11 @@
         .server-info {
             overflow: auto;
             margin-top: 15px;
+
+
+            .full-width{
+                width: 100%;
+            }
         }
     }
 </style>

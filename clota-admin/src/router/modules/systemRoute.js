@@ -25,7 +25,7 @@ export default {
                 name : 'account',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/account.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-account',
                     menuName : 'accountName',
                     lightMenu : 'system',
                     showInMenu : true,
@@ -39,7 +39,7 @@ export default {
                 name : 'systemNotice',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/systemNotice.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-notice',
                     menuName : 'systemNotice',
                     lightMenu : 'system',
                     showInMenu : true,
@@ -53,7 +53,7 @@ export default {
                 name : 'editSystemNotice',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/editSystemNotice.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-notice',
                     menuName : 'editSystemNotice',
                     lightMenu : 'system',
                     showInMenu : false,
@@ -66,7 +66,7 @@ export default {
                 name : 'addAccount',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/addAccount.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-account',
                     menuName : 'addAccount',
                     lightMenu : 'system',
                     subMenuType : 'account'
@@ -77,7 +77,7 @@ export default {
                 path : '/system/setting',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/setting.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-setting',
                     menuName : 'setting',
                     lightMenu : 'system',
                     showInMenu : true,
@@ -91,7 +91,7 @@ export default {
                         name : 'customeSetting',
                         component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/customSetting.vue'),
                         meta : {
-                            _name : 'system',
+                            _name : 'menu-setting',
                             menuName : 'setting',
                             lightMenu : 'system',
                             subMenuType : 'setting'
@@ -103,7 +103,7 @@ export default {
                         name : 'measureUnit',
                         component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/measureUnit.vue'),
                         meta : {
-                            _name : 'system',
+                            _name : 'menu-setting',
                             menuName : 'setting',
                             lightMenu : 'system',
                             subMenuType : 'setting'
@@ -115,7 +115,7 @@ export default {
                         name : 'holiday',
                         component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/holiday.vue'),
                         meta : {
-                            _name : 'system',
+                            _name : 'menu-setting',
                             menuName : 'setting',
                             lightMenu : 'system',
                             subMenuType : 'setting'
@@ -127,7 +127,7 @@ export default {
                         name : 'channel',
                         component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/channel.vue'),
                         meta : {
-                            _name : 'system',
+                            _name : 'menu-setting',
                             menuName : 'setting',
                             lightMenu : 'system',
                             subMenuType : 'setting'
@@ -139,7 +139,7 @@ export default {
                         name : 'region',
                         component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/region.vue'),
                         meta : {
-                            _name : 'system',
+                            _name : 'menu-setting',
                             menuName : 'setting',
                             lightMenu : 'system',
                             subMenuType : 'setting'
@@ -153,7 +153,7 @@ export default {
                 name : 'editMeasureUnit',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editMeasureUnit.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-setting',
                     menuName : 'setting',
                     lightMenu : 'system',
                     subMenuType : 'setting'
@@ -165,7 +165,7 @@ export default {
                 name : 'editHoliday',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editHoliday.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-setting',
                     menuName : 'setting',
                     lightMenu : 'system',
                     subMenuType : 'setting'
@@ -177,7 +177,7 @@ export default {
                 name : 'editChannel',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editChannel.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-setting',
                     menuName : 'setting',
                     lightMenu : 'system',
                     subMenuType : 'setting'
@@ -189,7 +189,7 @@ export default {
                 name : 'editRegion',
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/settingChild/editRegion.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-setting',
                     menuName : 'setting',
                     lightMenu : 'system',
                     subMenuType : 'setting'
@@ -201,7 +201,7 @@ export default {
                 name : 'helperCenter', //todo 权限暂时使用设置-账户的权限
                 component : () => import(/* webpackChunkName: "system" */ '../../pages/system/child/helperCenter/index.vue'),
                 meta : {
-                    _name : 'system',
+                    _name : 'menu-help',
                     menuName : 'helperCenter',
                     lightMenu : 'system',
                     showInMenu : true,

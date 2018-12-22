@@ -29,7 +29,7 @@ export default {
     travelOrder : '旅游产品订单',
     tenementCount : '租户累计',
     serverCount : '服务器数量',
-    circleName : '同比上周',
+    circleName : '同比昨天',
     ISPinternet : '服务提供商',
     cooperaChannelOrg : '合作渠道(机构)',
     cooperaChannelPer : '合作渠道（个人）',
