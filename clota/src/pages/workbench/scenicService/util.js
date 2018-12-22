@@ -47,7 +47,9 @@ export const routerPackage = (rowData, routerInfo) => {
         case 'reject_policy_online' :
             routerObj = {
                 name : 'salePolicyDetail',
-                params : rowData.extData
+                params : {
+                    info : rowData.extData
+                }
             }
             break;
         //充值 申请、通过申请、驳回申请
