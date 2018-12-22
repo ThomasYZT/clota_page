@@ -83,7 +83,9 @@
                                 <span class="edit-btn"></span>
                                 <div class="img-wrapper">
                                     <img-uploader @upload-success="uploadSuc"
+                                                  @remove-img="removeIDimg"
                                                   :defaultList="defaultImgList"
+                                                  :format="['jpeg', 'png']"
                                                   :quantity-limit="1"></img-uploader>
                                 </div>
                             </FormItem>
@@ -347,7 +349,14 @@
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') + this.$t('picture') }));
                     }
                 });
-            }
+            },
+            /**
+             * @param {array} data
+             * 删除图片
+             */
+            removeIDimg (data) {
+                this.formData.pics = data;
+            },
         }
     };
 </script>

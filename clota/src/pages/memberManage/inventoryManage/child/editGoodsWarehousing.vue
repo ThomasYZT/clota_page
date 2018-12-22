@@ -98,6 +98,7 @@
                         <FormItem :label="$t('goodPic')" prop="pics">
                             <img-uploader @upload-success="uploadSuc"
                                           @remove-img="removeIDimg"
+                                          :format="['jpeg', 'png']"
                                           :defaultList="defaultImgList"
                                           :quantity-limit="1"></img-uploader>
                         </FormItem>
