@@ -2065,4 +2065,5 @@ export default {
     'applyCancelOrder' : '申请取消订单',
     'cancelWaitChecking' : '退单待审',
     'cancelPass' : '退单审核通过',
+    'reserveAuditWaiting' : '预定待审',
 }

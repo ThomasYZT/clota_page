@@ -472,7 +472,6 @@
                 }).then(res => {
                     if (res.success) {
                         this.detail = res.data || {};
-                        console.log(this.detail)
                     } else {
                         this.detail = {};
                         this.$Message.error(res.message || this.$t('fail'));
