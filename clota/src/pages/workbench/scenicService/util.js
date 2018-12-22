@@ -24,19 +24,21 @@ const permissionFilter = (routerObj, routerList) => {
 }
 /**
  *  路由信息组装、权限判断
- *  @param type
+ *  @param {object} rowData
  */
-export const routerPackage = (type, routerInfo) => {
+export const routerPackage = (rowData, routerInfo) => {
     let routerObj = {};
     _routerList = routerInfo;
-    switch (type) {
+    switch (rowData.type) {
         //产品 上线申请、通过上线申请、驳回上线申请
         case 'apply_product_online' :
         case 'pass_product_online' :
         case 'reject_product_online' :
             routerObj = {
                 name : 'ticketDetail',
-                params : {}
+                params : {
+                    info : rowData.extData
+                }
             }
             break;
         //销售政策 上线申请、通过上线申请、驳回上线申请
@@ -45,7 +47,7 @@ export const routerPackage = (type, routerInfo) => {
         case 'reject_policy_online' :
             routerObj = {
                 name : 'salePolicyDetail',
-                params : {}
+                params : rowData.extData
             }
             break;
         //充值 申请、通过申请、驳回申请
@@ -72,7 +74,7 @@ export const routerPackage = (type, routerInfo) => {
         case 'pass_team_order' :
             routerObj = {
                 name : 'reserveOrderDetail',
-                params : {}
+                params : rowData.extData
             };
             break;
         //下单失败
