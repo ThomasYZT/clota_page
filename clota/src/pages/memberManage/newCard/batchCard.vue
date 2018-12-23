@@ -19,6 +19,9 @@
                         <Button type="primary"
                                 :disabled="tableData.length >= 50 || !cardReadEnabled"
                                 @click="readEntityCard">{{$t('readEntityCard')}}</Button>
+                        <Button type="primary"
+                                style="margin-left: 10px;"
+                                @click="openCardRightNow">{{$t('快速开卡')}}</Button>
                     </div>
                     <table-com
                         :show-pagination="false"
@@ -122,6 +125,10 @@
                              @search-success="cancelOperate"
                              @start-pay="createMember">
         </loop-for-pay-result>
+        <!--输入批量开卡范围-->
+        <card-number-scope v-model="cardScopeModalShow"
+                           @get-num-scope="getCarScope">
+        </card-number-scope>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -134,6 +141,7 @@
     import confirmMemberInfo from './components/confirmDetailModal';
     import { mapGetters } from 'vuex';
     import loopForPayResult from '../../../components/loopForPayResult/loopForPayResult';
+    import cardNumberScope from './components/cardNumberScope';
 
     export default {
         components : {
@@ -141,7 +149,8 @@
             selectCard,
             tableCom,
             confirmMemberInfo,
-            loopForPayResult
+            loopForPayResult,
+            cardNumberScope
         },
         props : {},
         data () {
@@ -164,7 +173,9 @@
                 //支付查询结果是否显示
                 payModalShow : false,
                 //内部交易id
-                transctionId : ''
+                transctionId : '',
+                //快速开卡范围输入模态框是否显示
+                cardScopeModalShow : false
             };
         },
         computed : {
@@ -337,6 +348,29 @@
                     this.$refs.payResultModal.setStage('scan');
                     this.payModalShow = true;
                     this.showConfirmModal = false;
+                }
+            },
+            /**
+             * 显示快速开卡的模态框
+             */
+            openCardRightNow () {
+                this.cardScopeModalShow = true;
+            },
+            /**
+             * 获取快速开卡的信息
+             * @param{Array} cardScope 快速开卡的信息
+             */
+            getCarScope (cardScope) {
+                if (this.tableData.length > 0) {
+                    for (let i =0,j = this.tableData.length; i < j; i++) {
+                        if (!(this.tableData[i]['physicalNum'] in cardScope)) {
+                            this.tableData.push(cardScope[this.tableData[i]['physicalNum']]);
+                        }
+                    }
+                } else {
+                    for (let item in cardScope) {
+                        this.tableData.push(cardScope[item]);
+                    }
                 }
             }
         }

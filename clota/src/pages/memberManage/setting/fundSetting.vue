@@ -144,7 +144,10 @@
                                 slot-scope="row">
                                 <template slot-scope="scope">
                                     <ul class="operate-list">
-                                        <li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>
+                                        <li class="blue-label"
+                                            @click="showModifyAccountModal(scope.row, scope.$index)">
+                                            {{$t('editAccount')}}
+                                        </li>
                                     </ul>
                                 </template>
                             </el-table-column>
@@ -322,7 +325,7 @@
             //获取储值赠送金额应用范围
             this.listAccount();
             //获取储值账户-(本金/赠送金额)应用范围
-            // this.getSubNode();
+            this.getSubNode();
         },
         methods : {
 
@@ -363,15 +366,18 @@
                     }
                 });
             },
-            // //获取储值账户-(本金/赠送金额)应用范围
-            // getSubNode () {
-            //     ajax.post('listApplicationRange').then(res => {
-            //         if ( res.success ) {
-            //             this.listAmountRangeTable = defaultsDeep([], res.data );
-            //             this.sendRangeTable = defaultsDeep([], res.data );
-            //         }
-            //     });
-            // },
+            //获取储值账户-(本金/赠送金额)应用范围
+            getSubNode () {
+                ajax.post('listApplicationRange').then(res => {
+                    if ( res.success ) {
+                        this.listAmountRangeTable = defaultsDeep([], res.data );
+                        this.sendRangeTable = defaultsDeep([], res.data );
+                    } else {
+                        this.listAmountRangeTable = [];
+                        this.sendRangeTable = [];
+                    }
+                });
+            },
 
             //查询会员基础设置
             findBasicSet () {

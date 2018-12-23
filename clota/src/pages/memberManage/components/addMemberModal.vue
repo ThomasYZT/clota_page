@@ -1,117 +1,133 @@
 <template>
-    <!--会员级别设置-->
-    <Modal
-        v-model="visible"
-        :title="$t('memberLevelSetting')"
-        class-name="add-member-modal vertical-center-modal"
-        width="560"
-        :mask-closable="false"
-        @on-visible-change="visibleChange"
-        @on-cancel="hide"><!--会员级别设置-->
+    <div>
+        <!--会员级别设置-->
+        <Modal
+            v-model="visible"
+            :title="$t('memberLevelSetting')"
+            class-name="add-member-modal vertical-center-modal"
+            width="560"
+            :mask-closable="false"
+            @on-visible-change="visibleChange"
+            @on-cancel="hide"><!--会员级别设置-->
 
-        <div class="modal-body">
+            <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="145">
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('会员卡名称') + '：'" prop="levelDesc"><!--等级名称-->
-                        <Input v-model.trim="formData.levelDesc"
-                               type="text"
-                               :placeholder="$t('inputField', {field: $t('memberLevelName')})"/><!--请输入会员级别名称，例：黄金会员-->
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('memberGrade') + '：'" prop="levelNum"><!--会员等级-->
-                        <Select v-model="formData.levelNum"
-                                :placeholder="$t('selectField', {msg: ''})"
-                                style="width: 280px;"><!--请选择会员等级-->
-                            <Option v-for="item in 12" :key="item"
-                                    :disabled="usedLevels.includes(item)"
-                                    :value="item">{{item}}
-                            </Option>
-                        </Select>
-                    </Form-item>
-                </div>
-                <!--会员3期暂时去掉-->
-                <!--<div class="ivu-form-item-wrap">-->
+                <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="145">
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('会员卡名称') + '：'" prop="levelDesc"><!--等级名称-->
+                            <Input v-model.trim="formData.levelDesc"
+                                   type="text"
+                                   :placeholder="$t('inputField', {field: $t('memberLevelName')})"/><!--请输入会员级别名称，例：黄金会员-->
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('memberGrade') + '：'" prop="levelNum"><!--会员等级-->
+                            <Select v-model="formData.levelNum"
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    style="width: 280px;"><!--请选择会员等级-->
+                                <Option v-for="item in 12" :key="item"
+                                        :disabled="usedLevels.includes(item)"
+                                        :value="item">{{item}}
+                                </Option>
+                            </Select>
+                        </Form-item>
+                    </div>
+                    <!--会员3期暂时去掉-->
+                    <!--<div class="ivu-form-item-wrap">-->
                     <!--<Form-item :label="$t('memberGrowthRange') + '：'" prop="highestGrowthValue">&lt;!&ndash;会员成长值范围&ndash;&gt;-->
-                        <!--<Input v-model.trim="formData.lowerGrowthValue"-->
-                               <!--:placeholder="$t('inputField', {field: ''})"-->
-                               <!--class="single-input"/>-->
-                        <!--<span class="split-line">–</span>-->
-                        <!--<Input v-model.trim="formData.highestGrowthValue"-->
-                               <!--:placeholder="$t('inputField', {field: ''})"-->
-                               <!--class="single-input"/>-->
+                    <!--<Input v-model.trim="formData.lowerGrowthValue"-->
+                    <!--:placeholder="$t('inputField', {field: ''})"-->
+                    <!--class="single-input"/>-->
+                    <!--<span class="split-line">–</span>-->
+                    <!--<Input v-model.trim="formData.highestGrowthValue"-->
+                    <!--:placeholder="$t('inputField', {field: ''})"-->
+                    <!--class="single-input"/>-->
                     <!--</Form-item>-->
-                <!--</div>-->
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('会员卡功能') + '：'" prop="function"><!--会员卡功能-->
-                        <CheckboxGroup v-model="formData.function">
-                            <Checkbox v-for="item in rightList"
-                                       :key="item.value"
-                                       :label="item.value">
+                    <!--</div>-->
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('会员卡功能') + '：'" prop="function"><!--会员卡功能-->
+                            <CheckboxGroup v-model="formData.function">
+                                <Checkbox v-for="item in rightList"
+                                          :key="item.value"
+                                          :label="item.value">
                                     {{item.label}}
-                            </Checkbox>
-                        </CheckboxGroup>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('售卡金额') + '：'" prop="salePrice"><!--售卡金额-->
-                        <Input v-model.trim="formData.salePrice"
-                               type="text"/>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('卡内金额') + '：'" prop="amountInCard"><!--卡内金额-->
-                        <Input v-model.trim="formData.amountInCard"
-                               type="text"/>
-                    </Form-item>
-                </div>
-                <!--有效期设置-->
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('validityPeriod') + '：'" prop="effTime">
-                        <Select v-model="formData.effTime" style="width:280px">
-                            <Option v-for="item in effTimeList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}{{$t('time.' + formData.effTimeUnit)}}
-                            </Option>
-                        </Select>
-                    </Form-item>
-                </div>
-                <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('remark') + '：'" prop="remark">
-                        <Input v-model.trim="formData.remark"
-                               type="textarea"
-                               :placeholder="$t('inputField', {field: ''})"/>
-                    </Form-item>
-                </div>
-                <!--<div class="ivu-form-item-wrap">-->
+                                </Checkbox>
+                            </CheckboxGroup>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('售卡金额') + '：'" prop="salePrice"><!--售卡金额-->
+                            <Input v-model.trim="formData.salePrice"
+                                   type="text"/>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('卡内金额') + '：'" prop="amountInCard"><!--卡内金额-->
+                            <Input v-model.trim="formData.amountInCard"
+                                   type="text"/>
+                        </Form-item>
+                    </div>
+                    <!--有效期设置-->
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('validityPeriod') + '：'" prop="effTime">
+                            <Select v-model="formData.effTime" style="width:280px">
+                                <Option v-for="(item,index) in effTimeList"
+                                        :value="item.value"
+                                        :key="item.value">
+                                    <div class="time-list-item">
+                                        <span class="time-label" :class="{ 'blue-label' : item.value === 'add' }">
+                                        {{ item.label }}{{$t('time.' + formData.effTimeUnit)}}
+                                        </span>
+                                        <span v-if="item.value !== 'add'" class="operate-label" @click.stop="delTimeItem(index)">{{$t('删除')}}</span>
+                                    </div>
+                                </Option>
+                            </Select>
+                        </Form-item>
+                    </div>
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('remark') + '：'" prop="remark">
+                            <Input v-model.trim="formData.remark"
+                                   type="textarea"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                        </Form-item>
+                    </div>
+                    <!--<div class="ivu-form-item-wrap">-->
                     <!--<i-row>-->
-                        <!--<i-col span="6">-->
-                            <!--<Form-item :label="$t('remark') + '：'" prop="remark">-->
-                                <!--<Input v-model.trim="formData.effTime"-->
-                                       <!--type="textarea"-->
-                                       <!--:placeholder="$t('inputField', {field: ''})"/>-->
-                            <!--</Form-item>-->
-                        <!--</i-col>-->
-                        <!--<i-col span="3">-->
-                            <!--<Form-item :label="$t('remark') + '：'" prop="remark">-->
-                                <!--<Input v-model.trim="formData.effTimeUnit"-->
-                                       <!--type="textarea"-->
-                                       <!--:placeholder="$t('inputField', {field: ''})"/>-->
-                            <!--</Form-item>-->
-                        <!--</i-col>-->
+                    <!--<i-col span="6">-->
+                    <!--<Form-item :label="$t('remark') + '：'" prop="remark">-->
+                    <!--<Input v-model.trim="formData.effTime"-->
+                    <!--type="textarea"-->
+                    <!--:placeholder="$t('inputField', {field: ''})"/>-->
+                    <!--</Form-item>-->
+                    <!--</i-col>-->
+                    <!--<i-col span="3">-->
+                    <!--<Form-item :label="$t('remark') + '：'" prop="remark">-->
+                    <!--<Input v-model.trim="formData.effTimeUnit"-->
+                    <!--type="textarea"-->
+                    <!--:placeholder="$t('inputField', {field: ''})"/>-->
+                    <!--</Form-item>-->
+                    <!--</i-col>-->
                     <!--</i-row>-->
-                <!--</div>-->
-            </Form>
-        </div>
+                    <!--</div>-->
+                </Form>
+            </div>
 
-        <div slot="footer" class="modal-footer">
-            <Button type="primary" @click="formValidateFunc">{{$t("save")}}</Button>
-            <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
-        </div>
+            <div slot="footer" class="modal-footer">
+                <Button type="primary" @click="formValidateFunc">{{$t("save")}}</Button>
+                <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
+            </div>
 
-    </Modal>
+        </Modal>
+        <!--删除有效期确认框-->
+        <del-modal ref="delModal">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>
+                {{$t('isDoing')}}{{$t('delete')}}{{$t('validityPeriod')}}：
+                <span class="yellow-label" v-w-title="currentData ? currentData.label : ''">{{currentData ? currentData.label : ''}}</span>
+            </span>
+            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
+        </del-modal>
+    </div>
 </template>
 
 <script>
@@ -119,6 +135,7 @@
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import delModal from '@/components/delModal/index.vue';
 
     export default {
         props : {
@@ -128,7 +145,9 @@
               default : ''
             }
         },
-        components : {},
+        components : {
+            delModal
+        },
         data () {
 
             const validateMethod = {
@@ -249,7 +268,8 @@
                 ],
                 // 已被创建的会员级别
                 usedLevels : [],
-
+                //当前操作的有效期数据
+                currentData : {},
                 ruleValidate : {
                     levelNum : [
                         {
@@ -267,8 +287,8 @@
                             trigger : 'blur'
                         }, // 会员级别名称不能为空
                         {
-                            max : 10,
-                            message : this.$t('errorMaxLength', { field : this.$t('levelSetting'), length : 10 }),
+                            max : 4,
+                            message : this.$t('errorMaxLength', { field : this.$t('levelSetting'), length : 4 }),
                             trigger : 'blur'
                         }, // 会员级别不能超过10字符
                         { validator : validateMethod.emoji, trigger : 'blur' },
@@ -434,7 +454,38 @@
                     this.formData.function = [];
                     this.formData.id = '';
                     this.$refs.formValidate.resetFields();
+                } else {
+                    this.getEffTimeList();
                 }
+            },
+            /**
+             * 删除有效期
+             * @param{Number} index 会员级别有效期删除
+             */
+            delTimeItem (index) {
+                this.currentData = this.effTimeList[index];
+                this.$refs.delModal.show({
+                    title : this.$t('删除有效期'),
+                    confirmCallback : () => {
+                        // this.deleteLevelInfo(rowData);
+                    }
+                });
+            },
+            /**
+             * 获取会员卡有效期信息
+             */
+            getEffTimeList () {
+                ajax.post('').then(res => {
+                    if (res.success) {
+                        this.effTimeList = [];
+                    } else {
+                        this.effTimeList = []
+                    }
+                    this.effTimeList.push({
+                        label : '新增有效期',
+                        value : 'add'
+                    });
+                });
             }
 
         },
@@ -444,6 +495,26 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .add-member-modal{
+
+        .time-list-item{
+            @include block_outline();
+            display: flex;
+
+            .time-label{
+                flex: 1;
+
+                &.blue-label{
+                    color: $color_blue;
+                }
+            }
+
+            .operate-label{
+                padding-right: 22px;
+                color: $color_err;
+                font-size: $font_size_14px;
+            }
+
+        }
 
         .modal-body{
             padding: 15px 30px 0;
@@ -476,6 +547,25 @@
             }
         }
 
+    }
+    .content-text {
+        width: 210px;
+        position: relative;
+
+        .delete-icon {
+            position: absolute;
+            left: -27px;
+            margin-right: 12px;
+            color: $color_red;
+        }
+
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
+        }
     }
 </style>
 

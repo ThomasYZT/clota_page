@@ -99,7 +99,11 @@
                                 return item['id'] !== '1';
                             }
                         }) : [];
-                        // this.getLevelsByCardType();
+                        //如果只有一种类型的会员卡，则自动选择会员卡和会员级别
+                        if (this.cardTypes.length === 1) {
+                            this.memberCard.cardTypeId = this.cardTypes[0]['id'];
+                            this.getLevelsByCardType();
+                        }
                     } else {
                         this.cardTypes = [];
                     }

@@ -257,6 +257,52 @@
                 </div>
             </div>
 
+            <div class="content-item">
+                <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
+                <div class="main">
+                    <RadioGroup :value="String(settingData.handingWithScoreGrowthWhileRefund.score)"
+                                @input="settingData.handingWithScoreGrowthWhileRefund.score = Boolean($event === 'true')"
+                                vertical>
+                        <Radio label="false">
+                            <span>{{$t('noReturnIntegral')}}</span><!--用户退款时积分不退-->
+                        </Radio>
+                        <Radio label="true">
+                            <span>{{$t('returnIntegral')}}</span><!--用户退款时积分退回用户积分账户中-->
+                        </Radio>
+                    </RadioGroup>
+                </div>
+            </div>
+
+            <!--新开卡会员积分赠送设置-->
+            <div class="content-item">
+                <div class="title">
+                    {{$t('新开卡会员积分赠送设置')}}
+                    <Tooltip placement="top" transfer>
+                        <span class="iconfont icon-note"></span>
+                        <div slot="content">
+                            <div class="tip-trade">{{$t('新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。')}}</div>
+                        </div>
+                    </Tooltip>
+                </div>
+                <div :class="{'ivu-form-item-error': error.memberDonateIntegerErr, 'main': true}">
+                    <i-switch v-model="settingData.openCardSendScore.isSwitch"
+                              @on-change="settingData.openCardSendScore.score = ''">
+                    </i-switch>
+                    <span class="text">{{$t('新开卡会员赠送')}}<!--会员生日当天消费可获得-->
+                        <Input v-model.trim="settingData.openCardSendScore.score"
+                               :disabled="!settingData.openCardSendScore.isSwitch"
+                               @on-blur="checkInputBlurFunc(settingData.openCardSendScore.score, 'memberDonateIntegerErr')"
+                               type="text"
+                               class="single-input"
+                               :placeholder="$t('inputField', {field: ''})"/>
+                        {{$t('积分')}}</span><!--倍积分-->
+                    <div class="ivu-form-item-error-tip"
+                         style="left: 173px;"
+                         v-if="error.memberDonateIntegerErr">{{error.memberDonateIntegerErr}}
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="btn-wrap">
@@ -289,6 +335,16 @@
                 routerName : 'consumeSetting',
                 //设置数据
                 settingData : {
+                    //用户退款时积分是否退还用户
+                    handingWithScoreGrowthWhileRefund : {
+                        score : false,//Boolean
+                        coupon : false,//Boolean
+                    },
+                    // 新开卡会员积分赠送设置
+                    openCardSendScore : {
+                        isSwitch : false,
+                        score : ''
+                    },
                     //储值获得成长值生效设置
                     scoreEffModeWhileCharging : {
                         storedType : '',
@@ -354,6 +410,7 @@
                     highProportionError : '',//积分交易抵扣规则--最多能抵多少
                     donateIntegrateError : '',
                     isNoIntegralTimeError : '',//会员积分生效设置
+                    memberDonateIntegerErr : '',//新开卡会员积分赠送设置
                 },
                 //Number型
                 numberProps : ['integrate','money','highProportion','donateIntegrate','growthSet','growthTime'],
@@ -474,6 +531,14 @@
                                 scoreExToCharge : JSON.parse(res.data.scoreExToCharge),
                                 scoreInsufficientNotification : res.data.scoreInsufficientNotification === 'true' ?
                                 Boolean(res.data.scoreInsufficientNotification) : false,
+                                openCardSendScore : res.data.openCardSendScore ? JSON.parse(res.data.openCardSendScore) : {
+                                    isSwitch : false,
+                                    score : ''
+                                },
+                                handingWithScoreGrowthWhileRefund : res.data.handingWithScoreGrowthWhileRefund ? JSON.parse(res.data.handingWithScoreGrowthWhileRefund) : {
+                                    score : false,//Boolean
+                                    coupon : false,//Boolean
+                                },
                             };
                             for ( let key in params) {
                                 if (key && Object.keys(params[key]).length > 0) {
@@ -529,6 +594,8 @@
                         scoreInsufficientNotification : String(setParam.scoreInsufficientNotification),
                         scoreEffectiveMode : JSON.stringify(setParam.scoreEffectiveMode),
                         scoreValidityPeriod : JSON.stringify(setParam.scoreValidityPeriod),
+                        openCardSendScore : JSON.stringify(this.settingData.openCardSendScore),
+                        handingWithScoreGrowthWhileRefund : JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
                     };
                     this.basicSet(params);
 
@@ -552,6 +619,11 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
+                if (this.settingData.openCardSendScore.isSwitch === true &&
+                    !this.checkInputBlurFunc(this.settingData.openCardSendScore.score, 'memberDonateIntegerErr')) {
+                    return false;
+                }
+
                 if (this.settingData.scoreEffModeWhileCharging.storedType === 'stored' &&
                     !this.checkInputBlurFunc(this.settingData.scoreEffModeWhileCharging.storedTime, 'storedTimeError') ) {
                     return false;
@@ -695,6 +767,7 @@
             overflow: auto;
 
             .content-item{
+                position: relative;
                 margin-bottom: 30px;
 
                 /deep/ .title{

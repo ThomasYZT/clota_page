@@ -266,7 +266,50 @@ export default {
         } else {
             return '-';
         }
-    }
+    },
+    /**
+     * 校验value是否为非负整数
+     * @param value
+     * @param reg
+     * @param minLength
+     * @param maxLength
+     */
+    validatePositiveInteger (value,reg,minLength = 0,maxLength = 10){
+        return new Promise((resolve,reject) => {
+            if(this.isNotEmpty(value)){
+                if(validator.isNumber(value)){
+                    let  numStr = String(value);
+                    if(value < 0){
+                        reject('nagivateIntegetError');
+                    }
+                    if(numStr.length < minLength){
+                        reject('errorMinLength');
+                    }else if(numStr.length > maxLength){
+                        reject('errorMaxLength');
+                    }else{
+                        if(Number.parseInt(value) === Number.parseFloat(value)){
+                            //使用自定义正则表达式
+                            if(reg){
+                                if(reg.test(value)){
+                                    resolve();
+                                }else{
+                                    reject('regErr');
+                                }
+                            }else{
+                                resolve();
+                            }
+                        }else{
+                            reject('nagivateIntegetError');
+                        }
+                    }
+                }else{
+                    reject('nagivateIntegetError');
+                }
+            }else{
+                reject('inputField');
+            }
+        });
+    },
 };
 
 
