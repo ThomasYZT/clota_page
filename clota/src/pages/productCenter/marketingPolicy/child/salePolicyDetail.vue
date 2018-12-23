@@ -503,6 +503,10 @@
                     if ( params.info ) {
                         this.allocationId = params.info.allocationId;
                         this.getPolicyInfo( params.info );
+                    } else {
+                        this.$router.push({
+                            name : 'marketingPolicy'
+                        })
                     }
                 }
             },

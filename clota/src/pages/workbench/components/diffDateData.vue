@@ -120,12 +120,12 @@
             padding: 0 20px;
 
             .title {
-                font-size: $font_size_18px;
+                font-size: $font_size_16px;
                 color: $color_353B5E;
             }
 
             .date-picker {
-                width: 220px;
+                width: 150px;
                 float: right;
                 margin-top: 7px;
             }

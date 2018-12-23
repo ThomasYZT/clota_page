@@ -2071,4 +2071,6 @@ export default {
     'storeGrowthSetting1' : '储值时不获得成长值，消费时获取',
     'storeGrowthSetting2' : '储值时获得成长值，消费时不重复获得成长值',
     'storeGetGrowthSettingValidateTime' : '储值获得成长值生效设置',
+    'submitSuccess' : '提交成功',
+    'hasKnown' : '知道了',
 }

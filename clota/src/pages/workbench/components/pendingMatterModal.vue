@@ -153,9 +153,10 @@
             getAllPendingMatters () {
                 ajax.post('workbench-queryUnfinishedWorkBack').then(res => {
                     if (res.success) {
-                        this.tableData = res.data.filter((item) => {
+                        this.tableData = res.data.filter((item, index, arr) => {
                             if (item.finishStatus === "false") {
-                                item.content = item.content ? JSON.parse(item.content) : '';
+                                arr[index].content = arr[index].content ? JSON.parse(arr[index].content) : '';
+                                arr[index].extData = arr[index].extData ? JSON.parse(arr[index].extData) : '';
                             }
                             return item.finishStatus === "false";
                         }) || [];
@@ -187,6 +188,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.tableData.splice(scopeData.$index, 1);
+                        this.$emit("updateWorkBackNum");
                     }
                 });
             },
@@ -194,10 +196,11 @@
              * 查看待处理事项：跳转至对应的页面
              */
             jumpToPages (scopeData) {
-                let routerObj = routerPackage(scopeData.row.type, this.routerInfo);
+                let routerObj = routerPackage(scopeData.row, this.routerInfo);
                 if (routerObj) {
+                    //console.log(routerObj)
                     this.$router.push(routerObj);
-                    this.handleMatters();
+                    this.handleMatters(scopeData);
                 } else {
                     this.$Message.warning(this.$t('accountPrivaligeError'));
                 }

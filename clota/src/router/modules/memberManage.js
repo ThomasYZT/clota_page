@@ -577,7 +577,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/cardScope.vue'),
                         meta : {
                             menuName : 'cardScopeSetting', //lang.config.js 里面的语言键值
-                            _name : 'basic-setting',
+                            _name : 'card-range',
                             rightPath : topMenuName + '.' + 'cardScopeSetting',
                             isMenu : true
                         },
@@ -661,7 +661,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/productTypeSetting.vue'),
                         meta : {
                             menuName : 'productTypeSetting', //lang.config.js 里面的语言键值
-                            _name : 'point-manage',
+                            _name : 'product-type',
                             rightPath : topMenuName + '.' + 'productTypeSetting',
                             isMenu : true
                         },
@@ -673,7 +673,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/memberRightsSetting.vue'),
                         meta : {
                             menuName : 'memberRights', //lang.config.js 里面的语言键值
-                            _name : 'point-manage',
+                            _name : 'member-right',
                             rightPath : topMenuName + '.' + 'memberRights',
                             isMenu : true
                         },
@@ -685,7 +685,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/memberActivity.vue'),
                         meta : {
                             menuName : 'memberActivity', //lang.config.js 里面的语言键值
-                            _name : 'point-manage',
+                            _name : 'member-activity',
                             rightPath : topMenuName + '.' + 'memberActivity',
                             isMenu : true
                         },
@@ -697,7 +697,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/smsSendRecord.vue'),
                         meta : {
                             menuName : 'smsSendRecord', //lang.config.js 里面的语言键值
-                            _name : 'point-manage',
+                            _name : 'member-activity',
                             rightPath : topMenuName + '.' + 'memberActivity'
                         },
                     },
@@ -708,7 +708,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/smsSendRecordDetail.vue'),
                         meta : {
                             menuName : 'smsSendRecordDetail', //lang.config.js 里面的语言键值
-                            _name : 'point-manage',
+                            _name : 'member-activity',
                             rightPath : topMenuName + '.' + 'memberActivity'
                         },
                     },

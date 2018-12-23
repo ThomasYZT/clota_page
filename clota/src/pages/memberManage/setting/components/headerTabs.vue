@@ -29,6 +29,7 @@
 </template>
 <script>
     import idlerWheelTap from '@/components/idlerWheelTap/index';
+    import { mapGetters } from 'vuex';
     export default {
         props : ['routerName'],
         components : {
@@ -37,17 +38,18 @@
         data () {
             return {
                 // 路由列表
-                routerList : [
-                    { name : 'memberSetting', desc : 'memberSetting' }, // 基础设置
-                    { name : 'cardScopeSetting', desc : 'cardScopeSetting' }, // 会员卡应用范围设置
-                    { name : 'memCardManagement', desc : 'memCardManagement' }, // 会员级别
-                    { name : 'growthSetting', desc : 'growthSetting' }, // 成长值设置
-                    { name : 'fundSetting', desc : 'fundSetting' }, // 储值设置
-                    { name : 'consumeSetting', desc : 'consumeSetting' }, // 积分消费管理
-                    { name : 'productTypeSetting', desc : 'productTypeSetting' }, // 产品类别设置
-                    { name : 'memberRights', desc : 'memberRights' }, // 会员权益
-                    { name : 'memberActivity', desc : 'memberActivity' }, // 会员活动
-                ],
+                // routerList : [
+                //     { name : 'memberSetting', desc : 'memberSetting' }, // 基础设置
+                //     { name : 'cardScopeSetting', desc : 'cardScopeSetting' }, // 会员卡应用范围设置
+                //     { name : 'memCardManagement', desc : 'memCardManagement' }, // 会员级别
+                //     // 会员3期暂时去掉
+                //     // { name : 'growthSetting', desc : 'growthSetting' }, // 成长值设置
+                //     { name : 'fundSetting', desc : 'fundSetting' }, // 储值设置
+                //     { name : 'consumeSetting', desc : 'consumeSetting' }, // 积分消费管理
+                //     { name : 'productTypeSetting', desc : 'productTypeSetting' }, // 产品类别设置
+                //     { name : 'memberRights', desc : 'memberRights' }, // 会员权益
+                //     { name : 'memberActivity', desc : 'memberActivity' }, // 会员活动
+                // ],
             };
         },
         methods : {
@@ -62,6 +64,9 @@
 
         },
         computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
             //当前所在的默认列表序号
             defaultIndex () {
                 for (let i = 0,j = this.routerList.length; i < j; i++) {
@@ -69,6 +74,47 @@
                         return i;
                     }
                 }
+            },
+            //路由列表
+            routerList () {
+                let result = [];
+                //基础设置权限
+                if ('basic-setting' in this.permissionInfo) {
+                    result.push({ name : 'memberSetting', desc : 'memberSetting' });
+                }
+                //会员卡可用范围设置权限
+                if ('card-range' in this.permissionInfo) {
+                    result.push({ name : 'cardScopeSetting', desc : 'cardScopeSetting' });
+                }
+                //会员卡管理
+                if ('card-manage' in this.permissionInfo) {
+                    result.push({ name : 'memCardManagement', desc : 'memCardManagement' });
+                }
+                //成长值设置
+                if ('growth-setting' in this.permissionInfo) {
+                    result.push({ name : 'growthSetting', desc : 'growthSetting' });
+                }
+                //储值设置
+                if ('storage-setting' in this.permissionInfo) {
+                    result.push({ name : 'fundSetting', desc : 'fundSetting' });
+                }
+                //积分设置
+                if ('point-manage' in this.permissionInfo) {
+                    result.push({ name : 'consumeSetting', desc : 'consumeSetting' });
+                }
+                //产品类别设置
+                if ('product-type' in this.permissionInfo) {
+                    result.push({ name : 'productTypeSetting', desc : 'productTypeSetting' });
+                }
+                //会员权益
+                if ('member-right' in this.permissionInfo) {
+                    result.push({ name : 'memberRights', desc : 'memberRights' });
+                }
+                //会员活动
+                if ('member-activity' in this.permissionInfo) {
+                    result.push({ name : 'memberActivity', desc : 'memberActivity' });
+                }
+                return result;
             }
         }
     };

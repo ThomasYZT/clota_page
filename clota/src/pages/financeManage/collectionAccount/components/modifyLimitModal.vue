@@ -122,11 +122,11 @@
                     alarmValue: params.alarmValue
                 }).then(res => {
                     if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('topUp')}));
+                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('modify')}));
                         this.hide();
                         this.$emit('updata-list', { item: this.formData, index: this.index});
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('topUp')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('modify')}));
                     }
                 })
             },

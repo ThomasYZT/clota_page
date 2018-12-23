@@ -57,7 +57,9 @@
             </div>
         </div>
         <!--全部待处理事项弹窗-->
-        <pending-matter-modal ref="pendingMatterModal" @on-hide="queryList()"></pending-matter-modal>
+        <pending-matter-modal ref="pendingMatterModal"
+                              @updateWorkBackNum="updateWorkBackNum"
+                              @on-hide="queryList()"></pending-matter-modal>
     </div>
 </template>
 <script>
@@ -85,12 +87,6 @@
                 tableData : [],
             }
         },
-        computed : {},
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询各类别待处理事项量
@@ -109,6 +105,12 @@
              */
             checkMatters () {
                 this.$refs.pendingMatterModal.show();
+            },
+            /**
+             * 更新代办数量
+             */
+            updateWorkBackNum () {
+                this.$emit("updateWorkBackNum");
             }
         }
     };

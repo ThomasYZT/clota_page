@@ -39,7 +39,7 @@
                         <img-uploader  ref="imgUpload"
                                        @upload-success="uploadSuc2"
                                        @remove-img="removeIDimg2"
-                                       :format="['png','jpg']"
+                                       :format="['png','jpeg']"
                                        :quantity-limit="1"></img-uploader>
                     </FormItem>
                     <!-- 邮箱地址 -->
@@ -61,19 +61,19 @@
                     </FormItem>
                 </Step>
                 <Step title="" >
-                    <FormItem :label-width="180" label="设置登陆信息">
+                    <FormItem :label-width="180" label="设置登录信息">
                     </FormItem>
                     <!-- 登录名 -->
                     <FormItem label="登录名" prop="loginName">
                         <Input v-model="formDataCompany.loginName" placeholder="请输入登录名"></Input>
                     </FormItem>
                     <!-- 登陆密码 -->
-                    <FormItem label="登陆密码" prop="password">
-                        <Input type="password" v-model="formDataCompany.password" placeholder="请输入登陆密码"></Input>
+                    <FormItem label="登录密码" prop="password">
+                        <Input type="password" v-model="formDataCompany.password" placeholder="请输入登录密码"></Input>
                     </FormItem>
                     <!-- 确认登陆密码 -->
-                    <FormItem label="确认登陆密码" prop="rePassword">
-                        <Input type="password" v-model="formDataCompany.rePassword" placeholder="请输入确认登陆密码"></Input>
+                    <FormItem label="确认登录密码" prop="rePassword">
+                        <Input type="password" v-model="formDataCompany.rePassword" placeholder="请输入确认登录密码"></Input>
                     </FormItem>
 
                     <div class="modal-footer">
@@ -83,6 +83,8 @@
                 </Step>
             </Steps>
         </Form>
+
+        <tipModal ref="tipModal"></tipModal>
     </div>
 </template>
 
@@ -92,10 +94,13 @@
     import ImgUploader from '../components/ImgUploader';
     import ajax from '../../../api/index';
     import MD5 from 'crypto-js/md5';
+    import tipModal from '../components/tipModal';
+    import defaultsDeep from 'lodash/defaultsDeep'
     export default {
         components: {
             cityPlugin,
-            ImgUploader
+            ImgUploader,
+            tipModal
         },
         data() {
             //校验第二次输入的密码和第一次是否相同 企业注册
@@ -140,25 +145,33 @@
                 },
                 //企业注册表单校验
                 companyRuleValidate: {
+                    //企业编号
                     enterpriseNumber: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('企业编号')}), trigger: 'blur' },
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('企业编号'),length : 20}),trigger : 'blur'}
                     ],
+                    //企业名称
                     orgName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('企业名称')}), trigger: 'blur' },
+                        { max : 50,message : this.$t('errorMaxLength',{field : this.$t('企业名称'),length : 50}),trigger : 'blur'}
                     ],
+                    //联系人
                     linkName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('联系人')}), trigger: 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{field : this.$t('联系人'),length : 20}),trigger : 'blur'}
                     ],
                     mobile: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('telephone')}), trigger: 'blur' },
                         { validator: validateMethods.mobile, trigger: 'blur'}
                     ],
+                    //社会信用代码
                     certificateNumber: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('社会信用代码')}), trigger: 'blur' },
-                        { validator: validateMethods.socialCode, trigger: 'blur'}
+                        { validator: validateMethods.socialCode, trigger: 'blur'},
+                        { max : 100,message : this.$t('errorMaxLength',{field : this.$t('社会信用代码'),length : 100}),trigger : 'blur'}
                     ],
                     attach: [
-                        { required: true, type: 'array', min: 1, message: this.$t('errorEmpty', {msg: this.$t('请上传营业执照附件')}), trigger: 'blur' }
+                        { required: true, type: 'array', min: 1, message: this.$t('请上传营业执照附件'), trigger: 'blur' }
                     ],
                     email: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('email')}), trigger: 'blur' },
@@ -167,14 +180,20 @@
                     place: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('address')}), trigger: 'blur' },
                     ],
+                    //详细地址
+                    address : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('detailAddr'),length : 100}),trigger : 'blur'}
+                    ],
                     description: [
                         {max : 200,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 200}),trigger : 'blur'}
                     ],
                     loginName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('loginName')}), trigger: 'blur' },
+                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('loginName'),length : 10}),trigger : 'blur'}
                     ],
                     password: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
+                        {max : 15,message : this.$t('errorMaxLength',{field : this.$t('password'),length : 15}),trigger : 'blur'}
                     ],
                     rePassword: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
@@ -201,14 +220,16 @@
              * 企业注册
              */
             companyRegist() {
-                this.formDataCompany.password = MD5(this.formDataCompany.password).toString();
-                this.formDataCompany.attach = JSON.stringify(this.formDataCompany.attach);
-                ajax.post('register', this.formDataCompany).then(res => {
+                let formData = defaultsDeep({
+                    password : MD5(this.formDataCompany.password).toString(),
+                    attach : JSON.stringify(this.formDataCompany.attach),
+                }, this.formDataCompany);
+                // this.formDataCompany.password = MD5(this.formDataCompany.password).toString();
+                // this.formDataCompany.attach = JSON.stringify(this.formDataCompany.attach);
+                ajax.post('register', formData).then(res => {
                     if(res.success) {
                         this.$Message.success(this.$t('注册成功'));
-                        this.$router.replace({
-                            name: 'login'
-                        });
+                        this.$refs.tipModal.show(this.formDataCompany.email);
                     } else {
                         this.$Message.error(this.$t(res.message));
                     }

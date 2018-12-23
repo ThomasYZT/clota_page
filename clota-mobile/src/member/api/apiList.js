@@ -9,19 +9,19 @@ const apiList = {
     // 会员注册&获取会员卡
     registerMemberCard : '/external/member/addMemberAndCard',
     // 获取卡Id
-    getWxMpCardId: '/wechat/mp/card/getWxMpCardId',
+    getWxMpCardId : '/wechat/mp/card/getWxMpCardId',
     // 领取卡所需要的扩展信息
-    getCardExt: '/wechat/mp/card/getCardExt',
+    getCardExt : '/wechat/mp/card/getCardExt',
     // 获取批量卡的扩展信息
-    getBatchCardExt: '/wechat/mp/card/getBatchCardExt',
+    getBatchCardExt : '/wechat/mp/card/getBatchCardExt',
     // 是否领取至微信卡包
-    queryUnboundCard: '/external/memberInfo/queryUnboundCard',
+    queryUnboundCard : '/external/memberInfo/queryUnboundCard',
     // 微信会员卡激活
-    wxActiveCard: '/wechat/mp/card/memberCard/activate',
+    wxActiveCard : '/wechat/mp/card/memberCard/activate',
     // 激活会员卡查询微信信息
-    queryWxMemberInfo: '/external/memberInfo/queryWxMemberInfo',
+    queryWxMemberInfo : '/external/memberInfo/queryWxMemberInfo',
     // 微信统一下单
-    payUnifiedorder: '/wechat/mp/pay/unifiedorder',
+    payUnifiedorder : '/wechat/mp/pay/unifiedorder',
     //获取验证码
     getCode : '/external/member/getPhoneVerificationCode',
     //会员登录
@@ -102,6 +102,8 @@ const apiList = {
     revocation : '/api/external/pay/revocation',
     //获取支付账户
     queryOnlinePayAccount : '/external/account/queryOnlinePayAccount',
+    //根据openId及会员卡号查询卡信息
+    queryCardInfoByDecryptCode : '/wechat/mp/card/queryCardInfoByDecryptCode'
 };
 
 export default apiList;

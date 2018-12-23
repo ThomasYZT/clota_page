@@ -255,7 +255,9 @@
                         //         token : ajax.getToken(),
                         //     }
                         // });
-                        location.href = location.origin + this.$router.options.base + '/h5Pay?memberId=' + this.userInfo.memberId +
+                        location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
+                            return item.module === 'member'
+                        })[0].path + '/h5Pay?memberId=' + this.userInfo.memberId +
                             '&cardId=' + this.cardInfo.id +
                             '&accounId=' + this.accounId +
                             '&paymentTypeId=' + this.payType +
@@ -311,7 +313,9 @@
                         //         payFormData : encodeURI(this.payFormData)
                         //     }
                         // });
-                        location.href = location.origin + this.$router.options.base + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
+                        location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
+                            return item.module === 'member'
+                        })[0].path + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));
@@ -324,7 +328,10 @@
             getRedirectUrl () {
                 let router = this.$router;
                 let base = router.options.base;
-                return encodeURI(location.origin + base + '/payStatus');
+                let module = this.$router.options.routes.filter((item) => {
+                    return item.module === 'member'
+                })[0].path;
+                return encodeURI(location.origin + base + module + '/payStatus');
             }
         },
         mounted () {

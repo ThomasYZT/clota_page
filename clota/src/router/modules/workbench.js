@@ -15,18 +15,20 @@ let topMenuName = 'workbench';
 export default {
     workbench : {
         path : '/workbench',
+        name : 'workbench',
         component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/index.vue'),
         meta : {
             _name : 'workbench', //todo 暂时用数据报表一级菜单权限
             menuName : 'workbench',
             rightPath : topMenuName + '.' + 'workbench',
-            isMenu : true
+            isMenu : true,
+            hasSideBar : false,
         },
-        children : {
+        /*children : {
             //景区服务工作台
             scenicService : {
                 path : '/workbench/scenicService',
-                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/scenicService/scenicService.vue'),
+                component : () => import(/!* webpackChunkName: "universalMarketing" *!/ '../../pages/workbench/scenicService/scenicService.vue'),
                 name : 'scenicService',
                 meta : {
                     menuName : 'scenicWorkbench', //lang.config.js 里面的语言键值
@@ -39,7 +41,7 @@ export default {
             //合作伙伴工作台
             cooperPartner : {
                 path : '/workbench/cooperPartner',
-                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/cooperPartner/cooperPartner.vue'),
+                component : () => import(/!* webpackChunkName: "universalMarketing" *!/ '../../pages/workbench/cooperPartner/cooperPartner.vue'),
                 name : 'cooperPartner',
                 meta : {
                     menuName : 'partnerWorkbench', //lang.config.js 里面的语言键值
@@ -49,10 +51,11 @@ export default {
                     hasSideBar : false,
                 },
             },
+
             //公司/单位工作台
             company : {
                 path : '/workbench/scenicService',
-                component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/scenicService/scenicService.vue'),
+                component : () => import(/!* webpackChunkName: "universalMarketing" *!/ '../../pages/workbench/scenicService/scenicService.vue'),
                 name : 'company',
                 meta : {
                     menuName : 'companyWorkbench', //lang.config.js 里面的语言键值
@@ -62,6 +65,6 @@ export default {
                     hasSideBar : false,
                 },
             },
-        }
+        }*/
     }
 }

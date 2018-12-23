@@ -140,9 +140,9 @@
                 //会员卡列表数据
                 memberCardList : [],
                 // 展示卡包
-                isShowCard: false,
+                isShowCard : false,
                 // 卡的拓展信息
-                cardExt: []
+                cardExt : []
             };
         },
         created () {
@@ -227,10 +227,10 @@
              */
             queryUnboundCard () {
                 ajax.post('queryUnboundCard', {
-                    memberId: this.userInfo.memberId
+                    memberId : this.userInfo.memberId
                 }).then((res) => {
-                    if(res.success) {
-                        if (res.data && res.data.length!=0) {
+                    if (res.success) {
+                        if (res.data && res.data.length != 0) {
                             this.isShowCard = true;
                             this.getCardExt();
                             this.getCardListInfo();
@@ -245,10 +245,10 @@
              */
             getCardExt () {
                 ajax.post('getBatchCardExt', {
-                    openId: this.userInfo.openId,
-                    memberId: this.userInfo.memberId
+                    openId : this.userInfo.openId,
+                    memberId : this.userInfo.memberId
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         this.cardExt = res.data ? res.data : [];
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
@@ -262,25 +262,25 @@
                 let cardList = [];
                 this.cardExt.forEach(item => {
                     cardList.push({
-                        cardId: item.cardId,
-                        cardExt: JSON.stringify({
-                            code: item.code,
-                            openid: item.openId,
-                            timestamp: item.timestamp,
-                            nonce_str: item.nonceStr,
-                            signature: item.signature
+                        cardId : item.cardId,
+                        cardExt : JSON.stringify({
+                            code : item.code,
+                            openid : item.openId,
+                            timestamp : item.timestamp,
+                            nonce_str : item.nonceStr,
+                            signature : item.signature
                         })
                     });
                 });
                 this.$wechat.addCard({
-                    cardList: cardList,
-                    success: res => {
+                    cardList : cardList,
+                    success : res => {
                         console.log(res);
                     },
-                    fail: res => {
+                    fail : res => {
                         this.$vux.toast.text(this.$t('getCardFail'));
                     },
-                    complete: () => {
+                    complete : () => {
                         this.isShowCard = false;
                     }
                 });
