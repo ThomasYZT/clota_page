@@ -18,7 +18,7 @@ export const columnData = [
     },
     {
         title : 'operate', // 操作
-        width : 140,
-        enWidth : 160,
+        width : 190,
+        enWidth : 260,
     },
 ];

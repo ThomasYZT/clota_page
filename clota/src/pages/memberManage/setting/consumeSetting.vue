@@ -7,6 +7,60 @@
 
         <div class="content">
 
+            <!--储值积分比例设置-->
+            <div class="content-item">
+                <div class="title">{{$t('storeIntegetSetting')}}</div>
+                <div class="main">
+                    <RadioGroup v-model="settingData.scoreFromCharging.chargingAddScore" vertical>
+                        <Radio label="false">
+                            <span>{{$t('storeWithouIntegetAGrowth')}}</span>
+                        </Radio>
+                        <Radio label="true">
+                            <span>{{$t('storeAndScoreSetting')}}</span>
+                        </Radio>
+                    </RadioGroup>
+                    <div class="check-group-wrap">{{$t('recharge')}}
+                        <span :class="{'ivu-form-item-error': error.moneyToIntegrateError}">
+                            <Input v-model.trim="settingData.scoreFromCharging.moneyToIntegrate"
+                                   :disabled="settingData.scoreFromCharging.chargingAddScore !== 'true' ? true : false"
+                                   @on-blur="checkInputBlurFunc(settingData.scoreFromCharging.moneyToIntegrate,'moneyToIntegrateError')"
+                                   type="text"
+                                   class="single-input"
+                                   :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
+                            <span class="ivu-form-item-error-tip"
+                                  style="left: 92px;"
+                                  v-if="error.moneyToIntegrateError">{{error.moneyToIntegrateError}}</span>
+                        </span>
+                        <span> {{settingData.scoreFromCharging.integrate}} {{$t('integral')}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--储值获得积分生效设置-->
+            <div class="content-item">
+                <div class="title">{{$t('storeIntegetRatioSetting')}}</div>
+                <div class="main">
+                    <RadioGroup v-model="settingData.scoreEffModeWhileCharging.storedType" vertical>
+                        <Radio label="immediately">
+                            <span>{{$t('rechartSucEffective')}}</span>
+                        </Radio>
+                        <Radio label="stored" :class="{'ivu-form-item-error': error.growthTimeError}">
+                            <span>{{$t('rechartSuc')}}</span>
+                            <Input v-model.trim="settingData.scoreEffModeWhileCharging.storedTime"
+                                   :disabled="settingData.scoreEffModeWhileCharging.storedType !== 'stored' ? true : false"
+                                   @on-blur="checkInputBlurFunc(settingData.scoreEffModeWhileCharging.storedTime,'growthTimeError')"
+                                   type="text"
+                                   class="single-input"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('hourLaterInvalid')}}</span>
+                            <span class="ivu-form-item-error-tip"
+                                  style="left: 113px;"
+                                  v-if="error.growthTimeError">{{error.growthTimeError}}</span>
+                        </Radio>
+                    </RadioGroup>
+                </div>
+            </div>
+
             <!--会员积分生效设置-->
             <div class="content-item">
                 <div class="title">{{$t('memberIntegralSetting')}}</div>
@@ -235,6 +289,17 @@
                 routerName : 'consumeSetting',
                 //设置数据
                 settingData : {
+                    //储值获得成长值生效设置
+                    scoreEffModeWhileCharging : {
+                        storedType : '',
+                        storedTime : '',//Number
+                    },
+                    //储值积分、成长值比例设置
+                    scoreFromCharging : {
+                        chargingAddScore : '',//Boolean
+                        moneyToIntegrate : '',//储值额-积分 Number
+                        integrate : 1,//积分
+                    },
                     //会员积分有效期设置
                     scoreValidityPeriod : {
                         validityType : '',
@@ -280,6 +345,8 @@
                 copySetData : {},
                 //输入框校验错误显示
                 error : {
+                    growthTimeError: '',//成长值生效设置
+                    moneyToIntegrateError : '',//储值获得积分生效设置
                     validityTimeError : '',//会员积分有效期设置
                     multipleError : '',//会员生日积分多倍积分
                     integrateError : '',//积分交易抵扣规则--多少积分
@@ -289,12 +356,19 @@
                     isNoIntegralTimeError : '',//会员积分生效设置
                 },
                 //Number型
-                numberProps : ['integrate','money','highProportion','donateIntegrate'],
+                numberProps : ['integrate','money','highProportion','donateIntegrate','growthSet','growthTime'],
                 //String型
-                stringProps : ['integrate','money','highProportion','donateIntegrate'],
+                stringProps : ['integrate','money','highProportion','donateIntegrate','growthSet','growthTime','chargingAddScore'],
             };
         },
         watch : {
+
+            //储值获得积分、成长值生效设置
+            'settingData.scoreEffModeWhileCharging.storedType' : function (newVal, oldVal) {
+                if (newVal !== 'stored') {
+                    this.error.storedTimeError = '';
+                }
+            },
 
             //会员积分有效期设置
             'settingData.scoreValidityPeriod.validityType' : function (newVal, oldVal) {
@@ -388,6 +462,10 @@
                             this.id = res.data.id;
                             //处理数据
                             let params = {
+                                scoreEffModeWhileCharging : res.data.scoreEffModeWhileCharging ?
+                                    JSON.parse(res.data.scoreEffModeWhileCharging) : this.settingData.scoreEffModeWhileCharging,
+                                scoreFromCharging : res.data.scoreFromCharging ?
+                                    JSON.parse(res.data.scoreFromCharging) : this.settingData.scoreFromCharging,
                                 scoreValidityPeriod : JSON.parse(res.data.scoreValidityPeriod),
                                 scoreMultipleOnBirthday : JSON.parse(res.data.scoreMultipleOnBirthday),
                                 scoreEffectiveMode : JSON.parse(res.data.scoreEffectiveMode),
@@ -443,6 +521,8 @@
 
                     let params = {
                         id : this.id,
+                        scoreEffModeWhileCharging : JSON.stringify(setParam.scoreEffModeWhileCharging),
+                        scoreFromCharging : JSON.stringify(setParam.scoreFromCharging),
                         scoreMultipleOnBirthday : JSON.stringify(setParam.scoreMultipleOnBirthday),
                         scoreOffsetInConsumption : JSON.stringify(setParam.scoreOffsetInConsumption),
                         scoreExToCharge : JSON.stringify(setParam.scoreExToCharge),
@@ -472,8 +552,18 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
+                if (this.settingData.scoreEffModeWhileCharging.storedType === 'stored' &&
+                    !this.checkInputBlurFunc(this.settingData.scoreEffModeWhileCharging.storedTime, 'storedTimeError') ) {
+                    return false;
+                }
+
                 if (this.settingData.scoreValidityPeriod.validityType === 'months_effective' &&
                     !this.checkInputBlurFunc(this.settingData.scoreValidityPeriod.validityTime,'validityTimeError')) {
+                    return false;
+                }
+
+                if (this.settingData.scoreFromCharging.chargingAddScore === 'true' &&
+                    !this.checkInputBlurFunc(this.settingData.scoreFromCharging.moneyToIntegrate, 'moneyToIntegrateError') ) {
                     return false;
                 }
 

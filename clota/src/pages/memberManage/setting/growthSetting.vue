@@ -26,6 +26,7 @@
                 </div>
             </div>
 
+            <!--成长值生效设置-->
             <div class="content-item">
                 <div class="title">{{$t('growthValidSetting')}}</div>
                 <div class="main">
@@ -53,15 +54,55 @@
                 </div>
             </div>
 
+            <!--储值获得成长值比例设置-->
             <div class="content-item">
-                <div class="title">{{$t('parentCardGrowthValueSetting')}}</div>
+                <div class="title">{{$t('storeGetGrowthSetting')}}</div>
                 <div class="main">
-                    <RadioGroup v-model="settingData.growthFromFamilies" vertical>
-                        <Radio label="true">
-                            <span>{{$t('childCardGrowthValueSetting')}}</span>
-                        </Radio>
+                    <RadioGroup v-model="settingData.growthFromCharging.chargingAddGrowth" vertical>
                         <Radio label="false">
-                            <span>{{$t('childCardGrowthSettingDesc')}}</span>
+                            <span>{{$t('storeGrowthSetting1')}}</span>
+                        </Radio>
+                        <Radio label="true">
+                            <span>{{$t('storeGrowthSetting2')}}</span>
+                        </Radio>
+                    </RadioGroup>
+                    <div class="check-group-wrap">{{$t('recharge')}}
+                        <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
+                            <Input v-model.trim="settingData.growthFromCharging.moneyToGgowth"
+                                   :disabled="settingData.growthFromCharging.chargingAddGrowth !== 'true' ? true : false"
+                                   @on-blur="checkInputBlurFunc(settingData.growthFromCharging.moneyToGgowth,'moneyToGgowthError')"
+                                   type="text"
+                                   class="single-input"
+                                   :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
+                            <span class="ivu-form-item-error-tip"
+                                  style="left: 92px;"
+                                  v-if="error.moneyToGgowthError">{{error.moneyToGgowthError}}</span>
+                        </span>
+                        <span> {{settingData.growthFromCharging.growth}} {{$t('growth')}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--储值获得成长值生效设置-->
+            <div class="content-item">
+                <div class="title">{{$t('storeGetGrowthSettingValidateTime')}}</div>
+                <div class="main">
+                    <RadioGroup v-model="settingData.growthEffModeWhileCharging.storedType" vertical>
+                        <Radio label="immediately">
+                            <span>{{$t('rechartSucEffective')}}</span>
+                        </Radio>
+                        <Radio label="stored" :class="{'ivu-form-item-error': error.storeTimeError}">
+                            <span>{{$t('rechartSuc')}}</span>
+                            <Input v-model.trim="settingData.growthEffModeWhileCharging.storedTime"
+                                   :disabled="settingData.growthEffModeWhileCharging.storedType !== 'stored' ? true : false"
+                                   @on-blur="checkInputBlurFunc(settingData.growthEffModeWhileCharging.storedTime,'storeTimeError')"
+                                   type="text"
+                                   class="single-input"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t('hourLaterInvalid')}}</span>
+                            <span class="ivu-form-item-error-tip"
+                                  style="left: 113px;"
+                                  v-if="error.storeTimeError">{{error.storeTimeError}}</span>
                         </Radio>
                     </RadioGroup>
                 </div>
@@ -97,6 +138,17 @@
                 routerName: 'growthSetting',
                 //设置数据
                 settingData: {
+                    //储值获得积分、成长值生效设置
+                    growthEffModeWhileCharging : {
+                        storedType : '',
+                        storedTime : '',//Number
+                    },
+                    //储值成长值比例设置
+                    growthFromCharging : {
+                        chargingAddGrowth : '',//Boolean
+                        moneyToGgowth : '',//储值额-积分 Number
+                        growth : 1,//积分
+                    },
                     //成长值设置
                     growthRateWhileConsume: {
                         growthSet: '',//Number
@@ -104,26 +156,33 @@
                     },
                     //成长值生效设置
                     growthEffectiveMode: {
-                        growthType: '',
-                        growthTime: '',//Number
+                        storedType: '',
+                        storedTime: '',//Number
                     },
-                    //子母卡成长值归属设置
-                    growthFromFamilies: '',
                 },
                 //copy数据，用于数据重置
                 copySetData: {},
                 //输入框校验错误显示
                 error: {
+                    moneyToGgowthError : '',//储值获得成长值生效设置
                     growthSetError: '',//成长值设置--消费值
                     growthTimeError: '',//成长值生效设置
+                    storeTimeError: '',//储值获得积分生效设置
                 },
                 //Number型
-                numberProps: ['growthSet','growthTime'],
+                numberProps: ['growthSet','storedTime'],
                 //String型
-                stringProps: ['growthSet','growthTime'],
+                stringProps: ['growthSet','storedTime'],
             }
         },
         watch: {
+
+            //储值获得成长值生效设置
+            'settingData.growthEffModeWhileCharging.storedType' : function (newVal, oldVal) {
+                if (newVal !== 'stored') {
+                    this.error.moneyToGgowthError = '';
+                }
+            },
 
             //成长值生效设置
             'settingData.growthEffectiveMode.growthType' : function (newVal, oldVal) {
@@ -158,30 +217,29 @@
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
                     if( res.success){
-                        if(res.data){
+                        if(res.data && Object.keys(res.data).length > 0){
                             this.id = res.data.id;
-                            if(res.data.growthFromFamilies){
-                                //处理数据
-                                let params = {
-                                    growthRateWhileConsume: JSON.parse(res.data.growthRateWhileConsume),
-                                    growthEffectiveMode: JSON.parse(res.data.growthEffectiveMode),
-                                    growthFromFamilies: res.data.growthFromFamilies,
-                                };
-                                for( let key in params){
-                                    if(key && Object.keys(params[key]).length > 0){
-                                        for( let ckey in params[key]){
-                                            if(this.stringProps.indexOf(ckey) > -1){
-                                                params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
-                                            }
+                            //处理数据
+                            let params = {
+                                growthEffModeWhileCharging : res.data.growthEffModeWhileCharging ?
+                                    JSON.parse(res.data.growthEffModeWhileCharging) : this.settingData.growthEffModeWhileCharging,
+                                growthFromCharging : res.data.growthFromCharging ?
+                                    JSON.parse(res.data.growthFromCharging) : this.settingData.growthFromCharging,
+                                growthRateWhileConsume: JSON.parse(res.data.growthRateWhileConsume),
+                                growthEffectiveMode: JSON.parse(res.data.growthEffectiveMode),
+                            };
+                            for( let key in params){
+                                if(key && Object.keys(params[key]).length > 0){
+                                    for( let ckey in params[key]){
+                                        if(this.stringProps.indexOf(ckey) > -1){
+                                            params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
                                         }
                                     }
                                 }
-                                this.settingData = params;
-                                //复制数据
-                                this.copySetData = defaultsDeep({}, params);
-                            } else {
-                                this.copySetData = defaultsDeep({}, this.settingData);
                             }
+                            this.settingData = params;
+                            //复制数据
+                            this.copySetData = defaultsDeep({}, params);
                         } else {
                             this.copySetData = defaultsDeep({}, this.settingData);
                         }
@@ -203,13 +261,13 @@
                         }
                     }
                     setParam.id = this.id;
-                    console.log(setParam)
 
                     let params = {
                         id: this.id,
                         growthRateWhileConsume: JSON.stringify(this.settingData.growthRateWhileConsume),
                         growthEffectiveMode: JSON.stringify(this.settingData.growthEffectiveMode),
-                        growthFromFamilies:this.settingData.growthFromFamilies,
+                        growthFromCharging : JSON.stringify(setParam.growthFromCharging),
+                        growthEffModeWhileCharging : JSON.stringify(setParam.growthEffModeWhileCharging),
                     };
                     this.basicSet(params);
 
@@ -233,6 +291,16 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
+
+                if (this.settingData.growthEffModeWhileCharging.storedType === 'stored' &&
+                    !this.checkInputBlurFunc(this.settingData.growthEffModeWhileCharging.storedTime, 'storedTimeError') ) {
+                    return false;
+                }
+
+                if (this.settingData.growthFromCharging.chargingAddGrowth === 'true' &&
+                    !this.checkInputBlurFunc(this.settingData.growthFromCharging.moneyToGgowth, 'moneyToGgowthError') ) {
+                    return false;
+                }
 
                 if(!this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSet, 'growthSetError')){
                     return false
@@ -335,8 +403,24 @@
                 }
                 .main{
                     position: relative;
-                    div{
-                        /*margin-bottom: 10px;*/
+
+                    .check-group-wrap{
+                        padding-left: 50px;
+                        margin-bottom: 0 !important;
+                        position: relative;
+                        margin-top : 5px;
+
+                        &:nth-child(1){
+                            margin-top: 10px;
+                        }
+
+                        /deep/ .ivu-checkbox-wrapper{
+                            margin-right: 0px;
+                        }
+
+                        /deep/ .ivu-checkbox{
+                            margin-right: 5px;
+                        }
                     }
                 }
             }

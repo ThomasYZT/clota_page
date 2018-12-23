@@ -359,7 +359,7 @@ export default {
     'channelName': '渠道名称',
     'modifyChannel': '修改渠道',
     'code': '编码',
-    'addMemberLevel': '新增会员级别',
+    'addMemberLevel': '新增会员卡级别',
     'promotionSetting': '晋级设置',
     'max12MemberLevels': '最多新增12个会员级别',
     'levelCode': '等级编码',
@@ -2066,4 +2066,9 @@ export default {
     'cancelWaitChecking' : '退单待审',
     'cancelPass' : '退单审核通过',
     'reserveAuditWaiting' : '预定待审',
+    'storeAndScoreSetting' : '储值时获得积分，消费时不重复获得积分',
+    'storeGetGrowthSetting' : '储值获得成长值比例设置',
+    'storeGrowthSetting1' : '储值时不获得成长值，消费时获取',
+    'storeGrowthSetting2' : '储值时获得成长值，消费时不重复获得成长值',
+    'storeGetGrowthSettingValidateTime' : '储值获得成长值生效设置',
 }

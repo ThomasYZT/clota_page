@@ -24,73 +24,6 @@
             <!--</div>-->
 
             <div class="content-item">
-                <div class="title">{{$t('storeIntegetSetting')}}</div>
-                <div class="main">
-                    <RadioGroup v-model="settingData.scoreGrowthFromCharging.storedAndGrowthType" vertical>
-                        <Radio label="false">
-                            <span>{{$t('storeWithouIntegetAGrowth')}}</span>
-                        </Radio>
-                        <Radio label="true">
-                            <span>{{$t('storeWithouIntegetAGrowthNoRepeat')}}</span>
-                        </Radio>
-                    </RadioGroup>
-                    <div class="check-group-wrap">{{$t('recharge')}}
-                        <span :class="{'ivu-form-item-error': error.moneyToIntegrateError}">
-                            <Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToIntegrate"
-                                 :disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"
-                                 @on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToIntegrate,'moneyToIntegrateError')"
-                                 type="text"
-                                 class="single-input"
-                                 :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
-                            <span class="ivu-form-item-error-tip"
-                                   style="left: 92px;"
-                                   v-if="error.moneyToIntegrateError">{{error.moneyToIntegrateError}}</span>
-                        </span>
-                        <span> {{settingData.scoreGrowthFromCharging.integrate}} {{$t('integral')}}</span>
-                    </div>
-                    <!--会员3期暂时去掉-->
-                    <!--<div class="check-group-wrap">{{$t('recharge')}}-->
-                        <!--<span :class="{'ivu-form-item-error': error.moneyToGrowthError}">-->
-                              <!--<Input v-model.trim="settingData.scoreGrowthFromCharging.moneyToGrowth"-->
-                                     <!--:disabled="settingData.scoreGrowthFromCharging.storedAndGrowthType !== 'true' ? true : false"-->
-                                     <!--@on-blur="checkInputBlurFunc(settingData.scoreGrowthFromCharging.moneyToGrowth,'moneyToGrowthError')"-->
-                                     <!--type="text"-->
-                                     <!--class="single-input"-->
-                                     <!--:placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}-->
-                              <!--<span class="ivu-form-item-error-tip"-->
-                                   <!--style="left: 92px;"-->
-                                   <!--v-if="error.moneyToGrowthError">{{error.moneyToGrowthError}}</span>-->
-                        <!--</span>-->
-                        <!--<span> {{settingData.scoreGrowthFromCharging.growth}} {{$t('growth')}}</span>-->
-                    <!--</div>-->
-                </div>
-            </div>
-
-            <div class="content-item">
-                <div class="title">{{$t('storeIntegetRatioSetting')}}</div>
-                <div class="main">
-                    <RadioGroup v-model="settingData.scoreGrowthEffModeWhileCharging.storedType" vertical>
-                        <Radio label="immediately">
-                            <span>{{$t('rechartSucEffective')}}</span>
-                        </Radio>
-                        <Radio label="checkout_after" :class="{'ivu-form-item-error': error.growthTimeError}">
-                            <span>{{$t('rechartSuc')}}</span>
-                            <Input v-model.trim="settingData.scoreGrowthEffModeWhileCharging.storedTime"
-                                   :disabled="settingData.scoreGrowthEffModeWhileCharging.storedType !== 'checkout_after' ? true : false"
-                                   @on-blur="checkInputBlurFunc(settingData.scoreGrowthEffModeWhileCharging.storedTime,'growthTimeError')"
-                                   type="text"
-                                   class="single-input"
-                                   :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{$t('hourLaterInvalid')}}</span>
-                            <span class="ivu-form-item-error-tip"
-                                  style="left: 113px;"
-                                  v-if="error.growthTimeError">{{error.growthTimeError}}</span>
-                        </Radio>
-                    </RadioGroup>
-                </div>
-            </div>
-
-            <div class="content-item">
                 <div class="title">{{$t('setProportionOfBonusAmountOfStorageValue')}}
                     <span class="add-span blue-color" @click="addSendRate">+ {{$t('add')}}</span>
                 </div>
@@ -136,114 +69,89 @@
                     </div>
             </div>-->
 
+            <!--储值账户设置-->
             <div class="content-item">
-                <div class="title">{{$t('CollectionModeSetting')}}
-                    <span class="blue-color add-span" @click="handleAddPay">+ {{$t('newCollectionMethod')}}</span>
+                <div class="title">{{$t('storeValueAccountSettings')}}
+                    <span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>
                 </div>
                 <div class="main">
-                    <Form ref="formDynamic" :model="formDynamic" :label-width="20">
-                        <div class="ivu-form-item-wrap short-wrap">
-                            <FormItem
-                                v-for="(item, index) in formDynamic.pay"
-                                v-if="item._status"
-                                :key="index"
-                                label=""
-                                :prop="'pay.' + index + '.payment'"
-                                :rules="{required: true, message: $t('CertificateTypeCannotBeEmpty'), trigger: 'blur'}">
-                                <Input type="text" :disabled="item.disabled" v-model.trim="item.payment" :placeholder="$t('inputField', {field: ''})"/>
-                                <span class="span-bottom red-color" v-if="item.active && item.isSystem=='false'" @click="deletePay(item,index)">{{$t('del')}}</span>
-                                <span class="span-bottom blue-color" v-if="!item.active" @click="handleSubmitForPay(item,index)">{{$t("save")}}</span>
-                                <span class="span-bottom grey-color" v-if="!item.active" @click="handleResetPay(item,index)">{{$t('cancel')}}</span>
-                            </FormItem>
-                        </div>
-                    </Form>
+                    <div class="table-wrap">
+                        <table-com
+                            :table-com-min-height="320"
+                            :column-data="columnData"
+                            :table-data="tableData"
+                            :auto-height="true"
+                            :border="false">
+                            <el-table-column
+                                slot="column0"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip
+                                slot-scope="row">
+                                <template slot-scope="scope">
+                                    {{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                slot="column1"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                show-overflow-tooltip
+                                slot-scope="row">
+                            </el-table-column>
+                            <el-table-column
+                                slot="column2"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
+                                <template slot-scope="scope">
+                                    <ul class="operate-list">
+                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">{{$t('appSetting')}}</li>
+                                    </ul>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                slot="column3"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
+                                <template slot-scope="scope">
+                                    <ul class="operate-list">
+                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">{{$t('appSetting')}}</li>
+                                    </ul>
+                                </template>
+                            </el-table-column>
+                            <!--会员3期暂时去掉-->
+                            <el-table-column
+                                slot="column4"
+                                :label="row.title"
+                                :prop="row.field"
+                                :key="row.index"
+                                :width="row.width"
+                                :min-width="row.minWidth"
+                                slot-scope="row">
+                                <template slot-scope="scope">
+                                    <ul class="operate-list">
+                                        <li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>
+                                    </ul>
+                                </template>
+                            </el-table-column>
+                        </table-com>
+                    </div>
                 </div>
             </div>
-
-            <!--会员3期暂时去掉-->
-            <!--<div class="content-item">-->
-                <!--<div class="title">{{$t('storeValueAccountSettings')}}-->
-                    <!--&lt;!&ndash;会员3期暂时去掉&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="main">-->
-                    <!--<div class="table-wrap">-->
-                        <!--<table-com-->
-                            <!--:table-com-min-height="320"-->
-                            <!--:column-data="columnData"-->
-                            <!--:table-data="tableData"-->
-                            <!--:auto-height="true"-->
-                            <!--:border="false">-->
-                            <!--<el-table-column-->
-                                <!--slot="column0"-->
-                                <!--:label="row.title"-->
-                                <!--:prop="row.field"-->
-                                <!--:key="row.index"-->
-                                <!--:width="row.width"-->
-                                <!--:min-width="row.minWidth"-->
-                                <!--show-overflow-tooltip-->
-                                <!--slot-scope="row">-->
-                                <!--<template slot-scope="scope">-->
-                                    <!--{{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}-->
-                                <!--</template>-->
-                            <!--</el-table-column>-->
-                            <!--<el-table-column-->
-                                <!--slot="column1"-->
-                                <!--:label="row.title"-->
-                                <!--:prop="row.field"-->
-                                <!--:key="row.index"-->
-                                <!--:width="row.width"-->
-                                <!--:min-width="row.minWidth"-->
-                                <!--show-overflow-tooltip-->
-                                <!--slot-scope="row">-->
-                            <!--</el-table-column>-->
-                            <!--<el-table-column-->
-                                <!--slot="column2"-->
-                                <!--:label="row.title"-->
-                                <!--:prop="row.field"-->
-                                <!--:key="row.index"-->
-                                <!--:width="row.width"-->
-                                <!--:min-width="row.minWidth"-->
-                                <!--slot-scope="row">-->
-                                <!--<template slot-scope="scope">-->
-                                    <!--<ul class="operate-list">-->
-                                        <!--<li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">{{$t('appSetting')}}</li>-->
-                                    <!--</ul>-->
-                                <!--</template>-->
-                            <!--</el-table-column>-->
-                            <!--<el-table-column-->
-                                <!--slot="column3"-->
-                                <!--:label="row.title"-->
-                                <!--:prop="row.field"-->
-                                <!--:key="row.index"-->
-                                <!--:width="row.width"-->
-                                <!--:min-width="row.minWidth"-->
-                                <!--slot-scope="row">-->
-                                <!--<template slot-scope="scope">-->
-                                    <!--<ul class="operate-list">-->
-                                        <!--<li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">{{$t('appSetting')}}</li>-->
-                                    <!--</ul>-->
-                                <!--</template>-->
-                            <!--</el-table-column>-->
-                            <!--&lt;!&ndash;会员3期暂时去掉&ndash;&gt;-->
-                            <!--&lt;!&ndash;<el-table-column&ndash;&gt;-->
-                                <!--&lt;!&ndash;slot="column4"&ndash;&gt;-->
-                                <!--&lt;!&ndash;:label="row.title"&ndash;&gt;-->
-                                <!--&lt;!&ndash;:prop="row.field"&ndash;&gt;-->
-                                <!--&lt;!&ndash;:key="row.index"&ndash;&gt;-->
-                                <!--&lt;!&ndash;:width="row.width"&ndash;&gt;-->
-                                <!--&lt;!&ndash;:min-width="row.minWidth"&ndash;&gt;-->
-                                <!--&lt;!&ndash;slot-scope="row">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<template slot-scope="scope">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<ul class="operate-list">&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<li class="blue-label" @click="showModifyAccountModal(scope.row, scope.$index)">{{$t('editAccount')}}</li>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                                <!--&lt;!&ndash;</template>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</el-table-column>&ndash;&gt;-->
-                        <!--</table-com>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
 
             <div class="content-item">
                 <div class="title">{{$t('消费时优先扣除账户设置')}}</div>
@@ -259,19 +167,21 @@
                 </div>
             </div>
 
+            <!--会员4期暂时去掉-->
             <!--房款返还至各业态账户的比例设置-->
-            <owner-refund-setting class="content-item"
-                                  ref="ownerSetting"
-                                  :ownerData.sync="settingData.houseMoneyRefunded"
-                                  @updateOwnerData="settingData.houseMoneyRefunded = $event">
-            </owner-refund-setting>
+            <!--<owner-refund-setting class="content-item"-->
+                                  <!--ref="ownerSetting"-->
+                                  <!--:ownerData.sync="settingData.houseMoneyRefunded"-->
+                                  <!--@updateOwnerData="settingData.houseMoneyRefunded = $event">-->
+            <!--</owner-refund-setting>-->
 
+            <!--会员4期暂时去掉-->
             <!--业主使用已返还金额在各业态进行消费时单笔订单可用金额比例设置-->
-            <owner-card-consume-config class="content-item"
-                                       ref="ownerSetting"
-                                       :ownerData.sync="settingData.houseMoneyRefunded"
-                                       @updateOwnerData="settingData.houseMoneyRefunded = $event">
-            </owner-card-consume-config>
+            <!--<owner-card-consume-config class="content-item"-->
+                                       <!--ref="ownerSetting"-->
+                                       <!--:ownerData.sync="settingData.houseMoneyRefunded"-->
+                                       <!--@updateOwnerData="settingData.houseMoneyRefunded = $event">-->
+            <!--</owner-card-consume-config>-->
 
         </div>
 
@@ -344,19 +254,6 @@
                 settingData : {
                     //储值密码设置
                     passwdForRechargeAccount : '',
-                    //储值积分、成长值比例设置
-                    scoreGrowthFromCharging : {
-                        storedAndGrowthType : '',//Boolean
-                        moneyToIntegrate : '',//储值额-积分 Number
-                        integrate : 1,//积分
-                        moneyToGrowth : '',//储值额-成长值 Number
-                        growth : 1,//成长值
-                    },
-                    //储值获得积分、成长值生效设置
-                    scoreGrowthEffModeWhileCharging : {
-                        storedType : '',
-                        storedTime : '',//Number
-                    },
                     //转账扣除手续费比例
 //                    commissionOfTransfermation: '',
                     //储值赠送金额比例设置
@@ -372,10 +269,6 @@
                 listAccountTable : [],
                 //收款方式设置
                 payIndex : 1,
-                //表单数据
-                formDynamic : {
-                    pay : [],
-                },
                 //表格数据--储值账户列表
                 tableData : [],
                 //表头数据
@@ -400,55 +293,30 @@
                         minWidth : 110,
                         field : 'id'
                     },
-                    // 会员3期暂时去掉
-                    // {
-                    //     title : 'operate',
-                    //     minWidth : 110,
-                    //     enMinWidth : 140,
-                    //     field : 'id'
-                    // },
+                    {
+                        title : 'operate',
+                        minWidth : 110,
+                        enMinWidth : 140,
+                        field : 'id'
+                    },
                 ],
                 //获取储值账户-(本金/赠送金额)应用范围
                 listAmountRangeTable : [],
                 sendRangeTable : [],
                 //输入框校验错误显示
                 error : {
-                    moneyToIntegrateError : '',//储值额-积分
                     moneyToGrowthError : '',//储值额--成长值
                     storedTimeError : '',//储值获得积分、成长值生效设置
                 },
-                //布尔型
-                boolProps : ['storedAndGrowthType'],
                 //Number型
-                numberProps : ['moneyToIntegrate','moneyToGrowth','storedTime'],
+                numberProps : ['moneyToGrowth'],
                 //String型
-                stringProps : ['moneyToIntegrate','moneyToGrowth','storedTime','storedAndGrowthType'],
+                stringProps : ['moneyToGrowth'],
             };
-        },
-        watch : {
-
-            // 会员3期暂时去掉
-            // //成长值生效设置
-            // 'settingData.scoreGrowthFromCharging.storedAndGrowthType' : function (newVal, oldVal) {
-            //     if (newVal !== 'true') {
-            //         this.error.moneyToIntegrateError = '';
-            //         this.error.moneyToGrowthError = '';
-            //     }
-            // },
-
-            //储值获得积分、成长值生效设置
-            'settingData.scoreGrowthEffModeWhileCharging.storedType' : function (newVal, oldVal) {
-                if (newVal !== 'checkout_after') {
-                    this.error.storedTimeError = '';
-                }
-            },
-
         },
         created () {
             //查询会员基础设置
             this.findBasicSet();
-            //查询收款方式
-            this.queryPaymentType();
             //查询储值账户
             this.queryMemberAccountDefine();
             //获取储值赠送金额应用范围
@@ -514,10 +382,6 @@
                             //处理数据
                             let params = {
                                 passwdForRechargeAccount : res.data.passwdForRechargeAccount || 'true',
-                                scoreGrowthFromCharging : res.data.scoreGrowthFromCharging ?
-                                    JSON.parse(res.data.scoreGrowthFromCharging) : this.settingData.scoreGrowthFromCharging,
-                                scoreGrowthEffModeWhileCharging : res.data.scoreGrowthEffModeWhileCharging ?
-                                    JSON.parse(res.data.scoreGrowthEffModeWhileCharging) : this.settingData.scoreGrowthEffModeWhileCharging,
                                 donateWhileRecharge : res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
                                 priorityDeductionInConsumption : res.data.priorityDeductionInConsumption,
                                 houseMoneyRefunded : res.data.houseMoneyRefunded,
@@ -562,8 +426,6 @@
                         let params = {
                             id : this.id,
                             passwdForRechargeAccount : setParam.passwdForRechargeAccount,
-                            scoreGrowthFromCharging : JSON.stringify(setParam.scoreGrowthFromCharging),
-                            scoreGrowthEffModeWhileCharging : JSON.stringify(setParam.scoreGrowthEffModeWhileCharging),
                             donateWhileRecharge : setParam.donateWhileRecharge.length > 0 ?
                                 JSON.stringify(setParam.donateWhileRecharge) : '',
                             priorityDeductionInConsumption : this.settingData.priorityDeductionInConsumption,
@@ -594,21 +456,6 @@
 
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-                if (this.settingData.scoreGrowthEffModeWhileCharging.storedType === 'checkout_after' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreGrowthEffModeWhileCharging.storedTime, 'storedTimeError') ) {
-                    return false;
-                }
-
-                if (this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'true' &&
-                    !this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToIntegrate, 'moneyToIntegrateError') ) {
-                    return false;
-                }
-                // 会员3期暂时去掉
-                // if (this.settingData.scoreGrowthFromCharging.storedAndGrowthType === 'true' &&
-                //     !this.checkInputBlurFunc(this.settingData.scoreGrowthFromCharging.moneyToGrowth, 'moneyToGrowthError') ) {
-                //     return false;
-                // }
-
                 return true;
             },
 
@@ -662,77 +509,6 @@
                 }
 
                 return true;
-            },
-
-            //查询收款方式
-            queryPaymentType () {
-                this.formDynamic.pay = [];
-                ajax.post('queryPaymentType',{
-                    isDeleted : 'false',
-                    pageNo : 1,
-                    pageSize : 99999,
-                }).then(res => {
-                    if (res.success) {
-                        if (res.data && res.data.length > 0) {
-                            res.data.forEach( (item, index) => {
-                                item.index = index;
-                                item._status = 1;
-                                item.active = true;
-                                item.disabled = true;
-                                this.formDynamic.pay.push(item);
-                            });
-                        }
-                    }
-                });
-            },
-            //增加/修改收款方式
-            updatePaymentType ( data, index ) {
-                ajax.post('updatePaymentType',{
-                    payment : data.payment,
-                }).then(res => {
-                    if (res.success) {
-                        this.formDynamic.pay[index].disabled = true;
-                        this.formDynamic.pay[index].active = true;
-                        this.formDynamic.pay[index].isSystem = 'false';
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('newCollectionMethod') }));
-                    }
-                });
-            },
-            //删除收款方式
-            deletePay ( data, index ) {
-                ajax.post('updatePaymentType',{
-                    id : data.id,
-                    isDeleted : 'true',
-                }).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delCollectionMethod') }));
-                        this.formDynamic.pay[index]._status = 0;
-                        this.formDynamic.pay.splice(index, 1); // 如果删除收款方式后不调查询收款方式接口，就记得在formDynamic.pay数组中清除被删除的数据
-                    }
-                });
-            },
-            //新增收款方式
-            handleAddPay () {
-                this.payIndex++;
-                this.formDynamic.pay.push({
-                    payment : '',
-                    index : this.payIndex,
-                    _status : 1,
-                    disabled : false,
-                });
-            },
-            //收款方式校验
-            handleSubmitForPay ( data, index ) {
-                this.$refs.formDynamic.validateField( 'pay.' + index + '.payment', (valid) => {
-                    if (valid === '') {
-                        this.updatePaymentType(data, index);
-                    }
-                } );
-            },
-            //取消收款方式校验
-            handleResetPay (data, index) {
-                this.$refs.formDynamic.resetFields('pay.' + index + '.payment' );
-                this.formDynamic.pay[index]._status = 0;
             },
 
             //删除储值赠送金额比例

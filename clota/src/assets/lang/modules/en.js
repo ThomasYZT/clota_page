@@ -2066,4 +2066,9 @@ export default {
     'cancelWaitChecking' : '退单待审',
     'cancelPass' : '退单审核通过',
     'reserveAuditWaiting' : '预定待审',
+    'storeAndScoreSetting' : '储值时获得积分，消费时不重复获得积分',
+    'storeGetGrowthSetting' : '储值获得成长值比例设置',
+    'storeGrowthSetting1' : '储值时不获得成长值，消费时获取',
+    'storeGrowthSetting2' : '储值时获得成长值，消费时不重复获得成长值',
+    'storeGetGrowthSettingValidateTime' : '储值获得成长值生效设置',
 }
