@@ -4,25 +4,29 @@
 -->
 <template>
     <Modal v-model="visible"
+           width="400"
            class-name="vertical-center-modal adjust-credits-modal"
            :title="$t('exchangePointsRequiredSetting')">
-        <Form ref="formInline"
-              :model="formData"
-              :rules="ruleValidate"
-              label-position="right"
-              :label-width="150">
-            <i-row>
-                <i-col span="18" offset="3">
-                    <Form-item :label="$t('exchangePointsRequired')" prop="requiredCredits">
-                        <Input v-model.trim="formData.requiredCredits" style="width:200px" :placeholder="$t('inputField', { field : $t('exchangePointsRequired') })"></Input>
-                    </Form-item>
-                </i-col>
-            </i-row>
-        </Form>
+
+        <div class="content">
+            <Form ref="formInline"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  label-position="right"
+                  :label-width="140">
+                <i-row>
+                    <i-col span="22" offset="2">
+                        <Form-item :label="$t('exchangePointsRequired')" prop="requiredCredits">
+                            <Input v-model.trim="formData.requiredCredits" style="width:160px" :placeholder="$t('inputField', { field : $t('exchangePointsRequired') })"></Input>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+            </Form>
+        </div>
 
         <div slot="footer">
             <Button class="ivu-btn-90px" type="primary" @click="validate">{{$t('save')}}</Button>
-            <Button class="ivu-btn-90px" type="default" @click="toggle">{{$t('cancel')}}</Button>
+            <Button class="ivu-btn-90px" type="default" @click="toggle()">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -74,10 +78,10 @@
              */
             toggle (data) {
                 if (data) {
-                    console.log(data)
                     this.detail = data;
                     this.formData.id = this.detail.id;
                     this.formData.goodsStatus = this.detail.goodsStatus;
+                    this.formData.requiredCredits = this.detail.requiredCredits ? this.detail.requiredCredits.toString() : '';
                     this.visible = true;
                 } else {
                     this.visible = false;
@@ -121,4 +125,11 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    /deep/ .ivu-modal-body {
+        min-height: 164px;
+    }
+
+    .content {
+        margin-top: 30px;
+    }
 </style>
