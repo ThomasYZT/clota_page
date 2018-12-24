@@ -62,19 +62,31 @@
                     </template>
                     <!-- 退票 -->
                     <template v-else-if="scope.row.type.includes('refund')">
+                        <!-- 退票申请 -->
                         <template v-if="scope.row.type.includes('apply')">
-                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}，</span>
                             <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
                         </template>
+                        <!-- 退票结果 -->
                         <template v-else>
-                            <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                            <span>{{$t('colonSetting', { key : $t('reject') })}}{{scope.row.content.rejectNum | contentFilter}}，</span>
+                            <span>{{$t('colonSetting', { key : $t('passed') })}}{{scope.row.content.passNum | contentFilter}}，</span>
                             <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
                         </template>
                     </template>
                     <!-- 改签 -->
                     <template v-else-if="scope.row.type.includes('alter')">
-                        <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
-                        <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                        <!-- 改签申请 -->
+                        <template v-if="scope.row.type.includes('apply')">
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}，</span>
+                            <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
+                        </template>
+                        <!-- 改签结果 -->
+                        <template v-else>
+                            <span>{{$t('colonSetting', { key : $t('reject') })}}{{scope.row.content.rejectNum | contentFilter}}，</span>
+                            <span>{{$t('colonSetting', { key : $t('passed') })}}{{scope.row.content.passNum | contentFilter}}，</span>
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
+                        </template>
                     </template>
                     <!-- 团队订单 -->
                     <template v-else-if="scope.row.type.includes('team')">
@@ -153,13 +165,13 @@
             getAllPendingMatters () {
                 ajax.post('workbench-queryUnfinishedWorkBack').then(res => {
                     if (res.success) {
-                        this.tableData = res.data.filter((item, index, arr) => {
+                        this.tableData = res.data ? res.data.filter((item) => {
                             if (item.finishStatus === "false") {
-                                arr[index].content = arr[index].content ? JSON.parse(arr[index].content) : '';
-                                arr[index].extData = arr[index].extData ? JSON.parse(arr[index].extData) : '';
+                                item.content = item.content ? JSON.parse(item.content) : '';
+                                item.extData = item.extData ? JSON.parse(item.extData) : '';
                             }
                             return item.finishStatus === "false";
-                        }) || [];
+                        }) : [];
                     } else {
                         this.tableData = [];
                     }
