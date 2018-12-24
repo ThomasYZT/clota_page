@@ -752,11 +752,11 @@ export const expiresStatus = [
     },
     {
         label : 'expired',  //已过期
-        value : 'expired',
+        value : 'overdue',
     },
     {
         label : 'notExpired',  //未过期
-        value : 'notExpired',
+        value : 'not_overdue',
     }
 ]
 

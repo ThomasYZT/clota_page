@@ -66,6 +66,7 @@
                         {{scope.row.pickStatus === 'true' ? $t('haveTickets') : $t('noHaveTickets')}}
                     </template>
                 </el-table-column>
+                <!-- 核销状态 -->
                 <el-table-column
                     slot="column3"
                     show-overflow-tooltip
@@ -74,7 +75,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed')}}
+                        <span v-if="scope.row.verifyStatus === 'true'">{{$t('consumed')}}</span>
+                        <span v-else-if="scope.row.verifyStatus === 'false'">{{$t('noConsumed')}}</span>
+                        <span v-else-if="scope.row.verifyStatus === 'overdue'">{{$t('expiredVerify')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -243,6 +246,8 @@
                     noVerifyNum: 0,
                     //已核销数量
                     verifyNum: 0,
+                    //过期核销
+                    overdueNum : 0,
                     //已退票数量
                     refundNum: 0,
                     //已改签数量
@@ -257,12 +262,13 @@
                     }else if(item.pickStatus == "true") {//已取票
                         _obj.takenNum += 1;
                     }
-                    //未核销
-                    if(item.verifyStatus == "false") {
-                        _obj.noVerifyNum += 1;
-                    }else {
+                    //已核销
+                    if(item.verifyStatus == "true") {
                         _obj.verifyNum += 1;
+                    } else if (item.verifyStatus == "overdue") {
+                        _obj.overdueNum += 1;
                     }
+
                     //已退票
                     if(item.refundStatus == 'refunded') {
                         _obj.refundNum += 1;
@@ -272,6 +278,8 @@
                         _obj.rescheduleNum += 1;
                     }
                 });
+                //未核销 = 产品总数 - 已退票 - 已核销 - 已过期核销
+                _obj.noVerifyNum = this.baseInfo.quantity - _obj.refundNum - _obj.verifyNum - _obj.overdueNum;
                 return _obj;
             },
             //选择的票是否能退

@@ -84,7 +84,7 @@
                 <i-col span="6">
                     <!--过期状态-->
                     <FormItem :label="$t('expiresStatus')" >
-                        <Select v-model="formData.expiresStatus"
+                        <Select v-model="formData.overdueStatus"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
                             <Option v-for="(item, index) in expiresStatusList"
@@ -130,7 +130,7 @@
                     // 下单渠道
                     orderChannel: 'allStatus',
                     // 过期状态
-                    expiresStatus : 'all',
+                    overdueStatus : 'all',
                     // 关键字查询：游客姓名/手机号/订单号/订单明细编号
                     keyword : '',
                 },
@@ -208,7 +208,7 @@
              * emit事件：on-filter，在父组件查询审核列表
              */
             searchAuditList() {
-                let keys = ['channelId', 'orderChannel', 'expiresStatus', 'paymentStatus'];
+                let keys = ['channelId', 'orderChannel', 'overdueStatus', 'paymentStatus'];
                 let queryParams = Object.assign({}, this.formData);
                 keys.forEach((key, i) => {
                     if (queryParams[key].includes('all')) {
