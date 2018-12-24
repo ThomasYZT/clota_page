@@ -13,7 +13,7 @@
                     </FormItem>
                     <FormItem>
                         <i-switch v-model="formDataCopy.isStart"></i-switch>
-                        <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status === 'close'}">
+                        <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status !== 'open'}">
                             {{$t(formData.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                         </span>
                     </FormItem>
@@ -30,7 +30,7 @@
                     <span class="iconfont icon-modify"></span>
                     {{$t('edit')}}
                 </span>
-                <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status === 'close'}">
+                <span :class="{'started' :formData.status === 'open' ,'not-started' : formData.status !== 'open'}">
                     {{$t(formData.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                 </span>
             </template>
