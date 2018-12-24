@@ -223,6 +223,7 @@
             </div>
             <div class="step-wrapper">
                 <operateLog :order-record-list="orderRecordList"
+                            :is-product-log="true"
                             :show-title="false">
                 </operateLog>
             </div>

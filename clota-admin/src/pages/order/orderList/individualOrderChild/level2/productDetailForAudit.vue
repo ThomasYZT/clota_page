@@ -312,7 +312,7 @@
              **/
             showAuditModal (auditType) {
                 this.$refs['confirmAuditModal'].show({
-                    productList : this.chosedData,
+                    productList : this.ticketList.filter(item => item.checkStatus === 'true'),
                     passList : this.chosedData,
                     type : auditType
                 });

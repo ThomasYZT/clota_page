@@ -587,4 +587,9 @@ export default {
     'auditResult' : '审核结果',
     'rejectAll' : '全部驳回',
     'failure' : '失败',
+    'identity' : '身份证',
+    'passport' : '护照',
+    'driver' : '驾照',
+    'officer' : '军官证',
+    'police' : '警官证',
 };

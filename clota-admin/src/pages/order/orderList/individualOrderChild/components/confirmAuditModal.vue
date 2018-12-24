@@ -25,13 +25,13 @@
             </div>
             <div class="table-wrap">
                 <table-com
-                    :height="165"
+                    :height="205"
                     :column-data="columnData"
                     :table-data="tableData"
-                    :min-height="150"
+                    :table-com-min-height="200"
                     :border="false">
                     <el-table-column
-                        slot="column1"
+                        slot="columnauditStatus"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -102,13 +102,13 @@
                     {
                         title : 'productDetailNo', // 产品明细编号
                         minWidth : 150,
-//                        enWidth : 180,
+                       enWidth : 180,
                         field : 'id'
                     },
                     {
                         title : 'auditResult', // 审核结果
                         minWidth : 150,
-//                        enWidth : 180,
+                       enWidth : 180,
                         field : 'auditStatus'
                     },
                 ],

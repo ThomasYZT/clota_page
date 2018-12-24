@@ -47,7 +47,6 @@
             </vertificationLog>
 
             <!--操作日志-->
-            <!--分销商不可见-->
             <operateLog :order-record-list="orderRecordList"></operateLog>
 
         </div>

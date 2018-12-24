@@ -52,7 +52,8 @@ export const columnData = [
         title : 'orderAmount',
         width : 130,
         enWidth : 180,
-        field : 'orderAmount'
+        field : 'orderAmount',
+        type : 'money'
     },
     {
         title : 'smsStatus',
