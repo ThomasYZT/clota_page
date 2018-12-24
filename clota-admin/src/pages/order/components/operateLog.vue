@@ -135,8 +135,7 @@
                         //是否是产品的日志信息
                         if (this.isProductLog) {
                             // 核销数量：
-                            return `${this.$t('productDetailNo')}：${contentsObj.ticketId}，
-                            ${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
+                            return `${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
                             ${this.$t('remark')}：${contentsObj.remark}`;
                         } else {
                             // 核销数量：

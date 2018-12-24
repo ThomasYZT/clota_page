@@ -218,7 +218,6 @@
                 if (this.passedProducts && this.passedProducts.length > 0) {
                     auditParams['productIds'] = this.passedProducts.map(item => item.id).join(',');
                 } else if (this.rejectProducts && this.rejectProducts.length > 0) {
-                    // auditParams['productIds'] = this.rejectProducts.map(item => item.id).join(',');
                     auditParams['productIds'] = '';
                 }
 

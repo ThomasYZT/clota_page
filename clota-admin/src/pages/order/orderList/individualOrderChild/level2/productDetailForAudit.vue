@@ -324,7 +324,6 @@
             onAuditConfirmed (auditParams) {
                 ajax.post('updateProductRefundAlterAudit',{
                     reqType : auditParams.reqType,
-                    // audit : auditParams.audit,
                     refundId : this.baseInfo.refundId,
                     productIds : auditParams.productIds,
                     remark : auditParams.remark
