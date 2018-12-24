@@ -45,6 +45,7 @@ export const routerPackage = (rowData, routerInfo) => {
         case 'apply_policy_online' :
         case 'pass_policy_online' :
         case 'reject_policy_online' :
+        case 'disable_policy' :
             routerObj = {
                 name : 'salePolicyDetail',
                 params : {

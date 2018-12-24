@@ -2042,6 +2042,7 @@ export default {
     'penddingMatter.apply_policy_online' : '销售政策上线申请',
     'penddingMatter.pass_policy_online' : '销售政策审核通过',
     'penddingMatter.reject_policy_online' : '销售政策被驳回',
+    'penddingMatter.disable_policy' : '销售政策被禁用',
     'penddingMatter.apply_recharge' : '收款待审核',
     'penddingMatter.pass_recharge' : '付款审核通过',
     'penddingMatter.reject_recharge' : '付款审核被驳回',

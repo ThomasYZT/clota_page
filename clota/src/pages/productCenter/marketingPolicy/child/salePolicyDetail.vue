@@ -453,6 +453,7 @@
              */
             auditAPI (status) {
                 ajax.post('modifyPolicyStatus',{
+                    allocationIds : this.allocationId,
                     policyIds : this.detail.productPolicy.id,
                     status : status,
                     remark : this.remark,
@@ -491,7 +492,9 @@
 
             //返回
             goBack () {
-                this.$router.back();
+                this.$router.push({
+                    name : 'marketingPolicy'
+                });
             },
 
             /**
