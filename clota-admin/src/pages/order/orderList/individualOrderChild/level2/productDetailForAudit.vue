@@ -15,12 +15,12 @@
             <div class="btn-wrapper" >
                 <Button type="primary"
                         style="width: 88px; margin-right: 5px;"
-                        :disabled="chosedData.length < 1"
+                        :disabled="!canAuditSuccessProduct"
                         @click="showAuditModal('pass')">{{$t('passed')}}
                 </Button>
                 <Button type="error"
                         style="width: 88px;"
-                        :disabled="chosedData.length < 1"
+                        :disabled="!canAuditRejectProduct"
                         @click="showAuditModal('reject')">{{$t('rejectAll')}}
                 </Button><!--全部驳回-->
             </div>
@@ -136,6 +136,7 @@
 
         <!--审核确认弹框-->
         <confirm-audit-modal ref="confirmAuditModal"
+                             :apply-number="applyNumber"
                              :base-info="baseInfo"
                              :visitor-info="visitor"
                              @on-audit-confirmed="onAuditConfirmed">
@@ -241,7 +242,45 @@
                 });
                 return _obj;
             },
-
+            //申请数量
+            applyNumber () {
+                return this.ticketList.filter(item => item.checkStatus === 'true').length;
+            },
+            //是否可以选择通过审核
+            canAuditSuccessProduct () {
+                //没有产品或没有选择的产品，通过按钮置灰
+                if ( this.chosedData.length < 1 || this.ticketList.length < 1) {
+                    return false;
+                } else {
+                    if (this.isRefund) {//退票
+                        return this.chosedData.filter(item => {
+                            //选择了退票待审核的才可以点击通过
+                            return item.checkStatus === 'true' && item.refundStatus === 'refund_audit';
+                        }).length > 0;
+                    } else if (this.isAlter) {//改签
+                        return this.chosedData.filter(item => {
+                            //选择了改签待审核的才可以点击通过
+                            return item.checkStatus === 'true' && item.rescheduleStatus === 'alter_audit';
+                        }).length > 0;
+                    }
+                    return false;
+                }
+            },
+            // 是否散客退票
+            isRefund () {
+                return this.$route.name === 'refundAuditRefundOrderDetail';
+            },
+            // 是否散客改签
+            isAlter () {
+                return this.$route.name === 'alterAuditRefundOrderDetail';
+            },
+            //是否可以全部驳回申请
+            canAuditRejectProduct () {
+                return this.ticketList.length > 0 && this.ticketList.filter(item => {
+                    //有待审核的才会显示全部驳回按钮
+                    return item.checkStatus === 'true' && (item.refundStatus === 'refund_audit' || item.rescheduleStatus === 'alter_audit');
+                }).length > 0;
+            }
         },
         methods : {
             /**
@@ -285,13 +324,15 @@
             onAuditConfirmed (auditParams) {
                 ajax.post('updateProductRefundAlterAudit',{
                     reqType : auditParams.reqType,
-                    audit : auditParams.audit,
+                    // audit : auditParams.audit,
                     refundId : this.baseInfo.refundId,
                     productIds : auditParams.productIds,
                     remark : auditParams.remark
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success(this.$t('auditSuccess'));
+                        this.$refs['confirmAuditModal'].hide();
+                        this.$emit('fresh-data');
                     } else {
                         this.$Message.error(this.$t('auditFailure'));
                     }
@@ -305,9 +346,6 @@
                 return row.checkStatus === 'true';
             }
         },
-        mounted () {
-
-        }
     };
 </script>
 
