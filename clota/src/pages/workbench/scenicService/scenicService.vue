@@ -50,7 +50,8 @@
                 <!--今日营业状况-->
                 <business-situation></business-situation>
                 <!--待处理事项-->
-                <pending-matters style="width: 42%; padding-left: 15px; float: left"></pending-matters>
+                <pending-matters @updateWorkBackNum="getScenicQuota"
+                                 style="width: 42%; padding-left: 15px; float: left"></pending-matters>
             </div>
 
             <!--畅销产品-->
@@ -108,7 +109,7 @@
                         this.itemsData = res.data;
                     }
                 });
-            }
+            },
         }
     };
 </script>

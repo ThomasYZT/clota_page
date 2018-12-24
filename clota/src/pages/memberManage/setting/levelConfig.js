@@ -27,6 +27,11 @@ export const levelListHead = [
         field : 'channelName'
     },
     {
+        title : '成长值范围', // 成长值范围
+        minWidth : 150,
+        field : 'growThScope'
+    },
+    {
         title : '售卡金额（元）', // 售卡金额（元）
         minWidth : 150,
         field : 'salePrice',
@@ -51,14 +56,8 @@ export const levelListHead = [
     },
     {
         title : 'operate', // 操作
-        minWidth : 70,
-        enMinWidth : 140,
+        minWidth : 140,
+        enMinWidth : 160,
         field : ''
     },
-    // {
-    //     title : 'operate', // 操作
-    //     minWidth : 140,
-    //     enMinWidth : 160,
-    //     field : ''
-    // },
 ];

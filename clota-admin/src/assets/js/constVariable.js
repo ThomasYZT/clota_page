@@ -352,8 +352,12 @@ export const sendStatusList = [
         value : 'success'
     },
     {
+        label : 'isRending',//发送中
+        value : 'wait,doing,req_success'
+    },
+    {
         label : 'fail',//失败
-        value : 'fail,doing,req_success,req_failure'
+        value : 'req_failure,failure'
     },
 ];
 //校验是否是ipv4地址

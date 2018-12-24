@@ -2,7 +2,7 @@ import defaultsDeep from 'lodash/defaultsDeep';
 import common from '../../../assets/js/common';
 import i18n from '../../../assets/lang/lang.config';
 const pieBaseConfig = {
-    color : ['#0055B8', '#00B6C2', '#F8AAC4', '#FBC826', '#FB7A89', '#64BFFA', '#71CF7F', '#8B8DFD',],
+    color : ['#2498b8', '#00B6C2', '#F8AAC4', '#FBC826', '#FB7A89', '#64BFFA', '#71CF7F', '#8B8DFD', 'F8DB8E'],
     legend : {
         orient : 'horizontal',
         bottom : 5,

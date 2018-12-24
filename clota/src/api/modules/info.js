@@ -292,4 +292,6 @@ export default {
     'exportGoodsStock' : '/goods/exportGoodsStock',
     //查询支付方式列表
     'queryOnlineAccount' : '/organize/queryOnlineAccount',
+    //快速开卡
+    'queryEntityCardByRange' : '/member/entityCard//queryEntityCardByRange',
 }

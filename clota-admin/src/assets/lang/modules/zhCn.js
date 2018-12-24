@@ -586,4 +586,5 @@ export default {
     'confirmAuditRes' : '审核结果确认',
     'auditResult' : '审核结果',
     'rejectAll' : '全部驳回',
+    'failure' : '失败',
 };

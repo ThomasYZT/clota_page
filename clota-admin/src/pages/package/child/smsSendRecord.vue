@@ -40,7 +40,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                       {{$t( scope.row.status === 'success' ? 'success' : 'fail')}}
+                        {{$t(getStatusText(scope.row)) | contentFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -169,7 +169,23 @@
                 this.filterData.startTime = filterData.sendTime[0] ? new Date(filterData.sendTime[0]).format('yyyy-MM-dd 00:00:00') : '';
                 this.filterData.endTime = filterData.sendTime[1] ? new Date(filterData.sendTime[1]).format('yyyy-MM-dd 23:59:59') : '';
                 this.getSmsSendRecord();
-            }
+            },
+            /**
+             * 获取状态对应的文案
+             * @param{Object} rowData
+             * @return{String} 状态对应的翻译配置键值
+             */
+            getStatusText (rowData) {
+                if ( ['wait','doing','req_success'].includes(rowData.status) ) {
+                    return 'isRending';
+                } else if ( rowData.status === 'success' ) {
+                    return 'success';
+                } else if ( ['req_failure','failure'].includes(rowData.status) ) {
+                    return 'failure';
+                } else {
+                    return 'isRending';
+                }
+            },
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {

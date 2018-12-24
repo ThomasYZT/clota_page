@@ -129,7 +129,9 @@ export default new Vuex.Store({
                     if (res.status === 200 && res.data.privilegeSet && res.data.privilegeSet.length > 0) {
                         let privilegeSet = res.data.privilegeSet;
                         //权限数据
-                        let privilegeData = {};
+                        let privilegeData = {
+                            // 'tanent' : 'allow'
+                        };
 
                         for (let i = 0,j = privilegeSet.length; i < j; i++) {
                             privilegeData[privilegeSet[i]['privCode']] = 'allow';

@@ -38,7 +38,7 @@
                         <img-uploader ref="imgUpload"
                                       @upload-success="uploadSuc"
                                       @remove-img="removeIDimg"
-                                      :format="['png','jpg']"
+                                      :format="['png','jpeg']"
                                       :quantity-limit="2"></img-uploader>
                     </FormItem>
                     <!-- 邮箱地址 -->
@@ -61,19 +61,19 @@
 
                 </Step>
                 <Step title="" >
-                    <FormItem :label-width="180" label="设置登陆信息">
+                    <FormItem :label-width="180" label="设置登录信息">
                     </FormItem>
                     <!-- 登录名 -->
                     <FormItem label="登录名" prop="loginName">
                         <Input v-model="formData.loginName" placeholder="请输入登录名"></Input>
                     </FormItem>
                     <!-- 登陆密码 -->
-                    <FormItem label="登陆密码" prop="password">
-                        <Input type="password"  v-model="formData.password" placeholder="请输入登陆密码"></Input>
+                    <FormItem label="登录密码" prop="password">
+                        <Input type="password"  v-model="formData.password" placeholder="请输入登录密码"></Input>
                     </FormItem>
                     <!-- 确认登陆密码 -->
-                    <FormItem label="确认登陆密码" prop="rePassword">
-                        <Input type="password"  v-model="formData.rePassword" placeholder="请输入确认登陆密码"></Input>
+                    <FormItem label="确认登录密码" prop="rePassword">
+                        <Input type="password"  v-model="formData.rePassword" placeholder="请输入确认登录密码"></Input>
                     </FormItem>
 
                     <div class="modal-footer">
@@ -83,6 +83,9 @@
                 </Step>
             </Steps>
         </Form>
+
+
+        <tipModal ref="tipModal"></tipModal>
     </div>
 </template>
 
@@ -92,10 +95,13 @@
     import ImgUploader from '../components/ImgUploader';
     import ajax from '../../../api/index';
     import MD5 from 'crypto-js/md5';
+    import tipModal from '../components/tipModal';
+    import defaultsDeep from 'lodash/defaultsDeep'
     export default {
         components: {
             cityPlugin,
-            ImgUploader
+            ImgUploader,
+            tipModal
         },
         data() {
             //校验第二次输入的密码和第一次是否相同 个人注册
@@ -147,6 +153,7 @@
                 personalRuleValidate: {
                     orgName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },
+                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('name'),length : 20}),trigger : 'blur'}
                     ],
                     sex: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('gender')}), trigger: 'blur' },
@@ -160,7 +167,7 @@
                         { validator: validateMethods.identificationNum, trigger: 'blur'}
                     ],
                     attach: [
-                        { required: true, type: 'array', min: 2, message: this.$t('errorEmpty', {msg: this.$t('请上传正反两名的身份证照片')}), trigger: 'blur' }
+                        { required: true, type: 'array', min: 2, message: this.$t('请上传正反两名的身份证照片'), trigger: 'blur' }
                     ],
                     email: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('email')}), trigger: 'blur' },
@@ -169,14 +176,20 @@
                     place: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('address')}), trigger: 'blur' },
                     ],
+                    //详细地址
+                    address : [
+                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('detailAddr'),length : 100}),trigger : 'blur'}
+                    ],
                     description: [
                         {max : 200,message : this.$t('errorMaxLength',{field : this.$t('remark'),length : 200}),trigger : 'blur'}
                     ],
                     loginName: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('loginName')}), trigger: 'blur' },
+                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('loginName'),length : 10}),trigger : 'blur'}
                     ],
                     password: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
+                        {max : 15,message : this.$t('errorMaxLength',{field : this.$t('password'),length : 15}),trigger : 'blur'}
                     ],
                     rePassword: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
@@ -200,14 +213,16 @@
              *  个人注册
              */
             personalRegist() {
-                this.formData.password = MD5(this.formData.password).toString();
-                this.formData.attach = JSON.stringify(this.formData.attach);
-                ajax.post('register', this.formData).then(res => {
+                // this.formData.password = MD5(this.formData.password).toString();
+                // this.formData.attach = JSON.stringify(this.formData.attach);
+                let formData = defaultsDeep({
+                    password : MD5(this.formData.password).toString(),
+                    attach : JSON.stringify(this.formData.attach),
+                }, this.formData);
+                ajax.post('register', formData).then(res => {
                     if(res.success) {
                         this.$Message.success(this.$t('注册成功'));
-                        this.$router.replace({
-                            name: 'login'
-                        });
+                        this.$refs.tipModal.show(this.formData.email);
                     } else {
                         this.$Message.error(this.$t(res.message));
                     }

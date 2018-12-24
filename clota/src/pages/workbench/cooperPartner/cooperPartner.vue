@@ -129,7 +129,8 @@
     .workbench-main {
         @include block_outline();
         @include padding_place();
-        overflow: auto;
+        width: 80%;
+        margin: 0 auto;
 
         &:after {
             background: transparent;
@@ -137,14 +138,20 @@
 
         .quota-info-top,
         .quota-info-bottom {
-            overflow: auto;
-            margin-top: 15px;
+            padding: 15px 15px 0 15px;
+            background-color: $color_fff;
         }
         .quota-info-top {
-            height: 325px;
+            height: 340px;
+            margin-top: 15px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
         .quota-info-bottom {
-            height: 310px;
+            padding-bottom: 15px;
+            height: 340px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
         .placement-bottom-left {

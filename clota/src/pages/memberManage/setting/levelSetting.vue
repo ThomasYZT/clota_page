@@ -17,8 +17,8 @@
 
                     <!--会员3期暂时去掉-->
                     <!--<Button type="primary"-->
-                    <!--:disabled="tableData.length > 0"-->
-                    <!--@click="showRuleModal">{{$t('promotionSetting')}}</Button>&lt;!&ndash;晋级设置&ndash;&gt;-->
+                        <!--:disabled="tableData.length > 0"-->
+                        <!--@click="showRuleModal">{{$t('promotionSetting')}}</Button>&lt;!&ndash;晋级设置&ndash;&gt;-->
                     <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
                 </template>
             </div>
@@ -28,7 +28,6 @@
                     :column-data="levelListHead"
                     :table-data="tableData"
                     :border="true">
-                    <!--会员3期暂时去掉-->
                     <!--<el-table-column-->
                         <!--slot="column3"-->
                         <!--:label="row.title"-->
@@ -56,7 +55,20 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column6"
+                        slot="column4"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            {{scoped.row.lowerGrowthValue | contentFilter }}-{{scoped.row.highestGrowthValue | contentFilter }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column7"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"
@@ -69,7 +81,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column8"
+                        slot="column9"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"
@@ -80,8 +92,7 @@
                         <template slot-scope="scoped">
                             <ul class="operate-list">
                                 <li class="blue-label" @click="showAddMemberModal($event,scoped.row)">{{$t('modify')}}</li>
-                                <!--会员3期暂时去掉-->
-                                <!--<li class="red-label" @click="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>-->
+                                <li class="red-label" @click="delMemberLevel($event,scoped.row)">{{$t('del')}}</li>
                             </ul>
                         </template>
                     </el-table-column>

@@ -18,7 +18,7 @@
                 <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
                 <span class="yellow-span" v-else-if="detail.auditStatus === 'auditing'">{{$t('waitChecking')}}</span><!--待审核-->
                 <span class="red-span" v-else-if="detail.auditStatus === 'rejected'">{{$t('rejected')}}</span><!--已驳回-->
-                <span v-if="canApplyAuditProduct" class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
+                <span v-if="detail.auditStatus !== 'auditing' && detail.auditStatus !== 'enabled'" class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
             </div>
 
             <!--表单信息-->
@@ -37,7 +37,7 @@
                                 <div class="form-item-content" v-w-title="detail.productName">{{detail.productName | contentFilter}}</div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12" v-if="$store.state.manageOrgs.nodeType !== 'partner'">
+                        <i-col span="12" v-if="$store.state.manageOrgs.nodeType !== 'partner' && role !== 'other_org'">
                             <Form-item :label="$t('standardPrice')+'：'"><!--景区成本价-->
                                 <div class="form-item-content">{{detail.standardPrice | contentFilter}}</div>
                             </Form-item>
@@ -238,7 +238,7 @@
                 </div>
 
                 <!--产品日志-->
-                <template v-if="recordsVos && recordsVos.length > 0 && $store.state.manageOrgs.nodeType !== 'partner'">
+                <template v-if="recordsVos && recordsVos.length > 0 && $store.state.manageOrgs.nodeType !== 'partner' && role !== 'other_org'">
                     <title-temp title="productLog"></title-temp>
                     <div class="form-content">
                         <Timeline>
@@ -351,7 +351,9 @@
                 //备注
                 remark : '',
                 //可接受证件类型
-                acceptIdType : []
+                acceptIdType : [],
+                //查看产品详情的角色
+                role : '',
             };
         },
         computed : {
@@ -498,6 +500,13 @@
                             this.queryScenicOrgByAccountRole();
                         }
                     }
+                    if (params.role) {
+                        this.role = params.role;
+                    }
+                } else {
+                    this.$router.push({
+                        name : 'ticketType'
+                    })
                 }
             }
 

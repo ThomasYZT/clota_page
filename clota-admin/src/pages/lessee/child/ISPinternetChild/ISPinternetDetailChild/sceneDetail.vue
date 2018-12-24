@@ -37,9 +37,8 @@
                         <span class="iconfont icon-modify"></span>
                         {{$t('edit')}}
                     </span>
-                    <span :class="{'started'
-                        :formDataCopy.isStart ,'not-started' : !formDataCopy.isStart}">
-                        {{$t(formDataCopy.isStart ? 'hasStart' : 'hasNotStart')}}
+                    <span :class="{'started' :sceneDetail.status === 'open' ,'not-started' : sceneDetail.status !== 'open'}">
+                        {{$t(sceneDetail.status === 'open' ? 'hasStart' : 'hasNotStart')}}
                     </span>
                 </template>
 

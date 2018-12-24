@@ -101,22 +101,6 @@
                 <!--</div>-->
                 <!--</div>-->
 
-                <div class="content-item">
-                    <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
-                    <div class="main">
-                        <RadioGroup :value="String(settingData.handingWithScoreGrowthWhileRefund.score)"
-                                    @input="settingData.handingWithScoreGrowthWhileRefund.score = Boolean($event === 'true')"
-                                    vertical>
-                            <Radio label="false">
-                                <span>{{$t('noReturnIntegral')}}</span><!--用户退款时积分不退-->
-                            </Radio>
-                            <Radio label="true">
-                                <span>{{$t('returnIntegral')}}</span><!--用户退款时积分退回用户积分账户中-->
-                            </Radio>
-                        </RadioGroup>
-                    </div>
-                </div>
-
                 <!--会员3期暂时去掉-->
                 <!--<div class="content-item">-->
                 <!--<div class="title">{{$t('isReturnCoupon')}}</div>&lt;!&ndash;用户退款时卡券是否退还用户&ndash;&gt;-->
@@ -216,36 +200,6 @@
                     </div>
                 </div>
 
-                <!--新开卡会员积分赠送设置-->
-                <div class="content-item">
-                    <div class="title">
-                        {{$t('新开卡会员积分赠送设置')}}
-                        <Tooltip placement="top" transfer>
-                            <span class="iconfont icon-note"></span>
-                            <div slot="content">
-                                <div class="tip-trade">{{$t('新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。')}}</div>
-                            </div>
-                        </Tooltip>
-                    </div>
-                    <div :class="{'ivu-form-item-error': error.memberDonateIntegerErr, 'main': true}">
-                        <i-switch v-model="settingData.openCardSendScore.isSwitch"
-                                  @on-change="settingData.openCardSendScore.score = ''">
-                        </i-switch>
-                        <span class="text">{{$t('新开卡会员赠送')}}<!--会员生日当天消费可获得-->
-                        <Input v-model.trim="settingData.openCardSendScore.score"
-                               :disabled="!settingData.openCardSendScore.isSwitch"
-                               @on-blur="checkInputBlurFunc(settingData.openCardSendScore.score, 'memberDonateIntegerErr')"
-                               type="text"
-                               class="single-input"
-                               :placeholder="$t('inputField', {field: ''})"/>
-                        {{$t('积分')}}</span><!--倍积分-->
-                        <div class="ivu-form-item-error-tip"
-                             style="left: 173px;"
-                             v-if="error.memberDonateIntegerErr">{{error.memberDonateIntegerErr}}
-                        </div>
-                    </div>
-                </div>
-
                 <!--短信发送设置-->
                 <div class="content-item">
                     <div class="title">{{$t('短信发送设置')}}</div>
@@ -323,11 +277,6 @@
                 routerName : 'memberSetting',
                 //设置数据
                 settingData : {
-                    // 新开卡会员积分赠送设置
-                    openCardSendScore : {
-                        isSwitch : false,
-                        score : ''
-                    },
                     //会员卡有效期设置
                     memberValidPeriod : {
                         type : '',//类型
@@ -339,11 +288,6 @@
                     notificationBeforeCouponExpire : {
                         isSwitch : false,
                         day : '',//number
-                    },
-                    //用户退款时积分是否退还用户
-                    handingWithScoreGrowthWhileRefund : {
-                        score : false,//Boolean
-                        coupon : false,//Boolean
                     },
                     //修改会员储值、积分、虚拟账户余额设置
                     allowAdjustAccount : '',
@@ -370,7 +314,6 @@
                     vipValidityTimeError : '',//会员卡有效期设置
                     vipNumberError : '',//会员卡有效期设置
                     dayError : '',//卡券过期提醒设置
-                    memberDonateIntegerErr : '',//卡券过期提醒设置
                     tradeAmountErr : '',//交易金额错误
                     replaceCardFeeErr : '',//补卡收费金额错误
                 },
@@ -451,17 +394,9 @@
                                         vipValidityTime : '',//number
                                         vipNumber : '',//number
                                     },
-                                    openCardSendScore : res.data.openCardSendScore ? JSON.parse(res.data.openCardSendScore) : {
-                                        isSwitch : false,
-                                        score : ''
-                                    },
                                     notificationBeforeCouponExpire : res.data.notificationBeforeCouponExpire ? JSON.parse(res.data.notificationBeforeCouponExpire) : {
                                         isSwitch : false,
                                         day : '',//number
-                                    },
-                                    handingWithScoreGrowthWhileRefund : res.data.handingWithScoreGrowthWhileRefund ? JSON.parse(res.data.handingWithScoreGrowthWhileRefund) : {
-                                        score : false,//Boolean
-                                        coupon : false,//Boolean
                                     },
                                     smsSend : res.data.smsSend,
                                     replacementCardFee : res.data.replacementCardFee,
@@ -489,11 +424,9 @@
                         this.basicSet({
                             id : this.id,
                             memberValidPeriod : JSON.stringify(this.settingData.memberValidPeriod),
-                            openCardSendScore : JSON.stringify(this.settingData.openCardSendScore),
                             smsSend : this.settingData.smsSend,
                             replacementCardFee : this.settingData.replacementCardFee,
                             notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
-                            handingWithScoreGrowthWhileRefund : JSON.stringify(this.settingData.handingWithScoreGrowthWhileRefund),
                             allowAdjustAccount : this.settingData.allowAdjustAccount,
                         });
                     });
@@ -519,11 +452,6 @@
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
-
-                if (this.settingData.openCardSendScore.isSwitch === true &&
-                    !this.checkInputBlurFunc(this.settingData.openCardSendScore.score, 'memberDonateIntegerErr')) {
-                    return false;
-                }
 
                 if (this.settingData.memberValidPeriod.type === 'vipValidityType' &&
                     !this.checkInputBlurFunc(this.settingData.memberValidPeriod.vipValidity, 'vipValidityError')) {

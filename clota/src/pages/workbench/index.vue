@@ -1,17 +1,36 @@
 <!--工作台路由-->
 
 <template>
-    <router-view>
-    </router-view>
+    <div class="workbench">
+        <template v-if="manageOrgs.nodeType === 'scenic'">
+            <scenicService></scenicService>
+        </template>
+
+        <template v-else>
+            <cooperPartner></cooperPartner>
+        </template>
+    </div>
 </template>
 
 <script>
+    import cooperPartner from './cooperPartner/cooperPartner';
+    import scenicService from './scenicService/scenicService';
+    import { mapGetters } from 'vuex';
     export default {
-        data() {
-            return {}
+        components : {
+            cooperPartner,
+            scenicService
         },
-        methods: {}
-    }
+        data () {
+            return {};
+        },
+        computed : {
+            ...mapGetters([
+                'manageOrgs'
+            ])
+        },
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>
