@@ -457,26 +457,27 @@
             handleCommand ( item ) {
                 if (item) {
                     let ids = this.selectedRow.map(obj => obj.id).join(',');
+                    let allocationIds = this.selectedRow.map(obj => obj.allocationId).join(',');
                     switch (item) {
                         case 'checkPass' :
-                            this.modifyPolicyStatus(ids, 'enabled');
+                            this.modifyPolicyStatus(ids, allocationIds, 'enabled');
                             break;
                         case 'commissioned' :
-                            this.modifyPolicyStatus(ids, 'enabled');
+                            this.modifyPolicyStatus(ids, allocationIds, 'enabled');
                             break;
                         case 'forbidden' :
-                            this.modifyPolicyStatus(ids, 'not_enabled');
+                            this.modifyPolicyStatus(ids, allocationIds, 'not_enabled');
                             break;
                         case 'delete' :
                             this.batchDel();
                             break;
                         case 'reject' :
                             //驳回
-                            this.modifyPolicyStatus(ids, 'rejected');
+                            this.modifyPolicyStatus(ids, allocationIds, 'rejected');
                             break;
                         case 'commitCheck' :
                             //提交审核
-                            this.modifyPolicyStatus(ids, 'auditing');
+                            this.modifyPolicyStatus(ids, allocationIds, 'auditing');
                             break;
                         default:
                             break;
@@ -485,8 +486,9 @@
             },
 
             // 更新销售政策状态
-            modifyPolicyStatus ( ids, status ) {
+            modifyPolicyStatus ( ids, allocationIds, status ) {
                 ajax.post('modifyPolicyStatus',{
+                    allocationIds : allocationIds,
                     policyIds : ids,
                     status : status
                 }).then(res => {
