@@ -91,6 +91,17 @@ export default {
                     rightPath : topMenuName + '.' + 'reserveOrderDetail'
                 },
             },
+            //团队订单详情 -- 团队订单退单审核
+            cancelOrderDetail : {
+                path : '/cancelOrderDetail/team',
+                name : 'cancelOrderDetail',
+                component : () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/teamOrderDetail.vue'),
+                meta : {
+                    menuName : 'teamOrderDetail',
+                    _name : 'order-list',
+                    rightPath : topMenuName + '.' + 'reserveOrderDetail'
+                },
+            },
             //散客一级订单详情
             individualFirstLevel : {
                 path : '/ordert/detail/individualFirstLevel',

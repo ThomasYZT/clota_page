@@ -229,7 +229,7 @@
              */
             goTeamOrderDetail(scopeRow) {
                 this.$router.push({
-                    name: 'teamOrderDetail',
+                    name: 'cancelOrderDetail',
                     params: {orderId: scopeRow.id},
                 });
             },
