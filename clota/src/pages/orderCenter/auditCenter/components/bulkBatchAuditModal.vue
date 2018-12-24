@@ -127,6 +127,8 @@
                         this.hide();
 
                         this.$emit('on-audited');
+                    } else if (res.code === 'OD003' || res.code === 'OD010') {
+                        this.$Message.error('产品库存不足，改签失败');
                     } else {
                         this.$Message.error('审核失败');
                     }
