@@ -37,7 +37,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span :class="scope.row.auditStatus=='reject' ? 'red' : 'green'">{{$t(transAudit(scope.row.auditStatus))}}</span>
+                            <span :class="scope.row.auditStatus === 'reject' ? 'red' : 'green'">{{$t(transAudit(scope.row.auditStatus))}}</span>
                         </template>
                     </el-table-column>
                 </table-com>
@@ -45,7 +45,7 @@
                     <ul>
                         <li>{{$t('rejectedNum')}}：<span class="red">{{rejectProducts.length | contentFilter}}</span></li><!--驳回数量-->
                         <li>{{$t('passedNum')}}：<span class="green">{{passedProducts.length | contentFilter}}</span></li><!--通过数量-->
-                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{rejectProducts.length | contentFilter}}</span></li><!--申请数量-->
+                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{applyNumber | contentFilter}}</span></li><!--申请数量-->
                     </ul>
                 </div>
                 <!--退票手续费-->
@@ -84,6 +84,11 @@
         props : {
             baseInfo : Object,
             visitorInfo : Object,
+            //申请数量
+            'apply-number' : {
+                type : [Number,String],
+                default : '0'
+            }
         },
         components : {
             tableCom,
@@ -212,10 +217,9 @@
                 }
                 if (this.passedProducts && this.passedProducts.length > 0) {
                     auditParams['productIds'] = this.passedProducts.map(item => item.id).join(',');
-                    auditParams['audit'] = 'suuccess';
                 } else if (this.rejectProducts && this.rejectProducts.length > 0) {
-                    auditParams['productIds'] = this.rejectProducts.map(item => item.id).join(',');
-                    auditParams['audit'] = 'reject';
+                    // auditParams['productIds'] = this.rejectProducts.map(item => item.id).join(',');
+                    auditParams['productIds'] = '';
                 }
 
                 if (this.auditRemark.length <= 500) {
