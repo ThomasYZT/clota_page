@@ -18,18 +18,28 @@
                         @on-change="getTradeRatio">
             </DatePicker>
         </div>
-        <div class="chart-area">
-            <pie :pie-data="pieChartData"></pie>
-        </div>
+        <template v-if="pieChartData.data.length > 0">
+            <div class="chart-area">
+                <pie :pie-data="pieChartData"></pie>
+            </div>
+        </template>
+        <template v-else>
+            <div class="no-data-wrapper">
+                <noDataTip></noDataTip>
+            </div>
+        </template>
     </div>
 </template>
 <script>
     import ajax from '@/api/index.js';
     import pie from '../../components/pie.vue';
+    import forEach from 'lodash/forEach';
+    import noDataTip from '../../../../components/noDataTip/noData-tip';
 
     export default {
         components : {
-            pie
+            pie,
+            noDataTip
         },
         props : {},
         data () {
@@ -38,27 +48,13 @@
                 date : new Date(),
                 //游客来源柱状图表数据
                 pieChartData : {
-                    data : [
-                        /*{
-                            value : 20,
-                            name : '冰雪'
-                        },{
-                            value : 40,
-                            name : '餐饮'
-                        },{
-                            value : 40,
-                            name : '门票'
-                        },*/
-                    ],
+                    data : [],
                     legend : []
                 },
             }
         },
-        computed : {},
         created () {
             this.getTradeRatio();
-        },
-        mounted () {
         },
         watch : {},
         methods : {
@@ -66,13 +62,25 @@
              * 查询游客来源柱状图表数据
              */
             getTradeRatio () {
+                this.pieChartData = {
+                    data : [],
+                    legend : []
+                };
                 ajax.post('workbench-getOrderVisitorAreaRatio',{
                     date : this.date.format('yyyy-MM-dd'),
                 }).then(res => {
                     if (res.success) {
-                        this.pieChartData = res.data || [];
+                        forEach(res.data, (value, key) => {
+                            this.pieChartData.data.push({
+                                name : this.$t(key),
+                                value : value
+                            });
+                        });
                     } else {
-                        this.pieChartData = [];
+                        this.pieChartData = {
+                            data : [],
+                            legend : []
+                        };
                     }
                 });
             },
@@ -111,6 +119,12 @@
             .chart-area {
                 height: calc(100% - 45px);
             }
+        }
+
+        .no-data-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
     }
 </style>

@@ -18,13 +18,14 @@
             </RadioGroup>
         </div>
         <div class="chart-area">
-            <line-chart :line-data="lineData" @on-change="getLineChartData"></line-chart>
+            <line-chart :line-data="lineChartData" @on-change="getLineChartData"></line-chart>
         </div>
     </div>
 </template>
 <script>
     import ajax from '@/api/index.js';
     import lineChart from '../../components/line.vue';
+    import forEach from 'lodash/forEach';
 
     export default {
         components : {
@@ -46,40 +47,53 @@
                 //折线图数据
                 lineChartData : {
                     series : [],
-                    xAxisData : []
+                    xAxisData : [],
+                    legend : []
                 }
             }
         },
-        computed : {
-            lineData () {
-                let selectedLegend = this.quotaList.find(item => {
-                    return item.value == this.quotaType;
-                });
-                return Object.assign({}, this.lineChartData, { legend : [this.$t(selectedLegend.label)] });
-            }
-        },
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询经营状况数据
              */
             getPerformanceData () {
+                this.lineChartData = {
+                    series : [],
+                        xAxisData : [],
+                        legend : []
+                };
                 ajax.post('workbench-getPartnerEchartOptionData',{
                     queryType : this.quotaType,
                     startDate : this.date[0] ? this.date[0].format('yyyy-MM-dd') : '',
                     endDate : this.date[1] ? this.date[1].format('yyyy-MM-dd') : ''
                 }).then(res => {
                     if (res.success && res.data) {
-//                        this.lineChartData.series = this.lineChartData.xAxisData = [];
-
-                        this.$set(this.lineChartData, 'series', res.data.series || []);
+                        if (res.data.series) {
+                            //serie数据
+                            forEach(res.data.series, (scenicData, scenicName) => {
+                                this.lineChartData.series.push({
+                                    name : scenicName,
+                                    data : scenicData.map(item => {
+                                        return {
+                                            name : item.name,
+                                            value : item.value,
+                                            time : item.date,
+                                        };
+                                    }),
+                                });
+                                //legend数据
+                                this.lineChartData.legend.push({
+                                    name : scenicName,
+                                    icon : 'rect',
+                                });
+                            });
+                        } else {
+                            this.lineChartData.series = [];
+                        }
+                        //xAxisData数据
                         this.$set(this.lineChartData, 'xAxisData', res.data.xAxisData || []);
                     } else {
-                        this.lineChartData = { series : [], xAxisData : [] };
+                        this.lineChartData = { series : [], xAxisData : [], legend : [] };
                     }
                 });
             },
