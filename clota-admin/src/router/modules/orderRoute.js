@@ -77,7 +77,7 @@ export default {
     },
     //团队订单详情 -- 团队订单预审核
     teamOrderDetailPreAudit : {
-        path : '/order/teamOrder/detail',
+        path : '/teamOrder/detail',
         name : 'preAduitTeamOrderDetail',
         component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/teamOrderDetail.vue'),
         meta : {

@@ -22,6 +22,39 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="columnfirstAllocationPrice"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getSettlePrice(1,scope.row)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnsecondAllocationPrice"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getSettlePrice(2,scope.row)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnthirdAllocationPrice"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{getSettlePrice(3,scope.row)}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="columndocumentInfo"
                 show-overflow-tooltip
                 slot-scope="row"
@@ -38,7 +71,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { columnData1 } from './productInfoConfig';
+    import { columnData2 } from './productInfoConfig';
     export default {
         props : {
             //产品信息
@@ -54,7 +87,7 @@
         },
         data () {
             return {
-                columnData : columnData1
+                columnData : columnData2
             };
         },
         methods : {
@@ -69,6 +102,22 @@
                 } else {
                     return '';
                 }
+            },
+            /**
+             * 获取分销商价格
+             * @param{Number} level 级别
+             * @param{Object} rowData 行数据
+             */
+            getSettlePrice (level,rowData) {
+                let orderSettleList = rowData.orderSettleList ? rowData.orderSettleList : [];
+                for (let i = 0,j = orderSettleList.length; i < j; i++) {
+                    if (orderSettleList[i]['settleLevel'] === level) {
+                        return (orderSettleList[i]['orgName'] ? orderSettleList[i]['orgName'] : '-') +
+                            '/' +
+                            (orderSettleList[i]['settlePrice'] ? orderSettleList[i]['settlePrice'] : '-');
+                    }
+                }
+                return '-/-';
             }
         },
     };

@@ -2,12 +2,12 @@
 export const columnData1 = [
     {
         title : 'productName',
-        width : 215,
+        minWidth : 120,
         field : 'productName'
     },
     {
         title : 'channelProductUnitPice',
-        width : 200,
+        minWidth : 120,
         field : 'price',
         type : 'money'
     },
@@ -31,18 +31,18 @@ export const columnData1 = [
 export const columnData2 = [
     {
         title : 'productName',
-        width : 215,
+        minWidth : 120,
         field : 'productName'
     },
     {
         title : 'marketingPolicy',
-        width : 200,
-        field : 'policyName'
+        minWidth : 120,
+        field : 'name'
     },
     {
         title : 'scenicDistrbutePrice',
         minWidth : 120,
-        field : 'scenicPrice',
+        field : 'price',
         type : 'money'
     },
     {
@@ -63,7 +63,7 @@ export const columnData2 = [
     {
         title : 'channelProductUnitPice',
         width : 200,
-        field : 'channelInPrice',
+        field : 'actPrice',
         type : 'money'
     },
     {
