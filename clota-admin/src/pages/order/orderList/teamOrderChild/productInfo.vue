@@ -29,7 +29,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{getSettlePrice(1,scope.row)}}
+                    {{scope.row.firstLevelOrgName | contentFilter}}-{{scope.row.firstLevelSettlePrice | moneyFilter | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -40,7 +40,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{getSettlePrice(2,scope.row)}}
+                    {{scope.row.secondLevelOrgName | contentFilter}}-{{scope.row.secondLevelSettlePrice | moneyFilter | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -51,7 +51,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{getSettlePrice(3,scope.row)}}
+                    {{scope.row.thirdLevelOrgName | contentFilter}}-{{scope.row.thirdLevelSettlePrice | moneyFilter | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -103,22 +103,6 @@
                     return '';
                 }
             },
-            /**
-             * 获取分销商价格
-             * @param{Number} level 级别
-             * @param{Object} rowData 行数据
-             */
-            getSettlePrice (level,rowData) {
-                let orderSettleList = rowData.orderSettleList ? rowData.orderSettleList : [];
-                for (let i = 0,j = orderSettleList.length; i < j; i++) {
-                    if (orderSettleList[i]['settleLevel'] === level) {
-                        return (orderSettleList[i]['orgName'] ? orderSettleList[i]['orgName'] : '-') +
-                            '/' +
-                            (orderSettleList[i]['settlePrice'] ? orderSettleList[i]['settlePrice'] : '-');
-                    }
-                }
-                return '-/-';
-            }
         },
     };
 </script>

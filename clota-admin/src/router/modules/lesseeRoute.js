@@ -87,4 +87,16 @@ export default {
             lightMenu : 'lessee',
         },
     },
+
+    //合作渠道（个人） --修改
+    cooperaChannelPerDetailModify : {
+        path : '/cooperaChannelPer/detail/edit',
+        name : 'cooperaChannelPerDetailModify',
+        component : () => import(/* webpackChunkName: "lessee" */ '../../pages/lessee/child/cooperaChannelChild/child/modifyChannelInfo.vue'),
+        meta : {
+            _name : 'tanent',
+            menuName : 'lessee',
+            lightMenu : 'lessee',
+        },
+    },
 };
