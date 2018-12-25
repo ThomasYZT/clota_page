@@ -33,6 +33,7 @@
         </team-pay-account>
         <!--下单失败提示框-->
         <create-order-fail-modal v-model="failModalShow"
+                                 :type="createOrderFailType"
                                  :product-list="failCreatedProductList"
                                  :can-remove-product="canRemoveProduct"
                                  @del-failed-product="delCreatedFailProduct">
