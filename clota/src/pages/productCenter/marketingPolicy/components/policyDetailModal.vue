@@ -230,8 +230,7 @@
                 <!--改签规则-->
                 <br/>
                 <div class="line" v-if="detail.productPolicy && detail.productPolicy.alterRuleModel">
-                   <Form :label-width="140"
-                         label-position="right">
+                   <Form label-position="right">
                        <i-row>
                            <i-col span="12">
                                <Form-item :label="$t('alterRule')+':'"><!--改签规则-->
@@ -467,7 +466,7 @@
             .ivu-form-item{
                 margin: 0 auto;
                 text-align: left;
-                width: 100%;
+                width: auto;
                 float: left;
                 margin-right: 10px;
                 height: 30px;

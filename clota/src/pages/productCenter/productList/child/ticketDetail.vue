@@ -18,7 +18,7 @@
                 <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
                 <span class="yellow-span" v-else-if="detail.auditStatus === 'auditing'">{{$t('waitChecking')}}</span><!--待审核-->
                 <span class="red-span" v-else-if="detail.auditStatus === 'rejected'">{{$t('rejected')}}</span><!--已驳回-->
-                <span v-if="detail.auditStatus !== 'auditing' && detail.auditStatus !== 'enabled'" class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
+                <span v-if="detail.auditStatus !== 'auditing' && detail.auditStatus !== 'enabled' && role !== 'other_org'" class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
             </div>
 
             <!--表单信息-->
@@ -258,7 +258,7 @@
 
         </div>
 
-        <div class="footer">
+        <div class="footer" v-if="role !== 'other_org'">
             <!--已驳回-->
             <template v-if="detail.auditStatus === 'rejected' || detail.auditStatus === 'not_enabled'">
                 <Button type="primary"
