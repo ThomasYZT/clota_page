@@ -261,7 +261,7 @@ export default new Vuex.Store({
                         sessionStorage.setItem('token',res.data ? res.data.token : '');
                         return new Promise((resolve, reject) => {
                             let privCode = {};
-                            let privateData = res.data.privileges;
+                            let privateData = res.data ? res.data.privileges ? res.data.privileges : [] : [];
                             //获取账号的菜单权限
                             for (let i = 0,j = privateData.length; i < j; i++) {
                                 privCode[privateData[i]['privCode']] = 'allow';
@@ -386,8 +386,8 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            // store.commit('updateCardReadEnabled',true);
-            // return;
+            store.commit('updateCardReadEnabled',true);
+            return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
             if (window.rd ) {
                 try {
@@ -408,8 +408,8 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                // store.commit('updateCardReadEnabled',true);
-                // resolve('777777');
+                store.commit('updateCardReadEnabled',true);
+                resolve('777777');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {

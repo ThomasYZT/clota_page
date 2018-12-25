@@ -44,17 +44,18 @@
                     <!--class="single-input"/>-->
                     <!--</Form-item>-->
                     <!--</div>-->
-                    <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('会员卡功能') + '：'" prop="function"><!--会员卡功能-->
-                            <CheckboxGroup v-model="formData.function">
-                                <Checkbox v-for="item in rightList"
-                                          :key="item.value"
-                                          :label="item.value">
-                                    {{item.label}}
-                                </Checkbox>
-                            </CheckboxGroup>
-                        </Form-item>
-                    </div>
+                    <!--会员4期暂时去掉-->
+                    <!--<div class="ivsu-form-item-wrap">-->
+                        <!--<Form-item :label="$t('会员卡功能') + '：'" prop="function">&lt;!&ndash;会员卡功能&ndash;&gt;-->
+                            <!--<CheckboxGroup v-model="formData.function">-->
+                                <!--<Checkbox v-for="item in rightList"-->
+                                          <!--:key="item.value"-->
+                                          <!--:label="item.value">-->
+                                    <!--{{item.label}}-->
+                                <!--</Checkbox>-->
+                            <!--</CheckboxGroup>-->
+                        <!--</Form-item>-->
+                    <!--</div>-->
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('售卡金额') + '：'" prop="salePrice"><!--售卡金额-->
                             <Input v-model.trim="formData.salePrice"

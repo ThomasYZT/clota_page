@@ -104,7 +104,7 @@
                         if (this.isProductLog) {
                             // 改签审核，通过数量：
                             return `${this.$t('alterAndAudit')}，
-                            ${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。
+                            ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate ? new Date(contentsObj.alterDate).format('yyyy-MM-dd HH:mm:ss') : '-'}。
                             ${this.$t('remark')}：${contentsObj.remark}`;
                         } else {
                             // 改签审核，通过数量：

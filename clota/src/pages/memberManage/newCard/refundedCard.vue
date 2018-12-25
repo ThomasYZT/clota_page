@@ -9,6 +9,9 @@
         <!--头部tab组件-->
         <header-tabs :router-name="'refundedCard'"></header-tabs>
         <div class="container">
+            <Button class="batch-return-card"
+                    type="primary"
+                    @click="batchReturnCard">{{$t('批量退卡')}}</Button>
             <member-info @click-row-todo="toFunc">
             </member-info>
         </div>
@@ -24,7 +27,6 @@
             headerTabs,
             memberInfo,
         },
-        props : {},
         data () {
             return {
                 // 获取数据的请求参数
@@ -34,12 +36,6 @@
                 },
             };
         },
-        computed : {},
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 跳转到对应的操作页面
@@ -51,6 +47,14 @@
                     params : {
                         memberInfo : rowData
                     }
+                });
+            },
+            /**
+             * 批量退卡
+             */
+            batchReturnCard () {
+                this.$router.push({
+                    name : 'batchRefundCard'
                 });
             }
         }
@@ -85,8 +89,15 @@
     }
 
     .container {
+        position: relative;
         height: calc(100% - 70px);
         overflow: auto;
+
+        .batch-return-card{
+            z-index: 9;
+            @include absolute_pos(absolute,$top : 14px,$left : 405px);
+        }
+
         .content-wrap {
             width: 850px;
             margin: 20px auto;

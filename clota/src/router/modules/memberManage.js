@@ -158,6 +158,17 @@ export default {
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
+                    //会员管理--新开会员卡--批量退卡
+                    batchRefundedCard : {
+                        path : '/memberManage/newCard/batchRefund',
+                        name : 'batchRefundCard',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/batchReturnCard.vue'),
+                        meta : {
+                            menuName : 'refundedCard', //lang.config.js 里面的语言键值
+                            _name : 'new-card',
+                            rightPath : topMenuName + '.' + 'newCard',
+                        },
+                    },
                     //会员管理--新开会员卡--申请退卡
                     applyRefundedCard : {
                         path : '/memberManage/newCard/applyRefunded',
