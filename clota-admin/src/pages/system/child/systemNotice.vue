@@ -157,12 +157,14 @@
                     state : state
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$Message.success( this.$t('success') + state === 'true' ?
-                            this.$t('startUsing') :
-                            this.$t('stopUsing') + data.title);
+                        this.$Message.success( state === 'normal' ?
+                            this.$t('successTip',{ tip : this.$t('startUsing') + data.title }) :
+                            this.$t('successTip',{ tip : this.$t('stopUsing') + data.title }));
                         this.queryList();
                     } else {
-                        this.$Message.error(res.message || this.$t('fail'));
+                        this.$Message.error( res.message || (state === 'normal' ?
+                            this.$t('failureTip',{ tip : this.$t('startUsing') + data.title }) :
+                            this.$t('failureTip',{ tip : this.$t('stopUsing') + data.title })));
                     }
                 });
             },
