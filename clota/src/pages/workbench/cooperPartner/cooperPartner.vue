@@ -9,33 +9,34 @@
         <div class="overview-data clearfix">
             <!--今日预定人数-->
             <overview-data :label-name="$t('todayReserveNum')"
-                           :label-rate="itemsData.orderVisitorNum.rate"
-                           :label-num="itemsData.orderVisitorNum.value"
+                           :label-rate="itemsData.orderVisitorNum ? itemsData.orderVisitorNum.rate : 0"
+                           :label-num="itemsData.orderVisitorNum ? itemsData.orderVisitorNum.value : 0"
                            :icon="'icon-person-num'"
                            :icon-color="'#F7C002'"
-                           :label-curve="itemsData.orderVisitorNum.sign">
+                           :label-curve="itemsData.orderVisitorNum ? itemsData.orderVisitorNum.sign : ''">
             </overview-data>
             <!--今日预定数量-->
             <overview-data :label-name="$t('todayReserveQty')"
-                           :label-rate="itemsData.orderAuditedNum.rate"
-                           :label-num="itemsData.orderAuditedNum.value"
+                           :label-rate="itemsData.orderAuditedNum ? itemsData.orderAuditedNum.rate : 0"
+                           :label-num="itemsData.orderAuditedNum ? itemsData.orderAuditedNum.value : 0"
                            :icon="'icon-quantity'"
                            :icon-color="'#FB7A89'"
-                           :label-curve="itemsData.orderAuditedNum.sign">
+                           :label-curve="itemsData.orderAuditedNum ? itemsData.orderAuditedNum.sign : ''">
             </overview-data>
             <!--今日订单金额-->
             <overview-data :label-name="$t('todayOrderAmount')"
-                           :label-rate="itemsData.orderAuditedAmount.rate"
-                           :label-num="itemsData.orderAuditedAmount.value"
+                           :label-rate="itemsData.orderAuditedAmount ? itemsData.orderAuditedAmount.rate : 0"
+                           :label-num="itemsData.orderAuditedAmount ? itemsData.orderAuditedAmount.value : 0"
                            :icon="'icon-money-amount'"
                            :icon-color="'#03CC7F'"
-                           :label-curve="itemsData.orderAuditedAmount.sign">
+                           :label-curve="itemsData.orderAuditedAmount ? itemsData.orderAuditedAmount.sign : ''">
             </overview-data>
             <!--未处理通知-->
             <overview-data :label-name="$t('unHandledNotice')"
-                           :label-num="itemsData.workBackNum.value"
+                           :label-num="itemsData.workBackNum ? itemsData.workBackNum.value : 0"
                            :icon="'icon-untreated'"
-                           :icon-color="'#479FF8'">
+                           :icon-color="'#479FF8'"
+                           :show-rate="false">
             </overview-data>
         </div>
         <div class="quota-info-top">
@@ -100,7 +101,7 @@
                 },
                 productTypeOperateHead : productTypeOperateHead,
                 productNameOperateHead : productNameOperateHead,
-            }
+            };
         },
         computed : {},
         created () {
@@ -116,6 +117,13 @@
                 }).then((res) => {
                     if (res.success && res.data) {
                         this.itemsData = res.data;
+                    } else {
+                        this.itemsData = {
+                            orderVisitorNum : {},
+                            orderAuditedAmount : {},
+                            orderAuditedNum : {},
+                            workBackNum : {},
+                        };
                     }
                 });
             }

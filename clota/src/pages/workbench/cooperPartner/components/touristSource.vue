@@ -72,14 +72,13 @@
                     if (res.success) {
                         forEach(res.data, (value, key) => {
                             this.pieChartData.data.push({
-                                name : this.$t(key),
+                                name : key,
                                 value : value
                             });
                         });
                     } else {
                         this.pieChartData = {
                             data : [],
-                            legend : []
                         };
                     }
                 });
