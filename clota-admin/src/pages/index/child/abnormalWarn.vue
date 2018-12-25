@@ -19,8 +19,8 @@
                         </li>
                         <li class="server-name" v-w-title="item.name">{{item.name}}</li>
                         <li class="event-time" v-w-title="item.ctime">{{item.ctime}}</li>
-                        <li v-if="serverPermission" class="watch" @click="toDetail('serverDetail')">查看</li>
-                        <li v-if="lessPermission" class="watch" @click="toDetail('serverDetail')">查看</li>
+                        <li v-if="item.warningType === 1 && serverPermission" class="watch" @click="toServerDetail">查看</li>
+                        <li v-if="item.warningType === 2 && lessPermission" class="watch" @click="toLessDetail(item)">查看</li>
                     </ul>
                 </li>
             </ul>
@@ -69,11 +69,10 @@
         methods : {
             /**
              * 跳转详情
-             * @param data
              */
-            toDetail (data) {
+            toServerDetail () {
                 this.$router.push({
-                    name : data,
+                    name : 'serverDetail',
                     params : {
                         orderType : "team"
                     }
@@ -115,6 +114,22 @@
             pageNoChange (pageNo) {
                 this.pageNo = pageNo;
                 this.getExceptionAlarm();
+            },
+            /**
+             * 跳转到租户详情
+             * @param{Object} data 异常数据信息
+             */
+            toLessDetail (data) {
+                this.$router.push({
+                    name : 'ISPinternetDetail',
+                    params : {
+                        id : data.orgId,
+                        activeNode : {
+                            id : data.orgId,
+                            type : data.orgType
+                        }
+                    }
+                });
             }
         },
         created () {

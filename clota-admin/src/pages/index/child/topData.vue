@@ -56,7 +56,7 @@
              */
             getRate (val) {
                 if (common.isNotEmpty(val)) {
-                    return Number(val * 100).toFixed(2);
+                    return Math.abs(Number(val * 100).toFixed(2));
                 } else {
                     return '';
                 }
