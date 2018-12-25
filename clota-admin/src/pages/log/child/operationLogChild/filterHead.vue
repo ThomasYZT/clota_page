@@ -19,10 +19,10 @@
                                 :transfer="true"
                                 :clearable="true"
                                 @on-change="emitFreshData">
-                            <Option v-for="item in operateType"
+                            <Option v-for="item in operateTypeDeal"
                                     :value="item.lable"
                                     :key="item.lable">
-                                {{ item.lable }}
+                                {{ item.lable === 'all' ? $t('all') :  item.lable }}
                             </Option>
                         </Select>
                     </FormItem>
@@ -63,7 +63,6 @@
 </template>
 
 <script>
-    import { operateType } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -80,7 +79,7 @@
                     //账号
                     loginName : '',
                     //操作类型
-                    sysOperationScene : '',
+                    sysOperationScene : 'all',
                     //操作对象
                     sysTargetName : '',
                     //日志时间
@@ -107,6 +106,10 @@
                                 returnObj['sysLogStartDate'] = this.formData['date'][0].format('yyyy-MM-dd 00:00:00');
                                 returnObj['sysLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 23:59:59');
                             }
+                        } else if (item === 'sysOperationScene') {
+                            if (this.formData[item] && this.formData[item] !== 'all') {
+                                returnObj['operationScene'] = this.formData['sysOperationScene'];
+                            }
                         } else {
                             if (this.formData[item]) {
                                 returnObj[item] = this.formData[item];
@@ -124,7 +127,7 @@
                                 returnObj['saasLogEndDate'] = this.formData['date'][1].format('yyyy-MM-dd 23:59:59');
                             }
                         } else if (item === 'sysOperationScene') {
-                            if (this.formData[item]) {
+                            if (this.formData[item] && this.formData[item] !== 'all') {
                                 returnObj['operationScene'] = this.formData['sysOperationScene'];
                             }
                         } else if (item === 'sysTargetName') {
@@ -151,7 +154,7 @@
              */
             reset () {
                 this.formData.loginName = '';
-                this.formData.sysOperationScene = '';
+                this.formData.sysOperationScene = 'all';
                 this.formData.sysTargetName = '';
                 this.formData.date = [];
                 this.emitFreshData();
@@ -192,6 +195,15 @@
                     }
                 },
                 immediate : true
+            }
+        },
+        computed : {
+            //操作类型列表处理
+            operateTypeDeal () {
+                return [{
+                    lable : 'all',
+                    value : 'all'
+                }].concat(this.operateType);
             }
         }
     };
