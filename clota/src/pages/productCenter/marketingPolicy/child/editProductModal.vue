@@ -39,6 +39,7 @@
                                 <Select v-model="formData.productId"
                                         transfer
                                         :disabled="type === 'check'"
+                                        transfer
                                         :placeholder="$t('selectField', {msg: ''})"
                                         @on-change="changeChooseProduct">
                                     <Option v-for="(item,index) in list"
