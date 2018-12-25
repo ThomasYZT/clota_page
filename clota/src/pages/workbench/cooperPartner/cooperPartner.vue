@@ -32,7 +32,7 @@
                            :label-curve="itemsData.orderAuditedAmount ? itemsData.orderAuditedAmount.sign : ''">
             </overview-data>
             <!--未处理通知-->
-            <overview-data :label-name="$t('unHandledNotice')"
+            <overview-data :label-name="$t('pendingMatters')"
                            :label-num="itemsData.workBackNum ? itemsData.workBackNum.value : 0"
                            :icon="'icon-untreated'"
                            :icon-color="'#479FF8'"

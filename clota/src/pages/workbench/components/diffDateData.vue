@@ -41,6 +41,17 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    slot="column1"
+                    slot-scope="row"
+                    show-overflow-tooltip
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{$t(scope.row.name)}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column2"
                     slot-scope="row"
                     show-overflow-tooltip
