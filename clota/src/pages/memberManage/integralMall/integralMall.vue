@@ -298,7 +298,19 @@
              *  @param {object} rowData
              */
             pullOffGoods (rowData) {
-
+                ajax.post('updateGoodsInfo', {
+                    id : rowData.id,
+                    goodsStatus : 'down',
+                    requiredCredits : rowData.requiredCredits,
+                    upNum : 0,
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('down') }));
+                        this.getListData();
+                    } else {
+                        this.$Message.success(this.$t('failureTip', { tip : this.$t('down') }));
+                    }
+                })
             },
             /**
              * 上架商品

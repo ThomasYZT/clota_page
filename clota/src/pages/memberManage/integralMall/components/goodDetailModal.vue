@@ -151,7 +151,6 @@
              */
             editGood () {
                 ajax.post('updateGoodsInfo', {
-                    //商品id
                     id : this.formData.id,
                     goodsStatus : 'up',
                     requiredCredits : this.formData.requiredCredits,
