@@ -457,7 +457,7 @@
                     limitByIdNum : '',//身份证件购票限制
                     limitByMobileDay : '',//手机号购票限制
                     limitByMobileNum : '',//手机号购票限制
-                    stockType : '',//限制库存
+                    stockType : 'everyday',//限制库存
                     stockNum : '',//库存数量
                     //产品有效性
                     productEffSet : 'since_the_play',//产品有效性设置
