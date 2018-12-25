@@ -63,6 +63,8 @@ export default new Vuex.Store({
         isLoading : false,
         //当前正在加载中的接口个数
         promisings : 0,
+        //当前角色
+        roleType : ''
     },
     getters : {
         //当前语言状态
@@ -87,6 +89,10 @@ export default new Vuex.Store({
         isLoading : state => {
             return state.isLoading;
         },
+        //当前登录账号角色
+        roleType : state => {
+            return state.roleType;
+        }
     },
     mutations : {
         //设置用户权限
@@ -120,6 +126,10 @@ export default new Vuex.Store({
                 },200);
             }
         },
+        //更新登录账号角色
+        updateRoleType (state,roleType) {
+            state.roleType = roleType;
+        }
     },
     actions : {
         //获取用户权限信息
@@ -132,7 +142,6 @@ export default new Vuex.Store({
                         let privilegeData = {
                             // 'tanent' : 'allow'
                         };
-
                         for (let i = 0,j = privilegeSet.length; i < j; i++) {
                             privilegeData[privilegeSet[i]['privCode']] = 'allow';
                         }
@@ -142,6 +151,7 @@ export default new Vuex.Store({
                         resetRouter(routers);
                         store.commit('updatePermissionInfo',privilegeData);
                         store.commit('updateRouteInfo',routers);
+                        store.commit('updateRoleType',privilegeSet[0]['adminType']);
                         // 如果有权限，则跳转到有权限的第一个页面
                         if (routers.length > 0) {
                             resolve(routers[0]);
@@ -149,6 +159,9 @@ export default new Vuex.Store({
                             reject();
                         }
                     } else {
+                        store.commit('updatePermissionInfo',null);
+                        store.commit('updateRouteInfo',null);
+                        store.commit('updateRoleType','');
                         reject();
                     }
                 }).catch(() => {

@@ -11,17 +11,6 @@
             :table-com-min-height="250"
             :auto-height="true">
             <el-table-column
-                slot="columnproductName"
-                show-overflow-tooltip
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{getProductName(scope.row)}}
-                </template>
-            </el-table-column>
-            <el-table-column
                 slot="columnfirstAllocationPrice"
                 show-overflow-tooltip
                 slot-scope="row"
@@ -89,20 +78,6 @@
             return {
                 columnData : columnData2
             };
-        },
-        methods : {
-            /**
-             * 获取产品名称
-             * @param{Object} rowData 行数据
-             * @return{String} 产品名称字符串值
-             */
-            getProductName (rowData) {
-                if (rowData.productName) {
-                    return JSON.parse(rowData.productName).join(',');
-                } else {
-                    return '';
-                }
-            },
         },
     };
 </script>

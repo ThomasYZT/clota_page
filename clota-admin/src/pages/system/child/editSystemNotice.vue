@@ -16,6 +16,7 @@
                     <i-col span="22">
                         <FormItem :label="$t('noticeName')" prop="title">
                             <Input v-model.trim="formData.title"
+                                   :disabled="type === 'look'"
                                    :placeholder="$t('inputPlaceholder')"/>
                         </FormItem>
                     </i-col>
@@ -25,7 +26,8 @@
                         <FormItem :label="$t('noticeContent')" prop="images">
                             <div class="img-wrap" v-for="(item,index) in formData.images" :key="index">
                                 <img class="img-item"  :src="item"/>
-                                <div class="mask-wrap">
+                                <div class="mask-wrap"
+                                     v-if="type !== 'look'">
                                     <span class="iconfont icon-delete" @click="delImg(index)"></span>
                                 </div>
                             </div>
@@ -52,6 +54,7 @@
                     <i-col span="22">
                         <FormItem :label="$t('desc')" prop="content">
                             <Input v-model.trim="formData.content"
+                                   :disabled="type === 'look'"
                                    type="textarea"
                                    :placeholder="$t('inputPlaceholder')"/>
                         </FormItem>

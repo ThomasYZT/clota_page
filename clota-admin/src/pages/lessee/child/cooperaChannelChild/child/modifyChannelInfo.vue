@@ -17,13 +17,13 @@
                 <i-row>
                     <i-col span="11">
                         <!--租户公司名称-->
-                        <FormItem :label="$t('name')" >
+                        <FormItem :label="$t('name')" v-if="personalChannel" >
                             {{formData.name | contentFilter}}
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--身份证号-->
-                        <FormItem :label="$t('身份证号')">
+                        <FormItem :label="$t('身份证号')" v-if="personalChannel" >
                             {{formData.certificateNumber | contentFilter}}
                         </FormItem>
                     </i-col>
@@ -68,18 +68,18 @@
                 <i-row>
                     <!--个人说明-->
                     <i-col span="24">
-                        <FormItem :label="$t('个人说明')">
+                        <FormItem :label="$t('个人说明')" v-if="personalChannel" >
                             <Input v-model.trim="formData.description" type="textarea"/>
                         </FormItem>
                     </i-col>
                 </i-row>
             </Form>
             <div class="footer">
-                <Button @click="save('close')"
+                <Button @click="save"
                         type="primary"
                         class="ivu-btn-min btn-margin"
                         :loading="addLoading">{{$t('confirmEdit')}}</Button>
-                <Button  @click="save('open')" class="ivu-btn-min">{{$t('cancel')}}</Button>
+                <Button  @click="cancel" class="ivu-btn-min">{{$t('cancel')}}</Button>
             </div>
         </div>
     </div>
@@ -107,7 +107,9 @@
                 //表单校验规则
                 ruleValidate : {
 
-                }
+                },
+                //是否在提交中
+                addLoading : false
             };
         },
         components : {
@@ -133,7 +135,18 @@
                     }
                 }
             },
-            addLoading () {
+            /**
+             * 取消编辑合作伙伴详情
+             */
+            cancel () {
+                this.$router.push({
+                    name : this.personalChannel ? 'cooperaChannelPer' : 'cooperaChannelOrg'
+                });
+            },
+            /**
+             * 保存编辑的信息
+             */
+            save () {
 
             }
         },
@@ -167,6 +180,14 @@
                 }
                 return [];
             },
+            //个人合作伙伴
+            personalChannel () {
+                return this.$route.name === 'cooperaChannelPerDetailModify';
+            },
+            //机构合作伙伴
+            orgChannel () {
+                return this.$route.name === 'cooperaChannelPerDetailModify';
+            }
         }
     };
 </script>
