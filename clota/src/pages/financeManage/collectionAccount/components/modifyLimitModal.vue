@@ -16,12 +16,12 @@
                     <span>{{formData.orgName}}</span>
                 </Form-item>
                 <!--信用额度-->
-                <Form-item :label="$t('creditBalance')" prop="creditLimits">
+                <Form-item :label="$t('creditBalance')" prop="creditBalance">
                     <Input v-model.trim="formData.creditBalance" :placeholder="$t('inputField', {field: $t('creditBalance')})" />
                     <span style="margin-left: 10px;">{{$t('yuan')}}</span>
                 </Form-item>
                 <!--预警额度-->
-                <Form-item :label="$t('warningLines')" prop="warningLimits">
+                <Form-item :label="$t('warningLines')" prop="alarmValue">
                     <Input v-model.trim="formData.alarmValue" :placeholder="$t('inputField', {field: $t('warningLines')})" />
                     <span style="margin-left: 10px;">{{$t('yuan')}}</span>
                 </Form-item>
@@ -43,14 +43,9 @@
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
-    import pick from 'lodash/pick';
 
     export default {
-        props: ['row-data'],
-        components: {
-        },
         data () {
-            let self = this;
             const validateMethod = {
                 emoji :  (rule, value, callback) => {
                     if (value && value.isUtf16()) {
@@ -59,59 +54,76 @@
                         callback();
                     }
                 },
+
+                //校验是否为正整数
+                validateMoney : (rule,value,callback) => {
+                    if (value) {
+                        common.validateMoney(value).then(() => {
+                            callback();
+                        }).catch(err => {
+                            if (err === 'errorMaxLength') {
+                                callback(this.$t('errorMaxLength',{ field : rule.field === 'alarmValue' ? this.$t('warningLines') : this.$t(rule.field),length : 10 }));
+                            } else {
+                                callback(this.$t(err,{ field : rule.field === 'alarmValue' ? this.$t('warningLines') : this.$t(rule.field) }));
+                            }
+                        });
+                    } else {
+                        callback();
+                    }
+                },
             };
 
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {},
+                formData : {
+                    id : '',
+                    //信用额度
+                    creditBalance : '',
+                    //预警额度
+                    alarmValue : ''
+                },
                 //校验规则
-                ruleValidate: {
-                    /*rechargeAmount: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('充值金额')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                    ],*/
+                ruleValidate : {
+                    //信用额度
+                    creditBalance : [
+                        { required : true, message: this.$t('errorEmpty', { msg : this.$t('信用额度')}), trigger: 'blur' },
+                        { validator : validateMethod.validateMoney, trigger: 'blur' },
+                        { validator : validateMethod.emoji, trigger: 'blur' },
+                    ],
+                    //预警额度
+                    alarmValue : [
+                        { required : true, message: this.$t('errorEmpty', { msg : this.$t('预警额度')}), trigger: 'blur' },
+                        { validator : validateMethod.validateMoney, trigger: 'blur' },
+                        { validator : validateMethod.emoji, trigger: 'blur' },
+                    ]
 
                 },
             }
-        },
-        watch: {
-
         },
         methods: {
 
             show ( data ) {
                 if( data ){
-                    this.formData = defaultsDeep({}, this.formData, data.item);
+                    this.formData = defaultsDeep({}, data.item );
                 }
                 this.visible = true;
-            },
-
-            //表单校验
-            formValidateFunc () {
-                this.$refs.formValidate.validate((valid) => {
-                    if(valid){
-
-                    }
-                })
             },
 
             //关闭模态框
             hide(){
                 this.visible = false;
-                this.formData = {
-                    partner: '',
-                    rechargeAmount: 0,
-                    payType: '',
-                    remark: '',
-                };
-
+                this.$refs.formValidate.resetFields();
             },
 
 
             // 确定
             confirm () {
-                this.confirmRecharge(this.formData);
+                this.$refs.formValidate.validate((valid) => {
+                    if(valid){
+                        this.confirmRecharge(this.formData);
+                    }
+                })
             },
 
             // 确认充值
@@ -147,7 +159,7 @@
             }
 
             /deep/ .ivu-form-item {
-                margin-bottom: 10px;
+                margin-bottom: 20px;
 
                 .ivu-form-item-label {
                     padding: 8px 10px 8px 12px;
