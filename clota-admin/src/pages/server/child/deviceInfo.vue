@@ -7,51 +7,54 @@
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="device-detail">
-            <div class="device-name">
-                {{$t('serverListMsg',{msg : serverDetail.serverName})}}
-            </div>
-            <div class="de-li">
-                <ul class="detail-list">
-                    <!-- 设备名称 -->
-                    <li class="arg-list">
-                        <span class="key">{{$t('deviceName')}}：</span>
-                        <span class="val">{{serverDetail.serverName}}</span>
-                    </li>
-                    <!-- 系统 -->
-                    <li class="arg-list">
-                        <span class="key">{{$t('system')}}：</span>
-                        <span class="val">{{serverDetail.opSystme}}</span>
-                    </li>
-                    <!-- 系统描述 -->
-                    <li class="arg-list">
-                        <span class="key">{{$t('systemDesc')}}：</span>
-                        <span class="val val-special">{{serverDetail.description}}</span>
-                    </li>
-                </ul>
-                <ul class="detail-list">
-                    <!-- ip地址 -->
-                    <li class="arg-list">
-                        <span class="key">{{$t('ipAddress')}}：</span>
-                        <span class="val">{{serverDetail.ip}}</span>
-                    </li>
-                    <!-- 系统类型 -->
-                    <li class="arg-list">
-                        <span class="key">{{$t('systemType')}}：</span>
-                        <span class="val">{{$t('bit',{length : serverDetail.systmeBit})}}</span>
-                    </li>
-                </ul>
-                <ul class="detail-list">
-                    <!-- 应用服务 -->
-                    <li class="arg-list">
-                        <span class="key">{{$t('usingService')}}：</span>
-                        <span class="val">{{serverDetail.serviceName}}</span>
-                    </li>
-                    <!-- 监听评率 -->
-                    <li class="arg-list">
-                        <span class="key">{{$t('listenRate')}}：</span>
-                        <span class="val">{{$t('minute',{minute : serverDetail.monitoringFrequencc})}}</span>
-                    </li>
-                </ul>
+            <div class="server-info">
+                <div class="modify" @click="modify"> <span class="iconfont icon-edit"></span>{{$t('modify')}}</div>
+                <div class="device-name">
+                    {{$t('serverListMsg',{msg : serverDetail.serverName})}}
+                </div>
+                <div class="de-li">
+                    <ul class="detail-list">
+                        <!-- 设备名称 -->
+                        <li class="arg-list">
+                            <span class="key">{{$t('deviceName')}}：</span>
+                            <span class="val">{{serverDetail.serverName}}</span>
+                        </li>
+                        <!-- 系统 -->
+                        <li class="arg-list">
+                            <span class="key">{{$t('system')}}：</span>
+                            <span class="val">{{serverDetail.opSystme}}</span>
+                        </li>
+                        <!-- 系统描述 -->
+                        <li class="arg-list">
+                            <span class="key">{{$t('systemDesc')}}：</span>
+                            <span class="val val-special">{{serverDetail.description}}</span>
+                        </li>
+                    </ul>
+                    <ul class="detail-list">
+                        <!-- ip地址 -->
+                        <li class="arg-list">
+                            <span class="key">{{$t('ipAddress')}}：</span>
+                            <span class="val">{{serverDetail.ip}}</span>
+                        </li>
+                        <!-- 系统类型 -->
+                        <li class="arg-list">
+                            <span class="key">{{$t('systemType')}}：</span>
+                            <span class="val">{{$t('bit',{length : serverDetail.systmeBit})}}</span>
+                        </li>
+                    </ul>
+                    <ul class="detail-list">
+                        <!-- 应用服务 -->
+                        <li class="arg-list">
+                            <span class="key">{{$t('usingService')}}：</span>
+                            <span class="val">{{serverDetail.serviceName}}</span>
+                        </li>
+                        <!-- 监听评率 -->
+                        <li class="arg-list">
+                            <span class="key">{{$t('listenRate')}}：</span>
+                            <span class="val">{{$t('minute',{minute : serverDetail.monitoringFrequencc})}}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="system-alarm">
                 <div class="name">
@@ -136,11 +139,16 @@
              * @param params
              */
             getParams (params) {
+                debugger
                 if (params.id) {
                     this.serverId = params.id;
                     this.serverIp = params.ip;
                     this.queryServerwarningData();
                     this.queryMoreWarningData();
+                } else {
+                    this.$router.push({
+                        name : 'server'
+                    });
                 }
             },
             /**
@@ -155,7 +163,7 @@
                     } else {
                         this.serverDetail = {};
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.serverDetail = {};
                 });
             },
@@ -173,16 +181,27 @@
                     } else {
                         this.warnInfoList = [];
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.warnInfoList = [];
+                });
+            },
+            /**
+             * 修改服务器信息
+             */
+            modify () {
+                this.$router.push({
+                    name : 'modifyServer',
+                    params : {
+                        serverDetail : this.serverDetail
+                    }
                 });
             }
         },
-        beforeRouteEnter (to,from,next) {
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        }
+        // beforeRouteEnter (to,from,next) {
+        //     next(vm => {
+        //         vm.getParams(to.params);
+        //     });
+        // }
     };
 </script>
 
@@ -200,6 +219,21 @@
             @include padding_place();
             padding: 26px 60px 0 60px;
             overflow: auto;
+
+            .server-info{
+                position: relative;
+
+                &:hover .modify{
+                    display: block;
+                }
+
+                .modify{
+                    @include absolute_pos(absolute,$right : 0);
+                    display: none;
+                    cursor: pointer;
+                    color: $color_blue;
+                }
+            }
 
             .device-name {
                 padding: 14px 0;

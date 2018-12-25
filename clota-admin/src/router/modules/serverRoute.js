@@ -52,6 +52,17 @@ export default {
             lightMenu : 'server',
         },
     },
+    //编辑服务器
+    modifyServer : {
+        path : '/server/modifyServer',
+        name : 'modifyServer',
+        component : () => import(/* webpackChunkName: "server" */ '../../pages/server/child/addServer.vue'),
+        meta : {
+            _name : 'server',
+            menuName : 'server',
+            lightMenu : 'server',
+        },
+    },
 
     //日志记录详情
     logDetail : {

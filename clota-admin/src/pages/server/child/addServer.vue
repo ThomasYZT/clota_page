@@ -4,7 +4,7 @@
     <div class="add-server">
         <!--面包屑导航-->
         <bread-crumb-head
-            :locale-router="$t('addServer')"
+            :locale-router="localeRouter"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="add-server-info">
@@ -80,6 +80,14 @@
             </Form>
             <div class="footer">
                 <Button type="primary"
+                        v-if="isModify"
+                        @click="save"
+                        class="ivu-btn-min"
+                        :loading="addLoading">
+                    {{$t('confirmEdit')}}
+                </Button>
+                <Button type="primary"
+                        v-else
                         @click="save"
                         class="ivu-btn-min"
                         :loading="addLoading">
@@ -100,8 +108,10 @@
     import { listenRateEnum, systemTypeList } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
     import { isIpv4,isIpv6 } from '../../../assets/js/constVariable';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead
         },
@@ -109,6 +119,12 @@
             //校验ip地址是否正确
             const validateIp = (rule,value,callback) => {
                 if (value) {
+                    if (this.isModify) {
+                        if (this.originalFormData.IPname === value) {
+                            callback();
+                            return;
+                        }
+                    }
                     if (isIpv4(value) || isIpv6(value)) {
                         ajax.post('queryServerByIp',{
                             ip : value
@@ -117,10 +133,10 @@
                                 if (!res.data) {
                                     callback();
                                 } else {
-                                    callback(this.$t('fieldExist',{ filed : this.$t('ipAddress') }));
+                                    callback(this.$t('fieldExist',{ field : this.$t('ipAddress') }));
                                 }
                             } else {
-                                callback(this.$t('checkFail',{ filed : this.$t('ipAddress') }) );
+                                callback(this.$t('checkFail',{ field : this.$t('ipAddress') }) );
                             }
                         });
                     } else {
@@ -133,6 +149,12 @@
             //校验服务器名称是否重复
             const validateServerName = (rule,value,callback) => {
                 if (value) {
+                    if (this.isModify) {
+                        if (this.originalFormData.serverName === value) {
+                            callback();
+                            return;
+                        }
+                    }
                     ajax.post('queryServerByServerName',{
                         serverName : value
                     }).then(res => {
@@ -140,10 +162,10 @@
                             if (!res.data) {
                                 callback();
                             } else {
-                                callback(this.$t('fieldExist',{ filed : this.$t('serverName') }));
+                                callback(this.$t('fieldExist',{ field : this.$t('serverName') }));
                             }
                         } else {
-                            callback(this.$t('checkFail',{ filed : this.$t('serverName') }) );
+                            callback(this.$t('checkFail',{ field : this.$t('serverName') }) );
                         }
                     });
                 } else {
@@ -151,17 +173,11 @@
                 }
             };
             return {
-                //上级路由列表
-                beforeRouterList : [
-                    {
-                        name : this.$t('serverList'),
-                        router : {
-                            name : 'server'
-                        }
-                    }
-                ],
+                //存储原始表单数据，用于判断服务器信息是否改变过
+                originalFormData : {},
                 //表单数据
                 formData : {
+                    id : '',
                     //服务器名称
                     serverName : '',
                     //ip地址
@@ -237,7 +253,11 @@
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        this.addServerse();
+                        if (this.isModify) {
+                            this.modifyServer();
+                        } else {
+                            this.addServerse();
+                        }
                     } else {
                         this.addLoading = false;
                     }
@@ -256,6 +276,7 @@
              */
             addServerse () {
                 ajax.post('addServerse',{
+                    id : this.isModify ? this.formData.id : '',
                     serverName : this.formData.serverName,
                     ip : this.formData.IPname,
                     serviceName : this.formData.usingService,
@@ -265,17 +286,111 @@
                     opSystme : this.formData.system,
                 }).then(res => {
                    if (res.status === 200) {
-                        this.$Message.success(this.$t('addSuccess'));
+                       this.$Message.success(this.$t('addSuccess'));
                         this.$router.push({
                             name : 'server'
                         });
                    } else {
-                        this.$Message.error(res.message || this.$t('interfaceError'));
+                       this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t('add') }));
                    }
                 }).finally(() =>{
                     this.addLoading = false;
                 });
             },
+            /**
+             * 获取路由信息
+             * @param{Object} params
+             */
+            getParams (params) {
+                if (this.$route.name === 'modifyServer') {
+                    if (params && params.serverDetail && Object.keys(params.serverDetail).length > 0) {
+                        this.formData.id =  params.serverDetail.id;
+                        this.formData.serverName =  params.serverDetail.serverName;
+                        this.formData.IPname =  params.serverDetail.ip;
+                        this.formData.usingService =  params.serverDetail.serviceName;
+                        this.formData.system =  params.serverDetail.opSystme;
+                        this.formData.systemType =  params.serverDetail.systmeBit;
+                        this.formData.listenRate =  String(params.serverDetail.monitoringFrequencc);
+                        this.formData.systemDesc =  params.serverDetail.description;
+                        this.originalFormData = JSON.parse(JSON.stringify(this.formData));
+                    } else {
+                        this.$router.push({
+                            name : 'serverDetail'
+                        });
+                    }
+                } else {
+                    this.originalFormData = {};
+                }
+            },
+            /**
+             * 修改服务器信息
+             */
+            modifyServer () {
+                ajax.post('updateServerse',{
+                    id : this.formData.id,
+                    serverName : this.formData.serverName,
+                    ip : this.formData.IPname,
+                    serviceName : this.formData.usingService,
+                    systmeBit : this.formData.systemType,
+                    monitoringFrequencc : this.formData.listenRate,
+                    description : this.formData.systemDesc,
+                    opSystme : this.formData.system,
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
+                        this.$router.push({
+                            name : 'serverDetail'
+                        });
+                    } else {
+                        this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t('edit') }));
+                    }
+                }).finally(() =>{
+                    this.addLoading = false;
+                });
+            }
+        },
+        computed : {
+            // 上级路由列表
+            beforeRouterList () {
+                if (this.$route.name === 'modifyServer') { //编辑服务器
+                    return [
+                        {
+                            name : this.$t('serverList'),
+                            router : {
+                                name : 'server'
+                            }
+                        },
+                        {
+                            name : this.$t('服务器详情'),
+                            router : {
+                                name : 'serverDetail'
+                            }
+                        }
+                    ];
+                } else if (this.$route.name === 'addServer') { //新增服务器
+                    return [
+                        {
+                            name : this.$t('serverList'),
+                            router : {
+                                name : 'server'
+                            }
+                        }
+                    ];
+                }
+                return [];
+            },
+            //当前路由名称
+            localeRouter () {
+                if (this.$route.name === 'modifyServer') { //编辑服务器
+                    return '编辑服务器';
+                } else if (this.$route.name === 'addServer') { //新增服务器
+                    return 'addServer';
+                }
+            },
+            //是否在修改页面
+            isModify () {
+                return this.$route.name === 'modifyServer';
+            }
         }
     };
 </script>
