@@ -53,15 +53,15 @@
                     <div class="ivu-form-item-wrap single" v-if="formData.saleRule.type === 'playBeforeSold'">
                         <Form-item :label="$t('aheadDays')"><!--提前天数(M)-->
                             <InputNumber :max="365"
-                                         :min="1"
-                                         :editable="false"
+                                         :min="0"
+                                         :precision="0"
                                          v-model.trim="formData.saleRule.beforeDay"
                                          :placeholder="$t('inputField', {field: ''})">
                             </InputNumber>
                             <span class="split">{{$t('To')}}</span>
                             <InputNumber :max="365"
-                                         :editable="false"
                                          :min="formData.saleRule.beforeDay || 0"
+                                         :precision="0"
                                          v-model.trim="formData.saleRule.afterDay"
                                          :placeholder="$t('inputField', {field: ''})">
                             </InputNumber>
