@@ -118,6 +118,7 @@
                 this.$router.push({
                     name : 'helperCenter'
                 });
+                this.$store.commit('changeOperateLine',false);
             }
         },
         created () {

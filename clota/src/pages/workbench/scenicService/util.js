@@ -71,13 +71,22 @@ export const routerPackage = (rowData, routerInfo) => {
         //改签 申请、审核申请
         case 'apply_ticket_alter' :
         case 'audit_ticket_alter' :
+            routerObj = {
+                name : 'individualFirstLevel',
+                params : {
+                    orderId : rowData.extData.id ? rowData.extData.id : '',
+                }
+            };
+            break;
         //团队订单 申请、驳回、通过
         case 'create_team_order' :
         case 'reject_team_order' :
         case 'pass_team_order' :
             routerObj = {
-                name : 'reserveOrderDetail',
-                params : rowData.extData
+                name : 'teamOrderDetail',
+                params : {
+                    orderId : rowData.extData.id ? rowData.extData.id : '',
+                }
             };
             break;
         //下单失败

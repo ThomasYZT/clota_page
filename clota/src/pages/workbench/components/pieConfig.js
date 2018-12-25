@@ -69,13 +69,15 @@ export default function (legendData, seriesData) {
     };
     if (seriesData && seriesData.length > 0) {
         for (let i = 0, j = seriesData.length; i < j; i++) {
-            option.value = seriesData[i].value;
-            option.name = seriesData[i].name;
-            seriesOption.push(option);
+            let _option = defaultsDeep({}, option);
+            _option.value = seriesData[i].value;
+            _option.name = seriesData[i].name;
+            seriesOption.push(_option);
         }
     } else {
         seriesOption = [option];
     }
+    console.log(seriesOption);
     return defaultsDeep({
         legend : {
             data : legendData

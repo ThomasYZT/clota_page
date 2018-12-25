@@ -19,6 +19,7 @@
 
         <quill-editor
             ref="myQuillEditor"
+            v-model="content"
             :options="editorOption"
             @change="onEditorChange($event)">
         </quill-editor>
@@ -77,6 +78,7 @@
                     placeholder : this.$t('inputPlaceholder'),
 
                 },
+                content : '',
             };
         },
         computed : {
@@ -122,6 +124,9 @@
                 this.$Message.error(this.$t('failureTip', { tip : this.$t('insertImg') }));
             }
         },
+        created () {
+            this.content = this.value;
+        }
     };
 </script>
 

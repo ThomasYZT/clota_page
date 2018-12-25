@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="edit-panel">
-        <template v-if="nowfileItem.type === 'new-file' || nowfileItem.type === 'edit-file'">
+        <template v-if="nowfileItem.type === 'new-file' || editable">
             <div class="form-wrapper">
                 <Form ref="form"
                       label-position="left"
@@ -31,8 +31,10 @@
                 <p class="content" v-html="content"></p>
             </div>
             <div class="btn-wrapper">
+                <Button type="primary" class="ivu-btn-90px" @click="edit">编辑</Button>
                 <Button type="error" class="ivu-btn-90px" @click="del">删除</Button>
             </div>
+
         </template>
         <template v-else>
             <div class="no-data-wrapper">
@@ -85,27 +87,52 @@
                     initialFrameHeight : 400
                 },
                 content : '',
+                editable : false
             };
         },
         methods : {
             save () {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
-                        ajax.post('addPage', {
+                        if (this.editable) {
+                            this.editFile();
+                        } else {
+                            this.newFolder();
+                        }
+                    }
+                })
+            },
+            newFolder () {
+                ajax.post('addPage', {
+                    folderId : this.nowfileItem.folderId,
+                    title : this.formData.title,
+                    content : this.formData.content,
+                }).then(res => {
+                    if (res.status === 200 && res.data) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        this.$emit('updatePageList', {
                             folderId : this.nowfileItem.folderId,
-                            title : this.formData.title,
-                            content : this.formData.content,
-                        }).then(res => {
-                            if (res.status === 200 && res.data) {
-                                this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
-                                this.$emit('updatePageList', {
-                                    folderId : this.nowfileItem.folderId,
-                                    fileId : res.data.id,
-                                });
-                            } else {
-                                this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
-                            }
+                            fileId : res.data.id,
                         });
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                    }
+                });
+            },
+            editFile () {
+                ajax.post('updatePage', {
+                    id : this.nowfileItem.id,
+                    title : this.formData.title,
+                    content : this.formData.content,
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('edit') }));
+                        this.$emit('updatePageList', {
+                            folderId : this.nowfileItem.folderId,
+                            fileId : this.nowfileItem.id,
+                        });
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('edit') }));
                     }
                 })
             },
@@ -140,6 +167,23 @@
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('delete') }));
                     }
                 })
+            },
+            /**
+             * 编辑文件
+             */
+            edit () {
+                this.editable = true;
+                this.formData.title = this.nowfileItem.name;
+                this.formData.content = this.content;
+            },
+            reset () {
+                this.editable = false;
+                this.formData = {
+                    folderId : '',
+                    title : '',
+                    picsIDs : [],
+                    content : '',
+                };
             }
         },
         watch : {
@@ -152,6 +196,7 @@
                     if (this.$refs.form) {
                         this.$refs.form.resetFields();
                     }
+                    this.reset();
                 },
                 deep : true,
             }
@@ -164,8 +209,9 @@
 
     .edit-panel {
         position: relative;
+        padding-bottom: 50px;
+        min-height: 100%;
         width: 100%;
-        height: 100%;
 
         .form-wrapper {
             height: 100%;
@@ -188,7 +234,7 @@
             .edit-form-item {
                 width: 100%;
                /deep/ .ivu-form-item-content {
-                   height: 550px;
+                   height: 570px;
                    margin-left: 0 !important;
                }
             }
@@ -205,9 +251,11 @@
         }
 
         .no-data-wrapper {
-            width: 100%;
-            height: 100%;
-            position: relative;
+            @include absolute_pos(absolute, 0, 0, 0, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
     }
 
@@ -217,8 +265,13 @@
     }
 
     .page-content {
+        width: 100%;
         padding: 10px;
         word-break: break-all;
+
+        /deep/ img {
+            max-width: 100%;
+        }
 
     }
 
