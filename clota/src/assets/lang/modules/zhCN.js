@@ -2076,4 +2076,8 @@ export default {
     'storeGetGrowthSettingValidateTime' : '储值获得成长值生效设置',
     'submitSuccess' : '提交成功',
     'hasKnown' : '知道了',
+    'upQuantity' : '上架数量',
+    'overPlusUpQuantity' : '剩余可上架数量',
+    'nowUpQuantity' : '当前上架数量',
+    'upNum' : '上架数量',
 }

@@ -11,7 +11,7 @@
               :model="formData"
               :rules="ruleValidate"
               label-position="right"
-              :label-width="130">
+              :label-width="150">
 
             <i-row>
                 <i-col span="16" offset="4">
@@ -20,21 +20,25 @@
                         <span>{{detail.name}}</span>
                     </Form-item>
 
-                    <!--库存数量-->
-                    <Form-item :label="$t('colonSetting', { key : $t('stockNum') })">
-                        <span>{{detail.stockNum}}</span>
+                    <!--剩余可上架数量 = 库存数量 - 上架数量 - 已兑换未领取，此处后台已处理已兑换未领取数量-->
+                    <Form-item :label="$t('colonSetting', { key : $t('overPlusUpQuantity') })">
+                        <span>{{detail.stockNum - detail.upNum}}</span>
                     </Form-item>
 
                     <!--可兑换积分-->
                     <Form-item :label="$t('colonSetting', { key : $t('convertibilityIntegral') })" prop="requiredCredits">
-                        <Input v-model.trim="formData.requiredCredits" style="width:200px" :placeholder="$t('inputField', { field : $t('convertibilityIntegral') })"></Input>
+                        <Input v-model.trim="formData.requiredCredits"
+                               style="width:150px"
+                               :placeholder="$t('inputField', { field : $t('convertibilityIntegral') })"></Input>
                     </Form-item>
 
-                    <!--库存状态-->
-                    <Form-item :label="$t('colonSetting', { key : $t('stockStatus') })" prop="goodsStatus">
-                        <Select v-model.trim="formData.goodsStatus" style="width:200px">
-                            <Option v-for="(item, index) in statuList" :value="item.value" :key="index">{{ $t(item.label) }}</Option>
-                        </Select>
+                    <!--上架数量-->
+                    <Form-item :label="$t('colonSetting', { key : $t('upNum') })" prop="upNum">
+                        <InputNumber style="width:150px"
+                                     v-model="formData.upNum"
+                                     :precision="0"
+                                     :min="1"
+                                     :max="detail.stockNum - detail.upNum"></InputNumber>
                     </Form-item>
                 </i-col>
             </i-row>
@@ -51,6 +55,7 @@
 <script>
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         components : {},
         data () {
@@ -60,9 +65,9 @@
                     callback();
                 }).catch(err => {
                     if (err === 'fieldTypeError') {
-                        callback(this.$t(err,{ field : '' }));
+                        callback(this.$t(err,{ field : this.$t(rule.field) }));
                     } else if (err === 'integetError') {
-                        callback(this.$t(err, { field : '' }));
+                        callback(this.$t(err, { field : this.$t(rule.field) }));
                     } else {
                         callback();
                     }
@@ -76,14 +81,22 @@
                     //商品id
                     id : '',
                     //商品上下架状态
-                    goodsStatus : '',
+                    goodsStatus : 'up',
                     //商品兑换积分
-                    requiredCredits : ''
+                    requiredCredits : '',
+                    //上架数量
+                    upNum : 0,
                 },
                 //表单验证规则
                 ruleValidate : {
+                    //兑换时所用积分
                     requiredCredits : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('convertibilityIntegral') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur' }
+                    ],
+                    //上架数量
+                    upNum : [
+                        { required : true, type : 'number', message : this.$t('errorEmpty', { msg : this.$t('upNum') }), trigger : 'blur' },
                         { validator : validateNum, trigger : 'blur' }
                     ]
                 },
@@ -112,7 +125,7 @@
                     this.detail = data;
                     this.formData.id = this.detail.id;
                     this.formData.goodsStatus = this.detail.goodsStatus;
-                    this.formData.requiredCredits = this.detail.requiredCredits;
+                    this.formData.requiredCredits = this.detail.requiredCredits.toString();
                 }
                 this.isShow = !this.isShow;
             },
@@ -120,11 +133,6 @@
              * 隐藏模态框
              */
             hide () {
-                this.formData = {
-                    id : '',
-                    goodsStatus : '',
-                    requiredCredits : ''
-                };
                 this.$refs.formList.resetFields();
                 this.toggle();
             },
@@ -142,13 +150,19 @@
              * 修改商品信息
              */
             editGood () {
-                ajax.post('updateGoodsInfo', this.formData).then(res => {
+                ajax.post('updateGoodsInfo', {
+                    //商品id
+                    id : this.formData.id,
+                    goodsStatus : 'up',
+                    requiredCredits : this.formData.requiredCredits,
+                    upNum : this.formData.upNum + this.detail.upNum,
+                }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('updateInfo') }));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('up') }));
                         this.toggle();
                         this.$emit('updateSuccess');
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('updateInfo') }));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('up') }));
                     }
                 });
             }

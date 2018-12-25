@@ -19,9 +19,9 @@
         <tool-box :toolNum="2">
             <div slot="tool0" class="button-tool">
                 <!-- 上架 -->
-                <Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>
+                <!--<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>-->
                 <!-- 下架 -->
-                <Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>
+                <!--<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>-->
                 <!-- 领取商品 -->
                 <Button class="ivu-btn-90px tool-btn" type="primary" @click="getGoods()">{{$t('GetTheGoods')}}</Button>
             </div>
@@ -43,15 +43,15 @@
                       :page-size-d.sync="queryParams.pageSize"
                       @selection-change="colomnSelect"
                       @query-data="getListData">
-                <!-- 兑换时所需积分 -->
+                <!-- 剩余可上架数量 -->
                 <el-table-column
-                    slot="column4"
+                    slot="column1"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="inline-btn" @click="adjustCredits(scope.row)">{{scope.row.requiredCredits | contentFilter}}</span>
+                        <span>{{scope.row.stockNum - scope.row.upNum}}</span>
                     </template>
                 </el-table-column>
                 <!-- 商品状态 -->
@@ -66,9 +66,20 @@
                         <span class="status sleep" v-else>{{$t('down')}}</span>
                     </template>
                 </el-table-column>
+                <!-- 兑换时所需积分 -->
+                <el-table-column
+                    slot="column5"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span class="inline-btn" @click="adjustCredits(scope.row)">{{scope.row.requiredCredits | contentFilter}}</span>
+                    </template>
+                </el-table-column>
                 <!-- 操作 -->
                 <el-table-column
-                    slot="column6"
+                    slot="column7"
                     slot-scope="row"
                     fixed="right"
                     :label="row.title"
@@ -76,7 +87,9 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li class="blue-label" @click="stockDetail(scope.row)">{{$t('details')}}</li>
+                            <!--<li class="blue-label" @click="stockDetail(scope.row)">{{$t('details')}}</li>-->
+                            <li class="blue-label" @click="putOnGoods(scope.row)">{{$t('up')}}</li>
+                            <li class="blue-label" @click="down(scope.row)">{{$t('down')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -185,13 +198,14 @@
             },
             /**
              *  下架商品模态框控制
+             *  @param {object} rowData
              */
-            down () {
+            down (rowData) {
                 this.delModalType = 'down';
                 this.$refs.delModal.show({
                     title : this.$t('notice'),
                     confirmCallback : () => {
-                        this.batchPullOffGoods();
+                        this.pullOffGoods(rowData);
                     }
                 });
             },
@@ -278,7 +292,21 @@
              */
             adjustCredits (rowData) {
                 this.$refs.adjustCreditsModal.toggle(rowData);
-            }
+            },
+            /**
+             *  下架商品
+             *  @param {object} rowData
+             */
+            pullOffGoods (rowData) {
+
+            },
+            /**
+             * 上架商品
+             *  @param {object} rowData
+             */
+            putOnGoods (rowData) {
+                this.$refs.goodDetailModal.toggle(rowData);
+            },
         }
     };
 </script>

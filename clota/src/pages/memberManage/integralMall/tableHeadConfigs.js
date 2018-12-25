@@ -6,9 +6,9 @@ export const integralHead = [
         field : 'name'
     },
     {
-        title : 'stockNum', //库存数量
+        title : 'overPlusUpQuantity', //剩余可上架数量
         minWidth : 120,
-        field : 'stockNum'
+        field : ''
     },
     {
         title : 'unit', //单位
@@ -19,6 +19,11 @@ export const integralHead = [
         title : 'goodsStatus', //商品状态
         minWidth : 120,
         field : 'goodsStatus'
+    },
+    {
+        title : 'nowUpQuantity', //上架数量
+        minWidth : 120,
+        field : 'upNum'
     },
     {
         title : 'exchangePointsRequired', //兑换时所需积分
