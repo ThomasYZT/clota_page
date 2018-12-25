@@ -106,6 +106,18 @@
                         </ul>
                     </template>
                 </el-table-column>
+                <!--同步状态-->
+                <el-table-column
+                    slot="columnsyncStatus"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{$t(transSyncStatus(scope.row.syncStatus)) | contentFilter}}</span>
+                    </template>
+                </el-table-column>
             </tableCom>
 
             <div class="data-pandect">
@@ -146,7 +158,7 @@
     import ticketChangingModal from '../components/ticketChangingModal';
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
-    import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
+    import { transRescheduleStatus, transVerifyStatus,transSyncStatus } from '../../../commFun';
 
     export default {
         components : {
@@ -291,6 +303,10 @@
             selectionChange (data) {
                 this.chosedData = data;
             },
+            /**
+             * 转换同步状态
+             */
+            transSyncStatus : transSyncStatus
         },
         mounted () {
 

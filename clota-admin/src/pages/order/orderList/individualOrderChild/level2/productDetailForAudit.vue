@@ -110,6 +110,18 @@
                         </ul>
                     </template>
                 </el-table-column>
+                <!--同步状态-->
+                <el-table-column
+                    slot="columnsyncStatus"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{$t(transSyncStatus(scope.row.syncStatus)) | contentFilter}}</span>
+                    </template>
+                </el-table-column>
             </tableCom>
 
             <div class="data-pandect">
@@ -149,7 +161,7 @@
     import refundModal from '../components/refundModal';
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
-    import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
+    import { transRescheduleStatus, transVerifyStatus,transSyncStatus } from '../../../commFun';
     import confirmAuditModal from '../components/confirmAuditModal';
     import ajax from '@/api/index';
 
@@ -343,7 +355,11 @@
              */
             canSelectProduct (row) {
                 return row.checkStatus === 'true';
-            }
+            },
+            /**
+             * 转换同步状态
+             */
+            transSyncStatus : transSyncStatus
         },
     };
 </script>

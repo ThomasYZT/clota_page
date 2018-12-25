@@ -43,6 +43,11 @@ export const productDetailInfo = [
         field : 'serialNo'
     },
     {
+        title : 'syncStatus',
+        minWidth : 120,
+        field : 'syncStatus'
+    },
+    {
         title : 'operate',
         minWidth : 120,
         field : 'operate'
