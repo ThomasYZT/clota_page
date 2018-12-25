@@ -21,6 +21,7 @@
                         <Form-item prop="user">
                             <div>
                                 <Input type="text"
+                                       :disabled="isLoging"
                                        prefix="ios-contact"
                                        v-model.trim="formInline.user"
                                        :placeholder="$t('userName')"/>
@@ -30,12 +31,14 @@
                         <Form-item prop="password">
                             <Input type="password"
                                    prefix="logo-usd"
+                                   :disabled="isLoging"
                                    v-model.trim="formInline.password"
                                    :placeholder="$t('password')"
                                    @on-enter="handleSubmit('formInline')"/>
                         </Form-item>
                         <Form-item class="auto-reme">
-                            <Checkbox v-model="rememberAccount">{{ $t("rememberAccount") }}</Checkbox>
+                            <Checkbox v-model="rememberAccount"
+                                      :disabled="isLoging">{{ $t("rememberAccount") }}</Checkbox>
                             <p class="register-entry"
                                @click="toRegist()">
                                 <span class="entry-tip">{{$t('noAccount')}}</span>

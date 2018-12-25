@@ -249,13 +249,14 @@
                 </div>
             </div>
 
-            <div class="content-item">
-                <div class="title">{{$t('pointsReturnedForRefund')}}</div>
-                <div class="main">
-                    <i-switch v-model="settingData.scoreInsufficientNotification"></i-switch>
-                    <span class="text">{{$t('consumeSettingTips')}}</span>
-                </div>
-            </div>
+            <!--会员4期暂时去掉-->
+            <!--<div class="content-item">-->
+                <!--<div class="title">{{$t('pointsReturnedForRefund')}}</div>-->
+                <!--<div class="main">-->
+                    <!--<i-switch v-model="settingData.scoreInsufficientNotification"></i-switch>-->
+                    <!--<span class="text">{{$t('consumeSettingTips')}}</span>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <div class="content-item">
                 <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
@@ -389,8 +390,9 @@
                         donateIntegrate : '',//Number
                         donateMoney : 1,
                     },
+                    // 会员4期暂时去掉
                     //退款时积分退回设置
-                    scoreInsufficientNotification : false,
+                    // scoreInsufficientNotification : false,
                     //积分生效设置
                     scoreEffectiveMode : {
                         isIntegralType : '',
@@ -529,8 +531,9 @@
                                 // scoreOffsetInConsumption : JSON.parse(res.data.scoreOffsetInConsumption),//会员3期暂时去掉
                                 scoreOffsetInConsumption : res.data.scoreOffsetInConsumption ? JSON.parse(res.data.scoreOffsetInConsumption) : [],
                                 scoreExToCharge : JSON.parse(res.data.scoreExToCharge),
-                                scoreInsufficientNotification : res.data.scoreInsufficientNotification === 'true' ?
-                                Boolean(res.data.scoreInsufficientNotification) : false,
+                                // 会员4期暂时去掉
+                                // scoreInsufficientNotification : res.data.scoreInsufficientNotification === 'true' ?
+                                // Boolean(res.data.scoreInsufficientNotification) : false,
                                 openCardSendScore : res.data.openCardSendScore ? JSON.parse(res.data.openCardSendScore) : {
                                     isSwitch : false,
                                     score : ''
@@ -591,7 +594,8 @@
                         scoreMultipleOnBirthday : JSON.stringify(setParam.scoreMultipleOnBirthday),
                         scoreOffsetInConsumption : JSON.stringify(setParam.scoreOffsetInConsumption),
                         scoreExToCharge : JSON.stringify(setParam.scoreExToCharge),
-                        scoreInsufficientNotification : String(setParam.scoreInsufficientNotification),
+                        // 会员4期暂时去掉
+                        // scoreInsufficientNotification : String(setParam.scoreInsufficientNotification),
                         scoreEffectiveMode : JSON.stringify(setParam.scoreEffectiveMode),
                         scoreValidityPeriod : JSON.stringify(setParam.scoreValidityPeriod),
                         openCardSendScore : JSON.stringify(this.settingData.openCardSendScore),
