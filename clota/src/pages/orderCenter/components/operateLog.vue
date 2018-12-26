@@ -46,9 +46,9 @@
                     //订单退票审核
                     'ORDER_REFUND_AUDIT' : 'green-status',
                     //订单改签申请
-                    'ORDER_ALTER_APPLY' : 'green-status',
+                    'ORDER_ALTER_APPLY' : 'red-status',
                     //订单改签审核
-                    'ORDER_ALTER_AUDIT' : 'green-status',
+                    'ORDER_ALTER_AUDIT' : 'red-status',
                     //新建订单
                     'ORDER_NEW_ORDER' : 'blue-status',
                     //新增票券
@@ -90,7 +90,9 @@
                         } else {
                             //退票审核，
                             return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，
-                            ${contentsObj.passOrderTicketIds || '-'}；${this.$t('rejectedNum')}：${contentsObj.rejectNum}。${this.$t('remark')}：${contentsObj.remark}`;
+                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }；
+                            ${this.$t('rejectedNum')}：${contentsObj.rejectNum}。
+                            ${this.$t('remark')}：${contentsObj.remark}`;
                         }
                     //订单改签申请
                     case 'ORDER_ALTER_APPLY' :
@@ -104,13 +106,13 @@
                         if (this.isProductLog) {
                             // 改签审核，通过数量：
                             return `${this.$t('alterAndAudit')}，
-                            ${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。
+                            ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate}。
                             ${this.$t('remark')}：${contentsObj.remark}`;
                         } else {
                             // 改签审核，通过数量：
                             return `${this.$t('alterAndAudit')}，
                             ${this.$t('passedNum')}：${contentsObj.passNum}，
-                            ${this.$t('productDetailNo')}：${contentsObj.passOrderTicketIds}，
+                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }
                             ${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。
                             ${this.$t('remark')}：${contentsObj.remark}`;
                         }
