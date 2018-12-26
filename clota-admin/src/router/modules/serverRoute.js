@@ -16,6 +16,7 @@ export default {
             _name : 'server',
             menuName : 'server',
             lightMenu : 'server',
+            isMenu : true
         }
     },
     //服务器详情
@@ -44,6 +45,17 @@ export default {
     addServer : {
         path : '/server/addServer',
         name : 'addServer',
+        component : () => import(/* webpackChunkName: "server" */ '../../pages/server/child/addServer.vue'),
+        meta : {
+            _name : 'server',
+            menuName : 'server',
+            lightMenu : 'server',
+        },
+    },
+    //编辑服务器
+    modifyServer : {
+        path : '/server/modifyServer',
+        name : 'modifyServer',
         component : () => import(/* webpackChunkName: "server" */ '../../pages/server/child/addServer.vue'),
         meta : {
             _name : 'server',

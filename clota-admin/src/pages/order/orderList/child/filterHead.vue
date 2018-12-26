@@ -216,6 +216,7 @@
                         <Select v-model.trim="formData.productType"
                                 style="max-width: 260px"
                                 @on-change="searchProductList">
+                            <Option value="all">{{$t('all')}}</Option>
                             <Option value="ticket">{{$t('tickets')}}</Option>
                         </Select>
                     </FormItem>
@@ -323,7 +324,7 @@
                     //下单企业
                     orderOrgId : 'all',
                     //业态类型
-                    productType : 'ticket',
+                    productType : 'all',
                     //订单类型
                     orderType : 'allStatus',
                     //是否是异常订单
@@ -441,7 +442,7 @@
                 this.formData.rescheduleStatus = 'allStatus';
                 this.formData.verifyStatus = 'allStatus';
                 this.formData.orderOrgId = 'all';
-                this.formData.productType = 'ticket';
+                this.formData.productType = 'all';
                 this.formData.orderType = 'allStatus';
                 this.formData.abnormalStatus = false;
                 this.formData.auditStatus = 'allStatus';
@@ -537,7 +538,7 @@
                     scenicOrgId : this.formData.scenicOrgId !== 'all' ? this.formData.scenicOrgId : '',
                     orderOrgId : this.formData.orderOrgId !== 'all' ? this.formData.orderOrgId : '',
                     orderChannel : this.formData.orderChannel === 'allStatus' ? '' : this.formData.orderChannel,
-                    productType : this.formData.productType,
+                    productType : this.formData.productType !== 'all' ? this.formData.productType : '',
                     syncStatus : this.formData.syncStatus === 'allStatus' ? '' : this.formData.syncStatus,
                     auditStatus : this.formData.auditStatus === 'allStatus' ? '' : this.formData.auditStatus,
                     paymentStatus : this.formData.paymentStatus === 'allStatus' ? '' : this.formData.paymentStatus,

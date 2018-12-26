@@ -30,6 +30,11 @@
             'show-title' : {
                 type : Boolean,
                 default : true
+            },
+            //是否是产品的操作日志
+            'is-product-log' : {
+                type : Boolean,
+                default : false
             }
         },
         data () {
@@ -76,18 +81,39 @@
                         return `${this.$t('ApplyForRefund')}，${this.$t('quantity')}：${contentsObj.reqNum}。`;
                     //订单退票审核
                     case 'ORDER_REFUND_AUDIT' :
-                        //退票审核，通过数量：                                                                    // 手续费率                                                                                 // 驳回数量                                         // 备注
-                        return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，
-                        ${'refundRate' in contentsObj ? ( this.$t('handlingRate') + ':' + contentsObj.refundRate + ',' ) : '' }
-                        ${contentsObj.passOrderTicketIds || '-'}；${this.$t('rejectedNum')}：${contentsObj.rejectNum}。${this.$t('remark')}：${contentsObj.remark}`;
+                        //是否是产品的日志信息
+                        if (this.isProductLog) {
+                            //退票审核，
+                            return `${this.$t('refundAndAudit')}，
+                                ${'refundRate' in contentsObj ? ( this.$t('handlingRate') + ':' + contentsObj.refundRate + ',' ) : '' }
+                                ${this.$t('remark')}：${contentsObj.remark}`;
+                        } else {
+                            //退票审核，
+                            return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，
+                            ${contentsObj.passOrderTicketIds || '-'}；${this.$t('rejectedNum')}：${contentsObj.rejectNum}。${this.$t('remark')}：${contentsObj.remark}`;
+                        }
                     //订单改签申请
                     case 'ORDER_ALTER_APPLY' :
-                        // 申请改签，数量：                                                                      // 申请改签至
-                        return `${this.$t('applyForUpgrade')}，${this.$t('quantity')}：${contentsObj.reqNum}，${this.$t('applyForUpgradeTo')}：${contentsObj.afterAlterDate}。`;
+                        // 申请改签，数量：
+                        return `${this.$t('applyForUpgrade')}，
+                        ${this.$t('quantity')}：${contentsObj.reqNum}，
+                        ${this.$t('applyForUpgradeTo')}：${contentsObj.afterAlterDate}。`;
                     //订单改签审核
                     case 'ORDER_ALTER_AUDIT' :
-                        // 改签审核，通过数量：                                                                  // 产品明细编号                                                           // 游玩日期改签至                                          // 备注
-                        return `${this.$t('alterAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，${this.$t('productDetailNo')}：${contentsObj.passOrderTicketIds}，${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。${this.$t('remark')}：${contentsObj.remark}`;
+                        //是否是产品的日志信息
+                        if (this.isProductLog) {
+                            // 改签审核，通过数量：
+                            return `${this.$t('alterAndAudit')}，
+                            ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate}。
+                            ${this.$t('remark')}：${contentsObj.remark}`;
+                        } else {
+                            // 改签审核，通过数量：
+                            return `${this.$t('alterAndAudit')}，
+                            ${this.$t('passedNum')}：${contentsObj.passNum}，
+                            ${this.$t('productDetailNo')}：${contentsObj.passOrderTicketIds}，
+                            ${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。
+                            ${this.$t('remark')}：${contentsObj.remark}`;
+                        }
                     //新建订单
                     case 'ORDER_NEW_ORDER' :
                         // 预定成功，预定数量：
@@ -106,8 +132,18 @@
                         return `${this.$t('checkPass')}，${this.$t('remark')}：${contentsObj.remark}。`;
                     //核销
                     case 'ORDER_VERIFY_TICKET' :
-                        // 核销数量：                                                       // 产品明细编号                                          // 核销串码                                           // 备注
-                        return `${this.$t('verificationNum')}：${contentsObj.verifyNum}，${this.$t('productDetailNo')}：${contentsObj.ticketId}，${this.$t('verifySN')}：${contentsObj.checkSerialNo}。${this.$t('remark')}：${contentsObj.remark}`;
+                        //是否是产品的日志信息
+                        if (this.isProductLog) {
+                            // 核销数量：
+                            return `${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
+                            ${this.$t('remark')}：${contentsObj.remark}`;
+                        } else {
+                            // 核销数量：
+                            return `${this.$t('verificationNum')}：${contentsObj.verifyNum}，
+                            ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
+                            ${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
+                            ${this.$t('remark')}：${contentsObj.remark}`;
+                        }
                     default : return '';
                 }
             }

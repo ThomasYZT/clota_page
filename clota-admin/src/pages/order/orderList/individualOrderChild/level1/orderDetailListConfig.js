@@ -3,7 +3,7 @@ export const columnData = [
     {
         title : 'orderDetailNo',
         width : 220,
-        field : 'id'
+        field : 'orderDetailNo'
     },
     {
         title : 'playDate',

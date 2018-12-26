@@ -103,12 +103,13 @@
         computed : {
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
             reqType () {
-                if (this.$route.name == 'auditBulkRefund') {
+                if (this.$route.name === 'indRefundOrderAudit') {
                     return 'refund';
-                } else if (this.$route.name == 'auditBulkChange') {
+                } else if (this.$route.name === 'indAlterOrderAudit') {
                     return 'alter';
                 }
-            }
+                return '';
+            },
         },
         created () {
         },
@@ -148,13 +149,13 @@
             bulkBatchAudit () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        ajax.post('auditBatchOrderProduct', {
-                            productRefundAlterIds : this.orderData.items.map(item => item.productRefundAlterId).join(','),
+                        ajax.post('updateIndividualOrderRefundAlterAudit', {
+                            refundIds : this.orderData.items.map(item => item.refundId).join(','),
                             remark : this.formData.auditRemark,
-                            auditStatus : this.orderData.type,
+                            audit : this.orderData.type,
                             reqType : this.reqType
                         }).then(res => {
-                            if (res.success) {
+                            if (res.status === 200) {
                                 if (this.orderData.type === 'pass') {
                                     this.$Message.success(this.$t('orderCheckPassed')); // 订单已审核通过
                                 } else if (this.orderData.type === 'reject') {

@@ -15,23 +15,29 @@
                 <FormItem prop="account" class="input-with-icon">
                     <span class="iconfont icon-person"></span>
                     <Input v-model.trim="formData.account"
+                           :disabled="logging"
                            style="width: 368px;height: 40px;"
-                           :placeholder="$t('account')"/>
+                           :placeholder="$t('account')"
+                           @on-enter="login"/>
                 </FormItem>
                 <!--密码-->
                 <FormItem prop="password" class="input-with-icon">
                     <span class="iconfont icon-reset-pass"></span>
                     <Input v-model.trim="formData.password"
                            type="password"
+                           :disabled="logging"
                            style="width: 368px"
-                           :placeholder="$t('password',{msg : ''})"/>
+                           :placeholder="$t('password',{msg : ''})"
+                           @on-enter="login"/>
                 </FormItem>
                 <!--验证码-->
                 <FormItem prop="verifyCode" class="password input-with-icon verify-code">
                     <span class="iconfont icon-person "></span>
                     <Input v-model.trim="formData.verifyCode"
+                           :disabled="logging"
                            style="width: 368px"
-                           :placeholder="$t('verifyCode')"/>
+                           :placeholder="$t('verifyCode')"
+                           @on-enter="login"/>
                     <img class="verify-img"
                          :src="verifyCode"
                          @click="changeCode">
@@ -127,34 +133,42 @@
                                 this.$store.dispatch('getUserInfo').then(route => {
                                     this.$router.push({
                                         name : route.name
+                                    },() => {
+                                        this.logging = false;
                                     });
+                                }).catch(() => {
+                                    this.logging = false;
+                                    this.$Message.error(this.$t('账户暂无任何菜单权限，请联系管理员开通菜单权限'));
                                 });
                             } else if (res.message === 'User is already login!') {
                                 this.errMessage = 'loginError.hasLogined';
                                 this.showErrMessage = true;
                                 this.changeCode();
+                                this.logging = false;
                             } else if (res.message === 'Validate code error!') {
                                 this.errMessage = 'loginError.verifyCodeError';
                                 this.showErrMessage = true;
                                 this.changeCode();
+                                this.logging = false;
                             } else if (res.message === 'Loginname or password error!') {
                                 this.errMessage = 'accountOPassError';
                                 this.showErrMessage = true;
                                 this.changeCode();
+                                this.logging = false;
                             } else if (res.message === 'User is inactived!') {
                                 this.errMessage = 'accountInvalid';
                                 this.showErrMessage = true;
                                 this.changeCode();
+                                this.logging = false;
                             } else {
                                 this.errMessage = res.message || 'loginError.accountError';
                                 this.showErrMessage = true;
                                 this.changeCode();
+                                this.logging = false;
                             }
-                        }).catch(err => {
+                        }).catch(() => {
                             this.errMessage = 'loginError.serverError';
                             this.showErrMessage = true;
-                        }).finally(() =>{
-                            this.logging = false;
                         });
                     } else {
                         this.logging = false;

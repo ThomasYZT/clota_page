@@ -15,6 +15,7 @@ import Tree from 'element-ui/lib/tree';
 import ElUpload from 'element-ui/lib/upload';
 //按需引入iview组件
 import {
+    Affix,
     Steps,
     Button,
     Input,
@@ -74,6 +75,7 @@ plugin.install = function (Vue, options) {
     Vue.use(ElUpload);
 
     //iview按需引入
+    Vue.component('Affix',Affix);
     Vue.component('Steps',Steps);
     Vue.component('Step',Steps.Step);
     Vue.component('Button',Button);

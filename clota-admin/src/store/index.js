@@ -15,7 +15,7 @@ const childDeepClone = (childrenList, data) => {
     for (let child in childrenList) {
         let router = defaultsDeep({}, childrenList[child]);
         //判断路由的名称是否存在于权限接口当中，部分父路由没有直接指定名称，所以需要判断meta信息里面的_name对应的权限是否存在
-        if ((router.meta && router.meta._name && router.meta._name in data)) {
+        if ((router.meta && router.meta._name && router.meta._name in data) || (router.meta && router.meta.isStaticMenu)) {
             if (router.children) {
                 let children = childDeepClone(router.children, data);
                 //配置没有匹配到路由的重定向页面
@@ -25,7 +25,7 @@ const childDeepClone = (childrenList, data) => {
                     children.push({
                         path : '',
                         redirect : {
-                            name : children[0].name ? children[0].name : children[0].meat._name
+                            name : children[0].name ? children[0].name : children[0].meta._name
                         }
                     });
                     router['children'] = children;
@@ -63,6 +63,8 @@ export default new Vuex.Store({
         isLoading : false,
         //当前正在加载中的接口个数
         promisings : 0,
+        //当前角色
+        roleType : ''
     },
     getters : {
         //当前语言状态
@@ -87,6 +89,10 @@ export default new Vuex.Store({
         isLoading : state => {
             return state.isLoading;
         },
+        //当前登录账号角色
+        roleType : state => {
+            return state.roleType;
+        }
     },
     mutations : {
         //设置用户权限
@@ -120,39 +126,48 @@ export default new Vuex.Store({
                 },200);
             }
         },
+        //更新登录账号角色
+        updateRoleType (state,roleType) {
+            state.roleType = roleType;
+        }
     },
     actions : {
         //获取用户权限信息
         getUserRight (store, route) {
-            // ajax.get('getPrivileges').then(res => {
-            //     if (res.status === 200) {
-			//
-            //     } else {
-			//
-            //     }
-            // }).catch(err => {
-            //     this.$Message.error(this.$t('interfaceError'));
-            // });
             return new Promise((resolve, reject) => {
-                let data = {
-                    'index' : 'allow',
-                    'lessee' : 'allow',
-                    'server' : 'allow',
-                    'order' : 'allow',
-                    'system' : 'allow',
-                    'package' : 'allow',
-                    'log' : 'allow',
-                };
-                let routers = childDeepClone(routerClect, data);
-                routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
-                //重新设置路由信息
-                resetRouter(routers);
-                store.commit('updatePermissionInfo',data);
-                store.commit('updateRouteInfo',routers);
-                // 如果有权限，则跳转到有权限的第一个页面
-                if (routers.length > 0) {
-                    resolve(routers[0]);
-                }
+                ajax.get('getPrivileges').then(res => {
+                    if (res.status === 200 && res.data.privilegeSet && res.data.privilegeSet.length > 0) {
+                        let privilegeSet = res.data.privilegeSet;
+                        //权限数据
+                        let privilegeData = {
+                            // 'tanent' : 'allow'
+                        };
+                        for (let i = 0,j = privilegeSet.length; i < j; i++) {
+                            privilegeData[privilegeSet[i]['privCode']] = 'allow';
+                        }
+                        let routers = childDeepClone(routerClect, privilegeData);
+                        routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
+                        //重新设置路由信息
+                        resetRouter(routers);
+                        store.commit('updatePermissionInfo',privilegeData);
+                        store.commit('updateRouteInfo',routers);
+                        store.commit('updateRoleType',privilegeSet[0]['adminType']);
+                        // 如果有权限，则跳转到有权限的第一个页面
+                        if (routers.length > 0) {
+                            resolve(routers[0]);
+                        } else {
+                            reject();
+                        }
+                    } else {
+                        store.commit('updatePermissionInfo',null);
+                        store.commit('updateRouteInfo',null);
+                        store.commit('updateRoleType','');
+                        reject();
+                    }
+                }).catch(() => {
+                    reject();
+                    this.$Message.error(this.$t('interfaceError'));
+                });
             });
 
             // ajax.get('getPrivileges').then(res => {

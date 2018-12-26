@@ -130,7 +130,7 @@
                 ruleValidate : {
                     depName : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('depName') }),trigger : 'blur' },
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('depName') }),trigger : 'blur' }
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('depName'), length : 100 }),trigger : 'blur' }
                     ]
                 }
             };

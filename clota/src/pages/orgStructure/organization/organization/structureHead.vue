@@ -304,6 +304,7 @@
                     nodeType : 'department',
                     parentManageId : this.currentNode.id,
                     parentEconomicId : this.currentNode.id,
+                    status : data.status
                 }).then(res => {
                     if(res.success){
                         this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));

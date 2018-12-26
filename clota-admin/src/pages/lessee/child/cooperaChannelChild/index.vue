@@ -11,17 +11,20 @@
                 <div class="less-name">
                     <span class="name" v-w-title="cooperaPerDetail.name">{{cooperaPerDetail.name}}</span>
                     <span class="status pass-result" v-if="auditStatus === 'success'">审核通过</span>
-                    <span class="status audit-wait" v-if="auditStatus === 'audit'">待审核</span>
-                    <span class="status nopass-result" v-if="auditStatus === 'reject'">审核不通过</span>
+                    <span class="status audit-wait" v-else-if="auditStatus === 'audit'">待审核</span>
+                    <span class="status nopass-result" v-else-if="auditStatus === 'reject'">审核不通过</span>
                 </div>
                 <div class="audit-area" v-if="showAuditBtn">
                     <Button type="primary" @click="auditPass">审核通过</Button>
                     <Button type="error" class="ivu-btn-90px" @click="reject">驳回</Button>
                 </div>
+                <div class="audit-area" v-if="showModifyBtn">
+                    <Button type="primary" class="ivu-btn-90px" @click="modify">{{$t('修改')}}</Button>
+                </div>
             </div>
             <ul class="cooper-detail">
-                <template v-for="item in cooperaPerDetail.info">
-                    <li class="list" v-if="item.length === 3">
+                <template v-for="(item,index) in cooperaPerDetail.info">
+                    <li class="list" v-if="item.length === 3" :key="index">
                         <div class="info-list1">
                             <span class="info-key">{{item[0].label}}：</span>
                             <span class="info-val" v-w-title="item[0].value">{{item[0].value | contentFilter}}</span>
@@ -191,6 +194,8 @@
                 channelId : '',
                 //审核状态
                 auditStatus : '',
+                //合作渠道信息
+                channelDetailInfo : {}
             };
         },
         methods : {
@@ -280,7 +285,8 @@
                     id : this.channelId
                 }).then(res => {
                     if (res.status === 200) {
-                        this.cooperaPerDetail.name = res.data.orgName;
+                        this.cooperaPerDetail.name = res.data ? res.data.orgName : {};
+                        this.channelDetailInfo = res.data ? res.data : {};
                         //个人渠道信息
                         if (this.channelType === 'per') {
                             this.cooperaPerDetail.info = getFiledData(
@@ -322,6 +328,7 @@
                         this.cooperaPerDetail.name = '';
                         this.auditStatus = '';
                         this.formData.email = '';
+                        this.channelDetailInfo = {};
                     }
                 });
             },
@@ -361,12 +368,27 @@
                     this.$refs.passModal.hide();
                     this.$refs.rejectModal.hide();
                 });
+            },
+            /**
+             * 跳转到修改合作伙伴信息页面
+             */
+            modify () {
+                this.$router.push({
+                    name : 'cooperaChannelPerDetailModify',
+                    params : {
+                        formData : this.channelDetailInfo
+                    }
+                });
             }
         },
         computed : {
             //是否显示通过和驳回的按钮
             showAuditBtn () {
                 return this.auditStatus === 'audit';
+            },
+            //是否显示修改按钮
+            showModifyBtn () {
+                return this.auditStatus === 'success';
             }
         }
     };
@@ -399,7 +421,6 @@
 
                     .status{
                         display: inline-block;
-                        @include block_outline(60px);
                         font-size: $font_size_14px;
                         vertical-align: top;
                     }
@@ -425,6 +446,7 @@
 
                 .audit-area{
                     float: left;
+                    text-align: right;
                     @include block_outline(226px);
 
                     .ivu-btn-primary{

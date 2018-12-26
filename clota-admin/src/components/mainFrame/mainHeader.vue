@@ -33,7 +33,9 @@
         </div>
         <div class="operation">
             <div class="menu-li">
-                <Menu mode="horizontal" @on-select="menuChange">
+                <Menu mode="horizontal"
+                      menu-trigger="click"
+                      @on-select="menuChange">
                     <Submenu name="1">
                         <template slot="title">
                             <div class="avator">
@@ -155,6 +157,7 @@
                             item.children = [];
                         }
                         item.showSubMenu = false;
+                        return item.meta && item.meta.isMenu;
                         //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
                         if (item.name) {
                             return item.name === item.meta._name;

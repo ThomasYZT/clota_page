@@ -35,7 +35,7 @@
                 <ul class="service-list">
                     <li class="service-name"
                         v-for="(item,i) in serviceDelayedInfo"
-                        :key="i">{{item.serviceName}}   &nbsp;&nbsp; {{item.estimateEndtime}}</li>
+                        :key="i"> <span class="service-name-info" v-w-title="item.serviceName">{{item.serviceName}}</span> {{item.estimateEndtime}}</li>
                 </ul>
             </FormItem>
         </Form>
@@ -178,6 +178,14 @@
             .service-name{
                 @include overflow_tip();
                 @include block_outline($height : 25px);
+
+                .service-name-info{
+                    max-width: 200px;
+                    @include overflow_tip();
+                    display: inline-block;
+                    vertical-align: middle;
+                    padding-right: 10px;
+                }
             }
         }
 

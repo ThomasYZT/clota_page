@@ -3,8 +3,8 @@
 <template>
     <div class="account">
         <div class="create-account">
-            <Button type="primary">
-                <span @click="addAccount">+ {{$t('addAccount')}}</span>
+            <Button type="primary" @click="addAccount">
+                <span>+ {{$t('addAccount')}}</span>
             </Button>
         </div>
         <table-com

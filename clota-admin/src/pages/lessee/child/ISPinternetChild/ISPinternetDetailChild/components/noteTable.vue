@@ -53,7 +53,7 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            {{$t(scope.row.status === 'success' ? 'success' : 'fail')}}
+                            {{$t(getStatusText(scope.row))}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -236,7 +236,23 @@
                         this.smsSendRecordTotal = 0;
                     }
                 });
-            }
+            },
+            /**
+             * 获取状态对应的文案
+             * @param{Object} rowData
+             * @return{String} 状态对应的翻译配置键值
+             */
+            getStatusText (rowData) {
+                if ( ['wait','doing','req_success'].includes(rowData.status) ) {
+                    return 'isRending';
+                } else if ( rowData.status === 'success' ) {
+                    return 'success';
+                } else if ( ['req_failure','failure'].includes(rowData.status) ) {
+                    return 'failure';
+                } else {
+                    return 'isRending';
+                }
+            },
         },
         computed : {
             //表格是否显示
