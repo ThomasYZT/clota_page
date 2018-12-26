@@ -31,6 +31,22 @@
                 {{$t("cancel")}}
             </Button>
         </div>
+        <!--确认退卡信息-->
+        <confirm-member-info v-model="showConfirmModal"
+                             @confirm-data="confirmDataInfo">
+            <Form  :label-width="110">
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('本次退卡数量') })">
+                        {{'a' | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('本次退卡总金额') })">
+                        {{'a' | contentFilter}}
+                    </FormItem>
+                </i-col>
+            </Form>
+        </confirm-member-info>
     </div>
 </template>
 
@@ -39,6 +55,7 @@
     import { batchRefundColumnData } from './batchReturnCardConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { mapGetters } from 'vuex';
+    import confirmMemberInfo from '../components/confirmDetailModal';
 
 	export default {
 		data() {
@@ -47,11 +64,14 @@
                 columnData : batchRefundColumnData,
                 //表格数据
                 tableData : [],
+                //是否显示确认模态框
+                showConfirmModal : true
             }
 		},
         components : {
             breadCrumbHead,
-            tableCom
+            tableCom,
+            confirmMemberInfo
         },
 		methods: {
             /**
@@ -72,8 +92,16 @@
             readEntityCard () {
                 if (this.tableData.length >= 50 || !this.cardReadEnabled) return;
                 this.$store.dispatch('getCardReadData').then(res => {
-                    console.log(res);
+                    for (let i  = 0,j = this.tableData.length;i < j; i++) {
+
+                    }
                 });
+            },
+            /**
+             * 确认开卡信息
+             */
+            confirmDataInfo () {
+                this.$Message.success('退卡成功');
             }
         },
         computed : {

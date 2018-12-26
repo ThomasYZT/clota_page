@@ -88,6 +88,7 @@
         /deep/ .ivu-modal-body{
             overflow: auto;
             max-height: 400px;
+            min-height: 200px;
             padding: 32px;
 
             .ivu-form-item-content{

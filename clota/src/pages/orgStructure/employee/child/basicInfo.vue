@@ -387,13 +387,12 @@
                 //     this.employee.password = MD5(this.employee.password).toString();
                 // }
                 let privileges = this.$refs.privalige.getHandlerChosedPrivaliges();
-                // 生日日期格式化
-                this.employee.birthday = new Date(this.employee.birthday).format('yyyy-MM-dd');
 
                 ajax.post("addOrUpdateEmployee", Object.assign({
                     privileges : JSON.stringify(privileges),
                 },{
                     ...this.employee,
+                    birthday : this.employee.birthday,
                     password : self.oldPwd !== self.employee.password ? MD5(self.employee.password).toString() : self.employee.password
                 })).then(function (res) {
                     if(res.success){

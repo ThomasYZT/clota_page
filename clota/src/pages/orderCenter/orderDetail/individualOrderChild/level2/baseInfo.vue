@@ -38,7 +38,12 @@
 
         <div class="buttun-wrapper">
             <Button type="primary"  @click.native="toUpDetail">{{$t('CheckOrdersFromSuperiors')}}</Button>
-            <Button v-if="canResendMsg" type="primary" @click="reSendMsg">{{$t('reSending')}}</Button>
+            <Button v-if="canResendMsg"
+                    :disabled="!resendBtnCanUsed"
+                    type="primary"
+                    @click="reSendMsg">
+                {{$t('reSending')}}
+            </Button>
         </div>
 
         <div class="audit-result">
@@ -60,6 +65,11 @@
             'view-type': {
                 type: String,
                 default: ''
+            },
+            //可重发短信次数
+            'reSend-times' : {
+                type: [String,Number],
+                default: 0
             }
         },
         computed: {
@@ -88,14 +98,17 @@
             canResendMsg () {
                 //景区下，审核成功，取票前可重发短信
                 return this.viewType === 'scenic' &&
-                    (this.baseInfo.quantity - this.baseInfo.quantityRefunded - this.baseInfo.quantityPicked > 0) &&
                     this.perMissioncanResendSms;
             },
+            //重发短信按钮是否可以使用
+            resendBtnCanUsed () {
+                return this.reSendTimes > 0;
+            }
         },
         data() {
             return {
                 //转换短信发送状态
-                transSMSStatus: transSMSStatus
+                transSMSStatus: transSMSStatus,
             }
         },
         methods: {
@@ -121,8 +134,8 @@
                         this.$Message.error(this.$t('failureTip',{ tip: this.$t('sending') }));
                     }
                 });
-            },
-        }
+            }
+        },
     }
 </script>
 
