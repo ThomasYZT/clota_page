@@ -4,7 +4,7 @@
     <div class="guide-info">
         <div class="title">
             <!--导游信息-->
-            {{$t('courierInfo')}}
+            {{$t('courierInfo')}} ({{$t('notNull')}})
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTourGuideInfo.length < 1"
