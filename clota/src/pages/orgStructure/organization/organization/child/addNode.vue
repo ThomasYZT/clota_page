@@ -30,6 +30,14 @@
                     </Option>
                 </Select>
             </FormItem>
+            <FormItem :label="$t('是否启用')"
+                      prop="status"
+                      v-if="formData.nodeType === 'department'">
+                <RadioGroup v-model="formData.status" style="width: 280px">
+                    <Radio label="open">立即启用</Radio>
+                    <Radio label="close">暂不启用</Radio>
+                </RadioGroup>
+            </FormItem>
         </Form>
         <div slot="footer">
             <Button type="primary"
@@ -65,7 +73,9 @@
                     //节点名称
                     nodeName: '',
                     //节点类型
-                    nodeType: ''
+                    nodeType: '',
+                    //是否启用
+                    status : 'open'
                 },
                 //节点类型
                 nodeList: nodeList,
@@ -83,6 +93,13 @@
                         {
                             required: true,
                             message: this.$t('selectField', {msg: this.$t('nodeType')}),
+                            trigger: 'blur'
+                        }
+                    ],
+                    status : [
+                        {
+                            required: true,
+                            message: this.$t('selectField', {msg: this.$t('isStarted')}),
                             trigger: 'blur'
                         }
                     ]

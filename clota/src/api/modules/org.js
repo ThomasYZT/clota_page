@@ -114,5 +114,7 @@ export default {
     'batchDeleteOrgStaff' : '/organize/batchDeleteOrgStaff',
     //查询当前机构对应景区
     'queryScenicByOrgId' : '/organize/queryScenicByOrgId',
+    //生成自营渠道appid/appSecretId
+    'generateChannelAccount' : '/selfChannel/generateChannelAccount',
 
 }
