@@ -98,7 +98,15 @@
                     orderNo : this.orderDetailInfo.orderNo,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.orderCreator = res.data ? res.data[0] : {};
+                        if (res.data) {
+                            for (let i = 0,j = res.data.length; i < j; i++) {
+                                if (res.data[i]['visitorType'] === 'payer') {
+                                    this.orderCreator = res.data[i];
+                                    return;
+                                }
+                            }
+                        }
+                        this.orderCreator = {};
                     } else {
                         this.orderCreator = {};
                     }

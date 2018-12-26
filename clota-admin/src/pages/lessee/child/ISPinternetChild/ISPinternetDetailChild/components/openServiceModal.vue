@@ -15,24 +15,39 @@
         <Form ref="formValidate"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="130">
-            <FormItem label="选择套餐" prop="package">
+              :label-width="140">
+            <FormItem label="选择套餐" prop="package" v-show="!openedServiceId">
                 <RadioGroup v-model="formData.packageId" @on-change="packageChange">
                     <Radio :label="item.id"
                            v-for="(item,index) in packageList"
                            :key="index">{{item.comboName}}</Radio>
                 </RadioGroup>
             </FormItem>
-            <FormItem label="选择服务" prop="servers">
-                <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
-                    <Checkbox :label="item.id"
-                              v-for="(item,index) in serverList"
-                              :disabled="item.disabled"
-                              :key="index">
-                        <span>{{item.serviceName}}</span>
-                    </Checkbox>
-                </CheckboxGroup>
-            </FormItem>
+            <template v-if="!openedServiceId">
+                <FormItem label="选择服务" prop="servers">
+                    <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
+                        <Checkbox :label="item.id"
+                                  v-for="(item,index) in serverList"
+                                  :disabled="item.disabled"
+                                  :key="index">
+                            <span>{{item.serviceName}}</span>
+                        </Checkbox>
+                    </CheckboxGroup>
+                </FormItem>
+            </template>
+            <template v-else>
+                <FormItem label="选择服务" prop="servers">
+                    <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
+                        <Checkbox :label="item.id"
+                                  v-for="(item,index) in serverList"
+                                  v-if="item.id === openedServiceId"
+                                  :disabled="true"
+                                  :key="index">
+                            <span>{{item.serviceName}}</span>
+                        </Checkbox>
+                    </CheckboxGroup>
+                </FormItem>
+            </template>
             <FormItem label="设置服务开始时间" prop="startTime">
                 <DatePicker type="date"
                             transfer

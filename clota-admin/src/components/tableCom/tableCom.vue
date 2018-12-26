@@ -16,6 +16,7 @@
                   @selection-change="handleSelectionChange">
                    <el-table-column
                         v-if="columnCheck"
+                        fixed="left"
                         type="selection"
                         :width="selectionWidth">
                    </el-table-column>

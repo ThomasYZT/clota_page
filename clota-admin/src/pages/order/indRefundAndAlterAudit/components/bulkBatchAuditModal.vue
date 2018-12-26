@@ -44,7 +44,7 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { bulkBatchAuditHead } from '../auditConfig';
+    import { bulkBatchAuditHead } from '../indRefundAuditConfig';
     import { mapGetters } from 'vuex';
 
     export default {
@@ -74,11 +74,12 @@
             }),
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
             reqType () {
-                if (this.$route.name == 'auditBulkRefund') {
+                if (this.$route.name === 'indRefundOrderAudit') {
                     return 'refund';
-                } else if (this.$route.name == 'auditBulkChange') {
+                } else if (this.$route.name === 'indAlterOrderAudit') {
                     return 'alter';
                 }
+                return '';
             },
         },
         methods : {
@@ -112,13 +113,13 @@
                 if (this.auditRemark.length > 500) {
                     return;
                 }
-                ajax.post('auditBatchOrderProduct', {
-                    productRefundAlterIds : this.orderData.items.map(item => item.productRefundAlterId).join(','),
+                ajax.post('updateIndividualOrderRefundAlterAudit', {
+                    refundIds : this.orderData.items.map(item => item.refundId).join(','),
                     remark : this.auditRemark,
-                    auditStatus : this.orderData.type,
+                    audit : this.orderData.type,
                     reqType : this.reqType
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         if (this.orderData.type === 'pass') {
                             this.$Message.success(this.$t('订单已批量审核通过'));
                         } else if (this.orderData.type === 'reject') {

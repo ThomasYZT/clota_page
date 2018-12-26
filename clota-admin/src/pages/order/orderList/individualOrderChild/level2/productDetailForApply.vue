@@ -1,7 +1,4 @@
-<!--
-    散客二级订单--产品明细
-    作者：杨泽涛
--->
+<!--订单明细，包含申请退票和改签功能-->
 <template>
     <div class="product-detail">
         <div class="title">{{$t('productDetail')}}</div>
@@ -33,8 +30,17 @@
                       :table-com-min-height="250"
                       :border="true"
                       :auto-height="true"
-                      :columnCheck="true"
                       @selection-change="selectionChange">
+                <el-table-column
+                    slot="columncheck"
+                    slot-scope="row"
+                    :label="row.title"
+                    fixed="left"
+                    show-overflow-tooltip
+                    type="selection"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                </el-table-column>
                 <el-table-column
                     slot="columnpickStatus"
                     show-overflow-tooltip
@@ -100,6 +106,18 @@
                         </ul>
                     </template>
                 </el-table-column>
+                <!--同步状态-->
+                <el-table-column
+                    slot="columnsyncStatus"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{$t(transSyncStatus(scope.row.syncStatus)) | contentFilter}}</span>
+                    </template>
+                </el-table-column>
             </tableCom>
 
             <div class="data-pandect">
@@ -140,7 +158,7 @@
     import ticketChangingModal from '../components/ticketChangingModal';
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
-    import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
+    import { transRescheduleStatus, transVerifyStatus,transSyncStatus } from '../../../commFun';
 
     export default {
         components : {
@@ -285,6 +303,10 @@
             selectionChange (data) {
                 this.chosedData = data;
             },
+            /**
+             * 转换同步状态
+             */
+            transSyncStatus : transSyncStatus
         },
         mounted () {
 

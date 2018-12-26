@@ -16,6 +16,7 @@
                     <i-col span="22">
                         <FormItem :label="$t('noticeName')" prop="title">
                             <Input v-model.trim="formData.title"
+                                   :disabled="type === 'look'"
                                    :placeholder="$t('inputPlaceholder')"/>
                         </FormItem>
                     </i-col>
@@ -23,11 +24,15 @@
                 <i-row>
                     <i-col span="11">
                         <FormItem :label="$t('noticeContent')" prop="images">
-                            <template v-if="formData.images && formData.images.length > 0">
-                                <img class="img-item" v-for="(item,index) in formData.images" :key="index" :src="item"/>
-                            </template>
+                            <div class="img-wrap" v-for="(item,index) in formData.images" :key="index">
+                                <img class="img-item"  :src="item"/>
+                                <div class="mask-wrap"
+                                     v-if="type !== 'look'">
+                                    <span class="iconfont icon-delete" @click="delImg(index)"></span>
+                                </div>
+                            </div>
                             <Upload
-                                v-if="type !== 'look'"
+                                v-if="type !== 'look' && formData.images.length < 2"
                                 class="upload-wrap"
                                 :action="uploadUrl"
                                 :headers="uploadHeaders"
@@ -49,6 +54,7 @@
                     <i-col span="22">
                         <FormItem :label="$t('desc')" prop="content">
                             <Input v-model.trim="formData.content"
+                                   :disabled="type === 'look'"
                                    type="textarea"
                                    :placeholder="$t('inputPlaceholder')"/>
                         </FormItem>
@@ -266,7 +272,6 @@
             },
             //附件上传成功回调
             handleSuccess (response, file, fileList) {
-                console.log(response);
                 let avatar = response.paths && response.paths.length > 0 ? response.paths : [];
                 if ( avatar.length > 0 ) {
                     avatar.forEach(url => {
@@ -286,6 +291,13 @@
                     duration : 3
                 });
             },
+            /**
+             * 删除图片
+             * @param{Number} index 图片序列
+             */
+            delImg (index) {
+                this.formData.images.splice(index,1);
+            }
         },
     };
 </script>
@@ -310,11 +322,36 @@
                 margin: 0 auto;
             }
 
+            .img-wrap{
+                float: left;
+                position: relative;
+                margin-right: 5px;
+
+                &:hover .mask-wrap{
+                    display: flex;
+                }
+
+                .mask-wrap{
+                    display: none;
+                    @include absolute_pos(absolute,0,0,0,0);
+                    background: rgba(0,0,0,0.4);
+                    align-items: center;
+                    justify-content: center;
+
+                    .icon-delete{
+                        cursor: pointer;
+
+                        &:before{
+                            color: #ffffff;
+                        }
+                    }
+                }
+            }
+
             .img-item{
                 width: 58px;
                 height: 58px;
                 display: inline-block;
-                margin-right: 5px;
                 vertical-align: top;
                 border-radius: 4px;
                 border: 1px dashed antiquewhite;

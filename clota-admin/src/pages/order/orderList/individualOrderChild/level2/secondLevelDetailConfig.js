@@ -2,6 +2,11 @@
 //产品明细表格配置
 export const productDetailInfo = [
     {
+        title : 'check',
+        width : 80,
+        field : 'check'
+    },
+    {
         title : 'productDetailNo',
         width : 215,
         field : 'id'
@@ -36,6 +41,11 @@ export const productDetailInfo = [
         title : 'SN',
         minWidth : 200,
         field : 'serialNo'
+    },
+    {
+        title : 'syncStatus',
+        minWidth : 120,
+        field : 'syncStatus'
     },
     {
         title : 'operate',

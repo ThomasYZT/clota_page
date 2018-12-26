@@ -3,8 +3,8 @@
 <template>
     <div class="package">
         <div class="create-package">
-            <Button type="primary">
-                <span @click="addPackage">添加套餐</span>
+            <Button type="primary" @click="addPackage">
+                添加套餐
             </Button>
         </div>
         <table-com

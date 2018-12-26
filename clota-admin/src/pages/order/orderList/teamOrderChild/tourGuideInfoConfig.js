@@ -2,12 +2,12 @@
 export const columnData = [
     {
         title : 'tourGuideName',
-        minWidth : 115,
+        minWidth : 120,
         field : 'visitorName'
     },
     {
         title : 'mobilePhone',
-        width : 150,
+        minWidth : 120,
         field : 'phoneNumber'
     },
     {

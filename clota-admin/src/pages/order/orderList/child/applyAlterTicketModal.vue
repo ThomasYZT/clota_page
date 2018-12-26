@@ -257,7 +257,7 @@
             //同步状态
             transSyncStatus : transSyncStatus,
             /**
-             * 发起退票申请
+             * 发起改签申请
              */
             saveOrderProductRefundAlter () {
                 ajax.post('saveOrderProductRefundAlter',{
@@ -266,7 +266,7 @@
                     productId : this.orderDetail.productId,
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                     reqType : 'alter',
-                    afterAlterDate : this.formData.alterDate.format('yyyy-MM-dd'),
+                    afterAlterDate : this.formData.alterDate.format('yyyy-MM-dd 00:00:00'),
                     orgId : this.orderDetail.orgId
                 }).then(res => {
                     if (res.status === 200) {
@@ -285,7 +285,7 @@
                 ajax.post('getProductPolicyPlayDate',{
                     visitorProductId : this.orderDetail.visitorProductId,
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.canAlterDate = res.data ? res.data : [];
                     } else {
                         this.canAlterDate = [];

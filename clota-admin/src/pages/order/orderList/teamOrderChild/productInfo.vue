@@ -11,14 +11,36 @@
             :table-com-min-height="250"
             :auto-height="true">
             <el-table-column
-                slot="columnproductName"
+                slot="columnfirstAllocationPrice"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{getProductName(scope.row)}}
+                    {{scope.row.firstLevelOrgName | contentFilter}}-{{scope.row.firstLevelSettlePrice | moneyFilter | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnsecondAllocationPrice"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.secondLevelOrgName | contentFilter}}-{{scope.row.secondLevelSettlePrice | moneyFilter | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="columnthirdAllocationPrice"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row.thirdLevelOrgName | contentFilter}}-{{scope.row.thirdLevelSettlePrice | moneyFilter | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -38,7 +60,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { columnData1 } from './productInfoConfig';
+    import { columnData2 } from './productInfoConfig';
     export default {
         props : {
             //产品信息
@@ -54,22 +76,8 @@
         },
         data () {
             return {
-                columnData : columnData1
+                columnData : columnData2
             };
-        },
-        methods : {
-            /**
-             * 获取产品名称
-             * @param{Object} rowData 行数据
-             * @return{String} 产品名称字符串值
-             */
-            getProductName (rowData) {
-                if (rowData.productName) {
-                    return JSON.parse(rowData.productName).join(',');
-                } else {
-                    return '';
-                }
-            }
         },
     };
 </script>
