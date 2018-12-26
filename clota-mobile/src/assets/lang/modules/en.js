@@ -296,4 +296,5 @@ export default {
     'driver' : '驾照',
     'officer' : '军官证',
     'police' : '警官证',
+    'M045' : '手机号未注册',
 };
