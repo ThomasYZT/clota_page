@@ -136,7 +136,13 @@
         </ul>
 
         <!--重发短信-->
-        <Button  v-if="canResendMsg" type="primary" class="ivu-btn-108px" @click="reSendMsg">{{$t('reSending')}}</Button>
+        <Button  v-if="canResendMsg"
+                 :disabled="!resendBtnCanUsed"
+                 type="primary"
+                 class="ivu-btn-108px"
+                 @click="reSendMsg">
+            {{$t('reSending')}}
+        </Button>
         <div class="audit-result">
             <img :src="auditResultImg" alt="">
         </div>
@@ -171,6 +177,11 @@
             'is-over-due' : {
                 type : String,
                 default : ''
+            },
+            //可重发短信次数
+            'reSend-times' : {
+                type: [String,Number],
+                default: 0
             }
         },
         data() {
@@ -199,10 +210,8 @@
         computed : {
             //是否可以重发短信
             canResendMsg () {
-                //景区下，审核成功，取票前可重发短信
-                return this.viewType === 'scenic' &&
-                    this.baseInfo.auditStatus === 'success' &&
-                    this.productInfoList.some(item => item.quantityPicked + item.quantityRefunded === 0) ;
+                //景区下可显示重发短信按钮
+                return this.viewType === 'scenic';
             },
             //审核结果图片
             auditResultImg () {
@@ -231,7 +240,15 @@
                         return require('../../../../assets/images/icon-canceled.svg');
                     }
                 }
+            },
+            //重发短信按钮是否可以使用
+            resendBtnCanUsed () {
+                //可重发次数大于0，审核通过，有未取票的可以点击重发短信按钮
+                return  this.reSendTimes > 0 &&
+                    this.baseInfo.auditStatus === 'success' &&
+                    this.productInfoList.some(item => item.quantityPicked + item.quantityRefunded === 0);
             }
+
         }
     }
 </script>

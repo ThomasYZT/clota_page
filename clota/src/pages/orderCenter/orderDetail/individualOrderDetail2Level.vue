@@ -11,7 +11,9 @@
         <div class="content">
             <!--订单基本信息-->
             <baseInfo :baseInfo="baseInfo"
-                      :viewType="orderOrgType"> </baseInfo>
+                      :reSend-times="reSendTimes"
+                      :viewType="orderOrgType">
+            </baseInfo>
 
             <!--游客信息-->
             <!--分销商不可见-->
@@ -88,6 +90,8 @@
                 orderDetailInfo: {},
                 //产品明细列表数据
                 ticketList: [],
+                //重发短信次数
+                reSendTimes : 0
             }
         },
         methods: {
@@ -114,7 +118,8 @@
                     visitorProductId: this.productDetail.visitorProductId
                 }).then(res => {
                     if(res.success) {
-                        this.orderDetailInfo = res.data;
+                        this.orderDetailInfo = res.data ? res.data : {};
+                        this.countSmsSend();
                     } else {
                         this.orderDetailInfo = {};
                     }
@@ -140,6 +145,22 @@
             freshData () {
                 this.getSecondLevelOrderDetailInfo();
                 this.getOrderTicketList();
+            },
+            /**
+             * 获取订单可以重发短信的次数
+             */
+            countSmsSend () {
+                if (this.orderDetailInfo && this.orderDetailInfo.baseInfo) {
+                    ajax.post('countSmsSend',{
+                        bizId : this.orderDetailInfo.baseInfo.visitorProductId,
+                    }).then(res => {
+                        if (res.success) {
+                            this.reSendTimes = res.data ? Number(res.data) : 0;
+                        } else {
+                            this.reSendTimes = 0;
+                        }
+                    });
+                }
             }
         },
         computed: {

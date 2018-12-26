@@ -73,5 +73,7 @@ export default {
     'queryLevelByTypeId': '/market/type/queryLevelByTypeId',
     //团队订单申请取消订单
     'applyCancelTeamOrder' : '/order/applyCancelTeamOrder',
+    //计算可以重发短信的次数
+    'countSmsSend' : '/order/checkCanResendSms',
 
 }

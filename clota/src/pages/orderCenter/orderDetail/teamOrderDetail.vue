@@ -9,6 +9,7 @@
         <div class="content">
             <!--基本信息-->
             <base-info :base-info="baseInfo"
+                       :reSend-times="reSendTimes"
                        :is-over-due="isOverdue"
                        :product-info-list="productInfoList"
                        :view-type="viewType">
@@ -87,7 +88,9 @@
                     }
                 ],
                 //订单详情
-                orderDetailInfo : {}
+                orderDetailInfo : {},
+                //重发短信次数
+                reSendTimes : 0
             }
         },
         methods: {
@@ -114,10 +117,27 @@
                 }).then(res => {
                     if(res.success){
                         this.orderDetailInfo = res.data ? res.data : {};
+                        this.countSmsSend();
                     }else{
                         this.orderDetailInfo = {};
                     }
                 });
+            },
+            /**
+             * 获取订单可以重发短信的次数
+             */
+            countSmsSend () {
+                if (this.orderDetailInfo && this.orderDetailInfo.baseInfo) {
+                    ajax.post('countSmsSend',{
+                        bizId : this.orderDetailInfo.baseInfo.visitorProductId,
+                    }).then(res => {
+                        if (res.success) {
+                            this.reSendTimes = res.data ? Number(res.data) : 0;
+                        } else {
+                            this.reSendTimes = 0;
+                        }
+                    });
+                }
             }
         },
         computed : {
