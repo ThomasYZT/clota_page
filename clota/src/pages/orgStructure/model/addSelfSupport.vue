@@ -33,11 +33,15 @@
             </Form-item>
             <!--APP ID-->
             <Form-item label="APP ID" prop="appId">
-                <Input v-model="addChannel.appId" :placeholder="$t('inputField', {field: ''})" />
+                <Input v-model="addChannel.appId"
+                       :disabled="true"
+                       :placeholder="$t('inputField', {field: ''})" />
             </Form-item>
             <!--APP Secret-->
             <Form-item label="APP Secret" prop="appSecret">
-                <Input v-model="addChannel.appSecret" :placeholder="$t('inputField', {field: ''})" />
+                <Input v-model="addChannel.appSecret"
+                       :disabled="true"
+                       :placeholder="$t('inputField', {field: ''})" />
             </Form-item>
             <!--备注-->
             <Form-item :label="$t('remark') + '：'" prop="description">
@@ -95,10 +99,6 @@
 
             }
         },
-        computed: {},
-        created() {
-        },
-        watch: {},
         methods: {
 
             /**
@@ -114,6 +114,10 @@
                     }
                 }
                 this.type = data.type;
+                if (data.type === 'add') {
+                    //新增的时候获取appid和appSecret
+                    this.generateChannelAccount();
+                }
 
                 this.visible = true;
             },
@@ -154,6 +158,20 @@
                         self.hide();
                     } else {
                         this.$Message.error(res.message ? res.message : partnerObj.failTip);
+                    }
+                });
+            },
+            /**
+             * 生成appid和appSecret
+             */
+            generateChannelAccount () {
+                ajax.post('generateChannelAccount').then(res => {
+                    if (res.success) {
+                        this.addChannel.appId = res.data ? res.data.appId : '';
+                        this.addChannel.appSecret = res.data ? res.data.appSecret : '';
+                    } else {
+                        this.addChannel.appId = '';
+                        this.addChannel.appSecret = '';
                     }
                 });
             },
