@@ -374,7 +374,7 @@
              */
             modify () {
                 this.$router.push({
-                    name : 'cooperaChannelPerDetailModify',
+                    name : this.channelType === 'per' ? 'cooperaChannelPerDetailModify' : 'cooperaChannelOrgDetailModify',
                     params : {
                         formData : this.channelDetailInfo
                     }

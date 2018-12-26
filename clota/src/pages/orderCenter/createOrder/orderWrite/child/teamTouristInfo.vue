@@ -4,7 +4,7 @@
     <div class="team-tourist-info">
         <div class="title">
             <!--游客信息-->
-            {{$t('touristInfo')}}
+            {{$t('touristInfo')}} ({{$t('optional')}})
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTouristInfo.length < 1"
