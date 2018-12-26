@@ -18,7 +18,7 @@
                 :label="row.title"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span>{{scope.row.operator + "/" + scope.row.operatedTime}}</span>
+                    <span>{{scope.row.operator ? scope.row.operator : $t('systemer')}} / {{scope.row.operatedTime | contentFilter}}</span>
                 </template>
             </el-table-column>
         </tableCom>

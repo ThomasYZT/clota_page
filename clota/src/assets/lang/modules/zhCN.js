@@ -2080,4 +2080,7 @@ export default {
     'overPlusUpQuantity' : '剩余可上架数量',
     'nowUpQuantity' : '当前上架数量',
     'upNum' : '上架数量',
+    'overDueVarifyNum' : '过期核销数量',
+    'systemer' : '系统',
+    'teamOrderCancelApply' : '团队订单取消申请',
 }
