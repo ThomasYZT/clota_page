@@ -96,7 +96,7 @@
                             </Form-item>
                         </div>
                     </template>
-                    <!--政策可售期 = 指定日期可售-->
+                    <!--政策可售期 = 指定日期方案-->
                     <div class="ivu-form-item-wrap single" v-if="formData.saleRule.type === 'specifiedDateSold'">
                         <Form-item :label="$t('specifiedDateSold')"><!--指定日期-->
                             <Select v-model="formData.saleRule.dateType"
@@ -867,8 +867,10 @@
                     let holiday = this.enumData.specialHoliday.find( item => val === item.id );
                     if (holiday && holiday.rangeDates) {
                         this.formData.saleRule.specifiedTime = holiday.rangeDates.split(',');
+                        this.getDateList(holiday.rangeDates, 'saleDate');
                     }
                 } else {
+                    this.saleDate = [];
                     this.formData.saleRule.specifiedTime = [];
                 }
             },
@@ -879,8 +881,10 @@
                     let holiday = this.enumData.specialHoliday.find( item => val === item.id );
                     if (holiday && holiday.rangeDates) {
                         this.formData.playRule.specifiedTime = holiday.rangeDates.split(',');
+                        this.getDateList(holiday.rangeDates,'playDate');
                     }
                 } else {
+                    this.playDate = [];
                     this.formData.playRule.specifiedTime = [];
                 }
             },
