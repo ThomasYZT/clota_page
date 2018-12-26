@@ -4,6 +4,7 @@
  */
 //按需引入vux组件
 import {
+    Checklist,
     XInput,
     Group,
     XButton,
@@ -69,6 +70,7 @@ plugin.install = function (Vue, options) {
     //vux按需引入
     Vue.component( 'XInput', XInput);
     Vue.component( 'Group', Group);
+    Vue.component( 'Checklist', Checklist);
     Vue.component( 'XButton', XButton);
     Vue.component( 'popup-picker', PopupPicker);
     Vue.component('swiper', Swiper);
