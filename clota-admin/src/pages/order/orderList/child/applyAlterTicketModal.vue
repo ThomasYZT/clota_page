@@ -274,7 +274,7 @@
                         this.cancel();
                         this.$emit('fresh-data');
                     } else {
-                        this.$Message.error(this.$t('TheApplicationForAlterationFail'));
+                        this.$Message.error(res.message || this.$t('TheApplicationForAlterationFail'));
                     }
                 });
             },

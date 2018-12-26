@@ -90,7 +90,9 @@
                         } else {
                             //退票审核，
                             return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，
-                            ${contentsObj.passOrderTicketIds || '-'}；${this.$t('rejectedNum')}：${contentsObj.rejectNum}。${this.$t('remark')}：${contentsObj.remark}`;
+                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }；
+                            ${this.$t('rejectedNum')}：${contentsObj.rejectNum}。
+                            ${this.$t('remark')}：${contentsObj.remark}`;
                         }
                     //订单改签申请
                     case 'ORDER_ALTER_APPLY' :
@@ -110,7 +112,7 @@
                             // 改签审核，通过数量：
                             return `${this.$t('alterAndAudit')}，
                             ${this.$t('passedNum')}：${contentsObj.passNum}，
-                            ${this.$t('productDetailNo')}：${contentsObj.passOrderTicketIds}，
+                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }
                             ${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。
                             ${this.$t('remark')}：${contentsObj.remark}`;
                         }

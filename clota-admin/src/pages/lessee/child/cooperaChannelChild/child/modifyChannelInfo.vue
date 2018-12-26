@@ -12,11 +12,27 @@
             <Form ref="formValidate"
                   :model="formData"
                   label-position="right"
-                  :rules="ruleValidate"
                   :label-width="120">
                 <i-row>
                     <i-col span="11">
-                        <!--租户公司名称-->
+                        <!--合作机构名称-->
+                        <FormItem :label="$t('companyBgName')"
+                                  v-if="orgChannel"
+                                  prop="name"
+                                  :rules="{ required : true, validator : validateName ,trigger : 'blur' }">
+                            <Input v-model.trim="formData.name" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11" v-if="orgChannel" >
+                        <!--社会信用代码-->
+                        <FormItem :label="$t('社会信用代码')"
+                                  prop="certificateNumber"
+                                  :rules="{ required : true, validator : validateCertificateNumber ,trigger : 'blur' }">
+                            <Input v-model.trim="formData.certificateNumber" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--合作伙伴名称-->
                         <FormItem :label="$t('name')" v-if="personalChannel" >
                             {{formData.name | contentFilter}}
                         </FormItem>
@@ -37,7 +53,9 @@
                     </i-col>
                     <i-col span="11">
                         <!--联系方式-->
-                        <FormItem :label="$t('phone')">
+                        <FormItem :label="$t('phone')"
+                                  prop="telephone"
+                                  :rules="{ required : true, validator : validatePhone ,trigger : 'blur' }">
                             <Input v-model.trim="formData.telephone" style="width: 280px"/>
                         </FormItem>
                     </i-col>
@@ -45,14 +63,20 @@
                 <i-row>
                     <i-col span="11">
                         <!--电子邮箱-->
-                        <FormItem :label="$t('email')" prop="mail">
+                        <FormItem :label="$t('email')"
+                                  prop="email"
+                                  :rules="{ required : true, validator : validateEmail ,trigger : 'blur' }">
                             <Input v-model.trim="formData.email" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                     <i-col span="11">
                         <!--地点-->
-                        <FormItem :label="$t('location')">
-                            <city-plugin @select="formData.place = $event" style="width: 280px;">
+                        <FormItem :label="$t('location')"
+                                  prop="place"
+                                  :rules="{ required : true, validator : validatePlace ,trigger : 'blur' }">
+                            <city-plugin @select="placeChange"
+                                         style="width: 280px;"
+                                         :defaultValue="defaultAddress">
                             </city-plugin>
                         </FormItem>
                     </i-col>
@@ -60,15 +84,38 @@
                 <i-row>
                     <!--详细地址-->
                     <i-col span="11">
-                        <FormItem :label="$t('address')" prop="address">
+                        <FormItem :label="$t('address')"
+                                  prop="address"
+                                  :rules="{ validator : validateAddress ,trigger : 'blur' }">
                             <Input v-model.trim="formData.address" style="width: 280px"/>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="11">
+                        <!--联系人-->
+                        <FormItem :label="$t('person')"
+                                  v-if="orgChannel"
+                                  prop="linkName"
+                                  :rules="{ required : true, validator : validateLinkName ,trigger : 'blur' }" >
+                            <Input v-model.trim="formData.linkName" style="width: 280px"/>
                         </FormItem>
                     </i-col>
                 </i-row>
                 <i-row>
                     <!--个人说明-->
                     <i-col span="24">
-                        <FormItem :label="$t('个人说明')" v-if="personalChannel" >
+                        <FormItem :label="$t('个人说明')"
+                                  v-if="personalChannel"
+                                  prop="description"
+                                  :rules="{ validator : validateDescription ,trigger : 'blur' }">
+                            <Input v-model.trim="formData.description" type="textarea"/>
+                        </FormItem>
+                    </i-col>
+                    <!--备注-->
+                    <i-col span="24">
+                        <FormItem :label="$t('remark')"
+                                  v-if="orgChannel"
+                                  prop="description"
+                                  :rules="{ validator : validateDescription ,trigger : 'blur' }">
                             <Input v-model.trim="formData.description" type="textarea"/>
                         </FormItem>
                     </i-col>
@@ -89,6 +136,8 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import ajax from '@/api/index.js';
+    import { validator } from 'klwk-ui';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -103,13 +152,19 @@
                     email : '',
                     description : '',
                     address : '',
+                    provinceId : '',
+                    cityId : '',
+                    areaId : '',
+                    linkName : '',
                 },
                 //表单校验规则
                 ruleValidate : {
 
                 },
                 //是否在提交中
-                addLoading : false
+                addLoading : false,
+                //合作伙伴详情
+                partnerDetail : {}
             };
         },
         components : {
@@ -131,8 +186,32 @@
                         this.formData.email = params.formData.email;
                         this.formData.description = params.formData.description;
                         this.formData.address = params.formData.address;
-                        // this.formData.idNum = params.formData.info[0][];
+                        this.formData.provinceId = params.formData.provinceId;
+                        this.formData.cityId = params.formData.cityId;
+                        this.formData.areaId = params.formData.areaId;
+                        this.partnerDetail = params.formData;
+                    } else if (this.$route.name === 'cooperaChannelOrgDetailModify') {
+                        this.formData.name = params.formData.orgName;
+                        this.formData.telephone = params.formData.telephone;
+                        this.formData.managerAccount = params.formData.managerAccount;
+                        this.formData.email = params.formData.email;
+                        this.formData.address = params.formData.address;
+                        this.formData.description = params.formData.description;
+                        this.formData.certificateNumber = params.formData.certificateNumber;
+                        this.formData.linkName = params.formData.linkName;
+                        this.partnerDetail = params.formData;
+                        this.formData.provinceId = params.formData.provinceId;
+                        this.formData.cityId = params.formData.cityId;
+                        this.formData.areaId = params.formData.areaId;
+                    } else {
+                        this.$router.push({
+                            name : this.personalChannel ? 'cooperaChannelPerDetail' : 'ISPinternetDetail'
+                        });
                     }
+                } else {
+                    this.$router.push({
+                        name : this.personalChannel ? 'cooperaChannelPerDetail' : 'ISPinternetDetail'
+                    });
                 }
             },
             /**
@@ -140,14 +219,200 @@
              */
             cancel () {
                 this.$router.push({
-                    name : this.personalChannel ? 'cooperaChannelPer' : 'cooperaChannelOrg'
+                    name : this.personalChannel ? 'cooperaChannelPerDetail' : 'ISPinternetDetail'
                 });
             },
             /**
              * 保存编辑的信息
              */
             save () {
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        if (this.personalChannel) {
+                            this.savePerPartnerInfo();
+                        } else if (this.orgChannel) {
+                            this.saveOrgPartnerInfo();
+                        }
+                    }
+                });
+            },
+            /**
+             * 保存修改后的合作伙伴信息
+             */
+            savePerPartnerInfo () {
+                ajax.post('',{
 
+                }).then(res => {
+                    if (res.success) {
+                        this.$router.push({
+                            name : 'ISPinternetDetail'
+                        });
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('edit') }));
+                    }
+                });
+            },
+            /**
+             * 校验手机号
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validatePhone (rule,value,callback) {
+                if (value) {
+                    if (validator.isMobile(value)) {
+                        callback();
+                    } else {
+                        callback(this.$t('errorFormat',{ field : this.$t('mobilePhone') }));
+                    }
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('mobilePhone') }));
+                }
+            },
+            /**
+             * 校验邮箱
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateEmail (rule,value,callback) {
+                if (value) {
+                    if (validator.isEmail(value)) {
+                        callback();
+                    } else {
+                        callback(this.$t('errorFormat',{ field : this.$t('email') }));
+                    }
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('email') }));
+                }
+            },
+            /**
+             * 所在地更改
+             * @param{Object} districtInfo 所在地信息
+             */
+            placeChange (districtInfo) {
+                this.formData.provinceId = districtInfo.province.provinceid;
+                this.formData.cityId = districtInfo.city.cityid;
+                this.formData.areaId = districtInfo.area.areaid;
+            },
+            /**
+             * 校验所在地
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validatePlace (rule,value,callback) {
+                if (this.formData.provinceId) {
+                    callback();
+                } else {
+                    callback(this.$t('selectField',{ msg : this.$t('location') }));
+                }
+            },
+            /**
+             * 校验详细地址
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateAddress (rule,value,callback) {
+                if (value) {
+                    if (value.length > 100) {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            },
+            /**
+             * 校验个人说明
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateDescription (rule,value,callback) {
+                if (value) {
+                    if (value.length > 200) {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('个人说明'),length : 200 }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            },
+            /**
+             * 校验公司名称
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateName (rule,value,callback) {
+                if (value) {
+                    if (value.length > 50) {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('公司名称'),length : 50 }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            },
+            /**
+             * 校验社会信用代码
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateCertificateNumber (rule,value,callback) {
+                if (value) {
+                    let reg = /[0-9A-Z]{18}/;
+                    if (!reg.test(value)) {
+                        callback(this.$t('errorFormat',{ field : this.$t('社会信用代码') }));
+                    } else if (value.length > 100) {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('社会信用代码'),length : 100 }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            },
+            /**
+             * 校验联系人
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateLinkName (rule,value,callback) {
+                if (value) {
+                    if (value.length > 20) {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('联系人'),length : 20 }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('联系人') }));
+                }
+            },
+            /**
+             * 保存机构详情
+             */
+            saveOrgPartnerInfo () {
+                ajax.post('',{
+
+                }).then(res => {
+                    if (res.success) {
+                        this.$router.push({
+                            name : 'ISPinternetDetail'
+                        });
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('edit') }));
+                    }
+                });
             }
         },
         computed : {
@@ -168,12 +433,18 @@
                             }
                         }
                     ];
-                } else if (this.$route.name === 'addServer') { //机构合作伙伴
+                } else if (this.$route.name === 'cooperaChannelOrgDetailModify') { //机构合作伙伴
                     return [
                         {
-                            name : this.$t('serverList'),
+                            name : 'cooperaChannelOrg',
                             router : {
-                                name : 'server'
+                                name : 'cooperaChannelPer'
+                            }
+                        },
+                        {
+                            name : 'lesseeDetail',
+                            router : {
+                                name : 'cooperaChannelPerDetail'
                             }
                         }
                     ];
@@ -186,8 +457,29 @@
             },
             //机构合作伙伴
             orgChannel () {
-                return this.$route.name === 'cooperaChannelPerDetailModify';
-            }
+                return this.$route.name === 'cooperaChannelOrgDetailModify';
+            },
+            //默认选中的所在地信息
+            defaultAddress () {
+                if (this.partnerDetail && Object.keys(this.partnerDetail).length > 0) {
+                    return {
+                        province : {
+                            provinceid : this.partnerDetail.provinceId,
+                            province : this.partnerDetail.province,
+                        },
+                        city : {
+                            cityid : this.partnerDetail.cityId,
+                            city : this.partnerDetail.city
+                        },
+                        area : {
+                            areaid : this.partnerDetail.areaId,
+                            area : this.partnerDetail.area
+                        },
+                    };
+                } else {
+                    return {};
+                }
+            },
         }
     };
 </script>
