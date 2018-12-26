@@ -105,16 +105,24 @@
                             companyCode : this.companyCode
                         }).then((res) => {
                             if (!res.success) {
-                                this.$vux.toast.show({
-                                    text : this.$t('operateFail',{ msg : this.$t('send') }),
-                                    type : 'cancel'
-                                });
+                                if (res.message && res.message === 'M045') {
+                                    this.$vux.toast.show({
+                                        text : this.$t(res.message),
+                                        type : 'cancel',
+                                    });
+                                } else {
+                                    this.$vux.toast.show({
+                                        text : this.$t('operateFail',{ msg : this.$t('send') }),
+                                        type : 'cancel'
+                                    });
+                                }
                             } else {
                                 this.loginInfo.vcode = '';
                                 this.timimg();
                                 this.isGetCode = true;
                                 this.$vux.toast.show({
-                                    text : this.$t('operateSuc',{ msg : this.$t('send') })
+                                    text : this.$t('operateSuc',{ msg : this.$t('send') }),
+                                    type : 'success'
                                 });
                             }
                         });
