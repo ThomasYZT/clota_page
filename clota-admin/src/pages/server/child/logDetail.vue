@@ -16,7 +16,7 @@
                 </DatePicker>
             </div>
             <!-- 日志文件面积图 -->
-            <area-com :y-yxis-name="$t('fileSize')"
+            <area-com :y-yxis-name="$t('fileSize') + '(M)'"
                         :series-data="logInfo.data"
                         :legend-data="logInfo.legend"
                         area-type="logFile"
