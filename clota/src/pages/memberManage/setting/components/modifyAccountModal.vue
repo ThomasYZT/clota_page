@@ -61,8 +61,8 @@
                     <!--是否允许兑现-->
                     <FormItem :label="$t('whetherCashingIsAllowed')">
                         <RadioGroup v-model="formData.exchangeToCash">
-                            <Radio label="true">{{$t('allowCash')}}</Radio>
-                            <Radio label="false">{{$t('notAllowCash')}}</Radio>
+                            <Radio label="true" :disabled="formData.defaultAccount === 'true' ? true : false">{{$t('allowCash')}}</Radio>
+                            <Radio label="false" :disabled="formData.defaultAccount === 'true' ? true : false">{{$t('notAllowCash')}}</Radio>
                         </RadioGroup>
                     </FormItem>
                 </div>

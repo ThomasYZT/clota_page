@@ -223,31 +223,32 @@
                 <!--</div>-->
             <!--</div>-->
 
-            <div class="content-item">
-                <div class="title">{{$t('canAllIntegerToMoney')}}</div>
-                <div class="main">
-                    <div>
-                        <i-switch v-model="settingData.scoreExToCharge.donateType"></i-switch>
-                        <span class="text">{{$t('allIntegerToMoney')}}</span>
-                    </div>
-                    <div class="check-group-wrap">
-                        {{$t('setTheExchangeRate')}}：
-                        <span :class="{'ivu-form-item-error': error.donateIntegrateError}">
-                            <Input v-model.trim="settingData.scoreExToCharge.donateIntegrate"
-                                   :disabled="!settingData.scoreExToCharge.donateType"
-                                   @on-blur="checkInputBlurFunc(settingData.scoreExToCharge.donateIntegrate,'donateIntegrateError')"
-                                   type="text"
-                                   :placeholder="$t('inputField', {field: ''})"
-                                   class="single-input"/>
-                            <span class="ivu-form-item-error-tip"
-                               style="left: 176px;"
-                               v-if="error.donateIntegrateError">{{error.donateIntegrateError}}</span>
-                        </span>
-                        {{$t('integral')}}
-                        <span> {{settingData.scoreExToCharge.donateMoney}} {{$t('yuan')}}</span>
-                    </div>
-                </div>
-            </div>
+            <!--会员4期暂时去掉-->
+            <!--<div class="content-item">-->
+                <!--<div class="title">{{$t('canAllIntegerToMoney')}}</div>-->
+                <!--<div class="main">-->
+                    <!--<div>-->
+                        <!--<i-switch v-model="settingData.scoreExToCharge.donateType"></i-switch>-->
+                        <!--<span class="text">{{$t('allIntegerToMoney')}}</span>-->
+                    <!--</div>-->
+                    <!--<div class="check-group-wrap">-->
+                        <!--{{$t('setTheExchangeRate')}}：-->
+                        <!--<span :class="{'ivu-form-item-error': error.donateIntegrateError}">-->
+                            <!--<Input v-model.trim="settingData.scoreExToCharge.donateIntegrate"-->
+                                   <!--:disabled="!settingData.scoreExToCharge.donateType"-->
+                                   <!--@on-blur="checkInputBlurFunc(settingData.scoreExToCharge.donateIntegrate,'donateIntegrateError')"-->
+                                   <!--type="text"-->
+                                   <!--:placeholder="$t('inputField', {field: ''})"-->
+                                   <!--class="single-input"/>-->
+                            <!--<span class="ivu-form-item-error-tip"-->
+                               <!--style="left: 176px;"-->
+                               <!--v-if="error.donateIntegrateError">{{error.donateIntegrateError}}</span>-->
+                        <!--</span>-->
+                        <!--{{$t('integral')}}-->
+                        <!--<span> {{settingData.scoreExToCharge.donateMoney}} {{$t('yuan')}}</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <!--会员4期暂时去掉-->
             <!--<div class="content-item">-->

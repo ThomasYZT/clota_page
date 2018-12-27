@@ -243,10 +243,10 @@
                     <div class="title">{{$t('微信端推送交易记录设置')}}</div>
                     <div :class="{'ivu-form-item-error': error.wxPushErr, 'main': true}">
                         <div class="switcher">
-                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" size="large"></i-switch><span>{{$t('是否在微信公众号推送储值账户交易信息')}}</span>
+                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" ></i-switch><span>{{$t('是否在微信公众号推送储值账户交易信息')}}</span>
                         </div>
                         <div class="switcher">
-                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>
+                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>
                         </div>
                         <span class="text">{{$t('title')}}</span>
                         <Input type="text"

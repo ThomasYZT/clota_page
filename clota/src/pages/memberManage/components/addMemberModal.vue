@@ -32,18 +32,17 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <!--会员3期暂时去掉-->
-                    <!--<div class="ivu-form-item-wrap">-->
-                    <!--<Form-item :label="$t('memberGrowthRange') + '：'" prop="highestGrowthValue">&lt;!&ndash;会员成长值范围&ndash;&gt;-->
-                    <!--<Input v-model.trim="formData.lowerGrowthValue"-->
-                    <!--:placeholder="$t('inputField', {field: ''})"-->
-                    <!--class="single-input"/>-->
-                    <!--<span class="split-line">–</span>-->
-                    <!--<Input v-model.trim="formData.highestGrowthValue"-->
-                    <!--:placeholder="$t('inputField', {field: ''})"-->
-                    <!--class="single-input"/>-->
-                    <!--</Form-item>-->
-                    <!--</div>-->
+                    <div class="ivu-form-item-wrap">
+                        <Form-item :label="$t('memberGrowthRange') + '：'" prop="highestGrowthValue"><!--会员成长值范围-->
+                            <Input v-model.trim="formData.lowerGrowthValue"
+                                :placeholder="$t('inputField', {field: ''})"
+                                class="single-input"/>
+                            <span class="split-line">–</span>
+                            <Input v-model.trim="formData.highestGrowthValue"
+                                :placeholder="$t('inputField', {field: ''})"
+                                class="single-input"/>
+                        </Form-item>
+                    </div>
                     <!--会员4期暂时去掉-->
                     <!--<div class="ivsu-form-item-wrap">-->
                         <!--<Form-item :label="$t('会员卡功能') + '：'" prop="function">&lt;!&ndash;会员卡功能&ndash;&gt;-->
