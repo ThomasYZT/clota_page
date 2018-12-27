@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <Upload
-                                v-if="type !== 'look' && formData.images.length < 2"
+                                v-if="type !== 'look' && formData.images.length < 1"
                                 class="upload-wrap"
                                 :action="uploadUrl"
                                 :headers="uploadHeaders"
@@ -132,7 +132,7 @@
                     title : [
                         { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('noticeName') }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
-                        { type : 'string', max : 50, message : this.$t('errorMaxLength', { field : this.$t('noticeName'), length : 50 }), trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('noticeName'), length : 20 }), trigger : 'blur' },
                     ],
                     content : [
                         { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('desc') }), trigger : 'blur' },
