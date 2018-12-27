@@ -31,7 +31,8 @@ import {
     Tabs,
     Steps,
     Poptip,
-    AutoComplete
+    AutoComplete,
+    Notice
 } from 'iview';
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
@@ -139,6 +140,7 @@ plugin.install = function (Vue, options) {
     Vue.component('AutoComplete',AutoComplete);
     Vue.prototype.$Message = Message;
     Vue.prototype.$QRcode = QRcode;
+    Vue.prototype.$Notice = Notice;
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
