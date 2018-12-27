@@ -504,7 +504,7 @@
              */
             takeNumChange (rowData) {
                 if(rowData.takeNum > 0){
-                    if(!rowData.idType){
+                    if(!rowData.idType && this.acceptCertificateType.all.length > 0){
                         rowData.idType = this.productPolicy[rowData.productId].acceptIdType ? this.productPolicy[rowData.productId].acceptIdType.split(',')[0] : '';
                     }
                 }else{

@@ -18,7 +18,7 @@
             <div class="target-body">
                 <table-com
                     :column-data="columnData"
-                    :table-data="productListDelal"
+                    :table-data="productListDela"
                     :border="false"
                     :height="254"
                     @query-data="queryList">
@@ -45,7 +45,7 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <InputNumber
-                                :min="scope.row.min ? scope.row.min : 1"
+                                :min="(scope.row.min && scope.row.min > 0) ? scope.row.min : 1"
                                 :max="scope.row.max ? scope.row.max : 10000000"
                                 :disabled="scope.row.disabled"
                                 :value="scope.row.num"
@@ -147,6 +147,14 @@
              * 确定填写数量
              */
             save () {
+                let ticketNum = 0;
+                for (let i = 0,j = this.productListDela.length; i < j; i++) {
+                    ticketNum += this.productListDela[i]['num']
+                }
+                if (ticketNum <= 0) {
+                    this.$Message.warning(this.$t('请选择购买的产品'));
+                    return;
+                }
                 let routeName = '';
                 if(this.searchParams.orderType === 'team'){
                     routeName = 'teamOrder';
@@ -156,7 +164,7 @@
                 this.$router.push({
                     name :routeName,
                     params :{
-                        productList : this.productListDelal,
+                        productList : this.productListDela,
                         saleOrgName : this.searchParams.saleOrgName,
                         scenicOrgId : this.searchParams.scenicOrgId,
                         saleOrgId : this.searchParams.saleOrgId,
@@ -239,13 +247,13 @@
             //预计总额
             predictMoney () {
                 let amount = 0;
-                for(let i = 0,j = this.productListDelal.length;i < j;i++){
-                    amount += this.productListDelal[i]['settlePrice'] * this.productListDelal[i]['num'];
+                for(let i = 0,j = this.productListDela.length;i < j;i++){
+                    amount += this.productListDela[i]['settlePrice'] * this.productListDela[i]['num'];
                 }
                 return amount;
             },
             //对产品数据进行处理，保证每个产品都有最大数量和最小数量
-            productListDelal () {
+            productListDela () {
                 if(this.productPolicy && Object.keys(this.productPolicy).length > 0){
                     return this.tableData.map(item => {
                         let numCount = item.num;
