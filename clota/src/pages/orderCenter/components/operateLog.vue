@@ -90,7 +90,7 @@
                         } else {
                             //退票审核，
                             return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，
-                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }；
+                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }
                             ${this.$t('rejectedNum')}：${contentsObj.rejectNum}。
                             ${this.$t('remark')}：${contentsObj.remark}`;
                         }
