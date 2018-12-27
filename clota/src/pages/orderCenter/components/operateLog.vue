@@ -128,7 +128,8 @@
                             return {
                                 content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
                             ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate}
-                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }。`,
+                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }。
+                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }。`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
                         } else {
@@ -186,22 +187,32 @@
                         }
                     //过期核销 -- 订单
                     case 'ORDER_OVERDUE_VERIFY' :
-                        return `${this.$t('overDueVarifyNum')}：${contentsObj.verifyNum}，
+                        return {
+                            content : `${this.$t('overDueVarifyNum')}：${contentsObj.verifyNum}，
                         ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
-                        ${this.$t('verifySN')}：${contentsObj.checkSerialNo}`;
+                        ${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
+                        };
                     //过期核销 -- 产品明细
                     case 'ORDER_OVERDUE_VERIFY_TICKET' :
-                        return `${this.$t('expiredVerify')}，${this.$t('verifySN')}：${contentsObj.checkSerialNo}`;
+                        return {
+                            content : `${this.$t('expiredVerify')}，${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
+                        };
                     //团队退单 -- 申请
                     case 'ORDER_CANCEL_APPLY' :
-                        return `${this.$t('applyCancelOrder')}`
+                        return {
+                            content : `${this.$t('applyCancelOrder')}`
+                        };
                     //团队退单 -- 驳回
                     case 'ORDER_CANCEL_AUDIT_REJECT' :
-                        return `${this.$t('teamOrderCancelApply')}：${this.$t('reject')}，
-                        ${this.$t('remark')}：${contentsObj.remark}`;
+                        return {
+                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('reject')}，
+                        ${this.$t('remark')}：${contentsObj.remark}`
+                        };
                     case 'ORDER_CANCEL_AUDIT_PASS' :
-                        return `${this.$t('teamOrderCancelApply')}：${this.$t('checkPass')}，
-                        ${this.$t('remark')}：${contentsObj.remark}`;
+                        return {
+                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('checkPass')}，
+                        ${this.$t('remark')}：${contentsObj.remark}`
+                        };
                     default : return '';
                 }
             }
