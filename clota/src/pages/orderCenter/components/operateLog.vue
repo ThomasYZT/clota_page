@@ -42,11 +42,11 @@
                 //各种状态对应的类名
                 constClassDefined : {
                     //订单退票申请
-                    'ORDER_REFUND_APPLY' : 'blue-status',
+                    'ORDER_REFUND_APPLY' : 'green-status',
                     //订单退票审核
-                    'ORDER_REFUND_AUDIT' : 'green-status',
+                    'ORDER_REFUND_AUDIT' : 'red-status',
                     //订单改签申请
-                    'ORDER_ALTER_APPLY' : 'red-status',
+                    'ORDER_ALTER_APPLY' : 'green-status',
                     //订单改签审核
                     'ORDER_ALTER_AUDIT' : 'red-status',
                     //新建订单
@@ -78,73 +78,101 @@
                     //订单退票申请
                     case 'ORDER_REFUND_APPLY' :
                         // 申请退票，数量：
-                        return `${this.$t('ApplyForRefund')}，${this.$t('quantity')}：${contentsObj.reqNum}。`;
+                        return {
+                            content : `${this.$t('ApplyForRefund')}，${this.$t('quantity')}：${contentsObj.reqNum}。`
+                        };
                     //订单退票审核
                     case 'ORDER_REFUND_AUDIT' :
                         //是否是产品的日志信息
                         if (this.isProductLog) {
                             //退票审核，
-                            return `${this.$t('refundAndAudit')}，
-                                ${'refundRate' in contentsObj ? ( this.$t('handlingRate') + ':' + contentsObj.refundRate + ',' ) : '' }
-                                ${this.$t('remark')}：${contentsObj.remark}`;
+                            return {
+                                content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}
+                                ${'refundRate' in contentsObj ? ( '，' + this.$t('handlingRate') + ':' + contentsObj.refundRate ) : '' }
+                                ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }。`,
+                                className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
+                            };
                         } else {
                             //退票审核，
-                            return `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}，
-                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }
-                            ${this.$t('rejectedNum')}：${contentsObj.rejectNum}。
-                            ${this.$t('remark')}：${contentsObj.remark}`;
+                            return {
+                                content : `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}
+                            ${'passOrderTicketIds' in contentsObj ? ( '，' +  this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
+                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }
+                            ${this.$t('rejectedNum')}：${contentsObj.rejectNum}。`,
+                                className : contentsObj.rejectedNum === '0' ? 'green-status' : 'red-status'
+                            };
                         }
                     //订单改签申请
                     case 'ORDER_ALTER_APPLY' :
                         // 申请改签，数量：
-                        return `${this.$t('applyForUpgrade')}，
-                        ${this.$t('quantity')}：${contentsObj.reqNum}，
-                        ${this.$t('applyForUpgradeTo')}：${contentsObj.afterAlterDate}。`;
+                        return {
+                            content : `${this.$t('applyForUpgrade')}，
+                           ${this.$t('quantity')}：${contentsObj.reqNum}，
+                           ${this.$t('applyForUpgradeTo')}：${contentsObj.afterAlterDate}。`
+                        };
                     //订单改签审核
                     case 'ORDER_ALTER_AUDIT' :
                         //是否是产品的日志信息
                         if (this.isProductLog) {
                             // 改签审核，通过数量：
-                            return `${this.$t('alterAndAudit')}，
-                            ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate}。
-                            ${this.$t('remark')}：${contentsObj.remark}`;
+                            return {
+                                content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
+                            ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate}
+                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }。`,
+                                className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
+                            };
                         } else {
                             // 改签审核，通过数量：
-                            return `${this.$t('alterAndAudit')}，
-                            ${this.$t('passedNum')}：${contentsObj.passNum}，
-                            ${'passOrderTicketIds' in contentsObj ? ( this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds + ',' ) : '' }
-                            ${this.$t('playDateUpgradeTo')}：${contentsObj.afterAlterDate}。
-                            ${this.$t('remark')}：${contentsObj.remark}`;
+                            return {
+                                content : `${this.$t('alterAndAudit')}，
+                            ${this.$t('passedNum')}：${contentsObj.passNum}
+                            ${'passOrderTicketIds' in contentsObj ? (  '，' + this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
+                            ${contentsObj['afterAlterDate'] ? (  '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.afterAlterDate ) : '' }
+                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`,
+                                className : !contentsObj.passedNum === '0' ? 'red-status' : 'green-status'
+                            };
                         }
                     //新建订单
                     case 'ORDER_NEW_ORDER' :
                         // 预定成功，预定数量：
-                        return `${this.$t('reverseSuccess')}，${this.$t('reserveNum')}：${contentsObj.orderNum}。`;
+                        return {
+                            content : `${this.$t('reverseSuccess')}，${this.$t('reserveNum')}：${contentsObj.orderNum}。`
+                        };
                     //新增票券
                     case 'ORDER_NEW_TICKET' :
                         // 预定成功
-                        return this.$t('reverseSuccess');
+                        return {
+                            content : this.$t('reverseSuccess') + '。'
+                        };
                     //"团队订单审核驳回
                     case 'ORDER_AUDIT_REJECT' :
                         // 审核不通过，备注：
-                        return `${this.$t('checkNoPass')}，${this.$t('remark')}：${contentsObj.remark}。`;
+                        return {
+                            content : `${this.$t('checkNoPass')}，${this.$t('remark')}：${contentsObj.remark}。`
+                        };
                     //"团队订单审核通过
                     case 'ORDER_AUDIT_PASS' :
                         // 审核通过，备注：
-                        return `${this.$t('checkPass')}，${this.$t('remark')}：${contentsObj.remark}。`;
+                        return {
+                            content : `${this.$t('checkPass')}，${this.$t('remark')}：${contentsObj.remark}。`
+                        };
                     //核销
                     case 'ORDER_VERIFY_TICKET' :
                         //是否是产品的日志信息
                         if (this.isProductLog) {
                             // 核销数量：
-                            return `${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
-                            ${this.$t('remark')}：${contentsObj.remark}`;
+                            return {
+                                content : `${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
+                            ${this.$t('remark')}：${contentsObj.remark}`
+                            };
                         } else {
                             // 核销数量：
-                            return `${this.$t('verificationNum')}：${contentsObj.verifyNum}，
+                            return {
+                                content : `${this.$t('verificationNum')}：${contentsObj.verifyNum}，
                             ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
-                            ${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
-                            ${this.$t('remark')}：${contentsObj.remark}`;
+                            ${this.$t('verifySN')}：${contentsObj.checkSerialNo}
+                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`
+                            };
                         }
                     default : return '';
                 }
@@ -154,10 +182,15 @@
             //操作记录数据处理
             operateLogDeal () {
                 return this.orderRecordList.map(item => {
+                    let contentDetail = this.getContentDetail(item);
                     return {
                         ...item,
-                        className : this.constClassDefined[item.operationStatus] ? this.constClassDefined[item.operationStatus] : 'blue-status',
-                        contentDeal : this.getContentDetail(item)
+                        className : contentDetail.className ?
+                            contentDetail.className :
+                            (this.constClassDefined[item.operationStatus] ?
+                                this.constClassDefined[item.operationStatus] :
+                                'blue-status'),
+                        contentDeal : contentDetail.content
                     }
                 });
             }
