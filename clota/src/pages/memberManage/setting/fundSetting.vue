@@ -7,184 +7,230 @@
 
         <div class="content">
 
-            <!--会员3期暂时去掉-->
-            <!--<div class="content-item">-->
+            <Form ref="formDynamic" :model="formDynamic">
+
+                <!--会员3期暂时去掉-->
+                <!--<div class="content-item">-->
                 <!--<div class="title">{{$t('StorePasswordSetting')}}</div>-->
                 <!--<div class="main">-->
-                    <!--<RadioGroup v-model="settingData.passwdForRechargeAccount" vertical>-->
-                        <!--<Radio label="false">-->
-                            <!--<span>{{$t('consumeWithoutPass')}}</span>-->
-                        <!--</Radio>-->
-                        <!--<Radio label="true">-->
-                            <!--<span>{{$t('consumeWithPass')}}</span>-->
-                            <!--<span class="yellow-color">{{$t('erCodeOrSmsToPass')}}</span>-->
-                        <!--</Radio>-->
-                    <!--</RadioGroup>-->
+                <!--<RadioGroup v-model="settingData.passwdForRechargeAccount" vertical>-->
+                <!--<Radio label="false">-->
+                <!--<span>{{$t('consumeWithoutPass')}}</span>-->
+                <!--</Radio>-->
+                <!--<Radio label="true">-->
+                <!--<span>{{$t('consumeWithPass')}}</span>-->
+                <!--<span class="yellow-color">{{$t('erCodeOrSmsToPass')}}</span>-->
+                <!--</Radio>-->
+                <!--</RadioGroup>-->
                 <!--</div>-->
-            <!--</div>-->
+                <!--</div>-->
 
-            <div class="content-item">
-                <div class="title">{{$t('setProportionOfBonusAmountOfStorageValue')}}
-                    <span class="add-span blue-color" @click="addSendRate">+ {{$t('add')}}</span>
+                <div class="content-item">
+                    <div class="title">{{$t('setProportionOfBonusAmountOfStorageValue')}}
+                        <span class="add-span blue-color" @click="addSendRate">+ {{$t('add')}}</span>
+                    </div>
+                    <div class="main" v-if="settingData.donateWhileRecharge.length > 0">
+                        <div class="ivu-form-item-wrap">
+                            <template v-for="(item, index) in settingData.donateWhileRecharge">
+                                <div :key="index" class="send-money-wrap" v-if="item._status">
+                                    <span class="label">{{$t('recharge')}}：</span>
+                                    <Input type="text"
+                                           :value="item.lowerValue"
+                                           disabled
+                                           :placeholder="$t('inputField', {field: ''})"
+                                           class="single-input"/> –
+                                    <Input type="text"
+                                           :value="item.topValue"
+                                           disabled
+                                           :placeholder="$t('inputField', {field: ''})"
+                                           class="single-input"/> {{$t('sendGift')}}
+                                    <Input type="text"
+                                           :value="item.gift"
+                                           disabled
+                                           :placeholder="$t('inputField', {field: ''})"
+                                           class="single-input"/> {{$t('yuan')}}
+                                    <span class="add-span blue-color"
+                                          @click="showSendRateModal(item,index)">{{$t('applicationScope')}}</span><!--应用范围-->
+                                    <span class="add-span blue-color"
+                                          @click="showSendRateModal(item,index)">{{$t('modify')}}</span>
+                                    <span class="add-span red-color"
+                                          @click="handleRemoveSendRate(item,index)">{{$t('del')}}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
-                <div class="main" v-if="settingData.donateWhileRecharge.length > 0">
-                    <div class="ivu-form-item-wrap">
-                        <template v-for="(item, index) in settingData.donateWhileRecharge">
-                            <div :key="index" class="send-money-wrap" v-if="item._status">
-                                <span class="label">{{$t('recharge')}}：</span>
-                                <Input type="text"
-                                       :value="item.lowerValue"
-                                       disabled
-                                       :placeholder="$t('inputField', {field: ''})"
-                                       class="single-input"/> –
-                                <Input type="text"
-                                       :value="item.topValue"
-                                       disabled
-                                       :placeholder="$t('inputField', {field: ''})"
-                                       class="single-input"/> {{$t('sendGift')}}
-                                <Input type="text"
-                                       :value="item.gift"
-                                       disabled
-                                       :placeholder="$t('inputField', {field: ''})"
-                                       class="single-input"/> {{$t('yuan')}}
+
+                <!--<div class="content-item">
+                    <div class="title">转账手续费扣除比例设置</div>
+                    <div class="main">
+                        <Input  v-model.trim="settingData.commissionOfTransfermation"
+                                type="text"
+                                class="single-input"
+                                placeholder="请输入"/>%
+                        </div>
+                </div>-->
+
+                <!--储值账户设置-->
+                <div class="content-item">
+                    <div class="title">{{$t('storeValueAccountSettings')}}
+                        <span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>
+                    </div>
+                    <div class="main">
+                        <div class="table-wrap">
+                            <table-com
+                                :table-com-min-height="320"
+                                :column-data="columnData"
+                                :table-data="tableData"
+                                :auto-height="true"
+                                :border="false">
+                                <el-table-column
+                                    slot="column0"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column1"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column2"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        <ul class="operate-list">
+                                            <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">{{$t('appSetting')}}</li>
+                                        </ul>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column3"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        <ul class="operate-list">
+                                            <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">{{$t('appSetting')}}</li>
+                                        </ul>
+                                    </template>
+                                </el-table-column>
+                                <!--会员3期暂时去掉-->
+                                <el-table-column
+                                    slot="column4"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        <ul class="operate-list">
+                                            <li class="blue-label"
+                                                @click="showModifyAccountModal(scope.row, scope.$index)">
+                                                {{$t('editAccount')}}
+                                            </li>
+                                        </ul>
+                                    </template>
+                                </el-table-column>
+                            </table-com>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-item">
+                    <div class="title">{{$t('消费时优先扣除账户设置')}}</div>
+                    <div class="main">
+                        <RadioGroup v-model="settingData.priorityDeductionInConsumption">
+                            <Radio label="corpus">
+                                <span>{{$t('corpusAccount')}}</span>
+                            </Radio>
+                            <Radio label="donate">
+                                <span>{{$t('赠送金额账户')}}</span>
+                            </Radio>
+                        </RadioGroup>
+                    </div>
+                </div>
+
+                <!--修改会员储值余额设置-->
+                <div class="content-item">
+                    <div class="title">{{$t('rechargeModifyReasons')}}</div><!--修改会员储值余额设置-->
+                    <div class="main">
+                        <RadioGroup v-model="settingData.allowAdjustRechargeAccount" vertical style="display: block">
+                            <Radio label="false">
+                                <span>{{$t('notAllowRecharge')}}</span><!--不允许修改会员的储值账户-->
+                            </Radio>
+                            <Radio label="true">
+                            <span>{{$t('allowModifyRecharge')}}<!--允许修改会员的储值账户，如允许修改，请设置修改原因-->
                                 <span class="add-span blue-color"
-                                      @click="showSendRateModal(item,index)">{{$t('applicationScope')}}</span><!--应用范围-->
-                                <span class="add-span blue-color"
-                                      @click="showSendRateModal(item,index)">{{$t('modify')}}</span>
-                                <span class="add-span red-color"
-                                      @click="handleRemoveSendRate(item,index)">{{$t('del')}}</span>
-                            </div>
-                        </template>
+                                      v-if="settingData.allowAdjustRechargeAccount === 'true'"
+                                      @click="handleAddReason">+ {{$t('addModifyReason')}}</span><!--新增修改原因-->
+                            </span>
+                            </Radio>
+                        </RadioGroup>
+                        <div class="ivu-form-item-wrap margin-left-50"
+                             v-show="settingData.allowAdjustRechargeAccount === 'true' ? true : false">
+                            <FormItem
+                                v-for="(item, index) in formDynamic.reason"
+                                v-if="item._status"
+                                :key="index"
+                                label=""
+                                :prop="'reason.' + index + '.reason'"
+                                :rules="[{required: true, message: $t('errorEmpty', {msg: $t('modifyReason')}), trigger: 'blur'},
+                                 { validator: emoji, trigger: 'blur' }]"><!--修改原因不能为空-->
+                                <Input type="text"
+                                       :disabled="item.disabled"
+                                       v-model.trim="item.reason" :maxlength="100"
+                                       style="width: 290px"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                                <span class="span-bottom red-color" v-if="item.active && index > 0"
+                                      @click="deleteReason(item,index)">{{$t('del')}}</span><!--删除-->
+                                <span class="span-bottom blue-color" v-if="!item.active"
+                                      @click="handleSubmitForReason(item,index)">{{$t("save")}}</span>
+                                <span class="span-bottom grey-color" v-if="!item.active"
+                                      @click="handleResetReason(item,index)">{{$t('cancel')}}</span><!--取消-->
+                            </FormItem>
+                        </div>
+
                     </div>
                 </div>
-            </div>
 
-            <!--<div class="content-item">
-                <div class="title">转账手续费扣除比例设置</div>
-                <div class="main">
-                    <Input  v-model.trim="settingData.commissionOfTransfermation"
-                            type="text"
-                            class="single-input"
-                            placeholder="请输入"/>%
-                    </div>
-            </div>-->
+                <!--会员4期暂时去掉-->
+                <!--房款返还至各业态账户的比例设置-->
+                <!--<owner-refund-setting class="content-item"-->
+                <!--ref="ownerSetting"-->
+                <!--:ownerData.sync="settingData.houseMoneyRefunded"-->
+                <!--@updateOwnerData="settingData.houseMoneyRefunded = $event">-->
+                <!--</owner-refund-setting>-->
 
-            <!--储值账户设置-->
-            <div class="content-item">
-                <div class="title">{{$t('storeValueAccountSettings')}}
-                    <span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>
-                </div>
-                <div class="main">
-                    <div class="table-wrap">
-                        <table-com
-                            :table-com-min-height="320"
-                            :column-data="columnData"
-                            :table-data="tableData"
-                            :auto-height="true"
-                            :border="false">
-                            <el-table-column
-                                slot="column0"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                show-overflow-tooltip
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    {{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                slot="column1"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                show-overflow-tooltip
-                                slot-scope="row">
-                            </el-table-column>
-                            <el-table-column
-                                slot="column2"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    <ul class="operate-list">
-                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'money')">{{$t('appSetting')}}</li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                slot="column3"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    <ul class="operate-list">
-                                        <li class="blue-label" @click="showRangeModal(scope.row, scope.$index, 'send')">{{$t('appSetting')}}</li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
-                            <!--会员3期暂时去掉-->
-                            <el-table-column
-                                slot="column4"
-                                :label="row.title"
-                                :prop="row.field"
-                                :key="row.index"
-                                :width="row.width"
-                                :min-width="row.minWidth"
-                                slot-scope="row">
-                                <template slot-scope="scope">
-                                    <ul class="operate-list">
-                                        <li class="blue-label"
-                                            @click="showModifyAccountModal(scope.row, scope.$index)">
-                                            {{$t('editAccount')}}
-                                        </li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
-                        </table-com>
-                    </div>
-                </div>
-            </div>
-
-            <div class="content-item">
-                <div class="title">{{$t('消费时优先扣除账户设置')}}</div>
-                <div class="main">
-                    <RadioGroup v-model="settingData.priorityDeductionInConsumption">
-                        <Radio label="corpus">
-                            <span>{{$t('corpusAccount')}}</span>
-                        </Radio>
-                        <Radio label="donate">
-                            <span>{{$t('赠送金额账户')}}</span>
-                        </Radio>
-                    </RadioGroup>
-                </div>
-            </div>
-
-            <!--会员4期暂时去掉-->
-            <!--房款返还至各业态账户的比例设置-->
-            <!--<owner-refund-setting class="content-item"-->
-                                  <!--ref="ownerSetting"-->
-                                  <!--:ownerData.sync="settingData.houseMoneyRefunded"-->
-                                  <!--@updateOwnerData="settingData.houseMoneyRefunded = $event">-->
-            <!--</owner-refund-setting>-->
-
-            <!--会员4期暂时去掉-->
-            <!--业主使用已返还金额在各业态进行消费时单笔订单可用金额比例设置-->
-            <!--<owner-card-consume-config class="content-item"-->
-                                       <!--ref="ownerSetting"-->
-                                       <!--:ownerData.sync="settingData.houseMoneyRefunded"-->
-                                       <!--@updateOwnerData="settingData.houseMoneyRefunded = $event">-->
-            <!--</owner-card-consume-config>-->
+                <!--会员4期暂时去掉-->
+                <!--业主使用已返还金额在各业态进行消费时单笔订单可用金额比例设置-->
+                <!--<owner-card-consume-config class="content-item"-->
+                <!--ref="ownerSetting"-->
+                <!--:ownerData.sync="settingData.houseMoneyRefunded"-->
+                <!--@updateOwnerData="settingData.houseMoneyRefunded = $event">-->
+                <!--</owner-card-consume-config>-->
+            </Form>
 
         </div>
 
@@ -255,6 +301,8 @@
                 routerName : 'fundSetting',
                 //设置数据
                 settingData : {
+                    //修改会员积分、虚拟账户余额设置
+                    allowAdjustRechargeAccount : '',
                     //储值密码设置
                     passwdForRechargeAccount : '',
                     //转账扣除手续费比例
@@ -315,6 +363,20 @@
                 numberProps : ['moneyToGrowth'],
                 //String型
                 stringProps : ['moneyToGrowth'],
+                formDynamic : {
+                    reason : [],
+                },
+                //动态表单数据
+                reasonIndex : 1,
+
+                //用于动态表单校验(特殊字符)
+                emoji : (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error(this.$t('errorIrregular'))); // 输入内容不合规则
+                    } else {
+                        callback();
+                    }
+                },
             };
         },
         created () {
@@ -326,6 +388,8 @@
             this.listAccount();
             //获取储值账户-(本金/赠送金额)应用范围
             this.getSubNode();
+            //查询修改原因
+            this.listAdjustReason();
         },
         methods : {
 
@@ -391,6 +455,7 @@
                                 donateWhileRecharge : res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
                                 priorityDeductionInConsumption : res.data.priorityDeductionInConsumption,
                                 houseMoneyRefunded : res.data.houseMoneyRefunded,
+                                allowAdjustRechargeAccount : res.data.allowAdjustRechargeAccount,
                             };
                             for ( let key in params) {
                                 if (key && params[key] && typeof (params[key]) === 'object' && Object.keys(params[key]).length > 0) {
@@ -436,6 +501,7 @@
                                 JSON.stringify(setParam.donateWhileRecharge) : '',
                             priorityDeductionInConsumption : this.settingData.priorityDeductionInConsumption,
                             houseMoneyRefunded : this.settingData.houseMoneyRefunded,
+                            allowAdjustRechargeAccount : this.settingData.allowAdjustRechargeAccount,
                         };
                         this.basicSet(params);
 
@@ -591,6 +657,74 @@
                 let obj = this.listAmountRangeTable.find((item) => val === item.id);
                 return obj ? this.$t(obj.orgName) : '-';
             },
+            //查询修改原因
+            listAdjustReason () {
+                this.formDynamic.reason = [];
+                ajax.post('listAdjustReason',{
+                    reasonType : 'recharge'
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data && res.data.length > 0) {
+                            res.data.forEach((item, index) => {
+                                item.index = index;
+                                item._status = 1;
+                                item.active = true;
+                                item.disabled = true;
+                                this.formDynamic.reason.push(item);
+                            });
+                        }
+                    }
+                });
+            },
+            //新增修改原因
+            handleAddReason () {
+                this.reasonIndex++;
+                this.formDynamic.reason.push({
+                    reason : '',
+                    index : this.reasonIndex,
+                    _status : 1,
+                    disabled : false,
+                });
+            },
+            //修改原因表单校验
+            handleSubmitForReason (data, index) {
+                this.$refs.formDynamic.validateField('reason.' + index + '.reason', (valid) => {
+                    if (valid === '') {
+                        this.updateReason(data, index);
+                    }
+                });
+            },
+            //增加/修改原因
+            updateReason (data, index) {
+                ajax.post('addAdjustReason', {
+                    reason : data.reason,
+                    reasonType : 'recharge'
+                }).then(res => {
+                    if (res.success) {
+                        this.formDynamic.reason[index].disabled = true;
+                        this.formDynamic.reason[index].active = true;
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('addReason') })); // 新增原因成功
+                    }
+                });
+            },
+            //删除原因
+            deleteReason (data, index) {
+                ajax.post('deleteAdjustReason', {
+                    reasonId : data.id,
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('delReason') })); // 删除原因成功
+                        this.formDynamic.reason[index]._status = 0;
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('delReason') })); // 删除原因成功
+                    }
+                });
+            },
+            //取消原因表单校验
+            handleResetReason (data, index) {
+                this.$refs.formDynamic.resetFields('reason.' + index + '.reason');
+                this.formDynamic.reason[index]._status = 0;
+            },
 
         },
     };
@@ -612,6 +746,31 @@
 
             .content-item{
 
+                .add-span {
+                    font-size: $font_size_14px;
+                    margin-left: 20px;
+                }
+
+                .blue-color {
+                    font-size: $font_size_14px;
+                    color: $color_blue;
+                    cursor: pointer;
+                }
+
+                .red-color {
+                    font-size: $font_size_14px;
+                    color: $color_red;
+                    cursor: pointer;
+                }
+                .grey-color {
+                    font-size: $font_size_14px;
+                    color: $color-3F3F3F;
+                    cursor: pointer;
+                }
+                .span-bottom {
+                    vertical-align: bottom;
+                }
+
                 &:not(:nth-last-of-type(1)) {
                     margin-bottom: 30px;
                 }
@@ -621,7 +780,6 @@
                     display: inline-block;
                     min-width: 690px;
                     padding-right: 55px;
-                    width: 40%;
                     text-align: center;
                     vertical-align: middle;
 
@@ -635,6 +793,10 @@
                         .ivu-form-item{
                             width: 360px;
                         }
+                    }
+
+                    &.margin-left-50 {
+                        margin-left: 50px;
                     }
                 }
 

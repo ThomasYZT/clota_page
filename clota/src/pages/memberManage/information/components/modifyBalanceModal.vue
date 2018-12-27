@@ -149,7 +149,7 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        props : ['reason','detail','card-info'],
+        props : ['detail','card-info'],
         components : {},
         data () {
 
@@ -237,6 +237,8 @@
                 },
                 //账户数据
                 store : [],
+                //修改原因
+                reason : []
             };
         },
         methods : {
@@ -254,6 +256,7 @@
                 setTimeout( () => {
                     this.visible = true;
                 }, 300);
+                this.listAdjustReason();
             },
 
             //要修改的账户--监听改变
@@ -311,6 +314,18 @@
                     reasonId : '',
                     remark : '',
                 };
+            },
+            //查询修改原因
+            listAdjustReason () {
+                ajax.post('listAdjustReason',{
+                    reasonType : 'recharge'
+                }).then(res => {
+                    if (res.success) {
+                        this.reason = res.data || [];
+                    } else {
+                        this.reason = [];
+                    }
+                });
             },
 
         },

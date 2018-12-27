@@ -119,45 +119,6 @@
                 <!--</div>-->
 
                 <div class="content-item">
-                    <div class="title">{{$t('modifyAccBalanceSetting')}}</div><!--修改会员储值、积分、虚拟账户余额设置-->
-                    <div class="main">
-                        <RadioGroup v-model="settingData.allowAdjustAccount" vertical>
-                            <Radio label="false">
-                                <span>{{$t('notAllowModifyAcc')}}</span><!--不允许修改会员的储值、积分、虚拟账户-->
-                            </Radio>
-                            <Radio label="true">
-                                <span>{{$t('allowModifyAccReason')}}<!--允许修改会员的储值、积分、虚拟账户,如允许修改，请设置修改原因-->
-                                    <span class="add-span blue-color"
-                                          v-if="settingData.allowAdjustAccount === 'true'"
-                                          @click="handleAddReason">+ {{$t('addModifyReason')}}</span><!--新增修改原因-->
-                                </span>
-                            </Radio>
-                        </RadioGroup>
-                        <div class="ivu-form-item-wrap margin-left-50"
-                             v-show="settingData.allowAdjustAccount === 'true' ? true : false">
-                            <FormItem
-                                v-for="(item, index) in formDynamic.reason"
-                                v-if="item._status"
-                                :key="index"
-                                label=""
-                                :prop="'reason.' + index + '.reason'"
-                                :rules="[{required: true, message: $t('errorEmpty', {msg: $t('modifyReason')}), trigger: 'blur'},
-                                 { validator: emoji, trigger: 'blur' }]"><!--修改原因不能为空-->
-                                <Input type="text" :disabled="item.disabled" v-model.trim="item.reason" :maxlength="100"
-                                       :placeholder="$t('inputField', {field: ''})"/>
-                                <span class="span-bottom red-color" v-if="item.active && index > 0"
-                                      @click="deleteReason(item,index)">{{$t('del')}}</span><!--删除-->
-                                <span class="span-bottom blue-color" v-if="!item.active"
-                                      @click="handleSubmitForReason(item,index)">{{$t("save")}}</span>
-                                <span class="span-bottom grey-color" v-if="!item.active"
-                                      @click="handleResetReason(item,index)">{{$t('cancel')}}</span><!--取消-->
-                            </FormItem>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="content-item">
                     <div class="title">{{$t('credentialsTypeSetting')}}<!--证件类型设置-->
                         <span class="blue-color add-span" @click="handleAddIdType">+ {{$t('addCredentialsType')}}</span>
                         <!--新增证件类型-->
@@ -314,8 +275,6 @@
                         isSwitch : false,
                         day : '',//number
                     },
-                    //修改会员储值、积分、虚拟账户余额设置
-                    allowAdjustAccount : '',
                     //短信发送设置
                     smsSend : '',
                     //补卡收费标准
@@ -331,8 +290,6 @@
                 copySetData : {},
                 // 支付协议内容
                 paymentAgreement : '',
-                //动态表单数据
-                reasonIndex : 1,
                 idTypeIndex : 1,
                 formDynamic : {
                     reason : [],
@@ -394,8 +351,6 @@
             this.findBasicSet();
             //查询证件类型
             this.queryDocument();
-            //查询修改原因
-            this.listAdjustReason();
             this.getMemberLevelsInType();
         },
         computed : {
@@ -432,7 +387,6 @@
                                     },
                                     smsSend : res.data.smsSend,
                                     replacementCardFee : res.data.replacementCardFee,
-                                    allowAdjustAccount : res.data.allowAdjustAccount,
                                     wxMpTemplateInfoSet : res.data.wxMpTemplateInfoSet ? JSON.parse(res.data.wxMpTemplateInfoSet) : {
                                         showStoreValue : false,
                                         showIntegration : false,
@@ -464,7 +418,6 @@
                             smsSend : this.settingData.smsSend,
                             replacementCardFee : this.settingData.replacementCardFee,
                             notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
-                            allowAdjustAccount : this.settingData.allowAdjustAccount,
                         });
                     });
                 }
@@ -596,70 +549,6 @@
             handleResetDocument (data, index) {
                 this.$refs.formDynamic.resetFields('idType.' + index + '.name');
                 this.formDynamic.idType[index]._status = 0;
-            },
-
-
-            //查询修改原因
-            listAdjustReason () {
-                ajax.post('listAdjustReason', {}).then(res => {
-                    if (res.success) {
-                        if (res.data && res.data.length > 0) {
-                            res.data.forEach((item, index) => {
-                                item.index = index;
-                                item._status = 1;
-                                item.active = true;
-                                item.disabled = true;
-                                this.formDynamic.reason.push(item);
-                            });
-                        }
-                    }
-                });
-            },
-            //增加/修改原因
-            updateReason (data, index) {
-                ajax.post('addAdjustReason', {
-                    reason : data.reason,
-                }).then(res => {
-                    if (res.success) {
-                        this.formDynamic.reason[index].disabled = true;
-                        this.formDynamic.reason[index].active = true;
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('addReason') }) + '！'); // 新增原因成功
-                    }
-                });
-            },
-            //删除原因
-            deleteReason (data, index) {
-                ajax.post('deleteAdjustReason', {
-                    reasonId : data.id,
-                }).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('delReason') }) + '！'); // 删除原因成功
-                        this.formDynamic.reason[index]._status = 0;
-                    }
-                });
-            },
-            //新增修改原因
-            handleAddReason () {
-                this.reasonIndex++;
-                this.formDynamic.reason.push({
-                    reason : '',
-                    index : this.reasonIndex,
-                    _status : 1,
-                    disabled : false,
-                });
-            },
-            //修改原因表单校验
-            handleSubmitForReason (data, index) {
-                this.$refs.formDynamic.validateField('reason.' + index + '.reason', (valid) => {
-                    if (valid === '') {
-                        this.updateReason(data, index);
-                    }
-                });
-            },
-            //取消原因表单校验
-            handleResetReason (data, index) {
-                this.$refs.formDynamic.resetFields('reason.' + index + '.reason');
-                this.formDynamic.reason[index]._status = 0;
             },
 
             /**
