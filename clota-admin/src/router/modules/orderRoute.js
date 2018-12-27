@@ -51,6 +51,17 @@ export default {
                     lightMenu : 'order',
                 }
             },
+            //团队订单退单审核
+            teamOrderCancelAudit : {
+                path : 'teamOrder/refundAudit',
+                name : 'teamOrderRefundAudit',
+                component : () => import(/* webpackChunkName: "order" */'../../pages/order/teamOrderAudit/index.vue'),
+                meta : {
+                    _name : 'order',
+                    menuName : 'order',
+                    lightMenu : 'order',
+                }
+            },
             //散客订单退票审核
             indRefundOrderAudit : {
                 path : 'indOrder/refund/audit',
