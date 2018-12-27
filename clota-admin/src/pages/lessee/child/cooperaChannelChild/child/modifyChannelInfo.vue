@@ -101,6 +101,38 @@
                     </i-col>
                 </i-row>
                 <i-row>
+                    <i-col span="11">
+                        <FormItem :label="personalChannel ? $t('身份证') : $t('营业执照')"
+                                  prop="images"
+                                  :rules="{ required : true, validator : validateAttaches ,trigger : 'change' }">
+                            <div class="img-wrap"
+                                 v-for="(item,index) in attaches"
+                                 :key="index">
+                                <img class="img-item"  :src="item"/>
+                                <div class="mask-wrap">
+                                    <span class="iconfont icon-delete" @click="delImg(index)"></span>
+                                </div>
+                            </div>
+                            <Upload
+                                v-show="uploadImgLimit"
+                                class="upload-wrap"
+                                :action="uploadUrl"
+                                :headers="uploadHeaders"
+                                :show-upload-list="false"
+                                :max-size="maxSize * 1024"
+                                :on-exceeded-size="handleExceededSize"
+                                :format="['gif','img','jpeg','jpg','jpeg','png','svg']"
+                                :on-format-error="handleFormatError"
+                                :on-success="handleSuccess"
+                                accept="image/*">
+                                <div class="upload-btn">
+                                    <Icon type="ios-camera" size="20"></Icon>
+                                </div>
+                            </Upload>
+                        </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
                     <!--个人说明-->
                     <i-col span="24">
                         <FormItem :label="$t('个人说明')"
@@ -157,14 +189,19 @@
                     areaId : '',
                     linkName : '',
                 },
-                //表单校验规则
-                ruleValidate : {
-
-                },
+                //上传的附件
+                attaches : [],
                 //是否在提交中
                 addLoading : false,
                 //合作伙伴详情
-                partnerDetail : {}
+                partnerDetail : {},
+                // 上传文件请求头
+                uploadHeaders : {
+                    "Accept" : 'application/json',
+                    "token" : ajax.getToken(),
+                },
+                //上传文件的最大值,单位是M
+                maxSize : 10
             };
         },
         components : {
@@ -190,6 +227,7 @@
                         this.formData.cityId = params.formData.cityId;
                         this.formData.areaId = params.formData.areaId;
                         this.partnerDetail = params.formData;
+                        this.getAttaches(this.partnerDetail.attach);
                     } else if (this.$route.name === 'cooperaChannelOrgDetailModify') {
                         this.formData.name = params.formData.orgName;
                         this.formData.telephone = params.formData.telephone;
@@ -199,10 +237,11 @@
                         this.formData.description = params.formData.description;
                         this.formData.certificateNumber = params.formData.certificateNumber;
                         this.formData.linkName = params.formData.linkName;
-                        this.partnerDetail = params.formData;
                         this.formData.provinceId = params.formData.provinceId;
                         this.formData.cityId = params.formData.cityId;
                         this.formData.areaId = params.formData.areaId;
+                        this.partnerDetail = params.formData;
+                        this.getAttaches(this.partnerDetail.attach);
                     } else {
                         this.$router.push({
                             name : this.personalChannel ? 'cooperaChannelPerDetail' : 'ISPinternetDetail'
@@ -212,6 +251,17 @@
                     this.$router.push({
                         name : this.personalChannel ? 'cooperaChannelPerDetail' : 'ISPinternetDetail'
                     });
+                }
+            },
+            /**
+             * 获取默认图片信息
+             * @param{String data 图片字符串值
+             */
+            getAttaches (data) {
+                if (data) {
+                    this.attaches = JSON.parse(data);
+                } else {
+                    this.attaches = [];
                 }
             },
             /**
@@ -240,12 +290,21 @@
              * 保存修改后的合作伙伴信息
              */
             savePerPartnerInfo () {
-                ajax.post('',{
-
+                ajax.post('updatePartner',{
+                    id : this.partnerDetail.id,
+                    telephone : this.formData.telephone,
+                    provinceId : this.formData.provinceId,
+                    cityId : this.formData.cityId,
+                    areaId : this.formData.areaId,
+                    address : this.formData.address,
+                    description : this.formData.description,
+                    certificateNumber : this.formData.certificateNumber,
+                    email : this.formData.email,
+                    attach : this.attaches.join(',')
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$router.push({
-                            name : 'ISPinternetDetail'
+                            name : 'cooperaChannelPerDetail'
                         });
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
                     } else {
@@ -401,18 +460,93 @@
              * 保存机构详情
              */
             saveOrgPartnerInfo () {
-                ajax.post('',{
-
+                ajax.post('updatePartner',{
+                    id : this.partnerDetail.id,
+                    telephone : this.formData.telephone,
+                    provinceId : this.formData.provinceId,
+                    cityId : this.formData.cityId,
+                    areaId : this.formData.areaId,
+                    address : this.formData.address,
+                    description : this.formData.description,
+                    certificateNumber : this.formData.certificateNumber,
+                    email : this.formData.email,
+                    attach : this.attaches.join(',')
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$router.push({
-                            name : 'ISPinternetDetail'
+                            name : 'cooperaChannelPerDetail'
                         });
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('edit') }));
                     }
                 });
+            },
+            /**
+             * 删除图片
+             * @param{Number} index 图片序列
+             */
+            delImg (index) {
+                this.attaches.splice(index,1);
+            },
+            /**
+             * 图片大小超过设置大小，给出提示
+             * @param{Object} file 上传的文件
+             */
+            handleExceededSize (file) {
+                this.$Message.warning({
+                    content : `${file.name}大小超${this.maxSize}M限制，暂时不支持上传该文件`,
+                });
+            },
+            /**
+             * 上传图片格式错误提示
+             * @param{Object} file 上传的文件
+             */
+            handleFormatError (file) {
+                this.$Message.warning({
+                    content : `${file.name}文件格式不符合要求，请重新选择文件`,
+                });
+            },
+            /**
+             * 上传文件成功
+             * @param{Object} response 上传文件接口返回值
+             * @param{Object} file 上传文件
+             */
+            handleSuccess (response, file) {
+                let avatar = response.paths && response.paths.length > 0 ? response.paths : [];
+                if ( avatar.length > 0 ) {
+                    avatar.forEach(url => {
+                        this.attaches.push(url);
+                    });
+                } else {
+                    this.$Message.error({
+                        content : `${file.name}文件上传失败，请重新上传`
+                    });
+                }
+                this.$refs.formValidate.validateField('images');
+            },
+            /**
+             * 校验上传附件是否正确
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateAttaches (rule,value,callback) {
+                if (this.personalChannel) {
+                    if (this.attaches.length < 2) {
+                        callback(this.$t('请上传身份证'));
+                    } else {
+                        callback();
+                    }
+                } else if (this.orgChannel) {
+                    if (this.attaches.length < 1) {
+                        callback(this.$t('请上传营业执照'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback('error');
+                }
             }
         },
         computed : {
@@ -480,6 +614,20 @@
                     return {};
                 }
             },
+            // 附件上传地址, 分上传关联附件和普通上传附件
+            uploadUrl () {
+                return ajax.getHost('uploadImage');
+            },
+            //上传图片限制
+            uploadImgLimit () {
+                if (this.personalChannel) {
+                    return this.attaches.length < 2;
+                } else if (this.orgChannel) {
+                    return this.attaches.length < 1;
+                } else {
+                    return false;
+                }
+            }
         }
     };
 </script>
@@ -510,6 +658,58 @@
             /deep/ .btn-margin {
                 margin-right: 18px;
             }
+        }
+
+        .img-wrap{
+            display: inline-block;
+            position: relative;
+            margin-right: 5px;
+            vertical-align: middle;
+
+            &:hover .mask-wrap{
+                display: flex;
+            }
+
+            .mask-wrap{
+                display: none;
+                @include absolute_pos(absolute,0,0,0,0);
+                background: rgba(0,0,0,0.4);
+                align-items: center;
+                justify-content: center;
+
+                .icon-delete{
+                    cursor: pointer;
+
+                    &:before{
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+
+        .img-item{
+            width: 58px;
+            height: 58px;
+            display: inline-block;
+            vertical-align: top;
+            border-radius: 4px;
+            border: 1px dashed antiquewhite;
+        }
+
+        .upload-wrap{
+            display: inline-block;
+            width: 58px;
+            vertical-align: middle;
+        }
+
+        .upload-btn{
+            width: 58px;
+            height:58px;
+            line-height: 58px;
+            border: 1px dashed  $color_DCE0E6;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
         }
     }
 </style>

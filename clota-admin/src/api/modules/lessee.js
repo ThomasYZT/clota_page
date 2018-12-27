@@ -71,4 +71,6 @@ export default {
     'addPayInfo' : 'tenant/addPayInfo.json',
     //获取上级公司支付账户信息
     'getCompanyPayInfo' : 'tenant/getCompanyPayInfo.json',
+    //更新合作伙伴信息
+    'updatePartner' : 'tenantPartner/updatePartner.json',
 };
