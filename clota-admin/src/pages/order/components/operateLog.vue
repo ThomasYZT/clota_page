@@ -59,6 +59,16 @@
                     'ORDER_AUDIT_PASS' : 'green-status',
                     //核销
                     'ORDER_VERIFY_TICKET' : 'green-status',
+                    //过期核销 -- 订单
+                    'ORDER_OVERDUE_VERIFY' : 'green-status',
+                    //过期核销 -- 产品明细
+                    'ORDER_OVERDUE_VERIFY_TICKET' : 'green-status',
+                    //团队订单退单申请
+                    'ORDER_CANCEL_APPLY' : 'blue-status',
+                    //团队订单退单驳回
+                    'ORDER_CANCEL_AUDIT_REJECT' : 'red-status',
+                    //团队订单退单通过
+                    'ORDER_CANCEL_AUDIT_PASS' : 'green-status'
                 }
             };
         },
@@ -118,7 +128,8 @@
                             return {
                                 content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
                             ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate}
-                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }。`,
+                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }。
+                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }。`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
                         } else {
@@ -174,6 +185,34 @@
                             ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`
                             };
                         }
+                    //过期核销 -- 订单
+                    case 'ORDER_OVERDUE_VERIFY' :
+                        return {
+                            content : `${this.$t('overDueVarifyNum')}：${contentsObj.verifyNum}，
+                        ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
+                        ${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
+                        };
+                    //过期核销 -- 产品明细
+                    case 'ORDER_OVERDUE_VERIFY_TICKET' :
+                        return {
+                            content : `${this.$t('expiredVerify')}，${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
+                        };
+                    //团队退单 -- 申请
+                    case 'ORDER_CANCEL_APPLY' :
+                        return {
+                            content : `${this.$t('applyCancelOrder')}`
+                        };
+                    //团队退单 -- 驳回
+                    case 'ORDER_CANCEL_AUDIT_REJECT' :
+                        return {
+                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('reject')}，
+                        ${this.$t('remark')}：${contentsObj.remark}`
+                        };
+                    case 'ORDER_CANCEL_AUDIT_PASS' :
+                        return {
+                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('checkPass')}，
+                        ${this.$t('remark')}：${contentsObj.remark}`
+                        };
                     default : return '';
                 }
             }
