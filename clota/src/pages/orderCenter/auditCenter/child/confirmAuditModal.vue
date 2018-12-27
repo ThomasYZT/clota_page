@@ -45,7 +45,7 @@
                     <ul>
                         <li>{{$t('rejectedNum')}}：<span class="red">{{rejectProducts.length | contentFilter}}</span></li><!--驳回数量-->
                         <li>{{$t('passedNum')}}：<span class="green">{{passedProducts.length | contentFilter}}</span></li><!--通过数量-->
-                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{Number(baseInfo.reqNum) | contentFilter}}</span></li><!--申请数量-->
+                        <li>{{$t('requestNum')}}：<span style="color: #333;">{{applyNum | contentFilter}}</span></li><!--申请数量-->
                     </ul>
                 </div>
                 <!--退票手续费-->
@@ -84,6 +84,11 @@
         props: {
             baseInfo: Object,
             visitorInfo: Object,
+            //申请数量
+            'apply-num' : {
+                type : [String,Number],
+                default : 0
+            }
         },
         components: {
             tableCom,
