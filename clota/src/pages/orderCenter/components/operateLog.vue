@@ -117,9 +117,9 @@
                             // 改签审核，通过数量：
                             return {
                                 content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
-                            ${this.$t('playDateUpgradeTo')}：${contentsObj.alterDate}
-                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }。
-                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }。`,
+                            ${contentsObj['alterDate'] ? (  '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.alterDate) : '' }
+                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }。
+                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
                         } else {
