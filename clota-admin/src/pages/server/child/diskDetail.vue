@@ -16,9 +16,10 @@
                 </DatePicker>
             </div>
             <!-- 磁盘空间面积图 -->
-            <area-com y-yxis-name="磁盘已用空间"
+            <area-com y-yxis-name="磁盘已用空间(M)"
                       :series-data="diskInfo.data"
                       :legend-data="diskInfo.legend"
+                      area-type="disk"
                       key="disk">
             </area-com>
         </div>
@@ -76,15 +77,20 @@
             queryMoreDiskSpaceDate () {
                 ajax.post('queryMoreDiskSpaceDate',{
                     ip : this.serverIp,
-                    startTime : this.logDate[0].format('yyyy-MM-dd'),
-                    endTime : this.logDate[1].format('yyyy-MM-dd'),
+                    startTime : this.logDate[0].format('yyyy-MM-dd 00:00:00'),
+                    endTime : this.logDate[1].format('yyyy-MM-dd 23:59:59'),
                     pageSize : 99999,
                     page : 1
                 }).then(res => {
                     if (res.status === 200) {
                         if (res.data.list && res.data.list.length > 0) {
                             let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
-                            this.diskInfo.data = legendData.map(item => item.totalSpace - item.freeSpace);
+                            this.diskInfo.data = legendData.map(item => {
+                                return {
+                                    size : Number((item.totalSpace - item.freeSpace) / 1024).toFixed(2),
+                                    ...item
+                                };
+                            });
                             this.diskInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
                         } else {
                             this.diskInfo = {

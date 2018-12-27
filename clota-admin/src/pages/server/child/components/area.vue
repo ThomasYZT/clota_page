@@ -40,6 +40,11 @@
                 default () {
                     return [];
                 }
+            },
+            //日志文件类型
+            'area-type' : {
+                type : String,
+                default : 'disk'
             }
         },
         methods : {},
@@ -53,8 +58,7 @@
                     this.$refs.area.refresh();
                     clearTimeout(this.timer);
                 },300);
-                // return getPieConfig( this.diskInfo.map(item => new Date(item.ctime).format('MM.dd')),this.diskInfo.map(item => item.totalSpace - item.freeSpace),this.yYxisName);
-                return getPieConfig( this.legendData,this.seriesData,this.yYxisName);
+                return getPieConfig( this.legendData,this.seriesData,this.yYxisName,this.areaType);
             }
         }
     };

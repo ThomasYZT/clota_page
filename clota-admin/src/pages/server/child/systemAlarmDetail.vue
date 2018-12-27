@@ -17,11 +17,18 @@
             </div>
             <div class="alaram-table">
                 <table-com
+                    v-if="serverIp"
+                    :column-data="columnData"
                     :table-data="tableData"
-                    :table-height="tableHeight"
-                    :column-data="columnData">
+                    :border="true"
+                    :page-no-d.sync="pageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="pageSize"
+                    :total-count="totalCount"
+                    :ofset-height="190"
+                    @query-data="queryMoreWarningData">
                     <el-table-column
-                        slot="column0"
+                        slot="columnmessage"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -31,23 +38,10 @@
                                   :class="{'icon-warn' : scoped.row.warningLevel === '2',
                                   'icon-error' : scoped.row.warningLevel === '1',
                                   'icon-mind' : scoped.row.warningLevel === '3'}"></span>
-                            {{scoped.row.message}}
+                            {{scoped.row.message | contentFilter}}
                         </template>
                     </el-table-column>
                 </table-com>
-                <div class="page-area" v-if="totalCount > 0">
-                    <el-pagination
-                        :current-page="pageNo"
-                        :page-sizes="pageSizeConfig"
-                        :page-size="pageSize"
-                        :layout="pageLayout"
-                        :total="totalCount"
-                        @size-change="sizeChange"
-                        @current-change="pageNoChange">
-                    </el-pagination>
-                </div>
-                <loading :visible="isLoading">
-                </loading>
             </div>
         </div>
     </div>
@@ -55,18 +49,16 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import tableCom from '../../index/child/tableCom';
-    import tableMixins from '../../lessee/tableMixins';
-    import loading from '@/components/loading/loading.vue';
+    import tableCom from '@/components/tableCom/tableCom.vue';
     import { columns } from './systemAlarmConfig';
     import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js'
 
     export default {
-        mixins : [tableMixins],
+        mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             tableCom,
-            loading
         },
         data () {
             return {
@@ -87,16 +79,15 @@
                 ],
                 //选择的日期
                 timeselect : new Date(),
-                //是否在加载中
-                isLoading : false,
                 //表头配置
                 columnData : columns,
-                //容器去除不包含表格的高度
-                spaceOffset : 209,
                 //服务器ip
                 serverIp : '',
                 //系统警报列表
-                tableData : []
+                tableData : [],
+                pageNo : 1,
+                pageSize : 10,
+                totalCount : 0,
             };
         },
         methods : {
@@ -111,17 +102,12 @@
                     ctime : this.timeselect.format('yyyy-MM-dd')
                 }).then(res => {
                     if (res.status === 200) {
-                        this.tableData = res.data.list ? res.data.list : [];
-                        this.totalCount = res.data.totalRecord;
+                        this.tableData = res.data ? res.data.list : [];
+                        this.totalCount = res.data ? Number(res.data.totalRecord) : 0;
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                }).catch(err => {
-                    this.tableData = [];
-                    this.totalCount = 0;
-                }).finally(() => {
-                    this.setTableHeight();
                 });
             },
             /**
@@ -131,30 +117,12 @@
             getParams (params) {
                 if (params.ip) {
                     this.serverIp = params.ip;
-                    this.queryMoreWarningData();
+                } else {
+                    this.$router.push({
+                        name : 'serverDetail'
+                    });
                 }
             },
-            /**
-             * 每页条数改变
-             * @param pageSize
-             */
-            sizeChange (pageSize) {
-                this.pageSize = pageSize;
-                this.queryMoreWarningData();
-            },
-            /**
-             * 每页大小改变
-             * @param pageNo
-             */
-            pageNoChange (pageNo) {
-                this.pageNo = pageNo;
-                this.queryMoreWarningData();
-            }
-        },
-        beforeRouteEnter (to,from,next) {
-            next(vm => {
-                vm.getParams(to.params);
-            });
         }
     };
 </script>
