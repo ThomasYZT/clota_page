@@ -29,7 +29,7 @@
                 <i-col span="12">
                     <FormItem label="服务器名称：" :label-width="150">
                         <span class="info-val" v-w-title="cashierDetail.serverName">{{cashierDetail.serverName | contentFilter}}</span>
-                        <Tooltip placement="bottom">
+                        <Tooltip placement="bottom" transfer>
                             <div slot="content" class="tips-content">
                                 {{$t('serverNameTips')}}
                             </div>

@@ -28,25 +28,21 @@
 
 <script>
 
-    import smsSetting from './smsSetting';
+    // import smsSetting from './smsSetting';
     import notice from './noticeSetting';
     import alarm from './alarmSetting';
     import ajax from '@/api/index';
 
     export default {
         components : {
-            smsSetting,
-            notice,
-            alarm
+            // smsSetting,
+            alarm,
+            notice
         },
         data () {
             return {
                 //tap列表
                 tapList : [
-                    {
-                        name : 'smsSetting',
-                        label : this.$t('smsSetting')
-                    },
                     {
                         name : 'notice',
                         label : this.$t('notice')
