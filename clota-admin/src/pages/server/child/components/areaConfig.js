@@ -37,13 +37,62 @@ const areaConfig = {
 export default function (xAxisData, seriesData,yAxisName,type) {
     let areaData = defaultsDeep({
         xAxis : {
+            type : 'category',
+            boundaryGap : true,
+            //网格线
+            splitLine : {
+                show : false
+            },
+            //设置轴线的属性
+            axisLine : {
+                show : true,
+                lineStyle : {
+                    color : '#BFC5CB'
+                },
+                z : 10
+            },
+            //轴线单位坐标线对应的方向
+            axisTick : {
+                show : true
+            },
+            //刻度标签文字
+            axisLabel : {
+                show : true,
+                color : '#999999',
+                interval : 0
+            },
             data : xAxisData
         },
         series : {
             data : seriesData.map(item => item.size)
         },
         yAxis : {
-            name : yAxisName
+            name : yAxisName,
+            splitNumber : 4,
+            //网格线
+            splitLine : {
+                show : true,
+                lineStyle : {
+                    color : '#F5F5F5'
+                }
+            },
+            axisLine : {
+                show : true,
+                lineStyle : {
+                    color : '#BFC5CB',
+                    width : 1
+                },
+                z : 10
+            },
+            //轴线单位坐标线对应的方向
+            axisTick : {
+                show : true
+            },
+            //刻度标签文字
+            axisLabel : {
+                show : true,
+                color : '#999999'
+            }
         },
         tooltip : {
             formatter ([data]) {
