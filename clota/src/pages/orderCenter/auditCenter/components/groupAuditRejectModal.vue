@@ -206,7 +206,7 @@
                 ajax.post('auditTeamOrder', {
                     orderIds: this.orderData.items.map(item => item.id).join(','),
                     remark: this.auditRemark,
-                    auditStatus:  this.auditStatus ? this.auditStatus : 'success',
+                    auditStatus:  this.auditStatus ? this.auditStatus : 'reject',
                 }).then(res => {
                     if(res.success){
                         this.hide();

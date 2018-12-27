@@ -203,18 +203,21 @@
                 <!--短信发送设置-->
                 <div class="content-item">
                     <div class="title">{{$t('短信发送设置')}}</div>
-                    <div :class="{'ivu-form-item-error': error.tradeAmountErr, 'main': true}">
-                        <span class="text">{{$t('交易金额大于')}}</span><!--交易金额大于-->
-                        <Input v-model.trim="settingData.smsSend"
-                               @on-blur="checkInputIsMoney(settingData.smsSend,'tradeAmountErr')"
-                               type="text"
-                               class="single-input"
-                               :placeholder="$t('inputField', {field: ''})"/>
-                        <div class="ivu-form-item-error-tip"
-                             style="left: 100px;"
-                             v-if="error.tradeAmountErr">{{error.tradeAmountErr}}
+
+                    <div class="main">
+                        <div :class="{'ivu-form-item-error': error.tradeAmountErr, 'main': true}">
+                            <span class="text">{{$t('交易金额大于')}}</span><!--交易金额大于-->
+                            <Input v-model.trim="settingData.smsSend"
+                                   @on-blur="checkInputIsMoney(settingData.smsSend,'tradeAmountErr')"
+                                   type="text"
+                                   class="single-input"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <div class="ivu-form-item-error-tip"
+                                 style="left: 100px;"
+                                 v-if="error.tradeAmountErr">{{error.tradeAmountErr}}
+                            </div>
+                            {{$t('时发送短信')}}<!--时发送短信-->
                         </div>
-                        {{$t('时发送短信')}}<!--时发送短信-->
                     </div>
                 </div>
                 <!--补卡收费标准-->
@@ -232,6 +235,28 @@
                              v-if="error.replaceCardFeeErr">{{error.replaceCardFeeErr}}
                         </div>
                         {{$t('yuan')}}
+                    </div>
+                </div>
+
+                <!--微信端推送交易记录设置-->
+                <div class="content-item">
+                    <div class="title">{{$t('微信端推送交易记录设置')}}</div>
+                    <div :class="{'ivu-form-item-error': error.wxPushErr, 'main': true}">
+                        <div class="switcher">
+                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" size="large"></i-switch><span>{{$t('是否在微信公众号推送储值账户交易信息')}}</span>
+                        </div>
+                        <div class="switcher">
+                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>
+                        </div>
+                        <span class="text">{{$t('title')}}</span>
+                        <Input type="text"
+                               v-model="settingData.wxMpTemplateInfoSet.title"
+                               @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr')"
+                               style="margin: 0 10px;width: 300px;"></Input>
+                        <div class="ivu-form-item-error-tip"
+                             style="left: 70px;"
+                             v-if="error.wxPushErr">{{error.wxPushErr}}
+                        </div>
                     </div>
                 </div>
 
@@ -294,7 +319,13 @@
                     //短信发送设置
                     smsSend : '',
                     //补卡收费标准
-                    replacementCardFee : ''
+                    replacementCardFee : '' ,
+                    //微信推送交易记录设置
+                    wxMpTemplateInfoSet : {
+                        showStoreValue : false,
+                        showIntegration : false,
+                        title : ''
+                    }
                 },
                 //copy数据，用于数据重置
                 copySetData : {},
@@ -315,7 +346,8 @@
                     vipNumberError : '',//会员卡有效期设置
                     dayError : '',//卡券过期提醒设置
                     tradeAmountErr : '',//交易金额错误
-                    replaceCardFeeErr : '',//补卡收费金额错误
+                    replaceCardFeeErr : '',//补卡收费金额错误,
+                    wxPushErr : '',//微信端推送交易记录 标题设置错误
                 },
                 tableData : [{
                     date : '2016-05-02',
@@ -401,6 +433,11 @@
                                     smsSend : res.data.smsSend,
                                     replacementCardFee : res.data.replacementCardFee,
                                     allowAdjustAccount : res.data.allowAdjustAccount,
+                                    wxMpTemplateInfoSet : res.data.wxMpTemplateInfoSet ? JSON.parse(res.data.wxMpTemplateInfoSet) : {
+                                        showStoreValue : false,
+                                        showIntegration : false,
+                                        title : ''
+                                    }
                                 };
                                 this.settingData = params;
                                 //复制数据
@@ -713,6 +750,20 @@
                         reject();
                     });
                 });
+            },
+            /**
+             * 校验输入的标题是否超过指定长度
+             * @param data
+             * @param errType
+             */
+            checkInputMaxErr (data, errType) {
+                if (String(data).length < 0) {
+                    this.error[errType] = this.$t('errorMinLength', { field : '', length : 1 });
+                } else if (String(data).length > 10) {
+                    this.error[errType] = this.$t('errorMaxLength', { field : '', length : 10 });
+                } else {
+                    this.error[errType] = '';
+                }
             },
             /**
              * 获取所有会员类别和类别下的所有级别数据
