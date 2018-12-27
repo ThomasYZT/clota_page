@@ -53,11 +53,11 @@
                      label-width="150px"
                      :placeholder="$t('enterCode')">
             </x-input>
-            <popup-radio v-show="stage === 3"
-                         :title="$t('所属类别')"
-                         :options="typeList"
-                         v-model="formData.typeInfo">
-            </popup-radio>
+            <cell v-show="stage === 3"
+                  :title="$t('所属类别')"
+                  @click.native="typeChooseModalShow = true"
+                  :value="typeName">
+            </cell>
             <x-input v-show="stage === 3"
                      :title="$t('设置新密码')"
                      v-model.trim="formData.password"
@@ -80,6 +80,15 @@
         <x-button class="button"
                   @click.native="next">{{$t('下一步')}}</x-button>
         <div class="before-step" v-if="stage > 1" @click="beforeStep">{{$t('上一步')}}</div>
+        <!--所属类别多选-->
+        <pop-check-box v-model="typeChooseModalShow"
+                       :left-text="$t('cancel')"
+                       :right-text="$t('confirm')"
+                       :head-title="$t('请选择所属类别')"
+                       :operate-list="typeList"
+                       :choosed-list-default="typeChoosed"
+                       @get-choosed-lists="getChoosedTypeLists">
+        </pop-check-box>
     </div>
 </template>
 
@@ -88,6 +97,7 @@
     import ajax from '@/marketing/api/index';
     import { validator } from 'klwk-ui';
     import MD5 from 'crypto-js/md5';
+    import popCheckBox from '@/components/popCheckBox/popCheckBox.vue';
 
 	export default {
 		data () {
@@ -106,8 +116,6 @@
                     password : '',
                     //再次输入的密码
                     passwordAgain : '',
-                    //选择的所属类别
-                    typeInfo : ''
                 },
                 //是否正在计时
                 isTiming : false,
@@ -116,9 +124,16 @@
                 //阶段
                 stage : 1,
                 //所属类别列表
-                typeList : []
+                typeList : [],
+                //选择类别的模态框是否显示
+                typeChooseModalShow : false,
+                //选择的所属类别信息
+                typeChoosed : []
             };
 		},
+        components : {
+            popCheckBox
+        },
 		methods : {
             /**
              * 获取手机号验证码
@@ -172,7 +187,9 @@
                         this.validatePhoneCode();
                     });
                 } else if (this.stage === 3) {
-                    this.validatePassword().then(() => {
+                    this.validateTypeInfo().then(() => {
+                        return this.validatePassword();
+                    }).then(() => {
                         return this.validatePasswordAgain();
                     }).then(() => {
                         this.resetPassword();
@@ -204,6 +221,7 @@
                 });
             },
             /**
+             *
              * 校验身份证号
              * @return {Promise<any>}
              */
@@ -301,7 +319,7 @@
                     idno : this.formData.idNum,
                     mobile : this.formData.phoneNum,
                     newPassword : MD5(this.formData.password).toString(),
-                    typeId : this.formData.typeInfo,
+                    typeIds : this.typeChoosed.join(','),
                     orgId : this.marketOrgId,
                 }).then(res => {
                     if (res.success) {
@@ -365,9 +383,6 @@
                                 value : item.typeName
                             };
                         }) : [];
-                        if (this.typeList.length > 0) {
-                            this.formData.typeInfo = this.typeList[0]['key'];
-                        }
                     } else if (res.success) {
                         this.typeList = res.data ? res.data.map(item => {
                             return {
@@ -375,9 +390,6 @@
                                 value : item.typeName
                             };
                         }) : [];
-                        if (this.typeList.length > 0) {
-                            this.formData.typeInfo = this.typeList[0]['key'];
-                        }
                     } else {
                         this.typeList = [];
                     }
@@ -411,6 +423,26 @@
                     this.queryOrgInfo(params.companyCode);
                 }
             },
+            /**
+             * 获取选择的所属类别
+             * @param{Array} typeList 选中的所属类别信息
+             */
+            getChoosedTypeLists (typeList) {
+                this.typeChoosed = typeList;
+            },
+            /**
+             * 校验选择的所属类别信息是否正确
+             */
+            validateTypeInfo () {
+                return new Promise((resolve,reject) => {
+                    if (this.typeChoosed && this.typeChoosed.length > 0 ) {
+                        resolve();
+                    } else {
+                        this.$vux.toast.text(this.$t('请选择所属类别') );
+                        reject();
+                    }
+                });
+            }
         },
         computed : {
             ...mapGetters({
@@ -419,7 +451,25 @@
                 marketOrgId : 'marketOrgId',
                 marketTypeId : 'marketTypeId',
                 marketINgCompanyCode : 'marketINgCompanyCode',
-            })
+            }),
+            //所选的类别名称信息
+            typeName () {
+                let str = [];
+                for (let i = 0,j = this.typeChoosed.length; i < j; i++) {
+                    if (this.typeChoosed[i] in this.typeListObj) {
+                        str.push(this.typeListObj[this.typeChoosed[i]]['value']);
+                    }
+                }
+                return str.join(',');
+            },
+            //所属类别格式转换
+            typeListObj () {
+                let result = {};
+                for (let i = 0,j = this.typeList.length; i < j; i++) {
+                    result[this.typeList[i]['key']] = this.typeList[i];
+                }
+                return result;
+            }
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {

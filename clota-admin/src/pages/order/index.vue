@@ -38,6 +38,10 @@
                         label : '团队订单预审核'
                     },
                     {
+                        name : 'teamOrderRefundAudit',
+                        label : '团队订单退票审核'
+                    },
+                    {
                         name : 'indRefundOrderAudit',
                         label : '散客退票审核'
                     },

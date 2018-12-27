@@ -169,9 +169,13 @@
                             if (item.finishStatus === "false") {
                                 item.content = item.content ? JSON.parse(item.content) : '';
                                 item.extData = item.extData ? JSON.parse(item.extData) : '';
+                                item.routerObj = routerPackage(item, this.routerInfo)
                             }
                             return item.finishStatus === "false";
                         }) : [];
+                        this.tableData = this.tableData.filter((item) => {
+                            return item.routerObj;
+                        });
                     } else {
                         this.tableData = [];
                     }
@@ -217,7 +221,6 @@
                     this.$Message.warning(this.$t('accountPrivaligeError'));
                 }
             },
-
         }
     };
 </script>

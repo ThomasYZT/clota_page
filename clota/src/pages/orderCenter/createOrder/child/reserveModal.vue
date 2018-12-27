@@ -45,8 +45,8 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <InputNumber
-                                :min="scope.row.min"
-                                :max="scope.row.max"
+                                :min="scope.row.min ? scope.row.min : 1"
+                                :max="scope.row.max ? scope.row.max : 10000000"
                                 :disabled="scope.row.disabled"
                                 :value="scope.row.num"
                                 @input="changeProductNum(scope.$index,$event)"

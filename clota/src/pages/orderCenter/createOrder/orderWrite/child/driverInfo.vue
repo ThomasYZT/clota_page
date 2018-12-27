@@ -4,7 +4,7 @@
     <div class="driver-info">
         <div class="title">
             <!--司机信息-->
-            {{$t('driverInfo')}}
+            {{$t('driverInfo')}} ({{$t('optional')}})
             <Button type="ghost"
                     class="ivu-btn-108px"
                     :disabled="selectedTourGuideInfo.length < 1"
