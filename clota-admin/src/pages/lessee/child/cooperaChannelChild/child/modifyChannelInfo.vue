@@ -572,7 +572,7 @@
                         {
                             name : 'cooperaChannelOrg',
                             router : {
-                                name : 'cooperaChannelPer'
+                                name : 'cooperaChannelOrg'
                             }
                         },
                         {

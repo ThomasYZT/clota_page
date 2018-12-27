@@ -22,6 +22,7 @@
         </div>
 
         <table-com
+            v-if="filterType"
             :column-data="columnDataInfo"
             :table-data="tableData"
             :border="true"
@@ -75,8 +76,10 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columns } from './cooperaChannelPerConfig';
     import ajax from '@/api/index.js';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             tableCom
         },
@@ -87,7 +90,7 @@
                 //表头数据
                 columnData : columns,
                 //过滤类型
-                filterType : 'audit',
+                filterType : '',
                 //过滤列表
                 filterList : [
                     {
@@ -120,6 +123,9 @@
             filterTable (value) {
                 this.filterType = value;
                 this.queryList();
+                this.updateStorgeInfo({
+                    filterType : this.filterType
+                });
             },
             /**
              * 跳转到详情
@@ -155,6 +161,20 @@
                         this.auditNumber = 0;
                     }
                 });
+            },
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由参数
+             * @param{Object} toRoute 下一个路由
+             * @param{Object} formRoute 前一个路由
+             */
+            getParams (params,toRoute,formRoute) {
+                if (params && Object.keys(params).length > 0 &&
+                    (formRoute.name === 'cooperaChannelPerDetail' || formRoute.name === 'cooperaChannelPerDetailModify')) {
+                    this.filterType = params.filterType;
+                } else {
+                    this.filterType = 'audit';
+                }
             }
         },
         computed : {
