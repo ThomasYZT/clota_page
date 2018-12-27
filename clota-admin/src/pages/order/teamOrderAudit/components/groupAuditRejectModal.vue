@@ -160,7 +160,7 @@
                         this.tableData = data.items;
                         this.title = 'teamBatchCheckReject'; // 团队订单批量驳回申请
                     } else {
-                        this.title = 'checkPass'; // 审核通过
+                        this.title = 'PRODUCT_AUDIT_REJECT'; // 驳回申请
                         this.getOrderProducts(data.items[0].orderNo);
                     }
                 }
