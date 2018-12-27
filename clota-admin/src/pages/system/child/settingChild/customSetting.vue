@@ -57,7 +57,7 @@
                     },
                 ],
                 //当前的tab对应的组件
-                tabComponent : 'smsSetting',
+                tabComponent : 'notice',
                 //设置数据
                 settingData : {},
             };

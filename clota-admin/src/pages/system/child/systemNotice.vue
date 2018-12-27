@@ -17,7 +17,7 @@
             :page-size-d.sync="sysListParams.pageSize"
             :border="true"
             @query-data="queryList">
-             <el-table-column
+            <el-table-column
                 slot="columnimages"
                 :label="row.title"
                 :prop="row.field"
@@ -46,7 +46,8 @@
                 show-overflow-tooltip
                 slot-scope="row">
                 <template slot-scope="scoped">
-                    <span>{{ scoped.row.state === 'true' ? $t('inUse') : $t('outUse')  }}</span>
+                    <span v-if="scoped.row.state === 'invalid'" class="in-use">{{$t('inUse')}}</span>
+                    <span v-else>{{$t('outUse')}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -62,7 +63,7 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info">
                         <li class="normal" @click="watchNotice(scoped.row)">{{$t('look')}}</li>
-                        <template v-if="scoped.row.state === 'true'">
+                        <template v-if="scoped.row.state === 'invalid'">
                             <li class="yellow-label" @click="stopNotice(scoped.row)">{{$t('disabled')}}</li>
                         </template>
                         <template v-else>
@@ -134,7 +135,7 @@
              */
             stopNotice (data) {
                 if (data) {
-                    this.switchNotice(data, 'invalid');
+                    this.switchNotice(data, 'normal');
                 }
             },
             /**
@@ -143,7 +144,7 @@
              */
             openNotice (data) {
                 if (data) {
-                    this.switchNotice(data, 'normal');
+                    this.switchNotice(data, 'invalid');
                 }
             },
             /**
@@ -157,12 +158,12 @@
                     state : state
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$Message.success( state === 'normal' ?
+                        this.$Message.success( state === 'invalid' ?
                             this.$t('successTip',{ tip : this.$t('startUsing') + data.title }) :
                             this.$t('successTip',{ tip : this.$t('stopUsing') + data.title }));
                         this.queryList();
                     } else {
-                        this.$Message.error( res.message || (state === 'normal' ?
+                        this.$Message.error( res.message || (state === 'invalid' ?
                             this.$t('failureTip',{ tip : this.$t('startUsing') + data.title }) :
                             this.$t('failureTip',{ tip : this.$t('stopUsing') + data.title })));
                     }
@@ -224,6 +225,10 @@
                 display: inline-block;
                 padding-top: 15px;
             }
+        }
+
+        .in-use {
+            color: $color_green;
         }
     }
 </style>
