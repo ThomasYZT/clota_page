@@ -58,6 +58,8 @@
             :confirm-text="$t('confirm')"
             :cancel-text="$t('cancel')"
             :title="$t('birthday')"
+            :min-year="1960"
+            :max-year="new Date().getFullYear()"
             :placeholder="$t('pleaseSelect',{field : $t('birthday') })"
             v-model="formData.birthDay">
         </datetime>
