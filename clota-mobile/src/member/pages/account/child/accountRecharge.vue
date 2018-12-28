@@ -164,6 +164,12 @@
                 if (this.cardInfo.status === 'frozen') return;
                 if (!this.hasTradePassword) {
                     this.$vux.toast.text(this.$t('pleaseSetTradePass'));
+                    this.$router.push({
+                        name : 'changeTradePass',
+                        params : {
+                            mobile : this.userInfo.phoneNum
+                        }
+                    });
                     return;
                 }
                 this.validateRechargeMoney(true).then(() => {

@@ -41,7 +41,7 @@
 <script>
     import numKeyBoard from '@/components/numKeyBoard/index.vue';
     import ajax from '@/member/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
     import MD5 from 'crypto-js/md5';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
@@ -49,7 +49,7 @@
         components : {
             numKeyBoard
         },
-        data() {
+        data () {
             return {
                 //输入的密码
                 inputData : [],
@@ -62,31 +62,34 @@
                 //当前输入密码类型
                 passType : '',
                 //支付协议是否被选择
-                isChoesd: false
-            }
+                isChoesd : false
+            };
         },
-        methods: {
+        methods : {
+            ...mapActions([
+                'getCardListInfo'
+            ]),
             /**
              * 获取键盘输入值
              * @param data
              */
             clickBoarad (data) {
-                if(this.passType === 'first'){
-                    if(this.inputData.length === 5){
+                if (this.passType === 'first') {
+                    if (this.inputData.length === 5) {
                         this.inputData.push(data);
                         this.passType = 'second';
-                    }else if(this.inputData.length >= 6){
+                    } else if (this.inputData.length >= 6) {
                         this.passType = 'second';
-                    }else{
+                    } else {
                         this.inputData.push(data);
                     }
-                }else{
-                    if(this.againInputData.length === 5){
+                } else {
+                    if (this.againInputData.length === 5) {
                         this.againInputData.push(data);
                         this.$store.commit('updateKeyBoardStatus',false);
-                    }else if(this.againInputData.length >= 6){
+                    } else if (this.againInputData.length >= 6) {
                         this.$store.commit('updateKeyBoardStatus',false);
-                    }else{
+                    } else {
                         this.againInputData.push(data);
                     }
                 }
@@ -105,12 +108,12 @@
              * 删除键盘输入数字
              */
             delPassWord () {
-                if(this.passType === 'first'){
-                    if(this.inputData && this.inputData.length > 0){
+                if (this.passType === 'first') {
+                    if (this.inputData && this.inputData.length > 0) {
                         this.inputData.splice(this.inputData.length - 1,1);
                     }
-                }else{
-                    if(this.againInputData && this.againInputData.length > 0){
+                } else {
+                    if (this.againInputData && this.againInputData.length > 0) {
                         this.againInputData.splice(this.againInputData.length - 1,1);
                     }
                 }
@@ -137,43 +140,45 @@
                     phoneNum : this.phoneNum,
                     code : this.code,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         setTimeout(() =>{
                             this.$vux.toast.show({
-                                text: this.$t('operateSuc',{msg : this.$t('modify')})
+                                text : this.$t('operateSuc',{ msg : this.$t('modify') })
                             });
-                            this.$router.push({
-                                name : 'personInfo'
+                            this.getCardListInfo().then(() => {
+                                this.$router.push({
+                                    name : 'personInfo'
+                                });
                             });
                         },500);
-                    }else{
-                        if(res.code === 'A005'){
+                    } else {
+                        if (res.code === 'A005') {
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('A005'),
+                                    text : this.$t('A005'),
                                     type : 'text'
-                                })
+                                });
                             },500);
-                        }else if(res.code === 'A003'){
+                        } else if (res.code === 'A003') {
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('A003'),
+                                    text : this.$t('A003'),
                                     type : 'text'
-                                })
+                                });
                             },500);
-                        }else if(res.code === 'A004'){
+                        } else if (res.code === 'A004') {
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('A004'),
+                                    text : this.$t('A004'),
                                     type : 'text'
-                                })
+                                });
                             },500);
-                        }else{
+                        } else {
                             setTimeout(() =>{
                                 this.$vux.toast.show({
-                                    text: this.$t('operateFail',{msg : this.$t('modify')}),
+                                    text : this.$t('operateFail',{ msg : this.$t('modify') }),
                                     type : 'cancel'
-                                })
+                                });
                             },500);
                         }
                     }
@@ -191,11 +196,11 @@
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
-                if(params && params.mobile && params.code) {
+            getParams (params) {
+                if (params && params.mobile && params.code) {
                     this.phoneNum = params.mobile;
                     this.code = params.code;
-                }else{
+                } else {
                     this.$router.push({
                         name : 'personInfo'
                     });
@@ -206,28 +211,28 @@
              */
             validatePass () {
                 return new Promise((resolve,reject) => {
-                    if(this.inputData && this.inputData.length !== 6){
+                    if (this.inputData && this.inputData.length !== 6) {
                         this.$vux.toast.show({
-                            text: this.$t('pleaseInput',{field : this.$t('password')}),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('pleaseInput',{ field : this.$t('password') }),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else if(this.againInputData && this.againInputData.length !== 6){
+                    } else if (this.againInputData && this.againInputData.length !== 6) {
                         this.$vux.toast.show({
-                            text: this.$t('inputPassAgain'),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('inputPassAgain'),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else if(this.againInputData.join('') !== this.inputData.join('')){
+                    } else if (this.againInputData.join('') !== this.inputData.join('')) {
                         this.$vux.toast.show({
-                            text: this.$t('twicePassError'),
-                            type: 'text',
-                            width: '5rem'
+                            text : this.$t('twicePassError'),
+                            type : 'text',
+                            width : '5rem'
                         });
                         reject();
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -235,20 +240,20 @@
             /**
              * 前往支付协议
              */
-            toAgreement() {
+            toAgreement () {
                 this.$router.push({
-                    path: '/personInfo/payAgreement'
-                })
+                    path : '/personInfo/payAgreement'
+                });
             }
         },
         computed : {
             //输入的密码数据
             passData () {
                 let result = [];
-                for(let i = 0,j = 6;i < j;i++){
-                    if(this.inputData[i] !== undefined){
+                for (let i = 0,j = 6; i < j; i++) {
+                    if (this.inputData[i] !== undefined) {
                         result.push('●');
-                    }else{
+                    } else {
                         result.push('');
                     }
                 }
@@ -257,10 +262,10 @@
             //再次输入的密码
             againPassData () {
                 let result = [];
-                for(let i = 0,j = 6;i < j;i++){
-                    if(this.againInputData[i] !== undefined){
+                for (let i = 0,j = 6; i < j; i++) {
+                    if (this.againInputData[i] !== undefined) {
                         result.push('●');
-                    }else{
+                    } else {
                         result.push('');
                     }
                 }
@@ -271,10 +276,10 @@
                 cardInfo : 'cardInfo',
             }),
             //当前激活的ul
-            activeLi (){
-                if(this.$store.state.showKeyBoard){
+            activeLi () {
+                if (this.$store.state.showKeyBoard) {
                     return this.passType;
-                }else{
+                } else {
                     return '';
                 }
             }
@@ -284,7 +289,7 @@
         //         vm.getParams(to.params)
         //     });
         // }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

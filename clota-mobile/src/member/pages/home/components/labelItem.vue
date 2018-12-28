@@ -23,7 +23,7 @@
 </template>
 
 <script>
-
+    import { mapGetters } from 'vuex';
   export default {
     props : {
         //导航信息
@@ -44,6 +44,15 @@
     data () {
       return {};
     },
+    computed : {
+        ...mapGetters([
+           'userInfo'
+        ]),
+        //是否设置交易密码
+        hasTradePassword () {
+            return this.cardInfo.hasTradePassword === 'true' ? true : false;
+        }
+    },
     methods : {
         /**
          * 页面导航控制
@@ -51,6 +60,14 @@
         toUrl (routeName,params) {
             if (this.cardInfo.status && this.cardInfo.status === 'frozen' && this.info.link === '/memberCode') {
                 this.$vux.toast.text(this.$t('thisCardIsFrozen'));
+            } else if (!this.hasTradePassword && this.info.link === '/memberCode') {
+                this.$vux.toast.text(this.$t('pleaseSetTradePass'));
+                this.$router.push({
+                    name : 'changeTradePass',
+                    params : {
+                        mobile : this.userInfo.phoneNum
+                    }
+                });
             } else {
                 if (params && Object.keys(params).length > 0) {
                     this.$router.push({ name : routeName, query : params });

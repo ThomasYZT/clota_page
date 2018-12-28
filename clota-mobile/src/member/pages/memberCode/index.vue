@@ -8,7 +8,7 @@
                 <barcode
                     ref="barcode"
                     tag="img"
-                    :value="chosedAccount['id'] ? chosedAccount['id'] : '0000000000000000000'"
+                    :value="payCode ? payCode : '0000000000000000000'"
                     :options="{ displayValue: true }"
                     @click.native="pre1CodeImage">
                 </barcode>
@@ -17,8 +17,8 @@
             <div class="two-code">
                 <qrcode
                     ref="qrCode"
-                    v-if="chosedAccount['id']"
-                    :value="chosedAccount['id']"
+                    v-if="payCode"
+                    :value="payCode"
                     type="img"
                     @click.native="showPreImage">
                 </qrcode>
@@ -149,6 +149,8 @@
                                 key : String(index),
                             };
                         }) : [];
+                        this.getPayRandomCode();
+                        this.updateCodeInterval();
                     } else {
                         this.accountList = [];
                     }
