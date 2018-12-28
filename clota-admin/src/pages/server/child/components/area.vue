@@ -51,14 +51,21 @@
         computed : {
             //面积图配置
             areaOptions () {
+                return getPieConfig( this.legendData,this.seriesData,this.yYxisName,this.areaType);
+            }
+        },
+        watch : {
+            //配置改变，重新渲染图表
+            areaOptions () {
                 if (this.timer) {
                     clearTimeout(this.timer);
                 }
                 this.timer = setTimeout(() => {
-                    this.$refs.area.refresh();
+                    this.$nextTick(() => {
+                        this.$refs.area.refresh();
+                    });
                     clearTimeout(this.timer);
                 },300);
-                return getPieConfig( this.legendData,this.seriesData,this.yYxisName,this.areaType);
             }
         }
     };

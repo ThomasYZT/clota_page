@@ -132,6 +132,10 @@
                 font-size: $font_size_12px;
                 color: $color_1890FF;
                 cursor: pointer;
+
+                .iconfont{
+                    vertical-align: middle;
+                }
             }
         }
 
