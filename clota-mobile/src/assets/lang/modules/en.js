@@ -297,4 +297,5 @@ export default {
     'officer' : '军官证',
     'police' : '警官证',
     'M045' : '手机号未注册',
+    'pleaseSetTradePass' : '请先设置交易密码',
 };

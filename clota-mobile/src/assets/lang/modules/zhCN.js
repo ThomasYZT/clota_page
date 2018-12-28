@@ -285,8 +285,8 @@ export default {
     'identity' : '身份证',
     'passport' : '护照',
     'addMemberCard' : '添加会员卡',
-    'addMemberCardTxtOne': '有',
-    'addMemberCardTxtTwo': '张会员卡, 是否加入微信卡包',
+    'addMemberCardTxtOne' : '有',
+    'addMemberCardTxtTwo' : '张会员卡, 是否加入微信卡包',
     'getCardBtn' : '确定',
     'getCardBtnNo' : '取消',
     'getCardSuccess' : '领取成功',
@@ -297,4 +297,5 @@ export default {
     'officer' : '军官证',
     'police' : '警官证',
     'M045' : '手机号未注册',
+    'pleaseSetTradePass' : '请先设置交易密码',
 };

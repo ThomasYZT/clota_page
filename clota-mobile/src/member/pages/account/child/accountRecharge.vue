@@ -75,7 +75,11 @@
                 'userInfo',
                 'cardInfo',
                 'lang'
-            ])
+            ]),
+            //是否设置交易密码
+            hasTradePassword () {
+                return this.cardInfo.hasTradePassword === 'true' ? true : false;
+            }
         },
         methods : {
             /**
@@ -158,6 +162,10 @@
              */
             recharge () {
                 if (this.cardInfo.status === 'frozen') return;
+                if (!this.hasTradePassword) {
+                    this.$vux.toast.text(this.$t('pleaseSetTradePass'));
+                    return;
+                }
                 this.validateRechargeMoney(true).then(() => {
                     if (this.payType === 'wx' && this.isWeixin()) {
                         //微信内微信支付专用
