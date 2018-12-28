@@ -1878,4 +1878,5 @@ export default {
     'hasKnown' : '知道了',
     'fileFormatOnlyIs' : '上传的文件格式只能为：{format}',
     'mostUploadPic' : '最多上传{num}个文件',
+    'disabledAccount' : '停用后将不能使用{account}账户进行收款',
 }
