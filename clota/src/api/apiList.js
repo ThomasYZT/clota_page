@@ -5,7 +5,7 @@
 //首页接口
 import index from './modules/index';
 //会员信息接口
-import info from './modules/info';
+import info from './modules/member';
 //组织架构接口
 import org from './modules/org';
 //系统设置接口

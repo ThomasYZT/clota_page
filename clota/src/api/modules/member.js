@@ -293,5 +293,11 @@ export default {
     //查询支付方式列表
     'queryOnlineAccount' : '/organize/queryOnlineAccount',
     //快速开卡
-    'queryEntityCardByRange' : '/member/entityCard//queryEntityCardByRange',
+    'queryEntityCardByRange' : '/member/entityCard/queryEntityCardByRange',
+    //查询会员卡有效期
+    'queryLevelEffSets' : '/member/memberLevel/queryLevelEffSets',
+    //保存会员卡有效期
+    'saveLevelEffSet' : '/member/memberLevel/saveLevelEffSet',
+    //删除会员卡有效期
+    'deleteLevelEffSet' : '/member/memberLevel/deleteLevelEffSet',
 }

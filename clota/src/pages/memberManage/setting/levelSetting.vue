@@ -26,6 +26,7 @@
                     :column-data="levelListHead"
                     :table-data="tableData"
                     :border="true">
+                    <!--会员4期暂时去掉-->
                     <!--<el-table-column-->
                         <!--slot="column3"-->
                         <!--:label="row.title"-->
@@ -36,7 +37,7 @@
                         <!--show-overflow-tooltip-->
                         <!--slot-scope="row">-->
                         <!--<template slot-scope="scoped">-->
-                            <!--<span>{{scoped.row.lowerGrowthValue}} - {{scoped.row.highestGrowthValue}}</span>-->
+                            <!--{{getFunctions(scoped.row)}}-->
                         <!--</template>-->
                     <!--</el-table-column>-->
                     <el-table-column
@@ -49,24 +50,11 @@
                         show-overflow-tooltip
                         slot-scope="row">
                         <template slot-scope="scoped">
-                            {{getFunctions(scoped.row)}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column4"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip
-                        slot-scope="row">
-                        <template slot-scope="scoped">
                             {{scoped.row.lowerGrowthValue | contentFilter }}-{{scoped.row.highestGrowthValue | contentFilter }}
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column7"
+                        slot="column6"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"
@@ -75,11 +63,16 @@
                         show-overflow-tooltip
                         slot-scope="row">
                         <template slot-scope="scoped">
-                            {{scoped.row.effTime}}{{$t('time.' + scoped.row.effTimeUnit)}}
+                            <template v-if="scoped.row.effTime === null">
+                                {{$t('永久有效')}}
+                            </template>
+                            <template v-else>
+                                {{scoped.row.effTime}}{{$t('time.' + scoped.row.effTimeUnit)}}
+                            </template>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column9"
+                        slot="column8"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"

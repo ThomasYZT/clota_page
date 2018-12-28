@@ -21,11 +21,12 @@ export const levelListHead = [
         minWidth : 140,
         field : 'levelDesc'
     },
-    {
-        title : '功能', // 功能
-        minWidth : 150,
-        field : 'channelName'
-    },
+    //会员4期暂时去掉
+    // {
+    //     title : '功能', // 功能
+    //     minWidth : 150,
+    //     field : 'channelName'
+    // },
     {
         title : '成长值范围', // 成长值范围
         minWidth : 150,
