@@ -10,7 +10,9 @@
 
 <script>
     import ajax from '../../../api/index';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
+        mixins : [lifeCycleMixins],
         components: {},
         data() {
             return {
@@ -30,12 +32,12 @@
                         this.$vux.toast.text(res.message)
                     }
                 })
+            },
+            getParams () {
+                //获取协议数据
+                this.getData();
             }
         },
-        created() {
-            //获取协议数据
-            this.getData();
-        }
     }
 </script>
 
