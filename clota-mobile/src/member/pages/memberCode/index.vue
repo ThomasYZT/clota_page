@@ -108,7 +108,9 @@
                         rect = thumbnail.getBoundingClientRect();
                         return { x : rect.left, y : rect.top + pageYScroll, w : rect.width };
                     }
-                }
+                },
+                //支付码
+                payCode : '',
             };
         },
         methods : {
@@ -188,6 +190,37 @@
                 ];
                 this.$nextTick(() =>{
                     this.$refs.previewer.show(0);
+                });
+            },
+            /**
+             * 定时更新付款二维码
+             */
+            updateCodeInterval () {
+                //每隔1分钟刷新一次二维码
+                setInterval(() => {
+                    this.getPayRandomCode();
+                }, 60000)
+            },
+            /**
+             * 获取账户随机支付码
+             */
+            getPayRandomCode () {
+                let chosedAccount = this.accountList[Number(this.accountChosed)] ? this.accountList[Number(this.accountChosed)] : '';
+                if (!chosedAccount) {
+                    this.$vux.toast.text(this.$t('pleaseSelect', { field : this.$t('account') }));
+                    return;
+                }
+                ajax.post('getPayRandomCode', {
+                    //卡id
+                    cardId : this.cardInfo.id,
+                    //账户类型id
+                    accountTypeId : chosedAccount.accountDefineId,
+                }, null, false).then(res => {
+                    if (res.success) {
+                        this.payCode = res.data ? res.data.payCode : '';
+                    } else {
+                        this.payCode = '0000000000000000000';
+                    }
                 });
             }
         },

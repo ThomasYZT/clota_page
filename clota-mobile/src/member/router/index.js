@@ -33,6 +33,7 @@ export const memberRouterDeal = (to, from, next) => {
                     }).catch(() => {
                         next({
                             name : 'mobileLogin',
+                            replace : true,
                         });
                     });
                 } else {
@@ -46,14 +47,16 @@ export const memberRouterDeal = (to, from, next) => {
                             next();
                         }).catch(() => {
                             next({
-                                name : 'mobileLogin'
+                                name : 'mobileLogin',
+                                replace : true,
                             });
                         });
                     }
                 }
             } else {
                 next({
-                    name : 'mobileLogin'
+                    name : 'mobileLogin',
+                    replace : true,
                 });
             }
 

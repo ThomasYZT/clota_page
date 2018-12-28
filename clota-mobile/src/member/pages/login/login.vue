@@ -290,7 +290,7 @@
             getCardList () {
                 //获取会员卡列表
                 this.getCardListInfo().then(() => {
-                    this.$router.push({ name : 'home' });
+                    this.$router.replace({ name : 'home' });
                 });
             }
         },
