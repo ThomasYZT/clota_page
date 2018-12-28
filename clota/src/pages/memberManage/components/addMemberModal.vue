@@ -71,14 +71,25 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('validityPeriod') + '：'" prop="effTime">
                             <Select v-model="formData.effTime" style="width:280px">
-                                <Option v-for="(item,index) in effTimeList"
+                                <Option v-for="(item,index) in effTimeListDetail"
                                         :value="item.value"
+                                        :label="item.value !== 'forEver' ? (item.label + $t('time.' + formData.effTimeUnit)) : item.label"
                                         :key="item.value">
                                     <div class="time-list-item">
-                                        <span class="time-label" :class="{ 'blue-label' : item.value === 'add' }">
-                                        {{ item.label }}{{$t('time.' + formData.effTimeUnit)}}
+                                        <span class="time-label" v-if="item.value !== 'add'">
+                                            {{ item.label }}
+                                            <template v-if="item.value !== 'forEver'">
+                                                {{$t('time.' + formData.effTimeUnit)}}
+                                            </template>
                                         </span>
-                                        <span v-if="item.value !== 'add'" class="operate-label" @click.stop="delTimeItem(index)">{{$t('删除')}}</span>
+                                        <span class="time-label blue-label add-label"
+                                              v-else
+                                              @click.stop="addEffectTime">
+                                            {{ item.label }}
+                                        </span>
+                                        <span v-if="item.value !== 'add' && item.value !== 'forEver' && item.value !== formData.effTime"
+                                              class="operate-label"
+                                              @click.stop="delTimeItem(index)">{{$t('删除')}}</span>
                                     </div>
                                 </Option>
                             </Select>
@@ -123,10 +134,27 @@
             <span class="content-text">
                 <i class="iconfont icon-help delete-icon"></i>
                 {{$t('isDoing')}}{{$t('delete')}}{{$t('validityPeriod')}}：
-                <span class="yellow-label" v-w-title="currentData ? currentData.label : ''">{{currentData ? currentData.label : ''}}</span>
+                <span class="yellow-label" v-w-title="currentData ? currentData.effValue : ''">
+                    {{currentData ? currentData.effValue : ''}}{{$t('time.year')}}
+                </span>
             </span>
             <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
         </del-modal>
+        <!--新增有效期-->
+        <edit-modal ref="editModal">
+            <Form ref="effTimeForm"
+                  :model="effectFormData"
+                  label-position="right"
+                  :label-width="80">
+                <!--新增有效期-->
+                <FormItem prop="addEffectTimeValue"
+                          :label="$t('有效期')"
+                          :rules="[{ required : true, validator : validateEffectTime,trigger : 'blur' }]">
+                    <Input v-model.trim="effectFormData.addEffectTimeValue" style="width: 280px"/>
+                    {{$t('time.year')}}
+                </FormItem>
+            </Form>
+        </edit-modal>
     </div>
 </template>
 
@@ -134,8 +162,8 @@
 
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
-    import defaultsDeep from 'lodash/defaultsDeep';
     import delModal from '@/components/delModal/index.vue';
+    import editModal from '@/components/editModal/index.vue';
 
     export default {
         props : {
@@ -146,7 +174,8 @@
             }
         },
         components : {
-            delModal
+            delModal,
+            editModal
         },
         data () {
 
@@ -233,24 +262,7 @@
                     effTimeUnit : 'year'
                 },
                 //有效期列表
-                effTimeList : [
-                    {
-                        label : '1',
-                        value : 1
-                    },
-                    {
-                        label : '2',
-                        value : 2
-                    },
-                    {
-                        label : '3',
-                        value : 3
-                    },
-                    {
-                        label : '4',
-                        value : 4
-                    }
-                ],
+                effTimeList : [],
                 //功能列表
                 rightList : [
                     {
@@ -266,6 +278,10 @@
                         value : 'isScore'
                     }
                 ],
+                effectFormData : {
+                    //新增有效期的值
+                    addEffectTimeValue : '',
+                },
                 // 已被创建的会员级别
                 usedLevels : [],
                 //当前操作的有效期数据
@@ -358,7 +374,6 @@
                             required : true,
                             message : this.$t('selectField',{ msg : this.$t('validityPeriod') }),
                             trigger : 'change',
-                            type : 'number'
                         }
                     ]
                 },
@@ -408,21 +423,23 @@
 
             //新增/修改数据
             updateMemberLevel ( data ) {
+                let levelEffSetId = this.effTimeListDetail.filter(item => item.value === data.effTime);
                 ajax.post('updateMemberLevel', {
                     cardTypeId : this.cardTypeId,
                     id : data.id,
                     levelNum : data.levelNum,
                     levelDesc : data.levelDesc,
-                    // lowerGrowthValue : data.lowerGrowthValue,
-                    // highestGrowthValue : data.highestGrowthValue,
+                    lowerGrowthValue : data.lowerGrowthValue,
+                    highestGrowthValue : data.highestGrowthValue,
                     remark : data.remark,
                     salePrice : data.salePrice,
                     amountInCard : data.amountInCard,
                     isRecharge : data.function.includes('isRecharge'),
                     isScore : data.function.includes('isScore'),
                     isDiscount : data.function.includes('isDiscount'),
-                    effTime : data.effTime,
-                    effTimeUnit : data.effTimeUnit,
+                    effTime : data.effTime === 'forEver' ? null : data.effTime,
+                    effTimeUnit : data.effTime === 'forEver' ? null : data.effTimeUnit,
+                    levelEffSetId : levelEffSetId.length > 0 ? levelEffSetId[0]['id'] : ''
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('save') })); // 操作成功
@@ -463,11 +480,12 @@
              * @param{Number} index 会员级别有效期删除
              */
             delTimeItem (index) {
+                document.body.click();
                 this.currentData = this.effTimeList[index];
                 this.$refs.delModal.show({
                     title : this.$t('删除有效期'),
                     confirmCallback : () => {
-                        // this.deleteLevelInfo(rowData);
+                        this.deleteEffectTime(this.currentData.id);
                     }
                 });
             },
@@ -475,20 +493,126 @@
              * 获取会员卡有效期信息
              */
             getEffTimeList () {
-                ajax.post('').then(res => {
+                ajax.post('queryLevelEffSets').then(res => {
                     if (res.success) {
-                        this.effTimeList = [];
+                        this.effTimeList = res.data ? res.data : [];
                     } else {
                         this.effTimeList = []
                     }
-                    this.effTimeList.push({
-                        label : '新增有效期',
-                        value : 'add'
+                });
+            },
+            /**
+             * 新增有效期
+             */
+            addEffectTime () {
+                document.body.click();
+                this.$refs.editModal.show({
+                    title : this.$t('新增有效期(年)'),
+                    confirmCallback : () => {
+                        this.confirmAddEffectTime();
+                    },
+                    cancelCallback : () => {
+                        this.$nextTick(() => {
+                            this.$refs.effTimeForm.resetFields();
+                        });
+                    }
+                });
+            },
+            /**
+             * 校验成长值有效期值
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            validateEffectTime (rule,value,callback) {
+                if (value) {
+                    common.validateInteger( value ).then(() => {
+                        if (value > 0 && value < 99) {
+                            callback();
+                        } else {
+                            callback(this.$t('请输入大于0且小于99的值'));
+                        }
+                    }).catch(err => {
+                        if(err === 'errorMaxLength'){
+                            callback(this.$t(err,{field : this.$t('有效期值'),length : 10}));
+                        }else{
+                            callback(this.$t(err,{field : this.$t('有效期值')}));
+                        }
                     });
+                } else {
+                    callback(this.$t('inputField',{field : this.$t('有效期值')}));
+                }
+            },
+            /**
+             * 确认新增有效期
+             */
+            confirmAddEffectTime () {
+                this.$refs.effTimeForm.validate(valid => {
+                    if (valid) {
+                        this.saveEffectTime();
+                    }
+                });
+            },
+            /**
+             * 保存有效期信息
+             */
+            saveEffectTime () {
+                ajax.post('saveLevelEffSet',{
+                    effValue : this.effectFormData.addEffectTimeValue,
+                    effUnit : this.formData.effTimeUnit
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                        this.$refs.editModal.hide();
+                        this.getEffTimeList();
+                        this.effectFormData.addEffectTimeValue = '';
+                    } else if (res.code === 'M046') {
+                        this.$Message.error('有效期已存在');
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                    }
+                });
+            },
+            /**
+             * 删除有效期
+             * @param{String} id 有效期id
+             */
+            deleteEffectTime (id) {
+                ajax.post('deleteLevelEffSet',{
+                    id : id
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
+                        this.$refs.delModal.cancel();
+                        this.getEffTimeList();
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('delete') }));
+                    }
                 });
             }
 
         },
+        computed : {
+            //会员卡有效期设置
+            effTimeListDetail () {
+                return [].concat(this.effTimeList.sort((a,b) => a.effValue - b.effValue).map(item => {
+                    return {
+                        label : item.effValue,
+                        value : String(item.effValue),
+                        ...item
+                    }
+                }),[
+                    {
+                        label : '永久有效',
+                        value : 'forEver'
+                    },
+                    {
+                        label : '新增有效期',
+                        value : 'add'
+                    },
+                ]);
+            }
+        }
     };
 </script>
 
@@ -506,10 +630,15 @@
                 &.blue-label{
                     color: $color_blue;
                 }
+
+                &.add-label{
+                    @include absolute_pos(absolute,0,0,0,0);
+                    height: 34px;
+                    padding: 7px 16px;
+                }
             }
 
             .operate-label{
-                padding-right: 22px;
                 color: $color_err;
                 font-size: $font_size_14px;
             }
