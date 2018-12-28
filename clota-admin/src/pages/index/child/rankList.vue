@@ -85,7 +85,7 @@
                 ajax.get('orderRankingList',{
                     page : 1,
                     pageSize : 5,
-                    date : new Date().format('yyyy-MM-dd 00:00:00')
+                    date : new Date().format('yyyy-MM-dd HH:mm:ss')
                 }).then(res => {
                     if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];

@@ -96,7 +96,7 @@
                 ajax.get('orderRankingList',{
                     page : this.pageNo,
                     pageSize : this.pageSize,
-                    date : this.selectDate.format('yyyy-MM-dd 00:00:00')
+                    date : this.selectDate.format('yyyy-MM-dd HH:mm:ss')
                 }).then(res => {
                     if (res.status === 200 && res.data) {
                         this.totalCount = Number(res.data.totalRecord);
