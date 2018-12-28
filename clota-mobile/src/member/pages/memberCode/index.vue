@@ -111,6 +111,8 @@
                 },
                 //支付码
                 payCode : '',
+                //计时器
+                timer : null,
             };
         },
         methods : {
@@ -199,7 +201,7 @@
              */
             updateCodeInterval () {
                 //每隔1分钟刷新一次二维码
-                setInterval(() => {
+                this.timer = setInterval(() => {
                     this.getPayRandomCode();
                 }, 60000)
             },
@@ -245,6 +247,10 @@
             next(vm => {
                 vm.getParams(to.params);
             });
+        },
+        beforeRouteLeave (to,from,next) {
+            clearInterval(this.timer);
+            next();
         }
     };
 </script>
