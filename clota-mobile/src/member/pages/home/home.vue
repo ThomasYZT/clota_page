@@ -146,7 +146,8 @@
             };
         },
         created () {
-            this.queryUnboundCard();
+            //暂时注释，方便测试
+            //this.queryUnboundCard();
         },
         computed : {
             ...mapGetters([
