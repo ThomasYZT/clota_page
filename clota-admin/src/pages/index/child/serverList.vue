@@ -10,33 +10,6 @@
             </span>
         </div>
         <div class="table-list">
-            <!--<table-com-->
-                <!--:table-data="tableData"-->
-                <!--table-height="268px"-->
-                <!--:column-data="columnData">-->
-                <!--&lt;!&ndash;系统类型&ndash;&gt;-->
-                <!--<el-table-column-->
-                    <!--slot="column4"-->
-                    <!--slot-scope="row"-->
-                    <!--:label="row.title"-->
-                    <!--:width="row.width"-->
-                    <!--:min-width="row.minWidth">-->
-                    <!--<template slot-scope="scoped">-->
-                        <!--{{$t('bit',{length : scoped.row.systmeBit})}}-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-                <!--&lt;!&ndash;监控频率&ndash;&gt;-->
-                <!--<el-table-column-->
-                    <!--slot="column5"-->
-                    <!--slot-scope="row"-->
-                    <!--:label="row.title"-->
-                    <!--:width="row.width"-->
-                    <!--:min-width="row.minWidth">-->
-                    <!--<template slot-scope="scoped">-->
-                        <!--{{$t('minute',{minute : scoped.row.monitoringFrequencc})}}-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-            <!--</table-com>-->
 
             <table-com
                 :column-data="columnData"
@@ -136,6 +109,10 @@
                 font-size: $font_size_12px;
                 color: $color_1890FF;
                 cursor: pointer;
+
+                .iconfont{
+                    vertical-align: middle;
+                }
             }
         }
 
