@@ -105,7 +105,7 @@ const apiList = {
     //根据openId及会员卡号查询卡信息
     queryCardInfoByDecryptCode : '/wechat/mp/card/queryCardInfoByDecryptCode',
     //获取账户随机支付码
-    getPayRandomCode : '/api/external/memberAccount/getPayRandomCode',
+    getPayRandomCode : '/external/memberAccount/getPayRandomCode',
 };
 
 export default apiList;
