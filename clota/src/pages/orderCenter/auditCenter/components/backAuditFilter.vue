@@ -138,7 +138,7 @@
                 // 下单企业列表
                 orderEnterprise: [{id: 'all', orgName: this.$t('all')}],
                 // 下单渠道列表
-                orderChannelList: notDistributorChannelList,
+                orderChannelList: notDistributorChannelList.filter((item) => { return item.value !== 'market' }),
                 // 支付状态
                 paymentList: payStatusList,
                 //过期状态列表
@@ -228,7 +228,11 @@
                 this.visitDateRange = [];
                 this.searchAuditList();
             }
-        }
+        },
+        created() {
+            this.queryOrderOrgList();
+            this.resetFormData = JSON.stringify(this.formData);
+        },
     }
 </script>
 

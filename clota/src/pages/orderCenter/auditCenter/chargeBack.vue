@@ -38,6 +38,17 @@
             @query-data="queryList"
             @selection-change="changeSelection">
             <el-table-column
+                slot="column1"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ scope.row.originVisitDate | timeFormat('yyyy-MM-dd') }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column4"
                 slot-scope="row"
                 show-overflow-tooltip
