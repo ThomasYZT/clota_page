@@ -14,6 +14,7 @@
         <transition name="fade">
             <div class="data-wrap" v-if="isPackUp">
                 <div class="edit-wrap">
+                    <span v-if="!isEditing" data-v-d42ae04c="" class="iconfont icon-edit"></span>
                     <span class="edit" v-if="!isEditing" @click="editAccountInfo">{{$t('编辑')}}</span>
                     <template v-else>
                         <span class="save" @click="saveOnlineReceipt">{{$t('save')}}</span>

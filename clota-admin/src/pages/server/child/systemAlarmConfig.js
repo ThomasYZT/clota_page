@@ -8,7 +8,7 @@ export const columns = [
     },
     {
         title : '时间',
-        width : 170,
+        width : 190,
         field : 'ctime'
     }
 ];

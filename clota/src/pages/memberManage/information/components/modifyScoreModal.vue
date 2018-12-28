@@ -98,7 +98,7 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        props : ['account','reason','detail','card-info'],
+        props : ['account','detail','card-info'],
         components : {},
         data () {
 
@@ -166,13 +166,16 @@
                         { max : 100, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 100 }), trigger : 'blur' }, // 备注不能超过100字符
                         { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                }
+                },
+                //修改原因
+                reason : []
             };
         },
         methods : {
 
             show () {
                 this.visible = true;
+                this.listAdjustReason();
             },
 
             //表单校验
@@ -221,6 +224,18 @@
                     reasonId : '',
                     remark : '',
                 };
+            },
+            //查询修改原因
+            listAdjustReason () {
+                ajax.post('listAdjustReason',{
+                    reasonType : 'score'
+                }).then(res => {
+                    if (res.success) {
+                        this.reason = res.data || [];
+                    } else {
+                        this.reason = [];
+                    }
+                });
             },
 
         },

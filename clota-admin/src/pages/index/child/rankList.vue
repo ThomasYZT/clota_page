@@ -36,16 +36,6 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="columnproportion"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <span>{{getIndex(scope.row.proportion)}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
                     slot="columnbar"
                     slot-scope="row"
                     :label="row.title"
@@ -94,14 +84,15 @@
             getOrderRankingList () {
                 ajax.get('orderRankingList',{
                     page : 1,
-                    pageSize : 5
+                    pageSize : 5,
+                    date : new Date().format('yyyy-MM-dd HH:mm:ss')
                 }).then(res => {
                     if (res.status === 200) {
                         this.tableData = res.data.list ? res.data.list : [];
                     } else {
                         this.tableData = [];
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.tableData = [];
                 });
             },
@@ -111,7 +102,7 @@
              */
             getIndex (rate) {
                 if (validator.isNumber(rate)) {
-                    return Number(rate).toFixed(2) + '%';
+                    return Number(rate * 100).toFixed(2) + '%';
                 } else {
                     return '-';
                 }
@@ -141,6 +132,10 @@
                 font-size: $font_size_12px;
                 color: $color_1890FF;
                 cursor: pointer;
+
+                .iconfont{
+                    vertical-align: middle;
+                }
             }
         }
 

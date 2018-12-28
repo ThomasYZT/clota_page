@@ -1,7 +1,7 @@
 <!--面包屑导航条-->
 
 <template>
-    <Affix :offset-top="56" >
+    <!--<Affix :offset-top="56" >-->
         <div class="bread-crumb-head">
             <Breadcrumb>
                 <BreadcrumbItem
@@ -13,7 +13,7 @@
                 <BreadcrumbItem>{{$t(localeRouter)}}</BreadcrumbItem>
             </Breadcrumb>
         </div>
-    </Affix>
+    <!--</Affix>-->
 </template>
 
 <script>

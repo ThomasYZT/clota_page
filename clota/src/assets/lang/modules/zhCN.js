@@ -2086,5 +2086,11 @@ export default {
     'optional' : '选填',
     'notNull' : '必填',
     'title' : '标题',
+    'scoreModifyReasons': '修改会员积分余额设置',
+    'rechargeModifyReasons': '修改会员储值余额设置',
+    'notAllowScore': '不允许修改会员的积分账户',
+    'notAllowRecharge': '不允许修改会员的储值账户',
+    'allowModifyScore': '允许修改会员的积分账户，如允许修改，请设置修改原因',
+    'allowModifyRecharge': '允许修改会员的储值账户，如允许修改，请设置修改原因',
     'systemServiceNotice' : '系统服务公告',
 }

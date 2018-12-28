@@ -224,11 +224,13 @@
                         </div>
                     </div>
                     <!--修改储值、积分数值-->
-                    <div class="content-info" v-if="setting.allowAdjustAccount && setting.allowAdjustAccount === 'true'">
+                    <div class="content-info" v-if="setting.allowAdjustRechargeAccount === 'true' || setting.allowAdjustScoreAccount === 'true'">
                         <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
                         <div class="operate">
-                            <div><span @click="showAssetModal">{{$t("modifyStorageBalance")}}</span></div>
-                            <div v-if="choosedCard.cardTypeId !== '1'"><span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span></div>
+                            <div><span @click="showAssetModal" v-if="setting.allowAdjustRechargeAccount === 'true'">{{$t("modifyStorageBalance")}}</span></div>
+                            <div v-if="choosedCard.cardTypeId !== '1' && setting.allowAdjustScoreAccount === 'true'">
+                                <span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span>
+                            </div>
                         </div>
 
                     </div>
@@ -281,7 +283,6 @@
 
         <!--会员储值账户余额修改modal-->
         <modify-balance-modal ref="modifyBalance"
-                              :reason="reasonData"
                               :card-info="choosedCard"
                               :detail="memberBaseDetail"
                               @add-success="listCardAccountInfo(choosedCard)">
@@ -291,7 +292,6 @@
         <modify-score-modal ref="modifyScore"
                             :account="scoreData"
                             :card-info="choosedCard"
-                            :reason="reasonData"
                             :detail="memberBaseDetail"
                             @add-success="listCardAccountInfo(choosedCard)">
         </modify-score-modal>
@@ -416,8 +416,6 @@
                         field : ''
                     },
                 ],
-                //修改原因
-                reasonData : [],
                 //储值账户信息--用于修改储值余额修改
                 charTableData : [],
                 //积分账户信息--用于修改积分余额修改
@@ -447,8 +445,6 @@
             this.queryDefineAccountType();
             //查询收款方式--用于新增储值
             this.queryPaymentType();
-            //查询修改原因--用于会员储值账户余额修改
-            this.listAdjustReason();
             //获取储值账户-(本金/赠送金额)应用范围
             this.getSubNode();
             //查询储值账户
@@ -479,15 +475,6 @@
                 }).then(res => {
                     if (res.success) {
                         this.paymentData = res.data || [];
-                    }
-                });
-            },
-
-            //查询修改原因
-            listAdjustReason () {
-                ajax.post('listAdjustReason',{}).then(res => {
-                    if (res.success) {
-                        this.reasonData = res.data || [];
                     }
                 });
             },

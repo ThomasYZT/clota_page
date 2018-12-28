@@ -20,7 +20,7 @@
                         @click="showAuditModal('pass')">{{$t('passed')}}
                 </Button>
                 <Button type="error"
-                        style="width: 88px; background-color: #EB6751;"
+                        style="width: 88px;"
                         :disabled="!moduleInfo || reqOrderTickets.length<1"
                         @click="showAuditModal('reject')">{{$t('rejectAll')}}
                 </Button><!--全部驳回-->
@@ -145,6 +145,7 @@
         </div>
         <!--审核确认弹框-->
         <confirm-audit-modal ref="confirmAuditModal"
+                             :apply-num="reqOrderTickets.length"
                              :base-info="baseInfo"
                              :visitor-info="visitorInfo"
                              @on-audit-confirmed="onAuditConfirmed">
@@ -191,10 +192,6 @@
                     return item.field !== 'rescheduleAfterVisitDate';
                 });
             },
-        },
-        created () {
-        },
-        mounted () {
         },
         watch : {
             moduleInfo (val, oldVal) {

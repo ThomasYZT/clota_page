@@ -431,8 +431,13 @@
             }
         }
         .step-wrapper {
-            width: 50%;
+            width: 700px;
             margin: 0 auto;
+        }
+
+        /deep/ .ivu-steps-clota {
+            margin-left: 335px;
+            width: calc(100% - 250px);
         }
     }
 </style>

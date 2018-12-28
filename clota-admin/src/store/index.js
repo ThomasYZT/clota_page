@@ -118,6 +118,7 @@ export default new Vuex.Store({
             } else if (type === 'del') {
                 state.promisings--;
             }
+            debugger
             if (state.promisings > 0) {
                 state.isLoading = true;
             } else {

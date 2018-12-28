@@ -68,11 +68,11 @@
                     <li class="detail"
                         v-for="(item,i) in warnInfoList"
                         :key="i">
-                        <div class="alarm-name">
+                        <div class="alarm-name" v-w-title="item.message">
                             <span class="iconfont"
-                                  :class="{'icon-warn' : item.warningLevel === '2',
-                                  'icon-error' : item.warningLevel === '1',
-                                  'icon-mind' : item.warningLevel === '3'}"></span>
+                                  :class="{'icon-warn' : item.warningLevel === 2,
+                                  'icon-error' : item.warningLevel === 1,
+                                  'icon-mind' : item.warningLevel === 3}"></span>
                             {{item.message}}
                         </div>
                         <div class="time">{{item.ctime}}</div>
@@ -139,7 +139,6 @@
              * @param params
              */
             getParams (params) {
-                debugger
                 if (params.id) {
                     this.serverId = params.id;
                     this.serverIp = params.ip;
@@ -175,6 +174,7 @@
                     ip : this.serverIp,
                     pageSize : 10,
                     page : 1,
+                    ctime : new Date().format('yyyy-MM-dd')
                 }).then(res => {
                     if (res.status === 200) {
                         this.warnInfoList = res.data.list ? res.data.list : [];
@@ -298,10 +298,14 @@
                         margin-left: 10px;
                         cursor: pointer;
                     }
+
+                    .icon-pull-down{
+                        vertical-align: middle;
+                    }
                 }
 
                 .alarm {
-                    @include block_outline(580px, auto);
+                    @include block_outline(100%, auto);
 
                     .detail {
                         @include block_outline($height: 47px);
@@ -323,6 +327,7 @@
 
                             .iconfont{
                                 margin-right: 10px;
+                                vertical-align: middle;
                             }
                         }
 

@@ -775,7 +775,7 @@
                 formData.limitByMobileDay = data.mobileLimit ? JSON.parse(data.mobileLimit).day : '';
                 formData.limitByMobileNum = data.mobileLimit ? JSON.parse(data.mobileLimit).quantity : '';
                 formData.limitByMobileNum = data.mobileLimit ? JSON.parse(data.mobileLimit).quantity : '';
-                formData.acceptIdType = data.acceptIdType ? data.acceptIdType.split(',') : '';
+                formData.acceptIdType = data.acceptIdType ? data.acceptIdType.split(',') : [];
                 formData.printPrice = data.printPrice ? String(data.printPrice) : '0';
                 formData.standardPrice = data.standardPrice ? String(data.standardPrice) : '0';
                 formData.id = data.id ? String(data.id) : '';
