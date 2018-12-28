@@ -16,9 +16,10 @@
                 </DatePicker>
             </div>
             <!-- 日志文件面积图 -->
-            <area-com :y-yxis-name="$t('fileSize')"
+            <area-com :y-yxis-name="$t('fileSize') + '(M)'"
                         :series-data="logInfo.data"
                         :legend-data="logInfo.legend"
+                        area-type="logFile"
                         key="disk">
             </area-com>
 
@@ -29,22 +30,47 @@
 
             <div class="log-history">
                 <table-com
-                    :table-data="tableData"
-                    :table-height="tableHeight"
+                    v-if="serverIp"
                     :column-data="columnData"
-                    :row-click="false">
+                    :table-data="tableData"
+                    :border="true"
+                    :page-no-d.sync="pageNo"
+                    :show-pagination="true"
+                    :page-size-d.sync="pageSize"
+                    :total-count="totalCount"
+                    :ofset-height="190"
+                    @query-data="queryLogTableData">
+                    <el-table-column
+                        slot="columndate"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            {{scoped.row.ctime ? scoped.row.ctime.slice(0,10) : '-'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="columntime"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            {{scoped.row.ctime ? scoped.row.ctime.substr(11) : '-'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="columnlogSize"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scoped">
+                            {{scoped.row.logSize ? Number(scoped.row.logSize / 1024).toFixed(2) : '-'}}
+                        </template>
+                    </el-table-column>
                 </table-com>
-                <div class="page-area" v-if="tableData.length > 0">
-                    <el-pagination
-                        :current-page="pageNo"
-                        :page-sizes="pageSizeConfig"
-                        :page-size="pageSize"
-                        :layout="pageLayout"
-                        :total="totalCount"
-                        @size-change="sizeChange"
-                        @current-change="pageNoChange">
-                    </el-pagination>
-                </div>
             </div>
         </div>
     </div>
@@ -53,11 +79,11 @@
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import areaCom from './components/area';
-    import tableCom from '../../index/child/tableCom';
-    import tableMixins from '../../lessee/tableMixins';
+    import tableCom from '@/components/tableCom/tableCom';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js'
     import ajax from '@/api/index.js';
     export default {
-        mixins : [tableMixins],
+        mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             areaCom,
@@ -87,15 +113,15 @@
                     {
                         title : '日期',
                         minWidth : 70,
-                        field : 'ctime'
+                        field : 'date'
                     },
                     {
                         title : '时间',
                         minWidth : 70,
-                        field : 'ctime'
+                        field : 'time'
                     },
                     {
-                        title : '文件大小 M',
+                        title : '文件大小(M)',
                         minWidth : 70,
                         field : 'logSize'
                     },
@@ -110,7 +136,10 @@
                 logInfo : {
                     data : [],
                     legend : []
-                }
+                },
+                pageNo : 1,
+                pageSize : 10,
+                totalCount : 0,
             };
         },
         methods : {
@@ -122,27 +151,33 @@
                     this.serverIp = params.ip;
                     this.serverName = params.serverName;
                     this.queryLog();
-                    this.queryLogTableData();
+                } else {
+                    this.$router.push({
+                        name : 'serverDetail'
+                    });
                 }
             },
             /**
              * 查询日志信息
-             * @param pageSize
-             * @param pageNo
              */
-            queryLog (pageSize,pageNo) {
+            queryLog () {
                 ajax.post('queryLog',{
                     ip : this.serverIp,
-                    startTime : this.logDate[0].format('yyyy-MM-dd'),
-                    endTime : this.logDate[1].format('yyyy-MM-dd'),
-                    pageSize : pageSize ? pageSize : 9999,
-                    page : pageNo ? pageNo : 1
+                    startTime : this.logDate[0].format('yyyy-MM-dd 00:00:00'),
+                    endTime : this.logDate[1].format('yyyy-MM-dd 23:59:59'),
+                    pageSize : this.pageSize,
+                    page : this.pageNo
                 }).then(res => {
                     if (res.status === 200) {
-                        if (res.data.list && res.data.list.length > 0) {
-                            let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
-                            this.logInfo.data = legendData.map(item => item.logSize);
-                            this.logInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
+                        if (res.data && res.data.list && res.data.list.length > 0) {
+                            let legendData = res.data.list.sort((a,b) => (a.ctime ? a.ctime.toDate() : '') - (b.ctime ? b.ctime.toDate() : ''));
+                            this.logInfo.data = legendData.map(item => {
+                                return  {
+                                    size : item.logSize ? Number(Number(item.logSize / 1024).toFixed(2)) : 0,
+                                    ...item
+                                }
+                            });
+                            this.logInfo.legend = legendData.map(item => item.ctime ? new Date(item.ctime).format('MM.dd') : '');
                         } else {
                             this.logInfo = {
                                 data : [],
@@ -155,28 +190,7 @@
                             legend : []
                         };
                     }
-                }).catch(err => {
-                    this.logInfo = {
-                        data : [],
-                        legend : []
-                    };
                 });
-            },
-            /**
-             * 每页条数改变
-             * @param pageSize
-             */
-            sizeChange (pageSize) {
-                this.pageSize = pageSize;
-                this.queryLogTableData();
-            },
-            /**
-             * 每页大小改变
-             * @param pageNo
-             */
-            pageNoChange (pageNo) {
-                this.pageNo = pageNo;
-                this.queryLogTableData();
             },
             /**
              * 查询日志记录信息
@@ -184,15 +198,15 @@
             queryLogTableData () {
                 ajax.post('queryLog',{
                     ip : this.serverIp,
-                    startTime : this.logDate[0].format('yyyy-MM-dd'),
-                    endTime : this.logDate[1].format('yyyy-MM-dd'),
+                    startTime : this.logDate[0].format('yyyy-MM-dd 00:00:00'),
+                    endTime : this.logDate[1].format('yyyy-MM-dd 23:59:59'),
                     pageSize : this.pageSize,
                     page : this.pageNo
                 }).then(res => {
                     if (res.status === 200) {
-                        if (res.data.list && res.data.list.length > 0) {
+                        if (res.data && res.data.list && res.data.list.length > 0) {
                             this.tableData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
-                            this.totalCount = res.data.totalRecord;
+                            this.totalCount = res.data ? Number(res.data.totalRecord) : 0;
                         } else {
                             this.tableData = [];
                             this.totalCount = 0;
@@ -201,11 +215,6 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                }).catch(err => {
-                    this.tableData = [];
-                    this.totalCount = 0;
-                }).finally(() => {
-                    this.setTableHeight();
                 });
             },
             /**
@@ -216,20 +225,15 @@
                 this.queryLog();
             }
         },
-        beforeRouteEnter (to,from,next) {
-            next(vm => {
-                vm.getParams(to.params);
-            });
-        },
         computed : {
             //日志文件最大值
             maxSize () {
-                let size = Number(Number(Math.max(...this.logInfo.data) / 1024).toFixed(2));
+                let size = Number(Math.max(...this.logInfo.data.map(item => item.size)));
                 return Number.isFinite(size) ? size : '-';
             },
             //日志文件最小值
             minSize () {
-                let size = Number(Number(Math.min(...this.logInfo.data) / 1024).toFixed(2));
+                let size = Number(Math.min(...this.logInfo.data.map(item => item.size)));
                 return Number.isFinite(size) ? size : '-';
             }
         }
@@ -290,15 +294,6 @@
 
             .log-history{
                 margin-top: 30px;
-            }
-            .page-area {
-                @include block_outline($height: 57px);
-                text-align: right;
-
-                /deep/ .el-pagination {
-                    display: inline-block;
-                    padding-top: 15px;
-                }
             }
         }
     }

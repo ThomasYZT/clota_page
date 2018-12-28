@@ -98,8 +98,8 @@
                     pageSize : this.pageSize,
                     date : this.selectDate.format('yyyy-MM-dd HH:mm:ss')
                 }).then(res => {
-                    if (res.status === 200) {
-                        this.totalCount = res.data.totalRecord;
+                    if (res.status === 200 && res.data) {
+                        this.totalCount = Number(res.data.totalRecord);
                         this.tableData = res.data.list ? res.data.list : [];
                     } else {
                         this.tableData = [];

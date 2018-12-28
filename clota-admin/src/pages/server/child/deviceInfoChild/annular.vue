@@ -74,12 +74,24 @@
                             { value : this.rate, name : this.rate + '%' },
                             { value : 100 - this.rate }
                         ],
-                        color : ['#55C6C5', '#f3f3f8'],
+                        color : [this.circleColorOptions, '#f3f3f8'],
                     }],
                     title : {
                         show : false,
                     }
                 };
+            },
+            //环形图颜色配置
+            circleColorOptions () {
+                if (this.rate > 0 && this.rate < 30) {
+                    return '#22BB5F';
+                } else if (this.rate >= 30 && this.rate < 60) {
+                    return '#F7981C';
+                } else if (this.rate >= 60 && this.rate < 80) {
+                    return '#EB6751';
+                } else if (this.rate >= 80 && this.rate < 100) {
+                    return '#ed3f14';
+                }
             }
         }
     };

@@ -41,18 +41,16 @@
             <div class="chart-circle">
                 <no-data v-if="logInfo.data.length < 1"></no-data>
                 <template v-else>
-                    <!--<div class="title-analysis">-->
-                        <!--<span class="log-name">{{logSize}}</span>-->
-                    <!--</div>-->
-                    <!--<div class="chart-name">{{$t('logFile',{msg : ''})}}</div>-->
                     <div class="area-map">
                         <!-- 日志文件面积图 -->
-                        <area-com :y-yxis-name="$t('fileSize')"
+                        <area-com :y-yxis-name="$t('fileSize') + '(M)'"
                                   :series-data="logInfo.data"
                                   :legend-data="logInfo.legend"
+                                  area-type="logFile"
                                   key="disk">
                         </area-com>
                     </div>
+                    <div class="chart-name">{{$t('logFile',{ msg : '' })}}</div>
                     <div class="detail" @click="toLogDetail">
                         {{$t('look')}}
                         <span class="iconfont icon-pull-down"></span>
@@ -108,6 +106,7 @@
             choseDay (dayType) {
                 this.activeTap = dayType;
                 this.queryMoreDiskSpaceDate();
+                this.queryLog();
             },
             /**
              * 跳转的日志文件详情
@@ -149,16 +148,15 @@
                     page : 1
                 }).then(res => {
                     if (res.status === 200) {
-                        if (res.data.list && res.data.list.length > 0) {
-                            this.diskUsePer = Number(Number((res.data.list[0].totalSpace - res.data.list[0].freeSpace) / res.data.list[0].totalSpace).toFixed());
+                        if (res.data && res.data.list && res.data.list.length > 0) {
+                            let diskData = res.data.list[res.data.list.length - 1];
+                            this.diskUsePer = Number(Number((diskData.totalSpace - diskData.freeSpace) / diskData.totalSpace * 100).toFixed(2));
                         } else {
                             this.diskUsePer = '-';
                         }
                     } else {
                         this.diskUsePer = '-';
                     }
-                }).catch(err => {
-                    this.diskUsePer = '-';
                 });
             },
             /**
@@ -168,23 +166,23 @@
                 //今天
                 if (this.activeTap === 'today') {
                     return {
-                        startTime : new Date().format('yyyy-MM-dd'),
-                        endTime : new Date().format('yyyy-MM-dd'),
+                        startTime : new Date().format('yyyy-MM-dd 00:00:00'),
+                        endTime : new Date().format('yyyy-MM-dd 23:59:59'),
                     };
                 } else if (this.activeTap === 'yesterday') {//昨天
                     return {
-                        startTime : new Date().addDays(-1).format('yyyy-MM-dd'),
-                        endTime : new Date().addDays(-1).format('yyyy-MM-dd'),
+                        startTime : new Date().addDays(-1).format('yyyy-MM-dd 00:00:00'),
+                        endTime : new Date().addDays(-1).format('yyyy-MM-dd 23:59:59'),
                     };
                 } else if (this.activeTap === 'passedSevenDays') {//过去7天
                     return {
-                        startTime : new Date().addDays(-7).format('yyyy-MM-dd'),
-                        endTime : new Date().format('yyyy-MM-dd'),
+                        startTime : new Date().addDays(-7).format('yyyy-MM-dd 00:00:00'),
+                        endTime : new Date().format('yyyy-MM-dd 23:59:59'),
                     };
                 } else if (this.activeTap === 'passedThirtyDays') {//过去30天
                     return {
-                        startTime : new Date().addDays(-30).format('yyyy-MM-dd'),
-                        endTime : new Date().format('yyyy-MM-dd'),
+                        startTime : new Date().addDays(-30).format('yyyy-MM-dd 00:00:00'),
+                        endTime : new Date().format('yyyy-MM-dd 23:59:59'),
                     };
                 } else {
                     return {
@@ -197,18 +195,22 @@
              * 查询日志信息
              */
             queryLog () {
-                let date = this.selectedDay();
                 ajax.post('queryLog',{
                     ip : this.serverIp,
-                    // startTime : date.startTime,
-                    // endTime : date.endTime,
+                    startTime : new Date().addDays(-7).format('yyyy-MM-dd 00:00:00'),
+                    endTime : new Date().format('yyyy-MM-dd 00:00:00'),
                     pageSize : 7,
                     page : 1
                 }).then(res => {
                     if (res.status === 200) {
                         if (res.data.list && res.data.list.length > 0) {
                             let legendData = res.data.list.sort((a,b) => a.ctime.toDate() - b.ctime.toDate());
-                            this.logInfo.data = legendData.map(item => item.logSize);
+                            this.logInfo.data = legendData.map(item => {
+                                return {
+                                    size : item.logSize ? Number(item.logSize / 1024).toFixed(2) : 0,
+                                    ...item
+                                };
+                            });
                             this.logInfo.legend = legendData.map(item => new Date(item.ctime).format('MM.dd'));
                         } else {
                             this.logInfo = {
@@ -222,11 +224,6 @@
                             legend : []
                         };
                     }
-                }).catch(err => {
-                    this.logInfo = {
-                        data : [],
-                        legend : []
-                    };
                 });
             }
         },
@@ -234,8 +231,6 @@
             this.queryMoreDiskSpaceDate();
             this.queryLog();
         },
-        computed : {
-        }
     };
 </script>
 
@@ -249,6 +244,7 @@
         border-radius: 4px;
 
         .day-tap {
+            display: none;
             @include block_outline($height: 60px);
             border-bottom: 1px solid $color_E8E8E;
             padding: 15px 16px 0 16px;
@@ -283,6 +279,10 @@
                     text-align: center;
                     cursor: pointer;
                     margin: 5px auto 0 auto;
+
+                    .icon-pull-down{
+                        vertical-align: middle;
+                    }
                 }
 
                 .title-analysis {
@@ -300,7 +300,7 @@
                 }
 
                 .area-map{
-                    @include block_outline($height : 230px);
+                    @include block_outline($height : 200px);
 
                     .echarts{
                         @include block_outline();
