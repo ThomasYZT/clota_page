@@ -242,8 +242,8 @@
              */
             toAgreement () {
                 this.$router.push({
-                    path : '/personInfo/payAgreement'
-                });
+                    name: 'payAgreement'
+                })
             }
         },
         computed : {

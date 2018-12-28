@@ -442,6 +442,7 @@
                 this.list = _productList;
                 if (data) {
                     this.formData = defaultsDeep({}, data);
+                    this.formData.settlePrice = this.formData.settlePrice.toString();
                     if (data.productId) {
                         this.productInfo = data;
                         this.productInfo.id = data.productId;

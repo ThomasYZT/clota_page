@@ -9,34 +9,36 @@
 </template>
 
 <script>
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins';
     import ajax from '@/member/api/index.js';
     export default {
-        components: {},
-        data() {
+        mixins : [lifeCycleMixins],
+        components : {},
+        data () {
             return {
-                txt: '',
+                txt : '',
                 //手机号码
                 mobile : '',
                 //验证码
                 code : '',
-            }
+            };
         },
-        methods: {
-            getData() {
+        methods : {
+            getData () {
                 ajax.post('getAgreementToPay').then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         this.txt = res.data;
-                    }else {
-                        this.$vux.toast.text(res.message)
+                    } else {
+                        this.$vux.toast.text(res.message);
                     }
-                })
+                });
+            },
+            getParams () {
+                //获取协议数据
+                this.getData();
             }
         },
-        created() {
-            //获取协议数据
-            this.getData();
-        }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
