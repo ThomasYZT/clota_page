@@ -79,9 +79,9 @@
 
 <script>
     import ajax from '@/member/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        data() {
+        data () {
             return {
                 //是否显示账户选择列表
                 visible : false,
@@ -95,23 +95,23 @@
                 prevList : [],
                 //预览图片是否旋转
                 preRotate : false,
-                options: {
+                options : {
                     getThumbBoundsFn : index => {
                         let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
                         let thumbnail = null;
                         let rect = null;
-                        if(index === 0){
+                        if (index === 0) {
                             thumbnail = this.$refs.barcode.$el;
-                        }else if(index === 1){
+                        } else if (index === 1) {
                             thumbnail = this.$refs.qrCode.$el;
                         }
-                        rect =thumbnail.getBoundingClientRect();
-                        return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
+                        rect = thumbnail.getBoundingClientRect();
+                        return { x : rect.left, y : rect.top + pageYScroll, w : rect.width };
                     }
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示账户选择列表
              */
@@ -139,15 +139,15 @@
                     cardId : this.cardInfo.id,
                     memberId : this.userInfo.memberIdf
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.accountList = res.data ? res.data.map((item,index) => {
                             return {
                                 ...item,
                                 value : String(index),
                                 key : String(index),
-                            }
+                            };
                         }) : [];
-                    }else{
+                    } else {
                         this.accountList = [];
                     }
                 });
@@ -165,9 +165,9 @@
             showPreImage () {
                 this.prevList = [
                     {
-                        src: this.$refs.qrCode.imgData,
-                        w: 240,
-                        h: 240
+                        src : this.$refs.qrCode.imgData,
+                        w : 240,
+                        h : 240
                     }
                 ];
                 this.$nextTick(() =>{
@@ -181,21 +181,21 @@
                 this.preRotate = true;
                 this.prevList = [
                     {
-                        src: this.$refs.barcode.$el.src,
-                        w: 600,
-                        h: 240
+                        src : this.$refs.barcode.$el.src,
+                        w : 600,
+                        h : 240
                     }
                 ];
                 this.$nextTick(() =>{
-                    this.$refs.previewer.show(0)
+                    this.$refs.previewer.show(0);
                 });
             }
         },
         computed : {
             //选择的账户信息
-            chosedAccount (){
-                for(let i = 0,j = this.accountList.length;i < j;i++){
-                    if(this.accountList[i].key === this.accountChosed){
+            chosedAccount () {
+                for (let i = 0,j = this.accountList.length; i < j; i++) {
+                    if (this.accountList[i].key === this.accountChosed) {
                         return this.accountList[i];
                     }
                 }
@@ -206,12 +206,12 @@
                 cardInfo : 'cardInfo'
             })
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

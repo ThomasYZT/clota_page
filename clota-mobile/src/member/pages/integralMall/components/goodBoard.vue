@@ -15,6 +15,8 @@
             <template v-else>
                 <span class="price">{{$t('totalPrice')}}: {{info.marketPrice | moneyFilter | contentFilter}}</span>
                 <p class="code">{{$t('exchangeCode')}}: {{info.exchangeSecurities | contentFilter}}</p>
+                <p class="price">{{$t('exchangeScore')}}: {{info.changeCredit | contentFilter}}</p>
+                <p class="time">{{$t('exchangeTime')}}: {{info.outTime | contentFilter}}</p>
             </template>
         </div>
         <div class="right-board">
@@ -54,7 +56,7 @@
     .good-board {
         display: flex;
         width: 100%;
-        height: 88px;
+        height: 120px;
         margin-bottom: 8.5px;
         padding: 14px;
         background-color: $color_fff;
