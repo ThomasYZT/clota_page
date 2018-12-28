@@ -167,7 +167,7 @@
                         { validator: validateMethods.identificationNum, trigger: 'blur'}
                     ],
                     attach: [
-                        { required: true, type: 'array', min: 2, message: this.$t('请上传正反两名的身份证照片'), trigger: 'blur' }
+                        { required: true, type: 'array', min: 2, message: this.$t('请上传正反两面的身份证照片'), trigger: 'blur' }
                     ],
                     email: [
                         { required: true, message: this.$t('errorEmpty', {msg: this.$t('email')}), trigger: 'blur' },
