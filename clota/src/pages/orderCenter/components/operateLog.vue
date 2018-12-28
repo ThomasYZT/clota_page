@@ -61,6 +61,10 @@
                     'ORDER_VERIFY_TICKET' : 'green-status',
                     //过期核销 -- 订单
                     'ORDER_OVERDUE_VERIFY' : 'green-status',
+                    //散客过期核销 -- 订单
+                    'ORDER_INDIVIDUAL_OVERDUE_VERIFY' : 'green-status',
+                    //团队过期核销 -- 订单
+                    'ORDER_TEAM_OVERDUE_VERIFY' : 'green-status',
                     //过期核销 -- 产品明细
                     'ORDER_OVERDUE_VERIFY_TICKET' : 'green-status',
                     //团队订单退单申请
@@ -191,6 +195,18 @@
                             content : `${this.$t('overDueVarifyNum')}：${contentsObj.verifyNum}，
                         ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
                         ${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
+                        };
+                    //散客订单过期核销
+                    case 'ORDER_INDIVIDUAL_OVERDUE_VERIFY' :
+                        return {
+                            content : `${this.$t('overDueVarifyNum')}：${contentsObj.verifyNum}，
+                        ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
+                        ${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
+                        };
+                    //团队订单过期核销
+                    case 'ORDER_TEAM_OVERDUE_VERIFY' :
+                        return {
+                            content : `${this.$t('overDueVarifyNum')}：${contentsObj.num}`
                         };
                     //过期核销 -- 产品明细
                     case 'ORDER_OVERDUE_VERIFY_TICKET' :
