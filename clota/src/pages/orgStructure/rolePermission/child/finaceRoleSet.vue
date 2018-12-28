@@ -39,6 +39,7 @@
                          v-show="menuList.length > 0"
                          :render-content="menuRenderContent"
                          @check="menuCheckChange"
+                         :filter-node-method="menuNodeFilter"
                          @check-change="checkChange">
                 </el-tree>
                 <no-data v-show="menuList.length < 1">
@@ -274,10 +275,12 @@
                     // this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes(chosedNode);
+                        this.$refs.menuTree.filter('isEconomic');
                     });
                 }else{
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes([]);
+                        this.$refs.menuTree.filter('isEconomic');
                     });
                 }
             },
@@ -321,7 +324,14 @@
                         }
                     })];
                 });
-            },100)
+            },100),
+            /**
+             * 筛选财务权限
+             * @param{Object} data 权限数据
+             */
+            menuNodeFilter (data) {
+                return data.isEconomic ? data.isEconomic === 'true' : false;
+            }
         },
         computed : {
             //公司树数据
