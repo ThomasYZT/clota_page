@@ -4,13 +4,14 @@
 -->
 <template>
     <Modal v-model="visible"
-           :title="title"
            :class-name="'vertical-center-modal ' + $style['system-notice-modal']"
            width="600"
            :mask-closable="false"
            @on-cancel="confirm()">
-
         <div class="modal-body">
+            <div class="header">
+                <span>{{title}}</span>
+            </div>
             <div class="content" :class="{'no-img' : noticeImg.length === 0}">
                 {{content}}
             </div>
@@ -50,7 +51,7 @@
                 this.title = '';
             },
             show () {
-
+                this.findUsingNotice();
             },
             /**
              * 获取公告信息
@@ -58,10 +59,14 @@
             findUsingNotice () {
                 ajax.post('findUsingNotice',null,false).then(res => {
                     if (res.success) {
-                        this.content = res.data ? res.data.content : '';
-                        this.noticeImg = res.data && res.data.picturePath ? res.data.picturePath.split(';') : '';
-                        this.title = res.data ? res.data.title : '';
-                        this.visible = true;
+                        if (res.data) {
+                            this.content = res.data.content;
+                            this.noticeImg = res.data.picturePath ? res.data.picturePath.split(';') : '';
+                            this.title = res.data.title;
+                            this.visible = true;
+                        } else {
+                            this.visible = false;
+                        }
                     } else {
                         this.content = '';
                         this.noticeImg = [];
@@ -70,22 +75,20 @@
                 });
             }
         },
-        created () {
-            this.findUsingNotice();
-        }
     }
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .modal-body {
-        min-height: 164px;
+        min-height: 200px;
         width: 90%;
         margin: 0 auto;
         .content {
             margin-bottom: 15px;
             font-size: 12px;
             color: #606266;
+            word-break: break-all;
         }
 
         .no-img {
@@ -103,8 +106,21 @@
         .just-one {
             width: 100%;
         }
-    }
 
+        .header {
+            margin: 12px 0 28px 0;
+            color: #354052;
+            font-size: 16px;
+            text-align: center;
+        }
+    }
+    /deep/ .ivu-modal-body {
+        max-height: 423px;
+        overflow: auto;
+    }
+    /deep/ .ivu-modal-header {
+        display: none;
+    }
 </style>
 <style module>
     .system-notice-modal {
