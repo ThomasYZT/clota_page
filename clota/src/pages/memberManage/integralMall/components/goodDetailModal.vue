@@ -55,7 +55,6 @@
 <script>
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
-    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         components : {},
         data () {
@@ -125,7 +124,7 @@
                     this.detail = data;
                     this.formData.id = this.detail.id;
                     this.formData.goodsStatus = this.detail.goodsStatus;
-                    this.formData.requiredCredits = this.detail.requiredCredits.toString();
+                    this.formData.requiredCredits = this.detail.requiredCredits ? this.detail.requiredCredits.toString() : '';
                 }
                 this.isShow = !this.isShow;
             },

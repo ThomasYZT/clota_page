@@ -245,16 +245,16 @@
                         <div class="switcher">
                             <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" size="large"></i-switch><span>{{$t('是否在微信公众号推送储值账户交易信息')}}</span>
                         </div>
-                        <div class="switcher">
-                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>
-                        </div>
+                        <!--<div class="switcher">-->
+                            <!--<i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>-->
+                        <!--</div>-->
                         <span class="text">{{$t('title')}}</span>
                         <Input type="text"
                                v-model="settingData.wxMpTemplateInfoSet.title"
                                @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr')"
                                style="margin: 0 10px;width: 300px;"></Input>
                         <div class="ivu-form-item-error-tip"
-                             style="left: 70px;"
+                             style="left: 50px;"
                              v-if="error.wxPushErr">{{error.wxPushErr}}
                         </div>
                     </div>
@@ -323,7 +323,7 @@
                     //微信推送交易记录设置
                     wxMpTemplateInfoSet : {
                         showStoreValue : false,
-                        showIntegration : false,
+                        // showIntegration : false,
                         title : ''
                     }
                 },
@@ -435,10 +435,11 @@
                                     allowAdjustAccount : res.data.allowAdjustAccount,
                                     wxMpTemplateInfoSet : res.data.wxMpTemplateInfoSet ? JSON.parse(res.data.wxMpTemplateInfoSet) : {
                                         showStoreValue : false,
-                                        showIntegration : false,
+                                        // showIntegration : false,
                                         title : ''
                                     }
                                 };
+                                params.wxMpTemplateInfoSet.showStoreValue = params.wxMpTemplateInfoSet.showStoreValue ? JSON.parse(params.wxMpTemplateInfoSet.showStoreValue) : false;
                                 this.settingData = params;
                                 //复制数据
                                 this.copySetData = defaultsDeep({}, params);
@@ -465,6 +466,7 @@
                             replacementCardFee : this.settingData.replacementCardFee,
                             notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
                             allowAdjustAccount : this.settingData.allowAdjustAccount,
+                            wxMpTemplateInfoSet : JSON.stringify(this.settingData.wxMpTemplateInfoSet),
                         });
                     });
                 }
@@ -507,6 +509,11 @@
 
                 if (this.settingData.notificationBeforeCouponExpire.isSwitch &&
                     !this.checkInputBlurFunc(this.settingData.notificationBeforeCouponExpire.day, 'dayError')) {
+                    return false;
+                }
+
+                if (this.settingData.wxMpTemplateInfoSet.title &&
+                    !this.checkInputMaxErr(this.settingData.wxMpTemplateInfoSet.title,'wxPushErr')) {
                     return false;
                 }
 
@@ -758,11 +765,14 @@
              */
             checkInputMaxErr (data, errType) {
                 if (String(data).length < 0) {
-                    this.error[errType] = this.$t('errorMinLength', { field : '', length : 1 });
+                    this.error[errType] = this.$t('errorMinLength', { field : this.$t('title'), length : 1 });
+                    return false;
                 } else if (String(data).length > 10) {
-                    this.error[errType] = this.$t('errorMaxLength', { field : '', length : 10 });
+                    this.error[errType] = this.$t('errorMaxLength', { field : this.$t('title'), length : 10 });
+                    return false;
                 } else {
                     this.error[errType] = '';
+                    return true;
                 }
             },
             /**

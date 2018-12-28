@@ -2086,4 +2086,5 @@ export default {
     'optional' : '选填',
     'notNull' : '必填',
     'title' : '标题',
+    'systemServiceNotice' : '系统服务公告',
 }

@@ -60,6 +60,8 @@
             </div>
             <div class="copyright">{{ $t("copyright") }}</div>
         </div>
+
+        <noticeModal ref="noticeModal"></noticeModal>
     </div>
 </template>
 
@@ -68,9 +70,12 @@
     import ajax from '@/api/index';
     import MD5 from 'crypto-js/md5';
     import { mapGetters } from 'vuex';
+    import noticeModal from './components/noticeModal';
 
     export default {
-        components: {},
+        components: {
+            noticeModal
+        },
         data() {
             return {
                 formInline: {
@@ -191,6 +196,9 @@
         created() {
             this.formInline.user =  localStorage.getItem('logName') ? localStorage.getItem('logName') : '';
             this.rememberAccount =  !!localStorage.getItem('logName');
+            setTimeout(() => {
+                this.$refs.noticeModal.show();
+            })
         },
     }
 </script>

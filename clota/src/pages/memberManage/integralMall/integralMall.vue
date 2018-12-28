@@ -89,7 +89,7 @@
                         <ul class="operate-list">
                             <!--<li class="blue-label" @click="stockDetail(scope.row)">{{$t('details')}}</li>-->
                             <li class="blue-label" @click="putOnGoods(scope.row)">{{$t('up')}}</li>
-                            <li class="blue-label" @click="down(scope.row)">{{$t('down')}}</li>
+                            <li :class="{ disabled : scope.row.goodsStatus === 'down' }" class="blue-label" @click="down(scope.row)">{{$t('down')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -201,6 +201,9 @@
              *  @param {object} rowData
              */
             down (rowData) {
+                if (rowData.goodsStatus === 'down') {
+                    return;
+                }
                 this.delModalType = 'down';
                 this.$refs.delModal.show({
                     title : this.$t('notice'),
@@ -403,5 +406,10 @@
             background-color: $color_blue;
             border-color: $color_blue;
         }
+    }
+
+    .disabled {
+        color: $color_gray;
+        cursor: not-allowed
     }
 </style>
