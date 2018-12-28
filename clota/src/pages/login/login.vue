@@ -198,7 +198,7 @@
             this.rememberAccount =  !!localStorage.getItem('logName');
             setTimeout(() => {
                 this.$refs.noticeModal.show();
-            })
+            }, 1000)
         },
     }
 </script>
