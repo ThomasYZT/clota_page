@@ -204,7 +204,7 @@
                             partnerId : this.payInfo.partnerId,
                             payType : this.formData.payType,
                             payMoney : this.formData.rechargeAmount,
-                            newWindow : newWindow
+                            newWindow : newWindow,
                         });
                     } else {
                         this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('topUp')}));
@@ -231,8 +231,8 @@
                                 payFormData : res.data
                             },
                         });
+                        localStorage.setItem('financeRecharge', JSON.stringify({ payFormData : res.data }));
                         newWindow.location.href = location.href.replace(location.hash, href);
-                        sessionStorage.setItem('financeRecharge', JSON.stringify({ payFormData : res.data }));
                         this.payModalShow = true;
                         this.hide();
                         this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });

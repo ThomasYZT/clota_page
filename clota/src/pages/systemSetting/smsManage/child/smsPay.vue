@@ -49,7 +49,13 @@
              * 获取路由参数
              * @param params
              */
-            getParams (params) {
+            getParams () {
+                let params = localStorage.getItem('smsPay');
+                if (params) {
+                    sessionStorage.setItem('smsPay', params);
+                    localStorage.removeItem('smsPay');
+                    params = JSON.parse(params);
+                }
                 if (params && params.payFormData) {
                     this.payFormData = params.payFormData;
                     this.$nextTick(() => {
