@@ -695,6 +695,7 @@ export default {
     'limitByIdDay' : '身份证件购票限制',
     'limitByMobileDay' : '手机号购票限制',
     'stockType' : '限制库存',
+    'stockTypeMod' : '限制库存类型',
     'stockNum' : '库存数量',
     'playPark' : '可游玩园区',
     'addPark' : '新增园区',

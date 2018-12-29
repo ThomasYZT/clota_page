@@ -695,7 +695,7 @@ export default {
     'limitByIdDay' : 'id card purchase limit',
     'limitByMobileDay' : 'mobile phone purchase limit',
     'stockType' : 'restricted inventory',
-    'stockNum' : 'inventory quantity',
+    'stockTypeMod' : '限制库存类型',
     'playPark' : 'park that can be played',
     'addPark' : 'add a new Park',
     'parkName' : 'park name',

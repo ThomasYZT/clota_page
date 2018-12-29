@@ -174,11 +174,22 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        {{scope.row.stockNum | contentFilter}}
+                                        {{scope.row.stockType ? $t(scope.row.stockType) : '-' | contentFilter}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column
                                     slot="column4"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        {{scope.row.stockNum | contentFilter}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column5"
                                     slot-scope="row"
                                     :label="row.title"
                                     :width="row.width"
