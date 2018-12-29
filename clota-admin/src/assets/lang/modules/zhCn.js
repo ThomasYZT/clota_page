@@ -596,4 +596,6 @@ export default {
     '1levelAllowcation' : '一级分销价格分销商',
     '2levelAllowcation' : '二级分销价格分销商',
     '3levelAllowcation' : '三级分销价格分销商',
+    'thirdPartSmsAccount' : '第三方短信服务商账号',
+    'thirdPartSmsPassword' : '第三方短信服务商密码'
 };

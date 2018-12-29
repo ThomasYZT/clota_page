@@ -73,9 +73,10 @@
             <i-row>
                 <i-col span="12">
                     <FormItem label="短信供应商：" :label-width="150">
-                        <Select v-model.trim="formDataCopy.smsProvider" v-if="type === 'edit'">
+                        <Select v-model.trim="formDataCopy.smsProviderId"
+                                v-if="type === 'edit'">
                             <Option v-for="item in smsSuppilerList"
-                                    :value="item.provider"
+                                    :value="item.id"
                                     :key="item.provider">
                                 {{ item.provider }}
                             </Option>
@@ -85,6 +86,36 @@
                         </span>
                     </FormItem>
                 </i-col>
+                <!-- 仅当创蓝、亿美时才显示该字段 -->
+                <template  v-if="formDataCopy.smsProviderId === '3' || formDataCopy.smsProviderId === '4'">
+                    <i-col span="12">
+                        <FormItem label="第三方短信服务商账号：" :label-width="180" prop="smsProviderAccount">
+                            <Input v-model.trim="formDataCopy.smsProviderAccount" v-if="type === 'edit'"/>
+                            <span v-else class="info-val">
+                            <span class="account-name" v-w-title="companyDetail.smsProviderAccount">
+                                {{companyDetail.smsProviderAccount | contentFilter}}
+                            </span>
+                        </span>
+                        </FormItem>
+                    </i-col>
+                    <i-col span="12">
+                        <FormItem label="第三方短信服务商密码：" :label-width="170" prop="smsProviderPassword">
+                            <Input v-model.trim="formDataCopy.smsProviderPassword" v-if="type === 'edit'"/>
+                            <span v-else class="info-val">
+                            <span class="account-name" v-w-title="companyDetail.smsProviderPassword">
+                                {{companyDetail.smsProviderPassword | contentFilter}}
+                            </span>
+                        </span>
+                        </FormItem>
+                    </i-col>
+                </template>
+                <template v-if="formDataCopy.smsProviderId === '5'">
+                    <i-col span="12">
+                        <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
+                            {{companyDetail.smsSendTotal | contentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </template>
                 <i-col span="12">
                     <FormItem label="管理账号：" :label-width="150">
                         <span class="info-val" >
@@ -198,11 +229,6 @@
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="12">
-                    <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
-                        {{companyDetail.smsSendTotal | contentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
-                    </FormItem>
-                </i-col>
                 <i-col span="12">
                     <FormItem prop="orgName" label="受理客服：" :label-width="150">
                         <Select v-model="formDataCopy.businessId" v-if="type === 'edit'  && activeNode && activeNode.pid !== '0'">
@@ -379,42 +405,9 @@
                 serviceStaffList : [],
                 //公司详细信息
                 companyDetail : {},
-                ruleValidate : {
-                    orgName : [
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('companyBgName'),length : 100 }),trigger : 'blur' },
-                        { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
-                    ],
-                    checkinCode : [
-                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
-                    ],
-                    smsProvider : [
-                        { required : true,message : this.$t('selectField',{ msg : this.$t('smsProvider') }),trigger : 'blur' }
-                    ],
-                    email : [
-                        { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
-                        { validator : validateEmail,trigger : 'blur' }
-                    ],
-                    linkName : [
-                        { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
-                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' },
-                    ],
-                    address : [
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' },
-                    ],
-                    telephone : [
-                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' },
-                        { validator : validatePhone ,trigger : 'blur' }
-                    ],
-                    tex : [
-                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),trigger : 'blur' },
-                    ],
-                    parentManageId : [
-                        { required : true,message : this.$t('selectField',{ msg : this.$t('superior') }),trigger : 'blur' },
-                    ],
-                    parentEconomicId : [
-                        { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
-                    ]
-                }
+                validateEmail : validateEmail,
+                validatePhone : validatePhone,
+
             };
         },
         methods : {
@@ -449,6 +442,9 @@
                             businessAccountId : this.formDataCopy.businessId,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
+                            smsProviderId : this.formDataCopy.smsProviderId,
+                            smsProviderAccount : this.formDataCopy.smsProviderAccount,
+                            smsProviderPassword : this.formDataCopy.smsProviderPassword,
                         }).then(res => {
                             if (res.status === 200) {
                                 this.$Message.success('修改成功');
@@ -670,6 +666,54 @@
                     }
                 } else {
                     return '';
+                }
+            },
+            ruleValidate () {
+                return {
+                    orgName : [
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('companyBgName'),length : 100 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
+                    ],
+                    checkinCode : [
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
+                    ],
+                    smsProvider : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('smsProvider') }),trigger : 'blur' }
+                    ],
+                    email : [
+                        { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
+                        { validator : this.validateEmail,trigger : 'blur' }
+                    ],
+                    linkName : [
+                        { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' },
+                    ],
+                    address : [
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' },
+                    ],
+                    telephone : [
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' },
+                        { validator : this.validatePhone ,trigger : 'blur' }
+                    ],
+                    tex : [
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),trigger : 'blur' },
+                    ],
+                    parentManageId : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('superior') }),trigger : 'blur' },
+                    ],
+                    parentEconomicId : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
+                    ],
+                    smsProviderAccount : [
+                        { required : this.formDataCopy.smsProviderId === '3' || this.formDataCopy.smsProviderId === '4' ? true : false,
+                          message : this.$t('inputField',{ field : this.$t('thirdPartSmsAccount') }),
+                          trigger : 'blur' }
+                    ],
+                    smsProviderPassword : [
+                        { required : this.formDataCopy.smsProviderId === '3' || this.formDataCopy.smsProviderId === '4' ? true : false,
+                          message : this.$t('inputField',{ field : this.$t('thirdPartSmsPassword') }),
+                          trigger : 'blur' }
+                    ]
                 }
             }
         },
