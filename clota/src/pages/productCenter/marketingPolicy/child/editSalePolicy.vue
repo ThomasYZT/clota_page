@@ -1102,7 +1102,7 @@
 
                 //产品
                 if (this.itemsData && this.itemsData.length < 1) {
-                    this.$Message.warning(this.$t('selectField', { msg : this.$t('addProduct') }));
+                    this.$Message.warning(this.$t('please', { msg : this.$t('addProduct') }));
                     return;
                 }
 
