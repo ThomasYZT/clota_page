@@ -49,7 +49,13 @@
              * 获取路由参数
              * @param params
              */
-            getParams (params) {
+            getParams () {
+                let params = localStorage.getItem('financeRecharge');
+                if (params) {
+                    sessionStorage.setItem('financeRecharge', params);
+                    localStorage.removeItem('financeRecharge');
+                    params = JSON.parse(params);
+                }
                 if (params && params.payFormData) {
                     this.payFormData = params.payFormData;
                     this.$nextTick(() => {

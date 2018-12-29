@@ -5,11 +5,12 @@
 <template>
     <Modal v-model="visible"
            class-name="vertical-center-modal"
+           width="400"
            :mask-closable="false"
            :title="$t(title)">
 
         <i-row class="content">
-            <i-col span="12" offset="8">
+            <i-col span="18" offset="6">
                 <div class="payment-item">
                     <span>{{$t('colonSetting', { key : $t('collectionAccountType') })}}</span>
                     <span>
@@ -38,7 +39,8 @@
                     {{$t('areYouSureAccount', { field : (accountInfo.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')) + $t('payType.' + accountInfo.accountType)  })}}
                 </span>
             </span>
-            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('whetherSure')}}？</span>
+            <span v-if="accountInfo.useStatus === 'enabled'">{{$t('disabledAccount', { account : $t('payType.' + accountInfo.accountType) })}}</span>
+            <span v-else><span class="red-label">{{$t('irreversible')}}</span>，{{$t('whetherSure')}}？</span>
         </del-modal>
     </Modal>
 </template>
@@ -128,6 +130,11 @@
     }
 
     .content {
+        margin-top: 20px;
         font-size: 14px;
+    }
+
+    /deep/ .ivu-modal-body {
+        min-height: 164px;
     }
 </style>

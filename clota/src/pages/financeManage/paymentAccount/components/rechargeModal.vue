@@ -190,6 +190,7 @@
              *  确认充值
              */
             confirmRecharge ( params ) {
+                let newWindow = window.open();
                 ajax.post('recharge', {
                     orgAccountId: params.id,
                     amount: this.formData.rechargeAmount,
@@ -202,17 +203,18 @@
                             merchantId : this.payInfo.merchantId,
                             partnerId : this.payInfo.partnerId,
                             payType : this.formData.payType,
-                            payMoney : this.formData.rechargeAmount
+                            payMoney : this.formData.rechargeAmount,
+                            newWindow : newWindow,
                         });
                     } else {
                         this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('topUp')}));
                     }
-                })
+                });
             },
             /**
              * 支付接口调用
              */
-            payNow ({bizId, payType, payMoney, merchantId, partnerId}) {
+            payNow ({bizId, payType, payMoney, merchantId, partnerId, newWindow}) {
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -229,8 +231,8 @@
                                 payFormData : res.data
                             },
                         });
-                        sessionStorage.setItem('financeRecharge', JSON.stringify({ payFormData : res.data }));
-                        window.open(href);
+                        localStorage.setItem('financeRecharge', JSON.stringify({ payFormData : res.data }));
+                        newWindow.location.href = location.href.replace(location.hash, href);
                         this.payModalShow = true;
                         this.hide();
                         this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
