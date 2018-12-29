@@ -2143,4 +2143,12 @@ export default {
     'privalige.deleteCheckerGroup' : '删除分组',
     'privalige.moveCheckerGroup' : '移至其他分组',
     'privalige.removeCheckerGroup' : '移出分组',
+    'privalige.submitWithdraw' : '提交转账流水',
+    'privalige.payment-account-manage' : '付款账户管理',
+    'privalige.queryPaymentAccountRecord' : '查询',
+    'privalige.applyPaymentAccountRecharge' : '充值',
+    'privalige.receivable-account-manage' : '收款账户管理',
+    'privalige.queryReceivableAccountRecord' : '查询',
+    'privalige.modifyReceivableAccount' : '修改',
+    'privalige.workbench' : '工作台',
 }

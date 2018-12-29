@@ -67,6 +67,7 @@
             </el-table-column>
 
             <el-table-column
+                v-if="canModifyAccount"
                 slot="column6"
                 slot-scope="row"
                 :label="row.title"
@@ -91,6 +92,7 @@
     import {configVariable} from '@/assets/js/constVariable';
     import {paymentHead} from '../financeManageConfig';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {tableCom, modifyLimitModal},
@@ -114,7 +116,15 @@
                 totalCount: 0,
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以修改收款账户
+            canModifyAccount () {
+                return this.permissionInfo && this.permissionInfo['modifyReceivableAccount'] === 'allow';
+            }
+        },
         created() {
         },
         mounted() {
@@ -146,6 +156,7 @@
              * @param scopeRow - 行数据
              */
             handleRecharge(scopeRow) {
+                if (!this.canModifyAccount) return;
                 this.$refs.modifyLimitModal.show({item: scopeRow});
             },
         }

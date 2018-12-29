@@ -53,6 +53,7 @@
             </el-table-column>
 
             <el-table-column
+                v-if="canAuditWithdraw || canSubmitWithdraw"
                 slot="column12"
                 slot-scope="row"
                 :label="row.title"
@@ -65,10 +66,10 @@
                         <li v-if="scope.row.withdrawStatus=='auditing' && canAuditWithdraw"
                             @click="showModal('auditCashModal', scope.row)">{{$t('checked')}}</li>
                         <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
-                        <li v-else-if="scope.row.withdrawStatus=='pass'"
+                        <li v-else-if="scope.row.withdrawStatus=='pass' && canSubmitWithdraw"
                             @click="showModal('transferAccountModal', scope.row)">{{$t('提交转账流水')}}</li>
                         <!--审核状态为“已转账”时，操作按钮：修改转账流水-->
-                        <li v-else-if="scope.row.withdrawStatus=='success'"
+                        <li v-else-if="scope.row.withdrawStatus=='success' && canSubmitWithdraw"
                             @click="showModal('transferAccountModal', scope.row)">{{$t('修改转账流水')}}</li>
                         <!--审核状态为“已驳回”时，操作按钮：无-->
                         <li v-else>-</li>
@@ -142,6 +143,10 @@
             //是否可以审核提现记录
             canAuditWithdraw () {
                 return this.permissionInfo && 'auditWithdraw' in this.permissionInfo;
+            },
+            //是否可以提交提现流水
+            canSubmitWithdraw () {
+                return this.permissionInfo && 'submitWithdraw' in this.permissionInfo;
             }
         },
         created () {
@@ -182,6 +187,7 @@
             },
 
             showModal (modalType,scopeRow) {
+                if (!this.canSubmitWithdraw) return;
                 this.$refs[modalType].show(scopeRow);
             },
             /**
