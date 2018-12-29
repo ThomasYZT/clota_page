@@ -98,7 +98,7 @@ export default {
                 component : () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/orderDetail/teamOrderDetail.vue'),
                 meta : {
                     menuName : 'teamOrderDetail',
-                    _name : 'order-list',
+                    _name : 'teamOrder-cancel_audit',
                     rightPath : topMenuName + '.' + 'reserveOrderDetail'
                 },
             },

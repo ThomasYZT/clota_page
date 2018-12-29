@@ -4,11 +4,12 @@
         <div class="orgHeader">
 
             <!--新增分组-->
-            <add-group @fresh-data="getOrgGroupList">
+            <add-group v-if="canAddSaleGroup" @fresh-data="getOrgGroupList">
             </add-group>
 
             <!--批量操作-->
             <batch-opertate
+                v-if="canMoveSaleGroup || canRemoveSaleGroup"
                 :orgGroupList="orgGroupList"
                 :saleGroupSelected="saleGroupSelected"
                 @handle-out-group="handleOutGroup"
@@ -38,6 +39,7 @@
                 @query-data="queryList"
                 @selection-change="selectedChange">
                 <el-table-column
+                    v-if="canMoveSaleGroup || canRemoveSaleGroup"
                     slot="column0"
                     slot-scope="row"
                     :label="row.title"
@@ -70,6 +72,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="canMoveSaleGroup || canRemoveSaleGroup"
                     slot="column6"
                     slot-scope="row"
                     :label="row.title"
@@ -78,7 +81,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scoped">
                         <ul class="operate-list">
-                            <li>
+                            <li v-if="canMoveSaleGroup">
                                 <move-group
                                     v-model="scoped.row.visible"
                                     :rowData="scoped.row"
@@ -86,7 +89,9 @@
                                     @move-channel-group="moveChannelGroup">
                                 </move-group>
                             </li>
-                            <li :class="{disabled : !scoped.row.checkGroupId}" @click="channelRemove(scoped.row)">{{$t('outGroup')}}</li><!--移出分组-->
+                            <li v-if="canRemoveSaleGroup"
+                                :class="{disabled : !scoped.row.checkGroupId}"
+                                @click="channelRemove(scoped.row)">{{$t('outGroup')}}</li><!--移出分组-->
                         </ul>
                     </template>
                 </el-table-column>
@@ -149,6 +154,7 @@
              * 查询核销设备分组信息
              */
             getOrgGroupList () {
+                if (!this.canAddSaleGroup) return;
                 ajax.post('getOrgGroupList',{
                     groupType : 'check'
                 }).then(res => {
@@ -258,8 +264,21 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
-            })
+                manageOrgs : 'manageOrgs',
+                permissionInfo : 'permissionInfo',
+            }),
+            //是否可以新增分组
+            canAddSaleGroup () {
+                return this.permissionInfo && this.permissionInfo['addCheckerGroup'] === 'allow';
+            },
+            //是否可以移动分组
+            canMoveSaleGroup () {
+                return this.permissionInfo && this.permissionInfo['moveCheckerGroup'] === 'allow';
+            },
+            //是否可以移出分组
+            canRemoveSaleGroup () {
+                return this.permissionInfo && this.permissionInfo['removeCheckerGroup'] === 'allow';
+            }
         }
     }
 </script>

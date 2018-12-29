@@ -11,9 +11,11 @@
                     <template>
                         <span class="label-text" v-w-title="item.groupName">{{item.groupName}}</span>
                         <span class="iconfont icon-edit"
-                              v-if="item.stay !== true"
+                              v-if="item.stay !== true && canModifySaleGroup"
                               @click="editOrgType($event,item)"></span>
-                        <span class="iconfont icon-delete" v-if="item.stay !== true" @click="delGroupShowModal(item,$event)"></span>
+                        <span class="iconfont icon-delete"
+                              v-if="item.stay !== true && canDeleteSaleGroup"
+                              @click="delGroupShowModal(item,$event)"></span>
                     </template>
                     <!--<template v-else>-->
                         <!--<Input v-model="item.groupName" style="width: 190px;"/>-->
@@ -49,6 +51,7 @@
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index.js';
     import editModal from '@/components/editModal/index.vue';
+    import { mapGetters } from 'vuex';
     export default {
         components : {
             delModal,
@@ -92,6 +95,7 @@
              * @param data
              */
             editOrgType (e,data) {
+                if (!this.canModifySaleGroup) return;
                 e.stopPropagation();
                 this.$set(data,'edit',!data.edit);
                 this.formData.orgName = data.groupName;
@@ -111,6 +115,7 @@
              * @param e
              */
             delGroupShowModal (data,e) {
+                if (!this.canDeleteSaleGroup) return;
                 e.stopPropagation();
                 this.currentGroup = data;
                 this.$refs.delGroupModal.show({
@@ -200,7 +205,18 @@
                     });
                 }
                 return orgGroupList;
-            }
+            },
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以修改分组
+            canModifySaleGroup () {
+                return this.permissionInfo && this.permissionInfo['modifySaleGroup'] === 'allow';
+            },
+            //是否可以删除分组
+            canDeleteSaleGroup () {
+                return this.permissionInfo && this.permissionInfo['deleteSaleGroup'] === 'allow';
+            },
         },
         created () {
             this.$emit('update:groupType',this.groupType);

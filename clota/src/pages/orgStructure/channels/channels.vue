@@ -2,7 +2,9 @@
     <!--  自营渠道页面 -->
     <div class="channel">
         <div class="filter-box">
-            <Button type="primary" style="float: left;margin-right: 10px" size="default"
+            <Button type="primary"
+                    style="float: left;margin-right: 10px"
+                    v-if="canAddChannel"
                     @click="newSelfSupportBtn('add')"><span class="add-icon">+ {{$t('addSelfChannel')}}</span>
             </Button>
             <!--<Button style="float: left" type="ghost" size="default">批量操作</Button>
@@ -10,6 +12,7 @@
                 <Input suffix="ios-search" placeholder="请输入任意信息进行查询"/>
             </div>-->
             <el-dropdown trigger="click"
+                         v-if="canChangeChannelStatus || canDeleteChannel"
                          placement="bottom-start"
                          @command="handleCommand">
                 <Button type="ghost" style="float: left" size="default">{{$t('batchOperate')}}</Button><!--批量操作-->
@@ -81,6 +84,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="canEditChannel || canChangeChannelStatus || canDeleteChannel"
                     slot="column7"
                     slot-scope="row"
                     :label="row.title"
@@ -88,27 +92,40 @@
                     fixed="right"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <!--修改-->
-                        <span class="operate-btn blue"
-                              @click="newSelfSupportBtn('modify', scope.row)">{{$t('modify')}}
-                        </span>
-                        <span class="divide-line"></span>
-                        <!--启用/禁用-->
-                        <span :class="['operate-btn', scope.row.status=='valid' ? 'org' : 'blue']"
-                              @click="enable(scope.row)">{{scope.row.status=='valid' ? $t('disabled') : $t('commissioned')}}
-                        </span>
-                        <span class="divide-line"></span>
-                        <!--删除-->
-                        <span :class="['operate-btn', 'red']"
-                              v-if="scope.row.type=='online'"
-                              @click="showDelModal(scope.row)">{{$t('del')}}
-                        </span>
-                        <Tooltip placement="top-end" :transfer="true" v-if="scope.row.type=='offline'">
-                            <span :class="['operate-btn', 'gray']">{{$t('del')}}</span>
-                            <div slot="content">
-                                <div class="tip-trade">{{$t('channelDelNotice')}}</div>
-                            </div>
-                        </Tooltip>
+                        <ul class="operate-list">
+                            <li v-if="canEditChannel" @click="newSelfSupportBtn('modify', scope.row)">{{$t('modify')}}</li>
+                            <li :class="{'red-label' : scope.row.status === 'valid'}"
+                                v-if="canChangeChannelStatus"
+                                @click="enable(scope.row)">
+                                {{scope.row.status === 'valid' ? $t('disabled') : $t('commissioned')}}
+                            </li>
+                            <li class="red-label"
+                                v-if="scope.row.type === 'online' && canDeleteChannel"
+                                @click="showDelModal(scope.row)">{{$t('del')}}</li>
+                            <li class="disabled" v-if="scope.row.type === 'offline' && canDeleteChannel">
+                                <Tooltip placement="top"
+                                         :transfer="true">
+                                    <span>{{$t('del')}}</span>
+                                    <div slot="content">
+                                        <div class="tip-trade">{{$t('channelDelNotice')}}</div>
+                                    </div>
+                                </Tooltip>
+                            </li>
+                        </ul>
+                        <!--<template v-if="canDeleteChannel">-->
+                            <!--<span class="divide-line"></span>-->
+                            <!--&lt;!&ndash;删除&ndash;&gt;-->
+                            <!--<span :class="['operate-btn', 'red']"-->
+                                  <!--v-if="scope.row.type=='online' && canDeleteChannel"-->
+                                  <!--@click="showDelModal(scope.row)">{{$t('del')}}-->
+                            <!--</span>-->
+                            <!--<Tooltip placement="top-end" :transfer="true" v-if="scope.row.type=='offline'">-->
+                                <!--<span :class="['operate-btn', 'gray']">{{$t('del')}}</span>-->
+                                <!--<div slot="content">-->
+                                    <!--<div class="tip-trade">{{$t('channelDelNotice')}}</div>-->
+                                <!--</div>-->
+                            <!--</Tooltip>-->
+                        <!--</template>-->
                     </template>
                 </el-table-column>
             </table-com>
@@ -142,6 +159,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {configVariable, batchOperate} from '@/assets/js/constVariable';
     import map from 'lodash/map';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {
@@ -179,8 +197,6 @@
                 name: '', //删除弹窗名字
                 deleteName: this.$t('delChannel'), //删除内容名字
                 rowIds: [], //自营渠道ids
-                // 批量操作下拉选项
-                batchOperate: batchOperate,
                 // 已勾选的数据
                 chosenRowData: [],
             }
@@ -227,6 +243,7 @@
             },
             // 点击启用，未启用事件
             enable(scopeRow, isBatch) {
+                if (!this.canChangeChannelStatus) return;
                 let partnerObj = {};
                 if (scopeRow.status=='valid') {
                     partnerObj.successTip = this.$t('disabledChannel');
@@ -265,6 +282,7 @@
              * @param scopeRow - 修改时的行数据
              **/
             newSelfSupportBtn(type, scopeRow) {
+                if (!this.canAddChannel && !this.canEditChannel) return;
                 let obj = type=='add' ? {type: type} : {item: scopeRow, type: type};
                 this.$refs.addSelfSupport.show(obj);
             },
@@ -324,9 +342,11 @@
                 switch (dropItem.status) {
                     case 'valid' :
                     case 'invalid' :
+                        if (!this.canChangeChannelStatus) return;
                         this.enable(dropItem, true);
                         break;
                     case 'del' :
+                        if (!this.canDeleteChannel) return;
                         let onlineData = this.chosenRowData.filter((item, i) => {
                             // 过滤出线上的自营渠道类型，因线下类型不可删除
                             return item.type == 'online';
@@ -341,7 +361,38 @@
             },
 
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以新增自营渠道
+            canAddChannel () {
+                return this.permissionInfo && this.permissionInfo['addChannel'] === 'allow';
+            },
+            //是否可以编辑自营渠道
+            canEditChannel () {
+                return this.permissionInfo && this.permissionInfo['modifyChannel'] === 'allow';
+            },
+            //是否可以禁用、启用自营渠道
+            canChangeChannelStatus () {
+                return this.permissionInfo && this.permissionInfo['operateChannel'] === 'allow';
+            },
+            //是否可以删除自营渠道
+            canDeleteChannel () {
+                return this.permissionInfo && this.permissionInfo['deleteChannel'] === 'allow';
+            },
+            // 批量操作下拉选项
+            batchOperate () {
+                let result = [];
+                if (this.canChangeChannelStatus) {
+                    result = result.concat(batchOperate.slice(0,2));
+                }
+                if (this.canDeleteChannel) {
+                    result = result.concat(batchOperate.slice(2));
+                }
+                return result;
+            }
+        },
         created() {
         },
     }

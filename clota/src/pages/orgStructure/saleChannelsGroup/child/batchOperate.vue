@@ -47,6 +47,7 @@
 
 <script>
     import {saleOperateBatch} from '@/assets/js/constVariable.js';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //销售渠道分组
@@ -67,8 +68,6 @@
         data() {
             return {
 
-                //批量操作类型
-                batchOperate : saleOperateBatch,
                 //分组信息
                 formData : {
                     //移动分组时选择的分组
@@ -114,6 +113,30 @@
             popperHide () {
                 this.$refs.formData.resetFields();
             }
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以移动分组
+            canMoveSaleGroup () {
+                return this.permissionInfo && this.permissionInfo['moveSaleGroup'] === 'allow';
+            },
+            //是否可以移出分组
+            canRemoveSaleGroup () {
+                return this.permissionInfo && this.permissionInfo['removeSaleGroup'] === 'allow';
+            },
+            //批量操作类型
+            batchOperate () {
+                let result = [];
+                if (this.canMoveSaleGroup) {
+                    result = result.concat(saleOperateBatch.slice(0,1));
+                }
+                if (this.canRemoveSaleGroup) {
+                    result = result.concat(saleOperateBatch.slice(1));
+                }
+                return result;
+            },
         }
     }
 </script>

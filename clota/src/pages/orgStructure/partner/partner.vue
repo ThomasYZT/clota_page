@@ -2,10 +2,14 @@
     <!-- 合作伙伴 -->
     <div class="partner">
         <div class="filter-box">
-            <Button type="primary" style="float: left;margin-right: 10px" @click="newPartnerBtn('add')"
+            <Button type="primary"
+                    style="float: left;margin-right: 10px"
+                    v-if="canAddpartner"
+                    @click="newPartnerBtn('add')"
                     size="default"><span class="add-icon">+ {{$t('addPartner')}}</span>
             </Button>
             <el-dropdown trigger="click"
+                         v-if="canOperatePartner || canDeletePartner"
                          placement="bottom-start"
                          @command="handleCommand">
                 <Button type="ghost" style="float: left" size="default">{{$t('batchOperate')}}</Button><!--批量操作-->
@@ -87,13 +91,17 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="operate-btn blue" @click="newPartnerBtn('modify', scope.row)">{{$t('modify')}}</span>
-                        <span class="divide-line"></span>
-                        <span :class="['operate-btn', scope.row.status=='valid' ? 'org' : 'blue']"
-                              @click="enable(scope.row)">{{scope.row.status=='valid' ? $t('disabled') : $t('commissioned')}}
-                        </span><!--启用/禁用-->
-                        <span class="divide-line"></span>
-                        <span class="operate-btn red" @click="showDelModal(scope.row)">{{$t('del')}}</span>
+                        <ul class="operate-list">
+                            <li v-if="canModifyPartner" @click="newPartnerBtn('modify', scope.row)">{{$t('modify')}}</li>
+                            <li :class="{'red-label' : scope.row.status === 'valid'}"
+                                v-if="canOperatePartner"
+                                @click="enable(scope.row)">
+                                {{scope.row.status === 'valid' ? $t('disabled') : $t('commissioned')}}
+                            </li>
+                            <li class="red-label"
+                                v-if="canDeletePartner"
+                                @click="showDelModal(scope.row)">{{$t('del')}}</li>
+                        </ul>
                     </template>
                 </el-table-column>
             </table-com>
@@ -130,6 +138,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import {configVariable, batchOperate} from '@/assets/js/constVariable';
     import map from 'lodash/map';
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {
@@ -171,8 +180,6 @@
                 deleteName: this.$t('delete')+this.$t('cooperation'), //删除内容名字
                 partnerIds: [], //合作伙伴ids
 //                scopeRowData: {}, //当前被操作的行数据
-                // 批量操作下拉选项
-                batchOperate: batchOperate,
                 // 已勾选的数据
                 chosenPartners: [],
             }
@@ -219,6 +226,7 @@
             },
             //启用或者禁用
             enable(scopeRow, isBatch) {
+                if (!this.canOperatePartner) return;
                 let partnerObj = {};
                 if (scopeRow.status=='valid') {
                     partnerObj.successTip = this.$t('disabledCooperation');
@@ -257,6 +265,7 @@
              * @param scopeRow - 修改时的行数据
              **/
             newPartnerBtn(type, scopeRow) {
+                if (!this.canAddpartner && !this.canModifyPartner) return;
                 let obj = type=='add' ? {type: type} : {item: scopeRow, type: type};
                 this.$refs.addPartnerModal.show(obj);
             },
@@ -266,6 +275,7 @@
              * @param isBatch - 是否批量操作  Boolean
              */
             showDelModal(data, isBatch) {
+                if (!this.canDeletePartner) return;
                 if (isBatch==true) {
                     this.partnerIds = data.map(item => item.id);
                     this.name = data.length>1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
@@ -319,7 +329,38 @@
                 }
             },
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以新增合作伙伴
+            canAddpartner () {
+                return this.permissionInfo && this.permissionInfo['addPartner'] === 'allow';
+            },
+            //是否可以修改合作伙伴
+            canModifyPartner() {
+                return this.permissionInfo && this.permissionInfo['modifyPartner'] === 'allow';
+            },
+            //是否可以禁用、启用合作伙伴
+            canOperatePartner () {
+                return this.permissionInfo && this.permissionInfo['operatePartner'] === 'allow';
+            },
+            //是否可以删除合作伙伴
+            canDeletePartner () {
+                return this.permissionInfo && this.permissionInfo['deletePartner'] === 'allow';
+            },
+            // 批量操作下拉选项
+            batchOperate () {
+                let result = [];
+                if (this.canOperatePartner) {
+                    result = result.concat(batchOperate.slice(0,2));
+                }
+                if (this.canDeletePartner) {
+                    result = result.concat(batchOperate.slice(2));
+                }
+                return result;
+            }
+        },
         created() {
         },
     }
@@ -345,15 +386,6 @@
                 border-color: $color_blue;
                 color: $color_blue;
             }
-        }
-
-        .divide-line {
-            display: inline-block;
-            width: 1px;
-            height: 14px;
-            margin: 0 5px;
-            margin-bottom: -2px;
-            background: #E1E1E1;
         }
 
         .operate-btn {
