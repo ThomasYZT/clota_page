@@ -30,7 +30,7 @@
                 <Input type="text"
                        v-model.trim="formData.keyword"
                        :placeholder="$t('queryByVerifySN')"
-                       style="min-width: 180px;max-width: 280px" />
+                       style="min-width: 250px;max-width: 280px" />
             </FormItem>
             <FormItem prop="user" :label-width="10">
                 <Button type="primary" class="ivu-btn-90px" @click="queryOrderTicketDetail">{{$t('searching')}}</Button>
@@ -43,6 +43,20 @@
             :table-com-min-height="250"
             :border="true"
             :auto-height="true">
+            <el-table-column
+                slot="column5"
+                slot-scope="row"
+                :label="row.title"
+                show-overflow-tooltip
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.pickStatus === 'true'">
+                        {{$t('haveTickets')}}
+                    </template>
+                    <span class="yellow-label" v-else>{{$t('noHaveTickets')}}</span>
+                </template>
+            </el-table-column>
         </table-com>
     </div>
 </template>
@@ -173,6 +187,10 @@
 
         /deep/ .ivu-form-item{
             margin-bottom: 10px;
+        }
+
+        .yellow-label{
+            color: $color_yellow;
         }
     }
 </style>

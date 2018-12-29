@@ -3,36 +3,36 @@ export const columnData = [
     {
         title: 'orderDetailNo',
         width: 215,
-        field: 'visitorName'
+        field: 'id'
     },
     {
         title: 'productName',
         width: 200,
-        field: 'phoneNumber'
+        field: 'productName'
     },
     {
         title: 'touristName',
         minWidth: 120,
-        field: 'documentInfo'
+        field: 'visitorName'
     },
     {
         title: 'mobilePhone',
         minWidth: 120,
-        field: 'documentInfo'
+        field: 'phoneNumber'
     },
     {
         title: 'verifySN',
         minWidth: 120,
-        field: 'documentInfo'
+        field: 'serialNo'
     },
     {
         title: 'takeTicketStatus',
         minWidth: 120,
-        field: 'documentInfo'
+        field: 'pickStatus'
     },
     {
         title: 'ticketTime',
         minWidth: 120,
-        field: 'documentInfo'
+        field: 'pickTime'
     }
 ]
