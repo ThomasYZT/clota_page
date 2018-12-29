@@ -133,6 +133,7 @@
 
             // 立即购买
             buyNow ( params ) {
+                let newWindow = window.open();
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         ajax.post('orderBuySmsPackage', {
@@ -146,7 +147,8 @@
                                         merchantId : this.payInfo.merchantId,
                                         partnerId : this.payInfo.partnerId,
                                         payType : this.formData.payType,
-                                        payMoney : this.formData.price
+                                        payMoney : this.formData.price,
+                                        newWindow : newWindow,
                                     });
                                 } else {
                                     this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
@@ -162,7 +164,7 @@
             /**
              * 支付接口调用
              */
-            payNow ({bizId, payType, payMoney, merchantId, partnerId}) {
+            payNow ({bizId, payType, payMoney, merchantId, partnerId, newWindow}) {
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -179,8 +181,8 @@
                                 payFormData : res.data
                             }
                         });
-                        sessionStorage.setItem('smsPay', JSON.stringify({ payFormData : res.data }));
-                        window.open(href);
+                        localStorage.setItem('smsPay', JSON.stringify({ payFormData : res.data }));
+                        newWindow.location.href = location.href.replace(location.hash, href);
                         this.payModalShow = true;
                         this.hide();
                         this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
