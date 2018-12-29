@@ -60,10 +60,10 @@
              * 选择订单
              */
             choseOrderItem () {
-                //未审核和驳回可以再申请的可以申请提现,已核销的和已退票的总和必须等于预定数量
+                //未审核和驳回可以再申请的可以申请提现,已核销的和已退票和退票已核销的总和必须等于预定数量
                 if (this.showRadio &&
                     this.orderDetail.expectedSalary > 0 &&
-                    (this.orderDetail.verifiedNum + this.orderDetail.refundNum === this.orderDetail.productNum) &&
+                    (this.orderDetail.verifiedNum + this.orderDetail.refundNum + this.orderDetail.overdueNum === this.orderDetail.productNum) &&
                     (this.orderDetail.withdrawStatus === 'reject' ||
                     this.orderDetail.withdrawStatus === 'unaudit')) {
                     this.checkCanWithdrawApply();
