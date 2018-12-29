@@ -596,4 +596,6 @@ export default {
     '1levelAllowcation' : '一级分销价格分销商',
     '2levelAllowcation' : '二级分销价格分销商',
     '3levelAllowcation' : '三级分销价格分销商',
+    'partnerChannelType' : '合作伙伴渠道类型',
+
 };

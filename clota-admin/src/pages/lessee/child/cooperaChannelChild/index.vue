@@ -104,13 +104,19 @@
                   key="passForm"
                   ref="passForm"
                   :rules="ruleValidate"
-                  :label-width="0">
+                  label-position="right"
+                  :label-width="150">
                 <FormItem :label="channelType === 'per' ? $t('cooperaChannelPer') : $t('cooperaChannelOrg') + '：'">
                     <span>{{cooperaPerDetail.name}}</span>
                 </FormItem>
-                <FormItem label="登录密码将发送至：" prop="email">
-                    <Input v-model.trim="formData.email" style="width: 280px"/>
+                <FormItem :label="$t('partnerChannelType') + '：'" prop="partnerChannelType">
+                    <RadioGroup v-model="formData.partnerChannelType" style="width: 100px">
+                        <Radio v-for="(item, index) in channelsGroupList" :key="index" :label="item.value">{{$t(item.label)}}</Radio>
+                    </RadioGroup>
                 </FormItem>
+                <!--<FormItem label="登录密码将发送至：" prop="email">-->
+                    <!--<Input v-model.trim="formData.email" style="width: 280px"/>-->
+                <!--</FormItem>-->
             </Form>
         </edit-modal>
     </div>
@@ -123,6 +129,7 @@
     import getFiledData from './channelConfig';
     import ajax from '@/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { channelsGroupList } from '@/assets/js/constVariable';
     import { validator } from 'klwk-ui';
     export default {
         mixins : [lifeCycleMixins],
@@ -168,18 +175,23 @@
                         { required : true,message : this.$t('inputField',{ field : this.$t('rejectReason') }),trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('rejectReason'),length : 20 }),trigger : 'blur' }
                     ],
-                    email : [
-                        { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
-                        { validator : validateEmail ,trigger : 'blur' },
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' }
-                    ]
+                    // email : [
+                    //     { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
+                    //     { validator : validateEmail ,trigger : 'blur' },
+                    //     { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' }
+                    // ]
+                    partnerChannelType : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('partnerChannelType') }),trigger : 'blur' },
+                    ],
                 },
                 //表单数据
                 formData : {
                     //通过原因
                     passReason : '',
                     //邮件地址
-                    email : ''
+                    //email : '',
+                    //合作伙伴渠道类型
+                    partnerChannelType : ''
                 },
                 //合作伙伴总数
                 totalCount : 0,
@@ -195,7 +207,9 @@
                 //审核状态
                 auditStatus : '',
                 //合作渠道信息
-                channelDetailInfo : {}
+                channelDetailInfo : {},
+                //合作伙伴渠道列表
+                channelsGroupList : channelsGroupList,
             };
         },
         methods : {
@@ -323,11 +337,11 @@
                                 res.data.attach);
                         }
                         this.auditStatus = res.data.auditStatus;
-                        this.formData.email = res.data.email;
+                        //this.formData.email = res.data.email;
                     } else {
                         this.cooperaPerDetail.name = '';
                         this.auditStatus = '';
-                        this.formData.email = '';
+                        //this.formData.email = '';
                         this.channelDetailInfo = {};
                     }
                 });
@@ -355,7 +369,8 @@
             auditPartner (params) {
                 ajax.post('auditPartner',Object.assign({
                     id : this.channelId,
-                    email : this.formData.email
+                    partnerChannelType : this.formData.partnerChannelType,
+                    //email : this.formData.email,
                 },params)).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('审核成功');

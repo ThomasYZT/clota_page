@@ -570,4 +570,16 @@ export const smsStatusList = [
     },
 ];
 
+//合作伙伴渠道列表
+export const channelsGroupList = [
+    {
+        label : 'travel', //旅行社
+        value : 'tour',
+    },
+    {
+        label : 'OTA', //OTA
+        value : 'ota',
+    }
+];
+
 
