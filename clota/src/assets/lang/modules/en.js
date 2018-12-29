@@ -2096,4 +2096,5 @@ export default {
     'allowModifyScore': '允许修改会员的积分账户，如允许修改，请设置修改原因',
     'allowModifyRecharge': '允许修改会员的储值账户，如允许修改，请设置修改原因',
     'systemServiceNotice' : '系统服务公告',
+    'teamOrderPickTicket' : '团队取票',
 }

@@ -72,7 +72,9 @@
                     //团队订单退单驳回
                     'ORDER_CANCEL_AUDIT_REJECT' : 'red-status',
                     //团队订单退单通过
-                    'ORDER_CANCEL_AUDIT_PASS' : 'green-status'
+                    'ORDER_CANCEL_AUDIT_PASS' : 'green-status',
+                    //团队订单取票
+                    'ORDER_TEAM_PICK_TICKET' : 'green-status'
                 }
             }
         },
@@ -228,6 +230,10 @@
                         return {
                             content : `${this.$t('teamOrderCancelApply')}：${this.$t('checkPass')}，
                         ${this.$t('remark')}：${contentsObj.remark}`
+                        };
+                    case 'ORDER_TEAM_PICK_TICKET' :
+                        return {
+                            content : `${this.$t('teamOrderPickTicket')}`
                         };
                     default : return '';
                 }
