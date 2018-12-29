@@ -143,6 +143,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="canModifyMemberInfo"
                     slot="column9"
                     :label="row.title"
                     :prop="row.field"
@@ -223,8 +224,13 @@
         },
         computed : {
             ...mapGetters({
-                lang : 'lang'
-            })
+                lang : 'lang',
+                permissionInfo : 'permissionInfo',
+            }),
+            //是否可以修改会员信息
+            canModifyMemberInfo () {
+                return this.permissionInfo && this.permissionInfo['modifyMembersInfo'] === 'allow';
+            }
         },
         methods : {
             // 获取会员级别列表
@@ -260,6 +266,7 @@
 
             //编辑会员
             modifyData ( event, data ) {
+                if (!this.canModifyMemberInfo) return;
                 event.stopPropagation();
                 this.$router.push({
                     name : 'addMember',

@@ -21,6 +21,8 @@
 </template>
 <script>
     import idlerWheelTap from '@/components/idlerWheelTap/index';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : ['routerName'],
         components : {
@@ -29,15 +31,15 @@
         data () {
             return {
                 // 路由列表
-                routerList : [
-                    { name : 'newCard', desc : 'newCard' }, // 新开卡
-                    { name : 'newBatchCard', desc : 'newBatchCard' }, // 批量开卡
-                    { name : 'renewal', desc : 'renewal' }, // 续期
-                    { name : 'associateEntityCard', desc : 'associateEntityCard' }, // 关联实体卡
-                    { name : 'replenishCard', desc : 'replenishCard' }, // 补卡
-                    { name : 'reportLoss', desc : 'reportLoss' }, // 挂失
-                    { name : 'refundedCard', desc : 'refundedCard' }, // 退卡
-                ],
+                // routerList : [
+                //     // { name : 'newCard', desc : 'newCard' }, // 新开卡
+                //     // { name : 'newBatchCard', desc : 'newBatchCard' }, // 批量开卡
+                //     // { name : 'renewal', desc : 'renewal' }, // 续期
+                //     // { name : 'associateEntityCard', desc : 'associateEntityCard' }, // 关联实体卡
+                //     // { name : 'replenishCard', desc : 'replenishCard' }, // 补卡
+                //     // { name : 'reportLoss', desc : 'reportLoss' }, // 挂失
+                //     // { name : 'refundedCard', desc : 'refundedCard' }, // 退卡
+                // ],
             };
         },
         methods : {
@@ -52,6 +54,9 @@
 
         },
         computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
             //当前所在的默认列表序号
             defaultIndex () {
                 for (let i = 0,j = this.routerList.length; i < j; i++) {
@@ -59,6 +64,35 @@
                         return i;
                     }
                 }
+            },
+            //路由列表
+            routerList () {
+                let result = [];
+                //新开卡
+                if ('newMemberCard' in this.permissionInfo) {
+                    result.push({ name : 'newCard', desc : 'newCard' });
+                }
+                //批量开卡
+                if ('batchNewCard' in this.permissionInfo) {
+                    result.push({ name : 'newBatchCard', desc : 'newBatchCard' });
+                }
+                //关联实体卡
+                if ('associatedEntityCard' in this.permissionInfo) {
+                    result.push({ name : 'associateEntityCard', desc : 'associateEntityCard'  });
+                }
+                //补卡
+                if ('supplementCard' in this.permissionInfo) {
+                    result.push({ name : 'replenishCard', desc : 'replenishCard' });
+                }
+                //挂失
+                if ('reportLoss' in this.permissionInfo) {
+                    result.push({ name : 'reportLoss', desc : 'reportLoss' });
+                }
+                //退卡
+                if ('product-type' in this.permissionInfo) {
+                    result.push({ name : 'refundedCard', desc : 'refundedCard' });
+                }
+                return result;
             }
         }
     };

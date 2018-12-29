@@ -19,9 +19,12 @@
         <tool-box :toolNum="2">
             <div slot="tool0" class="button-tool">
                 <!-- 新增商品入库 -->
-                <Button class="tool-btn left" type="primary" @click="addGood({type : 'add'})">+ {{$t('NewGoodsWarehousing')}}</Button>
+                <Button v-if="canAddGoods"
+                        class="tool-btn left"
+                        type="primary"
+                        @click="addGood({type : 'add'})">+ {{$t('NewGoodsWarehousing')}}</Button>
                 <!-- 导出 -->
-                <a class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>
+                <a v-if="canExportGoods" class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>
             </div>
             <div slot="tool1">
                 <div class="placeholder"></div>
@@ -68,11 +71,13 @@
                     slot-scope="row"
                     fixed="right"
                     :label="row.title"
-                    :width="row.width"
+                    :width="canAddGoods ? row.width : (row.width / 2)"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li class="blue-label" @click="addGood({type: 'edit', detail: scope.row})">{{$t('continueStockIn')}}</li>
+                            <li v-if="canAddGoods"
+                                class="blue-label"
+                                @click="addGood({type: 'edit', detail: scope.row})">{{$t('continueStockIn')}}</li>
                             <li class="blue-label" @click="stockDetail(scope.row)">{{$t('stockDetail')}}</li>
                         </ul>
                     </template>
@@ -90,6 +95,8 @@ import { goodsListHead } from './tableConfig';
 import ajax from '@/api/index';
 import ajaxConfig from '@/config/index.js';
 import apiList from '@/api/apiList.js';
+import { mapGetters } from 'vuex';
+
 export default {
 	components : {
 		tableCom,
@@ -127,6 +134,17 @@ export default {
         downloadUrl () {
             return ajaxConfig['HOST'] + apiList['exportGoodsList'] + '?token=' + ajax.getToken();
         },
+        ...mapGetters([
+            'permissionInfo'
+        ]),
+        //是否可以新增商品入库
+        canAddGoods () {
+            return this.permissionInfo && this.permissionInfo['operateMemberProduct'] === 'allow';
+        },
+        //是否可以导出商品
+        canExportGoods () {
+            return this.permissionInfo && this.permissionInfo['queryMemberProductList'] === 'allow';
+        }
     },
 	methods : {
 		/**
@@ -150,6 +168,7 @@ export default {
          * @param {object} detail
          */
         addGood ({ type, detail }) {
+            if (!this.canAddGoods) return;
             this.$router.push({
                 name : 'editGoodsWarehousing',
                 params : {

@@ -14,7 +14,11 @@
             <div class="content-wrap">
 
                 <div class="content-info">
-                    <div class="title">{{$t("memberSelfInfo")}}<span class="edit" @click="modifyInfo"><i class="iconfont icon-edit"></i>{{$t("modify")}}</span></div>
+                    <div class="title">{{$t("memberSelfInfo")}}
+                        <span v-if="canModifyMemberInfo" class="edit" @click="modifyInfo">
+                            <i class="iconfont icon-edit"></i>
+                            {{$t("modify")}}</span>
+                    </div>
                     <div class="basic-wrap">
                         <div class="person-left">
                             <template v-if="memberBaseDetail.portrait">
@@ -338,6 +342,7 @@
     import ownerCardViceCard from '../components/ownerCardViceCard';
     import editModal from '@/components/editModal/index.vue';
     import MD5 from 'crypto-js/md5';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -452,6 +457,15 @@
             // this.queryMemberAccountDefine();
             //查询会员初始化设置
             this.findBasicSet();
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以修改会员信息
+            canModifyMemberInfo () {
+                return this.permissionInfo && this.permissionInfo['modifyMembersInfo'] === 'allow';
+            }
         },
         methods : {
 
@@ -686,6 +700,7 @@
 
             //修改会员信息
             modifyInfo () {
+                if (!this.canModifyMemberInfo) return;
                 this.$router.push({
                     name : 'addMember',
                     query : {

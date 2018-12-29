@@ -291,12 +291,12 @@
                     // this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes(chosedNode.concat(handlerChoseNode));
-                        this.$refs.menuTree.filter('isEconomic');
+                        this.$refs.menuTree.filter('privAttr');
                     });
                 }else{
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes(handlerChoseNode);
-                        this.$refs.menuTree.filter('isEconomic');
+                        this.$refs.menuTree.filter('privAttr');
                     });
                 }
             },
@@ -341,11 +341,11 @@
             },100),
             /**
              * 筛选财务权限
+             * @param{String} value 权限数据
              * @param{Object} data 权限数据
              */
-            menuNodeFilter (data) {
-                console.log('data')
-                return data.isEconomic ? data.isEconomic === 'true' : false;
+            menuNodeFilter (value,data) {
+                return data.privAttr ? (data.privAttr === 'economic' || data.privAttr === 'both') : false;
             }
         },
         computed : {
