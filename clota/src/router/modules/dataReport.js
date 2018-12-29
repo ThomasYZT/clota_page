@@ -114,7 +114,7 @@ export default {
                 name : 'manageReport',
                 meta : {
                     menuName : 'manageReport', //lang.config.js 里面的语言键值
-                    _name : 'members',
+                    _name : 'manage-report',
                     iconClass : 'icon-diamond',
                     rightPath : topMenuName + '.' + 'manageReport',
                     isMenu : true,
@@ -127,7 +127,7 @@ export default {
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/partnerAbalityAnalysis.vue'),
                         meta : {
                             menuName : 'partnerAbality', //lang.config.js 里面的语言键值
-                            _name : 'member-report',
+                            _name : 'partnerAnalysis',
                             rightPath : topMenuName + '.' + 'partnerAbality',
                             isMenu : true,
                         },
