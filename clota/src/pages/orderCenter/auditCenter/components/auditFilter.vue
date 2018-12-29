@@ -154,7 +154,7 @@
                 // 下单企业列表
                 orderEnterprise: [{id: 'all', orgName: this.$t('all')}],
                 // 下单渠道列表
-                orderChannelList: notDistributorChannelList,
+                orderChannelList: notDistributorChannelList.filter((item) => { return item.value !== 'market' }),
                 // 支付状态
                 paymentList: payStatusList,
                 // 下单时间范围

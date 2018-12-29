@@ -39,7 +39,8 @@
                     {{$t('areYouSureAccount', { field : (accountInfo.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')) + $t('payType.' + accountInfo.accountType)  })}}
                 </span>
             </span>
-            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('whetherSure')}}？</span>
+            <span v-if="accountInfo.useStatus === 'enabled'">{{$t('disabledAccount', { account : $t('payType.' + accountInfo.accountType) })}}</span>
+            <span v-else><span class="red-label">{{$t('irreversible')}}</span>，{{$t('whetherSure')}}？</span>
         </del-modal>
     </Modal>
 </template>
