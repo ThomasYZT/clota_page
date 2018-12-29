@@ -35,6 +35,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                v-if="canBuySms"
                 slot="column5"
                 slot-scope="row"
                 :label="row.title"
@@ -56,6 +57,7 @@
     import {configVariable} from '@/assets/js/constVariable';
     import {smsPkgHead} from './buySmsConfig';
     import ajax from '@/api/index'
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {tableCom, buySmsModal},
@@ -79,7 +81,15 @@
                 totalCount: 0,
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以购买短消息
+            canBuySms () {
+                return this.permissionInfo && this.permissionInfo['buySmsPackage'] === 'allow';
+            }
+        },
         created() {
         },
         mounted() {
@@ -112,6 +122,7 @@
              * @param scopeRow - 行数据
              */
             handleBuy(scopeRow) {
+                if (!this.canBuySms) return;
                 this.$refs.buySmsModal.show({item: scopeRow});
             },
         }

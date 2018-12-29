@@ -214,7 +214,7 @@ export default {
                 component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/addMember.vue'),
                 meta : {
                     menuName : 'memberInfo', //lang.config.js 里面的语言键值
-                    _name : 'members-info',
+                    _name : 'modifyMembersInfo',
                     rightPath : topMenuName + '.' + 'memberInfo',
                 },
             },
@@ -327,7 +327,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/specialMember.vue'),
                         meta : {
                             menuName : 'specialMember', //lang.config.js 里面的语言键值
-                            _name : 'stuff-setting',
+                            _name : 'staff-setting',
                             rightPath : topMenuName + '.' + 'specialMember',
                             isMenu : true
                         },
@@ -529,7 +529,7 @@ export default {
                 component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/importEntityCard.vue'),
                 meta : {
                     menuName : 'importEntityCard', //lang.config.js 里面的语言键值
-                    _name : 'entity-card',
+                    _name : 'uploadEntityCard',
                     rightPath : topMenuName + '.' + 'cardManagement'
                 },
             },
@@ -778,7 +778,7 @@ export default {
                         name : 'editGoodsWarehousing',
                         component : () => import(/*webpackChunkName: "inventoryManage" */'../../pages/memberManage/inventoryManage/child/editGoodsWarehousing.vue'),
                         meta : {
-                            _name : 'invoicing-management',
+                            _name : 'operateMemberProduct',
                             menuName : 'editGoodsWarehousing',
                             rightPath : topMenuName + '.' + 'goodsManage',
                         },

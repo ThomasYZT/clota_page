@@ -294,6 +294,7 @@
             font-size: $font_size_14px;
             color: $color_red;
             text-align: center;
+            background: $color_fff;
 
             span{
                 cursor: pointer;

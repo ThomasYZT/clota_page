@@ -16,7 +16,8 @@ export default {
         path : '/dataReport',
         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/index.vue'),
         meta : {
-            _name : 'report',
+            // _name : 'report',
+            _name : 'members',
             menuName : 'dataReport',
             rightPath : topMenuName + '.' + 'dataReport',
             isMenu : true
@@ -106,6 +107,33 @@ export default {
                     },
                 }
             },
+            //经营报表
+            manageReport : {
+                path : '/manageReport',
+                component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/index.vue'),
+                name : 'manageReport',
+                meta : {
+                    menuName : 'manageReport', //lang.config.js 里面的语言键值
+                    _name : 'members',
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'manageReport',
+                    isMenu : true,
+                },
+                children : {
+                    //合作伙伴能力分析报表
+                    partnerAbality : {
+                        path : '/manageReport/partnerAbality',
+                        name : 'partnerAbality',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/partnerAbalityAnalysis.vue'),
+                        meta : {
+                            menuName : 'partnerAbality', //lang.config.js 里面的语言键值
+                            _name : 'member-report',
+                            rightPath : topMenuName + '.' + 'partnerAbality',
+                            isMenu : true,
+                        },
+                    },
+                }
+            }
         }
     }
 };

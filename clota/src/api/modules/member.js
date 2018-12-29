@@ -300,4 +300,6 @@ export default {
     'saveLevelEffSet' : '/member/memberLevel/saveLevelEffSet',
     //删除会员卡有效期
     'deleteLevelEffSet' : '/member/memberLevel/deleteLevelEffSet',
+    //获取会员报表凭证
+    'getTableauTrustedUrl' : '/report/getTableauTrustedUrl',
 }

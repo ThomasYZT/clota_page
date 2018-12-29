@@ -39,24 +39,26 @@
                     </ul>
                 </div>
                 <div class="btn-label">
-                    <Button type="primary"
-                            class="ivu-btn-108px"
-                            style="margin-right: 5px;"
-                            @click="importSingle">{{$t('singleImport')}}</Button>
-                    <el-dropdown trigger="click"
-                                 placement="bottom-start"
-                                 size="medium"
-                                 @command="handleCommand"
-                                 @click.native.stop="">
+                    <template v-if="canUploadCard">
                         <Button type="primary"
-                                class="ivu-btn-108px">{{$t('batchImport')}}</Button>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item v-for="(item,index) in importTypeList"
-                                              :key="index"
-                                              :command="item">{{$t(item.label)}}
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
+                                class="ivu-btn-108px"
+                                style="margin-right: 5px;"
+                                @click="importSingle">{{$t('singleImport')}}</Button>
+                        <el-dropdown trigger="click"
+                                     placement="bottom-start"
+                                     size="medium"
+                                     @command="handleCommand"
+                                     @click.native.stop="">
+                            <Button type="primary"C
+                                    class="ivu-btn-108px">{{$t('batchImport')}}</Button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item v-for="(item,index) in importTypeList"
+                                                  :key="index"
+                                                  :command="item">{{$t(item.label)}}
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </template>
                 </div>
             </div>
             <table-com
@@ -103,6 +105,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="canEditCard"
                     slot="column7"
                     slot-scope="row"
                     :label="row.title"
@@ -135,6 +138,8 @@
     import { cardHead } from './entityCardControlConfig';
     import ajax from '@/api/index.js';
     import importSingleCardInfo from './components/importSingleCardInfo';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {
             tableCom,
@@ -225,6 +230,7 @@
              * 显示导入单个
              */
             importSingle ( ) {
+                if (!this.canUploadCard) return;
                 this.currentData = {};
                 this.importVisible = true;
             },
@@ -233,7 +239,7 @@
              * @param rowData
              */
             modify (rowData) {
-                if (rowData.cardStatus === 'open' || rowData.cardStatus === 'loss') return;
+                if (rowData.cardStatus === 'open' || rowData.cardStatus === 'loss' || !this.canEditCard) return;
                 this.currentData = rowData;
                 this.importVisible = true;
             },
@@ -250,12 +256,26 @@
              * @param{String} command 导入的类型
              */
             handleCommand (command) {
+                if (!this.canUploadCard) return;
                 this.$router.push({
                     name : 'importEntityCard',
                     params : {
                         importType : command.value
                     }
                 });
+            }
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以导入实体卡
+            canUploadCard (){
+                return this.permissionInfo && this.permissionInfo['uploadEntityCard'] === 'allow';
+            },
+            //是否可以编辑实体卡
+            canEditCard () {
+                return this.permissionInfo && this.permissionInfo['modifyEntityCard'] === 'allow';
             }
         }
     };

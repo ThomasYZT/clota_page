@@ -36,6 +36,7 @@
                 </template>
             </el-table-column>-->
             <el-table-column
+                v-if="canResetPassword"
                 slot="column6"
                 slot-scope="row"
                 :label="row.title"
@@ -57,6 +58,7 @@
     import {configVariable} from '@/assets/js/constVariable';
     import {employeeInfoHead} from './resetPwdConfig';
     import ajax from '@/api/index'
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {tableCom, resetPwdModal},
@@ -80,7 +82,15 @@
                 totalCount: 0,
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以重置密码
+            canResetPassword () {
+                return this.permissionInfo && this.permissionInfo['operateResetPassword'] === 'allow';
+            }
+        },
         created() {
         },
         mounted() {

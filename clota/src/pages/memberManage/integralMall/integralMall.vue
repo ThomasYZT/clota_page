@@ -23,7 +23,10 @@
                 <!-- 下架 -->
                 <!--<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>-->
                 <!-- 领取商品 -->
-                <Button class="ivu-btn-90px tool-btn" type="primary" @click="getGoods()">{{$t('GetTheGoods')}}</Button>
+                <Button v-if="canOperateProduct"
+                        class="ivu-btn-90px tool-btn"
+                        type="primary"
+                        @click="getGoods()">{{$t('GetTheGoods')}}</Button>
             </div>
             <div slot="tool1">
                 <div class="placeholder"></div>
@@ -74,11 +77,13 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="inline-btn" @click="adjustCredits(scope.row)">{{scope.row.requiredCredits | contentFilter}}</span>
+                        <span :class="{ 'inline-btn' : canOperateProduct }"
+                              @click="adjustCredits(scope.row)">{{scope.row.requiredCredits | contentFilter}}</span>
                     </template>
                 </el-table-column>
                 <!-- 操作 -->
                 <el-table-column
+                    v-if="canOperateProduct"
                     slot="column7"
                     slot-scope="row"
                     fixed="right"
@@ -126,6 +131,7 @@
     import goodDetailModal from './components/goodDetailModal';
     import forEach from 'lodash/forEach';
     import adjustCreditsModal from './components/adjustCreditsModal';
+    import { mapGetters } from 'vuex';
     export default {
         components : {
             toolBox,
@@ -182,6 +188,7 @@
              * 兑换奖品
              */
             getGoods () {
+                if (!this.canOperateProduct) return;
                 this.$refs.getGoodModal.toggle();
             },
             /**
@@ -294,6 +301,7 @@
              *  @param {object} rowData
              */
             adjustCredits (rowData) {
+                if (!this.canOperateProduct) return;
                 this.$refs.adjustCreditsModal.toggle(rowData);
             },
             /**
@@ -321,6 +329,15 @@
              */
             putOnGoods (rowData) {
                 this.$refs.goodDetailModal.toggle(rowData);
+            },
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以进行操作
+            canOperateProduct () {
+                return this.permissionInfo && this.permissionInfo['operateIntegralProduct'] === 'allow';
             },
         }
     };

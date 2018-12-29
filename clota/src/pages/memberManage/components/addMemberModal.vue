@@ -73,13 +73,13 @@
                             <Select v-model="formData.effTime" style="width:280px">
                                 <Option v-for="(item,index) in effTimeListDetail"
                                         :value="item.value"
-                                        :label="item.value !== 'forEver' ? (item.label + $t('time.' + formData.effTimeUnit)) : item.label"
+                                        :label="item.value !== 'forEver' ? (item.label + $t('time.' + formData.effUnit)) : item.label"
                                         :key="item.value">
                                     <div class="time-list-item">
                                         <span class="time-label" v-if="item.value !== 'add'">
                                             {{ item.label }}
                                             <template v-if="item.value !== 'forEver'">
-                                                {{$t('time.' + formData.effTimeUnit)}}
+                                                {{$t('time.' + formData.effUnit)}}
                                             </template>
                                         </span>
                                         <span class="time-label blue-label add-label"
@@ -113,7 +113,7 @@
                     <!--</i-col>-->
                     <!--<i-col span="3">-->
                     <!--<Form-item :label="$t('remark') + '：'" prop="remark">-->
-                    <!--<Input v-model.trim="formData.effTimeUnit"-->
+                    <!--<Input v-model.trim="formData.effUnit"-->
                     <!--type="textarea"-->
                     <!--:placeholder="$t('inputField', {field: ''})"/>-->
                     <!--</Form-item>-->
@@ -259,7 +259,7 @@
                     //有效期
                     effTime : 1,
                     //有效期单位
-                    effTimeUnit : 'year'
+                    effUnit : 'year'
                 },
                 //有效期列表
                 effTimeList : [],
@@ -393,7 +393,11 @@
                             this.formData.function.push('isDiscount');
                         }
                         if (item in this.formData) {
-                            this.formData[item] = data[item];
+                            if (item === 'effTime') {
+                                this.formData['effTime'] = data['effTime'] ?  String(data['effTime']) : 'forEver';
+                            } else {
+                                this.formData[item] = data[item];
+                            }
                         }
                     }
                     this.formData.levelNum = this.formData.levelNum > -1 ? this.formData.levelNum : '';
@@ -438,7 +442,7 @@
                     isScore : data.function.includes('isScore'),
                     isDiscount : data.function.includes('isDiscount'),
                     effTime : data.effTime === 'forEver' ? null : data.effTime,
-                    effTimeUnit : data.effTime === 'forEver' ? null : data.effTimeUnit,
+                    effTimeUnit : data.effTime === 'forEver' ? null : data.effUnit,
                     levelEffSetId : levelEffSetId.length > 0 ? levelEffSetId[0]['id'] : ''
                 }).then(res => {
                     if (res.success) {
@@ -559,7 +563,7 @@
             saveEffectTime () {
                 ajax.post('saveLevelEffSet',{
                     effValue : this.effectFormData.addEffectTimeValue,
-                    effUnit : this.formData.effTimeUnit
+                    effUnit : this.formData.effUnit
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));

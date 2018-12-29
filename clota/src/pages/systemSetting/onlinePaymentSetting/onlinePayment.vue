@@ -30,7 +30,11 @@
                             <span>{{$t('colonSetting', { key : $t('collectionAccountType') })}}</span>
                             <div>
                                 {{$t('payType.' + item.accountType) | contentFilter}}
-                                <span class="using-btn" @click="operateSatus(item)">{{item.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')}}</span>
+                                <span v-if="canOperateAccount"
+                                      class="using-btn"
+                                      @click="operateSatus(item)">
+                                    {{item.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')}}
+                                </span>
                             </div>
                         </div>
                         <div class="payment-item">
@@ -109,6 +113,7 @@
     import delModal from '@/components/delModal';
     import ajax from '@/api/index';
     import operateAccountModal from './components/operateAccountModal'
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {noData, newAccountModal, delAccountModal, delModal, operateAccountModal},
@@ -129,7 +134,15 @@
                 hasPaytypeList: []
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以操作账户信息
+            canOperateAccount () {
+                return this.permissionInfo && this.permissionInfo['operatePaymentAccount'] === 'allow';
+            }
+        },
         created() {
             this.queryOnlineAccount()
         },
