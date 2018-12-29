@@ -50,6 +50,10 @@
                         <span class="key">{{$t('colonSetting',{ key : $t('已退票数量') })}}</span>
                         <span class="value">{{orderDetail.refundNum | contentFilter}}</span>
                     </div>
+                    <div class="detail-list">
+                        <span class="key">{{$t('colonSetting',{ key : $t('过期已核销数量') })}}</span>
+                        <span class="value">{{orderDetail.overdueNum | contentFilter}}</span>
+                    </div>
                 </div>
             </div>
             <!--佣金-->
@@ -155,10 +159,10 @@
         computed : {
             //是否可以申请提现
             canApplyDeposit () {
-                //未审核或已拒绝可再次申请,佣金大于0，核销加退票数量等于预定数量，并且订单全部核销的才可以申请提现
+                //未审核或已拒绝可再次申请,佣金大于0，核销加退票数量加过期已核销等于预定数量，并且订单全部核销的才可以申请提现
                 if (this.orderDetail &&
                     this.orderDetail.verifiedNum > 0 &&
-                    this.orderDetail.verifiedNum + this.orderDetail.refundNum === this.orderDetail.productNum &&
+                    this.orderDetail.verifiedNum + this.orderDetail.refundNum + this.orderDetail.overdueNum === this.orderDetail.productNum &&
                     (this.orderDetail.withdrawStatus === 'unaudit' || this.orderDetail.withdrawStatus === 'reject')) {
                     return true;
                 } else {
