@@ -144,8 +144,7 @@
                                type="text"
                                class="single-input"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        {{$t('smsRemindsBeforeDays')}}，<!--天短信提醒-->
-                        <span class="blue-color">{{$t('smsSetting')}}</span><!--短信设置-->
+                        {{$t('smsRemindsBeforeDays')}}<!--天短信提醒-->
                         <div class="ivu-form-item-error-tip"
                              style="left: 155px;"
                              v-if="error.remindError">{{error.remindError}}</div>
@@ -281,12 +280,12 @@
             <div class="content-item">
                 <div class="title">
                     {{$t('新开卡会员积分赠送设置')}}
-                    <Tooltip placement="top" transfer>
-                        <span class="iconfont icon-note"></span>
-                        <div slot="content">
-                            <div class="tip-trade">{{$t('新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。')}}</div>
-                        </div>
-                    </Tooltip>
+                    <!--<Tooltip placement="top" transfer>-->
+                        <!--<span class="iconfont icon-note"></span>-->
+                        <!--<div slot="content">-->
+                            <!--<div class="tip-trade">{{$t('新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。')}}</div>-->
+                        <!--</div>-->
+                    <!--</Tooltip>-->
                 </div>
                 <div :class="{'ivu-form-item-error': error.memberDonateIntegerErr, 'main': true}">
                     <i-switch v-model="settingData.openCardSendScore.isSwitch"
