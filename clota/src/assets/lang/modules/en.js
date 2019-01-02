@@ -2068,4 +2068,7 @@ export default {
     'disabledAccount' : '停用后将不能使用{account}账户进行收款',
     'optional' : '选填',
     'notNull' : '必填',
+    'refundNotAllowed' : '退票申请不通过',
+    'alterApplayAllwed' : '改签申请通过',
+    'alterApplayNotAllwed' : '改签申请不通过',
 }
