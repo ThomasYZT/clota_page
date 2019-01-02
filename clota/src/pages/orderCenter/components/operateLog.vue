@@ -87,7 +87,7 @@
                         if (this.isProductLog) {
                             //退票审核，
                             return {
-                                content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}
+                                content : `${contentsObj.auditType === 'success' ? this.$t('TicketRefundsApproved') : this.$t('refundNotAllowed')}
                                 ${'refundRate' in contentsObj ? ( '，' + this.$t('handlingRate') + ':' + contentsObj.refundRate ) : '' }
                                 ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }。`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
@@ -116,9 +116,9 @@
                         if (this.isProductLog) {
                             // 改签审核，通过数量：
                             return {
-                                content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
+                                content : `${contentsObj.auditType === 'success' ? this.$t('alterApplayAllwed') : this.$t('alterApplayNotAllwed')}
                             ${contentsObj['alterDate'] ? (  '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.alterDate) : '' }
-                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }。
+                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }
                             ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
