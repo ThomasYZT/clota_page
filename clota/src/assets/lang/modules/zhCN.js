@@ -2166,4 +2166,7 @@ export default {
     'privalige.advancePayment' : '预付保证金总表',
     'privalige.revenueStatement' : '收支明细报表',
     'partnerAbality' : '合作伙伴能力分析报表',
+    'refundNotAllowed' : '退票申请不通过',
+    'alterApplayAllwed' : '改签申请通过',
+    'alterApplayNotAllwed' : '改签申请不通过',
 }
