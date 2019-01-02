@@ -14,8 +14,9 @@
         <transition name="fade">
             <div class="data-wrap" v-if="isPackUp">
                 <div class="edit-wrap">
-                    <span v-if="!isEditing" data-v-d42ae04c="" class="iconfont icon-edit"></span>
-                    <span class="edit" v-if="!isEditing" @click="editAccountInfo">{{$t('编辑')}}</span>
+                    <span class="edit" v-if="!isEditing" @click="editAccountInfo">
+                        <span v-if="!isEditing" data-v-d42ae04c="" class="iconfont icon-edit"></span>{{$t('编辑')}}
+                    </span>
                     <template v-else>
                         <span class="save" @click="saveOnlineReceipt">{{$t('save')}}</span>
                         <span class="cancel" @click="cancelEdit">{{$t('cancel')}}</span>
@@ -63,8 +64,8 @@
                         <i-col span="10">
                             <FormItem :label="$t('colonSetting',{ key : $t('收款账户类型') })" prop="name">
                                 <CheckboxGroup v-model="formData.payChannel" >
-                                    <Checkbox label="weixin" :disabled="!isEditing || formData.accountType !== 'auto'">{{$t('weixin')}}</Checkbox>
-                                    <Checkbox label="alipay" :disabled="!isEditing || formData.accountType !== 'auto'">{{$t('alipay')}}</Checkbox>
+                                    <Checkbox label="weixin" :disabled="!isEditing">{{$t('weixin')}}</Checkbox>
+                                    <Checkbox label="alipay" :disabled="!isEditing">{{$t('alipay')}}</Checkbox>
                                 </CheckboxGroup>
                             </FormItem>
                         </i-col>
