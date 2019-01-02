@@ -180,8 +180,19 @@
                         :width="row.width"
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
-                        <template v-if="row.isShow === 'false'" slot-scope="scope">
-                            <span></span>
+                        <template v-if="manageOrgs.nodeType !== 'partner'" slot-scope="scope">
+                            <span>{{scope.row.standardPrice | moneyFilter | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column2"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span>{{scope.row.settlePrice | moneyFilter | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
