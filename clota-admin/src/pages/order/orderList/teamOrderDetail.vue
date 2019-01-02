@@ -192,7 +192,17 @@
                             }
                         }
                     ];
+                } else if (this.$route.name === 'TeamOrderRefundAuditDetail') {
+                    return [
+                        {
+                            name : '团队订单退票审核', // 团队订单退票审核
+                            router : {
+                                name : 'teamOrderRefundAudit'
+                            }
+                        }
+                    ];
                 }
+                return [];
             }
         }
     };

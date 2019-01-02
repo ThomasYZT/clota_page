@@ -53,6 +53,12 @@ export const groupOrderHead = [
         field : 'paymentStatus'
     },
     {
+        title : 'overdueStatus', // 过期状态
+        width : 110,
+        enWidth : 130,
+        field : 'overdue'
+    },
+    {
         title : 'operate',
         width : 180,
         enWidth : 230,

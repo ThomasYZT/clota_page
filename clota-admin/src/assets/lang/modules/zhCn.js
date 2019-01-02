@@ -598,5 +598,10 @@ export default {
     '3levelAllowcation' : '三级分销价格分销商',
     'partnerChannelType' : '合作伙伴渠道类型',
     'thirdPartSmsAccount' : '第三方短信服务商账号',
-    'thirdPartSmsPassword' : '第三方短信服务商密码'
+    'thirdPartSmsPassword' : '第三方短信服务商密码',
+    'overdueStatus' : '过期状态',
+    'applayCancelOrder' : '发起取消订单申请',
+    'cancelOrder' : '取消订单',
+    'orderCancelSuccess' : '团队订单申请退票通过',
+    'orderCancelFail' : '团队订单申请退票不通过',
 };

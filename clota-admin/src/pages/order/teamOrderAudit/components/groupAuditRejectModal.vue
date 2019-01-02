@@ -149,6 +149,10 @@
                     return this.orderData.items[0].originVisitDate;
                 }
                 return '';
+            },
+            //是否是团队订单退票审核页面
+            isTeamOrderRefundAudit () {
+                return this.$route.name === 'teamOrderRefundAudit';
             }
         },
         methods : {
@@ -194,19 +198,11 @@
                 if (this.auditRemark.length > 500) {
                     return;
                 }
-                ajax.post('updateGroupOrderAudit', {
-                    orderId : this.orderData.items.map(item => item.id).join(','),
-                    remark : this.auditRemark,
-                    audit : 'reject',
-                }).then(res => {
-                    if (res.status === 200) {
-                        this.$Message.success(this.$t('orderRejected')); // 订单已驳回
-                        this.$emit('on-audit-pass');
-                    } else {
-                        this.$Message.error(res.message || this.$t('orderRejectedFailed')); // 订单驳回失败
-                    }
-                    this.hide();
-                });
+                if (this.isTeamOrderRefundAudit) {
+                    this.rejectCancelTeamOrderApply();
+                } else {
+                    this.updateGroupOrderAudit();
+                }
             },
             /**
              * 获取产品名称
@@ -221,6 +217,41 @@
                     }
                 }
                 return '';
+            },
+            /**
+             * 审核不通过团队订单退票申请
+             */
+            rejectCancelTeamOrderApply () {
+                ajax.post('rejectCancelTeamOrderApply',{
+                    orderIds : this.orderData.items.map(item => item.id).join(','),
+                    remark : this.auditRemark,
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('orderRejected')); // 订单已驳回
+                        this.$emit('on-audit-pass');
+                    } else {
+                        this.$Message.error(res.message || this.$t('orderRejectedFailed')); // 订单审核失败
+                    }
+                    this.hide();
+                });
+            },
+            /**
+             * 团队订单预审核不通过
+             */
+            updateGroupOrderAudit () {
+                ajax.post('updateGroupOrderAudit', {
+                    orderId : this.orderData.items.map(item => item.id).join(','),
+                    remark : this.auditRemark,
+                    audit : 'reject',
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('orderRejected')); // 订单已驳回
+                        this.$emit('on-audit-pass');
+                    } else {
+                        this.$Message.error(res.message || this.$t('orderRejectedFailed')); // 订单驳回失败
+                    }
+                    this.hide();
+                });
             }
 
         },

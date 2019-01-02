@@ -180,7 +180,7 @@
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
-                :width="returnTicketMenuShow.width">
+                :width="(returnTicketMenuShow.show || returnTeamMenuShow.show) ? 170 : 80">
                 <template slot-scope="scope">
                     <ul class="operate-info">
                         <li class="normal" v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual'"
@@ -189,6 +189,9 @@
                         <li class="normal" v-if="returnTicketMenuShow.show  && scope.row.orderType === 'individual'"
                             :class="{disabled : !judgeCanAlter(scope.row)}"
                             @click="alterTicket(scope.row)">{{$t('alter')}}</li><!--改签-->
+                        <li v-if="returnTeamMenuShow.show && scope.row.orderType === 'team'"
+                            :class="{disabled : !judgeCanCancelOrder(scope.row)}"
+                            @click="cancelOrder(scope.row)">{{$t('cancelOrder')}}</li><!--取消订单-->
                         <li class="normal"  @click="toDetail(scope.row)">{{$t('details')}}</li><!--详情-->
                     </ul>
                 </template>
@@ -206,6 +209,11 @@
                                   :orderDetail="currentData"
                                   @fresh-data="queryList">
         </apply-alter-ticket-modal>
+        <!--取消团队订单确认框-->
+        <cancel-team-order-modal v-model="cancelModalShow"
+                                 :orderDetail="currentData"
+                                 @fresh-data="queryList">
+        </cancel-team-order-modal>
     </div>
 </template>
 
@@ -220,6 +228,7 @@
     import debounce from 'lodash/debounce';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { mapGetters } from 'vuex';
+    import cancelTeamOrderModal from './child/cancelTeamOrderModal';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -227,7 +236,8 @@
             filterHead,
             tableCom,
             applyRefundTicket,
-            applyAlterTicketModal
+            applyAlterTicketModal,
+            cancelTeamOrderModal
         },
         data () {
             return {
@@ -272,7 +282,9 @@
                 //改签模态框是否显示
                 alterTicketModalShow : false,
                 //默认筛选条件信息
-                paramsDefault : {}
+                paramsDefault : {},
+                //取消订单确认模态框是否显示
+                cancelModalShow : false
             };
         },
         methods : {
@@ -506,6 +518,21 @@
                         fromRoute.name === 'orderList')) {
                     this.paramsDefault = params;
                 }
+            },
+            /**
+             *  判断是否可以取消订单
+             */
+            judgeCanCancelOrder (rowData) {
+                return rowData.canCancle === 'true';
+            },
+            /**
+             * 取消订单
+             * @param {object} rowData
+             */
+            cancelOrder (rowData) {
+                this.currentData = rowData;
+                if (!this.judgeCanCancelOrder(rowData)) return;
+                this.cancelModalShow = true;
             }
         },
         computed : {
@@ -520,7 +547,22 @@
                         show : true,
                         width : 170,
                     };
-                } else {//散客全民营销订单
+                } else {
+                    return {
+                        show : false,
+                        width : 80,
+                    };
+                }
+            },
+            //是否显示取消团队订单按钮
+            returnTeamMenuShow () {
+                if ((this.queryParams.orderType === '' || this.queryParams.orderType === 'team') &&
+                    this.queryParams.allocationStatus === 'false') {
+                    return {
+                        show : true,
+                        width : 170
+                    };
+                } else {
                     return {
                         show : false,
                         width : 80,

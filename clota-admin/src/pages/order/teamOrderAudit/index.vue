@@ -68,6 +68,17 @@
                 </template>
             </el-table-column>
             <el-table-column
+                v-if="isRefundAuditPage"
+                slot="columnoverdue"
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{ scope.row.overdue === 'true' ? $t('已过期') : $t('未过期') }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="columnoperate"
                 slot-scope="row"
                 :label="row.title"
@@ -139,7 +150,12 @@
                 paramsDefault : {}
             };
         },
-        computed : {},
+        computed : {
+            //是否是团队订单退票审核页面
+            isRefundAuditPage () {
+                return this.$route.name === 'teamOrderRefundAudit';
+            }
+        },
         created () {
         },
         methods : {
@@ -269,8 +285,14 @@
              * @param{Object} scopeRow 订单详情数据
              */
             goTeamOrderDetail (scopeRow) {
+                let routeName = '';
+                if (this.isRefundAuditPage) {
+                    routeName = 'TeamOrderRefundAuditDetail';
+                } else {
+                    routeName = 'preAduitTeamOrderDetail';
+                }
                 this.$router.push({
-                    name : 'preAduitTeamOrderDetail',
+                    name : routeName,
                     params : {
                         orderDetail : scopeRow
                     },

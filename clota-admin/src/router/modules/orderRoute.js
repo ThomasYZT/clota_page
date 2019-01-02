@@ -97,6 +97,17 @@ export default {
             lightMenu : 'order',
         }
     },
+    //团队订单详情 -- 团队订单退票审核
+    teamOrderDetailRefundAudit : {
+        path : '/teamOrder/refundAudit/detail',
+        name : 'TeamOrderRefundAuditDetail',
+        component : () => import(/* webpackChunkName: "order" */'../../pages/order/orderList/teamOrderDetail.vue'),
+        meta : {
+            _name : 'order',
+            menuName : 'order',
+            lightMenu : 'order',
+        }
+    },
     //团队订单详情 -- 订单查询
     teamOrderDetail : {
         path : '/orderDetail/team',
