@@ -87,16 +87,16 @@
                     </FormItem>
                 </i-col>
                 <!-- 仅当创蓝、亿美时才显示该字段 -->
-                <template  v-if="formDataCopy.smsProviderId === '3' || formDataCopy.smsProviderId === '4'">
+                <template  v-if="(companyDetail.smsProviderId !== '5' && formDataCopy.smsProviderId !== '5')">
                     <i-col span="12">
                         <FormItem label="第三方短信服务商账号：" :label-width="180" prop="smsProviderAccount">
                             <Input v-model.trim="formDataCopy.smsProviderAccount"
                                    v-if="type === 'edit'"/>
                             <span v-else class="info-val">
-                            <span class="account-name" v-w-title="companyDetail.smsProviderAccount">
-                                {{companyDetail.smsProviderAccount | contentFilter}}
+                                <span class="account-name" v-w-title="companyDetail.smsProviderAccount">
+                                    {{companyDetail.smsProviderAccount | contentFilter}}
+                                </span>
                             </span>
-                        </span>
                         </FormItem>
                     </i-col>
                     <i-col span="12">
@@ -106,13 +106,13 @@
                                    v-if="type === 'edit'"/>
                             <span v-else class="info-val">
                             <span class="account-name" v-w-title="companyDetail.smsProviderPassword">
-                                {{companyDetail.smsProviderPassword | contentFilter}}
+                                {{"******"}}
                             </span>
                         </span>
                         </FormItem>
                     </i-col>
                 </template>
-                <template v-if="formDataCopy.smsProviderId === '5'">
+                <template v-if="companyDetail.smsProviderId === '5' || formDataCopy.smsProviderId === '5'">
                     <i-col span="12">
                         <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
                             {{companyDetail.smsSendTotal | contentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
