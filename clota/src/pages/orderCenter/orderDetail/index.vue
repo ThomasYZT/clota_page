@@ -528,7 +528,7 @@
                         show : true,
                         width : 170,
                     };
-                } else {//散客全民营销订单
+                } else {
                     return {
                         show : false,
                         width : 80,
@@ -537,7 +537,8 @@
             },
             //是否显示取消团队订单按钮
             returnTeamMenuShow () {
-                if (this.queryParams.orderType === '' || this.queryParams.orderType === 'team') {
+                if ((this.queryParams.orderType === '' || this.queryParams.orderType === 'team') &&
+                    this.queryParams.allocationStatus === 'false') {
                     return {
                         show : true,
                         width : 170

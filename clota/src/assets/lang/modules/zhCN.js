@@ -2193,4 +2193,5 @@ export default {
     'privalige.memberCount' : '各渠道会员数量报表',
     'goldCoin' : '金币',
     'gameCoin' : '游戏币',
+    'applayCancelOrder' : '发起取消订单申请',
 }

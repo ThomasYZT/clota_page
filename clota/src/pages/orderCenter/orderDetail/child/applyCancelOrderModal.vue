@@ -62,11 +62,11 @@
                     remark : '',
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('cancelOrder') }));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('applayCancelOrder') }));
                         this.toggle();
                         this.$emit('applySuccess');
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('cancelOrder') }));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('applayCancelOrder') }));
                     }
                 });
             }
