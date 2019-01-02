@@ -78,11 +78,16 @@
     @import '~@/assets/scss/base';
 
     .apply-cancel-order-modal {
+        position: relative;
         .tip {
-            width: 80%;
-            margin: 20px auto 0;
+            display: inline-block;
             text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 14px;
+            vertical-align: middle;
         }
     }
 
