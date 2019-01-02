@@ -587,7 +587,7 @@
                 height: 100%;
                 background-color: #FFFFFF;
                 border-radius: 4px;
-                overflow: auto;
+                overflow: hidden;
                 .ivu-input-icon{
                     z-index: 2;
                 }
