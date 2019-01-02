@@ -302,4 +302,6 @@ export default {
     'deleteLevelEffSet' : '/member/memberLevel/deleteLevelEffSet',
     //获取会员报表凭证
     'getTableauTrustedUrl' : '/report/getTableauTrustedUrl',
+    //批量退卡
+    'batchRefundCard' : '/member/batchRefundCard',
 }

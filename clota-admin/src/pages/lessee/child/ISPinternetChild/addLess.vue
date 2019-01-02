@@ -160,7 +160,10 @@
                 <Button @click="save('close')"
                         class="ivu-btn-min btn-margin"
                         :loading="addLoading">{{$t('保存，暂不启用')}}</Button>
-                <Button type="primary" @click="save('open')" class="ivu-btn-min">{{$t('保存，立即启用')}}</Button>
+                <Button type="primary"
+                        :loading="addLoading"
+                        @click="save('open')"
+                        class="ivu-btn-min">{{$t('保存，立即启用')}}</Button>
             </div>
         </div>
     </div>

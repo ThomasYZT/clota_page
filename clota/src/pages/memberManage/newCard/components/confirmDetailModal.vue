@@ -90,6 +90,14 @@
             max-height: 400px;
             min-height: 200px;
             padding: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .ivu-form{
+                width: 100%;
+                overflow: auto;
+            }
 
             .ivu-form-item-content{
                 color: $color_666;

@@ -17,6 +17,30 @@
                 :table-data="tableData"
                 :border="true"
                 :ofset-height="204">
+                <el-table-column
+                    slot="column0"
+                    slot-scope="row"
+                    show-overflow-tooltip
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{ scope.$index + 1 }}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    slot="column3"
+                    slot-scope="row"
+                    show-overflow-tooltip
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <ul class="operate-list">
+                            <li class="red-label" @click="delCard(scope.$index)">{{$t('del')}}</li>
+                        </ul>
+                    </template>
+                </el-table-column>
             </table-com>
         </div>
         <!--footer 按钮-->
@@ -37,12 +61,22 @@
             <Form  :label-width="110">
                 <i-col span="12">
                     <FormItem :label="$t('colonSetting',{ key : $t('本次退卡数量') })">
-                        {{'a' | contentFilter}}
+                        {{tableData.length | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('colonSetting',{ key : $t('本次退卡总金额') })">
-                        {{'a' | contentFilter}}
+                    <FormItem :label="$t('colonSetting',{ key : $t('返还总额') })">
+                        {{sumRefundMoney | moneyFilter | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('线上返回金额') })">
+                        {{sumOnlineMoney | moneyFilter | contentFilter}}
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem :label="$t('colonSetting',{ key : $t('返回现金') })">
+                        {{sumCashMoney | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
             </Form>
@@ -56,6 +90,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { mapGetters } from 'vuex';
     import confirmMemberInfo from '../components/confirmDetailModal';
+    import ajax from '@/api/index.js';
 
 	export default {
 		data() {
@@ -65,7 +100,7 @@
                 //表格数据
                 tableData : [],
                 //是否显示确认模态框
-                showConfirmModal : true
+                showConfirmModal : false
             }
 		},
         components : {
@@ -84,7 +119,7 @@
              * 确认批量退卡
              */
             confirmOperate () {
-
+                this.showConfirmModal = true;
             },
             /**
              * 读取实体卡
@@ -92,22 +127,76 @@
             readEntityCard () {
                 if (this.tableData.length >= 50 || !this.cardReadEnabled) return;
                 this.$store.dispatch('getCardReadData').then(res => {
-                    for (let i  = 0,j = this.tableData.length;i < j; i++) {
-
+                    //校验当前页面是否已经使用了读取的卡
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (this.tableData[i]['physicalNum'] === res) {
+                            return;
+                        }
                     }
+                    this.findRefundCardMoney(res);
                 });
             },
             /**
              * 确认开卡信息
              */
             confirmDataInfo () {
-                this.$Message.success('退卡成功');
+                this.showConfirmModal = false;
+                this.batchRefundCard();
+            },
+            /**
+             * 查询需要退卡的金额
+             * @param{String} physicalNum 物理卡号
+             */
+            findRefundCardMoney (physicalNum) {
+                ajax.post('findRefundCardMoney',{
+                    physicalNum : physicalNum
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.tableData.push({
+                            physicalNum : physicalNum,
+                            faceNum : res.data.faceNum,
+                            cardId : res.data.cardId,
+                            sumCashMoney : res.data.sumCashMoney,
+                            sumOnlineMoney : res.data.sumOnlineMoney,
+                            sumRefundMoney : res.data.sumRefundMoney,
+                        });
+                    }  else if (res.code === 'M018') {
+                        this.$Message.error('该会员卡已使用，不可退卡');
+                    }  else if (res.code === 'M036') {
+                        this.$Message.error('会员卡不存在');
+                    }    else {
+                        this.refundMoneyInfo = {};
+                    }
+                });
+            },
+            /**
+             * 删除读取的实体卡
+             * @param{Number} index 实体卡序号
+             */
+            delCard (index) {
+                this.tableData.splice(index,1);
+            },
+            /**
+             * 批量退卡
+             */
+            batchRefundCard () {
+                ajax.post('batchRefundCard',{
+                    cardIds : this.tableData.map(item => item.cardId).join(',')
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('批量退卡') }));
+                        this.tableData = [];
+                    } else{
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('批量退卡') }));
+                    }
+                });
             }
         },
         computed : {
             ...mapGetters({
                 cardReadEnabled : 'cardReadEnabled',
             }),
+            //面包屑路由信息
             beforeRouterList () {
                 return [{
                     name : 'newCard',
@@ -115,6 +204,18 @@
                         name : 'refundedCard'
                     }
                 }];
+            },
+            //本次线下退卡金额
+            sumCashMoney () {
+                return this.tableData.reduce((price,item) => item.sumCashMoney + price,0);
+            },
+            //本次线上退卡金额
+            sumOnlineMoney () {
+                return this.tableData.reduce((price,item) => item.sumOnlineMoney + price,0);
+            },
+            //本次退卡全部金额
+            sumRefundMoney () {
+                return this.tableData.reduce((price,item) => item.sumRefundMoney + price,0);
             }
         }
 	}
