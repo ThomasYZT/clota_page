@@ -16,8 +16,7 @@ export default {
         path : '/dataReport',
         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/index.vue'),
         meta : {
-            // _name : 'report',
-            _name : 'members',
+            _name : 'report',
             menuName : 'dataReport',
             rightPath : topMenuName + '.' + 'dataReport',
             isMenu : true
@@ -107,6 +106,81 @@ export default {
                     },
                 }
             },
+            //会员报表通用版
+            memberReportCommon : {
+                path : '/memberReportCommon',
+                component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/index.vue'),
+                name : 'memberReportCommon',
+                meta : {
+                    menuName : 'memberReportCommon', //lang.config.js 里面的语言键值
+                    _name : 'member-report',
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'memberReportCommon',
+                    isMenu : true,
+                },
+                children : {
+                    //会员等级报表
+                    partnerAbality : {
+                        path : '/memberReportCommon/memberGradeAnalysis',
+                        name : 'memberGradeAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberGradeAnalysis.vue'),
+                        meta : {
+                            menuName : 'memberGradeAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'memberLevel',
+                            rightPath : topMenuName + '.' + 'memberGradeAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //会员消费报表
+                    memberConsumeAnalysis : {
+                        path : '/memberReportCommon/memberConsumeAnalysis',
+                        name : 'memberConsumeAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberConsumeAnalysis.vue'),
+                        meta : {
+                            menuName : 'memberConsumeAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'memberConsume',
+                            rightPath : topMenuName + '.' + 'memberConsumeAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //各渠道会员数量报表
+                    channelAnalysis : {
+                        path : '/memberReportCommon/channelAnalysis',
+                        name : 'channelAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/channelAnalysis.vue'),
+                        meta : {
+                            menuName : 'channelAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'memberCount',
+                            rightPath : topMenuName + '.' + 'channelAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //会员积分报表
+                    memberIntegerAnalysis : {
+                        path : '/memberReportCommon/memberIntegerAnalysis',
+                        name : 'memberIntegerAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberIntegerAnalysis.vue'),
+                        meta : {
+                            menuName : 'memberIntegerAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'memberScore',
+                            rightPath : topMenuName + '.' + 'memberIntegerAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //会员储值报表
+                    memberRechargeAnalysis : {
+                        path : '/memberReportCommon/memberRechargeAnalysis',
+                        name : 'memberRechargeAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberRechargeAnalysis.vue'),
+                        meta : {
+                            menuName : 'memberRechargeAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'memberCharging',
+                            rightPath : topMenuName + '.' + 'memberRechargeAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                }
+            },
             //经营报表
             manageReport : {
                 path : '/manageReport',
@@ -129,6 +203,114 @@ export default {
                             menuName : 'partnerAbality', //lang.config.js 里面的语言键值
                             _name : 'partnerAnalysis',
                             rightPath : topMenuName + '.' + 'partnerAbality',
+                            isMenu : true,
+                        },
+                    },
+                    //入园时段报表
+                    enterGardenTimeAnalysis : {
+                        path : '/manageReport/enterGardenTimeAnalysis',
+                        name : 'enterGardenTimeAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/enterGardenTimeAnalysis.vue'),
+                        meta : {
+                            menuName : 'enterGardenTimeAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'admissionPeriodAnalysis',
+                            rightPath : topMenuName + '.' + 'enterGardenTimeAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //全民营销能力分析报表
+                    marketAnalysis : {
+                        path : '/manageReport/marketAnalysis',
+                        name : 'marketAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/marketAnalysis.vue'),
+                        meta : {
+                            menuName : 'marketAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'marketAnalysis',
+                            rightPath : topMenuName + '.' + 'marketAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //产品销售排行报表
+                    productSaleRankList : {
+                        path : '/manageReport/productSaleRankList',
+                        name : 'productSaleRankList',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/productSaleRankList.vue'),
+                        meta : {
+                            menuName : 'productSaleRankList', //lang.config.js 里面的语言键值
+                            _name : 'productSaleAnalysis',
+                            rightPath : topMenuName + '.' + 'productSaleRankList',
+                            isMenu : true,
+                        },
+                    },
+                    //散客产品报表
+                    individualProductAnalysis : {
+                        path : '/manageReport/individualProductAnalysis',
+                        name : 'individualProductAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/individualProductAnalysis.vue'),
+                        meta : {
+                            menuName : 'individualProductAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'individualProductAnalysis',
+                            rightPath : topMenuName + '.' + 'individualProductAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //团队产品报表
+                    teamProductAnalysis : {
+                        path : '/manageReport/teamProductAnalysis',
+                        name : 'teamProductAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/teamProductAnalysis.vue'),
+                        meta : {
+                            menuName : 'teamProductAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'teamProductAnalysis',
+                            rightPath : topMenuName + '.' + 'teamProductAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //散客订单报表
+                    individualOrderAnalysis : {
+                        path : '/manageReport/individualOrderAnalysis',
+                        name : 'individualOrderAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/individualOrderAnalysis.vue'),
+                        meta : {
+                            menuName : 'individualOrderAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'individualOrderAnalysis',
+                            rightPath : topMenuName + '.' + 'individualOrderAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //团队订单报表
+                    teamOrderAnalysis : {
+                        path : '/manageReport/teamOrderAnalysis',
+                        name : 'teamOrderAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/teamOrderAnalysis.vue'),
+                        meta : {
+                            menuName : 'teamOrderAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'teamOrderAnalysis',
+                            rightPath : topMenuName + '.' + 'teamOrderAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //短信发送记录报表
+                    smsSendAnalysis : {
+                        path : '/manageReport/smsSendAnalysis',
+                        name : 'smsSendAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/smsSendRecordAnalysis.vue'),
+                        meta : {
+                            menuName : 'smsSendAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'smsSendRecordAnalysis',
+                            rightPath : topMenuName + '.' + 'smsSendAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                    //收支明细报表
+                    paymentsAnalysis : {
+                        path : '/manageReport/paymentsAnalysis',
+                        name : 'paymentsAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/paymentsAnalysis.vue'),
+                        meta : {
+                            menuName : 'paymentsAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'revenueStatement',
+                            rightPath : topMenuName + '.' + 'paymentsAnalysis',
                             isMenu : true,
                         },
                     },

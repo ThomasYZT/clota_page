@@ -1,4 +1,4 @@
-<!--合作伙伴能力分析报表-->
+<!--产品销售排行报表-->
 
 <template>
     <div class="manage-report-wrap">
@@ -15,7 +15,7 @@
                 //报表基础路由
                 reportBaseUrl : '',
                 //报表参数路由
-                reportParams : 'views/clota-dev/sheet5?iframeSizedToWindow=true&:embed=y&:showAppBanner=false&:display_count=no&:showVizHome=no'
+                reportParams : 'views/clota-dev/sheet8?iframeSizedToWindow=true&:embed=y&:showAppBanner=false&:display_count=no&:showVizHome=no'
             };
         },
         methods : {
