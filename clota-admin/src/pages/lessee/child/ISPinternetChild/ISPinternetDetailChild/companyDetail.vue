@@ -90,7 +90,8 @@
                 <template  v-if="formDataCopy.smsProviderId === '3' || formDataCopy.smsProviderId === '4'">
                     <i-col span="12">
                         <FormItem label="第三方短信服务商账号：" :label-width="180" prop="smsProviderAccount">
-                            <Input v-model.trim="formDataCopy.smsProviderAccount" v-if="type === 'edit'"/>
+                            <Input v-model.trim="formDataCopy.smsProviderAccount"
+                                   v-if="type === 'edit'"/>
                             <span v-else class="info-val">
                             <span class="account-name" v-w-title="companyDetail.smsProviderAccount">
                                 {{companyDetail.smsProviderAccount | contentFilter}}
@@ -99,8 +100,10 @@
                         </FormItem>
                     </i-col>
                     <i-col span="12">
-                        <FormItem label="第三方短信服务商密码：" :label-width="170" prop="smsProviderPassword">
-                            <Input v-model.trim="formDataCopy.smsProviderPassword" v-if="type === 'edit'"/>
+                        <FormItem label="第三方短信服务商密码：" :label-width="180" prop="smsProviderPassword">
+                            <Input v-model.trim="formDataCopy.smsProviderPassword"
+                                   type="password"
+                                   v-if="type === 'edit'"/>
                             <span v-else class="info-val">
                             <span class="account-name" v-w-title="companyDetail.smsProviderPassword">
                                 {{companyDetail.smsProviderPassword | contentFilter}}
@@ -707,12 +710,14 @@
                     smsProviderAccount : [
                         { required : this.formDataCopy.smsProviderId === '3' || this.formDataCopy.smsProviderId === '4' ? true : false,
                           message : this.$t('inputField',{ field : this.$t('thirdPartSmsAccount') }),
-                          trigger : 'blur' }
+                          trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsAccount'),length : 20 }),trigger : 'blur' },
                     ],
                     smsProviderPassword : [
                         { required : this.formDataCopy.smsProviderId === '3' || this.formDataCopy.smsProviderId === '4' ? true : false,
                           message : this.$t('inputField',{ field : this.$t('thirdPartSmsPassword') }),
-                          trigger : 'blur' }
+                          trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },
                     ]
                 }
             }
