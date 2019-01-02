@@ -2085,6 +2085,7 @@ export default {
     'overDueVarifyNum' : '过期系统自动核销数量',
     'systemer' : '系统',
     'teamOrderCancelApply' : '团队订单取消申请',
+    'please' : '请{msg}',
     'optional' : '选填',
     'notNull' : '必填',
     'title' : '标题',

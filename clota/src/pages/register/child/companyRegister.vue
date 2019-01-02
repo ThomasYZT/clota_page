@@ -45,6 +45,7 @@
                     <!-- 邮箱地址 -->
                     <FormItem label="邮箱地址" prop="email">
                         <Input v-model="formDataCompany.email" placeholder="请输入邮箱地址"></Input>
+                        <span class="tip">{{'该邮箱用于接受审核通知'}}</span>
                     </FormItem>
                     <!--地点-->
                     <FormItem :label="$t('location')" prop="place">
@@ -293,5 +294,9 @@
             }
         }
 
+        .tip {
+            font-size: 12px;
+            color: $color_yellow;
+        }
     }
 </style>

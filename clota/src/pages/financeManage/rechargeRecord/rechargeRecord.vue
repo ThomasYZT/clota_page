@@ -8,7 +8,7 @@
     <div class="recharge-record">
         <div class="filter-box">
             <Input class="input-field"
-                   v-model.trim="filterParam.name"
+                   v-model.trim="filterParam.keyword"
                    icon="ios-search"
                    :placeholder="$t('inputAnywordForSearch')"
                    @on-enter="handleSearch"
@@ -118,7 +118,7 @@
                     pageSize: configVariable.pageDefaultSize,       // 每页显示数量
                 },
                 filterParam: {
-                    name: '',
+                    keyword: '',
                 },
                 // 表格表头字段名
                 columnData: rechargeHead,
