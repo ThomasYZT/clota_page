@@ -31,7 +31,7 @@ export default {
                 meta : {
                     menuName : 'posterInformation', //lang.config.js 里面的语言键值
                     _name : 'market-poster',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-channel',
                     rightPath : topMenuName + '.' + 'posterInformation',
                     isMenu : true,
                 },
@@ -44,7 +44,7 @@ export default {
                 meta : {
                     menuName : 'comprehensiveSetup', //lang.config.js 里面的语言键值
                     _name : 'market-setting',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-channel',
                     rightPath : topMenuName + '.' + 'comprehensiveSetup',
                     isMenu : true,
                 },

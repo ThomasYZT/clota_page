@@ -21,7 +21,7 @@
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
                             @on-change="getData"
-                            style="width: 280px">
+                            style="width: 280px;margin-right: 10px;">
                 </DatePicker>
 
                 <!-- 景区下拉列表 -->
@@ -29,7 +29,7 @@
                 <Select v-model="filterData.orgId"
                         :placeholder="$t('selectField', { msg : $t('order.scenic') })"
                         @on-change="getData"
-                        style="width:160px" >
+                        style="width:160px;margin-right: 10px;" >
                     <Option v-for="item in scenicList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
                 </Select>
             </div>

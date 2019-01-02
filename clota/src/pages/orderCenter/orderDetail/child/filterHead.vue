@@ -659,7 +659,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .filter-head{
-        padding: 14px 30px 15px 30px;
+        padding: 14px 20px 15px 18px;
         /*border: 1px solid #EEEEEE;*/
 
         /deep/ .ivu-date-picker{

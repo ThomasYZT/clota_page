@@ -16,12 +16,12 @@
             <div class="audit-btn">
                 <Button type="primary"
                         style="width: 88px; margin-right: 5px;"
-                        :disabled="!moduleInfo || reqOrderTickets.length<1"
+                        :disabled="!moduleInfo || reqOrderTickets.length<1 || chosenRowData.length < 1"
                         @click="showAuditModal('pass')">{{$t('passed')}}
                 </Button>
                 <Button type="error"
                         style="width: 88px;"
-                        :disabled="!moduleInfo || reqOrderTickets.length<1"
+                        :disabled="!moduleInfo || reqOrderTickets.length<1 || chosenRowData.length < 1"
                         @click="showAuditModal('reject')">{{$t('rejectAll')}}
                 </Button><!--全部驳回-->
             </div>

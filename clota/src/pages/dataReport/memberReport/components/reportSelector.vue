@@ -9,7 +9,7 @@
             <!-- 数据报表类型 -->
             <Select v-model="dataReport"
                     @on-change="reportChange"
-                    style="width:280px">
+                    style="width:280px;margin-right: 10px;">
                 <Option v-for="item in reportList"
                         show-name
                         :value="item.value"
@@ -234,6 +234,7 @@
             /deep/ .selected {
                 border: 1px solid #2F70DF !important;
                 z-index: 10;
+                color: #2F70DF;
             }
 
             /deep/ .tab-btn {

@@ -16,7 +16,7 @@
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
                             @on-change="getData"
-                            style="width: 280px">
+                            style="width: 280px;margin-right: 10px">
                 </DatePicker>
 
                 <!-- 会员类型下拉列表 -->
@@ -24,7 +24,7 @@
                 <Select v-model="filterData.memberType"
                         :placeholder="$t('selectField', { msg : $t('memberType') })"
                         @on-change="queryLevelsByCardType"
-                        style="width:160px" >
+                        style="width:160px;margin-right: 10px;" >
                     <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
                         {{ item.label }}
                     </Option>
@@ -35,7 +35,7 @@
                 <Select v-model="filterData.memberLevel"
                         :placeholder="$t('selectField', { msg : $t('member-level') })"
                         @on-change="getData"
-                        style="width:160px">
+                        style="width:160px;">
                     <Option v-for="item in memberLevellist" :value="item.value" :key="item.value">
                         {{ item.label === 'memberLevelAll' ? $t(item.label) : item.label }}
                     </Option>

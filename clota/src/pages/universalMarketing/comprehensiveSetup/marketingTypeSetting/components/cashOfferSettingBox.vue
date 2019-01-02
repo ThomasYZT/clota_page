@@ -11,7 +11,7 @@
             <div class="info">
                 <h4 class="title">{{$t('cashOfferDays')}}
                     <Tooltip :content="$t('setDaysCashOffer')" placement="right">
-                        <i class="iconfont icon-help"></i>
+                        <i class="iconfont icon-note"></i>
                     </Tooltip>
                 </h4>
                 <span v-if="status === 'show'" class="value">{{cashOfferInfo.withdrawDay | contentFilter}}</span>
@@ -219,12 +219,17 @@
         line-height: 40px;
         text-align: center;
         background-color: #F7F9FA;
+        border-bottom: 1px solid #E9E9E9;
 
         span, i {
             cursor: pointer;
         }
 
         .blue-btn {
+            color: $color_blue;
+        }
+
+        .icon-edit {
             color: $color_blue;
         }
 

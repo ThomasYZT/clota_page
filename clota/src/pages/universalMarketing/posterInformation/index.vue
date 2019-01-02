@@ -7,9 +7,8 @@
         <div class="btn-area">
             <template v-if="canddAndDelPoster">
                 <Button type="primary" class="ivu-btn-108px" @click="uploadPoster">{{$t('uploadPoster')}}</Button>
-                <Button type="default"
-                        :class="{disabled : chosedColomn.length === 0}"
-                        class="ivu-btn-108px error"
+                <Button type="error"
+                        class="ivu-btn-108px"
                         :disabled="chosedColomn.length === 0"
                         @click="deleteBatch()">
                     {{$t('deleteBatch')}}

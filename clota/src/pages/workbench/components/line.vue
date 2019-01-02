@@ -17,6 +17,7 @@
                             :clearable="false"
                             :editable="false"
                             transfer
+                            :placeholder="$t('selectField', { msg : $t('date') })"
                             placement="bottom-end"
                             style="width: 280px"
                             @on-change="changeDateCustom">

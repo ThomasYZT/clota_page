@@ -35,7 +35,7 @@
     @import '~@/assets/scss/base';
     .head-info {
         height: 80px;
-        margin: 19px 30px;
+        margin: 14px 30px;
         background-color: rgba(47,112,223,0.03);
         display: flex;
         flex-wrap: nowrap;

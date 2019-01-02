@@ -103,6 +103,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .store-value-report {
+        padding-top: 5px;
         width: 100%;
         height: calc(100% - 59px);
     }

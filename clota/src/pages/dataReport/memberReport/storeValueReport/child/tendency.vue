@@ -21,7 +21,7 @@
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
                             @on-change="getData"
-                            style="width: 280px">
+                            style="width: 280px;margin-right: 10px;">
                 </DatePicker>
 
                 <!-- 会员类型下拉列表 -->
@@ -29,7 +29,7 @@
                 <Select v-model="filterData.cardType"
                         :placeholder="$t('selectField', { msg : $t('memberType') })"
                         @on-change="getData"
-                        style="width:160px" >
+                        style="width:160px;margin-right: 10px;" >
                     <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
                         {{ item.label === 'memberTypeAll' ? $t(item.label) : item.label }}
                     </Option>
