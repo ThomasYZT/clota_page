@@ -266,6 +266,7 @@
                     if(item.verifyStatus == "true") {
                         _obj.verifyNum += 1;
                     } else if (item.verifyStatus == "overdue") {
+                        _obj.verifyNum += 1;
                         _obj.overdueNum += 1;
                     }
 
@@ -279,7 +280,7 @@
                     }
                 });
                 //未核销 = 产品总数 - 已退票 - 已核销 - 已过期核销
-                _obj.noVerifyNum = this.baseInfo.quantity - _obj.refundNum - _obj.verifyNum - _obj.overdueNum;
+                _obj.noVerifyNum = this.baseInfo.quantity - _obj.refundNum - _obj.verifyNum;
                 return _obj;
             },
             //选择的票是否能退
