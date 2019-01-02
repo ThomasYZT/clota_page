@@ -116,9 +116,9 @@
                         if (this.isProductLog) {
                             // 改签审核，通过数量：
                             return {
-                                content : `${contentsObj.auditType === 'success' ? this.$t('alterApplayAllwed') : this.$t('alterApplayNotAllwed')}，
+                                content : `${contentsObj.auditType === 'success' ? this.$t('alterApplayAllwed') : this.$t('alterApplayNotAllwed')}
                             ${contentsObj['alterDate'] ? (  '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.alterDate) : '' }
-                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }。
+                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }
                             ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
