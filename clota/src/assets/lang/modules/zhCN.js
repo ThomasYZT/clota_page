@@ -2190,4 +2190,6 @@ export default {
     'privalige.memberCharging' : '会员储值报表',
     'privalige.memberScore' : '会员积分报表',
     'privalige.memberCount' : '各渠道会员数量报表',
+    'goldCoin' : '金币',
+    'gameCoin' : '游戏币',
 }

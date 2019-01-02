@@ -43,7 +43,13 @@
                     <div class="ivu-form-item-wrap">
                         <!--单位-->
                         <Form-item :label="$t('unit')" prop="unit">
-                            <Input v-model.trim="formData.unit" :placeholder="$t('inputField', {field: ''})"/>
+                            <Select v-model="formData.unit">
+                                <Option v-for="item in unitList"
+                                        :value="item.value"
+                                        :key="item.value">
+                                    {{ $t(item.label) }}
+                                </Option>
+                            </Select>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap" >
@@ -263,6 +269,21 @@
                 ],
                 //归属校验
                 check: true,
+                //单位列表
+                unitList : [
+                    {
+                        value : 'yuan',
+                        label : 'yuan'
+                    },
+                    {
+                        value : 'goldCoin',
+                        label : 'goldCoin'
+                    },
+                    {
+                        value : 'gameCoin',
+                        label : 'gameCoin'
+                    }
+                ]
             }
         },
         watch: {
