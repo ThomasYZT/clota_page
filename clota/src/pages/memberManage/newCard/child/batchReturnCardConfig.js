@@ -6,16 +6,18 @@ export const batchRefundColumnData = [
         field : 'index'
     },
     {
-        title : '卡面号', // 卡面号
-        field : 'index'
+        title : 'cardFaceNum', // 卡面号
+        minWidth : 180,
+        field : 'faceNum'
     },
     {
-        title : '物理卡号', // 物理卡号
-        field : 'index'
+        title : 'physicalCardNo', // 物理卡号
+        minWidth : 180,
+        field : 'physicalNum'
     },
     {
         title : 'operate', // 操作
         width : 100,
-        field : 'index'
+        field : 'operate'
     },
 ];

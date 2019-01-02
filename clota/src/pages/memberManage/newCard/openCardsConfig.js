@@ -16,7 +16,7 @@ export const batchEntityCardHead = [
         field : 'physicalNum'
     },
     {
-        title : 'operate', // 物理卡号
+        title : 'operate', //操作
         width : 100,
         field : ''
     }
