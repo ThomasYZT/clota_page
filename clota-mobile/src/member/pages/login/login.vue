@@ -74,6 +74,8 @@
                 countDown : null,
                 //微信用户信息
                 wxUserInfo : {},
+                //微信openid
+                openId : '',
             };
         },
         computed : {
@@ -130,7 +132,7 @@
                         phoneNum : this.loginInfo.phoneNum,
                         code : this.loginInfo.vcode,
                         companyCode : this.companyCode,
-                        openId : this.wxUserInfo.openId
+                        openId : this.wxUserInfo.openId ? this.wxUserInfo.openId : this.openId,
                     }).then((res) => {
                         if (res.success) {
                             this.dataToLogin(res);
@@ -197,6 +199,9 @@
                 let queryParams = this.getUrlString(location.href);
                 if (queryParams && queryParams.code) {
                     this.getOAuth2UserInfo(queryParams.code);
+                }
+                if (queryParams && queryParams.openId) {
+                    this.openId = queryParams.openId;
                 }
             },
             /**

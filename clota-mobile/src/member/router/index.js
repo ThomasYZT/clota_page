@@ -33,6 +33,9 @@ export const memberRouterDeal = (to, from, next) => {
                     }).catch(() => {
                         next({
                             name : 'mobileLogin',
+                            query : {
+                                openId : query.openid,
+                            },
                         });
                     });
                 } else {
