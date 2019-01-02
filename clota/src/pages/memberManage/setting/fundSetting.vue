@@ -477,38 +477,34 @@
             },
             //点击保存，校验信息，数据处理
             save () {
-                this.$refs.ownerSetting.validateFormData().then(() => {
-                    if (this.checkInputFunc()) {
-                        let setParam = defaultsDeep({}, this.settingData);
-                        for ( let key in setParam) {
-                            if (key && typeof (setParam[key]) === 'object' && Object.keys(setParam[key]).length > 0) {
-                                for ( let ckey in setParam[key]) {
-                                    if (this.boolProps.indexOf(ckey) > -1) {
-                                        setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'boolean');
-                                    }
-                                    if (this.numberProps.indexOf(ckey) > -1) {
-                                        setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
-                                    }
+                if (this.checkInputFunc()) {
+                    let setParam = defaultsDeep({}, this.settingData);
+                    for ( let key in setParam) {
+                        if (key && typeof (setParam[key]) === 'object' && Object.keys(setParam[key]).length > 0) {
+                            for ( let ckey in setParam[key]) {
+                                // if (this.boolProps.indexOf(ckey) > -1) {
+                                //     setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'boolean');
+                                // }
+                                if (this.numberProps.indexOf(ckey) > -1) {
+                                    setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
                                 }
                             }
                         }
-                        setParam.id = this.id;
-
-                        let params = {
-                            id : this.id,
-                            passwdForRechargeAccount : setParam.passwdForRechargeAccount,
-                            donateWhileRecharge : setParam.donateWhileRecharge.length > 0 ?
-                                JSON.stringify(setParam.donateWhileRecharge) : '',
-                            priorityDeductionInConsumption : this.settingData.priorityDeductionInConsumption,
-                            houseMoneyRefunded : this.settingData.houseMoneyRefunded,
-                            allowAdjustRechargeAccount : this.settingData.allowAdjustRechargeAccount,
-                        };
-                        this.basicSet(params);
-
                     }
-                }).catch(() => {
-                    this.checkInputFunc();
-                });
+                    setParam.id = this.id;
+
+                    let params = {
+                        id : this.id,
+                        passwdForRechargeAccount : setParam.passwdForRechargeAccount,
+                        donateWhileRecharge : setParam.donateWhileRecharge.length > 0 ?
+                            JSON.stringify(setParam.donateWhileRecharge) : '',
+                        priorityDeductionInConsumption : this.settingData.priorityDeductionInConsumption,
+                        houseMoneyRefunded : this.settingData.houseMoneyRefunded,
+                        allowAdjustRechargeAccount : this.settingData.allowAdjustRechargeAccount,
+                    };
+                    this.basicSet(params);
+
+                }
             },
             //会员储值设置-保存/修改
             basicSet ( params ) {
@@ -585,7 +581,6 @@
 
             //删除储值赠送金额比例
             handleRemoveSendRate ( data, index ) {
-                this.$Message.success(this.$t('successTip', { tip : this.$t('del') })); // 删除成功
                 this.settingData.donateWhileRecharge.splice(index, 1);
             },
             //新增显示储值赠送金额比例
