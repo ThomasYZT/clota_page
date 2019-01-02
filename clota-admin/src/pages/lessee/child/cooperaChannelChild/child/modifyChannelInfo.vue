@@ -269,7 +269,7 @@
              */
             cancel () {
                 this.$router.push({
-                    name : this.personalChannel ? 'cooperaChannelPerDetail' : 'ISPinternetDetail'
+                    name : 'cooperaChannelPerDetail'
                 });
             },
             /**
