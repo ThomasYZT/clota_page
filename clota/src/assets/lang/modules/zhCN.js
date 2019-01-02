@@ -1839,7 +1839,6 @@ export default {
     'stockType.total' : '总量',
     'stockType.is_no_limit' : '不限',
     'fileSizeNoMore' : '文件大小不能超过{size}',
-    'fileFormatOnlyIs' : '文件格式只能为{format}',
     'noSupportGeolocation' : '你的浏览器不支持当前地理位置信息获取',
     'thanYestoday' : '比昨日',
     'new-card' : '新开卡',
@@ -2078,7 +2077,6 @@ export default {
     'submitSuccess' : '提交成功',
     'hasKnown' : '知道了',
     'fileFormatOnlyIs' : '上传的文件格式只能为：{format}',
-    'mostUploadPic' : '最多上传{num}个文件',
     'disabledAccount' : '停用后将不能使用{account}账户进行收款',
     'upQuantity' : '上架数量',
     'overPlusUpQuantity' : '剩余可上架数量',
@@ -2169,4 +2167,7 @@ export default {
     'refundNotAllowed' : '退票申请不通过',
     'alterApplayAllwed' : '改签申请通过',
     'alterApplayNotAllwed' : '改签申请不通过',
+    'emay' : '亿美',
+    'chuanglan' : '创蓝',
+    'yinke' : '银科',
 }

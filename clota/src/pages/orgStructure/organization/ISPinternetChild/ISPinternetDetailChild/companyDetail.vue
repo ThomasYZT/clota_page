@@ -116,7 +116,7 @@
                               v-if="type === 'edit'"
                               :label-width="type === 'edit' ? 0 : 150"
                               prop="smsProvider">
-                        <Select v-model.trim="formDataCopy.smsProvider" >
+                        <Select v-model.trim="formDataCopy.smsProvider" :disabled="true" >
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.provider"
                                     :key="item.id">
@@ -128,7 +128,7 @@
                         <span class="info-key">{{$t('smsProvider')}}：</span>
                         <span class="info-val"
                               v-w-title="companyDetail.smsProvider">
-                            {{companyDetail.smsProvider | contentFilter}}
+                            {{$t(companyDetail.smsProvider) | contentFilter}}
                         </span>
                     </div>
                 </i-col>
@@ -291,7 +291,7 @@
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="12">
+                <i-col span="12" v-if="companyDetail.smsProvider === 'yinke'">
                     <FormItem prop="orgName"
                               :label="$t('smsBuyCount')+'：'"
                               v-if="type === 'edit'"

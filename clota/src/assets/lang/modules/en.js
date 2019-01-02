@@ -2169,4 +2169,7 @@ export default {
     'refundNotAllowed' : '退票申请不通过',
     'alterApplayAllwed' : '改签申请通过',
     'alterApplayNotAllwed' : '改签申请不通过',
+    'emay' : '亿美',
+    'chuanglan' : '创蓝',
+    'yinke' : '银科',
 }
