@@ -177,18 +177,10 @@
                         }).then(res => {
                             if (res.status === 200) {
                                 this.isEditing = false;
-                                if (this.receiptAccountInfo.partnerId && this.receiptAccountInfo.merchantId) {
-                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
-                                } else {
-                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
-                                }
+                                this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
                                 this.$emit('fresh-org-data');
                             } else {
-                                if (this.receiptAccountInfo.partnerId && this.receiptAccountInfo.merchantId) {
-                                    this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
-                                } else {
-                                    this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
-                                }
+                                this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
                             }
                         });
                     }
@@ -232,7 +224,7 @@
                             merchantId : paymentChannel.merchantId,
                             payChannel : (function () {
                                 let result = [];
-                                if (paymentChannel.wenxinOpenStatus === 'open') {
+                                if (paymentChannel.weixinOpenStatus === 'open') {
                                     result.push('weixin');
                                 }
                                 if (paymentChannel.aliOpenStatus === 'open') {
@@ -248,7 +240,7 @@
                             merchantId : parentOrgPaymentChannel.merchantId,
                             payChannel : (function () {
                                 let result = [];
-                                if (parentOrgPaymentChannel.wenxinOpenStatus === 'open') {
+                                if (parentOrgPaymentChannel.weixinOpenStatus === 'open') {
                                     result.push('weixin');
                                 }
                                 if (parentOrgPaymentChannel.aliOpenStatus === 'open') {
@@ -303,7 +295,7 @@
                             this.formData.MerchantID = parentOrgPaymentChannel.merchantId;
                             this.formData.payChannel = (function () {
                                 let result = [];
-                                if (parentOrgPaymentChannel.wenxinOpenStatus === 'open') {
+                                if (parentOrgPaymentChannel.weixinOpenStatus === 'open') {
                                     result.push('weixin');
                                 }
                                 if (parentOrgPaymentChannel.aliOpenStatus === 'open') {
@@ -317,7 +309,7 @@
                             this.formData.MerchantID = paymentChannel.merchantId;
                             this.formData.payChannel = (function () {
                                 let result = [];
-                                if (paymentChannel.wenxinOpenStatus === 'open') {
+                                if (paymentChannel.weixinOpenStatus === 'open') {
                                     result.push('weixin');
                                 }
                                 if (paymentChannel.aliOpenStatus === 'open') {
