@@ -93,16 +93,31 @@
                 <i-row>
                     <i-col span="11">
                         <!--短息供应商-->
-                        <FormItem :label="$t('smsProvider')" prop="smsProvider">
-                            <Select v-model.trim="formData.smsProvider" style="width:280px" transfer>
+                        <FormItem :label="$t('smsProvider')" prop="smsProviderId">
+                            <Select v-model.trim="formData.smsProviderId" style="width:280px" transfer>
                                 <Option v-for="item in smsProviderList"
-                                        :value="item.provider"
+                                        :value="item.id"
                                         :key="item.provider">
                                     {{ item.provider }}
                                 </Option>
                             </Select>
                         </FormItem>
                     </i-col>
+                    <template v-if="formData.smsProviderId === '3' || formData.smsProviderId === '4'">
+                        <i-col span="11">
+                            <!--第三方短信服务商账号-->
+                            <FormItem :label="$t('thirdPartSmsAccount')" prop="smsProviderAccount">
+                                <Input v-model.trim="formData.smsProviderAccount" style="width: 280px"/>
+                            </FormItem>
+                        </i-col>
+                        <i-col span="11">
+                            <!--第三方短信服务商密码-->
+                            <FormItem :label="$t('thirdPartSmsPassword')" prop="smsProviderPassword">
+                                <Input v-model.trim="formData.smsProviderPassword"
+                                       type="password" style="width: 280px"/>
+                            </FormItem>
+                        </i-col>
+                    </template>
                     <i-col span="11">
                         <!--地点-->
                         <FormItem :label="$t('location')">
@@ -237,8 +252,6 @@
                     controlAccount : '',
                     //电子邮箱
                     mail : '',
-                    //短信供应商
-                    smsProvider : '',
                     //详细地址
                     address : '',
                     //客服专员
@@ -246,51 +259,17 @@
                     //地点
                     place : {},
                     //企业编码
-                    companyCode : ''
+                    companyCode : '',
+                    //短信供应商
+                    smsProviderId : '',
+                    //第三方短信服务商账号
+                    smsProviderAccount : '',
+                    //第三方短信服务商密码
+                    smsProviderPassword : ''
                 },
-                //表单校验规则
-                ruleValidate : {
-                    companyName : [
-                        {
-                            required : true,
-                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('lesseeName') }),
-                            trigger : 'blur'
-                        },
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('lesseeName'),length : 100 }),trigger : 'blur' }
-                    ],
-                    person : [
-                        {
-                            required : true,
-                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('person') }),
-                            trigger : 'blur'
-                        },
-                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' }
-                    ],
-                    phone : [
-                        { required : true, validator : validatePhone, trigger : 'blur' },
-                    ],
-                    controlAccount : [
-                        { required : true, validator : validateControlAccount, trigger : 'blur' },
-                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('controlAccount'),length : 20 }) }
-                    ],
-                    mail : [
-                        { required : true, validator : validateMail, trigger : 'blur' },
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('mail'),length : 100 }),trigger : 'blur' }
-                    ],
-                    address : [
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
-                    ],
-                    companyCode : [
-                        { max : 8,message : this.$t('errorMaxLength',{ field : this.$t('enterpriseCode'),length : 8 }),trigger : 'blur' }
-                    ],
-                    fax : [
-                        {
-                            max : 20,
-                            message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),
-                            trigger : 'blur'
-                        }
-                    ]
-                },
+                validatePhone : validatePhone,
+                validateControlAccount : validateControlAccount,
+                validateMail : validateMail,
                 // //集团列表
                 // groupList: [
                 //     {
@@ -399,13 +378,15 @@
                     tex : this.formData.fax,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
-                    smsProvider : this.formData.smsProvider,
                     provinceid : this.placeSelected.province.provinceid,
                     cityid : this.placeSelected.city.cityid,
                     districtid : this.placeSelected.area.areaid,
                     address : this.formData.address,
                     businessAccountId : this.formData.service,
                     checkinCode : this.formData.companyCode,
+                    smsProviderId : this.formData.smsProviderId,
+                    smsProviderAccount : this.formData.smsProviderAccount,
+                    smsProviderPassword : this.formData.smsProviderPassword,
                     nodeType : 'company',
                     status : status
                 }).then(res => {
@@ -443,6 +424,74 @@
                         area : '',
                     };
                 }
+            },
+            //表单校验规则
+            ruleValidate () {
+                return {
+                    companyName : [
+                        {
+                            required : true,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('lesseeName') }),
+                            trigger : 'blur'
+                        },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('lesseeName'),length : 100 }),trigger : 'blur' }
+                    ],
+                    person : [
+                        {
+                            required : true,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('person') }),
+                            trigger : 'blur'
+                        },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' }
+                    ],
+                    phone : [
+                        { required : true, validator : this.validatePhone, trigger : 'blur' },
+                    ],
+                    controlAccount : [
+                        { required : true, validator : this.validateControlAccount, trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('controlAccount'),length : 20 }) }
+                    ],
+                    mail : [
+                        { required : true, validator : this.validateMail, trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('mail'),length : 100 }),trigger : 'blur' }
+                    ],
+                    address : [
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
+                    ],
+                    companyCode : [
+                        { max : 8,message : this.$t('errorMaxLength',{ field : this.$t('enterpriseCode'),length : 8 }),trigger : 'blur' }
+                    ],
+                    fax : [
+                        {
+                            max : 20,
+                            message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),
+                            trigger : 'blur'
+                        }
+                    ],
+                    smsProviderId : [
+                        {
+                            required : true,
+                            message : this.$t('validateError.pleaseSelect', { 'msg' : this.$t('smsProvider') }),
+                            trigger : 'change'
+                        },
+                    ],
+                    smsProviderAccount : [
+                        {
+                            required : this.formData.smsProviderId === '3' || this.formData.smsProviderId === '4' ? true : false,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('thirdPartSmsAccount') }),
+                            trigger : 'blur'
+                        },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsAccount'),length : 20 }),trigger : 'blur' },
+                    ],
+                    smsProviderPassword : [
+                        {
+                            required : this.formData.smsProviderId === '3' || this.formData.smsProviderId === '4' ? true : false,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('thirdPartSmsPassword') }),
+                            trigger : 'blur'
+                        },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },
+                    ],
+                };
             }
         }
     };
