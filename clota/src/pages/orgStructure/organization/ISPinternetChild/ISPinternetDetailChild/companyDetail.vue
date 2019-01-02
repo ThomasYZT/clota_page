@@ -116,9 +116,9 @@
                               v-if="type === 'edit'"
                               :label-width="type === 'edit' ? 0 : 150"
                               prop="smsProvider">
-                        <Select v-model.trim="formDataCopy.smsProvider" :disabled="true" >
+                        <Select v-model.trim="formDataCopy.smsProviderId" :disabled="true" >
                             <Option v-for="item in smsSuppilerList"
-                                    :value="item.provider"
+                                    :value="item.id"
                                     :key="item.id">
                                 {{ item.provider }}
                             </Option>
