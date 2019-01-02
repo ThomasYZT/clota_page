@@ -2066,6 +2066,7 @@ export default {
     'fileFormatOnlyIs' : '上传的文件格式只能为：{format}',
     'mostUploadPic' : '最多上传{num}个文件',
     'disabledAccount' : '停用后将不能使用{account}账户进行收款',
+    'please' : '请{msg}',
     'optional' : '选填',
     'notNull' : '必填',
     'refundNotAllowed' : '退票申请不通过',
