@@ -161,12 +161,15 @@
                     .icon-up {
                         display: inline-block;
                         font-size: 12px;
-                        transform: scale(0.8);
                         vertical-align: middle;
                     }
 
                     .icon-down::before {
                         color: $color_err;
+                    }
+
+                    .icon-up::before {
+                        color: $color_green;
                     }
                 }
 

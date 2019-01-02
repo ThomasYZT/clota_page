@@ -70,8 +70,8 @@
         <transition name="fade">
             <div class="box-footer" v-if="boxStatus !== 'null' && canOperateMarketType">
                 <template v-if="boxStatus === 'show'">
-                    <div class="btn"><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
-                    <div class="btn"><span class="warn-btn" @click="del">{{$t('del')}}</span></div>
+                    <div class="btn"><i class="iconfont icon-edit"></i><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
+                    <div class="btn"><i class="iconfont icon-delete"></i><span class="warn-btn" @click="del">{{$t('del')}}</span></div>
                 </template>
                 <template v-if="boxStatus === 'add' || boxStatus === 'edit'">
                     <div class="btn"><span class="blue-btn" @click="save">{{$t('save')}}</span></div>
@@ -312,6 +312,7 @@
             border-bottom-left-radius: 8px;
             border-bottom-right-radius: 8px;
             .btn {
+                position: relative;
                 flex: 1 0;
                 height: 100%;
                 width: 100%;
@@ -329,6 +330,27 @@
                 .warn-btn {
                     color: $color_red;
                 }
+
+                &:first-child:after {
+                    position: absolute;
+                    margin-top: -8px;
+                    top: 50%;
+                    right: 0px;
+                    content: '';
+                    height: 16px;
+                    width: 1px;
+                    background-color: #E8E8E8;
+                }
+            }
+
+            .icon-edit {
+                color: $color_blue;
+                margin-right: 6px;
+            }
+
+            .icon-delete {
+                color: $color_red;
+                margin-right: 6px;
             }
 
         }
@@ -367,5 +389,9 @@
 
     .show-code-box {
         border: 1px solid #D9D9D9;
+    }
+
+    /deep/ .ivu-form-item {
+        margin-bottom: 5px;
     }
 </style>

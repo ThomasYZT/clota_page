@@ -3,11 +3,10 @@
     作者：杨泽涛
 -->
 <template>
-    <Modal class="add-marketing-level"
-           v-model="visible"
+    <Modal v-model="visible"
            :title="$t(type) + $t('marketingLevel')"
            class-name="vertical-center-modal add-marketing-level"
-           width="600"
+           width="560"
            :mask-closable="false"
            @on-cancel=toggle({})>
 
@@ -15,9 +14,9 @@
             <Form ref="form"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="180">
+                  :label-width="140">
                 <i-row>
-                    <i-col span="18" offset="3">
+                    <i-col span="16" offset="4">
                         <!-- 营销等级名称 -->
                         <FormItem :label="$t('colonSetting', { key : $t('marketingLevelName') })"  prop="marketingLevelName">
                             <Input type="text"
@@ -383,6 +382,10 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
+    .form-wrapper {
+        margin-top: 40px;
+    }
+
     /deep/ .ivu-select-item-disabled {
         color: $color_gray;
     }
@@ -390,4 +393,10 @@
     .level-amount-tip {
         color: $color_yellow;
     }
+
+    /deep/ .ivu-modal-body {
+        min-height: 250px;
+    }
+
+
 </style>

@@ -62,6 +62,7 @@
     @import '~@/assets/scss/base';
 
     .card-sale-report {
+        padding-top: 5px;
         width: 100%;
         height: calc(100% - 59px);
     }

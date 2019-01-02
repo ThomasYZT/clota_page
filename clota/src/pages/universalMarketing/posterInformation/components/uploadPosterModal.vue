@@ -7,13 +7,13 @@
            v-model="visible"
            :title="$t('uploadPoster')"
            class-name="vertical-center-modal"
-           width="600"
+           width="540"
            :mask-closable="false">
         <div class="form-wrapper">
             <Form ref="form"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="150">
+                  :label-width="120">
                 <i-row>
                     <i-col span="18" offset="3">
                         <FormItem :label="$t('colonSetting', { key : $t('posterName') })" prop="posterName">
@@ -202,6 +202,9 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .form-wrapper {
+        margin-top: 10px;
+    }
 
     .format-info {
         font-size: 12px;

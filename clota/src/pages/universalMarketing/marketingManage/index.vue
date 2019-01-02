@@ -264,6 +264,8 @@
         overflow: auto;
         background: $color_fff;
         border-radius: 4px;
-
+        /deep/ .ivu-form-item {
+            margin: 0;
+        }
     }
 </style>

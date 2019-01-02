@@ -13,14 +13,14 @@
                             :clearable="false"
                             :placeholder="$t('selectField', { msg : $t('date') })"
                             @on-change="getData"
-                            style="width: 280px"></DatePicker>
+                            style="width: 280px;margin-right: 10px;"></DatePicker>
 
                 <!-- 景区下拉列表 -->
                 <span class="label">{{$t('scenic')}}</span>
                 <Select v-model="filterData.scenic"
                         :placeholder="$t('selectField', { msg : $t('scenic') })"
                         @on-change="getData"
-                        style="width:160px">
+                        style="width:160px;margin-right: 10px;">
                     <Option v-for="item in scenicList" :value="item.value" :key="item.value">
                         {{ item.label === 'allScenic' ? $t(item.label) : item.label }}
                     </Option>
@@ -31,7 +31,7 @@
                 <Select v-model="filterData.cardType"
                         :placeholder="$t('selectField', { msg : $t('memberType') })"
                         @on-change="getData"
-                        style="width:160px">
+                        style="width:160px;margin-right: 10px;">
                     <Option v-for="item in cardTypeList" :value="item.value" :key="item.value">
                         {{ item.label === 'memberTypeAll' ? $t(item.label) : item.label }}
                     </Option>

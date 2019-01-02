@@ -30,7 +30,7 @@ export default {
                 meta : {
                     menuName : 'memberReport', //lang.config.js 里面的语言键值
                     _name : 'member-report',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-check-group',
                     rightPath : topMenuName + '.' + 'memberReport',
                     isMenu : true,
                 },
