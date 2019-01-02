@@ -5,6 +5,7 @@
         <div class="pick-up-title" >
             <span class="label">{{$t('在线收款账户')}}</span>
             <span class="back-up"
+                  v-if="showPickUp"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
                 <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
@@ -64,8 +65,8 @@
                         <i-col span="10">
                             <FormItem :label="$t('colonSetting',{ key : $t('收款账户类型') })" prop="name">
                                 <CheckboxGroup v-model="formData.payChannel" >
-                                    <Checkbox label="weixin" :disabled="!isEditing">{{$t('weixin')}}</Checkbox>
-                                    <Checkbox label="alipay" :disabled="!isEditing">{{$t('alipay')}}</Checkbox>
+                                    <Checkbox label="weixin" :disabled="!isEditing || formData.accountType !== 'auto'">{{$t('weixin')}}</Checkbox>
+                                    <Checkbox label="alipay" :disabled="!isEditing || formData.accountType !== 'auto'">{{$t('alipay')}}</Checkbox>
                                 </CheckboxGroup>
                             </FormItem>
                         </i-col>
@@ -99,6 +100,11 @@
                 default () {
                     return {};
                 }
+            },
+            //是否显示收起展开
+            'show-pick-up' : {
+                type : Boolean,
+                default : true
             }
         },
         data () {
@@ -166,7 +172,8 @@
                             partnerId : !this.useCorpPayAcc ? this.formData.partnerID : '',
                             merchantId : !this.useCorpPayAcc ? this.formData.MerchantID : '',
                             payChannel : !this.useCorpPayAcc ? this.formData.payChannel.join(',') : '',
-                            useCorpPayAcc : this.useCorpPayAcc
+                            useCorpPayAcc : this.useCorpPayAcc,
+                            paymentChannel : 'yinshi'
                         }).then(res => {
                             if (res.status === 200) {
                                 this.isEditing = false;
@@ -212,30 +219,61 @@
         computed : {
             //收款账户处理数据
             accountListDeal () {
-                if ( this.receiptAccountInfo.parentPartnerId && this.receiptAccountInfo.parentMerchantId ) {
+                let paymentChannel = (this.receiptAccountInfo.orgPaymentChannel && this.receiptAccountInfo.orgPaymentChannel.paramData) ?
+                    JSON.parse(this.receiptAccountInfo.orgPaymentChannel.paramData) :
+                    {};
+                if ( this.receiptAccountInfo.parentOrgPaymentChannel && this.receiptAccountInfo.parentOrgPaymentChannel.paramData ) {
+                    let parentOrgPaymentChannel = JSON.parse(this.receiptAccountInfo.parentOrgPaymentChannel.paramData);
                     return [
                         {
                             value : 'auto',
                             name : '自定义',
-                            partnerId : this.receiptAccountInfo.partnerId,
-                            merchantId : this.receiptAccountInfo.merchantId,
-                            payChannel : this.receiptAccountInfo.payChannel,
+                            partnerId : paymentChannel.partnerId,
+                            merchantId : paymentChannel.merchantId,
+                            payChannel : (function () {
+                                let result = [];
+                                if (paymentChannel.wenxinOpenStatus === 'open') {
+                                    result.push('weixin');
+                                }
+                                if (paymentChannel.aliOpenStatus === 'open') {
+                                    result.push('alipay');
+                                }
+                                return result;
+                            })(),
                         },
                         {
                             value : this.receiptAccountInfo.parentManageId,
                             name : this.receiptAccountInfo.parentManageName,
-                            partnerId : this.receiptAccountInfo.parentPartnerId,
-                            merchantId : this.receiptAccountInfo.parentMerchantId,
-                            payChannel : this.receiptAccountInfo.parentPayChannelInfo,
+                            partnerId : parentOrgPaymentChannel.partnerId,
+                            merchantId : parentOrgPaymentChannel.merchantId,
+                            payChannel : (function () {
+                                let result = [];
+                                if (parentOrgPaymentChannel.wenxinOpenStatus === 'open') {
+                                    result.push('weixin');
+                                }
+                                if (parentOrgPaymentChannel.aliOpenStatus === 'open') {
+                                    result.push('alipay');
+                                }
+                                return result;
+                            })(),
                         }
                     ];
                 } else {
                     return [{
                         value : 'auto',
                         name : '自定义',
-                        partnerId : this.receiptAccountInfo.partnerId,
-                        merchantId : this.receiptAccountInfo.merchantId,
-                        payChannel : this.receiptAccountInfo.payChannel,
+                        partnerId : paymentChannel.partnerId,
+                        merchantId : paymentChannel.merchantId,
+                        payChannel : (function () {
+                            let result = [];
+                            if (paymentChannel.weixinUseStatus === 'enabled') {
+                                result.push('weixin');
+                            }
+                            if (paymentChannel.aliOpenStatus === 'open') {
+                                result.push('alipay');
+                            }
+                            return result;
+                        })(),
                     }];
                 }
             },
@@ -244,11 +282,7 @@
                 if (!this.isScenic) {
                     return false;
                 } else {
-                    if (this.formData.accountType === 'auto') {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    return this.formData.accountType !== 'auto';
                 }
             }
         },
@@ -257,16 +291,40 @@
             receiptAccountInfo : {
                 handler (newVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
+                        let paymentChannel = (newVal.orgPaymentChannel && newVal.orgPaymentChannel.paramData) ?
+                            JSON.parse(newVal.orgPaymentChannel.paramData) :
+                            {};
                         if (newVal.useCorpPayAcc === 'true') {
+                            let parentOrgPaymentChannel = (newVal.parentOrgPaymentChannel && newVal.parentOrgPaymentChannel.paramData) ?
+                                JSON.parse(newVal.parentOrgPaymentChannel.paramData) :
+                                {};
                             this.formData.accountType = newVal.parentManageId;
-                            this.formData.partnerID = newVal.parentPartnerId;
-                            this.formData.MerchantID = newVal.parentMerchantId;
-                            this.formData.payChannel = newVal.parentPayChannelInfo ? newVal.parentPayChannelInfo : [];
+                            this.formData.partnerID = parentOrgPaymentChannel.partnerId;
+                            this.formData.MerchantID = parentOrgPaymentChannel.merchantId;
+                            this.formData.payChannel = (function () {
+                                let result = [];
+                                if (parentOrgPaymentChannel.wenxinOpenStatus === 'open') {
+                                    result.push('weixin');
+                                }
+                                if (parentOrgPaymentChannel.aliOpenStatus === 'open') {
+                                    result.push('alipay');
+                                }
+                                return result;
+                            })();
                         } else {
                             this.formData.accountType = 'auto';
-                            this.formData.partnerID = newVal.partnerId;
-                            this.formData.MerchantID = newVal.merchantId;
-                            this.formData.payChannel = newVal.payChannelInfo ? newVal.payChannelInfo : [];
+                            this.formData.partnerID = paymentChannel.partnerId;
+                            this.formData.MerchantID = paymentChannel.merchantId;
+                            this.formData.payChannel = (function () {
+                                let result = [];
+                                if (paymentChannel.wenxinOpenStatus === 'open') {
+                                    result.push('weixin');
+                                }
+                                if (paymentChannel.aliOpenStatus === 'open') {
+                                    result.push('alipay');
+                                }
+                                return result;
+                            })();
                         }
                     }
                 },

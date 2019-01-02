@@ -55,6 +55,14 @@
                     </li>
                 </template>
             </ul>
+
+            <!--在线收款账户-->
+            <online-receipt :node-info="channelDetailInfo"
+                            :show-pick-up="false"
+                            :receipt-account-info="lessDetail"
+                            @fresh-org-data="getLesseeDetail">
+            </online-receipt>
+
             <div class="partner-area">
                 <div class="partner-name">合作伙伴</div>
                 <div class="count">合作伙伴数：{{totalCount}}</div>
@@ -131,12 +139,14 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { channelsGroupList } from '@/assets/js/constVariable';
     import { validator } from 'klwk-ui';
+    import onlineReceipt from '../ISPinternetChild/ISPinternetDetailChild/components/onlineReceipt';
     export default {
         mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             tableCom,
-            editModal
+            editModal,
+            onlineReceipt
         },
         data () {
             //校验邮箱地址是否正确
@@ -210,6 +220,8 @@
                 channelDetailInfo : {},
                 //合作伙伴渠道列表
                 channelsGroupList : channelsGroupList,
+                //租户详情信息
+                lessDetail : {}
             };
         },
         methods : {
@@ -338,6 +350,7 @@
                         }
                         this.auditStatus = res.data.auditStatus;
                         //this.formData.email = res.data.email;
+                        this.getLesseeDetail();
                     } else {
                         this.cooperaPerDetail.name = '';
                         this.auditStatus = '';
@@ -394,7 +407,21 @@
                         formData : this.channelDetailInfo
                     }
                 });
-            }
+            },
+            /**
+             * 获取租户详情
+             */
+            getLesseeDetail () {
+                ajax.post('getServiceProvider',{
+                    id : this.channelDetailInfo.id
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.lessDetail = res.data ? res.data : {};
+                    } else {
+                        this.lessDetail = {};
+                    }
+                });
+            },
         },
         computed : {
             //是否显示通过和驳回的按钮
