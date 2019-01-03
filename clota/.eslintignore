@@ -3,17 +3,3 @@
 /dist/
 /*.js
 /test/unit/coverage/
-
-/src/api/
-/src/assets/
-/src/config/
-/src/mixins/
-/src/pages/financeManage/
-/src/pages/login/
-/src/pages/memberManage/
-/src/pages/orgStructure/
-/src/pages/permissionNot/
-/src/pages/personalCenter/
-/src/pages/register/
-/src/pages/systemSetting/
-/src/pages/withoutSubMenu/
