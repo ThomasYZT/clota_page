@@ -229,6 +229,7 @@
                     if (this.activeNodeId === data.id) {
                         this.$nextTick(() => {
                             this.$refs.menuTree.setCheckedNodes([]);
+                            this.setHandlerChosedNode();
                         });
                     }
                 }
@@ -255,30 +256,41 @@
                         this.$refs.menuTree.setChecked(data.privCode,false,true);
                     });
                 }
+                this.setHandlerChosedNode();
+            },
+            /**
+             * 设置手动选择节点
+             */
+            setHandlerChosedNode () {
                 this.$nextTick(() => {
                     let havedChosedNodes = this.$refs.menuTree.getCheckedNodes();
-                    havedChosedNodes.map(item => {
-                        //将不是默认选中的权限保存为手动选择的额外权限
-                        if (!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
-                            !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)) {
-                            this.handlerChosedMenu[this.activeNodeId].push({
-                                ...item,
-                                choseStatus : ''
-                            });
-                        }
-                    });
-                    halfCheckedNodes.map(item => {
-                        if (!item.disabled) {
+                    let halfCheckedNodes = this.$refs.menuTree.getHalfCheckedNodes();
+                    if (havedChosedNodes.length > 0) {
+                        havedChosedNodes.map(item => {
                             //将不是默认选中的权限保存为手动选择的额外权限
                             if (!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
                                 !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)) {
                                 this.handlerChosedMenu[this.activeNodeId].push({
                                     ...item,
-                                    choseStatus : 'half'
+                                    choseStatus : ''
                                 });
                             }
-                        }
-                    });
+                        });
+                        halfCheckedNodes.map(item => {
+                            if (!item.disabled) {
+                                //将不是默认选中的权限保存为手动选择的额外权限
+                                if (!this.defaultChosedDisabledPrivaliges[this.activeNodeId] ||
+                                    !this.defaultChosedDisabledPrivaliges[this.activeNodeId].includes(item.privCode)) {
+                                    this.handlerChosedMenu[this.activeNodeId].push({
+                                        ...item,
+                                        choseStatus : 'half'
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        this.handlerChosedMenu[this.activeNodeId] = [];
+                    }
                 });
             },
             /**
