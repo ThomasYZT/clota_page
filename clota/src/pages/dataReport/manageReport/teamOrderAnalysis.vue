@@ -8,6 +8,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         data () {
@@ -44,9 +45,12 @@
             });
         },
         computed : {
+            ...mapGetters({
+                manageOrgs : 'manageOrgs'
+            }),
             //报表路由
             reportUrl () {
-                return this.reportBaseUrl + this.reportParams;
+                return this.reportBaseUrl + this.reportParams + '&:nowOrgId=' + this.manageOrgs.id;
             }
         }
     };
