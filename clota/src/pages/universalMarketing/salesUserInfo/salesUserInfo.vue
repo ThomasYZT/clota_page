@@ -65,7 +65,7 @@
                     pageNo : 1,
                     pageSize : 10,
                 },
-            }
+            };
         },
         computed : {},
         created () {

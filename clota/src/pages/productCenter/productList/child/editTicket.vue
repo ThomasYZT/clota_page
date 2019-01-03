@@ -678,7 +678,7 @@
                 this.$refs.editPark.show({
                     index : index,
                     data : data,
-                    parkList :  Array.from(this.parkList),
+                    parkList : Array.from(this.parkList),
                     list : this.productPlayRuleVo,
                     title : this.$t('modify') + (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
                     type : 'modify',
@@ -800,7 +800,7 @@
                 this.formData.stockNum = '';
                 this.$nextTick(() => {
                     this.$refs.formValidate.validateField('stockNum');
-                })
+                });
             }
         },
         computed : {

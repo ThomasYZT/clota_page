@@ -28,40 +28,40 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import ajax from '@/api/index'
-    import companyManagerTemp from './components/company_manager_view'
-    import employeeTemp from './components/employee_view'
-    import partnerTemp from './components/partner_view'
-    import scenicManagerTemp from './components/scenic_manager_view'
+    import ajax from '@/api/index';
+    import companyManagerTemp from './components/company_manager_view';
+    import employeeTemp from './components/employee_view';
+    import partnerTemp from './components/partner_view';
+    import scenicManagerTemp from './components/scenic_manager_view';
 
     export default {
-        components: {
+        components : {
             companyManagerTemp,
             employeeTemp,
             partnerTemp,
             scenicManagerTemp
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 //用户信息
-                accountInfo: {},
+                accountInfo : {},
                 //用户类型
-                employeeType: '',
-            }
+                employeeType : '',
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
             this.getAccountInfo();
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             /**
              * 获取个人信息数据
              */
-            getAccountInfo() {
+            getAccountInfo () {
                 ajax.post('getProfile').then((res) => {
                     if (res.success) {
                         this.accountInfo = res.data ? res.data : {};
@@ -70,7 +70,7 @@
                         this.accountInfo = {};
                         this.employeeType = '';
                     }
-                })
+                });
             }
         }
     };

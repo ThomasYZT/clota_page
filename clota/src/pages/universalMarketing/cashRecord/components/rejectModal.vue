@@ -33,7 +33,7 @@
         data () {
             return {
                 visible : false, //显示模态框变量
-            }
+            };
         },
         computed : {},
         created () {

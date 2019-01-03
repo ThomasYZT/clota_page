@@ -1,7 +1,7 @@
 // 销售用户信息列表表头
 export const salesUserHead = [
     {
-        title : '用户编码', // 用户编码
+        title : 'userCode', // 用户编码
         minWidth : 130,
         field : 'id'
     },
@@ -11,13 +11,13 @@ export const salesUserHead = [
         field : 'name'
     },
     {
-        title : '用户手机号', // 用户手机号
+        title : 'userPhoneNumber', // 用户手机号
         width : 150,
         enWidth : 180,
         field : 'mobile'
     },
     {
-        title : '用户邀请码', // 用户邀请码
+        title : 'userInviteCode', // 用户邀请码
         minWidth : 130,
         field : 'inviteCode'
     },

@@ -152,7 +152,7 @@
              * 上传失败
              */
             uploadFail () {
-                this.$message.error('图片上传失败');
+                this.$message.error('failureTip', { tip : this.$t('upload') });
                 this.$store.commit('changePromisings','del');
             },
             /**

@@ -28,29 +28,29 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['row-data'],
-        components: {},
+        props : ['row-data'],
+        components : {},
         data () {
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {
-                    payer: '',
-                    rechargeAmount: 0,
-                    rechargeType: '',
-                    transactionNo: '',
-                    remark: '',
+                formData : {
+                    payer : '',
+                    rechargeAmount : 0,
+                    rechargeType : '',
+                    transactionNo : '',
+                    remark : '',
                 },
 
-            }
+            };
         },
-        watch: {
+        watch : {
 
         },
-        methods: {
+        methods : {
 
             show ( data ) {
-                if( data ){
+                if ( data ) {
                     this.formData = defaultsDeep({}, data.item, this.formData);
                 }
                 this.visible = true;
@@ -58,14 +58,14 @@
 
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {
-                    payer: '',
-                    rechargeAmount: 0,
-                    rechargeType: '',
-                    transactionNo: '',
-                    remark: '',
+                    payer : '',
+                    rechargeAmount : 0,
+                    rechargeType : '',
+                    transactionNo : '',
+                    remark : '',
                 };
 
             },
@@ -84,7 +84,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

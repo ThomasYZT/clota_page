@@ -21,7 +21,7 @@ const permissionFilter = (routerObj, routerList) => {
         }
     });
     return status;
-}
+};
 /**
  *  路由信息组装、权限判断
  *  @param {object} rowData
@@ -39,7 +39,7 @@ export const routerPackage = (rowData, routerInfo) => {
                 params : {
                     info : rowData.extData
                 }
-            }
+            };
             break;
         //销售政策 上线申请、通过上线申请、驳回上线申请
         case 'apply_policy_online' :
@@ -51,7 +51,7 @@ export const routerPackage = (rowData, routerInfo) => {
                 params : {
                     info : rowData.extData
                 }
-            }
+            };
             break;
         //充值 申请、通过申请、驳回申请
         case 'apply_recharge' :
@@ -100,6 +100,6 @@ export const routerPackage = (rowData, routerInfo) => {
     } else {
         return;
     }
-}
+};
 
 

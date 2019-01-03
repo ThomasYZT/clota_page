@@ -50,7 +50,7 @@
                     xAxisData : [],
                     legend : []
                 }
-            }
+            };
         },
         methods : {
             /**

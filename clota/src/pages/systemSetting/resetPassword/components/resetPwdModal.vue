@@ -48,23 +48,23 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['row-data'],
-        components: {
+        props : ['row-data'],
+        components : {
         },
         data () {
             let self = this;
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
                 },
                 // 校验再次输入的密码是否与新密码相同
-                isEqNewPwd: (rule, value, callback) => {
+                isEqNewPwd : (rule, value, callback) => {
                     if (value != self.formData.password) {
-                        callback(new Error( this.$t('paswordMustBeEqual') ));    // 输入的密码与新密码不同
+                        callback(new Error( this.$t('paswordMustBeEqual') )); // 输入的密码与新密码不同
                     } else {
                         callback();
                     }
@@ -73,42 +73,42 @@
             //校验密码是否符合规则
             const validatePass = (rule,value,callback) => {
                 let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
-                if(!reg.test(value)) {
+                if (!reg.test(value)) {
                     callback(new Error( this.$t('errorPwdRule') ));
-                }else {
-                    callback()
+                } else {
+                    callback();
                 }
             };
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {},
+                formData : {},
                 //校验规则
-                ruleValidate: {
-                    password: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('newPassword')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                ruleValidate : {
+                    password : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('newPassword') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                         {
                             validator : validatePass,
                             trigger : 'blur'
                         }
                     ],
-                    rePassword: [
-                        { required: true, message: this.$t('inputPasswordAgain'), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMethod.isEqNewPwd, trigger: 'blur' },
+                    rePassword : [
+                        { required : true, message : this.$t('inputPasswordAgain'), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMethod.isEqNewPwd, trigger : 'blur' },
                     ],
 
                 },
-            }
+            };
         },
-        watch: {
+        watch : {
 
         },
-        methods: {
+        methods : {
             //显示模态框
             show ( data ) {
-                if( data ){
+                if ( data ) {
                     this.formData = defaultsDeep(this.formData, data.item);
                     this.formData.accountId = data.item.id;
                 }
@@ -118,14 +118,14 @@
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
+                    if (valid) {
 
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {};
 
@@ -145,12 +145,12 @@
             resetPwd ( params ) {
                 params.password = MD5(params.password).toString();
                 ajax.post('resetAccountPassword', params).then((res) => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('resetPsw')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('resetPsw') }));
                         this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        this.$emit('updata-list', { item : this.formData, index : this.index });
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('resetPsw')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('resetPsw') }));
                     }
                 });
             },
@@ -165,7 +165,7 @@
             }
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

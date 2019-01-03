@@ -37,14 +37,14 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
     export default {
         mixins : [lifeCycleMixins],
-        components: {},
-        data() {
+        components : {},
+        data () {
             return {
                 //支付参数
                 payFormData : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
@@ -68,7 +68,7 @@
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

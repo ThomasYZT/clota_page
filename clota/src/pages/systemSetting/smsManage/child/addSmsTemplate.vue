@@ -86,18 +86,18 @@
     import ajax from '@/api/index';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
             exampleTplModal
         },
-        props: {},
+        props : {},
         mixins : [lifeCycleMixins],
-        data() {
+        data () {
             const validateMethod = {
 
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -107,85 +107,85 @@
 
             return {
                 // 面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: '短信模板',   // 短信模板
-                        router: {
+                        name : 'smsTemplate', // 短信模板
+                        router : {
                             name : 'smsTemplate'
                         },
                     }
                 ],
                 // 新增/修改
-                type: 'add',
-                loading: false,
+                type : 'add',
+                loading : false,
                 // 表单数据绑定
-                smsForm: {
-                    templetName: '',
-                    templetType: '',
-                    templetContent: '',
+                smsForm : {
+                    templetName : '',
+                    templetType : '',
+                    templetContent : '',
                 },
                 // 校验规则
-                ruleValidate: {
-                    templetName: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('templateName')}), trigger: 'blur'},     // 模板名称不能为空
+                ruleValidate : {
+                    templetName : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('templateName') }), trigger : 'blur' }, // 模板名称不能为空
                         {
-                            type: 'string',
-                            max: 15,
-                            message: this.$t('errorMaxLength', {field: this.$t('templateName'), length: 15}),
-                            trigger: 'blur'
-                        },      // 模板名称不能超过15个字符
-                        {validator: validateMethod.emoji, trigger: 'blur'}
+                            type : 'string',
+                            max : 15,
+                            message : this.$t('errorMaxLength', { field : this.$t('templateName'), length : 15 }),
+                            trigger : 'blur'
+                        }, // 模板名称不能超过15个字符
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
-                    templetType: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('templateType')}), trigger: 'change'},     // 模板类型不能为空
+                    templetType : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('templateType') }), trigger : 'change' }, // 模板类型不能为空
                     ],
-                    templetContent: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('templateContent')}), trigger: 'blur'},     // 模板内容不能为空
+                    templetContent : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('templateContent') }), trigger : 'blur' }, // 模板内容不能为空
                         {
-                            type: 'string',
-                            max: 15,
-                            message: this.$t('errorMaxLength', {field: this.$t('name'), length: 320}),
-                            trigger: 'blur'
-                        },      // 模板名称不能超过320个字符
-                        {validator: validateMethod.emoji, trigger: 'blur'}
+                            type : 'string',
+                            max : 15,
+                            message : this.$t('errorMaxLength', { field : this.$t('name'), length : 320 }),
+                            trigger : 'blur'
+                        }, // 模板名称不能超过320个字符
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
                 }
-            }
+            };
         },
-        computed: {
+        computed : {
             localeRouter () {
-                return this.type === 'add' ? this.$t('add') : this.$t('edit');      // 新增 ： 修改
+                return this.type === 'add' ? this.$t('add') : this.$t('edit'); // 新增 ： 修改
             },
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
 
                         //区分新增与修改
-                        if( this.type === 'modify' ){
+                        if ( this.type === 'modify' ) {
 
                             this.saveAndEditMember(this.smsForm);
-                        }else {
+                        } else {
                             //新增需求暂时不做
                         }
                     }
-                })
+                });
             },
 
             /**
              * 获取路由信息
              */
-            getParams(params) {
-                console.log(params)
-                if(this.$route.query.type === 'modify'){
-                    if(params && Object.keys(params).length > 0){
+            getParams (params) {
+                console.log(params);
+                if (this.$route.query.type === 'modify') {
+                    if (params && Object.keys(params).length > 0) {
                         this.type = this.$route.query.type;
                         this.initData(params);
                     }
@@ -194,34 +194,34 @@
             /**
              * 初始化编辑模版页面数据
              */
-            initData(params) {
-                this.smsForm = params
+            initData (params) {
+                this.smsForm = params;
             },
             //返回
-            goBack() {
+            goBack () {
                 //区分新增与修改
-                if( this.type === 'add' ){
-                    this.$router.push({ name: 'smsTemplate'});
+                if ( this.type === 'add' ) {
+                    this.$router.push({ name : 'smsTemplate' });
                 }
-                if( this.type === 'modify' ){
+                if ( this.type === 'modify' ) {
                     this.$router.back();
                 }
             },
             //编辑并保存模版
-            saveAndEditMember(params) {
+            saveAndEditMember (params) {
                 ajax.post('updateSmsTemplet',{
-                    id: params.id,
-                    templetName: params.templetName,
-                    templetContent: params.templetContent
+                    id : params.id,
+                    templetName : params.templetName,
+                    templetContent : params.templetContent
                 }).then((res) => {
-                    console.log(res)
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('add')}));
-                        this.$router.push({ name: 'smsTemplate'});
-                    }else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
+                    console.log(res);
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('add') }));
+                        this.$router.push({ name : 'smsTemplate' });
+                    } else {
+                        this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('add') }));
                     }
-                })
+                });
             }
         }
     };

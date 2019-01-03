@@ -78,7 +78,7 @@
                 products : [],
                 //产品id
                 productIds : '',
-            }
+            };
         },
         methods : {
             /**
@@ -130,10 +130,10 @@
                     } else {
                         this.tableData = [];
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

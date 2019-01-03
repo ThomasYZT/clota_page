@@ -47,31 +47,31 @@
 
 export const employeeInfoHead = [
     {
-        title: 'empId',//员工ID
-        width: 220,
-        field: 'id'
+        title : 'empId',//员工ID
+        width : 220,
+        field : 'id'
     },
     {
-        title: 'loginName',//登录名
-        minWidth: 150,
-        field: 'loginName'
+        title : 'loginName',//登录名
+        minWidth : 150,
+        field : 'loginName'
     },
     {
-        title: 'name',
-        minWidth: 100,
-        field: 'nickName'
+        title : 'name',
+        minWidth : 100,
+        field : 'nickName'
     },
     {
-        title: 'sceneName',//企业/景区名称
-        minWidth: 190,
+        title : 'sceneName',//企业/景区名称
+        minWidth : 190,
         enMinWidth : 160,
-        field: 'orgName'
+        field : 'orgName'
     },
     {
-        title: 'departName',//部门名称
-        minWidth: 190,
+        title : 'departName',//部门名称
+        minWidth : 190,
         enMinWidth : 150,
-        field: 'deptName'
+        field : 'deptName'
     },
     //按需求暂时不要
     /*{
@@ -80,13 +80,13 @@ export const employeeInfoHead = [
         field: 'roleName'
     },*/
     {
-        title: 'mobilePhone',
-        minWidth: 150,
-        field: 'phone'
+        title : 'mobilePhone',
+        minWidth : 150,
+        field : 'phone'
     },
     {
-        title: 'operate',
-        width: 80,
-        field: ''
+        title : 'operate',
+        width : 80,
+        field : ''
     },
 ];

@@ -26,7 +26,7 @@
                     <div>{{withdrawInfo.orderId | contentFilter}}</div>
                 </Form-item>
                 <!--销售用户姓名-->
-                <Form-item :label="$t('colonSetting', { key: $t('销售用户姓名') })">
+                <Form-item :label="$t('colonSetting', { key: $t('saleUserName') })">
                     <div>{{withdrawInfo.userName | contentFilter}}</div>
                 </Form-item>
                 <!--收款账户类型-->
@@ -34,7 +34,7 @@
                     <div>{{ $t(transAccountType(withdrawInfo.accountType)) | contentFilter }}</div>
                 </Form-item>
                 <!--收款账号/卡号-->
-                <Form-item :label="$t('colonSetting', { key: $t('收款账号/卡号') })">
+                <Form-item :label="$t('colonSetting', { key: $t('gatheringAccountAndCardNo') })">
                     <div>{{withdrawInfo.accountInfo | contentFilter}}</div>
                 </Form-item>
                 <!--订单金额-->
@@ -42,7 +42,7 @@
                     <div>{{withdrawInfo.checkAmount | contentFilter}}</div>
                 </Form-item>
                 <!--佣金-->
-                <Form-item :label="$t('colonSetting', { key: $t('佣金') })">
+                <Form-item :label="$t('colonSetting', { key: $t('commission') })">
                     <div>{{withdrawInfo.orderSalary | contentFilter}}</div>
                 </Form-item>
                 <!--付款方式-->
@@ -66,21 +66,21 @@
                     </Select>-->
                 </Form-item>
                 <!--付款方姓名-->
-                <Form-item :label="$t('colonSetting', { key: $t('付款方姓名') })" prop="payName">
+                <Form-item :label="$t('colonSetting', { key: $t('payerName') })" prop="payName">
                     <Input v-model.trim="transferParams.payName"
-                           :placeholder="$t('inputField', { field : $t('付款方姓名') })" />
+                           :placeholder="$t('inputField', { field : $t('payerName') })" />
                 </Form-item>
                 <!--付款账号/卡号-->
-                <Form-item :label="$t('colonSetting', { key: $t('付款账号/卡号') })" prop="payAccount">
+                <Form-item :label="$t('colonSetting', { key: $t('payAccountAndCardNo') })" prop="payAccount">
                     <Input v-model.trim="transferParams.payAccount"
-                           :placeholder="$t('inputField', { field : $t('付款账号/卡号') })" />
+                           :placeholder="$t('inputField', { field : $t('payAccountAndCardNo') })" />
                 </Form-item>
                 <!--备注-->
                 <Form-item :label="$t('colonSetting', { key: $t('remark') })" prop="remark">
                     <Input v-model.trim="transferParams.remark"
                            type="textarea"
                            :rows="4"
-                           :placeholder="$t('inputField', {field: $t('交易流水号或备注说明')})"/>
+                           :placeholder="$t('inputField', {field: $t('transactionSNOrRemark')})"/>
                 </Form-item>
 
             </Form>
@@ -122,18 +122,18 @@
                 ruleValidate : {
                     payName : {
                         required : true,
-                        message : this.$t('inputField', { field : this.$t('付款方姓名') }),
+                        message : this.$t('inputField', { field : this.$t('payerName') }),
                         trigger : 'blur'
                     },
                     payAccount : {
                         required : true,
-                        message : this.$t('inputField', { field : this.$t('付款账号/卡号') }),
+                        message : this.$t('inputField', { field : this.$t('payAccountAndCardNo') }),
                         trigger : 'blur'
                     },
                     remark : [
                         {
                             required : true,
-                            message : this.$t('inputField', { field : this.$t('交易流水号或备注说明') }),
+                            message : this.$t('inputField', { field : this.$t('transactionSNOrRemark') }),
                             trigger : 'blur'
                         },
                         {
@@ -145,7 +145,7 @@
                 },
                 //最近n次使用的银行卡付款账号类型
                 recentPayTypes : [],
-            }
+            };
         },
         computed : {
             //是否微信、支付宝付款方式
@@ -209,12 +209,12 @@
                             ...this.transferParams
                         }).then(res => {
                             if (res.success) {
-                                this.$Message.success(this.$t('提交成功！'));
+                                this.$Message.success(this.$t('successTip', { tip : this.$t('submit') }));
                                 this.hide();
 
                                 this.$emit('on-submit-success');
                             } else {
-                                this.$Message.error(this.$t('提交失败！'));
+                                this.$Message.error(this.$t('failureTip', { tip : this.$t('submit') }));
                             }
                         });
                     }

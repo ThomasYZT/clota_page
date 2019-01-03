@@ -74,7 +74,7 @@
                 allMarketLevel : [{ id : 'all', levelName : 'all' }],
                 // 销售政策列表
                 salesPolicy : [],
-            }
+            };
         },
         computed : {
             // policyItem () {

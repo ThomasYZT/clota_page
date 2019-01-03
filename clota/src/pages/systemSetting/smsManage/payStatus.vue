@@ -12,11 +12,11 @@
 
     export default {
         components : {},
-        data() {
-            return {}
+        data () {
+            return {};
         },
         methods : {}
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

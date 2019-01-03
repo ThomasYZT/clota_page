@@ -17,7 +17,7 @@ export const cashRecordHead = [
     },
     {
         title : 'saleUserPhoneNumber', // 用户手机号
-        width : 150,
+        width : 160,
         field : 'mobile'
     },
     /*{

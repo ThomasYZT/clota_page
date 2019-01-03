@@ -197,7 +197,7 @@
             },
             // 批量删除
             batchDel () {
-                if ( !this.cacnDelProduct ) return ;
+                if ( !this.cacnDelProduct ) return;
                 let ids = this.selectedRow.map(item => item.id).join(',');
                 this.delUnits = this.selectedRow.map(item => item.productName).join(',');
                 this.$refs.delModal.show({

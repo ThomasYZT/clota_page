@@ -102,85 +102,85 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import noData from '@/components/noDataTip/noData-tip.vue'
-    import newAccountModal from './components/newAccountModal.vue'
-    import delAccountModal from './components/delAccountModal.vue'
+    import noData from '@/components/noDataTip/noData-tip.vue';
+    import newAccountModal from './components/newAccountModal.vue';
+    import delAccountModal from './components/delAccountModal.vue';
 
     import delModal from '@/components/delModal';
     import ajax from '@/api/index';
-    import operateAccountModal from './components/operateAccountModal'
+    import operateAccountModal from './components/operateAccountModal';
 
     export default {
-        components: {noData, newAccountModal, delAccountModal, delModal, operateAccountModal},
-        props: {},
-        data() {
+        components : { noData, newAccountModal, delAccountModal, delModal, operateAccountModal },
+        props : {},
+        data () {
             return {
-                collectionAccList: [],
+                collectionAccList : [],
 
                 // 增加/修改账户modalTitle
-                modalTitle: '',
+                modalTitle : '',
                 //当前选中删除的账户类型
-                selectedPayType: '',
+                selectedPayType : '',
                 // payTypeName: {
                 //     'alipay': '支付宝支付账户',
                 //     'weixin': '微信支付账户'
                 // },
                 //当前用户已拥有的账户类型list
-                hasPaytypeList: []
-            }
+                hasPaytypeList : []
+            };
         },
-        computed: {},
-        created() {
-            this.queryOnlineAccount()
+        computed : {},
+        created () {
+            this.queryOnlineAccount();
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             /**
              * 增加/修改账户
              * @param operate - 增加、修改的双语键值
              */
-            addPaymentAccount(operate, item) {
+            addPaymentAccount (operate, item) {
                 let index = this.collectionAccList.length;
 
                 this.modalTitle = operate;
-                this.$refs.addAccount.show({ item, index});
+                this.$refs.addAccount.show({ item, index });
             },
             /**
              * 删除账户
              */
-            delPaymentAccount(item) {
+            delPaymentAccount (item) {
                 this.selectedPayType = item.paymentName;
                 this.$refs.delModal.show({
                     title : this.$t('deleteAccount'),
                     confirmCallback : () => {
                         ajax.post('deleteOnlineAccount', {
-                            id: item.id
+                            id : item.id
                         }).then((res) => {
-                            if(res.success){
+                            if (res.success) {
                                 this.$Message.success(this.$t('success') + this.$t('delete'));
                                 this.queryOnlineAccount();
                             } else {
                                 this.$Message.error(res.message || this.$t('fail'));
                             }
-                        })
+                        });
                     }
-                })
+                });
             },
             /**
              * 获取在线账户支付列表
              */
-            queryOnlineAccount() {
+            queryOnlineAccount () {
                 ajax.post('queryOnlineAccount').then((res) => {
                     if (res.success) {
                         this.collectionAccList = res.data;
                         this.hasPaytypeList = [];
                         this.collectionAccList.forEach((item) => {
-                            if(this.hasPaytypeList.indexOf('alipay') <= -1 && item.accountType == 'alipay') {
+                            if (this.hasPaytypeList.indexOf('alipay') <= -1 && item.accountType == 'alipay') {
                                 this.hasPaytypeList.push('alipay');
                             }
-                            if(this.hasPaytypeList.indexOf('weixin') <= -1 && item.accountType == 'weixin') {
+                            if (this.hasPaytypeList.indexOf('weixin') <= -1 && item.accountType == 'weixin') {
                                 this.hasPaytypeList.push('weixin');
                             }
                         });
@@ -188,14 +188,14 @@
                         this.hasPaytypeList = [];
                         this.collectionAccList = [];
                     }
-                })
+                });
             },
             /**
              * 改变收款账户状态
              * @param {*} item
              */
             operateSatus (item) {
-                this.$refs.operateAccountModal.toggle(item)
+                this.$refs.operateAccountModal.toggle(item);
             }
         }
     };

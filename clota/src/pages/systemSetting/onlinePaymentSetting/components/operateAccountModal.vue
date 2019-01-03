@@ -49,10 +49,10 @@
     import delModal from '@/components/delModal/index';
     import ajax from '@/api/index';
     export default {
-        components: {
+        components : {
             delModal
         },
-        data() {
+        data () {
             return {
                 //是否显示模态框
                 visible : false,
@@ -60,9 +60,9 @@
                 title : '',
                 //收款账户信息
                 accountInfo : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 隐藏/显示模态框
              * @param {*} data
@@ -70,7 +70,7 @@
             toggle (data) {
                 if (data) {
                     this.accountInfo = data;
-                    this.title = this.accountInfo.useStatus === 'enabled' ? 'startOnlineAccount' : 'stopOnlineAccount'
+                    this.title = this.accountInfo.useStatus === 'enabled' ? 'startOnlineAccount' : 'stopOnlineAccount';
                 } else {
                     this.accountInfo = {};
                     this.title = '';
@@ -84,13 +84,13 @@
                 this.visible = false;
                 this.$refs.delModal.show({
                     title : this.$t('notice'),
-                    confirmCallback: () => {
+                    confirmCallback : () => {
                         this.updateOnlineAccount();
                     },
-                    cancelCallback: () => {
+                    cancelCallback : () => {
                         this.visible = true;
                     }
-                })
+                });
             },
             /**
              * 修改账户状态
@@ -109,10 +109,10 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('operate') }));
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

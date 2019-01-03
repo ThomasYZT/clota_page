@@ -46,7 +46,7 @@
                     } else {
                         this.pageContent = {};
                     }
-                })
+                });
             }
         },
         watch : {

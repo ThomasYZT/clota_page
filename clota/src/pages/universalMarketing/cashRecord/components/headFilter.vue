@@ -68,7 +68,7 @@
                 marketingLevels : [],
                 // 全部营销等级
                 allMarketLevel : [{ id : 'all', levelName : 'all' }],
-            }
+            };
         },
         computed : {},
         created () {

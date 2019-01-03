@@ -397,7 +397,7 @@
                 this.type = type;
                 let _productList = productList;
                 let _chosedProducts = chosedProducts;
-                for (let i = 0, len = _productList.length; i < len; i ++) {
+                for (let i = 0, len = _productList.length; i < len; i++) {
                     for (let j = 0, jlen = _chosedProducts.length; j < jlen; j++) {
                         if (_chosedProducts[j].productId === _productList[i].id) {
                             _productList.splice(i, 1);

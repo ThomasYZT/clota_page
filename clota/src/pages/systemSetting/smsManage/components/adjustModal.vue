@@ -53,18 +53,18 @@
     import delModal from '../../../../components/delModal/index';
     import ajax from '../../../../api/index';
     export default {
-        components: {
+        components : {
             delModal
         },
-        data() {
+        data () {
             return {
                 //是否显示模态框
                 visible : false,
                 //列表项数据
                 listItem : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              *  切换显示/隐藏模态框
              */
@@ -107,7 +107,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

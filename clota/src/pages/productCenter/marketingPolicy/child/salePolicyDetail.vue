@@ -473,7 +473,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.detail = res.data || {};
-                        console.log(this.detail)
+                        console.log(this.detail);
                     } else {
                         this.detail = {};
                         this.$Message.error(res.message || this.$t('fail'));
@@ -510,7 +510,7 @@
                     } else {
                         this.$router.push({
                             name : 'marketingPolicy'
-                        })
+                        });
                     }
                 }
             },

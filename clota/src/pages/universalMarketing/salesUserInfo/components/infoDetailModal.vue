@@ -7,7 +7,7 @@
 <template>
     <Modal
         v-model="visible"
-        :title="$t('销售用户详细信息')"
+        :title="$t('saleUserDetail')"
         class-name="vertical-center-modal"
         width="1000"
         :mask-closable="false"
@@ -17,7 +17,7 @@
             <!--个人基本信息-->
             <div class="info-item">
                 <div class="info-item-title">
-                    <span class="title-name">{{$t('个人基本信息')}}</span>
+                    <span class="title-name">{{$t('personalBaseInfo')}}</span>
                 </div>
                 <div class="content">
                     <i-row>
@@ -36,7 +36,7 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--身份证号码-->
-                                <span class="info-key">{{$t('colonSetting', { key: $t('身份证号码') })}}</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('IDNumber') })}}</span>
                                 <span class="info-val">{{salesUserInfo.idno | contentFilter}}</span>
                             </div>
                         </i-col>
@@ -60,7 +60,7 @@
             <!--收款账户信息-->
             <div class="info-item">
                 <div class="info-item-title">
-                    <span class="title-name">{{$t('收款账户信息')}}</span>
+                    <span class="title-name">{{$t('collectionAccountInformation')}}</span>
                 </div>
                 <div class="content">
                     <i-row>
@@ -74,14 +74,14 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--收款用户姓名-->
-                                <span class="info-key">{{$t('colonSetting', { key: $t('收款用户姓名') })}}</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('collectionUserName') })}}</span>
                                 <span class="info-val">{{salesUserInfo.name | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--收款账号-->
-                                <span class="info-key">{{$t('colonSetting', { key: $t('收款账号') })}}</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('gatheringAccount') })}}</span>
                                 <span class="info-val">{{salesUserInfo.accountInfo | contentFilter}}</span>
                             </div>
                         </i-col>
@@ -91,7 +91,7 @@
             <!--注册信息-->
             <div class="info-item">
                 <div class="info-item-title">
-                    <span class="title-name">{{$t('注册信息')}}</span>
+                    <span class="title-name">{{$t('registerInfo')}}</span>
                 </div>
                 <div class="content">
                     <i-row>
@@ -126,7 +126,7 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--用户邀请码-->
-                                <span class="info-key">{{$t('colonSetting', { key: $t('用户邀请码') })}}</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('userInviteCode') })}}</span>
                                 <span class="info-val">{{salesUserInfo.inviteCode | contentFilter}}</span>
                             </div>
                         </i-col>
@@ -136,7 +136,7 @@
             <!--销售信息-->
             <div class="info-item">
                 <div class="info-item-title">
-                    <span class="title-name">{{$t('销售信息')}}</span>
+                    <span class="title-name">{{$t('saleInfo')}}</span>
                 </div>
                 <div class="content" style="margin-bottom: 26px;">
                     <i-row>
@@ -152,21 +152,21 @@
                         <i-col span="8">
                             <div class="node-info">
                                 <!--佣金总额-->
-                                <span class="info-key">{{$t('colonSetting', { key: $t('佣金总额') })}}</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('totalCommission') })}}</span>
                                 <span class="info-val text-org">{{salesUserInfo.totalEarnAmount | contentFilter | moneyFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--已提现金额-->
-                                <span class="info-key">{{$t('colonSetting', { key: $t('已提现金额') })}}</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('withdrawalsMoney') })}}</span>
                                 <span class="info-val text-org">{{salesUserInfo.haveWithdrawAmount | contentFilter | moneyFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
                             <div class="node-info">
                                 <!--未提现金额-->
-                                <span class="info-key">{{$t('colonSetting', { key: $t('未提现金额') })}}</span>
+                                <span class="info-key">{{$t('colonSetting', { key: $t('unWithdrawalsMoney') })}}</span>
                                 <span class="info-val text-org">{{salesUserInfo.unWithdrawAmount | contentFilter | moneyFilter}}</span>
                             </div>
                         </i-col>
@@ -192,7 +192,7 @@
             return {
                 visible : false,
                 salesUserInfo : {}
-            }
+            };
         },
         computed : {},
         created () {

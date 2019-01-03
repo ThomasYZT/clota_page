@@ -8,7 +8,7 @@
     <div class="filter-box">
         <ul class="clearfix">
             <li>
-                <span class="filter-label">{{$t('营销类别')}}</span>
+                <span class="filter-label">{{$t('marketType')}}</span>
                 <Select v-model="filterParams.marketTypeId"
                         class="field-item">
                     <Option v-for="item in marketingTypes"
@@ -21,7 +21,7 @@
             <li>
                 <i-input v-model.trim="filterParams.keyword"
                          style="width: 240px;"
-                         :placeholder="$t('请输入查询内容')"
+                         :placeholder="$t('pleaseInputSearchInfo')"
                          @on-enter="searchList">
                 </i-input><!--请输入查询内容-->
             </li>
@@ -45,7 +45,7 @@
                 },
                 // 营销类别列表
                 marketingTypes : [{ id : 'all', typeName : 'all' }],
-            }
+            };
         },
         computed : {},
         created () {

@@ -55,35 +55,35 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        props: ['row-data'],
-        components: {},
+        props : ['row-data'],
+        components : {},
         data () {
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {},
-            }
+                formData : {},
+            };
         },
-        watch: {
+        watch : {
 
         },
-        methods: {
+        methods : {
             show ( data ) {
-                if( data ){
+                if ( data ) {
                     this.formData = defaultsDeep(this.formData, data.item);
                 }
                 this.visible = true;
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {
-                    payer: '',
-                    rechargeAmount: 0,
-                    rechargeType: '',
-                    transactionNo: '',
-                    remark: '',
+                    payer : '',
+                    rechargeAmount : 0,
+                    rechargeType : '',
+                    transactionNo : '',
+                    remark : '',
                 };
 
             },
@@ -96,44 +96,44 @@
             },
 
             // 取消
-            cancel() {
+            cancel () {
                 //驳回
                 this.rejectRecharge(this.formData);
             },
 
             //驳回
-            rejectRecharge(params) {
+            rejectRecharge (params) {
                 ajax.post('rejectRecharge', {
-                    rechargeId: params.id,
-                    remark: this.formData.remark
+                    rechargeId : params.id,
+                    remark : this.formData.remark
                 }).then(res => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('operate')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('operate') }));
                         this.hide();
-                        this.$emit('update-list', { item: this.formData, index: this.index});
+                        this.$emit('update-list', { item : this.formData, index : this.index });
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('operate')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('operate') }));
                     }
-                })
+                });
             },
 
             //审核通过
-            passAudit(params) {
+            passAudit (params) {
                 ajax.post('passRecharge', {
-                    rechargeId: params.id,
-                    remark: this.formData.remark
+                    rechargeId : params.id,
+                    remark : this.formData.remark
                 }).then(res => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('operate')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('operate') }));
                         this.hide();
-                        this.$emit('update-list', { item: this.formData, index: this.index});
+                        this.$emit('update-list', { item : this.formData, index : this.index });
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('operate')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('operate') }));
                     }
-                })
+                });
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

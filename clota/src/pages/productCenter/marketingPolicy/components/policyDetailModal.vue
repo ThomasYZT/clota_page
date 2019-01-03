@@ -326,7 +326,7 @@
                                 minWidth : 20,
                                 field : '',
                                 isShow : 'false'
-                            }
+                            };
                         }
                     });
                 } else {

@@ -57,43 +57,43 @@
 </template>
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {smsTplHead} from './smsTemplateConfig';
+    import { configVariable } from '@/assets/js/constVariable';
+    import { smsTplHead } from './smsTemplateConfig';
     import checkTplModal from './components/checkTplModal.vue';
     import ajax from '@/api/index';
 
     export default {
-        components: {tableCom, checkTplModal},
-        props: {},
-        data() {
+        components : { tableCom, checkTplModal },
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    keyword: '',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    keyword : '',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    name: '',
+                filterParam : {
+                    name : '',
                 },
                 // 表格表头字段名
-                columnData: smsTplHead,
+                columnData : smsTplHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
+                totalCount : 0,
                 // 已勾选的模板
-                selectedTpl: [],
-            }
+                selectedTpl : [],
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
-            queryList() {
+        watch : {},
+        methods : {
+            queryList () {
                 ajax.post('getSmsTempletList',this.queryParams).then((res) => {
                     if (res.success) {
                         if (res.data && res.data.data) {
@@ -109,7 +109,7 @@
             },
 
             // 搜索短信套餐
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
@@ -118,25 +118,25 @@
              * 跳转至编辑模板，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            goEditSms(scopeRow) {
+            goEditSms (scopeRow) {
                 this.$router.push({
-                    name: 'addSmsTemplate',
-                    query: {type: 'modify'},
-                    params: scopeRow
+                    name : 'addSmsTemplate',
+                    query : { type : 'modify' },
+                    params : scopeRow
                 });
             },
             /**
              * 查看短信模板详情，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            checkSmsDetail(scopeRow) {
-                this.$refs.checkTplModal.show({item: scopeRow});
+            checkSmsDetail (scopeRow) {
+                this.$refs.checkTplModal.show({ item : scopeRow });
             },
             /**
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.selectedTpl = selection;
             },
         }

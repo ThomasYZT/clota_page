@@ -34,4 +34,4 @@ export const auditConfirmHeadConfig = [
         minWidth : 150,
         field : 'auditStatus'
     }
-]
+];

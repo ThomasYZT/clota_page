@@ -4,8 +4,8 @@
 -->
 <template>
     <div class="pay-status">
-        <span v-if="status === 'success'">支付成功！</span>
-        <span v-else-if="status === 'failure'">支付失败！</span>
+        <span v-if="status === 'success'">{{$t('successTip', { tip : $t('pay') })}}</span>
+        <span v-else-if="status === 'failure'">{{$t('failureTip', { tip : $t('pay') })}}</span>
     </div>
 </template>
 
@@ -16,10 +16,10 @@
         data () {
             return {
                 status : ''
-            }
+            };
         },
         methods : {}
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

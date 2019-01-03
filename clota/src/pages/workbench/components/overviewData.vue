@@ -66,7 +66,7 @@
             }
         },
         data () {
-            return {}
+            return {};
         },
         computed : {
             //同比上周，当前指标是上升，还是下降

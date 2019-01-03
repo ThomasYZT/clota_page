@@ -88,7 +88,7 @@
                 tableData : [],
                 //交易量比例基准
                 baseRate : 0,
-            }
+            };
         },
         computed : {},
         created () {

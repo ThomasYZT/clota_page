@@ -73,7 +73,7 @@
                 columnData : disableHeadConfig,
                 //产品id
                 productId : '',
-            }
+            };
         },
         methods : {
             /**
@@ -113,10 +113,10 @@
                     } else {
                         this.tableData = [];
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

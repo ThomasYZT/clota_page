@@ -67,23 +67,23 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        props: ['row-data'],
-        components: {
+        props : ['row-data'],
+        components : {
             loopForPayResult
         },
         data () {
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {
-                    packageName: '',
-                    price: '',
-                    smsCount: 0,
-                    provider: '',
-                    payType: '',
+                formData : {
+                    packageName : '',
+                    price : '',
+                    smsCount : 0,
+                    provider : '',
+                    payType : '',
                 },
                 //校验规则
-                ruleValidate: {
+                ruleValidate : {
                     payType : [
                         {
                             required : true,
@@ -97,35 +97,35 @@
                 //是否显示支付状态模态框
                 payModalShow : false,
                 transactionId : ''
-            }
+            };
         },
-        watch: {
+        watch : {
 
         },
-        methods: {
+        methods : {
 
             show ( data ) {
-                if( data ){
+                if ( data ) {
                     this.formData = defaultsDeep({}, data.item, this.formData);
                 }
                 this.visible = true;
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {
-                    packageName: '',
-                    price: '',
-                    smsCount: 0,
-                    provider: '',
-                    payType: '',
+                    packageName : '',
+                    price : '',
+                    smsCount : 0,
+                    provider : '',
+                    payType : '',
                 };
 
             },
 
             //
-            onTypeChanged(data) {
+            onTypeChanged (data) {
                 this.payInfo = this.onlineAccountList.find(item => {
                     return item.accountType === data;
                 });
@@ -137,10 +137,10 @@
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         ajax.post('orderBuySmsPackage', {
-                            smsPackageId: params.id,
+                            smsPackageId : params.id,
                             payType : this.formData.payType,
                         }).then(res => {
-                            if( res.success ) {
+                            if ( res.success ) {
                                 if (res.data) {
                                     this.payNow({
                                         bizId : res.data,
@@ -151,12 +151,12 @@
                                         newWindow : newWindow,
                                     });
                                 } else {
-                                    this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
+                                    this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                                 }
                             } else {
-                                this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
+                                this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                             }
-                        })
+                        });
                     }
                 });
             },
@@ -164,7 +164,7 @@
             /**
              * 支付接口调用
              */
-            payNow ({bizId, payType, payMoney, merchantId, partnerId, newWindow}) {
+            payNow ({ bizId, payType, payMoney, merchantId, partnerId, newWindow }) {
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -187,9 +187,9 @@
                         this.hide();
                         this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
                     } else {
-                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
+                        this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                     }
-                })
+                });
             },
             /**
              * 开启查询支付结果
@@ -212,7 +212,7 @@
                 'onlineAccountList'
             ])
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

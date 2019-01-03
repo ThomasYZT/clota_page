@@ -151,7 +151,7 @@
                 columnData : allPendingMattersHead,
                 //表格数据
                 tableData : [],
-            }
+            };
         },
         computed : {
             ...mapGetters([
@@ -169,7 +169,7 @@
                             if (item.finishStatus === "false") {
                                 item.content = item.content ? JSON.parse(item.content) : '';
                                 item.extData = item.extData ? JSON.parse(item.extData) : '';
-                                item.routerObj = routerPackage(item, this.routerInfo)
+                                item.routerObj = routerPackage(item, this.routerInfo);
                             }
                             return item.finishStatus === "false";
                         }) : [];

@@ -88,43 +88,43 @@
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import modifyLimitModal from './components/modifyLimitModal.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {paymentHead} from '../financeManageConfig';
+    import { configVariable } from '@/assets/js/constVariable';
+    import { paymentHead } from '../financeManageConfig';
     import ajax from '@/api/index';
 
     export default {
-        components: {tableCom, modifyLimitModal},
-        props: {},
-        data() {
+        components : { tableCom, modifyLimitModal },
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    keyword: '',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    keyword : '',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    name: '',
+                filterParam : {
+                    name : '',
                 },
                 // 表格表头字段名
-                columnData: paymentHead,
+                columnData : paymentHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
-            }
+                totalCount : 0,
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             /**
              * 查询收款账户列表
              **/
-            queryList() {
+            queryList () {
                 ajax.post('queryPartnerAccounts', this.queryParams).then((res) => {
                     if (res.data && res.data.data) {
                         this.tableData = res.data.data;
@@ -137,7 +137,7 @@
             },
 
             // 搜索信息
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 this.queryList();
             },
@@ -145,8 +145,8 @@
              * 显示修改额度弹窗，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            handleRecharge(scopeRow) {
-                this.$refs.modifyLimitModal.show({item: scopeRow});
+            handleRecharge (scopeRow) {
+                this.$refs.modifyLimitModal.show({ item : scopeRow });
             },
         }
     };
