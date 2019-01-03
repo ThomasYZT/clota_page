@@ -67,10 +67,10 @@
                             @click="showModal('auditCashModal', scope.row)">{{$t('checked')}}</li>
                         <!--审核状态为“已通过”时，操作按钮：提交转账流水-->
                         <li v-else-if="scope.row.withdrawStatus=='pass' && canSubmitWithdraw"
-                            @click="showModal('transferAccountModal', scope.row)">{{$t('提交转账流水')}}</li>
+                            @click="showModal('transferAccountModal', scope.row)">{{$t('submitTransferDetail')}}</li>
                         <!--审核状态为“已转账”时，操作按钮：修改转账流水-->
                         <li v-else-if="scope.row.withdrawStatus=='success' && canSubmitWithdraw"
-                            @click="showModal('transferAccountModal', scope.row)">{{$t('修改转账流水')}}</li>
+                            @click="showModal('transferAccountModal', scope.row)">{{$t('modifyTransferDetail')}}</li>
                         <!--审核状态为“已驳回”时，操作按钮：无-->
                         <li v-else>-</li>
                     </ul>
