@@ -436,7 +436,7 @@
                             this.$nextTick(() => {
                                 setTimeout(() => {
                                     let checkedKeys = this.$refs.nodeTree.getCheckedKeys();
-                                    this.$refs.nodeTree.setCheckedKeys([...data,...checkedKeys]);
+                                    this.$refs.nodeTree.setCheckedKeys([...checkedKeys]);
                                     this.setDefaultMenuChosed();
                                 },1200);
                             });
