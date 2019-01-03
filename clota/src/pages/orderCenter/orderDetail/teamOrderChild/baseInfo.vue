@@ -216,7 +216,7 @@
             //审核结果图片
             auditResultImg () {
                 //团队订单 已过期
-                if (this.isOverdue === 'true') {
+                if (this.baseInfo.isOverdue === 'true') {
                     if (this.baseInfo.auditStatus === 'cancel_audit' || this.baseInfo.auditStatus === 'cancel_success') {
                         if (this.baseInfo.auditStatus === 'cancel_audit') {
                             return require('../../../../assets/images/icon-cancel-wait-audit.svg');

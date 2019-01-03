@@ -68,7 +68,7 @@
                     //过期核销 -- 产品明细
                     'ORDER_OVERDUE_VERIFY_TICKET' : 'green-status',
                     //团队订单退单申请
-                    'ORDER_CANCEL_APPLY' : 'blue-status',
+                    'ORDER_CANCEL_APPLY' : 'green-status',
                     //团队订单退单驳回
                     'ORDER_CANCEL_AUDIT_REJECT' : 'red-status',
                     //团队订单退单通过
