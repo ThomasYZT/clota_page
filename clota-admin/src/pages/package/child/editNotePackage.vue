@@ -24,8 +24,8 @@
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
                             <Select v-model="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"
-                                        :value="item.provider"
-                                        :key="item.provider">
+                                        :value="item.id"
+                                        :key="item.id">
                                     {{ item.provider }}
                                 </Option>
                             </Select>
@@ -204,7 +204,7 @@
             addSmsPackage () {
                 ajax.post('addSmsPackage',{
                     packageName : this.formData.packageName,
-                    provider : this.formData.smsProvider,
+                    providerId : this.formData.smsProvider,
                     price : this.formData.price,
                     smsCount : this.formData.number,
                 }).then(res => {
