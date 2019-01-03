@@ -6,6 +6,11 @@ export const groupOrderHead = [
         field : 'orderNo'
     },
     {
+        title : 'scenePlace', // 所属景区
+        minWidth : 130,
+        field : 'orgName'
+    },
+    {
         title : 'playDate', // 游玩日期
         minWidth : 130,
         field : 'originVisitDate',

@@ -111,20 +111,36 @@
                 </i-col>
             </i-row>
             <i-row>
+                <i-col span="6" v-if="isRefundAuditPage">
+                    <!--过期状态-->
+                    <FormItem :label="$t('过期状态')" >
+                        <Select v-model="formData.overdue"
+                                style="max-width: 260px"
+                                @on-change="searchAuditList">
+                            <Option v-for="item in overdueStatus"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
                 <i-col span="6" style="float:right;text-align: right">
-                    <Button type="primary"
-                            class="ivu-btn-90px"
-                            @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->
-                    <Button type="ghost"
-                            class="ivu-btn-90px reset"
-                            @click="reset">{{$t('reset')}}</Button><!--重置-->
+                    <FormItem >
+                        <Button type="primary"
+                                class="ivu-btn-90px"
+                                @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->
+                        <Button type="ghost"
+                                class="ivu-btn-90px reset"
+                                @click="reset">{{$t('reset')}}</Button><!--重置-->
+                    </FormItem>
                 </i-col>
             </i-row>
         </Form>
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import { notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
+    import { notDistributorChannelList, payStatusList,overdueStatus } from '@/assets/js/constVariable';
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
     import debounce from 'lodash/debounce';
@@ -148,6 +164,8 @@
             return {
                 //表单数据
                 formData : {
+                    //过期状态
+                    overdue : 'all',
                     // 下单起始日期
                     orderStartDate : '',
                     // 下单结束日期
@@ -173,6 +191,8 @@
                 orderChannelList : notDistributorChannelList,
                 // 支付状态
                 paymentList : payStatusList,
+                // 过期状态
+                overdueStatus : overdueStatus,
                 // 下单时间范围
                 orderTimeRange : [],
                 // 游玩日期范围
@@ -195,6 +215,10 @@
                     id : 'all',
                     orgName : this.$t('all')
                 }],this.orderTakeList);
+            },
+            //是否是团队订单退票审核页面
+            isRefundAuditPage () {
+                return this.$route.name === 'teamOrderRefundAudit';
             }
         },
         created () {
@@ -222,7 +246,7 @@
              * emit事件：on-filter，在父组件查询审核列表
              */
             searchAuditList : debounce(function () {
-                let keys = ['channelId', 'orderChannel', 'productType', 'paymentStatus'];
+                let keys = ['channelId', 'orderChannel', 'productType', 'paymentStatus','overdue'];
                 let queryParams = Object.assign({}, this.formData);
                 keys.forEach((key, i) => {
                     if (queryParams[key] && queryParams[key].includes('all')) {

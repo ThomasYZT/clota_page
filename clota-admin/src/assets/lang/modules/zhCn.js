@@ -611,4 +611,6 @@ export default {
     'applyCancelOrder' : '申请取消订单',
     'preCheckPass' : '预审核通过',
     'preCheckReject' : '预审核不通过',
+    'notExpired' : '未过期',
+    'hasExpired' : '已过期',
 };

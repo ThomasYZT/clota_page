@@ -24,7 +24,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="250"
+            :ofsetHeight="260"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -174,6 +174,12 @@
                     auditStatus : this.isRefundAuditPage ? 'cancel_audit' : 'audit',
                     orderType : 'team',
                 };
+                if (this.queryParams.orderChannel) {
+                    Object.assign(params,{ orderChannel : this.queryParams.orderChannel });
+                }
+                if (this.queryParams.overdue) {
+                    Object.assign(params,{ overdue : this.queryParams.overdue });
+                }
                 if (this.queryParams.orderChannel) {
                     Object.assign(params,{ orderChannel : this.queryParams.orderChannel });
                 }

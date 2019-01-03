@@ -586,4 +586,19 @@ export const channelsGroupList = [
     }
 ];
 
+//过期状态
+export const overdueStatus = [
+    {
+        label : 'all', //全部
+        value : 'all',
+    },
+    {
+        label : 'hasExpired', //已过期
+        value : 'true',
+    }, {
+        label : 'notExpired', //未过期
+        value : 'false',
+    },
+];
+
 
