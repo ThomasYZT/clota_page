@@ -168,6 +168,8 @@
             save (data) {
                 if (data.label.length > 10) {
                     this.$Message.error(this.$t('errorMaxLength', { field : this.$t('marketType'), length : '10' }));
+                } else if (data.label.length < 1) {
+                    this.$Message.error(this.$t('errorEmpty', { msg : this.$t('marketType') }));
                 } else {
                     if (data.type && data.type === 'add') {
                         this.addType(data);
@@ -191,7 +193,6 @@
                             label : '',
                             type : 'add'
                         };
-                        this.getTypeList({});
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
                     }
@@ -227,6 +228,7 @@
                         return false;
                     } else if (data.label === item.label && item.type === 'add') {
                         this.typeList.pop();
+                        this.getTypeList({});
                         return false;
                     }
                 });

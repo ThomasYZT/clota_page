@@ -46,12 +46,14 @@
             padding-right: 10px;
             flex: 1 0;
             flex-basis: 20%;
+            width: 20%;
             border-right: 1px solid $color_gray;
         }
 
         .menu-tree-wrapper {
             flex: 1 0;
             flex-basis: 80%;
+            width: 80%;
         }
     }
 </style>

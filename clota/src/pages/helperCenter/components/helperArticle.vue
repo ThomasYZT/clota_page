@@ -5,7 +5,7 @@
 <template>
     <div class="helper-article">
         <template v-if="Object.keys(pageInfo).length > 0">
-            <h4 class="page-title">{{pageContent.title}}</h4>
+            <h4 class="page-title"><span>{{pageContent.title}}</span></h4>
             <div class="page-content" v-html="pageContent.content"></div>
         </template>
         <noDataTip v-else></noDataTip>
@@ -78,6 +78,10 @@
 
         .page-content {
             padding: 20px;
+            word-break: break-all;
+            /deep/ img {
+                max-width: 100%;
+            }
         }
     }
 </style>
