@@ -2194,4 +2194,6 @@ export default {
     'goldCoin' : '金币',
     'gameCoin' : '游戏币',
     'applayCancelOrder' : '发起取消订单申请',
+    'preCheckPass' : '预审核通过',
+    'preCheckReject' : '预审核不通过',
 };
