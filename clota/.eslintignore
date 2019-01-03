@@ -3,15 +3,3 @@
 /dist/
 /*.js
 /test/unit/coverage/
-
-/src/api/
-/src/config/
-/src/mixins/
-/src/utils/
-/src/router/
-/src/components/
-/src/store/
-/src/*.js
-/src/App.vue
-
-
