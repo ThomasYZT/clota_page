@@ -97,7 +97,7 @@
                     <FormItem :label="$t('keywords')" >
                         <Input v-model.trim="formData.keyword"
                                style="width: 320px;"
-                               :placeholder="$t('请输入游客姓名/手机号/订单号/订单明细编号')" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
+                               :placeholder="$t('inputField', { field : $t('vistorNameOrPhoneNumOrOrderNo') } )" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
                     </FormItem>
                 </i-col>
             </i-row>

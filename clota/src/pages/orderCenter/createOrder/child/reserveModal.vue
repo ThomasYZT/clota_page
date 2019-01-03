@@ -152,7 +152,7 @@
                     ticketNum += this.productListDela[i]['num'];
                 }
                 if (ticketNum <= 0) {
-                    this.$Message.warning(this.$t('请选择购买的产品'));
+                    this.$Message.warning(this.$t('selectField', { msg : this.$t('boughtGoods') }));
                     return;
                 }
                 let routeName = '';

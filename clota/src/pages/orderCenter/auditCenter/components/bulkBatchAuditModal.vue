@@ -87,9 +87,9 @@
                 if (data) {
                     this.orderData = data;
                     if (data.type == 'pass') {
-                        this.title = '批量通过';
+                        this.title = 'batchPass';
                     } else if (data.type == 'reject') {
-                        this.title = '批量驳回';
+                        this.title = 'batchReject';
                     }
 
                     if (this.reqType == 'refund') {
@@ -120,17 +120,17 @@
                 }).then(res => {
                     if (res.success) {
                         if (this.orderData.type === 'pass') {
-                            this.$Message.success(this.$t('订单已批量审核通过'));
+                            this.$Message.success(this.$t('orderBatchAuditPass'));
                         } else if (this.orderData.type === 'reject') {
-                            this.$Message.success(this.$t('订单已批量驳回'));
+                            this.$Message.success(this.$t('orderBatchAuditReject'));
                         }
                         this.hide();
 
                         this.$emit('on-audited');
                     } else if (res.code === 'OD003' || res.code === 'OD010') {
-                        this.$Message.error('产品库存不足，改签失败');
+                        this.$Message.error(this.$t('orderAuditTip.stockNumPoor'));
                     } else {
-                        this.$Message.error('审核失败');
+                        this.$Message.error(this.$t('auditFailure'));
                     }
                 });
             },

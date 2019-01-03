@@ -67,7 +67,7 @@
                     <template slot="label">
                         <Tooltip placement="top" transfer>
                             <div slot="content" class="tips-content">
-                                用于与线下系统对接
+                                {{$t('add-company.tip')}}
                             </div>
                             <span class="iconfont icon-note"></span>
                             <!--<Icon type="information-circled"></Icon>-->

@@ -30,12 +30,12 @@
                     </Option>
                 </Select>
             </FormItem>
-            <FormItem :label="$t('是否启用')"
+            <FormItem :label="$t('isStarted')"
                       prop="status"
                       v-if="formData.nodeType === 'department'">
                 <RadioGroup v-model="formData.status" style="width: 280px">
-                    <Radio label="open">立即启用</Radio>
-                    <Radio label="close">暂不启用</Radio>
+                    <Radio label="open">{{$t('startRightly')}}</Radio>
+                    <Radio label="close">{{$t('nowNoEnabled')}}</Radio>
                 </RadioGroup>
             </FormItem>
         </Form>

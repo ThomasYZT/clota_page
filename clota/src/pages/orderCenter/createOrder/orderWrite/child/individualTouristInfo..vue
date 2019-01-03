@@ -62,7 +62,7 @@
         <confirm-modal ref="confirmModal">
             <div class="confirm-label">
                 <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
-                {{$t('确认删除游客信息？')}}
+                {{$t('sureToDeleteVisitorInfo')}}
             </div>
         </confirm-modal>
     </div>

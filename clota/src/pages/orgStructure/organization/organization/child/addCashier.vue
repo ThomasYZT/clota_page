@@ -22,7 +22,7 @@
                     <template slot="label">
                         <Tooltip placement="top" transfer>
                             <div slot="content" class="tips-content">
-                                服务器名称为景区编码+设备编码或内网IP地址，不可重复
+                                {{$t('add-cashier.tip')}}
                             </div>
                             <span class="iconfont icon-note"></span>
                         </Tooltip>

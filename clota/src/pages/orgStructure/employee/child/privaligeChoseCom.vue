@@ -4,22 +4,22 @@
     <div class="menu-privalige">
         <div class="pri-title">
             <div class="org-title">
-                <div class="scene-title">景区权限</div>
+                <div class="scene-title">{{$t('scenePermission')}}</div>
                 <ul class="tap">
                     <li class="li"
                         :class="{active : tapType === 'manage'}"
                         @click="checkTap('manage')">
-                        经营权限
+                        {{$t('managePermission')}}
                     </li>
                     <li class="li"
                         :class="{active : tapType === 'finance'}"
                         @click="checkTap('finance')">
-                        财务权限
+                        {{$t('financeAuthority')}}
                     </li>
                 </ul>
             </div>
             <div class="menu-title">
-                <div class="scene-title">菜单权限（{{orgName[tapType]}}）</div>
+                <div class="scene-title">{{$t('menuPermission')}}（{{orgName[tapType]}}）</div>
             </div>
         </div>
         <finace-role v-show="tapType === 'finance'"

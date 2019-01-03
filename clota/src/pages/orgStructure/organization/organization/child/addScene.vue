@@ -37,7 +37,7 @@
                     <template slot="label">
                         <Tooltip placement="top" transfer>
                             <div slot="content" class="tips-content">
-                                如需开通更多服务，请先为上级公司开通相应服务。
+                                {{$t('add-scene.tip')}}
                             </div>
                             <span class="iconfont icon-note"></span>
                         </Tooltip>
@@ -78,7 +78,7 @@
                     <template slot="label">
                         <Tooltip placement="top" transfer>
                             <div slot="content" class="tips-content">
-                                用于与线下系统对接
+                                {{$t('add-scene.tipAboutCompanyCode')}}
                             </div>
                             <span class="iconfont icon-note"></span>
                         </Tooltip>

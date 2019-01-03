@@ -24,7 +24,7 @@
             </el-table-column>
         </table-com>
         <div class="total-info">
-            合计：<span class="total-amount">{{totalPrice | moneyFilter}}</span>
+            {{$t('colonSetting', { key : $t('totalAdd') })}}<span class="total-amount">{{totalPrice | moneyFilter}}</span>
         </div>
     </div>
 </template>
