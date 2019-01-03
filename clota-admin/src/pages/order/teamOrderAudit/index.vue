@@ -171,7 +171,7 @@
                     keyword : this.queryParams.keyword,
                     page : this.queryParams.page,
                     pageSize : this.queryParams.pageSize,
-                    auditStatus : 'audit',
+                    auditStatus : this.isRefundAuditPage ? 'cancel_audit' : 'audit',
                     orderType : 'team',
                 };
                 if (this.queryParams.orderChannel) {

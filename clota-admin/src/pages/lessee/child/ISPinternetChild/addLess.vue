@@ -11,7 +11,7 @@
                   :model="formData"
                   label-position="right"
                   :rules="ruleValidate"
-                  :label-width="120">
+                  :label-width="190">
                 <i-row>
                     <i-col span="11">
                         <!--租户公司名称-->
@@ -480,7 +480,7 @@
                     ],
                     smsProviderAccount : [
                         {
-                            required : this.formData.smsProviderId === '3' || this.formData.smsProviderId === '4' ? true : false,
+                            required : true,
                             message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('thirdPartSmsAccount') }),
                             trigger : 'blur'
                         },
@@ -488,7 +488,7 @@
                     ],
                     smsProviderPassword : [
                         {
-                            required : this.formData.smsProviderId === '3' || this.formData.smsProviderId === '4' ? true : false,
+                            required : true,
                             message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('thirdPartSmsPassword') }),
                             trigger : 'blur'
                         },
@@ -515,7 +515,7 @@
             overflow: auto;
 
             /deep/ .ivu-form {
-                @include block_outline(924px, auto);
+                @include block_outline(1124px, auto);
                 margin: 0 auto;
             }
         }

@@ -236,7 +236,7 @@
 
                 <i-col span="6">
                 <!--团队订单预审核状态-->
-                    <FormItem :label="$t('团队订单预审核状态')" :label-width="150" >
+                    <FormItem :label="$t('团队订单审核状态')" :label-width="150" >
                         <Select v-model.trim="formData.auditStatus"
                             style="max-width: 200px"
                             @on-change="searchProductList">

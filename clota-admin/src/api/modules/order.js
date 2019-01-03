@@ -44,7 +44,7 @@ export default {
     //散客产品退改签审核
     'updateProductRefundAlterAudit' : 'order/updateProductRefundAlterAudit.json',
     //申请取消订单
-    'applyCancleTeamOrder' : 'order/applyCancleTeamOrder.json',
+    'applyCancleTeamOrder' : 'order/applyCancelTeamOrder.json',
     //取消订单审核通过
     'passCancelTeamOrderApply' : 'order/passCancelTeamOrderApply.json',
     //取消订单审核不通过

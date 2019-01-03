@@ -604,4 +604,9 @@ export default {
     'cancelOrder' : '取消订单',
     'orderCancelSuccess' : '团队订单申请退票通过',
     'orderCancelFail' : '团队订单申请退票不通过',
+    'cancelWaitChecking' : '退单待审',
+    'cancelPass' : '退单审核通过',
+    'reserveAuditWaiting' : '预定待审',
+    'teamOrderCancelApply' : '团队订单取消申请',
+    'applyCancelOrder' : '申请取消订单',
 };

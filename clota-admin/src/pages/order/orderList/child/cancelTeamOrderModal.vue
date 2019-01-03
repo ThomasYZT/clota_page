@@ -74,7 +74,7 @@
                     orderIds : this.orderDetail.id,
                     remark : '',
                 }).then(res => {
-                    if (res.success) {
+                    if (res.status === 200) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('applayCancelOrder') }));
                         this.$emit('fresh-data');
                     } else {

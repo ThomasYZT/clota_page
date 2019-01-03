@@ -525,12 +525,16 @@ export const auditStatusList = [
         value : 'allStatus'
     },
     {
-        label : 'audited',//已审核
+        label : 'audited',//已审核(包括退单、预审)
         value : 'success'
     },
     {
-        label : 'notAudited',//未审核
+        label : 'reserveAuditWaiting',//预定待审核
         value : 'audit'
+    },
+    {
+        label : 'cancelWaitChecking',//退单待审
+        value : 'cancel_audit'
     }
 ];
 
