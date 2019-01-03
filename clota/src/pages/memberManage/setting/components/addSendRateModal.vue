@@ -54,37 +54,43 @@
             </div>
             <div class="title">{{$t('scopeOfApplicationOfTheRule')}}：</div>
             <div class="table-wrap">
-                <table-com
-                    ref="ruleMultiTablePlug"
-                    :table-com-min-height="320"
-                    :column-data="columnData"
-                    :height="370"
-                    :table-data="tableData"
-                    @selection-change="handleSelectionChange"
-                    :border="false">
-                    <el-table-column
-                        slot="column0"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        type="selection"
-                        slot-scope="row">
-                    </el-table-column>
-                    <el-table-column
-                        slot="column1"
-                        :label="row.title"
-                        :prop="row.field"
-                        :key="row.index"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        slot-scope="row">
-                        <template slot-scope="scope">
-                            {{scope.row.typeName}}-{{scope.row.levelDesc}}
-                        </template>
-                    </el-table-column>
-                </table-com>
+                <el-tree :data="cardAccountInfo"
+                         :props="defaultProps"
+                         :default-expand-all="true"
+                         show-checkbox
+                         :render-content="renderContent">
+                </el-tree>
+                <!--<table-com-->
+                    <!--ref="ruleMultiTablePlug"-->
+                    <!--:table-com-min-height="320"-->
+                    <!--:column-data="columnData"-->
+                    <!--:height="370"-->
+                    <!--:table-data="tableData"-->
+                    <!--@selection-change="handleSelectionChange"-->
+                    <!--:border="false">-->
+                    <!--<el-table-column-->
+                        <!--slot="column0"-->
+                        <!--:label="row.title"-->
+                        <!--:prop="row.field"-->
+                        <!--:key="row.index"-->
+                        <!--:width="row.width"-->
+                        <!--:min-width="row.minWidth"-->
+                        <!--type="selection"-->
+                        <!--slot-scope="row">-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column-->
+                        <!--slot="column1"-->
+                        <!--:label="row.title"-->
+                        <!--:prop="row.field"-->
+                        <!--:key="row.index"-->
+                        <!--:width="row.width"-->
+                        <!--:min-width="row.minWidth"-->
+                        <!--slot-scope="row">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--{{scope.row.typeName}}-{{scope.row.levelDesc}}-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                <!--</table-com>-->
             </div>
         </div>
 
@@ -204,6 +210,45 @@
                             trigger : 'blur'
                         }
                     ]
+                },
+                cardAccountInfo : [{
+                    label : '一级 1',
+                    children : [{
+                        label : '二级 1-1',
+                        children : [{
+                            label : '三级 1-1-1'
+                        }]
+                    }]
+                }, {
+                    label : '一级 2',
+                    children : [{
+                        label : '二级 2-1',
+                        children : [{
+                            label : '三级 2-1-1'
+                        }]
+                    }, {
+                        label : '二级 2-2',
+                        children : [{
+                            label : '三级 2-2-1'
+                        }]
+                    }]
+                }, {
+                    label : '一级 3',
+                    children : [{
+                        label : '二级 3-1',
+                        children : [{
+                            label : '三级 3-1-1'
+                        }]
+                    }, {
+                        label : '二级 3-2',
+                        children : [{
+                            label : '三级 3-2-1'
+                        }]
+                    }]
+                }],
+                defaultProps : {
+                    children : 'children',
+                    label : 'label'
                 }
             };
         },
@@ -282,6 +327,18 @@
                 this.index = null;
                 this.$refs.formValidate.resetFields();
             },
+            /**
+             * 会员卡账户数据树
+             * @param h
+             * @param{Object} root 根节点
+             * @param{Object} node 当前节点
+             * @param{Object} data 当前节点上的数据
+             */
+            renderContent (h, { root, node, data }) {
+                return h('div',{
+                    style : {}
+                },[h('span',data.label)]);
+            }
         },
     };
 </script>
