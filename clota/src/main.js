@@ -83,7 +83,7 @@ router.beforeEach((to, from, next) => {
                     userInfo : userInfo,
                     route : to
                 }).then(route => {
-                    if ((!route || !route.path ) ||  route.path === to.path) {
+                    if ((!route || !route.path ) || route.path === to.path) {
                         if (to.query && Object.keys(to.query).length > 0) {
                             next({
                                 path : to.path,

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         name : 'menuCom',
@@ -42,7 +42,7 @@
             'menu-info' : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //子菜单
@@ -58,23 +58,23 @@
                 default : 3
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        computed: {
+        computed : {
             /**
              * 下级菜单
              * name不为空的才是有对应的实际菜单
              * @returns {Array}
              */
-            subMenuList() {
+            subMenuList () {
                 return this.childrenMenu.filter(item => item.meta && item.meta.isMenu);
             },
             ...mapGetters({
                 menuIsPackUp : 'menuIsPackUp'
             })
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

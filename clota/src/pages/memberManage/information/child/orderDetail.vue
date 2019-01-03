@@ -30,45 +30,45 @@
     import ajax from '@/api/index';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
             orderInfoMain,
             orderInfoItem,
             orderInfoPay,
             orderInfoIntegral,
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 //面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'memberInfo',   // 会员信息
-                        router: {name: 'memberInfo'},
+                        name : 'memberInfo', // 会员信息
+                        router : { name : 'memberInfo' },
                     },
                     {
-                        name: 'memberDetail',   // 会员详情
-                        router: {name: 'infoDetail'},
+                        name : 'memberDetail', // 会员详情
+                        router : { name : 'infoDetail' },
                     },
                     {
-                        name: 'myOrder',   // 我的订单
-                        router: {name: 'myOrder'},
+                        name : 'myOrder', // 我的订单
+                        router : { name : 'myOrder' },
                     },
                 ],
 
                 // 订单详情数据
-                order: {
-                    itemModels: [],
-                    memberOrderModel: {},
-                    payModels: [],
+                order : {
+                    itemModels : [],
+                    memberOrderModel : {},
+                    payModels : [],
                 },
 
 //                scoreRule: {}
-            }
+            };
         },
-        computed: {
+        computed : {
         },
-        created() {
+        created () {
             this.getOrderDetail();
             /*setTimeout(() => {
                  this.scoreRule = {
@@ -79,22 +79,22 @@
                 }
             }, 2000);*/
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
-            getOrderDetail() {
+        watch : {},
+        methods : {
+            getOrderDetail () {
                 if (this.$route.query.orderId || this.$route.query.orderNo) {
                     ajax.post('queryOrderDetail', {
-                        orderId: this.$route.query.orderId,
-                        orderNo: this.$route.query.orderNo
+                        orderId : this.$route.query.orderId,
+                        orderNo : this.$route.query.orderNo
                     }).then(res => {
                         if (res.success && res.data) {
                             this.order = res.data;
                         }
                     });
                 } else {
-                    this.$router.push({name: 'myOrder'});
+                    this.$router.push({ name : 'myOrder' });
                 }
             },
         }

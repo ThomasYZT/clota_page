@@ -31,13 +31,13 @@
 
 <script>
 
-    import transferModal from  './components/transferModal.vue';
+    import transferModal from './components/transferModal.vue';
     import ajax from '@/api/index.js';
     import common from '@/assets/js/common.js';
 
 
     export default {
-        components: {
+        components : {
             transferModal,
         },
         data () {
@@ -46,9 +46,9 @@
                 moneyLeft : '',
                 //账户信息
                 orgInfo : {}
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 显示转账模态框
@@ -61,7 +61,7 @@
              * 跳转到转账记录详情表
              */
             viewTransferRecord () {
-                this.$router.push({ name: 'transferRecord'});
+                this.$router.push({ name : 'transferRecord' });
             },
 
             /**
@@ -69,10 +69,10 @@
              */
             getOrgAccount () {
                 ajax.post('getOrgAccount').then(res => {
-                   if(res.success){
+                   if (res.success) {
                         this.moneyLeft = common.isNotEmpty(res.data.balance) ? Number(res.data.balance).toCurrency() : '';
-                        this.orgInfo =  res.data;
-                   }else{
+                        this.orgInfo = res.data;
+                   } else {
                        this.moneyLeft = '';
                    }
                 }).catch(err => {
@@ -81,12 +81,12 @@
             }
 
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getOrgAccount();
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

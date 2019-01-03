@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import {saleOperateBatch} from '@/assets/js/constVariable.js';
+    import { saleOperateBatch } from '@/assets/js/constVariable.js';
     import { mapGetters } from 'vuex';
     export default {
         props : {
@@ -65,7 +65,7 @@
                 }
             }
         },
-        data() {
+        data () {
             return {
 
                 //分组信息
@@ -78,21 +78,21 @@
                 //表单校验规则
                 ruleValidate : {
                     selectOrgId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('saleGroup')}),trigger : 'change'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('saleGroup') }),trigger : 'change' },
                     ]
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 批量操作
              * @param command
              */
             handleCommand (command) {
                 this.bathChangeGroupShow = false;
-                if(command.value === 'outGroup'){
+                if (command.value === 'outGroup') {
                     this.$emit('handle-out-group');
-                }else if(command.value === 'toOtherGroup'){
+                } else if (command.value === 'toOtherGroup') {
                     this.bathChangeGroupShow = true;
                 }
             },
@@ -101,7 +101,7 @@
              */
             batchChangeOrg () {
                 this.$refs.formData.validate(valid =>{
-                    if(valid){
+                    if (valid) {
                         this.$emit('handle-remove-group',this.formData.selectOrgId);
                         this.bathChangeGroupShow = false;
                     }
@@ -138,7 +138,7 @@
                 return result;
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 // 批量开卡列表表头
 export const batchEntityCardHead = [
     {
-        title : 'index',    // 序号
+        title : 'index', // 序号
         width : 100,
         field : ''
     },
@@ -25,7 +25,7 @@ export const batchEntityCardHead = [
 // 退卡、挂失、补卡、关联实体、会员卡续期 的列表表头
 export const cardInfoHead = [
     {
-        title : '',    // radio
+        title : '', // radio
         width : 100,
         field : ''
     },

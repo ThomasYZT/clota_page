@@ -61,47 +61,47 @@
 </template>
 
 <script>
-    import {orderStatus} from '../infoListConfig';
+    import { orderStatus } from '../infoListConfig';
 
     export default {
-        props: {
-            infoData: {
-                type: Object,
-                default: {}
+        props : {
+            infoData : {
+                type : Object,
+                default : {}
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             // 订单状态显示
-            orderStatus: orderStatus,
+            orderStatus : orderStatus,
 
             /**
              * 来源业态 - code转换
              * @param type - 来源业态类型code
              * @returns {string}
              */
-            transferProductType(type) {
+            transferProductType (type) {
                 let statusName = '-';
                 switch (type) {
                     case 'ticket' :
-                        statusName = 'ticket';        // 票
+                        statusName = 'ticket'; // 票
                         break;
                     case 'catering' :
-                        statusName = 'repast';        // 餐饮
+                        statusName = 'repast'; // 餐饮
                         break;
                     case 'commodity' :
-                        statusName = 'goods';        // 商品
+                        statusName = 'goods'; // 商品
                         break;
                     case 'hotel' :
-                        statusName = 'hotel';        // 酒店
+                        statusName = 'hotel'; // 酒店
                         break;
                 }
                 return statusName;
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

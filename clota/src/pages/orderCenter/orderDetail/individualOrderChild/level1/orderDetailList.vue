@@ -248,51 +248,51 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './orderDetailListConfig.js';
-    import { transSyncStatus, transSMSStatus } from '../../../commFun.js'
+    import { transSyncStatus, transSMSStatus } from '../../../commFun.js';
 
     export default {
-        props :{
+        props : {
             //产品信息
             orderDetailList : {
                 type : Array,
-                default() {
-                    return []
+                default () {
+                    return [];
                 }
             },
             //机构对应订单角色
             orderOrgType : {
-                type: String,
-                default: ''
+                type : String,
+                default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
                 //同步状态转换
-                transSyncStatus: transSyncStatus,
+                transSyncStatus : transSyncStatus,
                 //短信发送状态转换
-                transSMSStatus: transSMSStatus
-            }
+                transSMSStatus : transSMSStatus
+            };
         },
-        components :{
+        components : {
             tableCom
         },
-        methods: {
+        methods : {
             /**
              * 进去散客二级订单详情
              * @param data
              */
-            toSecondLevelOrderDetail(data) {
+            toSecondLevelOrderDetail (data) {
                 this.$router.push({
-                    name: 'individualSecondLevel',
-                    params: {
-                        productDetail: data
+                    name : 'individualSecondLevel',
+                    params : {
+                        productDetail : data
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

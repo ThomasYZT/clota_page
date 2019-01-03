@@ -167,103 +167,103 @@
 </template>
 
 <script>
-    import productDetailModal from '../components/productDetailModal'
+    import productDetailModal from '../components/productDetailModal';
     import refundModal from '../components/refundModal';
-    import ticketChangingModal from '../components/ticketChangingModal'
+    import ticketChangingModal from '../components/ticketChangingModal';
     import tableCom from '@/components/tableCom/tableCom';
     import { productDetailInfo } from './secondLevelDetailConfig';
     import { transRescheduleStatus, transVerifyStatus } from '../../../commFun';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             tableCom,
             productDetailModal,
             refundModal,
             ticketChangingModal
         },
-        props: {
+        props : {
             //产品明细列表数据
-            ticketList: {
-                type: Array,
-                default(){
+            ticketList : {
+                type : Array,
+                default () {
                     return [];
                 }
             },
             //产品价格
-            productPrice: {
-                type: Number,
-                default: null
+            productPrice : {
+                type : Number,
+                default : null
             },
             //产品名称
-            productName: {
-                type: String,
-                default: ''
+            productName : {
+                type : String,
+                default : ''
             },
             //订单基本信息
-            baseInfo: {
-                type: Object,
-                default (){
+            baseInfo : {
+                type : Object,
+                default () {
                     return {};
                 }
             },
             //机构对应订单角色
-            orderOrgType: {
-                type: String,
-                default: ''
+            orderOrgType : {
+                type : String,
+                default : ''
             },
             //当前查看详情角色
-            'view-type': {
-                type: String,
-                default: ''
+            'view-type' : {
+                type : String,
+                default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //表格配置
-                tableColumn: productDetailInfo,
+                tableColumn : productDetailInfo,
                 //已选择的行数据
-                chosedData: [],
+                chosedData : [],
                 //改签状态转换
-                transRescheduleStatus: transRescheduleStatus,
+                transRescheduleStatus : transRescheduleStatus,
                 //核销状态转换
-                transVerifyStatus: transVerifyStatus,
+                transVerifyStatus : transVerifyStatus,
 
-            }
+            };
         },
-        computed: {
+        computed : {
             /**
              * 统计数据
              */
-            countData() {
+            countData () {
                 //统计数据
                 let _obj = {
                     //未取票数量
-                    noRefundNum: 0,
+                    noRefundNum : 0,
                     //已取票数据
                     takenNum : 0,
                     //未核销数量
-                    noVerifyNum: 0,
+                    noVerifyNum : 0,
                     //已核销数量
-                    verifyNum: 0,
+                    verifyNum : 0,
                     //过期核销
                     overdueNum : 0,
                     //已退票数量
-                    refundNum: 0,
+                    refundNum : 0,
                     //已改签数量
-                    rescheduleNum: 0,
+                    rescheduleNum : 0,
                 };
 
                 //计算未取票数量、未核销数量、已核销数量、已退票数量、已改签数量
                 this.ticketList.forEach(item => {
                     //未取票
-                    if(item.pickStatus == "false") {
+                    if (item.pickStatus == "false") {
                         _obj.noRefundNum += 1;
-                    }else if(item.pickStatus == "true") {//已取票
+                    } else if (item.pickStatus == "true") {//已取票
                         _obj.takenNum += 1;
                     }
                     //已核销
-                    if(item.verifyStatus == "true") {
+                    if (item.verifyStatus == "true") {
                         _obj.verifyNum += 1;
                     } else if (item.verifyStatus == "overdue") {
                         _obj.verifyNum += 1;
@@ -271,11 +271,11 @@
                     }
 
                     //已退票
-                    if(item.refundStatus == 'refunded') {
+                    if (item.refundStatus == 'refunded') {
                         _obj.refundNum += 1;
                     }
                     //已改签
-                    if(item.rescheduleStatus == 'altered') {
+                    if (item.rescheduleStatus == 'altered') {
                         _obj.rescheduleNum += 1;
                     }
                 });
@@ -285,17 +285,17 @@
             },
             //选择的票是否能退
             canRefundTicket () {
-                if(!this.chosedData || this.chosedData.length < 1){
+                if (!this.chosedData || this.chosedData.length < 1) {
                     return false;
-                }else{
+                } else {
                     return this.chosedData.every(item => item.returnRule === 'true');
                 }
             },
             //选择的票是否能改签
             canAlterTicket () {
-                if(!this.chosedData || this.chosedData.length < 1){
+                if (!this.chosedData || this.chosedData.length < 1) {
                     return false;
-                }else{
+                } else {
                     return this.chosedData.every(item => item.alterRule === 'true');
                 }
             },
@@ -312,68 +312,68 @@
             },
 
         },
-        methods: {
+        methods : {
             /**
              * 查看散客订单三级详情
              * @param data
              */
-            thirdLevelOrderDetail(data) {
+            thirdLevelOrderDetail (data) {
                 this.$refs.productDetailModal.toggle(data);
             },
             /**
              * 申请改签
              */
-            applyChange() {
+            applyChange () {
                 if (!this.canApplyAlter) return;
-                if(this.chosedData.length > 0) {
+                if (this.chosedData.length > 0) {
                     this.$refs.ticketChangingModal.toggle({
-                        chosedData: this.chosedData,
-                        baseInfo: this.baseInfo
+                        chosedData : this.chosedData,
+                        baseInfo : this.baseInfo
                     });
                 }
             },
             /**
              * 申请退票
              */
-            applyRefund() {
+            applyRefund () {
                 if (!this.canApplyRefund) return;
-                if(this.chosedData.length > 0) {
+                if (this.chosedData.length > 0) {
                     this.$refs.refundModal.toggle({
-                        chosedData: this.chosedData,
-                        baseInfo: this.baseInfo
+                        chosedData : this.chosedData,
+                        baseInfo : this.baseInfo
                     });
                 }
             },
             /**
              * 表格选择
              */
-            selectionChange(data) {
+            selectionChange (data) {
                 this.chosedData = data;
             },
             /**
              *  table selectable属性
              * @return {boolean}
              */
-            selectable: (data) => {
+            selectable : (data) => {
                 //旅行社按销售政策的退改规则，只能勾选 已同步的 未取票或未核销 产品申请退改
                 //景区可勾选所有产品明细申请退票或改签，包括已核销的产品
-                if(this.orderOrgType === 'channel') {
+                if (this.orderOrgType === 'channel') {
                     // 未取票、未核销、已同步的能够被勾选
-                    if(data.pickStatus == "false" && data.verifyStatus == "false" && data.syncStatus == 'success' ) {
+                    if (data.pickStatus == "false" && data.verifyStatus == "false" && data.syncStatus == 'success' ) {
                         return false;
-                    }else {
+                    } else {
                         return true;
                     }
-                }else {
+                } else {
                     return true;
                 }
 
             },
         },
-        mounted() {
+        mounted () {
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

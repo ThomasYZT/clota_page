@@ -394,7 +394,7 @@
                         }
                         if (item in this.formData) {
                             if (item === 'effTime') {
-                                this.formData['effTime'] = data['effTime'] ?  String(data['effTime']) : 'forEver';
+                                this.formData['effTime'] = data['effTime'] ? String(data['effTime']) : 'forEver';
                             } else {
                                 this.formData[item] = data[item];
                             }
@@ -501,7 +501,7 @@
                     if (res.success) {
                         this.effTimeList = res.data ? res.data : [];
                     } else {
-                        this.effTimeList = []
+                        this.effTimeList = [];
                     }
                 });
             },
@@ -537,14 +537,14 @@
                             callback(this.$t('请输入大于0且小于99的值'));
                         }
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t('有效期值'),length : 10}));
-                        }else{
-                            callback(this.$t(err,{field : this.$t('有效期值')}));
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t(err,{ field : this.$t('有效期值'),length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t('有效期值') }));
                         }
                     });
                 } else {
-                    callback(this.$t('inputField',{field : this.$t('有效期值')}));
+                    callback(this.$t('inputField',{ field : this.$t('有效期值') }));
                 }
             },
             /**
@@ -604,7 +604,7 @@
                         label : item.effValue,
                         value : String(item.effValue),
                         ...item
-                    }
+                    };
                 }),[
                     {
                         label : '永久有效',

@@ -31,11 +31,11 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //当前操作的特殊会员分类信息
-            'employee-type-info':{
+            'employee-type-info' : {
                 type : Object,
                 default () {
                     return {};
@@ -45,23 +45,23 @@
         data () {
             return {
                 //模态框是否显示
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {
-                    name: '',
+                formData : {
+                    name : '',
                 },
                 //表单校验规则
-                ruleValidate: {
-                    name: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('memberTypeName')}), trigger: 'blur' },
-                        {max : 15,message : this.$t('errorMaxLength',{field : this.$t('memberTypeName'),length : 15}),trigger : 'blur'}
+                ruleValidate : {
+                    name : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('memberTypeName') }), trigger : 'blur' },
+                        { max : 15,message : this.$t('errorMaxLength',{ field : this.$t('memberTypeName'),length : 15 }),trigger : 'blur' }
                     ],
                 },
                 //当前特殊会员分类的id
                 employeeTypeId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 模态框显示
@@ -78,13 +78,13 @@
                     if ( valid ) {
                         this.addMemberStaffType();
                     }
-                })
+                });
             },
 
             /**
              * 关闭模态框
              */
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
             },
@@ -96,11 +96,11 @@
                     id : this.employeeTypeId,
                     staffDesc : this.formData.name
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }
                 }).finally(() => {
                     this.hide();
@@ -112,7 +112,7 @@
             'employeeTypeInfo' : {
                 deep : true,
                 handler (newVal,oldVal) {
-                    if(newVal && Object.keys(newVal).length > 0){
+                    if (newVal && Object.keys(newVal).length > 0) {
                         this.employeeTypeId = newVal.id;
                         this.formData.name = newVal.staffDesc;
                     }
@@ -124,7 +124,7 @@
                 lang : 'lang'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss">

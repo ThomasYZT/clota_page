@@ -67,43 +67,43 @@
     //删除列表弹窗
     import deleteList from '../model/deleteList.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {employeeInfoHead} from '../../systemSetting/resetPassword/resetPwdConfig';
+    import { configVariable } from '@/assets/js/constVariable';
+    import { employeeInfoHead } from '../../systemSetting/resetPassword/resetPwdConfig';
     import ajax from '@/api/index';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             tableCom,
             deleteList,
         },
-        data() {
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    keyword: '',
+                filterParam : {
+                    keyword : '',
                 },
                 // 表格表头字段名
-                columnData: employeeInfoHead.filter((item, i) => {
+                columnData : employeeInfoHead.filter((item, i) => {
                     return item.field !== 'rolePrivilege';
                 }),
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
+                totalCount : 0,
 
-                deleteName: this.$t('delEmployee'),  //删除内容名字
-                name: '', //删除弹窗名字
-                scopeRowData: {}, //当前被操作的行数据
-            }
+                deleteName : this.$t('delEmployee'), //删除内容名字
+                name : '', //删除弹窗名字
+                scopeRowData : {}, //当前被操作的行数据
+            };
         },
-        methods: {
+        methods : {
             // 初始化加载获取员工列表数据
-            queryList() {
+            queryList () {
                 /*this.tableData = [
                     {
                         'employeeID': '309287482',
@@ -143,42 +143,42 @@
                 });
             },
             // 搜索员工
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
 
             //新增/修改员工
-            getNewPartner(type, scopeRow) {
+            getNewPartner (type, scopeRow) {
                 this.$router.replace({
-                    name: 'addEmployee',
-                    query: {type: type},
-                    params: {employeeItem: scopeRow}
-                })
+                    name : 'addEmployee',
+                    query : { type : type },
+                    params : { employeeItem : scopeRow }
+                });
             },
             //删除员工
-            deleteEmployee(scopeRow) {
-                if(!this.canDelEmployee) return;
+            deleteEmployee (scopeRow) {
+                if (!this.canDelEmployee) return;
                 this.scopeRowData = scopeRow;
                 this.name = scopeRow.nickName;
                 this.$refs.delListModal.show();
             },
             //确认删除
-            handleDeletions() {
-                if(!this.canDelEmployee) return;
+            handleDeletions () {
+                if (!this.canDelEmployee) return;
                 ajax.post('deletedEmployee', {
-                    accountIds: this.scopeRowData.id
+                    accountIds : this.scopeRowData.id
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                         this.handleSearch();
                     }
                 });
             },
 
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 permissionInfo : 'permissionInfo'
             }),
@@ -195,21 +195,21 @@
                 return this.permissionInfo && 'modifyEmployee' in this.permissionInfo;
             },
             //操作列宽度
-            operateColumnWidth (){
-                if(this.canDelEmployee && this.canModifyEmployee){
+            operateColumnWidth () {
+                if (this.canDelEmployee && this.canModifyEmployee) {
                     return {
                         minWidth : 120
-                    }
-                }else if(this.canDelEmployee || this.canModifyEmployee){
+                    };
+                } else if (this.canDelEmployee || this.canModifyEmployee) {
                     return {
                         minWidth : 80
-                    }
+                    };
                 }
             }
         },
-        created() {
+        created () {
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

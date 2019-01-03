@@ -63,11 +63,11 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './orderParticularsConfig';
+    import { columnData } from './orderParticularsConfig';
     import ajax from '@/api/index.js';
 
     export default {
-        props :{
+        props : {
             //订单id
             orderId : {
                 type : String,
@@ -81,7 +81,7 @@
                 }
             }
         },
-        data() {
+        data () {
             return {
                 //表格数据
                 tableData : [
@@ -91,7 +91,7 @@
                 //表头配置
                 columnData : columnData,
                 //查询条件
-                formData :{
+                formData : {
                     //产品id
                     productId : 'all',
                     //关键字
@@ -103,12 +103,12 @@
                 ruleInline : {
 
                 }
-            }
+            };
         },
-        components :{
+        components : {
             tableCom
         },
-        methods: {
+        methods : {
             /**
              * 获取订单明细信息
              */
@@ -119,9 +119,9 @@
                     keyword : this.formData.keyword,
                     orderId : this.orderId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 });
@@ -137,10 +137,10 @@
             }
         },
         watch : {
-            orderId :{
+            orderId : {
                 immediate : true,
                 handler (newVal) {
-                    if(newVal){
+                    if (newVal) {
                         this.queryOrderTicketDetail();
                     }
                 }
@@ -152,14 +152,14 @@
                     return {
                         label : item.productName,
                         value : item.productId
-                    }
+                    };
                 }),[{
                     label : 'all',
                     value : 'all'
                 }]);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

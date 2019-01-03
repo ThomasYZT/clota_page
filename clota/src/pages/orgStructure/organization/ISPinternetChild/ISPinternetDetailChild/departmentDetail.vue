@@ -66,7 +66,7 @@
     import employeeTable from './components/employeeTable';
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //节点信息
@@ -80,7 +80,7 @@
         components : {
             employeeTable
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formDataCopy : {},
@@ -90,13 +90,13 @@
                 //校验规则
                 ruleValidate : {
                     orgName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('departName')}),trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('departName'),length : 100})}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('departName') }),trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('departName'),length : 100 }) }
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 开始编辑
              */
@@ -125,18 +125,18 @@
                     parentEconomicId : this.formDataCopy.parentEconomicId,
                     parentManageId : this.formDataCopy.parentManageId,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
                         //修改了节点的名字，需要刷新左侧的组织树
-                        if(this.formDataCopy.orgName !== this.formData.orgName){
+                        if (this.formDataCopy.orgName !== this.formData.orgName) {
                             this.freshOrg();
-                        }else{
+                        } else {
                             this.$emit('fresh-org',this.activeNode);
                             this.getDepDetail();
                         }
                         this.$store.dispatch('freshOrgs');
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('modify')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
                     }
                 });
             },
@@ -147,9 +147,9 @@
                 ajax.post('getOrgInfo',{
                     orgId : this.activeNode.id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.formData = res.data ? res.data.basicInfo : {};
-                    }else{
+                    } else {
                         this.formData = {};
                     }
                 });
@@ -171,12 +171,12 @@
                 immediate : true
             }
         },
-        computed :{
+        computed : {
             ...mapGetters({
                 permissionInfo : 'permissionInfo'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

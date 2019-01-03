@@ -321,7 +321,7 @@
                     } else {
                         this.$Message.success(this.$t('failureTip', { tip : this.$t('down') }));
                     }
-                })
+                });
             },
             /**
              * 上架商品

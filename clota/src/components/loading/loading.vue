@@ -17,8 +17,8 @@
 
 <script>
     export default {
-        props: ['visible'],
-    }
+        props : ['visible'],
+    };
 </script>
 
 <style lang="scss" scoped>

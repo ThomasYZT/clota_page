@@ -78,7 +78,7 @@
                 }
                 //关联实体卡
                 if ('associatedEntityCard' in this.permissionInfo) {
-                    result.push({ name : 'associateEntityCard', desc : 'associateEntityCard'  });
+                    result.push({ name : 'associateEntityCard', desc : 'associateEntityCard' });
                 }
                 //补卡
                 if ('supplementCard' in this.permissionInfo) {

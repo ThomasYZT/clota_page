@@ -34,35 +34,35 @@
     import basicForm from './basicInfo.vue';
     import MD5 from 'crypto-js/md5';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             basicForm,
             breadCrumbHead
         },
-        mixins: [lifeCycleMixins],
-        data() {
+        mixins : [lifeCycleMixins],
+        data () {
             return {
                 // 面包屑上级路由信息
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'employee',   // 员工
-                        router: {
-                            name: 'generalEmployeeManager'
+                        name : 'employee', // 员工
+                        router : {
+                            name : 'generalEmployeeManager'
                         }
                     }
                 ],
                 //新增/修改
-                type: 'add',
-                loading: false,
+                type : 'add',
+                loading : false,
                 // 员工信息数据
-                employeeData: {},
-            }
+                employeeData : {},
+            };
         },
-        computed: {
+        computed : {
             localeRouter () {
-                return (this.type === 'add' ? this.$t('add') : this.$t('edit')) + this.$t('employee');      // 新增 ： 修改
+                return (this.type === 'add' ? this.$t('add') : this.$t('edit')) + this.$t('employee'); // 新增 ： 修改
             },
             ...mapGetters({
                 permissionInfo : 'permissionInfo'
@@ -80,22 +80,22 @@
                 return this.canModifyEmployee || this.canAddEmployee;
             }
         },
-        created() {
+        created () {
             this.init();
         },
-        methods: {
+        methods : {
 
-            init() {
+            init () {
                 if (this.$route.query && this.$route.query.type) {
                     this.type = this.$route.query.type;
                 }
             },
 
             //确认修改按钮回调，需校验表单
-            confirmModify(){
-                if(this.type === 'add' && this.canAddEmployee){
+            confirmModify () {
+                if (this.type === 'add' && this.canAddEmployee) {
                     this.$refs.basicForm.formValidateFunc();
-                }else if(this.type === "modify" && this.canModifyEmployee){
+                } else if (this.type === "modify" && this.canModifyEmployee) {
                     this.$refs.basicForm.formValidateFunc();
                 }
             },
@@ -103,9 +103,9 @@
              * 获取路由参数
              * @param params
              */
-            getParams(params){
-                if(this.$route.query.type === 'modify'){
-                    if(params && Object.keys(params).length > 0){
+            getParams (params) {
+                if (this.$route.query.type === 'modify') {
+                    if (params && Object.keys(params).length > 0) {
 //                        this.employeeData = Object.assign({}, this.employeeData, params.employeeItem);
                         this.employeeData = params.employeeItem;
                     }
@@ -113,7 +113,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

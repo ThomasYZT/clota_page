@@ -270,7 +270,7 @@
                                 name : 0,
                                 url : this.goodInfo.pics
                             }
-                        ]
+                        ];
                     } else {
                         this.$Message.error(this.$t('dataGetError'));
                     }

@@ -6,4 +6,4 @@ export default {
     'queryAllServerMsg' : 'servers/queryAllServerMsg.json',
     //获取服务公告接口
     'findUsingNotice' : 'sys/help/findUsingNotice',
-}
+};

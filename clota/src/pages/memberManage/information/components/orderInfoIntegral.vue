@@ -100,36 +100,36 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import {byLevelHead, byShopHead, byProductHead} from '../infoListConfig';
+    import { byLevelHead, byShopHead, byProductHead } from '../infoListConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
   export default {
-    components: {tableCom},
-    props: {
-        infoData: {
-            type: Object,
+    components : { tableCom },
+    props : {
+        infoData : {
+            type : Object,
             default () {
                 return {};
             }
         }
     },
-    data() {
+    data () {
       return {
-          byLevelHead: byLevelHead,
-          byShopHead: byShopHead,
-          byProductHead: byProductHead,
-      }
+          byLevelHead : byLevelHead,
+          byShopHead : byShopHead,
+          byProductHead : byProductHead,
+      };
     },
-    computed: {
+    computed : {
         ...mapGetters({
             lang : 'lang'
         }),
-        typeList() {
+        typeList () {
             if (this.infoData.typeList) {
                 let typeEntries = Object.entries(JSON.parse(this.infoData.typeList));
-                for (let i=0; i<typeEntries.length; i++) {
-                    typeEntries[i] = Object.assign({orgName: typeEntries[i][0]}, typeEntries[i][1][0]);
+                for (let i = 0; i < typeEntries.length; i++) {
+                    typeEntries[i] = Object.assign({ orgName : typeEntries[i][0] }, typeEntries[i][1][0]);
                 }
                 return typeEntries;
             } else {
@@ -137,13 +137,13 @@
             }
         }
     },
-    created() {
+    created () {
     },
-    mounted() {
+    mounted () {
     },
-    watch: {},
-    methods: {
-        transferDiscountRate(rate) {
+    watch : {},
+    methods : {
+        transferDiscountRate (rate) {
             if (this.lang == 'zh-CN') {
                 return rate + this.$t('discount');
             } else if (this.lang != 'zh-CN') {
@@ -151,7 +151,7 @@
                 if (discount.startsWith('%')) {
                     discount = discount.slice(1);
                 }
-                return Number(1-rate).toPercent() + discount;
+                return Number(1 - rate).toPercent() + discount;
             }
         },
     }

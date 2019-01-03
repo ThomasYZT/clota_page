@@ -36,4 +36,4 @@ export default {
     //会员累计积分变动
     'queryTotalScoreChangeRecord' : '/member/report/queryTotalScoreChangeRecord'
 
-}
+};

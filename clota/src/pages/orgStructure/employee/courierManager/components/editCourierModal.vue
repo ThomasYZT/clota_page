@@ -46,68 +46,68 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import ajax from '@/api/index';
     export default {
-        components: {},
-        data() {
+        components : {},
+        data () {
             const validateMethods = {
                 //身份证校验
-                identificationNum: (rule, value, callback) => {
+                identificationNum : (rule, value, callback) => {
                     let reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
-                    if(!reg.test(value)) {
-                        callback(new Error(this.$t('errorFormat', {field: this.$t('identityNo')})))
-                    }else {
+                    if (!reg.test(value)) {
+                        callback(new Error(this.$t('errorFormat', { field : this.$t('identityNo') })));
+                    } else {
                         callback();
                     }
                 },
                 //校验手机号码
-                mobile: (rule, value, callback) => {
+                mobile : (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
-                        callback(new Error(this.$t('errorFormat', {field: this.$t('phoneNum')})));
+                        callback(new Error(this.$t('errorFormat', { field : this.$t('phoneNum') })));
                     } else {
                         callback();
                     }
                 },
             };
             return {
-                visible: false,
-                title: this.$t('addNewCourier'),
-                formData: {
+                visible : false,
+                title : this.$t('addNewCourier'),
+                formData : {
                     //姓名
-                    staffName: '',
+                    staffName : '',
                     //员工类型
-                    staffType: 'guide',
+                    staffType : 'guide',
                     //证件类型
-                    documentType: 'id',
+                    documentType : 'id',
                     //证件号
-                    documentNo: '',
+                    documentNo : '',
                     //手机号
-                    phoneNumber: ''
+                    phoneNumber : ''
                 },
-                ruleValidate: {
-                    staffName: [
-                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('name')}), trigger: 'blur' }
+                ruleValidate : {
+                    staffName : [
+                        { required : true, message : this.$t('errorEmpty',{ msg : this.$t('name') }), trigger : 'blur' }
                     ],
-                    documentNo: [
-                        { validator: validateMethods.identificationNum, trigger: 'blur'}
+                    documentNo : [
+                        { validator : validateMethods.identificationNum, trigger : 'blur' }
                     ],
-                    phoneNumber: [
-                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('phoneNum')}), trigger: 'blur' },
-                        { validator: validateMethods.mobile, trigger: 'blur'}
+                    phoneNumber : [
+                        { required : true, message : this.$t('errorEmpty',{ msg : this.$t('phoneNum') }), trigger : 'blur' },
+                        { validator : validateMethods.mobile, trigger : 'blur' }
 
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示弹窗
              * @param type
              * @param scopeRow
              */
-            show({type, scopeRow}) {
-                if(scopeRow) {
+            show ({ type, scopeRow }) {
+                if (scopeRow) {
                     this.title = this.$t('editCourierInfo');
                     this.formData.id = scopeRow.id;
                     this.formData.staffName = scopeRow.staffName;
@@ -120,13 +120,13 @@
             /**
              * 隐藏弹窗
              */
-            hide() {
+            hide () {
                 this.formData = {
-                    staffName: '',
-                    staffType: 'guide',
-                    documentType: 'id',
-                    documentNo: '',
-                    phoneNumber: ''
+                    staffName : '',
+                    staffType : 'guide',
+                    documentType : 'id',
+                    documentNo : '',
+                    phoneNumber : ''
                 };
                 delete this.formData.id;
                 this.visible = false;
@@ -135,9 +135,9 @@
             /**
              * 校验表单
              */
-            formValidate() {
+            formValidate () {
                 this.$refs.form.validate(valid => {
-                    if(valid) {
+                    if (valid) {
                         this.saveGuide();
                     }
                 });
@@ -145,17 +145,17 @@
             /**
              * 新增导游
              */
-            saveGuide() {
+            saveGuide () {
                 ajax.post('addOrUpdateOrgStaff',this.formData).then(res => {
-                    if(res.success) {
-                        this.$Message.success(this.$t('successTip',{tip : this.$t(this.type)}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t(this.type) }));
                         this.hide();
                         this.$emit('refresh');
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

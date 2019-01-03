@@ -127,9 +127,9 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {tourColumnData,driverColumnData} from './addTourGuideConfig';
+    import { tourColumnData,driverColumnData } from './addTourGuideConfig';
     import ajax from '@/api/index';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     export default {
         props : {
             //绑定modal的v-modal值
@@ -153,45 +153,45 @@
         components : {
             tableCom
         },
-        data() {
+        data () {
             //校验导游姓名
             const validateName = (rule,value,callback) => {
-                if(rule.rowData.staffName){
-                    if(rule.rowData.staffName.length > 20){
-                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20}));
-                    }else{
+                if (rule.rowData.staffName) {
+                    if (rule.rowData.staffName.length > 20) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20 }));
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('name')}));      // 请输入姓名
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('name') })); // 请输入姓名
                 }
             };
             //校验手机号
             const validatePhone = (rule,value,callback) => {
-                if(rule.rowData.phoneNumber){
-                    if(validator.isMobile(rule.rowData.phoneNumber)){
+                if (rule.rowData.phoneNumber) {
+                    if (validator.isMobile(rule.rowData.phoneNumber)) {
                         callback();
-                    }else {
-                        callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
+                    } else {
+                        callback(this.$t('errorFormat', { field : this.$t('mobilePhone') }));
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('mobilePhone')}));  // '请输入手机号'
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('mobilePhone') })); // '请输入手机号'
                 }
             };
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
-                if(rule.rowData.documentNo){
-                    if(rule.rowData.documentNo.length > 100){
-                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100}));
-                    }else{
+                if (rule.rowData.documentNo) {
+                    if (rule.rowData.documentNo.length > 100) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100 }));
+                    } else {
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback(this.$t('existID'));   // 证件已存在
+                            callback(this.$t('existID')); // 证件已存在
                         });
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('IdentificationNumber') })); // 请输入证件号
                 }
             };
             return {
@@ -203,37 +203,37 @@
                 rules : {
                     idCard (rowData) {
                         return [
-                            {validator : validateIdCard,trigger: 'blur',rowData : rowData}
-                        ]
+                            { validator : validateIdCard,trigger : 'blur',rowData : rowData }
+                        ];
                     },
                     staffName (rowData) {
                         return [
-                            {validator : validateName,trigger : 'blur',rowData : rowData}
+                            { validator : validateName,trigger : 'blur',rowData : rowData }
                         ];
                     },
                     phoneNumber (rowData) {
                         return [
-                            {validator : validatePhone,trigger : 'blur',rowData : rowData}
+                            { validator : validatePhone,trigger : 'blur',rowData : rowData }
                         ];
                     }
                 },
                 //修改导游信息时，保存原始数据
                 originalTableData : [],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                     this.queryPagedOrgStaff();
                 }
             },
@@ -250,7 +250,7 @@
                 this.tableData.push({
                     editType : 'edit',
                     staffName : '',
-                    documentNo :'',
+                    documentNo : '',
                     phoneNumber : '',
                     modifyType : 'add'
                 });
@@ -286,30 +286,30 @@
                 //判断证件号是否已经填写，并且需要判断证件号和证件类型是否已经填写过
                 Promise.all([new Promise((resolve,reject) => {//校验导游姓名
                     this.$refs.formInline.validateField('staffName' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验证件号码
                     this.$refs.formInline.validateField('idCard' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验手机号码
-                    if(this.modalType === 'guide'){
+                    if (this.modalType === 'guide') {
                         this.$refs.formInline.validateField('phoneNumber' + index,valid => {
-                            if(valid){
+                            if (valid) {
                                 reject();
-                            }else{
+                            } else {
                                 resolve();
                             }
                         });
-                    }else if(this.modalType === 'driver'){
+                    } else if (this.modalType === 'driver') {
                         resolve();
                     }
                 })]).then(() => {
@@ -317,14 +317,14 @@
                         id : this.tableData[index]['id'],
                         staffName : this.tableData[index]['staffName'],
                         documentNo : this.tableData[index]['documentNo'],
-                        phoneNumber :this.tableData[index]['phoneNumber'],
+                        phoneNumber : this.tableData[index]['phoneNumber'],
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             this.$set(this.tableData[index],'editType','');
-                            this.$Message.success( this.$t('successTip', {tip: this.$t('driverAddSuccess')}) );    // 保存司机信息成功
+                            this.$Message.success( this.$t('successTip', { tip : this.$t('driverAddSuccess') }) ); // 保存司机信息成功
                             this.freshData(index,'modify');
-                        }else{
-                            this.$Message.error( this.$t('failureTip', {tip: this.$t('driverAddSuccess')}) );    // 保存司机信息失败
+                        } else {
+                            this.$Message.error( this.$t('failureTip', { tip : this.$t('driverAddSuccess') }) ); // 保存司机信息失败
                         }
                     });
                 });
@@ -334,9 +334,9 @@
              * @param index
              */
             cancelEdit (index) {
-                if(this.tableData[index]['modifyType'] === 'add'){
+                if (this.tableData[index]['modifyType'] === 'add') {
                     this.tableData.splice(index,1);
-                }else{
+                } else {
                     this.$set(this.tableData,index,this.originalTableData[index]);
                 }
             },
@@ -357,10 +357,10 @@
                     pageNo : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.setDefaultChosed();
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 });
@@ -372,7 +372,7 @@
              * @param documentNo 证件号
              * @param phoneNumber 手机号
              */
-            addOrUpdateOrgStaff ({id,staffName,documentNo,phoneNumber}) {
+            addOrUpdateOrgStaff ({ id,staffName,documentNo,phoneNumber }) {
                 return ajax.post('addOrUpdateOrgStaff',{
                     id : id,
                     staffName : staffName,
@@ -388,8 +388,8 @@
              */
             validateIdCardNumIsExist (cardInfo) {
                 return new Promise((resolve,reject) => {
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(cardInfo !== this.tableData[i] && this.tableData[i]['documentNo'] === cardInfo['documentNo']){
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (cardInfo !== this.tableData[i] && this.tableData[i]['documentNo'] === cardInfo['documentNo']) {
                             reject();
                         }
                     }
@@ -401,9 +401,9 @@
              */
             setDefaultChosed () {
                 this.$nextTick(() => {
-                    for(let i = 0,j = this.defaultInfo.length;i < j;i++){
-                        for(let a = 0,b = this.tableData.length;a < b;a++){
-                            if(this.tableData[a]['id'] === this.defaultInfo[i]['id']){
+                    for (let i = 0,j = this.defaultInfo.length; i < j; i++) {
+                        for (let a = 0,b = this.tableData.length; a < b; a++) {
+                            if (this.tableData[a]['id'] === this.defaultInfo[i]['id']) {
                                 this.$refs.table.toggleRowSelection(this.tableData[a]);
                             }
                         }
@@ -426,16 +426,16 @@
                         'Content-Type' : 'application/json;charset-UTF-8'
                     }
                 }).then(res => {
-                    if(res.success){
-                        if(this.modalType === 'guide'){
-                            this.$Message.success(this.$t('deletedField', {field: this.$t('courierInfo')}));      // 导游信息已删除
-                        }else if(this.modalType === 'driver'){
-                            this.$Message.success(this.$t('deletedField', {field: this.$t('driverInfo')}));   // 司机信息已删除
+                    if (res.success) {
+                        if (this.modalType === 'guide') {
+                            this.$Message.success(this.$t('deletedField', { field : this.$t('courierInfo') })); // 导游信息已删除
+                        } else if (this.modalType === 'driver') {
+                            this.$Message.success(this.$t('deletedField', { field : this.$t('driverInfo') })); // 司机信息已删除
                         }
                         this.freshData(index,'del');
                         this.queryPagedOrgStaff();
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del')}));    // 删除失败
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') })); // 删除失败
                     }
                 });
             },
@@ -446,7 +446,7 @@
              */
             freshData (index,type) {
                 this.$emit('modify-data',{
-                    data :this.tableData[index],
+                    data : this.tableData[index],
                     type : type
                 });
             },
@@ -455,22 +455,22 @@
         computed : {
             //证件类型
             documentType () {
-                if(this.modalType === 'guide'){
+                if (this.modalType === 'guide') {
                     return 'id';
-                }else if(this.modalType === 'driver'){
+                } else if (this.modalType === 'driver') {
                     return 'license';
                 }
             },
             //表头配置
             columnData () {
-                if(this.modalType === 'guide'){
+                if (this.modalType === 'guide') {
                     return tourColumnData;
-                }else if(this.modalType === 'driver'){
+                } else if (this.modalType === 'driver') {
                     return driverColumnData;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

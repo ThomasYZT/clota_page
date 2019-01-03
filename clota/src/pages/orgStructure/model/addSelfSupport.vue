@@ -67,49 +67,49 @@
     import pick from 'lodash/pick';
 
     export default {
-        components: {},
-        props: [],
-        data() {
+        components : {},
+        props : [],
+        data () {
             return {
-                visible: false, //显示模态框变量
+                visible : false, //显示模态框变量
                 // 表单变量
-                addChannel: {
+                addChannel : {
 //                    id: '',
-                    channelName: '',
-                    type: 'online',
-                    serverUrl: '',
-                    appId: '',
-                    appSecret: '',
-                    status: 'valid',
-                    description: ''
+                    channelName : '',
+                    type : 'online',
+                    serverUrl : '',
+                    appId : '',
+                    appSecret : '',
+                    status : 'valid',
+                    description : ''
                 },
                 // 新增or修改
-                type: 'add',
+                type : 'add',
 
                 // 校验规则
-                ruleValidate: {
-                    channelName: [
-                        {required: true, message: this.$t('inputField', {field: this.$t('selfSaleChannelName')}), trigger: 'blur'},
-                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('selfSaleChannelName'), length: 100}), trigger: 'blur' },  // 自营渠道名称不能超过100字符
+                ruleValidate : {
+                    channelName : [
+                        { required : true, message : this.$t('inputField', { field : this.$t('selfSaleChannelName') }), trigger : 'blur' },
+                        { max : 100, message : this.$t('errorMaxLength', { field : this.$t('selfSaleChannelName'), length : 100 }), trigger : 'blur' }, // 自营渠道名称不能超过100字符
                     ],
-                    description: [
-                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
+                    description : [
+                        { max : 100, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 100 }), trigger : 'blur' }, // 备注不能超过100字符
                     ]
                 },
 
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 显示模态框
              * @param data {data有值表示查看，反之新增}
              */
-            show(data) {
-                if( data.item ){
+            show (data) {
+                if ( data.item ) {
                     this.addChannel = defaultsDeep({}, pick(data.item, [...Object.keys(this.addChannel), 'id']), this.addChannel);
                 } else {
-                    if ('id' in this.addChannel){
+                    if ('id' in this.addChannel) {
                         delete this.addChannel.id;
                     }
                 }
@@ -124,7 +124,7 @@
             /**
              * 隐藏模态框
              */
-            hide() {
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
                 this.addChannel.serverUrl = '';
@@ -132,7 +132,7 @@
             /**
              * 创建自定义指标表单校验
              */
-            submit() {
+            submit () {
                 this.$refs.formValidate.validate((valid) => {
                     if (valid) {
                         this.confirmAdd();
@@ -140,13 +140,13 @@
                 });
             },
             // 确定新增自营渠道
-            confirmAdd() {
+            confirmAdd () {
                 let self = this;
                 let partnerObj = {};
-                if (this.type=='add') {
+                if (this.type == 'add') {
                     partnerObj.successTip = this.$t('addChannelSuccess');
                     partnerObj.failTip = this.$t('addChannelFail');
-                } else if (this.type=='modify') {
+                } else if (this.type == 'modify') {
                     partnerObj.successTip = this.$t('modifyChannelSuccess');
                     partnerObj.failTip = this.$t('modifyChannelFail');
                 }
@@ -176,7 +176,7 @@
                 });
             },
         }
-    }
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

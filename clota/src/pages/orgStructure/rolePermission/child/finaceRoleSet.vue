@@ -68,21 +68,21 @@
                 default : false
             }
         },
-        data() {
+        data () {
             return {
                 //组织树配置
-                defaultProps: {
-                    children: 'subNodes',
+                defaultProps : {
+                    children : 'subNodes',
                     label : 'orgName'
                 },
                 menuDefaultProps : {
-                    children: 'subNode',
+                    children : 'subNode',
                     label : 'org'
                 },
                 //默认选择的节点
                 defaultExpandedKeys : [],
                 //节点数据
-                treeData: {},
+                treeData : {},
                 //菜单权限列表
                 menuList : [],
                 // 当前激活的nodeid
@@ -93,29 +93,29 @@
                 privaligeInfo : {},
                 //选择的菜单权限节点
                 choosedNodes : [],
-            }
+            };
         },
         components : {
             noData
         },
-        methods: {
+        methods : {
             /**
              * 组织树render函数
              */
-            renderContent(h, {root, node, data}) {
+            renderContent (h, { root, node, data }) {
                 //没有新增或修改权限不可以编辑组织树
-                if(this.disabled){
+                if (this.disabled) {
                     this.$set(data,'disabled',true);
-                }else{
+                } else {
                     this.$set(data,'disabled',false);
                 }
                 return h('div', {
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
                     },
-                    class: {
-                        'title-wrap': true,
+                    class : {
+                        'title-wrap' : true,
                         'active-node' : data.id === this.activeNodeId
                     },
                     on : {
@@ -125,32 +125,32 @@
                     }
                 }, [
                     h('span', {
-                        class: {
-                            'title-class': true
+                        class : {
+                            'title-class' : true
                         },
-                        directives: [
+                        directives : [
                             {
-                                name: 'w-title',
-                                value: data.orgName
+                                name : 'w-title',
+                                value : data.orgName
                             }
                         ],
                     }, data.orgName)
-                ])
+                ]);
             },
             /**
              * 菜单组织树
              */
-            menuRenderContent (h, {root, node, data}) {
+            menuRenderContent (h, { root, node, data }) {
                 //没有选择节点不可选择菜单权限
                 //没有新增或修改权限不可以编辑组织树
-                if(!this.chosedOrgList.includes(this.activeNodeId) || this.disabled){
+                if (!this.chosedOrgList.includes(this.activeNodeId) || this.disabled) {
                     this.$set(data,'disabled',true);
-                }else{
+                } else {
                     this.$set(data,'disabled',false);
                 }
                 //如果当前选择的节点有被其它节点关联，那么当前节点不可以取消选择
-                for(let i = 0,j = this.choosedNodes.length;i < j;i++){
-                    if(this.choosedNodes[i]['linkedPrivCode'] === data['privCode']){
+                for (let i = 0,j = this.choosedNodes.length; i < j; i++) {
+                    if (this.choosedNodes[i]['linkedPrivCode'] === data['privCode']) {
                         this.$set(data,'disabled',true);
                         break;
                     } else {
@@ -158,26 +158,26 @@
                     }
                 }
                 return h('div', {
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
                     },
-                    class: {
-                        'title-wrap': true,
+                    class : {
+                        'title-wrap' : true,
                     },
                 }, [
                     h('span', {
-                        class: {
-                            'title-class': true
+                        class : {
+                            'title-class' : true
                         },
-                        directives: [
+                        directives : [
                             {
-                                name: 'w-title',
-                                value: this.$t('privalige.' + data.privCode)
+                                name : 'w-title',
+                                value : this.$t('privalige.' + data.privCode)
                             }
                         ],
                     }, this.$t('privalige.' + data.privCode))
-                ])
+                ]);
             },
             /**
              * 获取经营管理树
@@ -187,15 +187,15 @@
                     manageType : 'economic',
                     showScene : 'privilege',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.treeData = res.data ? res.data : {};
-                        if(this.treeData && Object.keys(this.treeData).length > 0){
+                        if (this.treeData && Object.keys(this.treeData).length > 0) {
                             this.getMenuPrivalige(this.treeData);
                         }
-                    }else{
+                    } else {
                         this.treeData = {};
                     }
-                })
+                });
             },
             /**
              * 获取机构的菜单权限
@@ -206,10 +206,10 @@
                 ajax.post('getAllPrivilege',{
                     orgId : data.id
                 }).then(res => {
-                    if(res.success){
-                        this.menuList  = res.data ? res.data : [];
-                    }else{
-                        this.menuList  = [];
+                    if (res.success) {
+                        this.menuList = res.data ? res.data : [];
+                    } else {
+                        this.menuList = [];
                     }
                 }).finally(() => {
                     this.setDefaultMenuChosed();
@@ -220,10 +220,10 @@
              * @param data
              * @param checkedKeys
              */
-            treeCheck (data,{checkedNodes,checkedKeys}) {
-                if(!checkedKeys.includes(data.id)){
+            treeCheck (data,{ checkedNodes,checkedKeys }) {
+                if (!checkedKeys.includes(data.id)) {
                     this.privaligeInfo[data.id] = [];
-                    if(this.activeNodeId === data.id){
+                    if (this.activeNodeId === data.id) {
                         this.$nextTick(() => {
                             this.$refs.menuTree.setCheckedNodes([]);
                         });
@@ -238,12 +238,12 @@
              * @param checkedNodes
              * @param halfCheckedNodes
              */
-            menuCheckChange (data,{checkedKeys,checkedNodes,halfCheckedNodes}){
+            menuCheckChange (data,{ checkedKeys,checkedNodes,halfCheckedNodes }) {
                 this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes.filter(item => !item.disabled)));
                 // this.choosedNodes = JSON.parse(JSON.stringify(checkedNodes));
-                if(checkedKeys.includes(data.privCode)){
+                if (checkedKeys.includes(data.privCode)) {
                     //如果当前权限有其它关联权限，那么必须要选择其它关联的权限
-                    if(data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)){
+                    if (data.linkedPrivCode && !checkedKeys.includes(data.linkedPrivCode)) {
                         this.$refs.menuTree.setChecked(data.linkedPrivCode,true);
                     }
                 } else {
@@ -270,14 +270,14 @@
              * 设置右侧默认选中的菜单节点
              */
             setDefaultMenuChosed () {
-                if(this.activeNodeId in this.privaligeInfo){
+                if (this.activeNodeId in this.privaligeInfo) {
                     let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
                     // this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes(chosedNode);
                         this.$refs.menuTree.filter('privAttr');
                     });
-                }else{
+                } else {
                     this.$nextTick(() => {
                         this.$refs.menuTree.setCheckedNodes([]);
                         this.$refs.menuTree.filter('privAttr');
@@ -289,8 +289,8 @@
              */
             getMangePrivalige () {
                 let returnValige = [];
-                for(let item in this.privaligeInfo){
-                    for(let i = 0,j = this.privaligeInfo[item].length;i < j;i++){
+                for (let item in this.privaligeInfo) {
+                    for (let i = 0,j = this.privaligeInfo[item].length; i < j; i++) {
                         returnValige.push({
                             privOrg : item,
                             privCode : this.privaligeInfo[item][i].privCode,
@@ -316,12 +316,12 @@
                         return {
                             ...item,
                             choseStatus : ''
-                        }
+                        };
                     }),...halfCheckedNodes.map(item => {
                         return {
                             ...item,
                             choseStatus : 'half'
-                        }
+                        };
                     })];
                 });
             },100),
@@ -336,10 +336,10 @@
         },
         computed : {
             //公司树数据
-            companyData (){
-                if(Object.keys(this.treeData).length > 0){
+            companyData () {
+                if (Object.keys(this.treeData).length > 0) {
                     return [this.treeData];
-                }else{
+                } else {
                     return [];
                 }
             },
@@ -350,10 +350,10 @@
         watch : {
             //设置默认选中的节点
             defaultChosedNodeInit (newVal,oldVal) {
-                if(newVal && Object.keys(newVal).length > 0){
+                if (newVal && Object.keys(newVal).length > 0) {
                     this.privaligeInfo = newVal;
                     let data = [];
-                    for(let item in this.defaultChosedNodeInit){
+                    for (let item in this.defaultChosedNodeInit) {
                         data.push(item);
                     }
                     this.chosedOrgList = data;
@@ -363,7 +363,7 @@
                 }
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

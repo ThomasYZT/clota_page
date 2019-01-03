@@ -362,7 +362,7 @@
              */
             getCarScope (cardScope) {
                 if (this.tableData.length > 0) {
-                    for (let i =0,j = this.tableData.length; i < j; i++) {
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
                         if (!(this.tableData[i]['physicalNum'] in cardScope)) {
                             this.tableData.push(cardScope[this.tableData[i]['physicalNum']]);
                         }

@@ -148,16 +148,16 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['length','table-data','send-data'],
-        components: {
+        props : ['length','table-data','send-data'],
+        components : {
             tableCom,
         },
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -169,10 +169,10 @@
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio') }));
                     }
                 });
             };
@@ -181,15 +181,15 @@
             const validateRateNumerator = (rule,value,callback) => {
                 common.validateInteger( this.formData.rateNumerator ).then(() => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio') }));
                     }
                 });
             };
@@ -204,71 +204,71 @@
             };
 
             return {
-                visible: false,
+                visible : false,
                 //步骤
-                step: 0,
+                step : 0,
                 //表单数据
-                index: null,
-                formData: {
-                    accountBelonging: '',
-                    accountName: '',
-                    unit: this.$t('yuan'),
-                    rate: '1',
-                    rateNumerator: '1',
-                    rateDenominator: '1',
-                    exchangeToCash: 'false',
-                    corpusAppliedOrgId: [],
-                    donateAppliedOrgId: [],
+                index : null,
+                formData : {
+                    accountBelonging : '',
+                    accountName : '',
+                    unit : this.$t('yuan'),
+                    rate : '1',
+                    rateNumerator : '1',
+                    rateDenominator : '1',
+                    exchangeToCash : 'false',
+                    corpusAppliedOrgId : [],
+                    donateAppliedOrgId : [],
                 },
                 //校验规则
-                ruleValidate: {
-                    accountBelonging: [
-                        { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
-                        { validator: validateOnly, trigger: 'blur' },
+                ruleValidate : {
+                    accountBelonging : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('accountOwnership') }), trigger : 'change' },
+                        { validator : validateOnly, trigger : 'blur' },
                     ],
-                    accountName: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 20, message: this.$t('errorMaxLength',{field : this.$t('accountName'),length : 20}), trigger: 'blur' },
+                    accountName : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 20, message : this.$t('errorMaxLength',{ field : this.$t('accountName'),length : 20 }), trigger : 'blur' },
                     ],
-                    unit: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength',{field : this.$t('unit'),length : 20}), trigger: 'blur' },
+                    unit : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength',{ field : this.$t('unit'),length : 20 }), trigger : 'blur' },
                     ],
-                    rateDenominator: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateRateNumerator, trigger: 'blur' },
+                    rateDenominator : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateRateNumerator, trigger : 'blur' },
                     ],
                 },
                 //存储所选表格数据
-                selectData: [],
+                selectData : [],
                 //表头信息
-                moneyColumnData: [
+                moneyColumnData : [
                     {
-                        title: '',
-                        minWidth: 110,
-                        field: '',
+                        title : '',
+                        minWidth : 110,
+                        field : '',
                     },
                     {
-                        title: 'principalCanBeUsedInRangeSetting',
-                        minWidth: 400,
-                        field: 'orgName'
+                        title : 'principalCanBeUsedInRangeSetting',
+                        minWidth : 400,
+                        field : 'orgName'
                     },
                 ],
-                sendColumnData: [
+                sendColumnData : [
                     {
-                        title: '',
-                        minWidth: 110,
-                        field: '',
+                        title : '',
+                        minWidth : 110,
+                        field : '',
                     },
                     {
-                        title: 'complimentaryAmountCanBeUsedToSetTheRange',
-                        minWidth: 400,
-                        field: 'orgName'
+                        title : 'complimentaryAmountCanBeUsedToSetTheRange',
+                        minWidth : 400,
+                        field : 'orgName'
                     },
                 ],
                 //归属校验
-                check: true,
+                check : true,
                 //单位列表
                 unitList : [
                     {
@@ -284,18 +284,18 @@
                         label : 'gameCoin'
                     }
                 ]
-            }
+            };
         },
-        watch: {
-            'formData.rateNumerator': function (newVal) {
+        watch : {
+            'formData.rateNumerator' : function (newVal) {
                 this.$refs.formValidate.validateField('rateDenominator');
             },
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 this.index = this.length;
-                if( data ){
+                if ( data ) {
                     this.formData = defaultsDeep({}, data.item);
                     this.index = data.index;
                 }
@@ -305,10 +305,10 @@
             //账户归属信息改变
             changeAccountBelonging (val) {
                 let obj = this.tableData.find( item => val === item.id );
-                if(obj){
-                    var params = {
-                        accountBelonging: obj.id,
-                        accountTypeId: ''
+                if (obj) {
+                    let params = {
+                        accountBelonging : obj.id,
+                        accountTypeId : ''
                     };
                     this.existAccountBelong(params);
                 }
@@ -318,107 +318,107 @@
             //判断账户归属是否存在
             existAccountBelong ( params ) {
                 ajax.post('existAccountBelong', params).then(res => {
-                    if( res.success ) {
+                    if ( res.success ) {
                         this.check = !res.data;
                         this.$refs.formValidate.validateField('accountBelonging');
                     } else {
-                        this.$Message.warning(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                        this.$Message.warning(res.message || this.$t('failureTip',{ tip : this.$t('modify') }));
                     }
-                })
+                });
             },
 
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid && this.check){
-                        this.step ++;
+                    if (valid && this.check) {
+                        this.step++;
                         this.setSelectToTableForStep(this.step);
                     }
-                })
+                });
             },
 
             //多选
-            handleSelectionChangeToMoney(val) {
+            handleSelectionChangeToMoney (val) {
                 this.selectData[0] = val;
             },
-            handleSelectionChangeToSend(val) {
+            handleSelectionChangeToSend (val) {
                 this.selectData[1] = val;
             },
 
             //根据数据回填表格，设置勾选
             setSelectToTableForStep ( step ) {
-                if( step === 1){
+                if ( step === 1) {
                     setTimeout( () => {
-                        if(this.selectData[0] && this.selectData[0].length > 0){
+                        if (this.selectData[0] && this.selectData[0].length > 0) {
                             this.selectData[0].forEach( item => {
                                 this.tableData.forEach( (list,index) => {
-                                    if(item.id === list.id){
-                                        if(this.$refs.moneyMultiTablePlug){
+                                    if (item.id === list.id) {
+                                        if (this.$refs.moneyMultiTablePlug) {
                                             this.$refs.moneyMultiTablePlug.toggleRowSelection(this.tableData[index], true);
                                         }
                                     }
-                                })
-                            })
+                                });
+                            });
                         }
-                    },300)
+                    },300);
                 }
-                if( step === 2){
+                if ( step === 2) {
                     setTimeout( () => {
-                        if(this.selectData[1] && this.selectData[1].length > 0){
+                        if (this.selectData[1] && this.selectData[1].length > 0) {
                             this.selectData[1].forEach( item => {
                                 this.sendData.forEach( (list,index) => {
-                                    if(item.id === list.id){
-                                        if(this.$refs.sendMultiTablePlug){
+                                    if (item.id === list.id) {
+                                        if (this.$refs.sendMultiTablePlug) {
                                             this.$refs.sendMultiTablePlug.toggleRowSelection(this.sendData[index], true);
                                         }
                                     }
-                                })
-                            })
+                                });
+                            });
                         }
-                    },300)
+                    },300);
                 }
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {
-                    accountBelonging: '',
-                    accountName: '',
-                    unit: this.$t('yuan'),
-                    rate: '1',
-                    rateNumerator: '1',
-                    rateDenominator: '1',
-                    exchangeToCash: 'false',
-                    corpusAppliedOrgId: [],
-                    donateAppliedOrgId: [],
+                    accountBelonging : '',
+                    accountName : '',
+                    unit : this.$t('yuan'),
+                    rate : '1',
+                    rateNumerator : '1',
+                    rateDenominator : '1',
+                    exchangeToCash : 'false',
+                    corpusAppliedOrgId : [],
+                    donateAppliedOrgId : [],
                 };
-                if(this.step === 0){
+                if (this.step === 0) {
                     this.$refs.formValidate.resetFields();
                 }
                 this.selectData = [];
                 this.index = null;
                 this.step = 0;
-                if( this.$refs.moneyMultiTablePlug ){
+                if ( this.$refs.moneyMultiTablePlug ) {
                     this.$refs.moneyMultiTablePlug.clearSelection();
                 }
-                if( this.$refs.sendMultiTablePlug ){
+                if ( this.$refs.sendMultiTablePlug ) {
                     this.$refs.sendMultiTablePlug.clearSelection();
                 }
             },
 
             //下一步
             nextStep ( data ) {
-                if(data){
+                if (data) {
                     this.formValidateFunc();
                 } else {
-                    this.step ++;
+                    this.step++;
                     this.setSelectToTableForStep(this.step);
                 }
             },
             //下一步
             prevStep () {
-                this.step --;
+                this.step--;
                 this.setSelectToTableForStep(this.step);
             },
 
@@ -426,29 +426,29 @@
             save () {
                 this.formData.corpusAppliedOrgId = [];
                 this.formData.donateAppliedOrgId = [];
-                if(this.selectData && this.selectData.length > 0 ){
+                if (this.selectData && this.selectData.length > 0 ) {
                     this.selectData[0].forEach( (item, index) => {
                         this.formData.corpusAppliedOrgId.push(item.id);
-                    })
+                    });
 
                     this.selectData[1].forEach( (item, index) => {
                         this.formData.donateAppliedOrgId.push(item.id);
                     });
                 }
                 let params = {
-                    typeModelJson: JSON.stringify({
-                        id:'',
-                        accountName:this.formData.accountName
+                    typeModelJson : JSON.stringify({
+                        id : '',
+                        accountName : this.formData.accountName
                     }),
-                    extModelJson: JSON.stringify({
-                        accountBelonging: this.formData.accountBelonging,
-                        unit: this.formData.unit,
-                        rate: (Number(this.formData.rateNumerator)/Number(this.formData.rateDenominator)).toFixed(2),
-                        exchangeToCash: this.formData.exchangeToCash,
-                        corpusAppliedOrgId: this.formData.corpusAppliedOrgId.join(','),
-                        donateAppliedOrgId: this.formData.donateAppliedOrgId.join(','),
-                        rateDenominator: this.formData.rateDenominator,
-                        rateNumerator: this.formData.rateNumerator
+                    extModelJson : JSON.stringify({
+                        accountBelonging : this.formData.accountBelonging,
+                        unit : this.formData.unit,
+                        rate : (Number(this.formData.rateNumerator) / Number(this.formData.rateDenominator)).toFixed(2),
+                        exchangeToCash : this.formData.exchangeToCash,
+                        corpusAppliedOrgId : this.formData.corpusAppliedOrgId.join(','),
+                        donateAppliedOrgId : this.formData.donateAppliedOrgId.join(','),
+                        rateDenominator : this.formData.rateDenominator,
+                        rateNumerator : this.formData.rateNumerator
                     })
                 };
                 this.updateMemberAccountDefine(params);
@@ -457,18 +457,18 @@
             //保存储值账户设置
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('add')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('add') }));
                         this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        this.$emit('updata-list', { item : this.formData, index : this.index });
                     } else {
-                        this.$Message.warning(res.message || this.$t('failureTip',{'tip' : this.$t('add')}));
+                        this.$Message.warning(res.message || this.$t('failureTip',{ 'tip' : this.$t('add') }));
                     }
-                })
+                });
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

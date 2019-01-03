@@ -7,23 +7,23 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        components: {},
-        data() {
-            return {}
+        components : {},
+        data () {
+            return {};
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             })
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {}
+        watch : {},
+        methods : {}
     };
 </script>
 

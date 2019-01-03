@@ -438,4 +438,4 @@ export const teamOrderChargeBack = [
         width : 180,
         enWidth : 230,
     }
-]
+];

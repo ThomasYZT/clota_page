@@ -270,7 +270,7 @@
                 'permissionInfo'
             ]),
             //是否可以导入实体卡
-            canUploadCard (){
+            canUploadCard () {
                 return this.permissionInfo && this.permissionInfo['uploadEntityCard'] === 'allow';
             },
             //是否可以编辑实体卡

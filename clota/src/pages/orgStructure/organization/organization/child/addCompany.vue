@@ -112,61 +112,61 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
     import selectTree from '@/components/selectTree/index.vue';
 
     export default {
-        components: {
+        components : {
             cityPlugin,
             selectTree
         },
-        props: {
+        props : {
             //绑定的模态框是否显示的变量
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //选择的父节点详情
-            'chosed-node-detail': {
-                type: Object,
-                default() {
-                    return {}
+            'chosed-node-detail' : {
+                type : Object,
+                default () {
+                    return {};
                 }
             },
             //新增的节点详情
-            'added-node-detail': {
-                type: Object,
-                default() {
-                    return {}
+            'added-node-detail' : {
+                type : Object,
+                default () {
+                    return {};
                 }
             },
             //根节点id
             'root-id' : {
-                type :String,
+                type : String,
                 default : ''
             }
         },
-        data() {
+        data () {
             //校验管理账号
             const validateControlAccount = (rule, value, callback) => {
-                if(value){
+                if (value) {
                     this.queryAccountExist().then((res) => {
-                        if(res.success){
-                            if(res.data){
+                        if (res.success) {
+                            if (res.data) {
                                 callback();
-                            }else{
+                            } else {
                                 callback(this.$t('adminAccountIsExit'));
                             }
-                        }else{
+                        } else {
                             callback(this.$t('accountValidFail'));
                         }
                     }).catch(() => {
                         callback(this.$t('accountValidFail'));
                     });
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('controlAccount')}));
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('controlAccount') }));
                 }
             };
             //校验电子邮箱
@@ -175,10 +175,10 @@
                     if (validator.isEmail(value)) {
                         callback();
                     } else {
-                        callback(this.$t('errorFormat',{field: this.$t('email')}));
+                        callback(this.$t('errorFormat',{ field : this.$t('email') }));
                     }
                 } else {
-                    callback(this.$t('inputField', {field: this.$t('email')}));
+                    callback(this.$t('inputField', { field : this.$t('email') }));
                 }
             };
             //校验联系电话
@@ -187,7 +187,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('errorFormat', {field: this.$t('phone')}));
+                        callback(this.$t('errorFormat', { field : this.$t('phone') }));
                     }
                 } else {
                     callback();
@@ -199,7 +199,7 @@
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('errorFormat',{field: this.$t('fax')}));
+                        callback(this.$t('errorFormat',{ field : this.$t('fax') }));
                     }
                 } else {
                     callback();
@@ -207,113 +207,113 @@
             };
             return {
                 //表单数据
-                formData: {
+                formData : {
                     //联系电话
-                    phone: '',
+                    phone : '',
                     //财务上级
-                    fianceSuperior: '',
+                    fianceSuperior : '',
                     //管理上级
                     manageSuperior : '',
                     //传真
-                    fax: '',
+                    fax : '',
                     //公司编码
-                    companyCode: '',
+                    companyCode : '',
                     //管理账号
-                    controlAccount: '',
+                    controlAccount : '',
                     //电子邮箱
-                    mail: '',
+                    mail : '',
                     //短信供应商
-                    smsProvider: '',
+                    smsProvider : '',
                     //详细地址
-                    address: '',
+                    address : '',
                     //地点
-                    place: {},
+                    place : {},
                     //联系人
-                    person: '',
+                    person : '',
                     //启用状态
                     status : 'open'
                 },
                 //表单校验规则
-                ruleValidate: {
-                    phone: [
-                        {validator: validatePhone, trigger: 'blur'},
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('phone'),length : 20}),trigger : 'blur'}
+                ruleValidate : {
+                    phone : [
+                        { validator : validatePhone, trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' }
                     ],
-                    fax: [
-                        {validator: validateFax, trigger: 'blur'},
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'}
+                    fax : [
+                        { validator : validateFax, trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),trigger : 'blur' }
                     ],
-                    fianceSuperior: [
+                    fianceSuperior : [
                         {
-                            required: true,
-                            message: this.$t('inputField', {field: this.$t('fianceSuperior')}),
-                            trigger: 'change'
+                            required : true,
+                            message : this.$t('inputField', { field : this.$t('fianceSuperior') }),
+                            trigger : 'change'
                         },
                     ],
-                    controlAccount: [
-                        {required: true, validator: validateControlAccount, trigger: 'blur'},
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('controlAccount'),length : 20}),trigger : 'blur'}
+                    controlAccount : [
+                        { required : true, validator : validateControlAccount, trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('controlAccount'),length : 20 }),trigger : 'blur' }
                     ],
-                    mail: [
-                        {required: true, validator: validateMail, trigger: 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('email'),length : 100}),trigger : 'blur'}
+                    mail : [
+                        { required : true, validator : validateMail, trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' }
                     ],
-                    smsProvider: [
+                    smsProvider : [
                         {
-                            required: true,
-                            message: this.$t('selectField', {msg: this.$t('smsProvider')}),
-                            trigger: 'change'
+                            required : true,
+                            message : this.$t('selectField', { msg : this.$t('smsProvider') }),
+                            trigger : 'change'
                         },
                     ],
                     person : [
-                        {required :true,message : this.$t('inputField',{field : this.$t('person')})},
-                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('person') }) },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' }
                     ],
                     companyCode : [
-                        {min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur'}
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' }
                     ],
                     address : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
                     ]
                 },
                 //短信供应商列表
-                smsProviderList: [],
+                smsProviderList : [],
                 //财务上级列表
                 parentEconomics : [],
                 //管理上级
                 parentManages : [],
                 //是否在新增中
                 savIng : false
-            }
+            };
         },
-        watch: {
+        watch : {
             //监听选择的父节点信息
-            'chosedNodeDetail': {
-                handler(newVal, oldVal) {
+            'chosedNodeDetail' : {
+                handler (newVal, oldVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
                         this.formData.fianceSuperior = newVal.id;
                         this.formData.manageSuperior = newVal.id;
                     }
                 },
-                immediate: true
+                immediate : true
             }
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
-                }else{
+                } else {
                     this.getParentManages();
                     this.getParentEconomic();
                     this.querySmsProviderList();
@@ -324,12 +324,12 @@
             /**
              * 保存新增租户数据
              */
-            save() {
+            save () {
                 this.savIng = true;
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
                         this.addOrgInfo();
-                    }else{
+                    } else {
                         this.savIng = false;
                     }
                 });
@@ -337,7 +337,7 @@
             /**
              * 初始化表单数据
              */
-            resetFormData() {
+            resetFormData () {
                 for (let item in this.formData) {
                     this.formData[item] = '';
                 }
@@ -345,7 +345,7 @@
             /**
              * 调用新增公司的接口
              */
-            addCompany() {
+            addCompany () {
                 this.$emit('fresh-structure-data');
                 this.$emit('input', false);
             },
@@ -360,13 +360,13 @@
              */
             getParentManages () {
                 ajax.post('getOrgsByManageType',{
-                    orgId :  this.chosedNodeDetail.id,
+                    orgId : this.chosedNodeDetail.id,
                     manageType : 'manage',
                     nodeType : this.chosedNodeDetail.nodeType,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.parentManages = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.parentManages = [];
                     }
                 });
@@ -380,9 +380,9 @@
                     manageType : 'economic',
                     nodeType : this.chosedNodeDetail.nodeType,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.parentEconomics = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.parentEconomics = [];
                     }
                 });
@@ -392,9 +392,9 @@
              */
             querySmsProviderList () {
                 ajax.post('getSmsProviderList').then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.smsProviderList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.smsProviderList = [];
                     }
                 });
@@ -421,7 +421,7 @@
                     nodeType : 'company',
                     status : this.formData.status
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.$emit('fresh-structure-data');
                         this.$emit('input', false);
                         if (this.formData.status === 'open') {
@@ -429,15 +429,15 @@
                                 content : this.$t('addNodeTips', {
                                     nodeName : this.addedNodeDetail.nodeName,
                                     nodeType : this.$t('company'),
-                                    email :  this.formData.mail
+                                    email : this.formData.mail
                                 }),
                                 duration : 5
                             });
                         } else {
-                            this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                            this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                         }
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }
                 }).finally(() => {
                     this.savIng = false;
@@ -463,33 +463,33 @@
             //选择的地区信息
             placeInfo () {
                 let place = {};
-                if(this.formData.place){
-                    if(this.formData.place.province){
+                if (this.formData.place) {
+                    if (this.formData.place.province) {
                         place['provinceid'] = this.formData.place.province.provinceid;
-                    }else{
+                    } else {
                         place['provinceid'] = '';
                     }
-                    if(this.formData.place.city){
+                    if (this.formData.place.city) {
                         place['cityid'] = this.formData.place.city.cityid;
-                    }else{
+                    } else {
                         place['cityid'] = '';
                     }
-                    if(this.formData.place.area){
+                    if (this.formData.place.area) {
                         place['areaid'] = this.formData.place.area.areaid;
-                    }else{
+                    } else {
                         place['areaid'] = '';
                     }
                     return place;
-                }else{
+                } else {
                     return {
                         provinceid : '',
                         cityid : '',
                         areaid : '',
-                    }
+                    };
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

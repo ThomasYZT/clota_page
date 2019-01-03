@@ -154,41 +154,41 @@
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             breadCrumbHead,
             cityPlugin
         },
-        data() {
+        data () {
             //校验联系电话
             const validatePhone = (rule, value, callback) => {
                 if (value) {
                     if (validator.isMobile(value) || validator.isTelephone(value)) {
                         callback();
                     } else {
-                        callback(this.$t('formalError',{field : this.$t('phone')}));
+                        callback(this.$t('formalError',{ field : this.$t('phone') }));
                     }
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('phone')}));
+                    callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('phone') }));
                 }
             };
             //校验管理账号
             const validateControlAccount = (rule, value, callback) => {
                 if (value === '' || value === null || value === undefined) {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('controlAccount')}));
+                    callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('controlAccount') }));
                 } else {
                     this.queryAccountExist().then((res) => {
-                        if(res.status === 200){
-                            if(res.data){
+                        if (res.status === 200) {
+                            if (res.data) {
                                 callback();
-                            }else{
+                            } else {
                                 callback(this.$t('adminAccountIsExit'));
                             }
-                        }else{
+                        } else {
                             callback(this.$t('accountValidFail'));
                         }
                     }).catch(() => {
@@ -202,30 +202,30 @@
                     if (validator.isEmail(value)) {
                         callback();
                     } else {
-                        callback(this.$t('formalError',{field : this.$t('mail')}));
+                        callback(this.$t('formalError',{ field : this.$t('mail') }));
                     }
                 } else {
-                    callback(this.$t('validateError.pleaseInput', {'msg': this.$t('email')}))
+                    callback(this.$t('validateError.pleaseInput', { 'msg' : this.$t('email') }));
                 }
             };
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('less'),
-                        router: {
-                            name: 'ISPinternet'
+                        name : this.$t('less'),
+                        router : {
+                            name : 'ISPinternet'
                         }
                     }
                 ],
                 //表单数据
-                formData: {
+                formData : {
                     //*租户公司名称
-                    companyName: 'aaa',
+                    companyName : 'aaa',
                     //联系人
-                    person: 'tst',
+                    person : 'tst',
                     //联系电话
-                    phone: '13054153343',
+                    phone : '13054153343',
                     //所属集团
                     // group: '',
                     //传真
@@ -235,54 +235,54 @@
                     //财务上级
                     // fianceSuperior: '',
                     //管理账号
-                    controlAccount: '',
+                    controlAccount : '',
                     //电子邮箱
-                    mail: 'zgh@qq.com',
+                    mail : 'zgh@qq.com',
                     //短信供应商
-                    smsProvider: '',
+                    smsProvider : '',
                     //详细地址
-                    address: '',
+                    address : '',
                     //客服专员
-                    service: '',
+                    service : '',
                     //地点
-                    place: {},
+                    place : {},
                     //企业编码
                     companyCode : ''
                 },
                 //表单校验规则
-                ruleValidate: {
-                    companyName: [
+                ruleValidate : {
+                    companyName : [
                         {
-                            required: true,
-                            message: this.$t('validateError.pleaseInput', {'msg': this.$t('lesseeName')}),
-                            trigger: 'blur'
+                            required : true,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('lesseeName') }),
+                            trigger : 'blur'
                         },
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('lesseeName'),length : 100}),trigger : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('lesseeName'),length : 100 }),trigger : 'blur' }
                     ],
-                    person: [
+                    person : [
                         {
-                            required: true,
-                            message: this.$t('validateError.pleaseInput', {'msg': this.$t('person')}),
-                            trigger: 'blur'
+                            required : true,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('person') }),
+                            trigger : 'blur'
                         },
-                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'}
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' }
                     ],
-                    phone: [
-                        {required: true, validator: validatePhone, trigger: 'blur'},
+                    phone : [
+                        { required : true, validator : validatePhone, trigger : 'blur' },
                     ],
-                    controlAccount: [
-                        {required: true, validator: validateControlAccount, trigger: 'blur'},
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('controlAccount'),length : 20})}
+                    controlAccount : [
+                        { required : true, validator : validateControlAccount, trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('controlAccount'),length : 20 }) }
                     ],
-                    mail: [
-                        {required: true, validator: validateMail, trigger: 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('mail'),length : 100}),trigger: 'blur'}
+                    mail : [
+                        { required : true, validator : validateMail, trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('mail'),length : 100 }),trigger : 'blur' }
                     ],
                     address : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger: 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
                     ],
                     companyCode : [
-                        {max : 8,message : this.$t('errorMaxLength',{field : this.$t('enterpriseCode'),length : 8}),trigger: 'blur'}
+                        { max : 8,message : this.$t('errorMaxLength',{ field : this.$t('enterpriseCode'),length : 8 }),trigger : 'blur' }
                     ]
                 },
                 // //集团列表
@@ -300,23 +300,23 @@
                 //     },
                 // ],
                 //短信供应商列表
-                smsProviderList: [],
+                smsProviderList : [],
                 //受理客服
-                serviceList: [],
+                serviceList : [],
                 //是否正在添加中
-                addLoading: false
-            }
+                addLoading : false
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存新增租户数据
              */
-            save() {
+            save () {
                 this.addLoading = true;
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.addOrgInfo();
-                    }else{
+                    } else {
                         this.addLoading = false;
                     }
                 });
@@ -324,9 +324,9 @@
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.$router.push({
-                    name: 'ISPinternet'
+                    name : 'ISPinternet'
                 });
             },
             /**
@@ -334,9 +334,9 @@
              */
             querySysAccoutList () {
                 ajax.post('querySysAccoutList').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.serviceList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.serviceList = [];
                     }
                 }).catch(err => {
@@ -351,9 +351,9 @@
                     page : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.smsProviderList = res.data.list ? res.data.list : [];
-                    }else{
+                    } else {
                         this.smsProviderList = [];
                     }
                 }).catch(() => {
@@ -373,9 +373,9 @@
              */
             getSysAccountByToken () {
                 ajax.post('getSysAccountByToken').then(res => {
-                    if(res.status === 200){
+                    if (res.status === 200) {
                         this.formData.service = res.data.id ? res.data.id : '';
-                    }else{
+                    } else {
                         this.formData.service = '';
                     }
                 });
@@ -400,17 +400,17 @@
                     checkinCode : this.formData.companyCode,
                     nodeType : 'company',
                 }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success(this.$t('successTip',{msg: this.$t('add')}));
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('successTip',{ msg : this.$t('add') }));
                         this.$router.push({
                             name : 'ISPinternet'
                         });
-                    }else{
-                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('add')}));
+                    } else {
+                        this.$Message.error(res.message || this.$t('failureTip',{ msg : this.$t('add') }));
                     }
                 }).finally(() => {
                     this.addLoading = false;
-                })
+                });
             }
         },
         created () {
@@ -421,22 +421,22 @@
         computed : {
             //选择的地区信息
             placeSelected () {
-                if(this.formData.place && Object.keys(this.formData.place).length > 0){
+                if (this.formData.place && Object.keys(this.formData.place).length > 0) {
                     return {
                         province : this.formData.place.province,
                         city : this.formData.place.city,
                         area : this.formData.place.area,
-                    }
-                }else{
+                    };
+                } else {
                     return {
                         province : '',
                         city : '',
                         area : '',
-                    }
+                    };
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

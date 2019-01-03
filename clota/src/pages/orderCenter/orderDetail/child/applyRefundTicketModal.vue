@@ -150,8 +150,8 @@
             //订单详情
             orderDetail : {
                 type : Object,
-                default() {
-                    return ''
+                default () {
+                    return '';
                 }
             },
             //产品信息
@@ -165,7 +165,7 @@
         components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
@@ -175,9 +175,9 @@
                 errMsg : '',
                 //退票费
                 refundFee : 0
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 隐藏模态框
              */
@@ -187,37 +187,37 @@
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
 
             },
             /**
              * 确定退票
              */
             confirm () {
-                if(this.selectedTicket.length > 0){
+                if (this.selectedTicket.length > 0) {
                     this.saveOrderProductRefundAlter();
-                }else{
-                    this.$Message.warning(this.$t('selectField', { sg: this.$t('productNeedsRefund') }));    // 请选择需要退票的产品
+                } else {
+                    this.$Message.warning(this.$t('selectField', { sg : this.$t('productNeedsRefund') })); // 请选择需要退票的产品
                 }
             },
             /**
              * 选择的产品信息
              * @param data
              */
-            handleSelectionChange(data) {
+            handleSelectionChange (data) {
                 this.selectedTicket = data;
                 this.errMsg = '';
-                for(let i = 0,j = data.length;i < j;i++){
+                for (let i = 0,j = data.length; i < j; i++) {
                     //如果景区退票的时候选择了已核销的产品需要给出提示
-                    if(data[i]['verifyStatus'] === 'true'){
-                        this.errMsg = this.$t('refundProductTip');  // 提示：您申请退票的产品中包含已核销的产品
+                    if (data[i]['verifyStatus'] === 'true') {
+                        this.errMsg = this.$t('refundProductTip'); // 提示：您申请退票的产品中包含已核销的产品
                         break;
                     }
                 }
@@ -227,7 +227,7 @@
              * @param data
              * @returns {boolean}
              */
-            selectableFunc(data){
+            selectableFunc (data) {
                 return data.returnRule === 'true';
             },
             //同步状态
@@ -243,12 +243,12 @@
                     reqOrderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                     reqType : 'refund'
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('ApplicationForRefundSuccess'));  // 发起退票申请成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('ApplicationForRefundSuccess')); // 发起退票申请成功
                         this.cancel();
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error(this.$t('ApplicationForRefundFail'));    // 发起退票申请失败
+                    } else {
+                        this.$Message.error(this.$t('ApplicationForRefundFail')); // 发起退票申请失败
                     }
                 });
             },
@@ -261,9 +261,9 @@
                     orderId : this.orderDetail.orderId,
                     orderTicketIds : this.selectedTicket.map(item => item.id).join(','),
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.refundFee = res.data ? res.data : 0;
-                    }else{
+                    } else {
                         this.refundFee = 0;
                     }
                 });
@@ -272,23 +272,23 @@
         computed : {
             //订单下的产品信息
             tableData () {
-                if(this.productInfo && this.productInfo.length > 0){
+                if (this.productInfo && this.productInfo.length > 0) {
                     return this.productInfo;
-                }else{
-                    return  [];
+                } else {
+                    return [];
                 }
             },
         },
         watch : {
-            selectedTicket (newVal){
-                if(newVal && newVal.length > 0){
+            selectedTicket (newVal) {
+                if (newVal && newVal.length > 0) {
                     this.getRefundProcedureFee();
-                }else{
+                } else {
                     this.refundFee = 0;
                 }
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

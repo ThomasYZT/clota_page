@@ -370,7 +370,7 @@
                 //营销类别列表
                 marketTypeList : [],
                 //营销级别列表
-                marketLevelList  : []
+                marketLevelList : []
             };
         },
         methods : {
@@ -630,7 +630,7 @@
                             } else if (item === 'visitDate') {
                                 this.$set(this.formData['visitDate'],0,this.paramsDefault.visitDate[0] ? new Date(this.paramsDefault.visitDate[0]) : '');
                                 this.$set(this.formData['visitDate'],1,this.paramsDefault.visitDate[1] ? new Date(this.paramsDefault.visitDate[1]) : '');
-                            }  else {
+                            } else {
                                 this.$set(this.formData,item,this.paramsDefault[item]);
                             }
                         }

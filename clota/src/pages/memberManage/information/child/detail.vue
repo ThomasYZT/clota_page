@@ -842,7 +842,7 @@
              * @param{Object} item 会员卡信息
              */
             choseCard (item) {
-                console.log(this.memberBaseDetail.custName)
+                console.log(this.memberBaseDetail.custName);
                 this.choosedCard = Object.assign({
                     ...item,
                 },{

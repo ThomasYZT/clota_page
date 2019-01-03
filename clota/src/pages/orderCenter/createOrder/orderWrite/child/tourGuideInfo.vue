@@ -140,17 +140,17 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './tourGuideConfig';
+    import { columnData } from './tourGuideConfig';
     import ajax from '@/api/index.js';
-    import {idType} from '@/assets/js/constVariable.js';
-    import {validator} from 'klwk-ui';
+    import { idType } from '@/assets/js/constVariable.js';
+    import { validator } from 'klwk-ui';
     import delModal from '@/components/delModal/index.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import addTourGuideOrDriverModal from './addTourGuideOrDriverModal';
     export default {
-        props :{
+        props : {
             //查询参数
-            'search-params': {
+            'search-params' : {
                 type : Object,
                 default () {
                     return {};
@@ -162,45 +162,45 @@
             delModal,
             addTourGuideOrDriverModal
         },
-        data() {
+        data () {
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
-                if(rule.rowData.documentNo){
-                    if(rule.rowData.documentNo.length > 100){
-                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100}));
-                    }else{
+                if (rule.rowData.documentNo) {
+                    if (rule.rowData.documentNo.length > 100) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100 }));
+                    } else {
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback(this.$t('existID'));   // 证件已存在
+                            callback(this.$t('existID')); // 证件已存在
                         });
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('IdentificationNumber') })); // 请输入证件号
                 }
             };
             //校验导游姓名
             const validateName = (rule,value,callback) => {
-                if(rule.rowData.staffName){
-                    if(rule.rowData.staffName.length > 20){
-                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20}));
-                    }else{
+                if (rule.rowData.staffName) {
+                    if (rule.rowData.staffName.length > 20) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20 }));
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('name')}));     // 请输入姓名
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('name') })); // 请输入姓名
                 }
             };
             //校验手机号
             const validatePhone = (rule,value,callback) => {
-                if(rule.rowData.phoneNumber){
-                    if(validator.isMobile(rule.rowData.phoneNumber)){
+                if (rule.rowData.phoneNumber) {
+                    if (validator.isMobile(rule.rowData.phoneNumber)) {
                         callback();
-                    }else {
-                        callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
+                    } else {
+                        callback(this.$t('errorFormat', { field : this.$t('mobilePhone') }));
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('mobilePhone')}));  // 请输入手机号
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('mobilePhone') })); // 请输入手机号
                 }
             };
             return {
@@ -214,17 +214,17 @@
                 rules : {
                     idCard (rowData) {
                         return [
-                            {validator : validateIdCard,trigger: 'blur',rowData : rowData}
-                        ]
+                            { validator : validateIdCard,trigger : 'blur',rowData : rowData }
+                        ];
                     },
                     staffName (rowData) {
                         return [
-                            {validator : validateName,trigger : 'blur',rowData : rowData}
+                            { validator : validateName,trigger : 'blur',rowData : rowData }
                         ];
                     },
                     phoneNumber (rowData) {
                         return [
-                            {validator : validatePhone,trigger : 'blur',rowData : rowData}
+                            { validator : validatePhone,trigger : 'blur',rowData : rowData }
                         ];
                     }
                 },
@@ -232,14 +232,14 @@
                 originalTableData : [],
                 //添加导游模态框是否显示
                 addTourGideShow : false,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 选择的导游信息
              * @param val
              */
-            handleSelectionChange(val) {
+            handleSelectionChange (val) {
                 this.selectedTourGuideInfo = val;
             },
             /**
@@ -247,13 +247,13 @@
              */
             addTourGuide () {
                 //旅行社下单，直接从保存的导游信息中添加导游
-                if(this.manageOrgs.nodeType === 'partner'){
+                if (this.manageOrgs.nodeType === 'partner') {
                     this.addTourGideShow = true;
-                }else if(this.manageOrgs.nodeType === 'scenic'){
+                } else if (this.manageOrgs.nodeType === 'scenic') {
                     this.tableData.push({
                         editType : 'edit',
                         staffName : '',
-                        documentNo :'',
+                        documentNo : '',
                         phoneNumber : '',
                         modifyType : 'add'
                     });
@@ -265,8 +265,8 @@
              */
             validateIdCardNumIsExist (cardInfo) {
                 return new Promise((resolve,reject) => {
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(cardInfo !== this.tableData[i] && this.tableData[i]['documentNo'] === cardInfo['documentNo']){
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (cardInfo !== this.tableData[i] && this.tableData[i]['documentNo'] === cardInfo['documentNo']) {
                             reject();
                         }
                     }
@@ -282,7 +282,7 @@
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
                 //设置已经选择的导游在模态框中默认选中
-                if(this.selectedTourGuideInfo.includes(this.tableData[index])){
+                if (this.selectedTourGuideInfo.includes(this.tableData[index])) {
                     this.$refs.table.toggleRowSelection(this.tableData[index]);
                 }
             },
@@ -292,7 +292,7 @@
              */
             delIdInfo (index) {
                 this.tableData.splice(index,1);
-                this.$Message.success(this.$t('deletedField', {field: this.$t('courierInfo')}));   // 导游信息已删除
+                this.$Message.success(this.$t('deletedField', { field : this.$t('courierInfo') })); // 导游信息已删除
             },
             /**
              * 保存导游信息
@@ -302,31 +302,31 @@
                 //判断证件类型和证件号是否已经填写，并且需要判断证件号和证件类型是否已经填写过
                 Promise.all([new Promise((resolve,reject) => {//校验导游姓名
                     this.$refs.formInline.validateField('staffName' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验证件号码
                     this.$refs.formInline.validateField('idCard' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验手机号码
                     this.$refs.formInline.validateField('phoneNumber' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 })]).then(() => {
                     //景区直接保存修改结果，旅行社需要保存到数据库中
-                    if(this.manageOrgs.nodeType === 'partner'){
+                    if (this.manageOrgs.nodeType === 'partner') {
                         this.addOrUpdateOrgStaff({
                             id : this.tableData[index]['id'],
                             staffName : this.tableData[index]['staffName'],
@@ -334,7 +334,7 @@
                             phoneNumber : this.tableData[index]['phoneNumber'],
                             index : index
                         });
-                    }else if(this.manageOrgs.nodeType === 'scenic'){
+                    } else if (this.manageOrgs.nodeType === 'scenic') {
                         this.$set(this.tableData[index],'editType','');
                     }
                 });
@@ -344,9 +344,9 @@
              * @param index
              */
             cancelEdit (index) {
-                if(this.tableData[index]['modifyType'] === 'add'){
+                if (this.tableData[index]['modifyType'] === 'add') {
                     this.tableData.splice(index,1);
-                }else{
+                } else {
                     this.$set(this.tableData,index,this.originalTableData[index]);
                 }
             },
@@ -359,38 +359,38 @@
                     confirmCallback : () => {
                         this.confirmDelTouristInfo();
                     }
-                })
+                });
             },
             /**
              * 判断当前导游是否可以选择
              * @param row
              * @param index
              */
-            selectableFunc (row,index){
-                return row['editType'] !== 'edit'
+            selectableFunc (row,index) {
+                return row['editType'] !== 'edit';
             },
             /**
              * 确认删除导游信息
              */
             confirmDelTouristInfo () {
-                for(let i = this.tableData.length,j = 0; i >= j;i--){
-                    if(this.selectedTourGuideInfo.includes(this.tableData[i])){
+                for (let i = this.tableData.length,j = 0; i >= j; i--) {
+                    if (this.selectedTourGuideInfo.includes(this.tableData[i])) {
                         this.tableData.splice(i,1);
                     }
                 }
-                this.$Message.success(this.$t('deletedField', {field: this.$t('courierInfo')}));   // 导游信息已删除
+                this.$Message.success(this.$t('deletedField', { field : this.$t('courierInfo') })); // 导游信息已删除
             },
             /**
              * 获取填写的导游信息
              */
             getTourGuideInfo () {
                 return new Promise((resolve,reject) => {
-                    if(this.tableData.length === 0){
+                    if (this.tableData.length === 0) {
                         reject('tourguideNumErr');
-                    }else{
+                    } else {
                         let result = [];
-                        for(let i = 0,j = this.tableData.length;i < j;i++){
-                            if(this.tableData[i]['editType'] === 'edit'){
+                        for (let i = 0,j = this.tableData.length; i < j; i++) {
+                            if (this.tableData[i]['editType'] === 'edit') {
                                 reject('tourguideErr');
                             }
                             result.push({
@@ -412,7 +412,7 @@
              * @param data
              */
             getChosedInfo (data) {
-                this.tableData =  data;
+                this.tableData = data;
             },
             /**
              * 修改导游信息
@@ -422,7 +422,7 @@
              * @param phoneNumber 手机号
              * @param index
              */
-            addOrUpdateOrgStaff ({id,staffName,documentNo,phoneNumber,index}) {
+            addOrUpdateOrgStaff ({ id,staffName,documentNo,phoneNumber,index }) {
                 return ajax.post('addOrUpdateOrgStaff',{
                     id : id,
                     staffName : staffName,
@@ -431,13 +431,13 @@
                     documentNo : documentNo,
                     phoneNumber : phoneNumber,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         // 修改导游信息成功
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('editCourierInfo')}));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('editCourierInfo') }));
                         this.$set(this.tableData[index],'editType','');
-                    }else{
+                    } else {
                         // 修改导游信息失败
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('editCourierInfo')}));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('editCourierInfo') }));
                     }
                 });
             },
@@ -446,12 +446,12 @@
              * @param data
              * @param type 操作类型
              */
-            modifyChoosedData({data,type}) {
-                for(let i = 0,j = this.tableData.length;i < j;i++){
-                    if(this.tableData[i]['id'] === data['id']){
-                        if(type === 'modify'){
-                            this.$set(this.tableData,i,data)
-                        }else if(type === 'del'){
+            modifyChoosedData ({ data,type }) {
+                for (let i = 0,j = this.tableData.length; i < j; i++) {
+                    if (this.tableData[i]['id'] === data['id']) {
+                        if (type === 'modify') {
+                            this.$set(this.tableData,i,data);
+                        } else if (type === 'del') {
                             this.tableData.splice(i,1);
                         }
                         break;
@@ -466,15 +466,15 @@
                     visitorType : 'guide',
                     orderOrgId : this.searchParams.orderOrgId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.map(item => {
                             return {
                                 ...item,
                                 documentNo : item.documentInfo ? JSON.parse(item.documentInfo)['data'] : '',
                                 staffName : item.visitorName
-                            }
+                            };
                         }) : [];
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 });
@@ -483,16 +483,16 @@
         computed : {
             //将要删除的导游信息
             delingTouristInfo () {
-                if(this.selectedTourGuideInfo.length > 2){
+                if (this.selectedTourGuideInfo.length > 2) {
                     return {
                         data : this.selectedTourGuideInfo.map(item => item.staffName).slice(0,2).join(','),
                         showMore : true
-                    }
-                }else{
+                    };
+                } else {
                     return {
                         data : this.selectedTourGuideInfo.map(item => item.staffName).slice(0,2).join(','),
                         showMore : false
-                    }
+                    };
                 }
             },
             ...mapGetters({
@@ -501,17 +501,17 @@
         },
         created () {
         },
-        watch :{
-            'searchParams.orderOrgId' (newVal,oldVal){
-                if(newVal){
+        watch : {
+            'searchParams.orderOrgId' (newVal,oldVal) {
+                if (newVal) {
                     //当前登录的是景区的话，要查询上次填写的导游信息
-                    if(this.manageOrgs.nodeType === 'scenic'){
+                    if (this.manageOrgs.nodeType === 'scenic') {
                         this.getRecentVisitors();
                     }
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -57,13 +57,13 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './linkSpeMemberConfig';
+    import { columnData } from './linkSpeMemberConfig';
     import ajax from '@/api/index.js';
     import linkBelongModal from '../components/linkBelongModal.vue';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
 
     export default {
-        components: {
+        components : {
             tableCom,
             linkBelongModal,
             breadCrumbHead
@@ -73,7 +73,7 @@
                 //关键字
                 keyword : '',
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //表头配置
                 columnData : columnData,
                 //总条数
@@ -85,17 +85,17 @@
                 //当前操作的行数据
                 currentData : {},
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'specialMember',
-                        router: {
-                            name: 'specialMember'
+                        name : 'specialMember',
+                        router : {
+                            name : 'specialMember'
                         }
                     }
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 重置查询条件
              */
@@ -119,17 +119,17 @@
                     pageSize : this.pageSize,
                     pageNo : this.pageNo,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 });
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

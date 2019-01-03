@@ -155,35 +155,35 @@
     // 删除自营渠道弹窗
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index';
-    import {saleChannelHead} from '../orgStructure';
+    import { saleChannelHead } from '../orgStructure';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {configVariable, batchOperate} from '@/assets/js/constVariable';
+    import { configVariable, batchOperate } from '@/assets/js/constVariable';
     import map from 'lodash/map';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             filterDrop,
             addSelfSupport,
             delModal,
             tableCom
         },
-        data() {
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    keyword: '',
+                filterParam : {
+                    keyword : '',
                 },
                 // 表格表头字段名
-                columnData: saleChannelHead,
+                columnData : saleChannelHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
+                totalCount : 0,
 
                 // 表格筛选下拉菜单
                 /*listFilters: {
@@ -193,17 +193,17 @@
                         alert: 'normal'
                     }],
                 },*/
-                enableValue: true,  //启用，未启用变量
-                name: '', //删除弹窗名字
-                deleteName: this.$t('delChannel'), //删除内容名字
-                rowIds: [], //自营渠道ids
+                enableValue : true, //启用，未启用变量
+                name : '', //删除弹窗名字
+                deleteName : this.$t('delChannel'), //删除内容名字
+                rowIds : [], //自营渠道ids
                 // 已勾选的数据
-                chosenRowData: [],
-            }
+                chosenRowData : [],
+            };
         },
-        methods: {
+        methods : {
             // 初始化加载获取员工列表数据
-            queryList() {
+            queryList () {
 
                 ajax.post('querySelfOwnedChannel', this.queryParams).then(res => {
                     if (res.success) {
@@ -218,51 +218,51 @@
                 });
             },
             // 搜索员工
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
 
             // 筛选下拉组件
-            renderHeader(h, params) {
+            renderHeader (h, params) {
                 return h(filterDrop, {
-                    props: {
-                        colParams: params.column,
-                        filters: this.listFilters
+                    props : {
+                        colParams : params.column,
+                        filters : this.listFilters
                     },
-                    on: {
-                        'state-filter': this.handleAlertFilter,
-                        'alert-filter': this.handleAlertFilter,
+                    on : {
+                        'state-filter' : this.handleAlertFilter,
+                        'alert-filter' : this.handleAlertFilter,
                     }
                 });
             },
             // 筛选点击事件
-            handleAlertFilter() {
+            handleAlertFilter () {
 
             },
             // 点击启用，未启用事件
-            enable(scopeRow, isBatch) {
+            enable (scopeRow, isBatch) {
                 if (!this.canChangeChannelStatus) return;
                 let partnerObj = {};
-                if (scopeRow.status=='valid') {
+                if (scopeRow.status == 'valid') {
                     partnerObj.successTip = this.$t('disabledChannel');
-                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('disabled')});    // 禁用失败
+                    partnerObj.failTip = this.$t('failureTip', { tip : this.$t('disabled') }); // 禁用失败
                     partnerObj.status = 'invalid';
                     partnerObj.msgType = 'warning';
-                } else if (scopeRow.status=='invalid') {
-                    partnerObj.successTip =  this.$t('enabledChannel');
-                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('commissioned')});    // 启用失败
+                } else if (scopeRow.status == 'invalid') {
+                    partnerObj.successTip = this.$t('enabledChannel');
+                    partnerObj.failTip = this.$t('failureTip', { tip : this.$t('commissioned') }); // 启用失败
                     partnerObj.status = 'valid';
                     partnerObj.msgType = 'success';
                 }
 
                 ajax.post('updateChannelStatus', {
-                    ids: isBatch==true ? this.rowIds.join(',') : scopeRow.id,
-                    status: partnerObj.status
+                    ids : isBatch == true ? this.rowIds.join(',') : scopeRow.id,
+                    status : partnerObj.status
                 }).then(res => {
                     if (res.success) {
-                        if (isBatch==true) {
+                        if (isBatch == true) {
                             // 批量操作提示语
                             this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + this.$t('batchOperate'));
                         } else {
@@ -281,9 +281,9 @@
              * @param type - 新增/修改 类型
              * @param scopeRow - 修改时的行数据
              **/
-            newSelfSupportBtn(type, scopeRow) {
+            newSelfSupportBtn (type, scopeRow) {
                 if (!this.canAddChannel && !this.canEditChannel) return;
-                let obj = type=='add' ? {type: type} : {item: scopeRow, type: type};
+                let obj = type == 'add' ? { type : type } : { item : scopeRow, type : type };
                 this.$refs.addSelfSupport.show(obj);
             },
             /**
@@ -291,10 +291,10 @@
              * @param data - 被删除的行数据
              * @param isBatch - 是否批量操作  Boolean
              */
-            showDelModal(data, isBatch) {
-                if (isBatch==true) {
+            showDelModal (data, isBatch) {
+                if (isBatch == true) {
                     this.rowIds = data.map(item => item.id);
-                    this.name = data.length>1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
+                    this.name = data.length > 1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
                 } else {
                     this.rowIds = [data.id];
                     this.name = data.channelName;
@@ -309,13 +309,13 @@
 
             },
             //确认删除
-            handleDeletions() {
+            handleDeletions () {
 
                 ajax.post('deleteChannels', {
-                    ids: this.rowIds.join(',')
+                    ids : this.rowIds.join(',')
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                         this.handleSearch();
                     }
                 });
@@ -324,9 +324,9 @@
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.chosenRowData = selection;
-                if (selection.length>0){
+                if (selection.length > 0) {
                     this.rowIds = map(selection, 'id');
                 }
             },
@@ -334,8 +334,8 @@
              * 选择批量操作
              * @param dropItem - 选择的操作方式  String
              */
-            handleCommand(dropItem) {
-                if (this.chosenRowData.length<=0) {
+            handleCommand (dropItem) {
+                if (this.chosenRowData.length <= 0) {
                     this.$Message.warning(this.$t('selectChannelOperate'));
                     return;
                 }
@@ -351,17 +351,17 @@
                             // 过滤出线上的自营渠道类型，因线下类型不可删除
                             return item.type == 'online';
                         });
-                        if (onlineData && onlineData.length>0) {
+                        if (onlineData && onlineData.length > 0) {
                             this.showDelModal(onlineData, true);
                         } else {
-                            this.$Message.warning(this.$t('channelDelNotice'))
+                            this.$Message.warning(this.$t('channelDelNotice'));
                         }
                         break;
                 }
             },
 
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'permissionInfo'
             ]),
@@ -393,9 +393,9 @@
                 return result;
             }
         },
-        created() {
+        created () {
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

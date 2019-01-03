@@ -27,8 +27,8 @@
 <script>
     import ajax from '@/api/index';
     export default {
-        components: {},
-        data() {
+        components : {},
+        data () {
             return {
                 //是否显示模态框
                 visible : false,
@@ -38,9 +38,9 @@
                 noticeImg : [],
                 //标题
                 title : '',
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 确认
              */
@@ -75,7 +75,7 @@
                 });
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

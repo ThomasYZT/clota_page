@@ -43,24 +43,24 @@
     import ajax from '@/api/index';
 
     export default {
-        props: ['store','detail'],
-        components: {},
+        props : ['store','detail'],
+        components : {},
         data () {
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                data: {
-                    accountTypeId: '',
+                data : {
+                    accountTypeId : '',
                 },
                 //表单校验
-                ruleValidate: {
-                    accountTypeId: [
-                        { required: true, message: this.$t('selectField', {msg: this.$t('account')}), trigger: 'change' },     // 账户不能为空
+                ruleValidate : {
+                    accountTypeId : [
+                        { required : true, message : this.$t('selectField', { msg : this.$t('account') }), trigger : 'change' }, // 账户不能为空
                     ],
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
 
             show () {
                 this.visible = true;
@@ -72,36 +72,36 @@
                     if ( valid ) {
                         this.addAccountInfo();
                     }
-                })
+                });
             },
 
             //新增账户
             addAccountInfo () {
                 ajax.post('addAccountInfo', {
-                    accountTypeId: this.data.accountTypeId,
-                    memberId: this.detail.id,
-                    cardId: this.detail.cardId,
+                    accountTypeId : this.data.accountTypeId,
+                    memberId : this.detail.id,
+                    cardId : this.detail.cardId,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(`${this.$t('newAccount')}${this.$t('success')}！`);   // 新增账号成功
+                    if (res.success) {
+                        this.$Message.success(`${this.$t('newAccount')}${this.$t('success')}！`); // 新增账号成功
                         this.$emit('add-success');
                         this.hide();
                     } else {
                         console.log(res);
-                        this.$Message.warning(res.message ? this.$t(res.message) : 'addAccountInfo '+ this.$t('failure') +'！');
+                        this.$Message.warning(res.message ? this.$t(res.message) : 'addAccountInfo ' + this.$t('failure') + '！');
                     }
                 });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
                 this.data.accountTypeId = '';
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

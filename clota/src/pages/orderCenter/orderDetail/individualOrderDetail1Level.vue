@@ -25,46 +25,46 @@
 <script>
     import baseInfo from './individualOrderChild/level1/baseInfo';
     import orderDetailList from './individualOrderChild/level1/orderDetailList';
-    import orderPlacer  from './individualOrderChild/level1/orderPlacer';
+    import orderPlacer from './individualOrderChild/level1/orderPlacer';
     import lifeCycelMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import ajax from '@/api/index.js';
     export default {
-        mixins: [lifeCycelMixins],
-        components: {
+        mixins : [lifeCycelMixins],
+        components : {
             baseInfo,
             orderDetailList,
             orderPlacer,
             breadCrumbHead
         },
-        data() {
+        data () {
             return {
                 //订单详情信息
-                orderDetailInfo: {},
+                orderDetailInfo : {},
                 //订单id
                 orderId : '',
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: this.$t('reserveOrderDetail'),
-                        router: {
-                            name: 'reserveOrderDetail'
+                        name : this.$t('reserveOrderDetail'),
+                        router : {
+                            name : 'reserveOrderDetail'
                         }
                     }
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
-                if(params && params.orderId){
+            getParams (params) {
+                if (params && params.orderId) {
                     this.orderId = params.orderId;
                     //路由中获取到参数后立马调用数据接口
                     this.queryindividualOrderDetail();
-                }else{
+                } else {
                     this.$router.push({
                         name : 'reserveOrderDetail'
                     });
@@ -77,49 +77,49 @@
                 ajax.post('queryFirstIndividualOrderDetail',{
                     orderId : this.orderId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.orderDetailInfo = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.orderDetailInfo = {};
                     }
                 });
             }
         },
-        computed: {
+        computed : {
             //基本信息
             baseInfo () {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo){
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
                     return this.orderDetailInfo.baseInfo;
-                }else{
+                } else {
                     return {};
                 }
             },
             //订单明细列表数据
-            orderDetailList() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderDetailList) {
+            orderDetailList () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderDetailList) {
                     return this.orderDetailInfo.orderDetailList;
-                }else {
+                } else {
                     return [];
                 }
             },
             //下单人信息
-            orderVisitor() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderVisitor) {
+            orderVisitor () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderVisitor) {
                     return this.orderDetailInfo.orderVisitor;
-                }else {
+                } else {
                     return {};
                 }
             },
             //机构对应订单角色
-            orderOrgType() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderOrgType) {
+            orderOrgType () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderOrgType) {
                     return this.orderDetailInfo.orderOrgType;
                 } else {
                     return '';
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

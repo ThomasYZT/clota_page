@@ -48,18 +48,18 @@
 <script>
 
     export default {
-        props: {
-            infoData: {
-                type: Array,
-                default: []
+        props : {
+            infoData : {
+                type : Array,
+                default : []
             }
         },
-        data() {
+        data () {
             return {
-            }
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

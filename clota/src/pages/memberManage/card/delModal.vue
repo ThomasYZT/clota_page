@@ -29,7 +29,7 @@
 
 <script>
     export default {
-        props :{
+        props : {
             //模态框是否显示
             'value' : {
                 type : Boolean,
@@ -39,14 +39,14 @@
             'coupon-data' : {
                 type : Object,
                 default () {
-                    return  {};
+                    return {};
                 }
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 删除券
              */
@@ -57,11 +57,11 @@
             /**
              * 关闭模态框
              */
-            hide(){
+            hide () {
                 this.$emit('input',false);
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

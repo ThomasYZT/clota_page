@@ -117,4 +117,4 @@ export default {
     //生成自营渠道appid/appSecretId
     'generateChannelAccount' : '/selfChannel/generateChannelAccount',
 
-}
+};

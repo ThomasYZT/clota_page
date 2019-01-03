@@ -80,50 +80,50 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['status','table-data','type'],
-        components: {
+        props : ['status','table-data','type'],
+        components : {
             tableCom,
         },
         data () {
             return {
                 //表头配置
-                columnData: [
+                columnData : [
                     {
-                        title: 'couponName',
-                        minWidth: 220,
-                        field: 'couponName'
+                        title : 'couponName',
+                        minWidth : 220,
+                        field : 'couponName'
                     },
                     {
-                        title: 'useCondition',
-                        minWidth: 130,
-                        field: 'content'
+                        title : 'useCondition',
+                        minWidth : 130,
+                        field : 'content'
                     },
                     {
-                        title: 'types',
-                        minWidth: 100,
-                        field: 'type'
+                        title : 'types',
+                        minWidth : 100,
+                        field : 'type'
                     },
                     {
-                        title: 'validityPeriod',
-                        minWidth: 230,
-                        field: ''
+                        title : 'validityPeriod',
+                        minWidth : 230,
+                        field : ''
                     },
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 获取卡券使用条件
              * @param rowData
              */
-            getUseCondition(rowData) {
-                if(rowData.couponType === 'discount_coupon'){//折扣券
-                    return this.$t('discountCouponUseConditions',{minCash : rowData.conditionLowerLimtation,maxCash : rowData.conditionUpperLimtation});
-                }else if(rowData.couponType === 'exchange_coupon'){//兑换券
-                    return this.$t('only',{msg : rowData.remark});
-                }else if(rowData.couponType === 'cash_coupon'){//代金券
-                    return this.$t('overTipCanUse',{money : rowData.conditionLowerLimtation});
+            getUseCondition (rowData) {
+                if (rowData.couponType === 'discount_coupon') {//折扣券
+                    return this.$t('discountCouponUseConditions',{ minCash : rowData.conditionLowerLimtation,maxCash : rowData.conditionUpperLimtation });
+                } else if (rowData.couponType === 'exchange_coupon') {//兑换券
+                    return this.$t('only',{ msg : rowData.remark });
+                } else if (rowData.couponType === 'cash_coupon') {//代金券
+                    return this.$t('overTipCanUse',{ money : rowData.conditionLowerLimtation });
                 }
             },
 
@@ -138,7 +138,7 @@
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -159,7 +159,6 @@
             }
         }
     }
-
 
 
 </style>

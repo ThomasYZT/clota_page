@@ -34,20 +34,20 @@
 <script>
 
     export default {
-        props: {
-          'baseInfo': {
-              type: Object,
-              default: {}
+        props : {
+          'baseInfo' : {
+              type : Object,
+              default : {}
           }
         },
-        components: {},
-        data() {
-            return {}
+        components : {},
+        data () {
+            return {};
         },
-        computed: {
+        computed : {
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

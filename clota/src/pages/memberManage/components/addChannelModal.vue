@@ -38,13 +38,13 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        components: {},
+        components : {},
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -52,34 +52,34 @@
             };
 
             return {
-                visible: false,
+                visible : false,
                 //标题
-                title: 'addChannel',   // '新增渠道'
+                title : 'addChannel', // '新增渠道'
                 //表单数据
-                formData: {
-                    channelName: '',
-                    remark: '',
+                formData : {
+                    channelName : '',
+                    remark : '',
                 },
                 // 表单校验
-                ruleValidate: {
-                    channelName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('channelName')}), trigger: 'blur' },   // 渠道名称不能为空
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength', {field: this.$t('channelName'), length: 10}), trigger: 'blur' },  // 渠道名称不能超过10字符
+                ruleValidate : {
+                    channelName : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('channelName') }), trigger : 'blur' }, // 渠道名称不能为空
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('channelName'), length : 10 }), trigger : 'blur' }, // 渠道名称不能超过10字符
                     ],
-                    remark: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
+                    remark : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 100, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 100 }), trigger : 'blur' }, // 备注不能超过100字符
                     ],
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
 
             //显示
             show ( data ) {
-                if(data){
-                    this.title = 'modifyChannel';   // 修改渠道
+                if (data) {
+                    this.title = 'modifyChannel'; // 修改渠道
                     this.formData = defaultsDeep({}, data);
                 }
                 this.visible = true;
@@ -89,44 +89,44 @@
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
-                        var params = {
-                            channelName: this.formData.channelName,
-                            remark: this.formData.remark,
+                        let params = {
+                            channelName : this.formData.channelName,
+                            remark : this.formData.remark,
                         };
                         //区分新增/编辑
-                        if(this.title === 'modifyChannel'){     // 修改渠道
+                        if (this.title === 'modifyChannel') { // 修改渠道
                             params.id = this.formData.id;
                             this.updateChannelSet(params);
-                        }else{
+                        } else {
                             this.updateChannelSet(params);
                         }
                     }
-                })
+                });
             },
 
             //增加/修改渠道
             updateChannelSet ( params ) {
                 ajax.post('updateChannelSet', params).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t(this.title)+ this.$t('successTip', {tip: ''}) + '！');
+                    if (res.success) {
+                        this.$Message.success(this.$t(this.title) + this.$t('successTip', { tip : '' }) + '！');
                         this.hide();
                         this.$emit('close-modal');
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');     // 删除失败
+                        this.$Message.warning('queryChannelSet ' + this.$t('failureTip', { tip : 'del' }) + '！'); // 删除失败
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
-                this.formData = { channelName: '', remark: '' };
+                this.formData = { channelName : '', remark : '' };
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -133,7 +133,7 @@ export default {
     //查询店铺商品信息
     'queryProduct' : '/product/queryProduct',
     //查询会员渠道，只包含自营渠道和ota
-    'querySelfChannel':'/member/channelSet/querySelfChannel',
+    'querySelfChannel' : '/member/channelSet/querySelfChannel',
 
     /***********************************初始化设置***********************************/
     //基础设置-会员基础设置-查询
@@ -196,33 +196,33 @@ export default {
     //判断账户归属是否存在
     'existAccountBelong' : '/member/memberBasicSet/existAccountBelong',
     //应用范围
-    'listApplicationRange': '/member/memberBasicSet/listApplicationRange',
+    'listApplicationRange' : '/member/memberBasicSet/listApplicationRange',
     //会员类别和会员级别所有数据
-    'getMemberLevelsInType': '/member/memberLevel/getMemberLevelsInType',
+    'getMemberLevelsInType' : '/member/memberLevel/getMemberLevelsInType',
     //会员类别数据
-    'queryCardTypeList': '/member/memberLevel/queryCardTypeList',
+    'queryCardTypeList' : '/member/memberLevel/queryCardTypeList',
     //新增或修改会员卡类别
-    'saveOrUpdateCardType': '/member/memberLevel/saveOrUpdateCardType',
+    'saveOrUpdateCardType' : '/member/memberLevel/saveOrUpdateCardType',
     //删除会员类别
-    'deletedCardType': '/member/memberLevel/deletedCardType',
+    'deletedCardType' : '/member/memberLevel/deletedCardType',
     //查询会员卡类别下的会员级别
-    'queryLevelsByCardType': '/member/memberLevel/queryLevelsByCardType',
+    'queryLevelsByCardType' : '/member/memberLevel/queryLevelsByCardType',
     //保存会员卡使用范围设置
-    'saveOrUpdateCardRanges': '/member/memberLevel/saveOrUpdateCardRanges',
+    'saveOrUpdateCardRanges' : '/member/memberLevel/saveOrUpdateCardRanges',
     //查询会员卡使用范围设置
-    'queryCardRangeList': '/member/memberLevel/queryCardRangeList',
+    'queryCardRangeList' : '/member/memberLevel/queryCardRangeList',
     //查询会员卡权益可用景区
-    'getTicketList': '/member/memberLevel/getTicketList',
+    'getTicketList' : '/member/memberLevel/getTicketList',
     //发送会员活动短信
-    'sendMassSms': '/member/memberBasicSet/sendMassSms',
+    'sendMassSms' : '/member/memberBasicSet/sendMassSms',
     //获取会员活动发送短信接口数量
-    'countMemberInLevel': '/member/memberLevel/countMemberInLevel',
+    'countMemberInLevel' : '/member/memberLevel/countMemberInLevel',
     //短信发送记录
-    'querySmsBizModels': '/sms/querySmsBizModels',
+    'querySmsBizModels' : '/sms/querySmsBizModels',
     //短信发送记录详情
-    'querySmsQueues': '/sms/querySmsQueues',
+    'querySmsQueues' : '/sms/querySmsQueues',
     //重发短信
-    'reSendSms': '/sms/reSendSms',
+    'reSendSms' : '/sms/reSendSms',
 
 
     /***********************************会员统计***********************************/
@@ -304,4 +304,4 @@ export default {
     'getTableauTrustedUrl' : '/report/getTableauTrustedUrl',
     //批量退卡
     'batchRefundCard' : '/member/batchRefundCard',
-}
+};

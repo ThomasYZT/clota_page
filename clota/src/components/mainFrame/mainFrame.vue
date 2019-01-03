@@ -25,24 +25,24 @@
 <script>
     import frameHeader from './frameHeader';
     import frameSidebar from './frameSidebar';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import loading from '../loading/loading';
     import settting from './setting';
 
     export default {
-        components: {
+        components : {
             frameHeader,
             frameSidebar,
             loading,
             settting
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {},
-        computed: {
+        methods : {},
+        computed : {
             ...mapGetters({
-                menuIsPackUp: 'menuIsPackUp',
+                menuIsPackUp : 'menuIsPackUp',
                 isLoading : 'isLoading'
             }),
             //是否有侧边栏导航
@@ -58,7 +58,7 @@
                 }
             },
         }
-    }
+    };
 
 </script>
 

@@ -258,7 +258,7 @@
         computed : {
             //是否可以添加游客
             canAddTouristInfo () {
-                for (let i = 0,j = this.productListFilter.length;i < j;i++) {
+                for (let i = 0,j = this.productListFilter.length; i < j; i++) {
                     if (this.productListFilter[i]['leftNum'] > 0) {
                         return true;
                     }

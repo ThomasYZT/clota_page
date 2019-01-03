@@ -166,7 +166,7 @@
                         this.cancel();
                     } else if (res.code === 'M024') {
                         this.$Message.error('会员卡类别名称已存在');
-                    }  else {
+                    } else {
                         this.$Message.error('修改会员类别失败');
                     }
                 }).finally(() => {

@@ -115,41 +115,41 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {orderProductHead, batchAuditHead} from '../auditConfig';
+    import { orderProductHead, batchAuditHead } from '../auditConfig';
     import sum from 'lodash/sum';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: [],
-        components: {
+        props : [],
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
-                title: '',
+                visible : false,
+                title : '',
                 //表头配置
                 columnData : orderProductHead,
                 //批量表头配置
                 batchColumnData : batchAuditHead,
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //订单数据
-                orderData: {
-                    items: [],
-                    isBatch: false
+                orderData : {
+                    items : [],
+                    isBatch : false
                 },
                 //审核备注
-                auditRemark: '',
+                auditRemark : '',
                 //审核状态
                 auditStatus : '',
-            }
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             }),
-            orderAmountSum() {
+            orderAmountSum () {
                 if (this.orderData.isBatch && this.orderData.items.length) {
                     return sum(this.orderData.items.map(item => item.orderAmount));
                 } else {
@@ -157,16 +157,16 @@
                 }
             },
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 if (data) {
                     this.orderData = data;
                     if (data.isBatch) {
                         this.tableData = data.items;
-                        this.title = 'teamBatchCheckPass';  // 团队订单批量审核通过
+                        this.title = 'teamBatchCheckPass'; // 团队订单批量审核通过
                     } else {
-                        this.title = 'checkPass';   // 审核通过
+                        this.title = 'checkPass'; // 审核通过
                         this.getOrderProducts(data.items[0].id);
                     }
                     if (data.auditStatus) {
@@ -177,7 +177,7 @@
                 this.visible = true;
             },
             //关闭模态框
-            hide() {
+            hide () {
                 this.auditRemark = '';
                 this.orderData.items = [];
                 this.tableData = [];
@@ -189,39 +189,39 @@
              * 获取订单下的产品
              * @param id  订单id
              */
-            getOrderProducts(id) {
+            getOrderProducts (id) {
                 ajax.post('queryOrderProductByOrderId', {
-                    orderId: id
+                    orderId : id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data || [];
                     } else {
                         this.tableData = [];
                     }
                 });
             },
-            auditPass() {
-                if (this.auditRemark.length>500) {
+            auditPass () {
+                if (this.auditRemark.length > 500) {
                     return;
                 }
 
                 ajax.post('auditTeamOrder', {
-                    orderIds: this.orderData.items.map(item => item.id).join(','),
-                    remark: this.auditRemark,
-                    auditStatus: this.auditStatus ? this.auditStatus : 'success',
+                    orderIds : this.orderData.items.map(item => item.id).join(','),
+                    remark : this.auditRemark,
+                    auditStatus : this.auditStatus ? this.auditStatus : 'success',
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('orderCheckPassed'));     // 订单审核通过
+                    if (res.success) {
+                        this.$Message.success(this.$t('orderCheckPassed')); // 订单审核通过
                         this.$emit('on-audit-pass');
-                    }else{
-                        this.$Message.error(this.$t('orderCheckFailure'));      // 订单审核失败
+                    } else {
+                        this.$Message.error(this.$t('orderCheckFailure')); // 订单审核失败
                     }
                     this.hide();
                 });
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

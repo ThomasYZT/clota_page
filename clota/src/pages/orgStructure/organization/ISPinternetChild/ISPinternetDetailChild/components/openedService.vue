@@ -116,31 +116,31 @@
 </template>
 
 <script>
-    import {openedServiceHead} from './openedServiceConfig';
+    import { openedServiceHead } from './openedServiceConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
     import addService from './addService';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //当前查看已开通服务的结构类型，可以为景区和公司，默认为公司
             type : {
                 type : String,
-                default: 'company'
+                default : 'company'
             },
             //表格查询参数
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //景区详情
             'scene-detail' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //是否默认展开
@@ -154,7 +154,7 @@
             delModal,
             addService
         },
-        data() {
+        data () {
             return {
                 //选择的服务
                 selectedService : [],
@@ -168,9 +168,9 @@
                 isPackUp : true,
                 pageNo : 1,
                 pageSize : 10,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 选择的服务数据改变
              * @param data
@@ -196,7 +196,7 @@
             orgAddService () {
                 this.$refs.addService.show({
                     confirmCallback (data) {
-                        console.log(data)
+                        console.log(data);
                     }
                 });
             },
@@ -209,10 +209,10 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.serviceList ? res.data.serviceList.data : [] : [];
                         this.totalCount = Number(res.data.serviceList.totalRow);
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -227,7 +227,7 @@
                     serviceIds.map(item => {
                         return {
                             id : item
-                        }
+                        };
                     }),
                     {
                         headers : {
@@ -235,11 +235,11 @@
                         }
                     }
                 ).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del') }));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                         this.queryList();
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                     }
                 });
             }
@@ -264,17 +264,17 @@
         watch : {
             //默认展开的初始值
             isDefaultPackUp : {
-                handler (newVal){
-                    if(newVal === true){
+                handler (newVal) {
+                    if (newVal === true) {
                         this.isPackUp = true;
-                    }else{
+                    } else {
                         this.isPackUp = false;
                     }
                 },
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

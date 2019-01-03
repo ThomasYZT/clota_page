@@ -6,4 +6,4 @@ export default {
     'queryPageInfoByFoldId' : '/sys/help/queryPageInfoByFoldId',
     //获取帮助中心目录
     'getHelpCenterCatalogs' : '/sys/help/getHelpCenterCatalogs',
-}
+};

@@ -23,31 +23,31 @@
 
 <script>
 
-    import moreCard  from './moreCard.vue'
+    import moreCard from './moreCard.vue';
 
     export default {
-        props: ['status','table-data'],
-        components: {
+        props : ['status','table-data'],
+        components : {
             moreCard,
         },
         data () {
             return {
-                visible: false,
-            }
+                visible : false,
+            };
         },
-        methods: {
+        methods : {
 
             show () {
                 this.visible = true;
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

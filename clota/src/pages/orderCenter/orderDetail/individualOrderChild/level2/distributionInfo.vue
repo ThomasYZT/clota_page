@@ -39,11 +39,11 @@
 <script>
 
     export default {
-        props: {
-            allocationInfo: {
-                type: Object,
-                default() {
-                    return {}
+        props : {
+            allocationInfo : {
+                type : Object,
+                default () {
+                    return {};
                 }
             },
             //退票手续费收入
@@ -52,41 +52,41 @@
                 default : 0
             },
             //当前查看详情角色
-            'view-type': {
-                type: String,
-                default: ''
+            'view-type' : {
+                type : String,
+                default : ''
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {},
+        methods : {},
         computed : {
             //分销价格链路表
             distributionLinks () {
-                if(this.allocationInfo && this.allocationInfo.settleLink){
+                if (this.allocationInfo && this.allocationInfo.settleLink) {
                     let settleLink = this.allocationInfo.settleLink;
-                    if(settleLink.length > 0){
+                    if (settleLink.length > 0) {
                         let costPriceInfo = {
                             ...settleLink[0],
                             settlePrice : settleLink[0]['inPrice'],
-                            content : this.viewType === 'scenic' ? this.$t('scenicUnitPrice') :this.$t('myPrimeCost')
+                            content : this.viewType === 'scenic' ? this.$t('scenicUnitPrice') : this.$t('myPrimeCost')
                         };
                         return [].concat(costPriceInfo,settleLink.map(item => {
                             return {
                                 ...item,
                                 content : item.orgName + this.$t('allowcationPriceOf')
-                            }
+                            };
                         }));
-                    }else{
+                    } else {
                         return [];
                     }
-                }else{
+                } else {
                     return [];
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

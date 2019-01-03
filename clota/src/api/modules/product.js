@@ -53,11 +53,9 @@ export default {
     //删除分销
     'deletePolicyAllocation' : '/salePolicy/deletePolicyAllocation',
     //获取分销已选择销售组列表
-    'queryHaveAllocationSaleGroups': '/salePolicy/queryHaveAllocationSaleGroups',
+    'queryHaveAllocationSaleGroups' : '/salePolicy/queryHaveAllocationSaleGroups',
     //获取政策列表对应的所属景区列表
-    'queryPolicyFromScenic': '/salePolicy/queryPolicyFromScenic'
+    'queryPolicyFromScenic' : '/salePolicy/queryPolicyFromScenic'
 
 
-
-
-}
+};

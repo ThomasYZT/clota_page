@@ -16,28 +16,28 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './driverInfoConfig';
+    import { columnData } from './driverInfoConfig';
     export default {
         props : {
             //司机列表
             'driver-list' : {
                 type : Array,
-                default ( ){
+                default ( ) {
                     return [];
                 }
             }
         },
-        components :{
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData
-            }
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

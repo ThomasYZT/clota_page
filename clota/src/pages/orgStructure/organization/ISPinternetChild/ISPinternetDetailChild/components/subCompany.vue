@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import {companies} from './subCompanyConfig';
+    import { companies } from './subCompanyConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
     export default {
@@ -41,7 +41,7 @@
             'search-params' : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //当前组织架构类型
@@ -53,7 +53,7 @@
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //下属公司表头配置
                 companies : companies,
@@ -64,10 +64,10 @@
                 //是否收起
                 isPackUp : true,
                 pageNo : 1,
-                pageSize :10
-            }
+                pageSize : 10
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询下属公司信息
              */
@@ -79,10 +79,10 @@
                     pageSize : this.pageSize,
                     manageType : this.activeTap,
                 }).then(res => {
-                   if(res.success){
+                   if (res.success) {
                        this.tableData = res.data ? res.data.data : [];
                        this.totalCount = res.data.totalRow;
-                   }else{
+                   } else {
                        this.tableData = [];
                        this.totalCount = 0;
                    }
@@ -95,7 +95,7 @@
                 return this.searchParams && !!this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -50,12 +50,15 @@ import elUpload from 'element-ui/lib/upload';
 import elDialog from 'element-ui/lib/dialog';
 import elCollapse from 'element-ui/lib/collapse';
 import elCollapseItem from 'element-ui/lib/collapse-item';
-import Loading  from 'element-ui/lib/loading';
+import Loading from 'element-ui/lib/loading';
 
 //引入qr-code工具
 import QRcode from 'qrcode';
 //引入地图工具
 import VueAMap from 'vue-amap';
+
+// 引入公用样式，指令及方法等
+import klwkUi from 'klwk-ui';
 
 
 // 按需引入 Echarts 图表
@@ -66,9 +69,6 @@ require('echarts/lib/component/tooltip');
 require('echarts/lib/component/legend');
 require('echarts/lib/component/legendScroll');
 require('echarts/lib/component/dataZoom');
-
-// 引入公用样式，指令及方法等
-import klwkUi from 'klwk-ui';
 
 let plugin = {};
 plugin.install = function (Vue, options) {
@@ -148,17 +148,17 @@ plugin.install = function (Vue, options) {
 
     //全局注入获取经纬度插件
     VueAMap.initAMapApiLoader({
-        key: '91e8fc59f5a65ca490ce419c646b7b35',
-        plugin: ['Geolocation'],
-        v: '1.4.4'
+        key : '91e8fc59f5a65ca490ce419c646b7b35',
+        plugin : ['Geolocation'],
+        v : '1.4.4'
     });
 
     // 注入全局变量
     Vue.mixin({
-        components: {},
-        filters: {
+        components : {},
+        filters : {
             // 时间格式化过滤器
-            timeFormat(value, format = 'yyyy/MM/dd', emptyVal = '-') {
+            timeFormat (value, format = 'yyyy/MM/dd', emptyVal = '-') {
                 if (!value) {
                     return emptyVal;
                 } else if (value instanceof Date) {
@@ -169,11 +169,11 @@ plugin.install = function (Vue, options) {
                     value = value.replace(/-/g,'/');
                     return value.toDate().format(format);
                 } else {
-                    return value
+                    return value;
                 }
             },
             //内容过滤器，如果内容为空或null，返回-
-            contentFilter(content) {
+            contentFilter (content) {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
@@ -181,7 +181,7 @@ plugin.install = function (Vue, options) {
                 }
             },
             //货比格式化
-            moneyFilter(content) {
+            moneyFilter (content) {
                 if (content === '' || content === null || content === undefined) {
                     return '-';
                 } else {
@@ -189,14 +189,14 @@ plugin.install = function (Vue, options) {
                 }
             }
         },
-        created() {
+        created () {
             //修改iview message全局配置
             this.$Message.config({
-                duration: 3
+                duration : 3
             });
 
         }
-    })
+    });
 
 };
 

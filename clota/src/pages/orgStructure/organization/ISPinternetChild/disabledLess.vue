@@ -32,52 +32,52 @@
 
 <script>
     export default {
-        props: {
+        props : {
             //绑定的模态框是否显示的变量
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //租户详情
-            'less-detail': {
-                type: Object,
-                default() {
-                    return {}
+            'less-detail' : {
+                type : Object,
+                default () {
+                    return {};
                 }
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
+            visibleChange (type) {
 
             },
             /**
              * 取消禁用
              */
-            cancel() {
+            cancel () {
                 this.$emit('input', false);
             },
             /**
              * 确认禁用
              */
-            confirm() {
+            confirm () {
                 this.$emit('input', true);
                 this.$emit('confirm-disabled');
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

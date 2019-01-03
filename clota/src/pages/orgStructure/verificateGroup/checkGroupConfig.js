@@ -1,19 +1,19 @@
 //核销设备分组
 export const saleGroup = [
     {
-        title: 'check',
-        width: 60,
-        field: 'check',
+        title : 'check',
+        width : 60,
+        field : 'check',
     },
     {
-        title: 'checkoutID',
-        minWidth: 200,
-        field: 'id',
+        title : 'checkoutID',
+        minWidth : 200,
+        field : 'id',
     },
     {
-        title: 'WriteOffSalesAndDeskName',
-        minWidth: 200,
-        field: 'channelName',
+        title : 'WriteOffSalesAndDeskName',
+        minWidth : 200,
+        field : 'channelName',
     },
     {
         title : 'cashierType',

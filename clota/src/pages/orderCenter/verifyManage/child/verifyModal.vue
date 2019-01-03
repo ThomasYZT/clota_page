@@ -43,35 +43,35 @@
 </template>
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        components: {},
-        props: {},
-        data() {
+        components : {},
+        props : {},
+        data () {
             return {
-                visible: false,
-                title: 'remind',    // 提醒
+                visible : false,
+                title : 'remind', // 提醒
                 //核销列表数据
-                verify: {
-                    list: [],
-                    type: ''
+                verify : {
+                    list : [],
+                    type : ''
                 },
                 //核销备注
-                remark: '',
-            }
+                remark : '',
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             }),
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             show ( data ) {
                 if (data) {
                     this.verify = data;
@@ -80,7 +80,7 @@
                 this.visible = true;
             },
             //关闭模态框
-            hide() {
+            hide () {
                 this.verify.type = '';
                 this.verify.list = [];
                 this.visible = false;
@@ -88,7 +88,7 @@
             /**
              * 核销
              */
-            handleVerify() {
+            handleVerify () {
                 let apiUrlKey = '';
                 if (this.verify.type == 'ticket') {
                     apiUrlKey = 'checkByPickSerialNo';
@@ -96,21 +96,21 @@
                     apiUrlKey = 'checkByCheckSerialNo';
                 }
 
-                if (this.remark.length>500) {
+                if (this.remark.length > 500) {
                     return;
                 }
 
                 ajax.post(apiUrlKey, {
-                    serialNoList: this.verify.list.map(item => item.serialNo),
-                    remark: this.remark
+                    serialNoList : this.verify.list.map(item => item.serialNo),
+                    remark : this.remark
                 }, {
-                    headers: {"Content-Type": "application/json;charset-UTF-8"}
+                    headers : { "Content-Type" : "application/json;charset-UTF-8" }
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.hide();
-                        this.$router.push({name: 'verifySuccess'});
-                    }else{
-                        this.$Message.error(this.$t('verifyFailure'));    // 核销失败
+                        this.$router.push({ name : 'verifySuccess' });
+                    } else {
+                        this.$Message.error(this.$t('verifyFailure')); // 核销失败
                     }
                 });
             },

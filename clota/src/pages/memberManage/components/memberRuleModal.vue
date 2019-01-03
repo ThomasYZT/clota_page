@@ -47,7 +47,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
-        components: {},
+        components : {},
         data () {
             return {
                 //校验正整数
@@ -55,14 +55,14 @@
                     common.validateInteger( Number(value) ).then(() => {
                         callback();
                     }).catch(err => {
-                        callback(this.$t(err, {field: ''}));
+                        callback(this.$t(err, { field : '' }));
                     });
                 },
 
                 //校验表情
                 emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -72,13 +72,13 @@
                 validateHigh : (rule,value,callback) => {
                     let field = rule.field.split('.');
                     common.validateInteger( Number(this.formData.tableData[field[1]].lowerGrowthValue) ).then(() => {
-                        if(Number(this.formData.tableData[field[1]].lowerGrowthValue) > Number(value)){
+                        if (Number(this.formData.tableData[field[1]].lowerGrowthValue) > Number(value)) {
                             callback(this.$t('startValBiggerThenMaxVal'));
                         } else {
                             callback();
                         }
                     }).catch(err => {
-                        callback(this.$t(err, {field: ''}));
+                        callback(this.$t(err, { field : '' }));
                     });
                 },
 
@@ -86,24 +86,24 @@
                 maxLength : (rule, value, callback) => {
                     let field = rule.field.split('.');
                     if (this.formData.tableData[field[1]].lowerGrowthValue && this.formData.tableData[field[1]].lowerGrowthValue.length > 10) {
-                        callback(this.$t('errorMaxLength',{field : '',length : 10}));
+                        callback(this.$t('errorMaxLength',{ field : '',length : 10 }));
                     } else {
                         callback();
                     }
                 },
 
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {
-                    tableData: [],
+                formData : {
+                    tableData : [],
                 },
                 //Number型
-                numberProps: ['lowerGrowthValue','highestGrowthValue'],
+                numberProps : ['lowerGrowthValue','highestGrowthValue'],
                 //String型
-                stringProps: ['lowerGrowthValue','highestGrowthValue'],
-            }
+                stringProps : ['lowerGrowthValue','highestGrowthValue'],
+            };
         },
-        methods: {
+        methods : {
 
             //数据转换，数据查询后转成string进入input，保存时转成相应类型
             transPropsType ( data, type ) {
@@ -112,60 +112,60 @@
                         return data ? Number(data) : 0;
                         break;
                     case 'string':
-                        return data!==null ? String(data) : '';
+                        return data !== null ? String(data) : '';
                         break;
                 }
             },
 
             //显示弹窗，页面数据初始化，把数字转成string
             show ( data ) {
-                if(data && data.length > 0){
+                if (data && data.length > 0) {
                     let list = defaultsDeep([], data);
                     list.forEach( (item, index) => {
-                        for( let key in item){
-                            if(this.stringProps.indexOf(key) > -1){
-                                item[key]= this.transPropsType(item[key], 'string');
+                        for ( let key in item) {
+                            if (this.stringProps.indexOf(key) > -1) {
+                                item[key] = this.transPropsType(item[key], 'string');
                             }
                         }
                     });
-                    this.formData.tableData =  defaultsDeep([], list);
+                    this.formData.tableData = defaultsDeep([], list);
                 }
                 this.visible = true;
             },
 
             save () {
                 let params = [];
-                let setParam = defaultsDeep([],  this.formData.tableData);
+                let setParam = defaultsDeep([], this.formData.tableData);
                 setParam.forEach( (item, index) => {
-                    for( let key in item){
-                        if(this.numberProps.indexOf(key) > -1){
-                            item[key]= this.transPropsType(item[key], 'number');
+                    for ( let key in item) {
+                        if (this.numberProps.indexOf(key) > -1) {
+                            item[key] = this.transPropsType(item[key], 'number');
                         }
                     }
                     params.push({
-                        id: item.id,
-                        levelNum: item.levelNum,
-                        levelDesc: item.levelDesc,
-                        lowerGrowthValue: item.lowerGrowthValue,
-                        highestGrowthValue: item.highestGrowthValue,
-                    })
+                        id : item.id,
+                        levelNum : item.levelNum,
+                        levelDesc : item.levelDesc,
+                        lowerGrowthValue : item.lowerGrowthValue,
+                        highestGrowthValue : item.highestGrowthValue,
+                    });
                 });
-                console.log(params)
+                console.log(params);
                 this.batchUpdateMemberLevels(params);
             },
 
             //会员等级晋升规则设置
             batchUpdateMemberLevels ( data ) {
-                ajax.post('batchUpdateMemberLevels', { models: JSON.stringify(data) }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('operate')}) + '！');  // 操作成功
+                ajax.post('batchUpdateMemberLevels', { models : JSON.stringify(data) }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('operate') }) + '！'); // 操作成功
                         this.$emit('modify-success');
                         this.hide();
                     } else {
                         this.$Message.warning(res.message ? this.$t(res.message) :
-                            'batchUpdateMemberLevels ' + this.$t('failureTip', {tip: this.$t('operate')}) + '！');  // 操作失败
+                            'batchUpdateMemberLevels ' + this.$t('failureTip', { tip : this.$t('operate') }) + '！'); // 操作失败
                     }
-                })
+                });
             },
 
             //表单校验
@@ -174,17 +174,17 @@
                     if ( valid ) {
                         this.save();
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

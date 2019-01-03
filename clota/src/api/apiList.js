@@ -9,7 +9,7 @@ import info from './modules/member';
 //组织架构接口
 import org from './modules/org';
 //系统设置接口
-import sms from './modules/sms'
+import sms from './modules/sms';
 //产品中心接口
 import product from './modules/product';
 //个人中心接口
@@ -31,19 +31,19 @@ const apiList = {
 
     /*****************登录+获取用户信息公用接口****************/
     // 登录
-    login: '/account/login',
+    login : '/account/login',
     //二次校验登录密码是否正确
-    secondLogin: '/account/secondLogin',
+    secondLogin : '/account/secondLogin',
     // 注册
-    register: '/partner/signUp',
+    register : '/partner/signUp',
     //图片上传接口
-    imgUpload: '/uploadFile',
+    imgUpload : '/uploadFile',
     //获取菜单权限
-    getPrivilege: '/account/getPrivilege',
+    getPrivilege : '/account/getPrivilege',
     //获取第一个会员的注册时间
-    getFirstMemberDate: '/member/getFirstMemberDate',
+    getFirstMemberDate : '/member/getFirstMemberDate',
     //获取当前账户可用机构
-    getManageOrgs: '/account/getManageOrgs',
+    getManageOrgs : '/account/getManageOrgs',
     //获取短信供应商列表
     'getSmsProviderList' : '/sms/getSmsProviderList',
     //首页接口

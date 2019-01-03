@@ -8,7 +8,7 @@ var utils = {
      * @param selector {String} 选择器字符串
      * @return {*}
      */
-    matchesSelector: function (element, selector) {
+    matchesSelector : function (element, selector) {
         if (element) {
             if (element.matches) {
                 return element.matches(selector);
@@ -23,8 +23,8 @@ var utils = {
             } else if (element.oMatchesSelector) {
                 return element.oMatchesSelector(selector);
             } else if (element.querySelectorAll) {
-                var matches = (element.document || element.ownerDocument).querySelectorAll(selector);
-                var i = 0;
+                let matches = (element.document || element.ownerDocument).querySelectorAll(selector);
+                let i = 0;
 
                 while (matches[i] && matches[i] !== element) i++;
 
@@ -38,9 +38,9 @@ var utils = {
      * 原生Ele获取真实offsetTop
      * @param ele {Object} 原生元素
      */
-    getOffsetTop: function (ele, selector) {
+    getOffsetTop : function (ele, selector) {
         if (!ele) {
-            return 0
+            return 0;
         }
         if (utils.matchesSelector(ele, selector)) {
             return 0;
@@ -51,9 +51,9 @@ var utils = {
      * 原生Ele获取真实offsetLeft
      * @param ele {Object} 原生元素
      */
-    getOffsetLeft: function (ele, selector) {
+    getOffsetLeft : function (ele, selector) {
         if (!ele) {
-            return 0
+            return 0;
         }
         if (utils.matchesSelector(ele, selector)) {
             return 0;
@@ -65,15 +65,15 @@ var utils = {
      * 原生Ele获取真实offsetTop和offsetLeft，需要通过call调用传入DOM元素
      * @param ele {Object} 原生元素
      */
-    getOffset: function (ele, selector) {
-        var _self = this
+    getOffset : function (ele, selector) {
+        let _self = this;
         if (ele) {
             return {
-                top: _self.getOffsetTop(ele, selector),
-                left: _self.getOffsetLeft(ele, selector)
-            }
+                top : _self.getOffsetTop(ele, selector),
+                left : _self.getOffsetLeft(ele, selector)
+            };
         } else {
-            return null
+            return null;
         }
     },
 
@@ -81,10 +81,10 @@ var utils = {
      * 获取真实的dom样式
      * @param {Object} el 元素
      */
-    getStyle: function (el) {
+    getStyle : function (el) {
         return (window.getComputedStyle
             ? window.getComputedStyle(el, null)
-            : el.currentStyle)
+            : el.currentStyle);
     },
 
     /**
@@ -92,20 +92,20 @@ var utils = {
      * @param {Object} el 元素
      * @param {Object} selector 选择器
      */
-    closest: function (el, selector) {
+    closest : function (el, selector) {
         if (utils.matchesSelector(el, 'body')) {
             // 如果最终和指定选择器不符则返回null
             if (selector !== undefined && selector !== 'body') {
-                return null
+                return null;
             } else {
-                return el
+                return el;
             }
         }
-        var pass = utils.matchesSelector(el, selector)
+        let pass = utils.matchesSelector(el, selector);
         if (pass) {
-            return el
+            return el;
         } else {
-            return utils.closest(el.parentElement, selector)
+            return utils.closest(el.parentElement, selector);
         }
     },
 
@@ -113,34 +113,34 @@ var utils = {
      * 获取最近一个定位父元素
      * @param {Object} el dom元素
      */
-    getHasPosParentEl: function (el) {
+    getHasPosParentEl : function (el) {
         if (utils.matchesSelector(el, 'body')) {
-            return el
+            return el;
         }
-        var style = utils.getStyle(el.parentElement)
+        let style = utils.getStyle(el.parentElement);
         if (style.position && style.position !== 'static') {
-            return el.parentElement
+            return el.parentElement;
         } else {
-            return utils.getHasPosParentEl(el.parentElement)
+            return utils.getHasPosParentEl(el.parentElement);
         }
     },
     /**
      * 获取最近一个滚动父元素
      * @param {Object} el dom元素
      */
-    getHasScrollParentEl: function (el) {
+    getHasScrollParentEl : function (el) {
         if (utils.matchesSelector(el, 'body')) {
-            return el
+            return el;
         }
-        var style = utils.getStyle(el.parentElement)
+        let style = utils.getStyle(el.parentElement);
         if (
             (style.overflow && 'auto,scroll'.includes(style.overflow))
             || (style['overflow-x'] && 'auto,scroll'.includes(style['overflow-x']))
             || (style['overflow-y'] && 'auto,scroll'.includes(style['overflow-y']))
         ) {
-            return el.parentElement
+            return el.parentElement;
         } else {
-            return utils.getHasScrollParentEl(el.parentElement)
+            return utils.getHasScrollParentEl(el.parentElement);
         }
     },
 
@@ -148,12 +148,12 @@ var utils = {
      * 获取所有的滚动父元素数组
      * @param {Object} el dom元素
      */
-    getAllHasScrollParentEls: function (el) {
+    getAllHasScrollParentEls : function (el) {
         const self = this;
         let arr = [];
 
         // 递归向上查找
-        function upQuery(tmp) {
+        function upQuery (tmp) {
             const pEl = self.getHasScrollParentEl(tmp);
             if (self.matchesSelector(pEl, 'body')) {
                 return;
@@ -168,9 +168,9 @@ var utils = {
         upQuery(el);
         return arr;
     }
-}
+};
 
-export default utils
+export default utils;
 
 
 /**
@@ -182,21 +182,21 @@ export default utils
  * @param duration 动画持续时间
  * @param endCallback 回调函数
  */
-export const scrollIntoView =  function (el, from = 0, to, direction = 'horizontal',  duration = 500, endCallback) {
+export const scrollIntoView = function (el, from = 0, to, direction = 'horizontal', duration = 500, endCallback) {
     if (!window.requestAnimationFrame) {
         window.requestAnimationFrame = (
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
             window.msRequestAnimationFrame ||
             function (callback) {
-                return window.setTimeout(callback, 1000/60);
+                return window.setTimeout(callback, 1000 / 60);
             }
         );
     }
     const difference = Math.abs(from - to);
     const step = Math.ceil(difference / duration * 50);
 
-    function scroll(start, end, step) {
+    function scroll (start, end, step) {
         if (start === end) {
             endCallback && endCallback();
             return;
@@ -210,13 +210,13 @@ export const scrollIntoView =  function (el, from = 0, to, direction = 'horizont
         if (el === window) {
             window.scrollTo(d, d);
         } else {
-            if(direction === 'horizontal'){
+            if (direction === 'horizontal') {
                 el.scrollLeft = d;
-            }else if(direction === 'vertical'){
+            } else if (direction === 'vertical') {
                 el.scrollTop = d;
             }
         }
         window.requestAnimationFrame(() => scroll(d, end, step));
     }
     scroll(from, to, step);
-}
+};

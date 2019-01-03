@@ -38,7 +38,7 @@
 <script>
     import common from '@/assets/js/common.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import ajax from '@/api/index.js'
+    import ajax from '@/api/index.js';
 
 	export default {
 	    components : {

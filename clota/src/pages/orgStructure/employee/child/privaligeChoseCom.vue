@@ -43,7 +43,7 @@
     import finaceRole from './financeRole';
     import manageRole from './manageRole';
     export default {
-        props :{
+        props : {
             //选择的角色信息
             'chose-roles' : {
                 type : Array,
@@ -64,7 +64,7 @@
             finaceRole,
             manageRole
         },
-        data() {
+        data () {
             return {
                 //当前权限种类
                 tapType : 'manage',
@@ -83,14 +83,14 @@
                     manage : '',
                     finance : '',
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 切换tap
              * @params type
              */
-            checkTap(type) {
+            checkTap (type) {
                 this.tapType = type;
             },
             /**
@@ -100,9 +100,9 @@
             getMangePrivalige (data) {
                 this.manageDefaultChosed = {};
                 this.economicDefaultChosed = {};
-                for(let i = 0,j = data.length;i < j;i++){
-                    if(data[i].orgType === 'manage'){
-                        if(!this.manageDefaultChosed[data[i].privOrg]){
+                for (let i = 0,j = data.length; i < j; i++) {
+                    if (data[i].orgType === 'manage') {
+                        if (!this.manageDefaultChosed[data[i].privOrg]) {
                             this.manageDefaultChosed[data[i].privOrg] = [{
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -112,7 +112,7 @@
                                 defaultChosed : true,
                                 linkedPrivCode : data[i].linkedPrivCode,
                             }];
-                        }else{
+                        } else {
                             this.manageDefaultChosed[data[i].privOrg].push({
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -123,8 +123,8 @@
                                 linkedPrivCode : data[i].linkedPrivCode,
                             });
                         }
-                    }else if(data[i].orgType === 'economic'){
-                        if(!this.economicDefaultChosed[data[i].privOrg]){
+                    } else if (data[i].orgType === 'economic') {
+                        if (!this.economicDefaultChosed[data[i].privOrg]) {
                             this.economicDefaultChosed[data[i].privOrg] = [{
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -134,7 +134,7 @@
                                 defaultChosed : true,
                                 linkedPrivCode : data[i].linkedPrivCode,
                             }];
-                        }else{
+                        } else {
                             this.economicDefaultChosed[data[i].privOrg].push({
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -153,17 +153,17 @@
              */
             updateChosedRoles () {
                 let addRoles = [];
-                for(let i = 0,j = this.choseRoles.length;i < j;i++){
-                    if(!(this.choseRoles[i] in this.rolePrivaliges)){
+                for (let i = 0,j = this.choseRoles.length; i < j; i++) {
+                    if (!(this.choseRoles[i] in this.rolePrivaliges)) {
                         addRoles.push(this.choseRoles[i]);
                     }
                 }
                 Promise.all(addRoles.map(item =>{
                     return ajax.post('findById',{
                         id : item
-                    })
+                    });
                 })).then(res => {
-                    for(let i = 0, j = res.length;i < j;i++){
+                    for (let i = 0, j = res.length; i < j; i++) {
                         this.rolePrivaliges[addRoles[i]] = res[i].data ? res[i].data['privModelList'] : [];
                     }
                     let privaliges = this.getTotalPrivaliges();
@@ -176,8 +176,8 @@
             getTotalPrivaliges () {
                 let result = [];
                 this.rolePrivaligesChosed = {};
-                for(let i = 0,j = this.choseRoles.length;i < j;i++){
-                    if(this.rolePrivaliges[this.choseRoles[i]] && this.rolePrivaliges[this.choseRoles[i]].length > 0){
+                for (let i = 0,j = this.choseRoles.length; i < j; i++) {
+                    if (this.rolePrivaliges[this.choseRoles[i]] && this.rolePrivaliges[this.choseRoles[i]].length > 0) {
                         result = [...result,...this.rolePrivaliges[this.choseRoles[i]]];
                         this.rolePrivaligesChosed[this.choseRoles[i]] = this.rolePrivaliges[this.choseRoles[i]];
                     }
@@ -197,24 +197,24 @@
              * @param type
              * @param data
              */
-            getOrgname ({type,data}) {
+            getOrgname ({ type,data }) {
                 this.orgName[type] = data;
             }
         },
-        watch :{
+        watch : {
             choseRoles (newVal) {
-                if(newVal){
+                if (newVal) {
                     this.updateChosedRoles();
                 }
             }
         },
-        computed :{
+        computed : {
             //额外菜单权限中不包括半选的菜单
             extraPrivaligeDeal () {
                 return this.extraPrivalige.filter(item => item.choseStatus !== 'half');
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

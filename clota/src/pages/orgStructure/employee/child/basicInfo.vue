@@ -164,21 +164,21 @@
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
     import MD5 from 'crypto-js/md5';
-    import {genderEnum} from '@/assets/js/constVariable';
+    import { genderEnum } from '@/assets/js/constVariable';
     import { validator } from 'klwk-ui';
     import map from 'lodash/map';
     import privaligeChoseCom from './privaligeChoseCom';
 
     export default {
-        props: ['employeeInfo'],
-        components: {
+        props : ['employeeInfo'],
+        components : {
             privaligeChoseCom
         },
         data () {
 
-            var validateMethod = {
+            let validateMethod = {
 
-                mobile :  (rule, value, callback) => {
+                mobile : (rule, value, callback) => {
                     if (!validator.isMobile(value)) {
                         callback(new Error(this.$t('inputRightMobile')));
                     } else {
@@ -194,30 +194,30 @@
                     }
                 },
 
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
                 },
 
                 //密码只能由数字+26个英文大、小写字母组成，且6-20位
-                pwdRule: (rule, value, callback) => {
-                    if(this.passwordOrigin){
-                        if(value !== this.passwordOrigin){
-                            if(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value)){
+                pwdRule : (rule, value, callback) => {
+                    if (this.passwordOrigin) {
+                        if (value !== this.passwordOrigin) {
+                            if (/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value)) {
                                 callback();
-                            }else{
+                            } else {
                                 callback(new Error( this.$t('errorPwdRule') ));
                             }
-                        }else{
+                        } else {
                             callback();
                         }
-                    }else{
-                        if(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value)){
+                    } else {
+                        if (/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value)) {
                             callback();
-                        }else{
+                        } else {
                             callback(new Error( this.$t('errorPwdRule') ));
                         }
                     }
@@ -226,118 +226,118 @@
             };
 
             return {
-                dateOption: {
-                    disabledDate: function( value ){
+                dateOption : {
+                    disabledDate : function ( value ) {
                         return value && ( value.format('yyyy-MM-dd') < '1900-01-01' || value.format('yyyy-MM-dd') > new Date().format('yyyy-MM-dd'));
                     }
                 },
-                enumData: {
-                    department: [],
-                    nativePlace: [],
-                    privileges: [],
+                enumData : {
+                    department : [],
+                    nativePlace : [],
+                    privileges : [],
                 },
-                employee: {
-                    deptId: '',             // 部门
-                    loginName: '',          // 登录名
-                    password: '',
-                    nickName: '',
-                    phone: '',
-                    sex: '',
-                    birthday: '',
-                    provinceId: '',
-                    address: '',
-                    descript: '',               // 备注
-                    roleIds: '',            // 角色权限ids
-                    status: 'valid',        // 是否启用 valid/invalid
+                employee : {
+                    deptId : '', // 部门
+                    loginName : '', // 登录名
+                    password : '',
+                    nickName : '',
+                    phone : '',
+                    sex : '',
+                    birthday : '',
+                    provinceId : '',
+                    address : '',
+                    descript : '', // 备注
+                    roleIds : '', // 角色权限ids
+                    status : 'valid', // 是否启用 valid/invalid
                 },
                 // 勾选的角色权限
-                rolePrivileges: [],
+                rolePrivileges : [],
                 // 搜索角色关键字
-                roleKeyword: '',
-                matchedData: [],
+                roleKeyword : '',
+                matchedData : [],
                 // 性别
-                genderEnum: genderEnum,
+                genderEnum : genderEnum,
                 // 旧密码
-                oldPwd: '',
+                oldPwd : '',
                 // 当前点击active的角色权限下拉项
-                activeGroupItem: {},
+                activeGroupItem : {},
                 // 当前点击查看的角色所包含的景区权限
-                roleInOrg: [],
+                roleInOrg : [],
                 // 角色下的菜单权限
-                menuInRole: [],
+                menuInRole : [],
                 // 当前点击active的景区权限
-                activeRoleInOrg: {},
+                activeRoleInOrg : {},
                 // 已勾选的角色名称
-                roleNames: '',
+                roleNames : '',
                 //除角色下的权限外的权限
-                extraPrivs :  [],
+                extraPrivs : [],
                 //修改时原生的密码
                 passwordOrigin : '',
 
                 // 表单校验规则
-                ruleValidate: {
-                    deptId: [
-                        { required: true, message: this.$t('selectField', {msg: this.$t('department')}), trigger: 'change' },
-                        { validator: validateMethod.orgName, trigger: 'change'}
+                ruleValidate : {
+                    deptId : [
+                        { required : true, message : this.$t('selectField', { msg : this.$t('department') }), trigger : 'change' },
+                        { validator : validateMethod.orgName, trigger : 'change' }
                     ],
-                    loginName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('loginName')}), trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('loginName'), length: 20}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                    loginName : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('loginName') }), trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('loginName'), length : 20 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
-                    nickName: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('name')}), trigger: 'blur' },
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('name'), length: 20}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                    nickName : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('name') }), trigger : 'blur' },
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('name'), length : 20 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
-                    password: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('password')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMethod.pwdRule, trigger: 'blur' }
+                    password : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('password') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMethod.pwdRule, trigger : 'blur' }
                     ],
-                    phone: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('mobilePhone')}), trigger: 'blur' },
-                        { validator: validateMethod.mobile, trigger: 'blur'}
+                    phone : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('mobilePhone') }), trigger : 'blur' },
+                        { validator : validateMethod.mobile, trigger : 'blur' }
                     ],
-                    address: [
-                        { type: 'string', max: 20, message: this.$t('errorMaxLength', {field: this.$t('nativeAddress'), length: 20}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                    address : [
+                        { type : 'string', max : 20, message : this.$t('errorMaxLength', { field : this.$t('nativeAddress'), length : 20 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
-                    descript: [
-                        { type: 'string', max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                    descript : [
+                        { type : 'string', max : 100, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 100 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
 
                 }
-            }
+            };
         },
-        watch: {
+        watch : {
             /*'employee.sex' : function(newVal, oldVal){
                 this.$refs.formValidate.validateField('sex');
             },
             'employee.orgName' : function(newVal, oldVal){
                 this.$refs.formValidate.validateField('orgName');
             },*/
-            employeeInfo: {
-                handler: function (newVal, oldVal) {
+            employeeInfo : {
+                handler : function (newVal, oldVal) {
                     if (this.isEdit && newVal.id) {
 //                        this.employee = Object.assign(this.employee, newVal);
                         this.getEmployeeDetail(newVal.id);
                     }
                 },
-                immediate: true
+                immediate : true
             }
         },
-        computed: {
-            isEdit() {
+        computed : {
+            isEdit () {
                 return this.$route.query.type && (this.$route.query.type == 'modify');
             }
         },
 
-        methods: {
+        methods : {
 
             // 手动校验，解决datePicker手动输入触发校验时获取到的值有延时导致校验错误问题
-            customValid(data, field){
+            customValid (data, field) {
                 this.employee.birthday = data;
                 this.$nextTick(()=>{
                     this.$refs.formValidate.validateField( field );
@@ -350,15 +350,15 @@
                     if ( valid ) {
                         this.saveEmployee();
                     }
-                })
+                });
             },
 
 
-            init() {
+            init () {
                 let fields = [
-                    {apiKey: 'queryDepartments', dataKey: 'department'},
-                    {apiKey: 'getProvinceList', dataKey: 'nativePlace'},
-                    {apiKey: 'queryRoleList', dataKey: 'privileges'},
+                    { apiKey : 'queryDepartments', dataKey : 'department' },
+                    { apiKey : 'getProvinceList', dataKey : 'nativePlace' },
+                    { apiKey : 'queryRoleList', dataKey : 'privileges' },
                 ];
                 fields.forEach((item, i) => {
                     this.getFieldInitData(item.apiKey, item.dataKey);
@@ -369,19 +369,19 @@
              * @params apiKey - 接口api
              * @params dataKey - enumData的key值
              **/
-            getFieldInitData(apiKey, dataKey) {
+            getFieldInitData (apiKey, dataKey) {
                 ajax.post(apiKey).then(res => {
                     if (res.success) {
                         this.enumData[dataKey] = res.data || [];
-                        if (dataKey=='privileges') {
+                        if (dataKey == 'privileges') {
                             this.matchedData = JSON.parse(JSON.stringify(this.enumData[dataKey]));
                         }
                     }
                 });
             },
             //新增员工接口
-            saveEmployee( param ){
-                var self = this;
+            saveEmployee ( param ) {
+                let self = this;
                 // 如果是编辑员工且密码未被修改过，那就不需要MD5加密
                 // if (self.oldPwd !== self.employee.password) {
                 //     this.employee.password = MD5(this.employee.password).toString();
@@ -395,21 +395,21 @@
                     birthday : this.employee.birthday,
                     password : self.oldPwd !== self.employee.password ? MD5(self.employee.password).toString() : self.employee.password
                 })).then(function (res) {
-                    if(res.success){
-                        self.$Message.success(self.isEdit ? self.$t('editEmployee')+self.$t('success') : self.$t('newEmployee')+self.$t('success'));
-                        self.$router.push({name: 'generalEmployeeManager'});
+                    if (res.success) {
+                        self.$Message.success(self.isEdit ? self.$t('editEmployee') + self.$t('success') : self.$t('newEmployee') + self.$t('success'));
+                        self.$router.push({ name : 'generalEmployeeManager' });
                     } else if (res.code === 'A010') {
                         self.$Message.error(self.$t(res.code));
-                    }else{
-                        self.$Message.error( self.$t('failureTip',{tip: self.$t('addOrUpdateEmployee')}) );
+                    } else {
+                        self.$Message.error( self.$t('failureTip',{ tip : self.$t('addOrUpdateEmployee') }) );
                     }
-                })
+                });
             },
             /**
              * 多选角色权限
              * @param selections
              */
-            onChangeSelect(selections) {
+            onChangeSelect (selections) {
                 this.employee.roleIds = selections.join(',');
                 this.getChosen(selections);
             },
@@ -417,29 +417,29 @@
              * 获取员工信息详情 - 用于修改员工时数据回填
              * @params id  员工id
              */
-            getEmployeeDetail(id) {
+            getEmployeeDetail (id) {
                 ajax.post("findEmployeeDetail", {
-                    employeeId: id
+                    employeeId : id
                 }).then(res => {
-                    if(res.success){
-                        if(res.data){
-                            for(let item in res.data) {
+                    if (res.success) {
+                        if (res.data) {
+                            for (let item in res.data) {
                                 this.employee[item] = res.data[item];
                             }
                         }
                         this.passwordOrigin = res.data ? res.data.password : '';
                         // this.employee = Object.assign(this.employee, res.data || {});
-                        this.rolePrivileges = map(res.data.roles, 'id');   // 角色权限列表
+                        this.rolePrivileges = map(res.data.roles, 'id'); // 角色权限列表
                         this.$set(this.employee, 'roleIds', this.rolePrivileges.join(','));
                         this.roleNames = map(res.data.roles || [], 'roleName').join(',');
                         this.oldPwd = this.employee.password;
                         this.extraPrivs = res.data ? res.data.extraPrivs : [];
                     }
-                })
+                });
             },
 
             // 搜索匹配到的角色
-            searchMatched() {
+            searchMatched () {
                 this.matchedData = this.enumData.privileges.filter((roleItem, i) => {
                     return roleItem.roleName.includes(this.roleKeyword);
                 });
@@ -454,15 +454,15 @@
                         if (child.id == item) {
                             professionText.push(child.roleName);
                         }
-                    })
+                    });
                 });
                 this.roleNames = professionText.join(',');
             },
             // 点击选择要查看的角色
-            handleClickItem(roleItem) {
+            handleClickItem (roleItem) {
                 this.activeGroupItem = roleItem;
                 ajax.post('findRolePrivInOrg', {
-                    roleId: roleItem.id
+                    roleId : roleItem.id
                 }).then(res => {
                     if (res.success) {
                         this.roleInOrg = res.data || [];
@@ -474,17 +474,17 @@
                 });
             },
             // 点击选择要查看的景区权限
-            onActiveAuthor(orgItem) {
+            onActiveAuthor (orgItem) {
                 this.activeRoleInOrg = orgItem;
                 this.menuInRole = orgItem.rolePrivModels;
             },
 
 
         },
-        created() {
+        created () {
             this.init();
         },
-    }
+    };
 </script>
 
 <style lang="scss">

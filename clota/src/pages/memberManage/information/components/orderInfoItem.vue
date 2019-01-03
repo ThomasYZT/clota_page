@@ -64,17 +64,17 @@
 <script>
 
     export default {
-        props: {
-            infoData: {
-                type: Array,
-                default: []
+        props : {
+            infoData : {
+                type : Array,
+                default : []
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

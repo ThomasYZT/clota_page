@@ -73,10 +73,10 @@
     import noticeModal from './components/noticeModal';
 
     export default {
-        components: {
+        components : {
             noticeModal
         },
-        data() {
+        data () {
             return {
                 formInline : {
                     user : '', //登录账号
@@ -193,12 +193,12 @@
                 lang : 'lang'
             })
         },
-        created() {
-            this.formInline.user =  localStorage.getItem('logName') ? localStorage.getItem('logName') : '';
-            this.rememberAccount =  !!localStorage.getItem('logName');
+        created () {
+            this.formInline.user = localStorage.getItem('logName') ? localStorage.getItem('logName') : '';
+            this.rememberAccount = !!localStorage.getItem('logName');
             setTimeout(() => {
                 this.$refs.noticeModal.show();
-            }, 1000)
+            }, 1000);
         },
     };
 </script>

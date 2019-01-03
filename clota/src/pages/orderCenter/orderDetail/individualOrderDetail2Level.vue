@@ -66,13 +66,13 @@
     import refundLog from './individualOrderChild/level2/refundLog';
     import touristInfo from './individualOrderChild/level2/touristInfo';
     import vertificationLog from './individualOrderChild/level2/vertificationLog';
-    import distributionInfo from './individualOrderChild/level2/distributionInfo'
+    import distributionInfo from './individualOrderChild/level2/distributionInfo';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import operateLog from '../components/operateLog';
 
     export default {
-        mixins: [lifeCycelMixins],
-        components: {
+        mixins : [lifeCycelMixins],
+        components : {
             baseInfo,
             operateLog,
             productDetail,
@@ -82,29 +82,29 @@
             distributionInfo,
             breadCrumbHead
         },
-        data() {
+        data () {
             return {
                 //产品订单明细数据--路由数据
-                productDetail: {},
+                productDetail : {},
                 //二级订单详情接口数据
-                orderDetailInfo: {},
+                orderDetailInfo : {},
                 //产品明细列表数据
-                ticketList: [],
+                ticketList : [],
                 //重发短信次数
                 reSendTimes : 0
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
-                if(params && params.productDetail){
+            getParams (params) {
+                if (params && params.productDetail) {
                     this.productDetail = params.productDetail;
                     this.getSecondLevelOrderDetailInfo();
                     this.getOrderTicketList();
-                }else{
+                } else {
                     this.$router.push({
                         name : 'individualFirstLevel'
                     });
@@ -113,31 +113,31 @@
             /**
              * 获取二级订单详情数据
              */
-            getSecondLevelOrderDetailInfo() {
+            getSecondLevelOrderDetailInfo () {
                 ajax.post('querySecondIndividualOrderDetail', {
-                    visitorProductId: this.productDetail.visitorProductId
+                    visitorProductId : this.productDetail.visitorProductId
                 }).then(res => {
-                    if(res.success) {
+                    if (res.success) {
                         this.orderDetailInfo = res.data ? res.data : {};
                         this.countSmsSend();
                     } else {
                         this.orderDetailInfo = {};
                     }
-                })
+                });
             },
             /**
              * 获取产品明细列表
              */
-            getOrderTicketList() {
+            getOrderTicketList () {
                 ajax.post('queryRefundAndAlterTicketList', {
-                    visitorProductId: this.productDetail.visitorProductId
+                    visitorProductId : this.productDetail.visitorProductId
                 }).then(res => {
-                    if(res.success) {
+                    if (res.success) {
                         this.ticketList = res.data ? res.data : [];
-                    }else {
+                    } else {
                         this.ticketList = [];
                     }
-                })
+                });
             },
             /**
              * 刷新页面数据
@@ -163,68 +163,68 @@
                 }
             }
         },
-        computed: {
+        computed : {
             //退票手续费收入
             totalRefundFee () {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.totalRefundFee) {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.totalRefundFee) {
                     return this.orderDetailInfo.totalRefundFee;
-                }else {
+                } else {
                     return 0;
                 }
             },
             //分销信息
-            allocationInfo() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
+            allocationInfo () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.allocationInfo) {
                     return this.orderDetailInfo.allocationInfo;
-                }else {
+                } else {
                     return {};
                 }
             },
             //基本信息
-            baseInfo() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
+            baseInfo () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
                     return this.orderDetailInfo.baseInfo;
-                }else {
+                } else {
                     return {};
                 }
             },
             //操作记录信息
-            orderOperationRecordList() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderOperationRecordList) {
+            orderOperationRecordList () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.orderOperationRecordList) {
                     return this.orderDetailInfo.orderOperationRecordList;
-                }else {
+                } else {
                     return [];
                 }
             },
             //退票日志列表信息
-            refundAlterList() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.refundAlterList) {
+            refundAlterList () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.refundAlterList) {
                     return this.orderDetailInfo.refundAlterList;
-                }else {
+                } else {
                     return [];
                 }
             },
             //核销日志列表信息
-            verifyTicketLogList() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.verifyTicketLogList) {
+            verifyTicketLogList () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.verifyTicketLogList) {
                     return this.orderDetailInfo.verifyTicketLogList;
-                }else {
+                } else {
                     return [];
                 }
             },
             //游客信息
-            visitor() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.visitor) {
+            visitor () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.visitor) {
                     return this.orderDetailInfo.visitor;
-                }else {
+                } else {
                     return {};
                 }
             },
             //机构对应订单角色
-            orderOrgType() {
-                if(Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
+            orderOrgType () {
+                if (Object.keys(this.orderDetailInfo).length > 0 && this.orderDetailInfo.baseInfo) {
                     return this.orderDetailInfo.baseInfo.orderOrgType;
-                }else {
+                } else {
                     return '';
                 }
             },
@@ -232,15 +232,15 @@
             beforeRouterList () {
                 return [
                     {
-                        name: 'reserveOrderDetail',     // 订单查询
-                        router: {
-                            name: 'reserveOrderDetail'
+                        name : 'reserveOrderDetail', // 订单查询
+                        router : {
+                            name : 'reserveOrderDetail'
                         }
                     },
                     {
-                        name: 'orderDetail',   // 订单详情
-                        router: {
-                            name: 'individualFirstLevel',
+                        name : 'orderDetail', // 订单详情
+                        router : {
+                            name : 'individualFirstLevel',
                             params : {
                                 orderId : this.productDetail.orderId
                             }
@@ -249,7 +249,7 @@
                 ];
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

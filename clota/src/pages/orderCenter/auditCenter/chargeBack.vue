@@ -132,37 +132,37 @@
 <script>
     import backAuditFilter from './components/backAuditFilter';
     import tableCom from '@/components/tableCom/tableCom';
-    import {teamOrderChargeBack, batchAudit} from './auditConfig';
+    import { teamOrderChargeBack, batchAudit } from './auditConfig';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
     import { notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import ajax from '@/api/index';
     export default {
-        components: {
+        components : {
             tableCom,
             backAuditFilter,
             auditPassModal,
             auditRejectModal
         },
-        data() {
+        data () {
             return {
                 //表头数据
                 columnData : teamOrderChargeBack,
                 // 获取数据的请求参数
-                queryParams: {
-                    auditStatus: 'cancel_audit',   // 只查询退单待审的订单
-                    pageNo: 1,
-                    pageSize: 10,
+                queryParams : {
+                    auditStatus : 'cancel_audit', // 只查询退单待审的订单
+                    pageNo : 1,
+                    pageSize : 10,
                 },
                 tableData : [],
                 totalCount : 0,
                 // 已勾选的数据
-                chosenRowData: [],
+                chosenRowData : [],
                 //批量审核
-                batchAudit: batchAudit
-            }
+                batchAudit : batchAudit
+            };
         },
-        methods: {
+        methods : {
             /**
              * 过滤列表数据
              * @param {object} paramsObj
@@ -187,8 +187,8 @@
                     }
                 });
             },
-            handleCommand(dropItem) {
-                if (this.chosenRowData.length<=0) {
+            handleCommand (dropItem) {
+                if (this.chosenRowData.length <= 0) {
                     this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
@@ -214,7 +214,7 @@
              * @param isBatch - 是否批量操作  Boolean
              * @param type - 类型  'pass' | 'reject'
              **/
-            showAuditModal(data, isBatch, type) {
+            showAuditModal (data, isBatch, type) {
                 let auditModal = '';
                 let auditStatus = '';
                 switch (type) {
@@ -229,8 +229,8 @@
                 }
 
                 this.$refs[auditModal].show({
-                    items: isBatch ? data : [data],
-                    isBatch: isBatch,
+                    items : isBatch ? data : [data],
+                    isBatch : isBatch,
                     auditStatus : auditStatus,
                 });
             },
@@ -238,10 +238,10 @@
              * 跳转至团队订单详情
              * @param scopeRow
              */
-            goTeamOrderDetail(scopeRow) {
+            goTeamOrderDetail (scopeRow) {
                 this.$router.push({
-                    name: 'cancelOrderDetail',
-                    params: {orderId: scopeRow.id},
+                    name : 'cancelOrderDetail',
+                    params : { orderId : scopeRow.id },
                 });
             },
             /**
@@ -249,7 +249,7 @@
              * @param value 下单渠道code
              * @returns {string}
              */
-            transOrderOrg(value) {
+            transOrderOrg (value) {
                 let orderChannel = notDistributorChannelList.find((channel, i) => {
                     return value === channel.value;
                 });
@@ -260,7 +260,7 @@
              * 获取产品名称
              * @param rowData 订单详情数据
              */
-            getProductName(rowData) {
+            getProductName (rowData) {
                 return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
             },
             /**
@@ -268,7 +268,7 @@
              * @param status  支付状态code
              * @returns {string}
              */
-            transPaymentStatus(status) {
+            transPaymentStatus (status) {
                 let paymentStatus = payStatusList.find((payment, i) => {
                     return status === payment.value;
                 });
@@ -276,7 +276,7 @@
                 return paymentStatus ? paymentStatus.label : '-';
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

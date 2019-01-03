@@ -106,31 +106,31 @@
     // import provinces from './dicts/provinces';
     // import citys from './dicts/citys';
     // import areas from './dicts/areas';
-    import {commonFunc} from 'klwk-ui'
+    import { commonFunc } from 'klwk-ui';
     import ajax from '@/api/index.js';
 
     export default {
-        name: 'KCityPicker',
-        props: {
+        name : 'KCityPicker',
+        props : {
             // 类型 {string} 只选到省、市、区，分别传'p' 'c' 'a'，默认：'a'
-            type: {
-                type: String,
-                default: 'a'
+            type : {
+                type : String,
+                default : 'a'
             },
             // 是否将弹层放置在 body 内 {boolean} 默认：true
-            transfer: {
-                type: Boolean,
-                default: true
+            transfer : {
+                type : Boolean,
+                default : true
             },
             // 是否禁用组件 {boolean} 默认：false
-            disabled: {
-                type: Boolean,
-                default: false
+            disabled : {
+                type : Boolean,
+                default : false
             },
             // 占位文本
-            placeholder: {
-                type: String,
-                default: '请选择'
+            placeholder : {
+                type : String,
+                default : '请选择'
             },
             //默认选中省、市、区信息
             defaultValue : {
@@ -140,33 +140,33 @@
                 }
             }
         },
-        data() {
+        data () {
             return {
                 // 当前显示内容
-                curVal: '',
+                curVal : '',
                 // 是否可见dropdown
-                visible: false,
+                visible : false,
                 // dropdown样式
-                style: null,
+                style : null,
                 // 是否是hover状态
-                hovering: false,
+                hovering : false,
                 // 当前所在视图 'p'：省，'c'：市，'a'：区
-                view: 'p',
+                view : 'p',
                 // 展示数据
-                provinces: {
-                    'A-G': [],
-                    'H-K': [],
-                    'L-S': [],
-                    'T-Z': []
+                provinces : {
+                    'A-G' : [],
+                    'H-K' : [],
+                    'L-S' : [],
+                    'T-Z' : []
                 },
-                citys: [],
-                areas: [],
+                citys : [],
+                areas : [],
                 // 选择结果
-                select: {
-                    province: null,
-                    city: null,
-                    area: null,
-                    value: ''
+                select : {
+                    province : null,
+                    city : null,
+                    area : null,
+                    value : ''
                 },
                 //省份信息列表展示
                 provinceInfoList : [],
@@ -174,226 +174,226 @@
                 cityInfoList : [],
                 //区县列表
                 areaInfoList : []
-            }
+            };
         },
-        computed: {
+        computed : {
             // 清除图标可见
-            iconClearShow() {
-                return !this.disabled && this.hovering && this.curVal
+            iconClearShow () {
+                return !this.disabled && this.hovering && this.curVal;
             }
         },
-        methods: {
+        methods : {
             /**
              * 图标点击
              */
-            onClickSuffix(ev) {
+            onClickSuffix (ev) {
                 if (this.iconClearShow) {
-                    this.select.province = this.select.city = this.select.area = null
-                    this.callback()
+                    this.select.province = this.select.city = this.select.area = null;
+                    this.callback();
 
-                    ev.stopPropagation()
+                    ev.stopPropagation();
                 }
             },
             /**
              * 点击触发器
              */
-            onClickInput(ev) {
-                if (this.disabled) return
+            onClickInput (ev) {
+                if (this.disabled) return;
 
                 if (this.visible) {
-                    this.hide()
+                    this.hide();
                 } else {
-                    this.show()
+                    this.show();
                 }
             },
             /**
              * 点击选项
              */
-            onClickItem(data) {
+            onClickItem (data) {
                 // 根据不同视图存储不同数据
                 switch (this.view) {
                     case 'p':
-                        this.select.province = data
+                        this.select.province = data;
                         // 如果类型只选到省则直接回调
                         if (this.type === 'p') {
-                            this.callback()
-                            this.hide()
+                            this.callback();
+                            this.hide();
                         } else {
                             this.queryCityInfoList(data.provinceid);
                         }
-                        break
+                        break;
                     case 'c':
-                        this.select.city = data
+                        this.select.city = data;
                         // 如果类型只选到省则直接回调
                         if (this.type === 'c') {
-                            this.callback()
-                            this.hide()
+                            this.callback();
+                            this.hide();
                         } else {
                             this.getSysAreassByCityid(data.cityid);
                         }
-                        break
+                        break;
                     case 'a':
-                        this.select.area = data
+                        this.select.area = data;
                         if (this.type === 'a') {
-                            this.callback()
-                            this.hide()
+                            this.callback();
+                            this.hide();
                         }
-                        break
+                        break;
                 }
             },
             /**
              * 回调数据
              */
-            callback() {
+            callback () {
                 // 合理清空数据
                 switch (this.type) {
                     case 'p':
-                        this.select.city = this.select.area = null
-                        break
+                        this.select.city = this.select.area = null;
+                        break;
                     case 'c':
-                        this.select.area = null
-                        break
+                        this.select.area = null;
+                        break;
                     case 'a':
-                        break
+                        break;
                 }
 
                 this.curVal = this.select.value = (this.select.province && this.select.province.province || '')
                     + (this.select.city && (`${this.select.city.city}`) || '')
-                    + (this.select.area && (`${this.select.area.area}`) || '')
+                    + (this.select.area && (`${this.select.area.area}`) || '');
                 this.$emit('select', this.select);
             },
             /**
              * 选择选项
              * @param {object} 选项 {province:'', city:'', area: '', value}
              */
-            setSelect(option) {
+            setSelect (option) {
                 if (option) {
                     // 如果参数value则按 value
                     if (option.value) {
-                        this.curVal = this.select.value = option.value
+                        this.curVal = this.select.value = option.value;
                     } else {
                         // 根据 code 选中对应的数据
                         if (option.province) {
-                            this.select.province = provinces.find(item => item.code === option.province)
+                            this.select.province = provinces.find(item => item.code === option.province);
                         }
 
                         if (option.city) {
-                            this.select.city = citys.find(item => item.code === option.city)
+                            this.select.city = citys.find(item => item.code === option.city);
                         }
 
                         if (option.area) {
-                            this.select.area = areas.find(item => item.code === option.area)
+                            this.select.area = areas.find(item => item.code === option.area);
                         }
 
                         this.curVal = this.select.value = (this.select.province && this.select.province.name || '')
                             + (this.select.city && this.select.city.name || '')
-                            + (this.select.area && this.select.area.name || '')
+                            + (this.select.area && this.select.area.name || '');
                     }
                 } else {
-                    this.select.province = null
-                    this.select.city = null
-                    this.select.area = null
-                    this.curVal = ''
+                    this.select.province = null;
+                    this.select.city = null;
+                    this.select.area = null;
+                    this.curVal = '';
                 }
             },
             /**
              * 直接设置文本
              */
-            setValue(value) {
-                this.setSelect({value});
+            setValue (value) {
+                this.setSelect({ value });
             },
-            show() {
-                if (this.visible) return
+            show () {
+                if (this.visible) return;
 
                 // 初始化
-                this.view = 'p'
+                this.view = 'p';
 
                 this.$nextTick(() => {
-                    this.visible = true
-                    this.setPos()
-                })
+                    this.visible = true;
+                    this.setPos();
+                });
             },
             /**
              * 定位
              */
-            setPos() {
-                if (!this.visible) return
+            setPos () {
+                if (!this.visible) return;
 
-                this.style = null
+                this.style = null;
 
                 this.$nextTick(() => {
-                    const input = this.$refs.Input
-                    const inputRc = input.getBoundingClientRect()
-                    const dropdown = this.$refs.Drop
+                    const input = this.$refs.Input;
+                    const inputRc = input.getBoundingClientRect();
+                    const dropdown = this.$refs.Drop;
 
-                    let style = {bottom:''};
+                    let style = { bottom : '' };
 
                     // 如果弹层在body内定位
                     if (this.transfer) {
-                        style.left = `${inputRc.left}px`
+                        style.left = `${inputRc.left}px`;
                         // 如果弹层超出底线则显示在上方
                         if (inputRc.bottom + dropdown.offsetHeight + 5 >= window.innerHeight) {
-                            const newTop = inputRc.top - dropdown.offsetHeight - 10
+                            const newTop = inputRc.top - dropdown.offsetHeight - 10;
                             // 如果新位置小于顶部则继续显示在底部
                             if (newTop < 0) {
-                                style.top = `${inputRc.bottom}px`
+                                style.top = `${inputRc.bottom}px`;
                             } else {
-                                style.top = `${newTop}px`
-                                style.bottom = `${window.innerHeight - inputRc.top}px`
+                                style.top = `${newTop}px`;
+                                style.bottom = `${window.innerHeight - inputRc.top}px`;
                             }
                         } else {
-                            style.top = `${inputRc.bottom}px`
+                            style.top = `${inputRc.bottom}px`;
                         }
                     } else {
                         style = {
-                            left: 0,
-                            top: `${inputRc.height}px`
-                        }
+                            left : 0,
+                            top : `${inputRc.height}px`
+                        };
                     }
 
-                    this.style = style
-                })
+                    this.style = style;
+                });
             },
-            hide() {
-                if (!this.visible) return
-                this.visible = false
+            hide () {
+                if (!this.visible) return;
+                this.visible = false;
             },
             /**
              * 初始化数据
              * @param
              */
-            init(type) {
+            init (type) {
                 if (type) {
-                    let pCode = ''
+                    let pCode = '';
                     switch (type) {
                         case 'c':
-                            pCode = this.select.province.code
+                            pCode = this.select.province.code;
                             // this.citys = this.cityInfoList.filter(city => {
                             //     city.city = city.city.split('市')[0]
                             //     city.city = city.city.split('市')[0]
                             //     city.city = city.city.split('县')[0]
                             //     return city.cityid === pCode && city.city
                             // })
-                            break
+                            break;
                         case 'a':
-                            pCode = this.select.city.code
+                            pCode = this.select.city.code;
                             this.areas = this.areaInfoList.filter(area => {
-                                return area.cityCode === pCode && area.name
-                            })
-                            break
+                                return area.cityCode === pCode && area.name;
+                            });
+                            break;
                     }
                 } else {
                     // 先排序再初始化数据
                     this.provinceInfoList.sort((a, b) => {
-                        let pinyin = commonFunc.getNamePinYin(a.province)
-                        let pinyin1 = commonFunc.getNamePinYin(b.province)
-                        if (a.province.includes('重庆')) pinyin = 'chongqingshi'
-                        if (b.province.includes('重庆')) pinyin1 = 'chongqingshi'
+                        let pinyin = commonFunc.getNamePinYin(a.province);
+                        let pinyin1 = commonFunc.getNamePinYin(b.province);
+                        if (a.province.includes('重庆')) pinyin = 'chongqingshi';
+                        if (b.province.includes('重庆')) pinyin1 = 'chongqingshi';
 
-                        a.fstCh = pinyin[0]
-                        b.fstCh = pinyin1[0]
+                        a.fstCh = pinyin[0];
+                        b.fstCh = pinyin1[0];
 
-                        return pinyin > pinyin1 ? 1 : -1
+                        return pinyin > pinyin1 ? 1 : -1;
                     }).forEach(province => {
                         // 整改文案
                         // province.province = province.province.split('省')[0]
@@ -404,18 +404,18 @@
                         // province.province = province.province.split('维吾尔')[0]
 
                         if (province.fstCh >= 'a' && province.fstCh <= 'g') {
-                            this.provinces['A-G'].push(province)
+                            this.provinces['A-G'].push(province);
                         }
                         if (province.fstCh >= 'h' && province.fstCh <= 'k') {
-                            this.provinces['H-K'].push(province)
+                            this.provinces['H-K'].push(province);
                         }
                         if (province.fstCh >= 'l' && province.fstCh <= 's') {
-                            this.provinces['L-S'].push(province)
+                            this.provinces['L-S'].push(province);
                         }
                         if (province.fstCh >= 't' && province.fstCh <= 'z') {
-                            this.provinces['T-Z'].push(province)
+                            this.provinces['T-Z'].push(province);
                         }
-                    })
+                    });
                 }
             },
             /**
@@ -423,13 +423,13 @@
              */
             listProvince () {
                 ajax.post('getProvinceList').then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.provinceInfoList = res.data ? res.data : [];
-                        this.init()
-                    }else{
+                        this.init();
+                    } else {
                         this.provinceInfoList = [];
                     }
-                })
+                });
             },
             /**
              * 根据省id获取市信息
@@ -439,22 +439,22 @@
                 ajax.post('getCityList',{
                     provinceid : provinceId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.cityInfoList = res.data ? res.data : [];
                         // 如果没有市数据则选择本身，且清空下级数据
                         if (!this.cityInfoList.length) {
                             this.select.city = this.select.area = null;
-                            this.callback()
-                            this.hide()
+                            this.callback();
+                            this.hide();
                         } else {
                             // 加载对应省下的市数据
-                            this.init('c')
-                            this.view = 'c'
+                            this.init('c');
+                            this.view = 'c';
                         }
-                    }else{
+                    } else {
                         this.cityInfoList = [];
                     }
-                })
+                });
             },
             /**
              * 根据市id获取区县
@@ -464,20 +464,20 @@
                 ajax.post('getAreaList',{
                     cityid : cityid
                 }).then(res => {
-                   if(res.success){
+                   if (res.success) {
                        this.areaInfoList = res.data ? res.data : [];
                        // 加载对应省下的市数据
-                       this.init('a')
+                       this.init('a');
 
                        // 如果没有区数据则选择本身，且清空下级数据
                        if (!this.areaInfoList.length) {
-                           this.select.area = null
-                           this.callback()
-                           this.hide()
+                           this.select.area = null;
+                           this.callback();
+                           this.hide();
                        } else {
-                           this.view = 'a'
+                           this.view = 'a';
                        }
-                   }else{
+                   } else {
                        this.areaInfoList = [];
                    }
                 });
@@ -485,7 +485,7 @@
             /**
              * 设置默认选中的值
              */
-            setDefaultValue (){
+            setDefaultValue () {
 
                 if (this.defaultValue.province) {
                     this.select.province = this.defaultValue.province;
@@ -501,19 +501,19 @@
 
                 this.curVal = this.select.value = (this.select.province && this.select.province.province || '')
                     + (this.select.city && this.select.city.city || '')
-                    + (this.select.area && this.select.area.area || '')
+                    + (this.select.area && this.select.area.area || '');
             },
             /**
              * 重置
              */
             reset () {
-                console.log("111111")
+                console.log("111111");
                 // 选择结果
                 this.select = {
-                    province: null,
-                    city: null,
-                    area: null,
-                    value: ''
+                    province : null,
+                    city : null,
+                    area : null,
+                    value : ''
                 };
                 this.curVal = '';
             }
@@ -521,30 +521,30 @@
         created () {
           this.listProvince();
         },
-        mounted() {
-            const mousedown = document.onmousedown
+        mounted () {
+            const mousedown = document.onmousedown;
             document.onmousedown = (ev) => {
-                if (mousedown) mousedown(ev)
+                if (mousedown) mousedown(ev);
                 // 点击外部隐藏
-                this.hide()
-            }
+                this.hide();
+            };
 
             // 如果弹层放置在body中，则跟随滚动
-            const resizeFunc = window.onresize
+            const resizeFunc = window.onresize;
             window.onresize = (ev) => {
-                if (resizeFunc) resizeFunc(ev)
-                this.setPos()
-            }
+                if (resizeFunc) resizeFunc(ev);
+                this.setPos();
+            };
 
             if (this.transfer) {
-                const scrollEls = dom.getAllHasScrollParentEls(this.$refs.Input)
+                const scrollEls = dom.getAllHasScrollParentEls(this.$refs.Input);
                 scrollEls.forEach(el => {
-                    const scrollFunc = el.onscroll
+                    const scrollFunc = el.onscroll;
                     el.onscroll = (ev) => {
-                        if (scrollFunc) scrollFunc(ev)
-                        this.setPos()
-                    }
-                })
+                        if (scrollFunc) scrollFunc(ev);
+                        this.setPos();
+                    };
+                });
             }
         },
         watch : {
@@ -556,7 +556,7 @@
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss">

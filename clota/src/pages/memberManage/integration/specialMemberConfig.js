@@ -3,19 +3,19 @@
 //特殊会员分类表头
 export const specialEmployeeHead = [
     {
-        title: '',
-        field: 'check',
-        width: 70,
+        title : '',
+        field : 'check',
+        width : 70,
     },
     {
-        title: 'specialMemClassify',
-        minWidth: 150,
-        enMinWidth: 180,
-        field: 'staffDesc'
+        title : 'specialMemClassify',
+        minWidth : 150,
+        enMinWidth : 180,
+        field : 'staffDesc'
     },
     {
-        title: 'operate',
-        width: 120,
+        title : 'operate',
+        width : 120,
         enWidth : 170,
     }
 ];
@@ -23,36 +23,36 @@ export const specialEmployeeHead = [
 //获取会员级别对应的特殊会员级别
 export const employeeTrustHead = [
     {
-        title: 'levelSetting',
-        minWidth: 150,
-        enMinWidth: 180,
-        field: 'levelDesc'
+        title : 'levelSetting',
+        minWidth : 150,
+        enMinWidth : 180,
+        field : 'levelDesc'
     },
     {
-        title: 'specialMemClassify',
-        minWidth: 150,
-        enMinWidth: 340,
-        field: 'staffDesc'
+        title : 'specialMemClassify',
+        minWidth : 150,
+        enMinWidth : 340,
+        field : 'staffDesc'
     },
     {
-        title: 'integralScale',
-        minWidth: 250,
-        enMinWidth: 400,
-        field: 'scoreRate'
+        title : 'integralScale',
+        minWidth : 250,
+        enMinWidth : 400,
+        field : 'scoreRate'
     },
     {
-        title: 'discountRate',
-        minWidth: 150,
-        field: 'discountRate'
+        title : 'discountRate',
+        minWidth : 150,
+        field : 'discountRate'
     },
     {
-        title: 'remark',
-        minWidth: 150,
-        field: 'remark'
+        title : 'remark',
+        minWidth : 150,
+        field : 'remark'
     },
     {
-        title: 'operate',
-        width: 180,
-        enWidth: 270,
+        title : 'operate',
+        width : 180,
+        enWidth : 270,
     }
 ];

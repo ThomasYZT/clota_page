@@ -65,50 +65,50 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['store'],
-        components: {
+        props : ['store'],
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
+                visible : false,
                 //表头数据
-                corpusColumnData: [
+                corpusColumnData : [
                     {
-                        title: 'principal',     // 本金
-                        minWidth: 200,
-                        field: 'corpusRanges'
+                        title : 'principal', // 本金
+                        minWidth : 200,
+                        field : 'corpusRanges'
                     },
                 ],
-                donateColumnData: [
+                donateColumnData : [
                     {
-                        title: 'giftSum',  // 赠送金额
-                        minWidth: 200,
-                        field: 'donateRanges'
+                        title : 'giftSum', // 赠送金额
+                        minWidth : 200,
+                        field : 'donateRanges'
                     },
                 ],
                 //会员信息的账户数据
-                accountInfo: {},
+                accountInfo : {},
                 //应用范围列表
-                corpusRangeData: [],
-                donateRangeData: [],
-            }
+                corpusRangeData : [],
+                donateRangeData : [],
+            };
         },
-        methods: {
+        methods : {
 
             show ( data ) {
-                if( data ){
+                if ( data ) {
                     this.donateRangeData = [];
                     this.corpusRangeData = [];
                     this.accountInfo = data;
                     let corpusRanges = data.corpusAppliedOrgId ? data.corpusAppliedOrgId.split(',') : [];
                     let donateRanges = data.donateAppliedOrgId ? data.donateAppliedOrgId.split(',') : [];
                     this.store.forEach( (item, index) => {
-                        if(corpusRanges.indexOf(item.id) > -1){
-                            this.corpusRangeData.push({ corpusRanges: item.orgName });
+                        if (corpusRanges.indexOf(item.id) > -1) {
+                            this.corpusRangeData.push({ corpusRanges : item.orgName });
                         }
-                        if(donateRanges.indexOf(item.id) > -1){
-                            this.donateRangeData.push({ donateRanges: item.orgName });
+                        if (donateRanges.indexOf(item.id) > -1) {
+                            this.donateRangeData.push({ donateRanges : item.orgName });
                         }
                     });
                 }
@@ -116,7 +116,7 @@
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.accountInfo = {};
                 setTimeout(function () {
@@ -126,7 +126,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

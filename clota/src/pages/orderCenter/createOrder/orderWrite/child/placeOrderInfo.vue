@@ -47,9 +47,9 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     export default {
-        props :{
+        props : {
             //下单人
             'pay-person-list' : {
               type : Array ,
@@ -58,39 +58,39 @@
               }
             }
         },
-        data() {
+        data () {
             //校验手机号码
-            const validatePhone =  (rule,value,callback) => {
-                  if(value && validator.isMobile(value)){
+            const validatePhone = (rule,value,callback) => {
+                  if (value && validator.isMobile(value)) {
                       callback();
-                  }else{
-                      callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
+                  } else {
+                      callback(this.$t('errorFormat', { field : this.$t('mobilePhone') }));
                   }
             };
             //校验身份证号
             const validateIdNum = (rule,value,callback) => {
-                if(value){
-                    if(validator.isIdCard(value)){
+                if (value) {
+                    if (validator.isIdCard(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('errorFormat', { field : this.$t('identityNo')}));
+                    } else {
+                        callback(this.$t('errorFormat', { field : this.$t('identityNo') }));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
             return {
-                ruleInline: {
-                    payer: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('orderMakerName')}), trigger: 'blur' },
-                        { max : 20, message: this.$t('errorMaxLength', { field : this.$t('orderMakerName') , length : 20}), trigger: 'blur' },
+                ruleInline : {
+                    payer : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('orderMakerName') }), trigger : 'blur' },
+                        { max : 20, message : this.$t('errorMaxLength', { field : this.$t('orderMakerName') , length : 20 }), trigger : 'blur' },
                     ],
-                    phone: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('mobilePhone')}), trigger: 'blur' },
-                        {validator :validatePhone,trigger : 'blur'}
+                    phone : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('mobilePhone') }), trigger : 'blur' },
+                        { validator : validatePhone,trigger : 'blur' }
                     ],
                     idNum : [
-                        { validator : validateIdNum ,trigger :'blur'}
+                        { validator : validateIdNum ,trigger : 'blur' }
                     ]
                 },
                 formData : {
@@ -101,20 +101,20 @@
                     //身份证号
                     idNum : ''
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 下单人改变,选择其它，重新设置下单人信息
              */
             payerChange (data) {
-                if(data === 'other'){
+                if (data === 'other') {
                     this.formData.payer = '';
                     this.formData.phone = '';
                     this.formData.idNum = '';
-                }else{
-                    for(let i = 0,j = this.payPersonListFilter.length;i < j;i++){
-                        if(data === this.payPersonListFilter[i]['value']){
+                } else {
+                    for (let i = 0,j = this.payPersonListFilter.length; i < j; i++) {
+                        if (data === this.payPersonListFilter[i]['value']) {
                             this.formData.phone = this.payPersonListFilter[i]['phone'];
                         }
                     }
@@ -127,12 +127,12 @@
             getPlaceOrderInfo () {
                 return new Promise((resolve,reject) => {
                     this.$refs.formInline.validate(valid => {
-                        if(valid){
+                        if (valid) {
                             //下单人姓名
                             let visitorName = '';
-                            if(this.payerType === 'other'){
+                            if (this.payerType === 'other') {
                                 visitorName = this.formData.payer;
-                            }else{
+                            } else {
                                 visitorName = this.payPersonListFilter.find((item, i) => {
                                     return this.formData.payerType === item.value;
                                 })['label'];
@@ -143,7 +143,7 @@
                                 visitorName : visitorName,
                                 visitorType : 'payer',
                             });
-                        }else{
+                        } else {
                             reject();
                         }
                     });
@@ -155,22 +155,22 @@
             getPlaceOrderDocumentInfo () {
                 //证件信息
                 let documentInfo = '';
-                if(this.payerType === 'other'){
+                if (this.payerType === 'other') {
                     documentInfo = JSON.stringify([{
                         data : this.formData.idNum,
                         type : 'identity'
-                    }])
-                }else{
-                    for(let i = 0,j = this.payPersonListFilter.length;i < j;i++){
-                        if(this.formData.payerType === this.payPersonListFilter[i]['value']){
+                    }]);
+                } else {
+                    for (let i = 0,j = this.payPersonListFilter.length; i < j; i++) {
+                        if (this.formData.payerType === this.payPersonListFilter[i]['value']) {
                             //游客证件信息
                             let idTableData = this.payPersonListFilter[i]['idTableData'];
                             documentInfo = JSON.stringify(idTableData.map(item => {
                                 return {
                                     data : item.data,
                                     type : item.type,
-                                }
-                            }))
+                                };
+                            }));
                         }
                     }
                 }
@@ -182,38 +182,38 @@
             payPersonListFilter () {
                 return [...this.payPersonList,{
                     label : 'others',
-                    value :'other',
+                    value : 'other',
                     phone : '',
                     idTableData : []
-                }]
+                }];
             }
         },
         watch : {
-            payPersonListFilter :{
-                handler (newVal,oldVal){
-                    if(newVal && newVal.length > 0){
-                        if(!this.formData.payerType){
+            payPersonListFilter : {
+                handler (newVal,oldVal) {
+                    if (newVal && newVal.length > 0) {
+                        if (!this.formData.payerType) {
                             this.formData.payerType = newVal[0]['value'];
                             this.formData.phone = newVal[0]['phone'];
-                        }else if(this.payerType === 'other' && this.formData.payer === '' && this.formData.phone === '' && this.formData.idNum === ''){
+                        } else if (this.payerType === 'other' && this.formData.payer === '' && this.formData.phone === '' && this.formData.idNum === '') {
                             this.formData.payerType = newVal[0]['value'];
                             this.formData.phone = newVal[0]['phone'];
-                        }else if(oldVal.length > newVal.length){
+                        } else if (oldVal.length > newVal.length) {
                             this.formData.payerType = newVal[0]['value'];
                             this.formData.phone = newVal[0]['phone'];
                             this.formData.payer = '';
                             this.formData.idNum = '';
                         }
-                    }else{
+                    } else {
                         this.formData.payerType = '';
                         this.formData.phone = '';
                     }
                 },
-                deep :true,
+                deep : true,
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -119,50 +119,50 @@
 <script type="text/ecmascript-6">
     import auditFilter from './components/auditFilter.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {groupOrderHead, batchAudit} from './auditConfig';
+    import { groupOrderHead, batchAudit } from './auditConfig';
     import ajax from '@/api/index';
-    import {configVariable, notDistributorChannelList, payStatusList} from '@/assets/js/constVariable';
+    import { configVariable, notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
 
     export default {
-        components: {
+        components : {
             auditFilter,
             tableCom,
             auditPassModal,
             auditRejectModal
         },
-        props: {},
-        data() {
+        props : {},
+        data () {
             return {
                 //表头配置
                 columnData : groupOrderHead,
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //表格是否显示
 //                tableShow : false,
                 // 获取数据的请求参数
-                queryParams: {
-                    auditStatus: 'audit',   // 只查询待审核的订单
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    auditStatus : 'audit', // 只查询待审核的订单
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
                 // 已勾选的数据
-                chosenRowData: [],
+                chosenRowData : [],
                 //是否显示预定模态框
                 showReserveModal : false,
                 //选择的产品列表
-                productList: [],
+                productList : [],
                 //批量审核
-                batchAudit: batchAudit
-            }
+                batchAudit : batchAudit
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        methods: {
+        methods : {
             /**
              * 查询所有团队订单审核信息
              */
@@ -170,7 +170,7 @@
                 ajax.post('queryTeamOrder',{
                     ...this.queryParams
                 }).then(res => {
-                    if(res.success && res.data){
+                    if (res.success && res.data) {
                         this.tableData = res.data.data || [];
                         this.totalCount = res.data.totalRow || 0;
                     } else {
@@ -183,11 +183,11 @@
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.chosenRowData = selection;
             },
-            handleCommand(dropItem) {
-                if (this.chosenRowData.length<=0) {
+            handleCommand (dropItem) {
+                if (this.chosenRowData.length <= 0) {
                     this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
@@ -205,7 +205,7 @@
              * @param value 下单渠道code
              * @returns {string}
              */
-            transOrderOrg(value) {
+            transOrderOrg (value) {
                 let orderChannel = notDistributorChannelList.find((channel, i) => {
                     return value === channel.value;
                 });
@@ -217,7 +217,7 @@
              * @param status  支付状态code
              * @returns {string}
              */
-            transPaymentStatus(status) {
+            transPaymentStatus (status) {
                 let paymentStatus = payStatusList.find((payment, i) => {
                     return status === payment.value;
                 });
@@ -228,7 +228,7 @@
              * 按筛选条件获取审核列表数据
              * @param paramsObj   筛选条件
              */
-            filterAuditList(paramsObj) {
+            filterAuditList (paramsObj) {
                 Object.assign(this.queryParams, paramsObj);
                 this.queryList();
             },
@@ -238,7 +238,7 @@
              * @param isBatch - 是否批量操作  Boolean
              * @param type - 类型  'pass' | 'reject'
              **/
-            showAuditModal(data, isBatch, type) {
+            showAuditModal (data, isBatch, type) {
                 let auditModal = '';
                 switch (type) {
                     case 'pass' :
@@ -250,25 +250,25 @@
                 }
 
                 this.$refs[auditModal].show({
-                    items: isBatch ? data : [data],
-                    isBatch: isBatch
+                    items : isBatch ? data : [data],
+                    isBatch : isBatch
                 });
             },
             /**
              * 跳转至团队订单详情
              * @param scopeRow
              */
-            goTeamOrderDetail(scopeRow) {
+            goTeamOrderDetail (scopeRow) {
                 this.$router.push({
-                    name: 'teamOrderDetail',
-                    params: {orderId: scopeRow.id},
+                    name : 'teamOrderDetail',
+                    params : { orderId : scopeRow.id },
                 });
             },
             /**
              * 获取产品名称
              * @param rowData 订单详情数据
              */
-            getProductName(rowData) {
+            getProductName (rowData) {
                 return rowData.productName ? JSON.parse(rowData.productName).join(',') : '';
             }
         }

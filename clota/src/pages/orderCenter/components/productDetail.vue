@@ -235,7 +235,7 @@
              * @param row   // 行数据
              * @param index // 序号
              */
-            handleSelectable(row, index) {
+            handleSelectable (row, index) {
                 /*let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
                 if (bulkDetail && bulkDetail.rowData) {
                     return bulkDetail.rowData.reqOrderTicketIds.includes(row.id);
@@ -249,7 +249,7 @@
              * 单个订单审核
              * @param auditParams   单个订单审核的传参
              */
-            onAuditConfirmed(auditParams) {
+            onAuditConfirmed (auditParams) {
                 let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
                 ajax.post('auditSingleOrderProduct', {
                     ...auditParams,
@@ -264,7 +264,7 @@
                         this.$emit('confirm-audit', auditParams.visitorProductId);
                     } else if (res.code === 'OD003' || res.code === 'OD010') {
                         this.$Message.error('产品库存不足，改签失败');
-                    }  else {
+                    } else {
                         this.$Message.error(this.$t('auditFailure')); // 审核失败
                     }
                 });

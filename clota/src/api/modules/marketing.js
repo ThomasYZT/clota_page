@@ -62,4 +62,4 @@ export default {
     //根据营销级别获取相关政策
     'getPolicyByMarketTypeAndLevel' : '/market/manage/getPolicyByMarketTypeAndLevel',
 
-}
+};

@@ -35,46 +35,46 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
 
     export default {
-        components: {},
-        props: ['deleteName', 'name'],
-        data() {
+        components : {},
+        props : ['deleteName', 'name'],
+        data () {
             return {
-                visible: false,
-                readonly: false,
-                loading: false,
-            }
+                visible : false,
+                readonly : false,
+                loading : false,
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
 
             /**
              * 显示模态框
              * @param data {data有值表示查看，反之新增}
              */
-            show(data) {
+            show (data) {
                 this.visible = true;
             },
             /**
              * 隐藏模态框
              */
-            hide() {
+            hide () {
                 this.visible = false;
             },
             /**
              * 创建自定义指标表单校验
              */
-            submit() {
-                this.$emit('deletions')
+            submit () {
+                this.$emit('deletions');
                 this.visible = false;
             },
         }
-    }
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

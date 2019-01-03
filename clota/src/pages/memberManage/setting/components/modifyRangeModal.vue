@@ -75,112 +75,112 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['length','table-data'],
-        components: {
+        props : ['length','table-data'],
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
-                title: '',
+                visible : false,
+                title : '',
                 //表格多选列表
-                multipleSelection: [],
+                multipleSelection : [],
                 //区分本金/赠送金额 money/send
-                type: 'money',
+                type : 'money',
                 //表单数据
-                formData: {},
-                index: null,
+                formData : {},
+                index : null,
                 //表头信息
-                moneyColumnData: [
+                moneyColumnData : [
                     {
-                        title: '',
-                        minWidth: 110,
-                        field: '',
+                        title : '',
+                        minWidth : 110,
+                        field : '',
                     },
                     {
-                        title: 'principalCanBeUsedInRangeSetting',
-                        minWidth: 400,
-                        field: 'orgName'
-                    },
-                ],
-                sendColumnData: [
-                    {
-                        title: '',
-                        minWidth: 110,
-                        field: '',
-                    },
-                    {
-                        title: 'complimentaryAmountCanBeUsedToSetTheRange',
-                        minWidth: 400,
-                        field: 'orgName'
+                        title : 'principalCanBeUsedInRangeSetting',
+                        minWidth : 400,
+                        field : 'orgName'
                     },
                 ],
-            }
+                sendColumnData : [
+                    {
+                        title : '',
+                        minWidth : 110,
+                        field : '',
+                    },
+                    {
+                        title : 'complimentaryAmountCanBeUsedToSetTheRange',
+                        minWidth : 400,
+                        field : 'orgName'
+                    },
+                ],
+            };
         },
-        methods: {
+        methods : {
 
             show ( data, type) {
-                if(type && type !== 'money'){
+                if (type && type !== 'money') {
                     this.title = data.item.accountName + this.$t('defaultAccountScope');
                     this.type = 'send';
                 } else {
                     this.title = data.item.accountName + this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting');
                     this.type = 'money';
                 }
-                if( data ){
+                if ( data ) {
                     let formData = defaultsDeep({}, data.item);
                     formData.corpusAppliedOrgId = data.item.corpusAppliedOrgId && data.item.corpusAppliedOrgId.length > 0 ?
                         data.item.corpusAppliedOrgId.split(',') : [];
-                    formData.donateAppliedOrgId = data.item.donateAppliedOrgId && data.item.donateAppliedOrgId.length > 0  ?
+                    formData.donateAppliedOrgId = data.item.donateAppliedOrgId && data.item.donateAppliedOrgId.length > 0 ?
                         data.item.donateAppliedOrgId.split(',') : [];
                     this.formData = formData;
                     this.index = data.index;
                 }
                 this.visible = true;
 
-                if( data ){
+                if ( data ) {
 
                     setTimeout( () => {
-                        if(type === 'money'){
-                            if(this.formData.corpusAppliedOrgId && this.formData.corpusAppliedOrgId.length > 0){
+                        if (type === 'money') {
+                            if (this.formData.corpusAppliedOrgId && this.formData.corpusAppliedOrgId.length > 0) {
                                 this.formData.corpusAppliedOrgId.forEach( item => {
                                     this.tableData.forEach( (list,index) => {
-                                        if(item === list.id){
-                                            if( this.$refs.moneyMultiTablePlug ) {
+                                        if (item === list.id) {
+                                            if ( this.$refs.moneyMultiTablePlug ) {
                                                 this.$refs.moneyMultiTablePlug.toggleRowSelection(this.tableData[index], true);
                                             }
                                         }
-                                    })
-                                })
+                                    });
+                                });
                             }
                         }
 
-                        if(type === 'send'){
-                            if(this.formData.donateAppliedOrgId && this.formData.donateAppliedOrgId.length > 0){
+                        if (type === 'send') {
+                            if (this.formData.donateAppliedOrgId && this.formData.donateAppliedOrgId.length > 0) {
                                 this.formData.donateAppliedOrgId.forEach( item => {
                                     this.tableData.forEach( (list,index) => {
-                                        if(item === list.id){
-                                            if( this.$refs.sendMultiTablePlug ) {
+                                        if (item === list.id) {
+                                            if ( this.$refs.sendMultiTablePlug ) {
                                                 this.$refs.sendMultiTablePlug.toggleRowSelection(this.tableData[index], true);
                                             }
                                         }
-                                    })
-                                })
+                                    });
+                                });
                             }
                         }
-                    },300)
+                    },300);
 
                 }
 
             },
 
-            handleSelectionChange(val) {
+            handleSelectionChange (val) {
                 this.multipleSelection = val;
             },
 
             //保存
             save () {
-                if(this.type === 'send'){
+                if (this.type === 'send') {
                     this.multipleSelection.forEach( (item, index) => {
                         this.formData.donateAppliedOrgId.push(item.id);
                     });
@@ -190,18 +190,18 @@
                     });
                 }
                 let params = {
-                    typeModelJson: JSON.stringify({
-                        id:this.formData.id,
-                        accountName:this.formData.accountName
+                    typeModelJson : JSON.stringify({
+                        id : this.formData.id,
+                        accountName : this.formData.accountName
                     }),
-                    extModelJson: JSON.stringify({
-                        accountBelonging: this.formData.accountBelonging,
-                        unit: this.formData.unit,
-                        rate: this.formData.rate,
-                        exchangeToCash: this.formData.exchangeToCash,
-                        corpusAppliedOrgId: this.formData.corpusAppliedOrgId.length > 0 ?
+                    extModelJson : JSON.stringify({
+                        accountBelonging : this.formData.accountBelonging,
+                        unit : this.formData.unit,
+                        rate : this.formData.rate,
+                        exchangeToCash : this.formData.exchangeToCash,
+                        corpusAppliedOrgId : this.formData.corpusAppliedOrgId.length > 0 ?
                             this.formData.corpusAppliedOrgId.join(',') : '',
-                        donateAppliedOrgId: this.formData.donateAppliedOrgId.length > 0 ?
+                        donateAppliedOrgId : this.formData.donateAppliedOrgId.length > 0 ?
                             this.formData.donateAppliedOrgId.join(',') : ''
                     })
                 };
@@ -213,24 +213,24 @@
             //保存/更改/储值账户设置
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('operate')}) + '！');     // 操作成功
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('operate') }) + '！'); // 操作成功
                         this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        this.$emit('updata-list', { item : this.formData, index : this.index });
                     } else {
-                        this.$Message.warning(res.message || 'updateMemberAccountDefine '+ this.$t('failureTip', {tip: this.$t('operate')}) +'！');    // 操作失败
+                        this.$Message.warning(res.message || 'updateMemberAccountDefine ' + this.$t('failureTip', { tip : this.$t('operate') }) + '！'); // 操作失败
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.title = this.$t('defaultAccountPrincipalCanBeUsedInTheRangeSetting');
-                if( this.$refs.moneyMultiTablePlug ){
+                if ( this.$refs.moneyMultiTablePlug ) {
                     this.$refs.moneyMultiTablePlug.clearSelection();
                 }
-                if( this.$refs.sendMultiTablePlug ){
+                if ( this.$refs.sendMultiTablePlug ) {
                     this.$refs.sendMultiTablePlug.clearSelection();
                 }
                 this.formData = {};
@@ -239,7 +239,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

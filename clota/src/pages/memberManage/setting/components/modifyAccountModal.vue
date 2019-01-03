@@ -86,8 +86,8 @@
 
 
     export default {
-        props: ['length','table-data'],
-        components: {},
+        props : ['length','table-data'],
+        components : {},
         // watch: {
         //     'formData.rateNumerator': function (newVal) {
         //         this.$refs.formValidate.validateField('rateDenominator');
@@ -96,9 +96,9 @@
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -110,10 +110,10 @@
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio') }));
                     }
                 });
             };
@@ -122,15 +122,15 @@
             const validateRateNumerator = (rule,value,callback) => {
                 common.validateInteger( this.formData.rateNumerator ).then(() => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('storedValueRatio') }));
                     }
                 });
             };
@@ -145,69 +145,69 @@
             };
 
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                index: null,
-                formData: {
-                    accountBelonging: '',
-                    accountName: '',
-                    unit: '',
-                    rate: '',
-                    rateNumerator: '',
-                    rateDenominator: '',
-                    exchangeToCash: '',
-                    corpusAppliedOrgId: [],
-                    donateAppliedOrgId: [],
+                index : null,
+                formData : {
+                    accountBelonging : '',
+                    accountName : '',
+                    unit : '',
+                    rate : '',
+                    rateNumerator : '',
+                    rateDenominator : '',
+                    exchangeToCash : '',
+                    corpusAppliedOrgId : [],
+                    donateAppliedOrgId : [],
                 },
                 //校验规则
-                ruleValidate: {
-                    accountBelonging: [
-                        { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
-                        { validator: validateOnly, trigger: 'blur' },
+                ruleValidate : {
+                    accountBelonging : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('accountOwnership') }), trigger : 'change' },
+                        { validator : validateOnly, trigger : 'blur' },
                     ],
-                    accountName: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength',{field : this.$t('accountName'),length : 10}), trigger: 'blur' },
+                    accountName : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength',{ field : this.$t('accountName'),length : 10 }), trigger : 'blur' },
                     ],
-                    unit: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 10, message: this.$t('errorMaxLength',{field : this.$t('unit'),length : 10}), trigger: 'blur' },
+                    unit : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength',{ field : this.$t('unit'),length : 10 }), trigger : 'blur' },
                     ],
-                    rateDenominator: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateNumber, trigger: 'blur' },
-                        { validator: validateRateNumerator, trigger: 'blur' },
+                    rateDenominator : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateRateNumerator, trigger : 'blur' },
                     ],
                 },
                 //归属校验
-                check: true,
-            }
+                check : true,
+            };
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 this.index = this.length;
 
-                if( data ){
+                if ( data ) {
                     let formData = defaultsDeep({}, data.item);
-                    formData.rateDenominator = data.item.rateDenominator ? data.item.rateDenominator+"" : "";
-                    formData.rateNumerator = data.item.rateNumerator ? data.item.rateNumerator+"" : "";
+                    formData.rateDenominator = data.item.rateDenominator ? data.item.rateDenominator + "" : "";
+                    formData.rateNumerator = data.item.rateNumerator ? data.item.rateNumerator + "" : "";
                     this.formData = defaultsDeep({}, formData);
                     this.index = data.index;
                 }
                 this.visible = true;
                 setTimeout( () => {
                     this.$refs.formValidate.validateField('rateDenominator');
-                },300 )
+                },300 );
             },
 
             //账户归属信息改变
             changeAccountBelonging (val) {
                 let obj = this.tableData.find( item => val === item.id );
-                if(obj){
-                   var params = {
-                       accountBelonging: obj.id,
-                       accountTypeId: this.formData.id
+                if (obj) {
+                   let params = {
+                       accountBelonging : obj.id,
+                       accountTypeId : this.formData.id
                    };
                    this.existAccountBelong(params);
                 }
@@ -216,73 +216,73 @@
             //判断账户归属是否存在
             existAccountBelong ( params ) {
                 ajax.post('existAccountBelong', params).then(res => {
-                    if( res.success ) {
+                    if ( res.success ) {
                         this.check = !res.data;
                         this.$refs.formValidate.validateField('accountBelonging');
                     } else {
-                        this.$Message.warning(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                        this.$Message.warning(res.message || this.$t('failureTip',{ tip : this.$t('modify') }));
                     }
-                })
+                });
             },
 
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid && this.check){
+                    if (valid && this.check) {
                         let params = {
-                            typeModelJson: JSON.stringify({
-                                id: this.formData.id || '',
-                                accountName:this.formData.accountName
+                            typeModelJson : JSON.stringify({
+                                id : this.formData.id || '',
+                                accountName : this.formData.accountName
                             }),
-                            extModelJson: JSON.stringify({
-                                accountBelonging: this.formData.accountBelonging,
-                                unit: this.formData.unit,
-                                rate: (Number(this.formData.rateNumerator)/Number(this.formData.rateDenominator)).toFixed(2),
-                                exchangeToCash: this.formData.exchangeToCash,
-                                corpusAppliedOrgId: this.formData.corpusAppliedOrgId,
-                                donateAppliedOrgId: this.formData.donateAppliedOrgId,
-                                rateDenominator: this.formData.rateDenominator,
-                                rateNumerator: this.formData.rateNumerator
+                            extModelJson : JSON.stringify({
+                                accountBelonging : this.formData.accountBelonging,
+                                unit : this.formData.unit,
+                                rate : (Number(this.formData.rateNumerator) / Number(this.formData.rateDenominator)).toFixed(2),
+                                exchangeToCash : this.formData.exchangeToCash,
+                                corpusAppliedOrgId : this.formData.corpusAppliedOrgId,
+                                donateAppliedOrgId : this.formData.donateAppliedOrgId,
+                                rateDenominator : this.formData.rateDenominator,
+                                rateNumerator : this.formData.rateNumerator
                             })
 
                         };
                         this.updateMemberAccountDefine(params);
                     }
-                })
+                });
             },
 
             //保存/更改/储值账户设置
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
                         this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        this.$emit('updata-list', { item : this.formData, index : this.index });
                     } else {
-                        this.$Message.warning(res.message || this.$t('failureTip',{tip : this.$t('modify')}));
+                        this.$Message.warning(res.message || this.$t('failureTip',{ tip : this.$t('modify') }));
                     }
-                })
+                });
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
-                this.formData = {accountBelonging: '',
-                    accountName: '',
-                    unit: '',
-                    rate: '',
-                    rateNumerator: '',
-                    rateDenominator: '',
-                    exchangeToCash: '',
-                    corpusAppliedOrgId: [],
-                    donateAppliedOrgId: [],
+                this.formData = { accountBelonging : '',
+                    accountName : '',
+                    unit : '',
+                    rate : '',
+                    rateNumerator : '',
+                    rateDenominator : '',
+                    exchangeToCash : '',
+                    corpusAppliedOrgId : [],
+                    donateAppliedOrgId : [],
                 };
                 this.index = null;
                 this.$refs.formValidate.resetFields();
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

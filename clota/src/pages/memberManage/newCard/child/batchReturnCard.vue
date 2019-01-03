@@ -93,7 +93,7 @@
     import ajax from '@/api/index.js';
 
 	export default {
-		data() {
+		data () {
 			return {
 			    //表头配置
                 columnData : batchRefundColumnData,
@@ -101,14 +101,14 @@
                 tableData : [],
                 //是否显示确认模态框
                 showConfirmModal : false
-            }
+            };
 		},
         components : {
             breadCrumbHead,
             tableCom,
             confirmMemberInfo
         },
-		methods: {
+		methods : {
             /**
              * 取消操作
              */
@@ -160,11 +160,11 @@
                             sumOnlineMoney : res.data.sumOnlineMoney,
                             sumRefundMoney : res.data.sumRefundMoney,
                         });
-                    }  else if (res.code === 'M018') {
+                    } else if (res.code === 'M018') {
                         this.$Message.error('该会员卡已使用，不可退卡');
-                    }  else if (res.code === 'M036') {
+                    } else if (res.code === 'M036') {
                         this.$Message.error('会员卡不存在');
-                    }    else {
+                    } else {
                         this.refundMoneyInfo = {};
                     }
                 });
@@ -186,7 +186,7 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('批量退卡') }));
                         this.tableData = [];
-                    } else{
+                    } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('批量退卡') }));
                     }
                 });
@@ -218,7 +218,7 @@
                 return this.tableData.reduce((price,item) => item.sumRefundMoney + price,0);
             }
         }
-	}
+	};
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

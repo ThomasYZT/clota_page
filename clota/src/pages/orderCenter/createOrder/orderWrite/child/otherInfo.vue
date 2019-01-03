@@ -23,15 +23,15 @@
             'info-data' : {
                 type : Object,
                 default () {
-                    return  {}
+                    return {};
                 }
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

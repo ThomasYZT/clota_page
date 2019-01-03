@@ -52,25 +52,25 @@
     export default {
         props : {
             //会员信息
-            'member-info' :{
+            'member-info' : {
                 type : Object,
                 default () {
                     return {};
                 }
             },
         },
-        components: {},
+        components : {},
         data () {
             return {
                 //模态框是否显示
-                visible: false,
+                visible : false,
                 //员工分类
                 specialMemberData : [],
                 //员工分类id
                 staffTypeId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 显示模态框
@@ -89,11 +89,11 @@
                         staffTypeId : this.staffTypeId,
                     })
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('link')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('link') }));
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('link')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('link') }));
                     }
                 }).finally(() => {
                     this.hide();
@@ -101,7 +101,7 @@
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
             },
             /**
@@ -112,13 +112,13 @@
                     pageNo : 1,
                     pageSize : 99999,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.specialMemberData = res.data.data ? res.data.data : [];
-                    }else{
-                        this.specialMemberData =  [];
+                    } else {
+                        this.specialMemberData = [];
                     }
                 }).catch(err => {
-                    this.specialMemberData =  [];
+                    this.specialMemberData = [];
                 });
             },
         },
@@ -126,16 +126,16 @@
             this.memberStaffTypeList();
         },
         watch : {
-            'memberInfo' :{
+            'memberInfo' : {
                 handler (newVal,oldVal) {
-                    if(newVal && Object.keys(newVal).length > 0){
+                    if (newVal && Object.keys(newVal).length > 0) {
                         this.staffTypeId = newVal.memberCardVos[0].staffTypeId;
                     }
                 },
-                deep :true
+                deep : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

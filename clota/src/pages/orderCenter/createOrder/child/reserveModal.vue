@@ -79,7 +79,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './reserveConfig';
+    import { columnData } from './reserveConfig';
     import ticketInfo from './ticketInfo';
     import ajax from '@/api/index.js';
     export default {
@@ -101,14 +101,14 @@
                 }
             },
             //查询参数
-            'search-params' :{
-                type :Object,
+            'search-params' : {
+                type : Object,
                 default () {
                     return {};
                 }
             }
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
@@ -124,21 +124,21 @@
                 validatMoney : 0,
                 //产品政策
                 productPolicy : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                     this.queryLeftMoney();
                     this.findProductSaleRule();
                 }
@@ -149,21 +149,21 @@
             save () {
                 let ticketNum = 0;
                 for (let i = 0,j = this.productListDela.length; i < j; i++) {
-                    ticketNum += this.productListDela[i]['num']
+                    ticketNum += this.productListDela[i]['num'];
                 }
                 if (ticketNum <= 0) {
                     this.$Message.warning(this.$t('请选择购买的产品'));
                     return;
                 }
                 let routeName = '';
-                if(this.searchParams.orderType === 'team'){
+                if (this.searchParams.orderType === 'team') {
                     routeName = 'teamOrder';
-                }else if(this.searchParams.orderType === 'individual'){
+                } else if (this.searchParams.orderType === 'individual') {
                     routeName = 'individualOrder';
                 }
                 this.$router.push({
-                    name :routeName,
-                    params :{
+                    name : routeName,
+                    params : {
                         productList : this.productListDela,
                         saleOrgName : this.searchParams.saleOrgName,
                         scenicOrgId : this.searchParams.scenicOrgId,
@@ -201,19 +201,19 @@
              * @param num
              */
             changeProductNum (index,num) {
-                this.$set(this.tableData[index],'num',num)
+                this.$set(this.tableData[index],'num',num);
             },
             /**
              * 查询下单企业剩余金额
              */
-            queryLeftMoney() {
+            queryLeftMoney () {
                 ajax.post('findByOrgIdAndPeerId',{
                     orgId : this.searchParams.orderOrgId,
-                    peerOrgId :this.searchParams.saleOrgId
+                    peerOrgId : this.searchParams.saleOrgId
                 }).then(res =>{
-                    if(res.success){
-                        this.validatMoney = (res.data.accountBalance ? res.data.accountBalance :0) + (res.data.creditBalance ? res.data.creditBalance : 0);
-                    }else{
+                    if (res.success) {
+                        this.validatMoney = (res.data.accountBalance ? res.data.accountBalance : 0) + (res.data.creditBalance ? res.data.creditBalance : 0);
+                    } else {
                         this.validatMoney = 0;
                     }
                 });
@@ -225,9 +225,9 @@
                 ajax.post('findProductSaleRule',{
                     productIds : this.tableData.map(item => item.productId).join(',')
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.productPolicy = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.productPolicy = {};
                     }
                 });
@@ -239,7 +239,7 @@
                     return {
                         ...item,
                         num : 0
-                    }
+                    };
                 })));
             }
         },
@@ -247,29 +247,29 @@
             //预计总额
             predictMoney () {
                 let amount = 0;
-                for(let i = 0,j = this.productListDela.length;i < j;i++){
+                for (let i = 0,j = this.productListDela.length; i < j; i++) {
                     amount += this.productListDela[i]['settlePrice'] * this.productListDela[i]['num'];
                 }
                 return amount;
             },
             //对产品数据进行处理，保证每个产品都有最大数量和最小数量
             productListDela () {
-                if(this.productPolicy && Object.keys(this.productPolicy).length > 0){
+                if (this.productPolicy && Object.keys(this.productPolicy).length > 0) {
                     return this.tableData.map(item => {
                         let numCount = item.num;
-                        if(this.productPolicy[item.productId] &&
+                        if (this.productPolicy[item.productId] &&
                             this.productPolicy[item.productId].minNum !== null &&
                             this.productPolicy[item.productId].minNum !== '' &&
-                            this.productPolicy[item.productId].minNum !== undefined){
-                            if(item.num < this.productPolicy[item.productId].minNum){
+                            this.productPolicy[item.productId].minNum !== undefined) {
+                            if (item.num < this.productPolicy[item.productId].minNum) {
                                 numCount = this.productPolicy[item.productId].minNum;
                             }
                         }
-                        if(this.productPolicy[item.productId] &&
+                        if (this.productPolicy[item.productId] &&
                             this.productPolicy[item.productId].maxNum !== null &&
                             this.productPolicy[item.productId].maxNum !== '' &&
-                            this.productPolicy[item.productId].maxNum !== undefined){
-                            if(item.num > this.productPolicy[item.productId].maxNum){
+                            this.productPolicy[item.productId].maxNum !== undefined) {
+                            if (item.num > this.productPolicy[item.productId].maxNum) {
                                 numCount = this.productPolicy[item.productId].maxNum;
                             }
                         }
@@ -279,21 +279,21 @@
                             max : this.productPolicy[item.productId] ? this.productPolicy[item.productId].maxNum ? Number(this.productPolicy[item.productId].maxNum) : 0 : 0,
                             min : this.productPolicy[item.productId] ? this.productPolicy[item.productId].minNum ? Number(this.productPolicy[item.productId].minNum) : 0 : 0,
                             num : Number(numCount)
-                        }
+                        };
                     });
-                }else{
+                } else {
                     return this.tableData.map(item => {
                         return {
                             ...item,
                             disabled : true,
                             max : 0,
                             min : 0
-                        }
+                        };
                     });
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

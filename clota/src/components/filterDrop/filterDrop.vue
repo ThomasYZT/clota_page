@@ -25,18 +25,18 @@
 <script type="text/ecmascript-6">
 
     export default {
-        components: {},
-        props: {
-            colParams: Object,
-            filters: Object
+        components : {},
+        props : {
+            colParams : Object,
+            filters : Object
         },
-        data() {
+        data () {
             return {
-                selected: null
-            }
+                selected : null
+            };
         },
-        computed: {
-            colFilter: function () {
+        computed : {
+            colFilter : function () {
                 switch (this.colParams.property) {
                     case 'signTime' :
                         this.filters.stateFilter.forEach((item) => {
@@ -51,13 +51,13 @@
                 }
             }
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
-            getCommand(item) {
+        watch : {},
+        methods : {
+            getCommand (item) {
                 this.selected = item.$index;
                 if (item.state) {
                     this.$emit('state-filter', item.state);

@@ -124,20 +124,20 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
 
     export default {
-        components: {
+        components : {
             headerTabs,
         },
         data () {
             return {
                 //设置id
-                id:'',
+                id : '',
                 //当前页面路由名称
-                routerName: 'growthSetting',
+                routerName : 'growthSetting',
                 //设置数据
-                settingData: {
+                settingData : {
                     //储值获得积分、成长值生效设置
                     growthEffModeWhileCharging : {
                         storedType : '',
@@ -150,32 +150,32 @@
                         growth : 1,//积分
                     },
                     //成长值设置
-                    growthRateWhileConsume: {
-                        growthSet: '',//Number
-                        growthSetValue: 1,
+                    growthRateWhileConsume : {
+                        growthSet : '',//Number
+                        growthSetValue : 1,
                     },
                     //成长值生效设置
-                    growthEffectiveMode: {
-                        storedType: '',
-                        storedTime: '',//Number
+                    growthEffectiveMode : {
+                        storedType : '',
+                        storedTime : '',//Number
                     },
                 },
                 //copy数据，用于数据重置
-                copySetData: {},
+                copySetData : {},
                 //输入框校验错误显示
-                error: {
+                error : {
                     moneyToGgowthError : '',//储值获得成长值生效设置
-                    growthSetError: '',//成长值设置--消费值
-                    growthTimeError: '',//成长值生效设置
-                    storeTimeError: '',//储值获得积分生效设置
+                    growthSetError : '',//成长值设置--消费值
+                    growthTimeError : '',//成长值生效设置
+                    storeTimeError : '',//储值获得积分生效设置
                 },
                 //Number型
-                numberProps: ['growthSet','storedTime'],
+                numberProps : ['growthSet','storedTime'],
                 //String型
-                stringProps: ['growthSet','storedTime','chargingAddGrowth'],
-            }
+                stringProps : ['growthSet','storedTime','chargingAddGrowth'],
+            };
         },
-        watch: {
+        watch : {
 
             //储值获得成长值生效设置
             'settingData.growthEffModeWhileCharging.storedType' : function (newVal, oldVal) {
@@ -186,24 +186,24 @@
 
             //成长值生效设置
             'settingData.growthEffectiveMode.growthType' : function (newVal, oldVal) {
-                if(newVal !== 'checkout_after'){
+                if (newVal !== 'checkout_after') {
                     this.error.growthTimeError = '';
                 }
             },
 
             //储值获得成长值比例设置
             'settingData.growthFromCharging.chargingAddGrowth' : function (newVal, oldVal) {
-                if(newVal === 'false'){
+                if (newVal === 'false') {
                     this.error.moneyToGgowthError = '';
                 }
             },
 
         },
-        created() {
+        created () {
             //查询会员基础设置
             this.findBasicSet();
         },
-        methods: {
+        methods : {
 
             //数据转换，数据查询后转成string进入input，保存时转成相应类型
             transPropsType ( data, type ) {
@@ -212,10 +212,10 @@
                         return data ? Number(data) : 0;
                         break;
                     case 'boolean':
-                        return data ==='true' ? true : false;
+                        return data === 'true' ? true : false;
                         break;
                     case 'string':
-                        return data!==null ? String(data) : '';
+                        return data !== null ? String(data) : '';
                         break;
                 }
             },
@@ -223,22 +223,22 @@
             //查询会员基础设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
-                    if( res.success){
-                        if(res.data && Object.keys(res.data).length > 0){
+                    if ( res.success) {
+                        if (res.data && Object.keys(res.data).length > 0) {
                             this.id = res.data.id;
                             //处理数据
                             let params = {
                                 growthEffModeWhileCharging : res.data.growthEffModeWhileCharging ?
-                                    JSON.parse(res.data.growthEffModeWhileCharging)  : this.settingData.growthEffModeWhileCharging,
+                                    JSON.parse(res.data.growthEffModeWhileCharging) : this.settingData.growthEffModeWhileCharging,
                                 growthFromCharging : res.data.growthFromCharging ?
                                     JSON.parse(res.data.growthFromCharging) : this.settingData.growthFromCharging,
-                                growthRateWhileConsume: JSON.parse(res.data.growthRateWhileConsume),
-                                growthEffectiveMode: JSON.parse(res.data.growthEffectiveMode),
+                                growthRateWhileConsume : JSON.parse(res.data.growthRateWhileConsume),
+                                growthEffectiveMode : JSON.parse(res.data.growthEffectiveMode),
                             };
-                            for( let key in params){
-                                if(key && Object.keys(params[key]).length > 0){
-                                    for( let ckey in params[key]){
-                                        if(this.stringProps.indexOf(ckey) > -1){
+                            for ( let key in params) {
+                                if (key && Object.keys(params[key]).length > 0) {
+                                    for ( let ckey in params[key]) {
+                                        if (this.stringProps.indexOf(ckey) > -1) {
                                             params[key][ckey] = this.transPropsType(params[key][ckey], 'string');
                                         }
                                     }
@@ -251,17 +251,17 @@
                             this.copySetData = defaultsDeep({}, this.settingData);
                         }
                     }
-                })
+                });
             },
             //点击保存，校验信息，数据处理
             save () {
-                if(this.checkInputFunc()){
+                if (this.checkInputFunc()) {
 
                     let setParam = defaultsDeep({}, this.settingData);
-                    for( let key in setParam){
-                        if(key && Object.keys(setParam[key]).length > 0){
-                            for( let ckey in setParam[key]){
-                                if(this.numberProps.indexOf(ckey) > -1){
+                    for ( let key in setParam) {
+                        if (key && Object.keys(setParam[key]).length > 0) {
+                            for ( let ckey in setParam[key]) {
+                                if (this.numberProps.indexOf(ckey) > -1) {
                                     setParam[key][ckey] = this.transPropsType(setParam[key][ckey], 'number');
                                 }
                             }
@@ -270,9 +270,9 @@
                     setParam.id = this.id;
 
                     let params = {
-                        id: this.id,
-                        growthRateWhileConsume: JSON.stringify(this.settingData.growthRateWhileConsume),
-                        growthEffectiveMode: JSON.stringify(this.settingData.growthEffectiveMode),
+                        id : this.id,
+                        growthRateWhileConsume : JSON.stringify(this.settingData.growthRateWhileConsume),
+                        growthEffectiveMode : JSON.stringify(this.settingData.growthEffectiveMode),
                         growthFromCharging : JSON.stringify(setParam.growthFromCharging),
                         growthEffModeWhileCharging : JSON.stringify(setParam.growthEffModeWhileCharging),
                     };
@@ -283,15 +283,15 @@
             //会员成长值设置-保存/修改
             basicSet ( params ) {
                 ajax.post('basicSet', params).then(res => {
-                    if( res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('saveGrowthSetting')}));
+                    if ( res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('saveGrowthSetting') }));
                         this.findBasicSet();
                     }
-                })
+                });
             },
             //点击取消重置数据
             resetFieldFunc () {
-                if(this.copySetData !== {}){
+                if (this.copySetData !== {}) {
                     this.settingData = defaultsDeep({}, this.copySetData);
                 }
             },
@@ -309,16 +309,16 @@
                     return false;
                 }
 
-                if(!this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSet, 'growthSetError')){
-                    return false
+                if (!this.checkInputBlurFunc(this.settingData.growthRateWhileConsume.growthSet, 'growthSetError')) {
+                    return false;
                 }
 
-                if(this.settingData.growthEffectiveMode.growthType === 'checkout_after' &&
-                    !this.checkInputBlurFunc(this.settingData.growthEffectiveMode.growthTime, 'growthTimeError')){
-                    return false
+                if (this.settingData.growthEffectiveMode.growthType === 'checkout_after' &&
+                    !this.checkInputBlurFunc(this.settingData.growthEffectiveMode.growthTime, 'growthTimeError')) {
+                    return false;
                 }
 
-                return true
+                return true;
             },
 
             /**
@@ -329,52 +329,52 @@
             checkInputBlurFunc ( val, errorField ) {
 
                 //校验不为空
-                if(common.isNotEmpty(val)){
+                if (common.isNotEmpty(val)) {
                     this.error[errorField] = '';
-                }else{
-                    this.error[errorField] = this.$t('inputField', {field: ''});
-                    return false
+                } else {
+                    this.error[errorField] = this.$t('inputField', { field : '' });
+                    return false;
                 }
 
                 //校验表情符号
                 if (val && String(val).isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
-                    return false
+                    return false;
                 } else {
                     this.error[errorField] = '';
                 }
                 //正整数，长度校验
-                if(validator.isNumber(val)){
+                if (validator.isNumber(val)) {
                     let numStr = String(val);
-                    if(numStr.length < 1){
-                        this.error[errorField] = this.$t('errorMinLength',{field : '',length : 1});
-                        return false
-                    }else if(numStr.length > 10){
-                        this.error[errorField] = this.$t('errorMaxLength', {field : '',length : 10});
-                        return false
-                    }else{
-                        if(Number.parseInt(val) === Number.parseFloat(val)){
-                            if(val < 0 || val == 0){
-                                this.error[errorField] = this.$t('fieldTypeError', {field: ''});
-                                return false
-                            }else{
+                    if (numStr.length < 1) {
+                        this.error[errorField] = this.$t('errorMinLength',{ field : '',length : 1 });
+                        return false;
+                    } else if (numStr.length > 10) {
+                        this.error[errorField] = this.$t('errorMaxLength', { field : '',length : 10 });
+                        return false;
+                    } else {
+                        if (Number.parseInt(val) === Number.parseFloat(val)) {
+                            if (val < 0 || val == 0) {
+                                this.error[errorField] = this.$t('fieldTypeError', { field : '' });
+                                return false;
+                            } else {
                                 this.error[errorField] = '';
                             }
-                        }else{
-                            this.error[errorField] = this.$t('integetError', {field: ''});
-                            return false
+                        } else {
+                            this.error[errorField] = this.$t('integetError', { field : '' });
+                            return false;
                         }
                     }
-                }else{
-                    this.error[errorField] = this.$t('integetError', {field: ''});
-                    return false
+                } else {
+                    this.error[errorField] = this.$t('integetError', { field : '' });
+                    return false;
                 }
 
-                return true
+                return true;
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

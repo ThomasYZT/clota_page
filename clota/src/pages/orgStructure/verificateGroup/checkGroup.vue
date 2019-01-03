@@ -111,17 +111,17 @@
 <script>
     import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {saleGroup} from './checkGroupConfig';
+    import { saleGroup } from './checkGroupConfig';
     import delModal from '@/components/delModal/index.vue';
-    import {saleOperateBatch} from '@/assets/js/constVariable.js';
-    import batchOpertate from'./child/batchOperate';
+    import { saleOperateBatch } from '@/assets/js/constVariable.js';
+    import batchOpertate from './child/batchOperate';
     import addGroup from './child/addGroup';
     import groupSelect from './child/groupSelect';
     import moveGroup from './child/moveGroup';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        components: {
+        components : {
             tableCom,
             delModal,
             batchOpertate,
@@ -129,10 +129,10 @@
             groupSelect,
             moveGroup
         },
-        data() {
+        data () {
             return {
                 //表单数据
-                tableData: [],
+                tableData : [],
                 //核销设备分组
                 orgGroupList : [],
                 //表头配置
@@ -147,9 +147,9 @@
                 //选择的渠道列表
                 saleGroupSelected : [],
                 groupType : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询核销设备分组信息
              */
@@ -158,9 +158,9 @@
                 ajax.post('getOrgGroupList',{
                     groupType : 'check'
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.orgGroupList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.orgGroupList = [];
                     }
                 });
@@ -168,21 +168,21 @@
             /**
              * 查询所有核销设备分组
              */
-            queryList() {
+            queryList () {
                 ajax.post('getCheckItemPage',{
                     groupId : this.groupType === '-2' ? '' : this.groupType,
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                     orgId : this.manageOrgs.id
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             },
             /**
              * 移动核销设备分组
@@ -194,11 +194,11 @@
                         'Content-Type' : 'application/json;charset-UTF-8'
                     }
                 }).then(res => {
-                   if(res.success){
-                       this.$Message.success(this.$t('successTip',{msg: this.$t('move')}));
+                   if (res.success) {
+                       this.$Message.success(this.$t('successTip',{ msg : this.$t('move') }));
                        this.queryList();
-                   }else{
-                       this.$Message.error(this.$t('failureTip',{msg: this.$t('move')}));
+                   } else {
+                       this.$Message.error(this.$t('failureTip',{ msg : this.$t('move') }));
                    }
                 });
             },
@@ -219,17 +219,17 @@
              * @param data
              */
             selectedChange (data) {
-                this.saleGroupSelected =  data;
+                this.saleGroupSelected = data;
             },
             /**
              * 单个移出分组
              * @param data
              */
             channelRemove (data) {
-                if(!data.checkGroupId) return;
+                if (!data.checkGroupId) return;
                 this.removeGroup([{
-                    checkGroupId :  '',
-                    id :  data.id,
+                    checkGroupId : '',
+                    id : data.id,
                 }]);
             },
             /**
@@ -237,8 +237,8 @@
              */
             handleOutGroup () {
                 this.removeGroup(this.saleGroupSelected.map(item => ({
-                    checkGroupId :  '',
-                    id :  item.id,
+                    checkGroupId : '',
+                    id : item.id,
                 })));
             },
             /**
@@ -247,8 +247,8 @@
              */
             handleRemoveGroup (groupId) {
                 this.batchMoveChannelGroup(this.saleGroupSelected.map(item => ({
-                    checkGroupId :  groupId,
-                    id :  item.id,
+                    checkGroupId : groupId,
+                    id : item.id,
                 })));
             },
             /**
@@ -259,7 +259,7 @@
                 this.batchMoveChannelGroup(data);
             },
         },
-        created() {
+        created () {
             this.getOrgGroupList();
         },
         computed : {
@@ -280,7 +280,7 @@
                 return this.permissionInfo && this.permissionInfo['removeCheckerGroup'] === 'allow';
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss">

@@ -31,7 +31,7 @@
                 detail : {},
                 //控制是否显示模态框
                 visible : false,
-            }
+            };
         },
         methods : {
             /**
@@ -71,7 +71,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

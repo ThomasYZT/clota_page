@@ -106,29 +106,29 @@
 </template>
 
 <script>
-    import {notDistributorChannelList, payStatusList, expiresStatus} from '@/assets/js/constVariable';
-    import {mapGetters} from 'vuex';
+    import { notDistributorChannelList, payStatusList, expiresStatus } from '@/assets/js/constVariable';
+    import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
     export default {
         components : {},
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
                     // 下单起始日期
-                    orderStartDate: '',
+                    orderStartDate : '',
                     // 下单结束日期
-                    orderEndDate: '',
+                    orderEndDate : '',
                     // 游玩起始日期
                     visitStartDate : '',
                     // 游玩结束日期
                     visitEndDate : '',
                     // 支付状态（全部、已支付、未支付）
-                    paymentStatus: 'allStatus',
+                    paymentStatus : 'allStatus',
                     // 下单企业ID
-                    channelId: 'all',
+                    channelId : 'all',
                     // 下单渠道
-                    orderChannel: 'allStatus',
+                    orderChannel : 'allStatus',
                     // 过期状态
                     overdueStatus : 'all',
                     // 关键字查询：游客姓名/手机号/订单号/订单明细编号
@@ -136,27 +136,29 @@
                 },
 
                 // 下单企业列表
-                orderEnterprise: [{id: 'all', orgName: this.$t('all')}],
+                orderEnterprise : [{ id : 'all', orgName : this.$t('all') }],
                 // 下单渠道列表
-                orderChannelList: notDistributorChannelList.filter((item) => { return item.value !== 'market' }),
+                orderChannelList : notDistributorChannelList.filter((item) => {
+ return item.value !== 'market';
+}),
                 // 支付状态
-                paymentList: payStatusList,
+                paymentList : payStatusList,
                 //过期状态列表
                 expiresStatusList : expiresStatus,
                 // 下单时间范围
-                orderTimeRange: [],
+                orderTimeRange : [],
                 // 游玩日期范围
-                visitDateRange: [],
+                visitDateRange : [],
 
                 //表单校验规则
                 formRule : {
 
                 },
                 // 重置使用的初始筛选条件
-                resetFormData: {}
-            }
+                resetFormData : {}
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             })
@@ -167,7 +169,7 @@
              * @param date   范围日期
              * @param dateType   日期格式
              */
-            changeOrderTime(date, dateType) {
+            changeOrderTime (date, dateType) {
                 this.formData.orderStartDate = date[0];
                 this.formData.orderEndDate = date[1];
                 this.searchAuditList();
@@ -177,7 +179,7 @@
              * @param date   范围日期
              * @param dateType   日期格式
              */
-            changeVisitDate(date, dateType) {
+            changeVisitDate (date, dateType) {
                 this.formData.visitStartDate = date[0];
                 this.formData.visitEndDate = date[1];
                 this.searchAuditList();
@@ -194,10 +196,10 @@
             /**
              * 查询下单企业
              */
-            queryOrderOrgList() {
+            queryOrderOrgList () {
                 ajax.post('getOrderOrgList', {
-                    allocationStatus: false,   // 是否分销：true/false
-                    scenicId: this.manageOrgs.id,
+                    allocationStatus : false, // 是否分销：true/false
+                    scenicId : this.manageOrgs.id,
                 }).then(res => {
                     if (res.success) {
                         this.orderEnterprise = this.orderEnterprise.concat(res.data || []);
@@ -207,7 +209,7 @@
             /**
              * emit事件：on-filter，在父组件查询审核列表
              */
-            searchAuditList() {
+            searchAuditList () {
                 let keys = ['channelId', 'orderChannel', 'overdueStatus', 'paymentStatus'];
                 let queryParams = Object.assign({}, this.formData);
                 keys.forEach((key, i) => {
@@ -221,7 +223,7 @@
             /**
              * 重置筛选条件
              */
-            reset() {
+            reset () {
                 this.$refs.formCustom.resetFields();
                 this.formData = JSON.parse(this.resetFormData);
                 this.orderTimeRange = [];
@@ -229,11 +231,11 @@
                 this.searchAuditList();
             }
         },
-        created() {
+        created () {
             this.queryOrderOrgList();
             this.resetFormData = JSON.stringify(this.formData);
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

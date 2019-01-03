@@ -22,7 +22,7 @@ import universalMarketing from './modules/universalMarketing';
 //工作台
 import workbench from './modules/workbench';
 //帮助中心
-import helperCenter from './modules/helperCenter'
+import helperCenter from './modules/helperCenter';
 
 export default {
     ...orgStructureRouter,

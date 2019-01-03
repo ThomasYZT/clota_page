@@ -66,7 +66,7 @@
                 }
             },
         },
-        data() {
+        data () {
             return {
                 //选择的分组类型
                 groupType : '-1',
@@ -75,8 +75,8 @@
                 //表单校验规则
                 ruleValidate : {
                     orgName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('groupName')}),trigger : 'blur'},
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('groupName'),length : 100}),trigger : 'blur'},
+                        { required : true,message : this.$t('inputField',{ field : this.$t('groupName') }),trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('groupName'),length : 100 }),trigger : 'blur' },
                     ]
                 },
                 //分组信息
@@ -86,9 +86,9 @@
                     //分组id
                     orgId : ''
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 编辑分组
              * @param e
@@ -135,16 +135,16 @@
                 ajax.post('deleteItemGroup',{
                     groupId : data.id
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{msg: this.$t('delGroup')+data.groupName}));
-                        if(data.id === this.groupType){
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ msg : this.$t('delGroup') + data.groupName }));
+                        if (data.id === this.groupType) {
                             this.groupType = '-1';
                             this.$emit('update:groupType',this.groupType);
                         }
                         this.$emit('fresh-data');
                         this.$emit('fresh-channel');
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{msg: this.$t('delete')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ msg : this.$t('delete') }));
                     }
                 });
             },
@@ -164,23 +164,23 @@
                     groupType : 'check',
                     groupName : this.formData.orgName
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{msg: this.$t('modify')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ msg : this.$t('modify') }));
                         this.$emit('fresh-data');
                         this.$emit('fresh-channel');
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{msg: this.$t('modify')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ msg : this.$t('modify') }));
                     }
                 }).finally(() => {
                     this.$refs.editModal.hide();
                 });
             }
         },
-        computed: {
+        computed : {
             //包含全部和未分组的渠道分组列表
             allGroupList () {
                 let orgGroupList = [];
-                if(this.orgGroupList && this.orgGroupList.length > 0){
+                if (this.orgGroupList && this.orgGroupList.length > 0) {
                     orgGroupList = JSON.parse(JSON.stringify(this.orgGroupList));
                     orgGroupList.push({
                         groupName : this.$t('noGroup'),
@@ -192,7 +192,7 @@
                         id : '-1',
                         stay : true
                     });
-                }else{
+                } else {
                     orgGroupList.push({
                         groupName : this.$t('noGroup'),
                         id : '-2',
@@ -221,7 +221,7 @@
         created () {
             this.$emit('update:groupType',this.groupType);
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

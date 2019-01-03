@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    import { mapGetters } from 'vuex';
     import menuCom from './menuCom';
     import defaultsDeep from 'lodash/defaultsDeep';
 
@@ -50,22 +50,22 @@
         components : {
             menuCom
         },
-        data() {
+        data () {
             return {
                 //当前展开的二级菜单
                 openedNames : [],
                 //上次展开的二级菜单保存记录
-                openedNamesRecord :[]
-            }
+                openedNamesRecord : []
+            };
         },
-        methods: {
+        methods : {
             /**
              * 更改选择的菜单
              * @param name 菜单名字
              */
-            selectMenu(name) {
+            selectMenu (name) {
                 this.$router.push({
-                    name: name
+                    name : name
                 });
                 //解决点击菜单组织树不收起来的问题
                 this.$el.click();
@@ -77,7 +77,7 @@
              */
             openChange (name) {
                 this.openedNamesRecord = name;
-                if(this.menuIsPackUp){
+                if (this.menuIsPackUp) {
                     this.$store.commit('updateMenuIsPackUp', false);
                 }
             },
@@ -92,10 +92,10 @@
                 });
             }
         },
-        computed: {
+        computed : {
             ...mapGetters({
-                menuIsPackUp: 'menuIsPackUp',
-                routerInfo: 'routerInfo'
+                menuIsPackUp : 'menuIsPackUp',
+                routerInfo : 'routerInfo'
             }),
             /**
              * 二级菜单列表
@@ -103,7 +103,7 @@
              * 如果菜单的name属性和meta下的_name属性的值不同，说明这个菜单权限是挂靠在name为meta._name下的菜单，这里也需要排除
              * @returns {Array}
              */
-            subMenuList() {
+            subMenuList () {
                 if (this.$route && this.$route.meta && this.routerInfo && this.routerInfo.length > 0) {
                     let activeTopMenu = this.$route.meta.rightPath ? this.$route.meta.rightPath.split('.')[0] : '';
                     for (let i = 0, j = this.routerInfo.length; i < j; i++) {
@@ -122,18 +122,18 @@
             },
             //当前高亮的二级菜单
             //通过name或meta下的_name来标识激活菜单名字
-            activeMenu() {
-                if(this.$route && this.$route.meta && this.$route.meta.rightPath){
+            activeMenu () {
+                if (this.$route && this.$route.meta && this.$route.meta.rightPath) {
                     let path = this.$route.meta.rightPath.split('.');
                     return path[path.length - 1];
-                }else{
+                } else {
                     return '';
                 }
             }
         },
-        watch: {
+        watch : {
             //监听路由变化，更新激活菜单
-            '$route'() {
+            '$route' () {
                 this.$nextTick(() => {
                     let menu = this.$refs.menu;
                     if (menu) {
@@ -141,10 +141,10 @@
                     }
                 });
             },
-            menuIsPackUp (newVal){
-                if(newVal === true){
+            menuIsPackUp (newVal) {
+                if (newVal === true) {
                     this.openedNames = [];
-                }else{
+                } else {
                     this.openedNames = defaultsDeep([],this.openedNamesRecord);
                 }
                 this.$nextTick(() => {
@@ -152,7 +152,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

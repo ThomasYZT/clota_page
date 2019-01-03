@@ -127,7 +127,7 @@
             addRule () {
                 this.currentData = {
                     index : 0,
-                    data :{}
+                    data : {}
                 };
                 this.showRuleModal = true;
             },

@@ -76,9 +76,9 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {openedServiceHead} from './openedServiceConfig';
+    import { openedServiceHead } from './openedServiceConfig';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //景区详情
@@ -96,10 +96,10 @@
                 }
             }
         },
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //是否显示模态框
                 modalShow : false,
@@ -116,41 +116,41 @@
                 pageSize : 10,
                 pageNo : 1,
                 tableData : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === false){
+            visibleChange (type) {
+                if (type === false) {
                     this.handleSelectionChange([]);
                 }
             },
             /**
              * 取消新增
              */
-            cancel() {
+            cancel () {
                 this.modalShow = false;
-                if(this.cancelCallback){
+                if (this.cancelCallback) {
                     this.cancelCallback();
                 }
             },
             /**
              * 确认开通服务
              */
-            confirm() {
-                if(this.selectedService.length < 1){
-                    this.$Message.warning(this.$t('selectField', {msg: this.$t('service')}));
-                }else{
+            confirm () {
+                if (this.selectedService.length < 1) {
+                    this.$Message.warning(this.$t('selectField', { msg : this.$t('service') }));
+                } else {
                     let selectService = [];
-                    for(let i = 0,j = this.selectedService.length;i < j;i++){
-                        if(!(this.selectedService[i]['serviceId'] in this.openedServiceObj)){
+                    for (let i = 0,j = this.selectedService.length; i < j; i++) {
+                        if (!(this.selectedService[i]['serviceId'] in this.openedServiceObj)) {
                             selectService.push(this.selectedService[i]);
                         }
                     }
-                    if(selectService.length > 0){
+                    if (selectService.length > 0) {
                         this.openScenicServices(JSON.parse(JSON.stringify(selectService)));
                     }
                 }
@@ -160,12 +160,12 @@
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({confirmCallback = null,cancelCallback}) {
+            show ({ confirmCallback = null,cancelCallback }) {
                 this.modalShow = true;
-                if(confirmCallback && typeof confirmCallback == 'function'){
+                if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if(cancelCallback && typeof cancelCallback == 'function'){
+                if (cancelCallback && typeof cancelCallback == 'function') {
                     this.cancelCallback = cancelCallback;
                 }
             },
@@ -185,12 +185,12 @@
                     pageNo : 1,
                     pageSize : 9999
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data && res.data.rootServiceList ? res.data.rootServiceList.data : [];
                         this.$nextTick(() => {
                             this.setDefaultChosed(this.tableData);
                         });
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 });
@@ -209,7 +209,7 @@
                             serviceId : item.serviceId,
                             serviceName : item.serviceName,
                             runStatus : item.runStatus,
-                        }
+                        };
                     }),
                     {
                         headers : {
@@ -217,11 +217,11 @@
                         }
                     }
                 ).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('openedService')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('openedService') }));
                         this.$emit('fresh-service');
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('openedService')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('openedService') }));
                     }
                 }).finally(() => {
                     this.modalShow = false;
@@ -232,9 +232,9 @@
              * @param tableData
              */
             setDefaultChosed (tableData) {
-                for(let i = 0,j = this.openedServices.length;i < j;i++){
-                    for(let a = 0,b = tableData.length;a < b;a++){
-                        if(tableData[a].serviceId === this.openedServices[i].serviceId){
+                for (let i = 0,j = this.openedServices.length; i < j; i++) {
+                    for (let a = 0,b = tableData.length; a < b; a++) {
+                        if (tableData[a].serviceId === this.openedServices[i].serviceId) {
                             this.$refs.multipleTable.toggleRowSelection(tableData[a]);
                         }
                     }
@@ -245,9 +245,9 @@
              * @param row
              * @param index
              */
-            checkIsValid (row,index){
-                for(let i = 0,j = this.openedServices.length;i < j;i++){
-                    if(row.serviceId === this.openedServices[i].serviceId){
+            checkIsValid (row,index) {
+                for (let i = 0,j = this.openedServices.length; i < j; i++) {
+                    if (row.serviceId === this.openedServices[i].serviceId) {
                         return false;
                     }
                 }
@@ -265,15 +265,15 @@
             //已经开通的服务对象类型
             openedServiceObj () {
                 let returnObj = {};
-                if(this.openedServices && this.openedServices.length > 0){
-                    for(let i = 0,j = this.openedServices.length;i < j;i++){
+                if (this.openedServices && this.openedServices.length > 0) {
+                    for (let i = 0,j = this.openedServices.length; i < j; i++) {
                         returnObj[this.openedServices[i]['serviceId']] = this.openedServices[i];
                     }
                 }
                 return returnObj;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

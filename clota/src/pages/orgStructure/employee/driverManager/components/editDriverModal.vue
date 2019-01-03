@@ -39,54 +39,54 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import ajax from '@/api/index';
     export default {
-        components: {},
-        data() {
+        components : {},
+        data () {
             const validateMethods = {
                 //车牌号校验
-                license: (rule, value, callback) => {
+                license : (rule, value, callback) => {
                     let reg = /(^[\u4E00-\u9FA5]{1}[A-Z0-9]{6}$)|(^[A-Z]{2}[A-Z0-9]{2}[A-Z0-9\u4E00-\u9FA5]{1}[A-Z0-9]{4}$)|(^[\u4E00-\u9FA5]{1}[A-Z0-9]{5}[挂学警军港澳]{1}$)|(^[A-Z]{2}[0-9]{5}$)|(^(08|38){1}[A-Z0-9]{4}[A-Z0-9挂学警军港澳]{1}$)/;
-                    if(!reg.test(value)) {
-                        callback(new Error(this.$t('errorFormat', {field: this.$t('licence')})))
-                    }else {
+                    if (!reg.test(value)) {
+                        callback(new Error(this.$t('errorFormat', { field : this.$t('licence') })));
+                    } else {
                         callback();
                     }
                 }
             };
             return {
-                visible: false,
-                formData: {
+                visible : false,
+                formData : {
                     //姓名
-                    staffName: '',
+                    staffName : '',
                     //员工类型
-                    staffType: 'driver',
+                    staffType : 'driver',
                     //证件类型
-                    documentType: 'license',
+                    documentType : 'license',
                     //证件号
-                    documentNo: '',
+                    documentNo : '',
                 },
-                ruleValidate: {
-                    staffName: [
-                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('name')}), trigger: 'blur' }
+                ruleValidate : {
+                    staffName : [
+                        { required : true, message : this.$t('errorEmpty',{ msg : this.$t('name') }), trigger : 'blur' }
                     ],
-                    documentNo: [
-                        { required: true, message: this.$t('errorEmpty',{msg: this.$t('licence')}), trigger: 'blur' },
-                        { validator: validateMethods.license, trigger: 'blur'}
+                    documentNo : [
+                        { required : true, message : this.$t('errorEmpty',{ msg : this.$t('licence') }), trigger : 'blur' },
+                        { validator : validateMethods.license, trigger : 'blur' }
                     ]
                 },
-                title: this.$t('addDriver')
-            }
+                title : this.$t('addDriver')
+            };
         },
-        methods: {
+        methods : {
             /**
              * 显示弹窗
              * @param type
              * @param scopeRow
              */
-            show({type, scopeRow}) {
-                if(scopeRow) {
+            show ({ type, scopeRow }) {
+                if (scopeRow) {
                     this.formData.id = scopeRow.id;
                     this.formData.staffName = scopeRow.staffName;
                     this.formData.documentNo = scopeRow.documentNo;
@@ -99,13 +99,13 @@
             /**
              * 隐藏弹窗
              */
-            hide() {
+            hide () {
                 this.formData = {
-                    staffName: '',
-                    staffType: 'driver',
-                    documentType: 'license',
-                    documentNo: '',
-                    phoneNumber: ''
+                    staffName : '',
+                    staffType : 'driver',
+                    documentType : 'license',
+                    documentNo : '',
+                    phoneNumber : ''
                 };
                 delete this.formData.id;
                 this.title = this.$t('addDriver');
@@ -114,9 +114,9 @@
             /**
              * 校验表单
              */
-            formValidate() {
+            formValidate () {
                 this.$refs.form.validate(valid => {
-                    if(valid) {
+                    if (valid) {
                         this.saveGuide();
                     }
                 });
@@ -124,17 +124,17 @@
             /**
              * 新增导游
              */
-            saveGuide() {
+            saveGuide () {
                 ajax.post('addOrUpdateOrgStaff',this.formData).then(res => {
-                    if(res.success) {
-                        this.$Message.success(this.$t('successTip',{tip : this.$t(this.type)}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t(this.type) }));
                         this.hide();
                         this.$emit('refresh');
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

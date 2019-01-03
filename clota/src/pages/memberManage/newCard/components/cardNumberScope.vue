@@ -51,7 +51,7 @@
                 default : false
             }
         },
-		data() {
+		data () {
             //校验开卡范围最小值值
             const validateSmallNum = (rule,value,callback) => {
                 if (common.isNotEmpty(value)) {
@@ -59,7 +59,7 @@
                         if (common.isNotEmpty(this.formData.bigNum)) {
                             if (validator.isNumber(this.formData.bigNum)) {
                                 if (this.formData.bigNum < this.formData.smallNum) {
-                                    callback(this.$t('errorGreaterThan',{small : this.$t('起始值'),big : this.$t('结束值')}));
+                                    callback(this.$t('errorGreaterThan',{ small : this.$t('起始值'),big : this.$t('结束值') }));
                                 } else {
                                     callback();
                                 }
@@ -70,10 +70,10 @@
                             callback();
                         }
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t('卡片编号起始值'),length : 20}));
-                        }else{
-                            callback(this.$t(err,{field : this.$t('卡片编号起始值')}));
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t(err,{ field : this.$t('卡片编号起始值'),length : 20 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t('卡片编号起始值') }));
                         }
                     });
                 } else {
@@ -87,7 +87,7 @@
                         if (common.isNotEmpty(this.formData.smallNum)) {
                             if (validator.isNumber(this.formData.smallNum)) {
                                 if (this.formData.bigNum < this.formData.smallNum) {
-                                    callback(this.$t('sizeErrorS',{filed1 : this.$t('结束值'),filed2 : this.$t('起始值')}));
+                                    callback(this.$t('sizeErrorS',{ filed1 : this.$t('结束值'),filed2 : this.$t('起始值') }));
                                 } else {
                                     callback();
                                 }
@@ -98,10 +98,10 @@
                             callback();
                         }
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            callback(this.$t(err,{field : this.$t('卡片编号结束值'),length : 20}));
-                        }else{
-                            callback(this.$t(err,{field : this.$t('卡片编号结束值')}));
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t(err,{ field : this.$t('卡片编号结束值'),length : 20 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t('卡片编号结束值') }));
                         }
                     });
                 } else {
@@ -131,9 +131,9 @@
                         }
                     ]
                 }
-            }
+            };
 		},
-		methods: {
+		methods : {
             /**
              * 绑定的value值改变
              * @param{Boolean} data  当前状态
@@ -198,7 +198,7 @@
                 return obj;
             }
         }
-	}
+	};
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

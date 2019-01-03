@@ -576,22 +576,22 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import {couponTypeList} from '@/assets/js/constVariable.js';
+    import { couponTypeList } from '@/assets/js/constVariable.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import common from '@/assets/js/common.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
-        components: {
+        components : {
             breadCrumbHead
         },
-        data() {
+        data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -600,32 +600,32 @@
 
             //校验卡券面值
             const validateCardFaceValue = (rule,value,callback) => {
-                if(this.formData.couponType === 'discount_coupon'){
+                if (this.formData.couponType === 'discount_coupon') {
                     common.validateMoney(value,0,4).then(() => {
-                        if(this.formData.couponType === 'discount_coupon'){
-                            if(value <= 0 || value >= 10){
-                                callback(this.$t('rangeError',{field : this.$t(rule.field),min : 0,max : 10}));
-                            }else{
+                        if (this.formData.couponType === 'discount_coupon') {
+                            if (value <= 0 || value >= 10) {
+                                callback(this.$t('rangeError',{ field : this.$t(rule.field),min : 0,max : 10 }));
+                            } else {
                                 callback();
                             }
-                        }else{
+                        } else {
                             callback();
                         }
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 4}));
-                        }else{
-                            callback(this.$t(err,{field : this.$t(rule.field)}));
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 4 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t(rule.field) }));
                         }
                     });
-                }else{
+                } else {
                     common.validateMoney(value,0,10).then(() => {
                         callback();
                     }).catch(err => {
-                        if(err === 'errorMaxLength'){
-                            callback(this.$t('errorMaxLength',{field : this.$t('couponFaceValue'),length : 10}));
-                        }else{
-                            callback(this.$t(err,{field : this.$t('couponFaceValue')}));
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t('errorMaxLength',{ field : this.$t('couponFaceValue'),length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t('couponFaceValue') }));
                         }
                     });
                 }
@@ -633,28 +633,28 @@
 
             //校验有效开始时间
             const validateStartTime = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(this.formData.expireTime && value.valueOf() >  this.formData.expireTime.valueOf()){
+                if (common.isNotEmpty(value)) {
+                    if (this.formData.expireTime && value.valueOf() > this.formData.expireTime.valueOf()) {
                         // callback('有效开始时间不可大于结束时间');
-                        callback(this.$t('sizeErrorB',{filed1 : this.$t('validStartTime'),filed2 : this.$t('validEndTime')}));
-                    }else{
+                        callback(this.$t('sizeErrorB',{ filed1 : this.$t('validStartTime'),filed2 : this.$t('validEndTime') }));
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('selectField',{msg : this.$t('validStartTime')}));
+                } else {
+                    callback(this.$t('selectField',{ msg : this.$t('validStartTime') }));
                 }
             };
 
             //校验有效结束时间
             const validateEndTime = (rule,value,callback) => {
-                if(common.isNotEmpty(value)){
-                    if(this.formData.effectiveTime && value.valueOf() <  this.formData.effectiveTime.valueOf()){
-                        callback(this.$t('sizeErrorS',{filed1 : this.$t('validEndTime'),filed2 : this.$t('validStartTime')}));
-                    }else{
+                if (common.isNotEmpty(value)) {
+                    if (this.formData.effectiveTime && value.valueOf() < this.formData.effectiveTime.valueOf()) {
+                        callback(this.$t('sizeErrorS',{ filed1 : this.$t('validEndTime'),filed2 : this.$t('validStartTime') }));
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('selectField',{msg : this.$t('validEndTime')}));
+                } else {
+                    callback(this.$t('selectField',{ msg : this.$t('validEndTime') }));
                 }
             };
 
@@ -663,78 +663,78 @@
                 common.validateInteger(value).then(() => {
                     callback();
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : this.$t('intergralExchangeCount'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('intergralExchangeCount')}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t(err,{ field : this.$t('intergralExchangeCount'),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t('intergralExchangeCount') }));
                     }
                 });
             };
 
             //校验可用渠道
             const validateConditionChannelId = (rule,value,callback) => {
-                if((this.formData.conditionOrgId && this.formData.conditionOrgId.length > 0) || this.formData.singleStoreId ){
+                if ((this.formData.conditionOrgId && this.formData.conditionOrgId.length > 0) || this.formData.singleStoreId ) {
                     callback();
-                }else{
-                    if(common.isNotEmpty(value)){
-                        if(value.length > 0){
+                } else {
+                    if (common.isNotEmpty(value)) {
+                        if (value.length > 0) {
                             callback();
-                        }else{
-                            callback(this.$t('selectField',{msg : this.$t('validChannel')}));
+                        } else {
+                            callback(this.$t('selectField',{ msg : this.$t('validChannel') }));
                         }
-                    }else{
-                        callback(this.$t('selectField',{msg : this.$t('validChannel')}));
+                    } else {
+                        callback(this.$t('selectField',{ msg : this.$t('validChannel') }));
                     }
                 }
             };
 
             //校验可用店铺
             const validateOrg = (rule,value,callback) => {
-                if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
+                if (this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0) {
                     callback();
-                }else{
-                    if(common.isNotEmpty(value)){
-                        if(value.length > 0){
+                } else {
+                    if (common.isNotEmpty(value)) {
+                        if (value.length > 0) {
                             callback();
-                        }else{
-                            callback(this.$t('selectField',{msg : this.$t('shop')}));
+                        } else {
+                            callback(this.$t('selectField',{ msg : this.$t('shop') }));
                         }
-                    }else{
-                        callback(this.$t('selectField',{msg : this.$t('shop')}));
+                    } else {
+                        callback(this.$t('selectField',{ msg : this.$t('shop') }));
                     }
                 }
             };
 
             //校验选择的商品
             const validateProduct = (rule,value,callback) => {
-                if(this.formData.conditionProductId){
+                if (this.formData.conditionProductId) {
                     callback();
-                }else{
-                    if(common.isNotEmpty(value)){
-                        if(value.length > 0){
+                } else {
+                    if (common.isNotEmpty(value)) {
+                        if (value.length > 0) {
                             callback();
-                        }else{
-                            callback(this.$t('selectField',{msg : this.$t('goods')}));
+                        } else {
+                            callback(this.$t('selectField',{ msg : this.$t('goods') }));
                         }
-                    }else{
-                        callback(this.$t('selectField',{msg : this.$t('goods')}));
+                    } else {
+                        callback(this.$t('selectField',{ msg : this.$t('goods') }));
                     }
                 }
             };
 
             //校验单选店铺
             const validateSingleStore = (rule,value,callback) => {
-                if(this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0){
+                if (this.formData.conditionChannelId && this.formData.conditionChannelId.length > 0) {
                     callback();
-                }else{
-                    if(common.isNotEmpty(value)){
-                        if(value.length > 0){
+                } else {
+                    if (common.isNotEmpty(value)) {
+                        if (value.length > 0) {
                             callback();
-                        }else{
-                            callback(this.$t('selectField',{msg : this.$t('shop')}));
+                        } else {
+                            callback(this.$t('selectField',{ msg : this.$t('shop') }));
                         }
-                    }else{
-                        callback(this.$t('selectField',{msg : this.$t('shop')}));
+                    } else {
+                        callback(this.$t('selectField',{ msg : this.$t('shop') }));
                     }
                 }
             };
@@ -742,16 +742,16 @@
             //校验最低消费金额
             const validateLowerMon = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    if(common.isNotEmpty(this.formData.conditionUpperLimtation) && Number(value) > this.formData.conditionUpperLimtation){
-                        callback(this.$t('sizeErrorB',{filed1 : this.$t('conditionLowerLimtation'),filed2 : this.$t('conditionUpperLimtation')}));
-                    }else{
+                    if (common.isNotEmpty(this.formData.conditionUpperLimtation) && Number(value) > this.formData.conditionUpperLimtation) {
+                        callback(this.$t('sizeErrorB',{ filed1 : this.$t('conditionLowerLimtation'),filed2 : this.$t('conditionUpperLimtation') }));
+                    } else {
                         callback();
                     }
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t(rule.field) }));
                     }
                 });
             };
@@ -759,33 +759,33 @@
             //校验最高消费金额
             const validateUpperMon = (rule,value,callback) => {
                 common.validateMoney(value).then(() => {
-                    if(common.isNotEmpty(this.formData.conditionLowerLimtation) && Number(value) < this.formData.conditionLowerLimtation){
-                        callback(this.$t('sizeErrorS',{filed1 : this.$t('conditionUpperLimtation'),filed2 : this.$t('conditionLowerLimtation')}));
-                    }else{
+                    if (common.isNotEmpty(this.formData.conditionLowerLimtation) && Number(value) < this.formData.conditionLowerLimtation) {
+                        callback(this.$t('sizeErrorS',{ filed1 : this.$t('conditionUpperLimtation'),filed2 : this.$t('conditionLowerLimtation') }));
+                    } else {
                         callback();
                     }
                 }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t('errorMaxLength',{field : this.$t(rule.field),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t(rule.field)}));
+                    if (err === 'errorMaxLength') {
+                        callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
+                    } else {
+                        callback(this.$t(err,{ field : this.$t(rule.field) }));
                     }
                 });
             };
 
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'card',
-                        router: {
-                            name: 'card'
+                        name : 'card',
+                        router : {
+                            name : 'card'
                         }
                     }
                 ],
                 //新增/修改
-                type: '',
-                loading: false,
+                type : '',
+                loading : false,
                 //卡券类别列表
                 couponTypeList : couponTypeList,
                 //渠道列表
@@ -795,121 +795,121 @@
                 //产品列表
                 productList : [],
                 // 表单数据
-                formData: {
+                formData : {
                     id : '',
                     status : 'valid',
                     //卡券名称
-                    couponName: '',
+                    couponName : '',
                     //卡券类别
-                    couponType: 'cash_coupon',
+                    couponType : 'cash_coupon',
                     //卡券面值
-                    nominalValue: '',
+                    nominalValue : '',
                     //最低消费金额后可用
-                    conditionLowerLimtation: '',
+                    conditionLowerLimtation : '',
                     // 最高消费金额内可用
-                    conditionUpperLimtation: '',
+                    conditionUpperLimtation : '',
                     //可兑换积分数
                     price : '',
                     // 有效开始时间
-                    effectiveTime: '',
+                    effectiveTime : '',
                     //有效结束时间
-                    expireTime: '',
+                    expireTime : '',
                     //可用店铺id
                     conditionOrgId : [],
                     //兑换券单选的店铺id
                     singleStoreId : '',
                     //可用渠道id
-                    conditionChannelId: [],
+                    conditionChannelId : [],
                     //商品
-                    conditionProductId: '',
+                    conditionProductId : '',
                     //是否与会员折扣权益同时使用
                     isDiscountCoexist : 'false',
                     //代金券在折扣前后使用设置
                     isEffectBeforeDiscount : ''
                 },
                 //校验规则
-                ruleValidate: {
-                    couponName: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('couponName')}), trigger: 'blur' },
-                        { type: 'string', max: 30, message: this.$t('errorMaxLength',{field : this.$t('couponName'),length : 30}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' }
+                ruleValidate : {
+                    couponName : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('couponName') }), trigger : 'blur' },
+                        { type : 'string', max : 30, message : this.$t('errorMaxLength',{ field : this.$t('couponName'),length : 30 }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
-                    couponType: [
-                        { required: true, message: this.$t('selectField',{msg : this.$t('couponType')}), trigger: 'change' },
+                    couponType : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('couponType') }), trigger : 'change' },
                     ],
-                    nominalValue: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('couponFaceValue')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateCardFaceValue, trigger: 'blur' },
+                    nominalValue : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('couponFaceValue') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateCardFaceValue, trigger : 'blur' },
                     ],
-                    conditionLowerLimtation: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('conditionLowerLimtation')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateLowerMon, trigger: 'blur' },
+                    conditionLowerLimtation : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('conditionLowerLimtation') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateLowerMon, trigger : 'blur' },
                     ],
-                    conditionUpperLimtation: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('conditionUpperLimtation')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateUpperMon, trigger: 'blur' },
+                    conditionUpperLimtation : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('conditionUpperLimtation') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateUpperMon, trigger : 'blur' },
                     ],
-                    effectiveTime: [
-                        { required: true, validator : validateStartTime, trigger: 'change' },
+                    effectiveTime : [
+                        { required : true, validator : validateStartTime, trigger : 'change' },
                     ],
-                    expireTime: [
-                        { required: true, validator : validateEndTime, trigger: 'change' },
+                    expireTime : [
+                        { required : true, validator : validateEndTime, trigger : 'change' },
                     ],
-                    conditionOrgId: [
-                        { required: true, validator : validateOrg, trigger: 'change' },
+                    conditionOrgId : [
+                        { required : true, validator : validateOrg, trigger : 'change' },
                     ],
-                    price: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('pointsExchange')}), trigger: 'blur' },
-                        { validator: validatePrice, trigger: 'blur' },
+                    price : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('pointsExchange') }), trigger : 'blur' },
+                        { validator : validatePrice, trigger : 'blur' },
                     ],
-                    conditionChannelId: [
-                        { required: true, validator : validateConditionChannelId, trigger: 'change' },
+                    conditionChannelId : [
+                        { required : true, validator : validateConditionChannelId, trigger : 'change' },
                     ],
                     isDiscountCoexist : [
-                        {required : true,trigger : 'change'}
+                        { required : true,trigger : 'change' }
                     ],
                     isEffectBeforeDiscount : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('isEffectBeforeDiscount')}),trigger : 'change'}
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('isEffectBeforeDiscount') }),trigger : 'change' }
                     ],
                     conditionProductId : [
-                        {required :true ,validator : validateProduct ,trigger : 'change'}
+                        { required : true ,validator : validateProduct ,trigger : 'change' }
                     ],
                     singleStoreId : [
-                        {required : true,validator : validateSingleStore,trigger : 'change'}
+                        { required : true,validator : validateSingleStore,trigger : 'change' }
                     ]
                 },
                 //日期插件配置
                 pickerOptions : {
-                    disabledDate(time) {
+                    disabledDate (time) {
                         return time.getTime() < new Date().addDays(-1).valueOf();
                     },
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 表单校验
              */
             formValidateFunc () {
                 let fromRef = '';
-                if(this.formData.couponType === 'discount_coupon'){
-                    fromRef = 'discountFormValidate'
-                }else if(this.formData.couponType === 'cash_coupon'){
-                    fromRef = 'cashFormValidate'
-                }else if(this.formData.couponType === 'exchange_coupon'){
-                    fromRef = 'exchangeFormValidate'
+                if (this.formData.couponType === 'discount_coupon') {
+                    fromRef = 'discountFormValidate';
+                } else if (this.formData.couponType === 'cash_coupon') {
+                    fromRef = 'cashFormValidate';
+                } else if (this.formData.couponType === 'exchange_coupon') {
+                    fromRef = 'exchangeFormValidate';
                 }
-                if(fromRef){
+                if (fromRef) {
                     this.$refs[fromRef].validate((valid) => {
                         if ( valid ) {
                             this.loading = true;
                             this.updateCoupon();
                         }
-                    })
+                    });
                 }
             },
             /**
@@ -918,17 +918,17 @@
             updateCoupon () {
                 let params = this.getAddCouponParams();
                 ajax.post('updateCoupon',params).then(res => {
-                    if(res.success){
-                        if(this.type === 'add'){
-                            this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
-                        }else{
-                            this.$Message.success(this.$t('successTip',{tip : this.$t('modify')}));
+                    if (res.success) {
+                        if (this.type === 'add') {
+                            this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                        } else {
+                            this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
                         }
-                    }else{
-                        if(this.type === 'add'){
-                            this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
-                        }else{
-                            this.$Message.error(this.$t('failureTip',{tip : this.$t('modify')}));
+                    } else {
+                        if (this.type === 'add') {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
                         }
                     }
                 }).finally(() => {
@@ -943,17 +943,17 @@
              */
             queryChannelSet () {
                 ajax.post('querySelfOwnedChannel', {
-                    status: 'valid',
-                    pageNo: 1,
-                    pageSize: 999
+                    status : 'valid',
+                    pageNo : 1,
+                    pageSize : 999
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.channelSetList = res.data ? res.data.data : [];
-                    }else{
-                        this.channelSetList =  [];
+                    } else {
+                        this.channelSetList = [];
                     }
                 }).catch(() => {
-                    this.channelSetList =  [];
+                    this.channelSetList = [];
                 });
             },
             /**
@@ -963,20 +963,20 @@
                 ajax.post('getSubNode',{
                     orgType : 'scenic'
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.listAmountRange = res.data ? res.data : [];
-                    }else{
-                        this.listAmountRange =  [];
+                    } else {
+                        this.listAmountRange = [];
                     }
                 }).catch(() => {
-                    this.listAmountRange =  [];
+                    this.listAmountRange = [];
                 });
             },
             /**
              * 获取新增卡券的参数
              */
             getAddCouponParams () {
-                if(this.formData.couponType === 'cash_coupon'){//新增代金券
+                if (this.formData.couponType === 'cash_coupon') {//新增代金券
                     return {
                         id : this.formData.id,
                         status : this.formData.status,
@@ -991,8 +991,8 @@
                         isEffectBeforeDiscount : this.formData.isEffectBeforeDiscount,
                         conditionChannelId : this.formData.conditionChannelId ? this.formData.conditionChannelId.join(',') : '',
                         conditionOrgId : this.formData.conditionOrgId.join(','),
-                    }
-                }else if(this.formData.couponType === 'exchange_coupon'){//新增兑换券
+                    };
+                } else if (this.formData.couponType === 'exchange_coupon') {//新增兑换券
                     return {
                         id : this.formData.id,
                         status : this.formData.status,
@@ -1005,8 +1005,8 @@
                         conditionProductId : this.formData.conditionProductId,
                         remark : this.getDiscountRemark(),
                         conditionOrgId : this.formData.singleStoreId,
-                    }
-                }else if(this.formData.couponType === 'discount_coupon'){//新增折扣券
+                    };
+                } else if (this.formData.couponType === 'discount_coupon') {//新增折扣券
                     return {
                         id : this.formData.id,
                         status : this.formData.status,
@@ -1020,7 +1020,7 @@
                         price : this.formData.price,
                         conditionOrgId : this.formData.conditionOrgId.length > 0 ? this.formData.conditionOrgId.join(',') : '',
                         conditionChannelId : this.formData.conditionChannelId ? this.formData.conditionChannelId.join(',') : '',
-                    }
+                    };
                 }
             },
             /**
@@ -1028,12 +1028,12 @@
              * @param params
              */
             getParams (params) {
-                if(params && Object.keys(params).length > 0){
-                    for(let item in params){
-                        if(item in this.formData){
-                            if(['conditionChannelId','conditionOrgId'].includes(item)){
+                if (params && Object.keys(params).length > 0) {
+                    for (let item in params) {
+                        if (item in this.formData) {
+                            if (['conditionChannelId','conditionOrgId'].includes(item)) {
                                 this.formData[item] = params[item] ? params[item].split(',') : '';
-                            }else{
+                            } else {
                                 this.formData[item] = params[item];
                             }
                         }
@@ -1048,14 +1048,14 @@
                 this.$nextTick(() => {
 
                     let fromRef = '';
-                    if(this.formData.couponType === 'discount_coupon'){
-                        fromRef = 'discountFormValidate'
-                    }else if(this.formData.couponType === 'cash_coupon'){
-                        fromRef = 'cashFormValidate'
-                    }else if(this.formData.couponType === 'exchange_coupon'){
-                        fromRef = 'exchangeFormValidate'
+                    if (this.formData.couponType === 'discount_coupon') {
+                        fromRef = 'discountFormValidate';
+                    } else if (this.formData.couponType === 'cash_coupon') {
+                        fromRef = 'cashFormValidate';
+                    } else if (this.formData.couponType === 'exchange_coupon') {
+                        fromRef = 'exchangeFormValidate';
                     }
-                    if(fromRef){
+                    if (fromRef) {
                         this.$refs[fromRef].resetFields();
                     }
                 });
@@ -1067,12 +1067,12 @@
                 let remark = [];
                 let orgName = this.getSingleStore();
                 this.channelSetList.forEach(item => {
-                    if(this.formData.conditionChannelId.includes(item.id)){
+                    if (this.formData.conditionChannelId.includes(item.id)) {
                         remark.push(item.channelName);
                     }
                 });
                 this.productList.forEach(item => {
-                    if(this.formData.conditionProductId === item.id){
+                    if (this.formData.conditionProductId === item.id) {
                         remark.push(orgName + item.productName);
                     }
                     // if(this.formData.conditionProductId.includes(item.id)){
@@ -1086,7 +1086,7 @@
              * 那么代金券在折扣前后使用规则必须清除
              */
             discountTypeChange (data) {
-                if(data === 'false'){
+                if (data === 'false') {
                     this.formData.isEffectBeforeDiscount = '';
                 }
             },
@@ -1106,9 +1106,9 @@
                 ajax.post('queryProduct',{
                     orgId : orgId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.productList = res.data.data ? res.data.data : [];
-                    }else{
+                    } else {
                         this.productList = [];
                     }
                 }).catch(err => {
@@ -1124,9 +1124,9 @@
             /**
              * 获取兑换券下选择店铺的名称
              */
-            getSingleStore() {
-                for(let i = 0,j = this.listAmountRange.length;i < j;i++){
-                    if(this.formData.singleStoreId === this.listAmountRange[i].id){
+            getSingleStore () {
+                for (let i = 0,j = this.listAmountRange.length; i < j; i++) {
+                    if (this.formData.singleStoreId === this.listAmountRange[i].id) {
                         return this.listAmountRange[i].orgName;
                     }
                 }
@@ -1139,10 +1139,10 @@
         },
         watch : {
             'formData.singleStoreId' (newVal,oldVal) {
-                if(oldVal){
-                    this.formData.conditionProductId  = '';
+                if (oldVal) {
+                    this.formData.conditionProductId = '';
                 }
-                if(newVal){
+                if (newVal) {
                     this.queryProduct(newVal);
                 }
             }
@@ -1152,7 +1152,7 @@
                 lang : 'lang'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

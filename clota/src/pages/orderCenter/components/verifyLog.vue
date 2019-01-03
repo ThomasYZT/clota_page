@@ -34,18 +34,18 @@
 </template>
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {verifyLogHead} from '../auditCenter/auditConfig';
+    import { verifyLogHead } from '../auditCenter/auditConfig';
 
     export default {
-        components: {tableCom},
-        props: {
-            moduleInfo: Array
+        components : { tableCom },
+        props : {
+            moduleInfo : Array
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : verifyLogHead,
-            }
+            };
         },
 
     };

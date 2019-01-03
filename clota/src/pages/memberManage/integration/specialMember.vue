@@ -120,12 +120,12 @@
     import addSpecialTypeModal from './components/addSpecialTypeModal.vue';
     import modifyRateModal from './components/modifyRateModal.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {specialEmployeeHead,employeeTrustHead} from './specialMemberConfig';
+    import { specialEmployeeHead,employeeTrustHead } from './specialMemberConfig';
     import ajax from '@/api/index.js';
     import delModal from './components/delModal';
 
     export default {
-        components: {
+        components : {
             addSpecialTypeModal,
             modifyRateModal,
             tableCom,
@@ -155,9 +155,9 @@
                 memberInfo : {},
                 //选择的特殊会员分类
                 specialMemberChosed : []
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 新增特殊会员类别
@@ -184,15 +184,15 @@
                     pageNo : 1,
                     pageSize : 9999,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.specialMemberData = res.data.data ? res.data.data : [];
                         this.specialMemberDataCount = res.data.totalRow;
-                    }else{
-                        this.specialMemberData =  [];
+                    } else {
+                        this.specialMemberData = [];
                         this.specialMemberDataCount = 0;
                     }
                 }).catch(err => {
-                    this.specialMemberData =  [];
+                    this.specialMemberData = [];
                     this.specialMemberDataCount = 0;
                 });
             },
@@ -212,11 +212,11 @@
                     pageNo : 1,
                     pageSize : 9999,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.specialMemberBylyData = [];
-                        if(res.data){
+                        if (res.data) {
                             res.data.forEach(item => {
-                                if(item.staff){
+                                if (item.staff) {
                                     item.staff.forEach(list => {
                                         this.specialMemberBylyData.push ({
                                             ...list,
@@ -229,12 +229,12 @@
                             });
                         }
                         this.specialMemberBylyDataCount = res.data.totalRow;
-                    }else{
-                        this.specialMemberBylyData =  [];
+                    } else {
+                        this.specialMemberBylyData = [];
                         this.specialMemberBylyDataCount = 0;
                     }
                 }).catch(err => {
-                    this.specialMemberBylyData =  [];
+                    this.specialMemberBylyData = [];
                     this.specialMemberBylyDataCount = 0;
                 });
             },
@@ -252,11 +252,11 @@
                     scoreRate : formData.scoreRate,
                     remark : formData.remark
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('settingSuccess'));  // 设置成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('settingSuccess')); // 设置成功
                         this.getStaffLevelInfo();
-                    }else{
-                        this.$Message.error(this.$t('settingFail'));    // 设置失败
+                    } else {
+                        this.$Message.error(this.$t('settingFail')); // 设置失败
                     }
                 }).finally(() => {
                     callback();
@@ -273,7 +273,7 @@
              * 判断val是否为空
              * @param val
              */
-            isNotEmpty(val) {
+            isNotEmpty (val) {
                 return val !== null && val !== '' && val !== undefined;
             },
             /**
@@ -292,12 +292,12 @@
                 ajax.post('deleteMemberStaffType',{
                     id : this.memberInfo.id
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));      // 删除成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') })); // 删除成功
                         this.memberStaffTypeList();
                         this.getStaffLevelInfo();
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('del')}) );    // 删除失败
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }) ); // 删除失败
                     }
                 });
             },
@@ -323,15 +323,15 @@
                 let specialMemberChosed = this.specialMemberChosed.map(item => item.id);
                 let specialMemberBylyData = this.specialMemberBylyData;
                 let result = [];
-                for(let i = 0,j = specialMemberBylyData.length;i < j;i++){
-                    if(specialMemberChosed.includes(specialMemberBylyData[i]['id'])){
+                for (let i = 0,j = specialMemberBylyData.length; i < j; i++) {
+                    if (specialMemberChosed.includes(specialMemberBylyData[i]['id'])) {
                         result.push(specialMemberBylyData[i]);
                     }
                 }
                 return result;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

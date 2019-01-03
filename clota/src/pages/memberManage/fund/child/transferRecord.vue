@@ -98,13 +98,13 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './transferRecordConfig';
+    import { columnData } from './transferRecordConfig';
     import ajax from '@/api/index.js';
-    import {tradeType} from '@/assets/js/constVariable.js';
+    import { tradeType } from '@/assets/js/constVariable.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
 
     export default {
-        components: {
+        components : {
             tableCom,
             breadCrumbHead
         },
@@ -119,32 +119,32 @@
                 //每页条数
                 pageSize : 10,
                 // 查询数据
-                queryParams: {
+                queryParams : {
                     //关键字
-                    keyword: '',
+                    keyword : '',
                     //交易类型
-                    tradeType: 'all',
+                    tradeType : 'all',
                     //开始时间
-                    startTime: '',
+                    startTime : '',
                     //结束时间
-                    endTime: '',
+                    endTime : '',
                 },
                 //交易类型列表
                 tradeType : tradeType,
                 // 表格数据
-                tableData: [],
+                tableData : [],
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'financialManagement',
-                        router: {
-                            name: 'transfer'
+                        name : 'financialManagement',
+                        router : {
+                            name : 'transfer'
                         }
                     }
                 ],
-            }
+            };
         },
-        methods: {
+        methods : {
 
             /**
              * 查询转账记录
@@ -158,17 +158,17 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
                     this.tableData = [];
                     this.totalCount = 0;
-                })
+                });
             },
             /**
              * 重置查询条件
@@ -181,7 +181,7 @@
                 this.queryList();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

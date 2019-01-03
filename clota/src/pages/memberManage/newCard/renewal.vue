@@ -14,20 +14,20 @@
     import headerTabs from './components/newCardTabs.vue';
 
     export default {
-        components: {
+        components : {
             headerTabs,
         },
-        props: {},
-        data() {
-            return {}
+        props : {},
+        data () {
+            return {};
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {}
+        watch : {},
+        methods : {}
     };
 </script>
 

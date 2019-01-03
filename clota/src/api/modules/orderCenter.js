@@ -48,32 +48,32 @@ export default {
     //给导游重发短信
     'noticeGuidesAuditResult' : '/order/noticeGuidesAuditResult',
     //查询一级散客订单详情
-    'queryFirstIndividualOrderDetail': '/order/queryFirstIndividualOrderDetail',
+    'queryFirstIndividualOrderDetail' : '/order/queryFirstIndividualOrderDetail',
     //查询二级散客订单详情
     'querySecondIndividualOrderDetail' : '/order/querySecondIndividualOrderDetail',
     //查询三级散客订单详情
-    'queryThirdIndividualOrderDetail': '/order/queryThirdIndividualOrderDetail',
+    'queryThirdIndividualOrderDetail' : '/order/queryThirdIndividualOrderDetail',
     //查询订单下产品详情
     // 'queryOrderTicketList': '/order/queryOrderTicketList',
     //获取订单退票手续费
-    'getRefundProcedureFee': '/order/getRefundProcedureFee',
+    'getRefundProcedureFee' : '/order/getRefundProcedureFee',
     //查询产品明细列表--退票、审核用
-    'queryOrderTicketList': '/order/queryOrderTicketList',
+    'queryOrderTicketList' : '/order/queryOrderTicketList',
     //查询退票改签票信息列表
-    'queryRefundAndAlterTicketList': '/order/queryRefundAndAlterTicketList',
+    'queryRefundAndAlterTicketList' : '/order/queryRefundAndAlterTicketList',
     //新增订单退票改签申请
-    'saveOrderProductRefundAlter': '/order/saveOrderProductRefundAlter',
+    'saveOrderProductRefundAlter' : '/order/saveOrderProductRefundAlter',
     //获取产品可预定日期
-    'getProductPolicyPlayDate': '/order/getProductPolicyPlayDate',
+    'getProductPolicyPlayDate' : '/order/getProductPolicyPlayDate',
     //通知游客取票
-    'noticeVisitorToPick': '/order/noticeVisitorToPick',
+    'noticeVisitorToPick' : '/order/noticeVisitorToPick',
     //查询营销类别
-    'queryTypeList': '/market/type/typeList',
+    'queryTypeList' : '/market/type/typeList',
     //查询营销级别
-    'queryLevelByTypeId': '/market/type/queryLevelByTypeId',
+    'queryLevelByTypeId' : '/market/type/queryLevelByTypeId',
     //团队订单申请取消订单
     'applyCancelTeamOrder' : '/order/applyCancelTeamOrder',
     //计算可以重发短信的次数
     'countSmsSend' : '/order/checkCanResendSms',
 
-}
+};

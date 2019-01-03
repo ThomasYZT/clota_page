@@ -9,10 +9,10 @@
 </style>
 
 <script>
-    import echarts from 'echarts/lib/echarts'
-    import debounce from 'lodash/debounce'
-    import {addListener, removeListener} from './resize-detector'
-    import Vue from 'vue'
+    import echarts from 'echarts/lib/echarts';
+    import debounce from 'lodash/debounce';
+    import { addListener, removeListener } from './resize-detector';
+    import Vue from 'vue';
 
     // enumerating ECharts events for now
     const EVENTS = [
@@ -47,214 +47,214 @@
         'mousedown',
         'mouseup',
         'globalout'
-    ]
+    ];
 
     export default {
-        props: {
-            options: Object,
-            theme: [String, Object],
-            initOptions: Object,
-            group: String,
-            autoResize: Boolean,
-            watchShallow: Boolean
+        props : {
+            options : Object,
+            theme : [String, Object],
+            initOptions : Object,
+            group : String,
+            autoResize : Boolean,
+            watchShallow : Boolean
         },
-        data() {
+        data () {
             return {
-                chart: null,
-                lastArea: 0
-            }
+                chart : null,
+                lastArea : 0
+            };
         },
-        computed: {
+        computed : {
             // Only recalculated when accessed from JavaScript.
             // Won't update DOM on value change because getters
             // don't depend on reactive values
-            width: {
-                cache: false,
-                get() {
-                    return this.delegateGet('width', 'getWidth')
+            width : {
+                cache : false,
+                get () {
+                    return this.delegateGet('width', 'getWidth');
                 }
             },
-            height: {
-                cache: false,
-                get() {
-                    return this.delegateGet('height', 'getHeight')
+            height : {
+                cache : false,
+                get () {
+                    return this.delegateGet('height', 'getHeight');
                 }
             },
-            isDisposed: {
-                cache: false,
-                get() {
-                    return !!this.delegateGet('isDisposed', 'isDisposed')
+            isDisposed : {
+                cache : false,
+                get () {
+                    return !!this.delegateGet('isDisposed', 'isDisposed');
                 }
             },
-            computedOptions: {
-                cache: false,
-                get() {
-                    return this.delegateGet('computedOptions', 'getOption')
+            computedOptions : {
+                cache : false,
+                get () {
+                    return this.delegateGet('computedOptions', 'getOption');
                 }
             }
         },
-        watch: {
-            group(group) {
-                this.chart.group = group
+        watch : {
+            group (group) {
+                this.chart.group = group;
             }
         },
-        methods: {
+        methods : {
             // provide a explicit merge option method
-            mergeOptions(options, notMerge, lazyUpdate) {
-                this.delegateMethod('setOption', options, notMerge, lazyUpdate)
+            mergeOptions (options, notMerge, lazyUpdate) {
+                this.delegateMethod('setOption', options, notMerge, lazyUpdate);
             },
             // just delegates ECharts methods to Vue component
             // use explicit params to reduce transpiled size for now
-            appendData(params) {
-                this.delegateMethod('appendData', params)
+            appendData (params) {
+                this.delegateMethod('appendData', params);
             },
-            resize(options) {
-                this.delegateMethod('resize', options)
+            resize (options) {
+                this.delegateMethod('resize', options);
             },
-            dispatchAction(payload) {
-                this.delegateMethod('dispatchAction', payload)
+            dispatchAction (payload) {
+                this.delegateMethod('dispatchAction', payload);
             },
-            convertToPixel(finder, value) {
-                return this.delegateMethod('convertToPixel', finder, value)
+            convertToPixel (finder, value) {
+                return this.delegateMethod('convertToPixel', finder, value);
             },
-            convertFromPixel(finder, value) {
-                return this.delegateMethod('convertFromPixel', finder, value)
+            convertFromPixel (finder, value) {
+                return this.delegateMethod('convertFromPixel', finder, value);
             },
-            containPixel(finder, value) {
-                return this.delegateMethod('containPixel', finder, value)
+            containPixel (finder, value) {
+                return this.delegateMethod('containPixel', finder, value);
             },
-            showLoading(type, options) {
-                this.delegateMethod('showLoading', type, options)
+            showLoading (type, options) {
+                this.delegateMethod('showLoading', type, options);
             },
-            hideLoading() {
-                this.delegateMethod('hideLoading')
+            hideLoading () {
+                this.delegateMethod('hideLoading');
             },
-            getDataURL(options) {
-                return this.delegateMethod('getDataURL', options)
+            getDataURL (options) {
+                return this.delegateMethod('getDataURL', options);
             },
-            getConnectedDataURL(options) {
-                return this.delegateMethod('getConnectedDataURL', options)
+            getConnectedDataURL (options) {
+                return this.delegateMethod('getConnectedDataURL', options);
             },
-            clear() {
-                this.delegateMethod('clear')
+            clear () {
+                this.delegateMethod('clear');
             },
-            dispose() {
-                this.delegateMethod('dispose')
+            dispose () {
+                this.delegateMethod('dispose');
             },
-            delegateMethod(name, ...args) {
+            delegateMethod (name, ...args) {
                 if (!this.chart) {
-                    Vue.util.warn(`Cannot call [${name}] before the chart is initialized. Set prop [options] first.`, this)
-                    return
+                    Vue.util.warn(`Cannot call [${name}] before the chart is initialized. Set prop [options] first.`, this);
+                    return;
                 }
-                return this.chart[name](...args)
+                return this.chart[name](...args);
             },
-            delegateGet(name, method) {
+            delegateGet (name, method) {
                 if (!this.chart) {
-                    Vue.util.warn(`Cannot get [${name}] before the chart is initialized. Set prop [options] first.`, this)
+                    Vue.util.warn(`Cannot get [${name}] before the chart is initialized. Set prop [options] first.`, this);
                 }
-                return this.chart[method]()
+                return this.chart[method]();
             },
-            getArea() {
-                return this.$el.offsetWidth * this.$el.offsetHeight
+            getArea () {
+                return this.$el.offsetWidth * this.$el.offsetHeight;
             },
-            init() {
+            init () {
                 if (this.chart) {
-                    return
+                    return;
                 }
 
-                let chart = echarts.init(this.$el, this.theme, this.initOptions)
+                let chart = echarts.init(this.$el, this.theme, this.initOptions);
 
                 if (this.group) {
-                    chart.group = this.group
+                    chart.group = this.group;
                 }
 
-                chart.setOption(this.options, true)
+                chart.setOption(this.options, true);
 
                 // expose ECharts events as custom events
                 EVENTS.forEach(event => {
                     chart.on(event, params => {
-                        this.$emit(event, params)
-                    })
-                })
+                        this.$emit(event, params);
+                    });
+                });
 
                 if (this.autoResize) {
-                    this.lastArea = this.getArea()
+                    this.lastArea = this.getArea();
                     this.__resizeHandler = debounce(() => {
                         if (this.lastArea === 0) {
                             // emulate initial render for initially hidden charts
-                            this.mergeOptions({}, true)
-                            this.resize()
-                            this.mergeOptions(this.options, true)
+                            this.mergeOptions({}, true);
+                            this.resize();
+                            this.mergeOptions(this.options, true);
                         } else {
-                            this.resize()
+                            this.resize();
                         }
-                        this.lastArea = this.getArea()
-                    }, 100, {leading: true})
-                    addListener(this.$el, this.__resizeHandler)
+                        this.lastArea = this.getArea();
+                    }, 100, { leading : true });
+                    addListener(this.$el, this.__resizeHandler);
                 }
 
-                this.chart = chart
+                this.chart = chart;
             },
-            destroy() {
+            destroy () {
                 if (this.autoResize) {
-                    removeListener(this.$el, this.__resizeHandler)
+                    removeListener(this.$el, this.__resizeHandler);
                 }
-                this.dispose()
-                this.chart = null
+                this.dispose();
+                this.chart = null;
             },
-            refresh() {
-                this.destroy()
-                this.init()
+            refresh () {
+                this.destroy();
+                this.init();
             }
         },
-        created() {
+        created () {
             this.$watch('options', options => {
                 if (!this.chart && options) {
-                    this.init()
+                    this.init();
                 } else {
-                    this.chart.setOption(this.options, true)
+                    this.chart.setOption(this.options, true);
                 }
-            }, {deep: !this.watchShallow})
+            }, { deep : !this.watchShallow });
 
-            let watched = ['theme', 'initOptions', 'autoResize', 'watchShallow']
+            let watched = ['theme', 'initOptions', 'autoResize', 'watchShallow'];
             watched.forEach(prop => {
                 this.$watch(prop, () => {
-                    this.refresh()
-                }, {deep: true})
-            })
+                    this.refresh();
+                }, { deep : true });
+            });
         },
-        mounted() {
+        mounted () {
             // auto init if `options` is already provided
             if (this.options) {
-                this.init()
+                this.init();
             }
         },
-        activated() {
+        activated () {
             if (this.autoResize) {
-                this.chart && this.chart.resize()
+                this.chart && this.chart.resize();
             }
         },
-        beforeDestroy() {
+        beforeDestroy () {
             if (!this.chart) {
-                return
+                return;
             }
-            this.destroy()
+            this.destroy();
         },
-        connect(group) {
+        connect (group) {
             if (typeof group !== 'string') {
-                group = group.map(chart => chart.chart)
+                group = group.map(chart => chart.chart);
             }
-            echarts.connect(group)
+            echarts.connect(group);
         },
-        disconnect(group) {
-            echarts.disConnect(group)
+        disconnect (group) {
+            echarts.disConnect(group);
         },
-        registerMap(mapName, geoJSON, specialAreas) {
-            echarts.registerMap(mapName, geoJSON, specialAreas)
+        registerMap (mapName, geoJSON, specialAreas) {
+            echarts.registerMap(mapName, geoJSON, specialAreas);
         },
-        registerTheme(name, theme) {
-            echarts.registerTheme(name, theme)
+        registerTheme (name, theme) {
+            echarts.registerTheme(name, theme);
         },
-        graphic: echarts.graphic
-    }
+        graphic : echarts.graphic
+    };
 </script>

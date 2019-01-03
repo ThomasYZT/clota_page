@@ -25,4 +25,4 @@ export default {
     'workbench-getOrderAmountGroupByProductType' : '/workbench/getOrderAmountGroupByProductType',
     //查询合作伙伴分产品经营状况
     'workbench-getOrderAmountGroupByProductName' : '/workbench/getOrderAmountGroupByProductName',
-}
+};

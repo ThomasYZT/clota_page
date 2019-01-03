@@ -77,12 +77,12 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {channelListHead} from './channelConfig';
+    import { channelListHead } from './channelConfig';
     import headerTabs from './components/headerTabs.vue';
-    import addChannelModal  from '../components/addChannelModal.vue';
+    import addChannelModal from '../components/addChannelModal.vue';
 
     export default {
-        components: {
+        components : {
             headerTabs,
             addChannelModal,
             tableCom,
@@ -90,59 +90,59 @@
         data () {
             return {
                 //当前页面路由名称
-                routerName: 'channelSetting',
+                routerName : 'channelSetting',
                 //列表表头
                 channelListHead : channelListHead,
                 // 表格数据
-                tableData: [],
-            }
+                tableData : [],
+            };
         },
-        created(){
+        created () {
             //查询列表
             this.queryList();
         },
-        methods: {
+        methods : {
 
             //查询列表(查询表格取统一的方法名)
             queryList () {
                 ajax.post('queryChannelSet', {
-                    pageNo: 1,
-                    pageSize: 99999,
-                    isDeleted: 'false',
+                    pageNo : 1,
+                    pageSize : 99999,
+                    isDeleted : 'false',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data.data || [];
                     } else {
-                        this.$Message.warning('queryChannelSet '+ $t('queryFailure') +'！');
+                        this.$Message.warning('queryChannelSet ' + $t('queryFailure') + '！');
                     }
-                })
+                });
             },
 
             //增加/修改渠道
             showChannelModal ( event, data ) {
-                console.log(data)
+                console.log(data);
                 this.$refs.addChannel.show(data);
             },
 
             //删除数据
             deleteChannel ( event, data ) {
                 ajax.post('updateChannelSet', {
-                    id: data.id,
-                    isDeleted: 'true',
+                    id : data.id,
+                    isDeleted : 'true',
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: 'del'}) + '！');     // 删除成功
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : 'del' }) + '！'); // 删除成功
                         //查询列表
                         this.queryList();
                     } else {
                         console.log(res);
-                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');     // 删除失败
+                        this.$Message.warning('queryChannelSet ' + this.$t('failureTip', { tip : 'del' }) + '！'); // 删除失败
                     }
-                })
+                });
             },
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

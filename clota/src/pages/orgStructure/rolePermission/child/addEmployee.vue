@@ -47,14 +47,14 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {roleHead} from './employeeRoleListConfig';
+    import { roleHead } from './employeeRoleListConfig';
     import ajax from '@/api/index.js';
     export default {
         props : {
             //绑定modal的v-modal值
-            value: {
-                type: Boolean,
-                default: false
+            value : {
+                type : Boolean,
+                default : false
             },
             //已经新增的员工
             'added-employee' : {
@@ -67,7 +67,7 @@
         components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columns : roleHead.slice(0,-1),
@@ -75,9 +75,9 @@
                 tableData : [],
                 //已选择的员工
                 employeeSelected : [],
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 保存当前选择的员工
              */
@@ -94,16 +94,16 @@
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
-                }else{
+            visibleChange (type) {
+                if (type === true) {
+                } else {
                     this.tableData = [];
                     this.employeeSelected = [];
                 }
@@ -116,16 +116,16 @@
                     pageNo : 1,
                     pageSize : 99999
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         let addIds = this.addedEmployee.map(item => item.id);
-                        if(res.data && res.data.data){
+                        if (res.data && res.data.data) {
                             this.tableData = res.data.data.filter(item =>{
                                 return !addIds.includes(item.id);
                             });
-                        }else{
+                        } else {
                             this.tableData = [];
                         }
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 });
@@ -138,7 +138,7 @@
                 this.employeeSelected = employees;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss">

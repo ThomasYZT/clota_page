@@ -452,7 +452,7 @@
                 copySetData : {},
                 //输入框校验错误显示
                 error : {
-                    growthTimeError: '',//成长值生效设置
+                    growthTimeError : '',//成长值生效设置
                     moneyToIntegrateError : '',//储值获得积分生效设置
                     validityTimeError : '',//会员积分有效期设置
                     multipleError : '',//会员生日积分多倍积分
@@ -815,7 +815,7 @@
              * @param data
              * @param index
              */
-            editIntegetRule ({data,index}) {
+            editIntegetRule ({ data,index }) {
                 this.$set(this.settingData.scoreOffsetInConsumption,index,data);
             },
             //新增修改原因

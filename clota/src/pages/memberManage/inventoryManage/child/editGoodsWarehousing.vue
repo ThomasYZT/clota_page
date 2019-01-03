@@ -153,7 +153,7 @@
     import addUnitModal from '../components/addUnitModal';
     import common from '@/assets/js/common.js';
     import breadCrumbHead from '../../../../components/breadCrumbHead/index';
-    import delModal from '../../../../components/delModal/index'
+    import delModal from '../../../../components/delModal/index';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -403,7 +403,7 @@
              * @param data
              */
             delUnit (data) {
-                this.$set(this.$refs.select, 'visible', false)
+                this.$set(this.$refs.select, 'visible', false);
                 this.formData.unit = '';
                 this.unitName = data.unitNames;
                 this.$refs.delModal.show({
@@ -425,7 +425,7 @@
                     cancelCallback : () => {
                         this.unitName = '';
                     }
-                })
+                });
             }
         },
         created () {

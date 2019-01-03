@@ -15,9 +15,9 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './tourGuideInfoConfig';
+    import { columnData } from './tourGuideInfoConfig';
     export default {
-        props :{
+        props : {
             //导游列表
             'guide-list' : {
                 type : Array,
@@ -26,17 +26,17 @@
                 }
             }
         },
-        components :{
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData
-            }
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

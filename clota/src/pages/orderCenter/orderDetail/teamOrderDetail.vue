@@ -62,7 +62,7 @@
     import common from '@/assets/js/common.js';
 
     export default {
-        mixins :[lifeCycelMixins],
+        mixins : [lifeCycelMixins],
         components : {
             baseInfo,
             breadCrumbHead,
@@ -74,16 +74,16 @@
             orderOperateLog,
             commission
         },
-        data() {
+        data () {
             return {
                 //订单id
                 orderId : '',
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'reserveOrderDetail',     // 订单查询
-                        router: {
-                            name: 'reserveOrderDetail'
+                        name : 'reserveOrderDetail', // 订单查询
+                        router : {
+                            name : 'reserveOrderDetail'
                         }
                     }
                 ],
@@ -91,18 +91,18 @@
                 orderDetailInfo : {},
                 //重发短信次数
                 reSendTimes : 0
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
              */
-            getParams(params) {
-                if(params && params.orderId){
+            getParams (params) {
+                if (params && params.orderId) {
                     this.orderId = params.orderId;
                     this.queryTeamOrderDetail();
-                }else{
+                } else {
                     this.$router.push({
                         name : 'reserveOrderDetail'
                     });
@@ -115,10 +115,10 @@
                 ajax.post('queryTeamOrderDetail',{
                     orderId : this.orderId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.orderDetailInfo = res.data ? res.data : {};
                         this.countSmsSend();
-                    }else{
+                    } else {
                         this.orderDetailInfo = {};
                     }
                 });
@@ -143,99 +143,99 @@
         computed : {
             //产品列表
             productInfoList () {
-                if(this.orderDetailInfo && this.orderDetailInfo.productInfoList){
+                if (this.orderDetailInfo && this.orderDetailInfo.productInfoList) {
                     return this.orderDetailInfo.productInfoList;
-                }else{
+                } else {
                     return [];
                 }
             },
             //游客信息
             visitorList () {
-                if(this.orderDetailInfo && this.orderDetailInfo.visitorList){
+                if (this.orderDetailInfo && this.orderDetailInfo.visitorList) {
                     return this.orderDetailInfo.visitorList.map(item =>{
                         let documentInfo = item.documentInfo ? JSON.parse(item.documentInfo) : {};
                         return {
                             ...item,
-                            idNum :documentInfo['data'],
-                            idType :documentInfo['type'],
-                        }
+                            idNum : documentInfo['data'],
+                            idType : documentInfo['type'],
+                        };
                     });
-                }else{
+                } else {
                     return [];
                 }
             },
             //导游信息
             guideList () {
-                if(this.orderDetailInfo && this.orderDetailInfo.guideList){
+                if (this.orderDetailInfo && this.orderDetailInfo.guideList) {
                     return this.orderDetailInfo.guideList.map(item => {
                         let documentInfo = item.documentInfo ? JSON.parse(item.documentInfo) : {};
                         return {
                             ...item,
-                            idNum :documentInfo['data'],
-                            idType :documentInfo['type'],
-                        }
+                            idNum : documentInfo['data'],
+                            idType : documentInfo['type'],
+                        };
                     });
-                }else{
+                } else {
                     return [];
                 }
             },
             //司机信息
             driverList () {
-                if(this.orderDetailInfo && this.orderDetailInfo.driverList){
+                if (this.orderDetailInfo && this.orderDetailInfo.driverList) {
                     return this.orderDetailInfo.driverList.map(item => {
                         let documentInfo = item.documentInfo ? JSON.parse(item.documentInfo) : {};
                         return {
                             ...item,
-                            idNum :documentInfo['data'],
-                            idType :documentInfo['type'],
-                        }
+                            idNum : documentInfo['data'],
+                            idType : documentInfo['type'],
+                        };
                     });
-                }else{
+                } else {
                     return [];
                 }
             },
             //订单操作日志
             orderRecordList () {
-                if(this.orderDetailInfo && this.orderDetailInfo.orderRecordList){
+                if (this.orderDetailInfo && this.orderDetailInfo.orderRecordList) {
                     return this.orderDetailInfo.orderRecordList;
-                }else{
+                } else {
                     return [];
                 }
             },
             //基本信息
             baseInfo () {
-                if(this.orderDetailInfo && this.orderDetailInfo.baseInfo){
+                if (this.orderDetailInfo && this.orderDetailInfo.baseInfo) {
                     return this.orderDetailInfo.baseInfo;
-                }else{
+                } else {
                     return {};
                 }
             },
             //视图
             viewType () {
-                if(this.orderDetailInfo && this.orderDetailInfo.orderOrgType){
+                if (this.orderDetailInfo && this.orderDetailInfo.orderOrgType) {
                     return this.orderDetailInfo.orderOrgType;
-                }else{
+                } else {
                     return '';
                 }
             },
             // 分销佣金
             allocationCommission () {
-                if(this.orderDetailInfo && common.isNotEmpty(this.orderDetailInfo.allocationCommission)){
+                if (this.orderDetailInfo && common.isNotEmpty(this.orderDetailInfo.allocationCommission)) {
                     return this.orderDetailInfo.allocationCommission;
-                }else{
+                } else {
                     return '';
                 }
             },
             // 是否过期
             isOverdue () {
-                if(this.orderDetailInfo && this.orderDetailInfo.isOverdue){
+                if (this.orderDetailInfo && this.orderDetailInfo.isOverdue) {
                     return this.orderDetailInfo.isOverdue;
-                }else{
+                } else {
                     return '';
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

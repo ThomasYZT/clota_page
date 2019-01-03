@@ -203,9 +203,9 @@
                                 this.confirmRefund();
                             }
                         });
-                    }  else if (res.code === 'M018') {
+                    } else if (res.code === 'M018') {
                         this.$Message.error('该会员卡已使用，不可退卡');
-                    }  else {
+                    } else {
                         this.refundMoneyInfo = {};
                     }
                 });

@@ -357,7 +357,7 @@
             //默认打开的折叠面板
             collapseOpened () {
                 let result = [];
-                for (let item in this.memberLevelsData){
+                for (let item in this.memberLevelsData) {
                     result.push(item);
                 }
                 return result;

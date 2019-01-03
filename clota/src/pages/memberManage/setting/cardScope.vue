@@ -373,7 +373,7 @@
                         return {
                             ...list,
                             content : item + '-' + list.levelDesc
-                        }
+                        };
                     }));
                 }
                 return result;
