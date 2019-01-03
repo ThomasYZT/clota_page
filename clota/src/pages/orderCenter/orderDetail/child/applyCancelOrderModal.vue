@@ -11,7 +11,7 @@
            @on-cancel="toggle()">
 
         <div class="tip">
-            <span>申请取消订单后，订单所含产品不可取票或核销。是否继续？</span>
+            <span>{{$t('cancelOrderNotice')}}</span>
         </div>
 
         <div slot="footer">

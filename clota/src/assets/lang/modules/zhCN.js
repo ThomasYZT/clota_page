@@ -2284,5 +2284,6 @@ export default {
     'orderBatchAuditPass' : '订单已批量审核通过',
     'orderBatchAuditReject' : '订单已批量驳回',
     'marketLevel' : '营销级别',
+    'cancelOrderNotice' : '申请取消订单后，订单所含产品不可取票或核销。是否继续？',
 
 };

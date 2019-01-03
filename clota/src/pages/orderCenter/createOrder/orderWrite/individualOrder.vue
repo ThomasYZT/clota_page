@@ -216,7 +216,7 @@
                                 this.addTouristModalShow = true;
                                 this.touristErrList = res.data ? res.data : [];
                             } else {
-                                this.$Message.error('下单失败');
+                                this.$Message.error(this.$t('orderFailure'));
                             }
                         }
                     });

@@ -263,7 +263,7 @@
                         this.$Message.success(this.$t('auditSuccess')); // 审核成功
                         this.$emit('confirm-audit', auditParams.visitorProductId);
                     } else if (res.code === 'OD003' || res.code === 'OD010') {
-                        this.$Message.error('产品库存不足，改签失败');
+                        this.$Message.error(this.$t('orderAuditTip.stockNumPoor'));
                     } else {
                         this.$Message.error(this.$t('auditFailure')); // 审核失败
                     }
