@@ -150,7 +150,7 @@
 </template>
 
 <script>
-    import {transPaymentStatus,transSMSStatus} from '../../commFun';
+    import { transPaymentStatus,transSMSStatus } from '../../commFun';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -180,14 +180,14 @@
             },
             //可重发短信次数
             'reSend-times' : {
-                type: [String,Number],
-                default: 0
+                type : [String,Number],
+                default : 0
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 给导游重发短信
              */
@@ -195,10 +195,10 @@
                 ajax.post('noticeGuidesAuditResult',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('sending')}));  // 发送成功
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('sending')}));    // 发送失败
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('sending') })); // 发送成功
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('sending') })); // 发送失败
                     }
                 });
             },
@@ -230,7 +230,7 @@
                 //团队订单 未过期
                     if (this.baseInfo.auditStatus === 'success') {
                         return require('../../../../assets/images/icon-audit-success.svg');
-                    } else if(this.baseInfo.auditStatus === 'audit') {
+                    } else if (this.baseInfo.auditStatus === 'audit') {
                         return require('../../../../assets/images/icon-wait-audit.svg');
                     } else if (this.baseInfo.auditStatus === 'reject') {
                         return require('../../../../assets/images/icon-audit-fail.svg');
@@ -244,13 +244,13 @@
             //重发短信按钮是否可以使用
             resendBtnCanUsed () {
                 //可重发次数大于0，审核通过，有未取票的可以点击重发短信按钮
-                return  this.reSendTimes > 0 &&
+                return this.reSendTimes >= 0 && this.reSendTimes <= 5 &&
                     this.baseInfo.auditStatus === 'success' &&
                     this.productInfoList.some(item => item.quantityPicked + item.quantityRefunded === 0);
             }
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

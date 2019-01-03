@@ -48,7 +48,7 @@
                                            :value="item.gift"
                                            disabled
                                            :placeholder="$t('inputField', {field: ''})"
-                                           class="single-input"/> {{$t('yuan')}}
+                                           class="single-input"/> {{$t('variousUnit')}}
                                     <span class="add-span blue-color"
                                           @click="showSendRateModal(item,index)">{{$t('applicationScope')}}</span><!--应用范围-->
                                     <span class="add-span blue-color"
@@ -107,7 +107,9 @@
                                     show-overflow-tooltip
                                     slot-scope="row">
                                 </el-table-column>
+                                <!--会员4期暂时去掉-->
                                 <el-table-column
+                                    v-if="false"
                                     slot="column2"
                                     :label="row.title"
                                     :prop="row.field"
@@ -121,7 +123,9 @@
                                         </ul>
                                     </template>
                                 </el-table-column>
+                                <!--会员4期暂时去掉-->
                                 <el-table-column
+                                    v-if="false"
                                     slot="column3"
                                     :label="row.title"
                                     :prop="row.field"

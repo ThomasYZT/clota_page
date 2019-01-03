@@ -2196,4 +2196,5 @@ export default {
     'applayCancelOrder' : '发起取消订单申请',
     'preCheckPass' : '预审核通过',
     'preCheckReject' : '预审核不通过',
+    'variousUnit' : '元/金币/游戏币（以各账户的储值单位为准）',
 };
