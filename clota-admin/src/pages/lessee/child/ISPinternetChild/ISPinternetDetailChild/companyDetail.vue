@@ -45,19 +45,19 @@
         </div>
         <i-row>
             <i-col span="12">
-                <FormItem label="公司ID：" :label-width="150">
+                <FormItem label="公司ID：" :label-width="180">
                     <span class="info-val" v-w-title="companyDetail.id">{{companyDetail.id | contentFilter}}</span>
                 </FormItem>
             </i-col>
             <i-col span="12">
-                <FormItem label="公司编码：" :label-width="150">
+                <FormItem label="公司编码：" :label-width="180">
                     <span class="info-val" v-w-title="companyDetail.nodeCode">{{companyDetail.nodeCode | contentFilter}}</span>
                 </FormItem>
             </i-col>
         </i-row>
         <i-row>
             <i-col span="12">
-                <FormItem prop="checkinCode" label="企业编码(线下核销)：" :label-width="150">
+                <FormItem prop="checkinCode" label="企业编码(线下核销)：" :label-width="180">
                     <Input v-model.trim="formDataCopy.checkinCode"  v-if="type === 'edit'"/>
                     <span class="info-val" v-else v-w-title="companyDetail.checkinCode">
                         {{companyDetail.checkinCode | contentFilter}}
@@ -65,14 +65,14 @@
                 </FormItem>
             </i-col>
             <i-col span="12">
-                <FormItem label="全民分销邀请码：" :label-width="150">
+                <FormItem label="全民分销邀请码：" :label-width="180">
                     <span class="info-val" v-w-title="companyDetail.saleCode">{{companyDetail.saleCode | contentFilter}}</span>
                 </FormItem>
             </i-col>
         </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem label="短信供应商：" :label-width="150">
+                    <FormItem label="短信供应商：" :label-width="180">
                         <Select v-model.trim="formDataCopy.smsProviderId"
                                 v-if="type === 'edit'">
                             <Option v-for="item in smsSuppilerList"
@@ -86,41 +86,8 @@
                         </span>
                     </FormItem>
                 </i-col>
-                <!-- 仅当创蓝、亿美时才显示该字段 -->
-                <template  v-if="(companyDetail.smsProviderId !== '5' && formDataCopy.smsProviderId !== '5')">
-                    <i-col span="12">
-                        <FormItem label="第三方短信服务商账号：" :label-width="180" prop="smsProviderAccount">
-                            <Input v-model.trim="formDataCopy.smsProviderAccount"
-                                   v-if="type === 'edit'"/>
-                            <span v-else class="info-val">
-                                <span class="account-name" v-w-title="companyDetail.smsProviderAccount">
-                                    {{companyDetail.smsProviderAccount | contentFilter}}
-                                </span>
-                            </span>
-                        </FormItem>
-                    </i-col>
-                    <i-col span="12">
-                        <FormItem label="第三方短信服务商密码：" :label-width="180" prop="smsProviderPassword">
-                            <Input v-model.trim="formDataCopy.smsProviderPassword"
-                                   type="password"
-                                   v-if="type === 'edit'"/>
-                            <span v-else class="info-val">
-                            <span class="account-name" v-w-title="companyDetail.smsProviderPassword">
-                                {{"******"}}
-                            </span>
-                        </span>
-                        </FormItem>
-                    </i-col>
-                </template>
-                <template v-if="companyDetail.smsProviderId === '5' || formDataCopy.smsProviderId === '5'">
-                    <i-col span="12">
-                        <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="150">
-                            {{companyDetail.smsSendTotal | contentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
-                        </FormItem>
-                    </i-col>
-                </template>
                 <i-col span="12">
-                    <FormItem label="管理账号：" :label-width="150">
+                    <FormItem label="管理账号：" :label-width="180">
                         <span class="info-val" >
                             <span class="account-name" v-w-title="companyDetail.adminAccountName">
                              {{companyDetail.adminAccountName | contentFilter}}
@@ -130,9 +97,36 @@
                     </FormItem>
                 </i-col>
             </i-row>
+            <!-- 仅当创蓝、亿美时才显示该字段 -->
+            <i-row  v-if="((type === 'edit' && formDataCopy.smsProviderId &&  formDataCopy.smsProviderId !== '5' ) ||
+                (type === 'watch' && companyDetail.smsProviderId &&  companyDetail.smsProviderId !== '5' ))">
+                <i-col span="12">
+                    <FormItem label="第三方短信服务商账号：" :label-width="180" prop="smsProviderAccount">
+                        <Input v-model.trim="formDataCopy.smsProviderAccount"
+                               v-if="type === 'edit'"/>
+                        <span v-else class="info-val">
+                                <span class="account-name" v-w-title="companyDetail.smsProviderAccount">
+                                    {{companyDetail.smsProviderAccount | contentFilter}}
+                                </span>
+                            </span>
+                    </FormItem>
+                </i-col>
+                <i-col span="12">
+                    <FormItem label="第三方短信服务商密码：" :label-width="180" prop="smsProviderPassword">
+                        <Input v-model.trim="formDataCopy.smsProviderPassword"
+                               type="password"
+                               v-if="type === 'edit'"/>
+                        <span v-else class="info-val">
+                            <span class="account-name" v-w-title="companyDetail.smsProviderPassword">
+                                {{"******"}}
+                            </span>
+                        </span>
+                    </FormItem>
+                </i-col>
+            </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="email" label="电子邮箱：" :label-width="150">
+                    <FormItem prop="email" label="电子邮箱：" :label-width="180">
                         <Input v-model.trim="formDataCopy.email" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.email">
                              {{companyDetail.email | contentFilter}}
@@ -140,7 +134,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="linkName" label="联系人：" :label-width="150">
+                    <FormItem prop="linkName" label="联系人：" :label-width="180">
                         <Input v-model.trim="formDataCopy.linkName" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.linkName">
                              {{companyDetail.linkName | contentFilter}}
@@ -150,7 +144,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem label="所在地：" :label-width="150">
+                    <FormItem label="所在地：" :label-width="180">
                         <city-plugin @select="changeCity"
                                      v-if="defaultAddress && type === 'edit'"
                                      :defaultValue="defaultAddress">
@@ -161,7 +155,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="address" label="详细地址：" :label-width="150">
+                    <FormItem prop="address" label="详细地址：" :label-width="180">
                         <Input v-model="formDataCopy.address" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.address">
                              {{companyDetail.address | contentFilter}}
@@ -171,7 +165,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem prop="telephone" label="电话：" :label-width="150">
+                    <FormItem prop="telephone" label="电话：" :label-width="180">
                         <Input v-model.trim="formDataCopy.telephone" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.telephone">
                              {{companyDetail.telephone | contentFilter}}
@@ -179,7 +173,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="tex" label="传真：" :label-width="150">
+                    <FormItem prop="tex" label="传真：" :label-width="180">
                         <Input v-model.trim="formDataCopy.tex" v-if="type === 'edit'"/>
                         <span class="info-val" v-else v-w-title="companyDetail.tex">
                              {{companyDetail.tex | contentFilter}}
@@ -189,14 +183,7 @@
             </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentManageId' : ''" label="管理上级：" :label-width="150">
-                        <!--<Select v-model.trim="formDataCopy.parentManageId" v-if="type === 'edit' && activeNode && activeNode.pid">-->
-                            <!--<Option v-for="item in superiorList"-->
-                                <!--:value="item.id"-->
-                                <!--:key="item.id">-->
-                                <!--{{ item.orgName }}-->
-                            <!--</Option>-->
-                        <!--</Select>-->
+                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentManageId' : ''" label="管理上级：" :label-width="180">
                         <select-tree v-if="type === 'edit' && activeNode && activeNode.pid && activeNode.pid !== '0'"
                                      v-model="formDataCopy.parentManageId"
                                      :disabled-node-ids="[activeNode.id]"
@@ -210,14 +197,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentEconomicId' : ''" label="财务上级：" :label-width="150">
-                        <!--<Select v-model.trim="formDataCopy.parentEconomicId" v-if="type === 'edit' && activeNode && activeNode.pid">-->
-                            <!--<Option v-for="item in fianceSuperiorList"-->
-                                    <!--:value="item.id"-->
-                                    <!--:key="item.id">-->
-                                <!--{{ item.orgName }}-->
-                            <!--</Option>-->
-                        <!--</Select>-->
+                    <FormItem :prop="(activeNode && activeNode.pid) ? 'parentEconomicId' : ''" label="财务上级：" :label-width="180">
                         <select-tree v-if="type === 'edit' && activeNode && activeNode.pid && activeNode.pid !== '0'"
                                      v-model="formDataCopy.parentEconomicId"
                                      :disabled-node-ids="[activeNode.id]"
@@ -231,9 +211,16 @@
                     </FormItem>
                 </i-col>
             </i-row>
-            <i-row>
+                <template v-if="((type === 'edit' && formDataCopy.smsProviderId &&  formDataCopy.smsProviderId === '5' ) ||
+                (type === 'watch' && companyDetail.smsProviderId &&  companyDetail.smsProviderId === '5' ))">
+                    <i-col span="12">
+                        <FormItem prop="orgName" label="短信余量/累计购买：" :label-width="180">
+                            {{companyDetail.smsSendTotal | contentFilter}}/{{companyDetail.smsPurchaseTotal | contentFilter}}
+                        </FormItem>
+                    </i-col>
+                </template>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="受理客服：" :label-width="150">
+                    <FormItem prop="orgName" label="受理客服：" :label-width="180">
                         <Select v-model="formDataCopy.businessId" v-if="type === 'edit'  && activeNode && activeNode.pid !== '0'">
                             <Option v-for="item in serviceStaffList"
                                     :value="item.id"
@@ -246,33 +233,26 @@
                         </span>
                     </FormItem>
                 </i-col>
-            </i-row>
-
-            <i-row>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="创建时间：" :label-width="150">
+                    <FormItem prop="orgName" label="创建时间：" :label-width="180">
                         <span class="info-val" v-w-title="companyDetail.createdTime">{{companyDetail.createdTime | contentFilter}}</span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="创建人：" :label-width="150">
+                    <FormItem prop="orgName" label="创建人：" :label-width="180">
                         <span class="info-val" v-w-title="companyDetail.createUser">{{companyDetail.createUser | contentFilter}}</span>
                     </FormItem>
                 </i-col>
-            </i-row>
-
-            <i-row>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="上次修改时间：" :label-width="150">
+                    <FormItem prop="orgName" label="上次修改时间：" :label-width="180">
                         <span class="info-val" v-w-title="companyDetail.updatedTime">{{companyDetail.updatedTime | contentFilter}}</span>
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem prop="orgName" label="上次修改人：" :label-width="150">
+                    <FormItem prop="orgName" label="上次修改人：" :label-width="180">
                         <span class="info-val" v-w-title="companyDetail.updateUser">{{companyDetail.updateUser | contentFilter}}</span>
                     </FormItem>
                 </i-col>
-            </i-row>
 
             <i-row v-if="type === 'edit'">
                 <i-col span="24" style="text-align: center">
@@ -708,13 +688,13 @@
                         { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
                     ],
                     smsProviderAccount : [
-                        { required : this.formDataCopy.smsProviderId === '3' || this.formDataCopy.smsProviderId === '4' ? true : false,
+                        { required : true,
                           message : this.$t('inputField',{ field : this.$t('thirdPartSmsAccount') }),
                           trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsAccount'),length : 20 }),trigger : 'blur' },
                     ],
                     smsProviderPassword : [
-                        { required : this.formDataCopy.smsProviderId === '3' || this.formDataCopy.smsProviderId === '4' ? true : false,
+                        { required : true,
                           message : this.$t('inputField',{ field : this.$t('thirdPartSmsPassword') }),
                           trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },
