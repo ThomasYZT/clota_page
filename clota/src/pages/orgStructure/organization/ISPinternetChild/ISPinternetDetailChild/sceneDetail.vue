@@ -318,9 +318,9 @@
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import editModal from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import selectTree from '@/components/selectTree/index.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -337,7 +337,7 @@
                 default : ''
             }
         },
-        components: {
+        components : {
             tableCom,
             openedService,
             subScene,
@@ -347,28 +347,28 @@
             editModal,
             selectTree
         },
-        data() {
+        data () {
             //校验邮箱
             const validateEmail = (rule,value,callback) => {
-                if(value){
-                    if(validator.isEmail(value)){
+                if (value) {
+                    if (validator.isEmail(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('errorFormat',{field : this.$t('email')}));
+                    } else {
+                        callback(this.$t('errorFormat',{ field : this.$t('email') }));
                     }
-                }else{
-                    callback(this.$t('inputField',{field : this.$t('email')}));
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('email') }));
                 }
             };
             //校验手机号
             const validatePhone = (rule,value,callback) => {
-                if(value){
-                    if(validator.isTelephone(value)){
+                if (value) {
+                    if (validator.isTelephone(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('errorFormat',{field : this.$t('phone')}));
+                    } else {
+                        callback(this.$t('errorFormat',{ field : this.$t('phone') }));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
@@ -385,40 +385,40 @@
                 //校验规则
                 ruleValidate : {
                     orgName : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('scenicName'),length : 100}),trigger : 'blur'},
-                        {required : true,message : this.$t('inputField',{field : this.$t('scenicName')}),trigger : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('scenicName'),length : 100 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('scenicName') }),trigger : 'blur' }
                     ],
                     checkinCode : [
-                        {min : 2,max : 8,message : this.$t('rangeBitError',{field : this.$t('enterpriseCode'),length : 8,min : 1,max :8}),trigger : 'blur'},
+                        { min : 2,max : 8,message : this.$t('rangeBitError',{ field : this.$t('enterpriseCode'),length : 8,min : 1,max : 8 }),trigger : 'blur' },
                     ],
                     email : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('email')}),trigger : 'blur'},
-                        {validator : validateEmail,trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
+                        { validator : validateEmail,trigger : 'blur' }
                     ],
                     address : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'},
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' },
                     ],
                     telephone : [
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('phone'),length : 20}),trigger : 'blur'},
-                        {validator : validatePhone ,trigger : 'blur'}
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' },
+                        { validator : validatePhone ,trigger : 'blur' }
                     ],
                     tex : [
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'},
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),trigger : 'blur' },
                     ],
                     linkName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('person')}),trigger : 'blur'},
-                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'},
+                        { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' },
                     ],
                     parentManageId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('superior')}),trigger : 'blur'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('superior') }),trigger : 'blur' },
                     ],
                     parentEconomicId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('fianceSuperior')}),trigger : 'blur'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 取消编辑
              */
@@ -431,7 +431,7 @@
              */
             saveEdit () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.type = 'watch';
                         ajax.post('modifyOrgInfo',{
                             id : this.formDataCopy.id,
@@ -451,20 +451,20 @@
                             managerId : this.formDataCopy.managerId,
                             nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
-                            if(res.success){
-                                this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
-                                if(this.formDataCopy.orgName !== this.sceneDetail.orgName){
+                            if (res.success) {
+                                this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
+                                if (this.formDataCopy.orgName !== this.sceneDetail.orgName) {
                                     this.freshOrg();
-                                }else if(this.formDataCopy.parentManageId !== this.sceneDetail.parentManageId){
+                                } else if (this.formDataCopy.parentManageId !== this.sceneDetail.parentManageId) {
                                     this.freshOrg();
-                                }else if(this.formDataCopy.parentEconomicId !== this.sceneDetail.parentEconomicId){
+                                } else if (this.formDataCopy.parentEconomicId !== this.sceneDetail.parentEconomicId) {
                                     this.freshOrg();
-                                }else{
+                                } else {
                                     this.getSceneDetail();
                                 }
                                 this.$store.dispatch('freshOrgs');
-                            }else{
-                                this.$Message.error(res.message | this.$t('failureTip', {tip: this.$t('modify')}));
+                            } else {
+                                this.$Message.error(res.message | this.$t('failureTip', { tip : this.$t('modify') }));
                             }
                         });
                     }
@@ -476,22 +476,22 @@
             edit () {
                 this.formDataCopy = defaultsDeep({
                     isStart : this.sceneDetail.status === 'open',
-                }  , this.sceneDetail);
+                } , this.sceneDetail);
                 this.type = 'edit';
             },
             /**
              * 确认重置密码
              */
-            confimChangePass (){
+            confimChangePass () {
                 ajax.post('resetManagerPassword',{
                     orgId : this.activeNode.id,
                     managerId : this.sceneDetail.managerId,
                     email : this.sceneDetail.email,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('resetPswSuccess',{msg: this.sceneDetail.manager}));
-                    }else{
-                        this.$Message.error(res.message || this.$t('resetPswFail',{msg: this.companyDetail.manager}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('resetPswSuccess',{ msg : this.sceneDetail.manager }));
+                    } else {
+                        this.$Message.error(res.message || this.$t('resetPswFail',{ msg : this.companyDetail.manager }));
                     }
                 }).finally(() => {
                     this.$refs.editModal.hide();
@@ -521,9 +521,9 @@
                 ajax.post('getOrgInfo',{
                     orgId : this.activeNode.id,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.sceneDetail = res.data ? res.data.basicInfo : {};
-                    }else{
+                    } else {
                         this.sceneDetail = {};
                     }
                 });
@@ -537,9 +537,9 @@
                     manageType : 'manage',
                     nodeType : this.activeNode.type,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.superiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
-                    }else{
+                    } else {
                         this.superiorList = [];
                     }
                 });
@@ -553,9 +553,9 @@
                     manageType : 'economic',
                     nodeType : this.activeNode.type,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.fianceSuperiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
-                    }else{
+                    } else {
                         this.fianceSuperiorList = [];
                     }
                 });
@@ -565,24 +565,24 @@
              * @param data
              */
             changeCity (data) {
-                if(data.province && Object.keys(data.province).length > 0){
+                if (data.province && Object.keys(data.province).length > 0) {
                     this.formDataCopy.provinceCode = data.province.provinceid;
                     this.formDataCopy.province = data.province.province;
-                }else{
+                } else {
                     this.formDataCopy.provinceCode = '000000';
                     this.formDataCopy.province = '';
                 }
-                if(data.city && Object.keys(data.city).length > 0){
+                if (data.city && Object.keys(data.city).length > 0) {
                     this.formDataCopy.cityCode = data.city.cityid;
                     this.formDataCopy.city = data.city.city;
-                }else{
+                } else {
                     this.formDataCopy.cityCode = '000000';
                     this.formDataCopy.city = '';
                 }
-                if(data.area && Object.keys(data.area).length > 0){
+                if (data.area && Object.keys(data.area).length > 0) {
                     this.formDataCopy.districtCode = data.area.areaid;
                     this.formDataCopy.district = data.area.area;
-                }else{
+                } else {
                     this.formDataCopy.districtCode = '000000';
                     this.formDataCopy.district = '';
                 }
@@ -602,20 +602,20 @@
             //公司详细地址
             companyPlace () {
                 let place = '';
-                if(this.sceneDetail && this.sceneDetail.province){
+                if (this.sceneDetail && this.sceneDetail.province) {
                     place += this.sceneDetail.province;
                 }
-                if(this.sceneDetail && this.sceneDetail.city){
+                if (this.sceneDetail && this.sceneDetail.city) {
                     place += this.sceneDetail.city;
                 }
-                if(this.sceneDetail && this.sceneDetail.district){
+                if (this.sceneDetail && this.sceneDetail.district) {
                     place += this.sceneDetail.district;
                 }
                 return place;
             },
             //默认选中的所在地信息
             defaultAddress () {
-                if(this.sceneDetail && Object.keys(this.sceneDetail).length > 0){
+                if (this.sceneDetail && Object.keys(this.sceneDetail).length > 0) {
                     return {
                         province : {
                             provinceid : this.sceneDetail.provinceCode,
@@ -629,8 +629,8 @@
                             areaid : this.sceneDetail.districtCode,
                             area : this.sceneDetail.district,
                         },
-                    }
-                }else{
+                    };
+                } else {
                     return false;
                 }
             },
@@ -642,7 +642,7 @@
             this.getParentManages();
             this.getParentEconomic();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

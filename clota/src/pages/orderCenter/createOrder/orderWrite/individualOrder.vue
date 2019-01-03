@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import lifeCycelMixins from '@/mixins/lifeCycleMixins.js'
+    import lifeCycelMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import productInfo from './child/productInfo';
     import touristInfo from './child/individualTouristInfo.';
@@ -58,7 +58,7 @@
     import otherInfo from './child/otherInfo';
     import accountInfo from './child/individualAccountInfo';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import productErrHitModal from './child/productErrHintModal';
     import createOrderFailModal from './child/createOrderFailModal';
     import touristErrModal from './child/touristErrModal';
@@ -78,14 +78,14 @@
             touristErrModal,
             addTouristErrModal
         },
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'orderFilling',   // 订单填写
-                        router: {
-                            name: 'createOrder'
+                        name : 'orderFilling', // 订单填写
+                        router : {
+                            name : 'createOrder'
                         }
                     }
                 ],
@@ -119,18 +119,18 @@
                 //下单失败类型
                 createOrderFailType : '',
                 //游客下单不符合销售政策模态框是否显示
-                addTouristModalShow :false,
+                addTouristModalShow : false,
                 //下单失败游客信息
                 touristErrList : []
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
              */
             getParams (params) {
-                if(params && params.productList){
+                if (params && params.productList) {
                     this.productList = params.productList;
                     this.otherInfo = {
                         saleOrgName : params.saleOrgName,
@@ -141,7 +141,7 @@
                         playDate : params.playDate,
                     };
                     this.queryLeftMoney();
-                }else{
+                } else {
                     this.$router.push({
                         name : 'createOrder'
                     });
@@ -176,7 +176,7 @@
                                 quantity : item.num,
                                 price : item.settlePrice,
                                 actPrice : item.settlePrice,
-                            }
+                            };
                         })),
                         //下单企业
                         channelId : this.otherInfo.orderOrgId,
@@ -189,13 +189,13 @@
                         //所属景区
                         scenicId : this.otherInfo.scenicOrgId,
                         //游客信息以及下单人信息
-                        OrderVisitorProductVos :JSON.stringify(OrderVisitorProductVos),
+                        OrderVisitorProductVos : JSON.stringify(OrderVisitorProductVos),
                         //下单日期
                         playDate : this.otherInfo.playDate,
                         //校验产品信息
                         saleRuleVos : JSON.stringify(productSaleVo)
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             this.$router.replace({
                                 name : 'successSubmit',
                                 params : {
@@ -203,28 +203,28 @@
                                     orderId : res.data
                                 }
                             });
-                        }else{
-                            if(res.code === 'OD002'){//上级分销商余额不足
-                                this.getFailedProductInfo(res.data ? res.data :[]);
+                        } else {
+                            if (res.code === 'OD002') {//上级分销商余额不足
+                                this.getFailedProductInfo(res.data ? res.data : []);
                                 this.failModalShow = true;
                                 this.createOrderFailType = 'balanceNotEnough';
-                            }else if(res.code === 'OD003'){//产品库存不足
-                                this.getFailedProductInfo(res.data ? res.data :[]);
+                            } else if (res.code === 'OD003') {//产品库存不足
+                                this.getFailedProductInfo(res.data ? res.data : []);
                                 this.failModalShow = true;
                                 this.createOrderFailType = 'inventoryNotEnough';
-                            }else if(res.code === 'OD006'){//不符合下单规则
+                            } else if (res.code === 'OD006') {//不符合下单规则
                                 this.addTouristModalShow = true;
                                 this.touristErrList = res.data ? res.data : [];
-                            }else{
-                                this.$Message.error('下单失败');
+                            } else {
+                                this.$Message.error('orderFailure');
                             }
                         }
                     });
                 }).catch(err => {
-                    if(err && err.type === 'ticketErr'){//产品下单失败错误
+                    if (err && err.type === 'ticketErr') {//产品下单失败错误
                         this.leftProductInfo = err.data;
                         this.errHintShow = true;
-                    }else if(err && err.type === 'touristInfoErr'){//游客添加产品信息错误
+                    } else if (err && err.type === 'touristInfoErr') {//游客添加产品信息错误
                         this.touristWithoutProductModalShow = true;
                         this.touristWithourProductList = err.data;
                     }
@@ -233,14 +233,14 @@
             /**
              * 查询下单企业剩余金额
              */
-            queryLeftMoney() {
+            queryLeftMoney () {
                 ajax.post('findByOrgIdAndPeerId',{
                     orgId : this.otherInfo.orderOrgId,
-                    peerOrgId :this.otherInfo.saleOrgId
+                    peerOrgId : this.otherInfo.saleOrgId
                 }).then(res =>{
-                    if(res.success){
-                        this.validatMoney = (res.data.accountBalance ? res.data.accountBalance :0) + (res.data.creditBalance ? res.data.creditBalance : 0);
-                    }else{
+                    if (res.success) {
+                        this.validatMoney = (res.data.accountBalance ? res.data.accountBalance : 0) + (res.data.creditBalance ? res.data.creditBalance : 0);
+                    } else {
                         this.validatMoney = 0;
                     }
                 });
@@ -250,8 +250,8 @@
              * @param data 需要删除的产品信息
              */
             delCreatedFailProduct (data) {
-                for(let i = this.productList.length - 1,j = 0;i >= j;i--){
-                    if(data.includes(this.productList[i]['productId'])){
+                for (let i = this.productList.length - 1,j = 0; i >= j; i--) {
+                    if (data.includes(this.productList[i]['productId'])) {
                         this.productList.splice(i,1);
                     }
                 }
@@ -264,8 +264,8 @@
              */
             getFailedProductInfo (data) {
                 this.failCreatedProductList = [];
-                for(let i = 0,j = this.productList.length;i < j;i++){
-                    if(data.includes(this.productList[i]['productId'])){
+                for (let i = 0,j = this.productList.length; i < j; i++) {
+                    if (data.includes(this.productList[i]['productId'])) {
                         this.failCreatedProductList.push(this.productList[i]);
                     }
                 }
@@ -277,22 +277,22 @@
                 return {
                     validatMoney : this.validatMoney,
                     totalPrice : this.productList.reduce((price,item) => price += item.settlePrice * item.num,0)
-                }
+                };
             },
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             }),
             //订单渠道
             orderChannel () {
-                if(this.manageOrgs && Object.keys(this.manageOrgs).length > 0){
-                    if(this.manageOrgs.nodeType === "scenic"){
+                if (this.manageOrgs && Object.keys(this.manageOrgs).length > 0) {
+                    if (this.manageOrgs.nodeType === "scenic") {
                         return 'scenic';
-                    }else if(this.manageOrgs.nodeType === "partner"){
+                    } else if (this.manageOrgs.nodeType === "partner") {
                         return 'tour';
-                    }else{
+                    } else {
                         return '';
                     }
-                }else{
+                } else {
                     return '';
                 }
             },
@@ -307,14 +307,14 @@
                             return {
                                 data : docInfo.data,
                                 type : docInfo.type,
-                            }
+                            };
                         })),
                         productModels : item.productInfo.map(product => {
                             return {
                                 documentId : item.idTableData.reduce((key,documentlist) => {
-                                    if(product.idType === documentlist['type']){
+                                    if (product.idType === documentlist['type']) {
                                         return documentlist['data'];
-                                    }else {
+                                    } else {
                                         return '';
                                     }
                                 },''),
@@ -323,9 +323,9 @@
                                 productId : product.productId,
                                 productName : product.productName,
                                 quantity : product.takeNum,
-                            }
+                            };
                         })
-                    }
+                    };
                 });
             },
             //下单人列表
@@ -336,7 +336,7 @@
                         value : item.phone,
                         phone : item.phone,
                         idTableData : item.idTableData
-                    }
+                    };
                 });
             },
             //是否可以移除产品
@@ -344,7 +344,7 @@
                 return this.failCreatedProductList.length !== this.productList.length;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

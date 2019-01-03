@@ -24,16 +24,16 @@
             </el-table-column>
         </table-com>
         <div class="total-info">
-            合计：<span class="total-amount">{{totalPrice | moneyFilter}}</span>
+            {{$t('colonSetting', { key : $t('totalAdd') })}}<span class="total-amount">{{totalPrice | moneyFilter}}</span>
         </div>
     </div>
 </template>
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './productInfoConfig';
+    import { columnData } from './productInfoConfig';
     export default {
-        props :{
+        props : {
             //选择的产品列表
             'product-list' : {
                 type : Array,
@@ -45,21 +45,21 @@
         components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : columnData,
                 //表格数据
                 tableData : []
-            }
+            };
         },
-        methods: {
+        methods : {
         },
         watch : {
             productList (newVal) {
-                if(newVal){
+                if (newVal) {
                     this.tableData = JSON.parse(JSON.stringify(newVal));
-                }else{
+                } else {
                     this.tableData = [];
                 }
             }
@@ -69,11 +69,11 @@
             totalPrice () {
                 let amount = 0;
                 return this.tableData.reduce((price,item) => {
-                   return  price += item.settlePrice * item.num;
-                },0)
+                   return price += item.settlePrice * item.num;
+                },0);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

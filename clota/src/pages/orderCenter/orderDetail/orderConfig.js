@@ -2,104 +2,104 @@
 //表头配置
 export const columnData = [
     {
-        title: 'orderId',
-        width: 215,
-        field: 'orderNo'
+        title : 'orderId',
+        width : 215,
+        field : 'orderNo'
     },
     {
-        title: 'orderDetailNo',
-        width: 200,
-        field: 'orderDetailNo'
+        title : 'orderDetailNo',
+        width : 200,
+        field : 'orderDetailNo'
     },
     {
-        title: 'playDate',
-        minWidth: 120,
-        field: 'visitDate'
+        title : 'playDate',
+        minWidth : 120,
+        field : 'visitDate'
     },
     {
-        title: 'orderTime',
-        width: 190,
-        field: 'orderTime'
+        title : 'orderTime',
+        width : 190,
+        field : 'orderTime'
     },
     {
-        title: 'scenePlace',
-        width: 200,
-        field: 'scenic'
+        title : 'scenePlace',
+        width : 200,
+        field : 'scenic'
     },
     {
-        title: 'orderChannel',
-        width: 130,
+        title : 'orderChannel',
+        width : 130,
         enWidth : 180,
-        field: 'orderChannel'
+        field : 'orderChannel'
     },
     {
-        title: 'orderOrg',
-        width: 200,
-        field: 'channel'
+        title : 'orderOrg',
+        width : 200,
+        field : 'channel'
     },
     {
-        title: 'productName',
-        width: 250,
-        field: 'productName'
+        title : 'productName',
+        width : 250,
+        field : 'productName'
     },
     {
-        title: 'productQuantity',
-        width: 130,
+        title : 'productQuantity',
+        width : 130,
         enWidth : 180,
-        field: 'quantity'
+        field : 'quantity'
     },
     {
-        title: 'orderAmount',
-        width: 130,
+        title : 'orderAmount',
+        width : 130,
         enWidth : 180,
-        field: 'amount'
+        field : 'amount'
     },
     {
-        title: 'smsStatus',
-        width: 130,
+        title : 'smsStatus',
+        width : 130,
         enWidth : 180,
-        field: 'smsStatus'
+        field : 'smsStatus'
     },
     {
-        title: 'syncStatus',
-        width: 130,
+        title : 'syncStatus',
+        width : 130,
         enWidth : 180,
-        field: 'syncStatus'
+        field : 'syncStatus'
     },
     {
-        title: 'paymentStatus',
-        width: 130,
+        title : 'paymentStatus',
+        width : 130,
         enWidth : 180,
-        field: 'paymentStatus'
+        field : 'paymentStatus'
     },
     {
-        title: 'auditStatus',
-        width: 130,
+        title : 'auditStatus',
+        width : 130,
         enWidth : 180,
-        field: 'auditStatus'
+        field : 'auditStatus'
     },
     {
-        title: 'ticketPickNum',
-        width: 200,
-        field: 'quantityPicked'
+        title : 'ticketPickNum',
+        width : 200,
+        field : 'quantityPicked'
     },
     {
-        title: 'verificationNum',
-        width: 200,
-        field: 'quantityVerified'
+        title : 'verificationNum',
+        width : 200,
+        field : 'quantityVerified'
     },
     {
-        title: 'quantityRefunded',
-        width: 200,
-        field: 'quantityRefunded'
+        title : 'quantityRefunded',
+        width : 200,
+        field : 'quantityRefunded'
     },
     {
-        title: 'quantityRescheduled',
-        width: 200,
-        field: 'quantityRescheduled'
+        title : 'quantityRescheduled',
+        width : 200,
+        field : 'quantityRescheduled'
     },
     {
-        title: 'operate',
-        width: 170,
+        title : 'operate',
+        width : 170,
     }
 ];

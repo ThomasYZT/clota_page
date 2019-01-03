@@ -105,11 +105,11 @@
 </template>
 
 <script>
-    import {orderType} from '@/assets/js/constVariable.js';
+    import { orderType } from '@/assets/js/constVariable.js';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        data() {
+        data () {
             return {
                 //表单校验规则
                 ruleCustom : {
@@ -144,9 +144,9 @@
                 saleDisabled : false,
                 //下单企业是否禁用
                 orderTaskDisabled : false,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 订单类型改变，查询所属景区信息
              */
@@ -160,15 +160,15 @@
                     this.formData.saleOrgId = '';
                     this.formData.saleOrgList = [];
                     this.formData.orderTakeList = [];
-                    if(res.success){
+                    if (res.success) {
                         this.belongScene = res.data ? res.data : [];
-                        if(!this.formData.scenicOrgId && this.belongScene.length > 0){
+                        if (!this.formData.scenicOrgId && this.belongScene.length > 0) {
                             this.formData.scenicOrgId = this.belongScene[0].id;
                             this.sceneChange();
-                        }else{
+                        } else {
                             this.search();
                         }
-                    }else{
+                    } else {
                         this.belongScene = [];
                     }
                 });
@@ -177,39 +177,39 @@
              * 所属景区改变，查询发售机构和下单企业信息
              */
             sceneChange () {
-                if(!this.formData.scenicOrgId) return;
+                if (!this.formData.scenicOrgId) return;
                 this.formData.saleOrgId = '';
                 this.formData.orderOrgId = '';
                 ajax.post('queryOrderOptionList',{
                     scenicId : this.formData.scenicOrgId,
                     orderType : this.formData.orderType
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.saleOrgList = res.data ? res.data.saleList : [];
                         this.orderTakeList = res.data ? res.data.orderList : [];
-                    }else{
+                    } else {
                         this.saleOrgList = [];
                         this.orderTakeList = [];
                     }
                     //如果所属景区是当前登录的景区，那么发售机构是当前机构，不可修改，
                     //如果所属景区不是当前登录景区，那么下单企业必须是当前景区，且不可修改
-                    if(this.formData.scenicOrgId === this.manageOrgs.id){
+                    if (this.formData.scenicOrgId === this.manageOrgs.id) {
                         this.saleDisabled = true;
                         this.orderTaskDisabled = false;
-                        if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
+                        if (!this.formData.orderOrgId && this.orderTakeList.length > 0) {
                             this.formData.orderOrgId = this.orderTakeList[0].id;
                         }
-                        if(!this.formData.saleOrgId && this.saleOrgList.length > 0){
+                        if (!this.formData.saleOrgId && this.saleOrgList.length > 0) {
                             this.formData.saleOrgId = this.saleOrgList[0].id;
                             this.search();
                         }
-                    }else{
+                    } else {
                         this.saleDisabled = false;
                         this.orderTaskDisabled = true;
-                        if(!this.formData.saleOrgId && this.saleOrgList.length > 0){
+                        if (!this.formData.saleOrgId && this.saleOrgList.length > 0) {
                             this.formData.saleOrgId = this.saleOrgList[0].id;
                         }
-                        if(!this.formData.orderOrgId && this.orderTakeList.length > 0){
+                        if (!this.formData.orderOrgId && this.orderTakeList.length > 0) {
                             this.formData.orderOrgId = this.orderTakeList[0].id;
                             this.search();
                         }
@@ -246,33 +246,33 @@
         created () {
             this.orderTypeChange();
         },
-        computed :{
+        computed : {
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             }),
             //发售机构名字
             saleOrgName () {
-                if(this.saleOrgList && this.saleOrgList.length > 0){
-                    for(let i = 0, j = this.saleOrgList.length;i < j;i++){
-                        if(this.formData.saleOrgId === this.saleOrgList[i]['id']){
+                if (this.saleOrgList && this.saleOrgList.length > 0) {
+                    for (let i = 0, j = this.saleOrgList.length; i < j; i++) {
+                        if (this.formData.saleOrgId === this.saleOrgList[i]['id']) {
                             return this.saleOrgList[i]['orgName'];
                         }
                     }
                     return '';
-                }else{
+                } else {
                     return '';
                 }
             },
             //下单企业名字
             orderOrgName () {
-                if(this.orderTakeList && this.orderTakeList.length > 0){
-                    for(let i = 0, j = this.orderTakeList.length;i < j;i++){
-                        if(this.formData.orderOrgId === this.orderTakeList[i]['id']){
+                if (this.orderTakeList && this.orderTakeList.length > 0) {
+                    for (let i = 0, j = this.orderTakeList.length; i < j; i++) {
+                        if (this.formData.orderOrgId === this.orderTakeList[i]['id']) {
                             return this.orderTakeList[i]['orgName'];
                         }
                     }
                     return '';
-                }else{
+                } else {
                     return '';
                 }
             },
@@ -293,13 +293,13 @@
             //日期插件配置参数
             dateOptions () {
                 return {
-                    disabledDate : (date) =>  {
+                    disabledDate : (date) => {
                         return date && date.valueOf() < Date.now() - 86400000;
                     }
-                }
+                };
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -64,34 +64,34 @@
 <script>
     import backAuditFilter from './components/backAuditFilter';
     import tableCom from '@/components/tableCom/tableCom';
-    import {teamOrderChargeBack, batchAudit} from './auditConfig';
+    import { teamOrderChargeBack, batchAudit } from './auditConfig';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
     export default {
-        components: {
+        components : {
             tableCom,
             backAuditFilter,
             auditPassModal,
             auditRejectModal
         },
-        data() {
+        data () {
             return {
                 //表头数据
                 columnData : teamOrderChargeBack,
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,
-                    pageSize: 10,
+                queryParams : {
+                    pageNo : 1,
+                    pageSize : 10,
                 },
                 tableData : [],
                 totalCount : 0,
                 // 已勾选的数据
-                chosenRowData: [],
+                chosenRowData : [],
                 //批量审核
-                batchAudit: batchAudit
-            }
+                batchAudit : batchAudit
+            };
         },
-        methods: {
+        methods : {
             /**
              * 过滤列表数据
              * @param {object} paramsObj
@@ -114,8 +114,8 @@
                 this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},];
                 this.totalCount = 20;
             },
-            handleCommand(dropItem) {
-                if (this.chosenRowData.length<=0) {
+            handleCommand (dropItem) {
+                if (this.chosenRowData.length <= 0) {
                     this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
@@ -141,7 +141,7 @@
              * @param isBatch - 是否批量操作  Boolean
              * @param type - 类型  'pass' | 'reject'
              **/
-            showAuditModal(data, isBatch, type) {
+            showAuditModal (data, isBatch, type) {
                 let auditModal = '';
                 switch (type) {
                     case 'pass' :
@@ -153,22 +153,22 @@
                 }
 
                 this.$refs[auditModal].show({
-                    items: isBatch ? data : [data],
-                    isBatch: isBatch
+                    items : isBatch ? data : [data],
+                    isBatch : isBatch
                 });
             },
             /**
              * 跳转至团队订单详情
              * @param scopeRow
              */
-            goTeamOrderDetail(scopeRow) {
+            goTeamOrderDetail (scopeRow) {
                 this.$router.push({
-                    name: 'teamOrderDetail',
-                    params: {orderId: scopeRow.id},
+                    name : 'teamOrderDetail',
+                    params : { orderId : scopeRow.id },
                 });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

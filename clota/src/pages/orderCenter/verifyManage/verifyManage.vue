@@ -329,43 +329,43 @@
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import noDataTip from '@/components/noDataTip/noData-tip.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {orderTicketHead, orderVerifyHead} from './verifyConfig';
-    import ajax from '@/api/index'
+    import { configVariable } from '@/assets/js/constVariable';
+    import { orderTicketHead, orderVerifyHead } from './verifyConfig';
+    import ajax from '@/api/index';
     import verifyModal from './child/verifyModal.vue';
-    import {transOrderOrg, transSyncStatus, transSMSStatus, transVerifyStatus, transPickStatus} from '../commFun';
+    import { transOrderOrg, transSyncStatus, transSMSStatus, transVerifyStatus, transPickStatus } from '../commFun';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {tableCom, noDataTip, verifyModal},
-        props: {},
-        data() {
+        components : { tableCom, noDataTip, verifyModal },
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    serialNos: '',
+                filterParam : {
+                    serialNos : '',
                 },
                 // 以取票串码查询的表格表头字段名
-                ticketColumnData: orderTicketHead,
+                ticketColumnData : orderTicketHead,
                 // 以核销串码查询的表格表头字段名
-                verifyColumnData: orderVerifyHead,
+                verifyColumnData : orderVerifyHead,
                 // 根据串码搜索的结果数据
-                tableData: {
-                    orderInfoList: [],      // 以核销串码查询的结果
-                    orderTicketList: [],    // 以取票串码查询的结果
+                tableData : {
+                    orderInfoList : [], // 以核销串码查询的结果
+                    orderTicketList : [], // 以取票串码查询的结果
                 },
                 // 已勾选的数据
-                chosenRowData: {
-                    ticket: [],
-                    verify: []
+                chosenRowData : {
+                    ticket : [],
+                    verify : []
                 },
-            }
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'permissionInfo'
             ]),
@@ -374,35 +374,35 @@
                 return this.permissionInfo && 'orderChecker' in this.permissionInfo;
             },
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
-            queryList() {
+        watch : {},
+        methods : {
+            queryList () {
                 ajax.post('queryOrderInfoBySerialNo', this.queryParams).then((res) => {
                     if (res.success) {
-                        this.tableData = res.data || {orderInfoList: [], orderTicketList: []};
+                        this.tableData = res.data || { orderInfoList : [], orderTicketList : [] };
                     } else {
                         this.tableData.orderInfoList = [];
                         this.tableData.orderTicketList = [];
                     }
-                })
+                });
             },
             /**
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeVerifySelection(selection) {
+            changeVerifySelection (selection) {
                 this.chosenRowData.verify = selection;
             },
-            changeTicketSelection(selection) {
+            changeTicketSelection (selection) {
                 this.chosenRowData.ticket = selection;
             },
 
             // 搜索核销列表
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
@@ -410,7 +410,7 @@
             /**
              * 重置 - 清空输入框内容，并搜索
              */
-            reset() {
+            reset () {
                 this.filterParam.serialNos = '';
                 this.handleSearch();
             },
@@ -420,32 +420,32 @@
              * @param isBatch - 是否批量操作  Boolean
              * @param type - 类型  'ticket'-根据取票串码核销 | 'verify'-根据核销串码核销
              **/
-            showModal(data, isBatch, type) {
+            showModal (data, isBatch, type) {
                 if (!this.canOrderChecker) return;
                 if (data.verifyRule == 'true') {
                     this.$refs['verifyModal'].show({
-                        list: isBatch ? data : [data],
-                        isBatch: isBatch,
-                        type: type
+                        list : isBatch ? data : [data],
+                        isBatch : isBatch,
+                        type : type
                     });
                 }
             },
-            handleCommand(type) {
+            handleCommand (type) {
                 if (!this.canOrderChecker) return;
-                if (this.chosenRowData[type].length<=0) {
+                if (this.chosenRowData[type].length <= 0) {
                     this.$Message.error(this.$t('selectChannelOperate'));
                     return;
                 }
                 this.showModal(this.chosenRowData[type], true, type);
             },
             // 下单渠道code转换
-            transOrderOrg: transOrderOrg,
+            transOrderOrg : transOrderOrg,
             // 同步状态code转换
-            transSyncStatus: transSyncStatus,
+            transSyncStatus : transSyncStatus,
             // 取票状态code转换
             transPickStatus : transPickStatus,
             // 短信发送状态code转换
-            transSMSStatus: transSMSStatus,
+            transSMSStatus : transSMSStatus,
             // 核销状态code转换
             transVerifyStatus : transVerifyStatus,
             /**
@@ -454,7 +454,7 @@
              * @param index
              * @returns {boolean}
              */
-            setSelectable(row, index) {
+            setSelectable (row, index) {
                 return row.verifyRule == 'true';
             },
         }

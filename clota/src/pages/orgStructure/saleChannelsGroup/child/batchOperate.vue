@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import {saleOperateBatch} from '@/assets/js/constVariable.js';
+    import { saleOperateBatch } from '@/assets/js/constVariable.js';
     export default {
         props : {
             //销售渠道分组
@@ -64,7 +64,7 @@
                 }
             }
         },
-        data() {
+        data () {
             return {
 
                 //批量操作类型
@@ -79,21 +79,21 @@
                 //表单校验规则
                 ruleValidate : {
                     selectOrgId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('saleGroup')}),trigger : 'change'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('saleGroup') }),trigger : 'change' },
                     ]
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 批量操作
              * @param command
              */
             handleCommand (command) {
                 this.bathChangeGroupShow = false;
-                if(command.value === 'outGroup'){
+                if (command.value === 'outGroup') {
                     this.$emit('handle-out-group');
-                }else if(command.value === 'toOtherGroup'){
+                } else if (command.value === 'toOtherGroup') {
                     this.bathChangeGroupShow = true;
                 }
             },
@@ -102,7 +102,7 @@
              */
             batchChangeOrg () {
                 this.$refs.formData.validate(valid =>{
-                    if(valid){
+                    if (valid) {
                         this.$emit('handle-remove-group',this.formData.selectOrgId);
                         this.bathChangeGroupShow = false;
                     }
@@ -115,7 +115,7 @@
                 this.$refs.formData.resetFields();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

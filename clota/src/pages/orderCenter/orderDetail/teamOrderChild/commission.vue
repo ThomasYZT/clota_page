@@ -11,18 +11,18 @@
 
 <script>
     export default {
-        props: {
+        props : {
             //分销佣金
             allocationCommission : {
                 type : [String,Number],
-                default :''
+                default : ''
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

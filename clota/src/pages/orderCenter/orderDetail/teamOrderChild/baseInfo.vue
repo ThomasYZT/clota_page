@@ -144,7 +144,7 @@
 </template>
 
 <script>
-    import {transPaymentStatus,transSMSStatus} from '../../commFun';
+    import { transPaymentStatus,transSMSStatus } from '../../commFun';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -168,10 +168,10 @@
                 }
             },
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 给导游重发短信
              */
@@ -179,10 +179,10 @@
                 ajax.post('noticeGuidesAuditResult',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('sending')}));  // 发送成功
-                    }else{
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('sending')}));    // 发送失败
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('sending') })); // 发送成功
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('sending') })); // 发送失败
                     }
                 });
             },
@@ -197,20 +197,20 @@
                 //景区下，审核成功，取票前可重发短信
                 return this.viewType === 'scenic' &&
                     this.baseInfo.auditStatus === 'success' &&
-                    this.productInfoList.every(item => item.quantity > item.quantityPicked) ;
+                    this.productInfoList.every(item => item.quantity > item.quantityPicked);
             },
             //审核结果图片
             auditResultImg () {
-                if(this.baseInfo.auditStatus === 'success'){
+                if (this.baseInfo.auditStatus === 'success') {
                     return require('../../../../assets/images/icon-audit-success.svg');
-                }else if(this.baseInfo.auditStatus === 'audit'){
+                } else if (this.baseInfo.auditStatus === 'audit') {
                     return require('../../../../assets/images/icon-wait-audit.svg');
-                }else{
+                } else {
                     return require('../../../../assets/images/icon-audit-fail.svg');
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

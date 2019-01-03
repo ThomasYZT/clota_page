@@ -3,22 +3,22 @@
 export const columnData = [
     {},
     {
-        title: 'tourGuideName',     // 导游姓名
-        minwidth: 234,
-        field: 'staffName'
+        title : 'tourGuideName', // 导游姓名
+        minwidth : 234,
+        field : 'staffName'
     },
     {
-        title: 'identityNo',
-        minwidth: 254,
-        field: 'documentNo'
+        title : 'identityNo',
+        minwidth : 254,
+        field : 'documentNo'
     },
     {
-        title: 'mobilePhone',
-        minwidth: 254,
-        field: 'phoneNumber'
+        title : 'mobilePhone',
+        minwidth : 254,
+        field : 'phoneNumber'
     },
     {
-        title: 'operate',
-        width: 130,
+        title : 'operate',
+        width : 130,
     },
 ];

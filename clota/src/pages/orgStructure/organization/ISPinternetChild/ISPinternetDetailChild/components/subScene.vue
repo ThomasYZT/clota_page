@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import {region} from './subSceneConfig';
+    import { region } from './subSceneConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
     export default {
@@ -44,7 +44,7 @@
             'search-params' : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //当前组织架构类型
@@ -53,7 +53,7 @@
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //下属景区表头配置
                 region : region,
@@ -64,10 +64,10 @@
                 //是否收起
                 isPackUp : true,
                 pageNo : 1,
-                pageSize :10
-            }
+                pageSize : 10
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询下属景区信息
              */
@@ -79,15 +79,15 @@
                     manageType : this.activeTap,
                     nodeType : 'scenic'
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 }).catch(err => {
-                    console.log(err)
+                    console.log(err);
                 });
             }
         },
@@ -97,7 +97,7 @@
                 return this.searchParams && this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

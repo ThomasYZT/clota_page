@@ -18,7 +18,7 @@
 
 <script>
     export default {
-        props :{
+        props : {
             //操作记录
             'order-record-list' : {
                 type : Array,
@@ -37,7 +37,7 @@
                 default : false
             }
         },
-        data() {
+        data () {
             return {
                 //各种状态对应的类名
                 constClassDefined : {
@@ -60,9 +60,9 @@
                     //核销
                     'ORDER_VERIFY_TICKET' : 'green-status',
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取日志详细内容
              * @param itemData
@@ -89,15 +89,15 @@
                             return {
                                 content : `${contentsObj.auditType === 'success' ? this.$t('TicketRefundsApproved') : this.$t('refundNotAllowed')}
                                 ${'refundRate' in contentsObj ? ( '，' + this.$t('handlingRate') + ':' + contentsObj.refundRate ) : '' }
-                                ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }。`,
+                                ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }。`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
                         } else {
                             //退票审核，
                             return {
                                 content : `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}
-                            ${'passOrderTicketIds' in contentsObj ? ( '，' +  this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
-                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }
+                            ${'passOrderTicketIds' in contentsObj ? ( '，' + this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }
                             ${this.$t('rejectedNum')}：${contentsObj.rejectNum}。`,
                                 className : contentsObj.rejectedNum === '0' ? 'green-status' : 'red-status'
                             };
@@ -117,9 +117,9 @@
                             // 改签审核，通过数量：
                             return {
                                 content : `${contentsObj.auditType === 'success' ? this.$t('alterApplayAllwed') : this.$t('alterApplayNotAllwed')}
-                            ${contentsObj['alterDate'] ? (  '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.alterDate) : '' }
-                            ${contentsObj['rejectNum'] ? (  '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }
-                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }`,
+                            ${contentsObj['alterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.alterDate) : '' }
+                            ${contentsObj['rejectNum'] ? ( '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
                         } else {
@@ -127,9 +127,9 @@
                             return {
                                 content : `${this.$t('alterAndAudit')}，
                             ${this.$t('passedNum')}：${contentsObj.passNum}
-                            ${'passOrderTicketIds' in contentsObj ? (  '，' + this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
-                            ${contentsObj['afterAlterDate'] ? (  '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.afterAlterDate ) : '' }
-                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`,
+                            ${'passOrderTicketIds' in contentsObj ? ( '，' + this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
+                            ${contentsObj['afterAlterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.afterAlterDate ) : '' }
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`,
                                 className : !contentsObj.passedNum === '0' ? 'red-status' : 'green-status'
                             };
                         }
@@ -172,7 +172,7 @@
                                 content : `${this.$t('verificationNum')}：${contentsObj.verifyNum}，
                             ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
                             ${this.$t('verifySN')}：${contentsObj.checkSerialNo}
-                            ${contentsObj['remark'] ? (  '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`
                             };
                         }
                     //过期核销 -- 订单
@@ -220,11 +220,11 @@
                                 this.constClassDefined[item.operationStatus] :
                                 'blue-status'),
                         contentDeal : contentDetail.content
-                    }
+                    };
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

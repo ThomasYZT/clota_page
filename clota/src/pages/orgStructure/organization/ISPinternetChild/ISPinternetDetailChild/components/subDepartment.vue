@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import {partMentHead} from './subDepartmentConfig';
+    import { partMentHead } from './subDepartmentConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
     export default {
@@ -52,7 +52,7 @@
             'search-params' : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //当前组织架构类型
@@ -64,7 +64,7 @@
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //下属部门表头配置
                 partMentHead : partMentHead,
@@ -76,9 +76,9 @@
                 pageSize : 10,
                 //是否收起
                 isPackUp : false,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 查询下属部门信息
              */
@@ -90,10 +90,10 @@
                     pageSize : this.pageSize,
                     manageType : this.activeTap,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -106,7 +106,7 @@
                 return this.searchParams && this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

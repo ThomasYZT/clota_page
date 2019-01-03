@@ -44,17 +44,17 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {roleHead} from './rolePermissionConfig';
+    import { roleHead } from './rolePermissionConfig';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 // 表单数据
-                tableData: [],
+                tableData : [],
                 //查询关键字
                 keyWrod : '',
                 //表头配置
@@ -63,9 +63,9 @@
                 pageSize : 10,
                 //总条数
                 totalCount : 0
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取权限信息
              */
@@ -75,10 +75,10 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
-                    }else{
+                    } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
@@ -101,7 +101,7 @@
              * 新增角色权限
              */
             addRole () {
-                if(!this.hasAddRolePermission) return;
+                if (!this.hasAddRolePermission) return;
                 this.$router.push({
                     name : 'addRole',
                     params : {
@@ -119,7 +119,7 @@
                 return this.permissionInfo && 'addRole' in this.permissionInfo;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss">

@@ -201,8 +201,8 @@
 <script>
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
-    import {cashierType} from '@/assets/js/constVariable.js';
-    import {mapGetters} from 'vuex';
+    import { cashierType } from '@/assets/js/constVariable.js';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //节点信息
@@ -213,27 +213,27 @@
                 }
             },
         },
-        data() {
+        data () {
             //校验服务名的唯一性
             const validateServerUrl = (rule,value,callback) => {
-                if(value){
-                    if(this.cashierDetail.serverUrl != value){
+                if (value) {
+                    if (this.cashierDetail.serverUrl != value) {
                         this.checkServerUrlUnique(value).then(res => {
-                            if(res.success){
-                                if(res.data){
+                            if (res.success) {
+                                if (res.data) {
                                     callback();
-                                }else{
+                                } else {
                                     callback(this.$t('serverNameIsExit'));
                                 }
-                            }else{
+                            } else {
                                 callback(this.$t('serverNameValidFail'));
                             }
                         });
-                    }else{
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('inputField',{field : this.$t('serverName')}));
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('serverName') }));
                 }
             };
             // //校验是否为空
@@ -275,19 +275,19 @@
                 //所属销售渠道分组
                 verifySaleTypeGroupList : [],
                 //款台详情
-                cashierDetail :{},
+                cashierDetail : {},
                 //款台类型列表
                 cashierType : cashierType,
                 //校验规则
                 ruleValidate : {
                     channelName : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('checkoutName'),length : 100}),trigger : 'blur'},
-                        {required : true,message : this.$t('inputField',{field : this.$t('checkoutName')}),trigger : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('checkoutName'),length : 100 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('checkoutName') }),trigger : 'blur' }
                     ],
                     serverUrl : [
-                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('serverName'),length : 50}),trigger : 'blur'},
-                        {required : true,message : this.$t('inputField',{field : this.$t('serverName')}),trigger : 'blur'},
-                        {validator : validateServerUrl,trigger : 'blur'}
+                        { max : 50,message : this.$t('errorMaxLength',{ field : this.$t('serverName'),length : 50 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('serverName') }),trigger : 'blur' },
+                        { validator : validateServerUrl,trigger : 'blur' }
                     ],
                     // checkGroupId : [
                     //     {validator : validateNotEmpty,trigger : 'change',_field : 'cashierTypeGroup'}
@@ -296,14 +296,14 @@
                     //     {validator : validateNotEmpty,trigger : 'change',_field : 'saleTypeGroup'}
                     // ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 开始编辑
              */
             edit () {
-                this.formDataCopy = defaultsDeep({}  , this.cashierDetail);
+                this.formDataCopy = defaultsDeep({} , this.cashierDetail);
                 this.type = 'edit';
             },
             /**
@@ -318,7 +318,7 @@
              */
             saveEdit () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.modifyTable();
                         this.type = 'watch';
                     }
@@ -331,11 +331,11 @@
                 ajax.post('getOrgInfo',{
                     orgId : this.activeNode.id,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.cashierDetail = res.data ? res.data.orgSelfChannel : {};
                         this.getCheckItemPage();
                         this.getSaleItemPage();
-                    }else{
+                    } else {
                         this.cashierDetail = {};
                     }
                 });
@@ -348,9 +348,9 @@
                     groupType : 'check',
                     orgId : this.cashierDetail.orgId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.verifyCashierTypeGroupList = res.data ? res.data : [];
-                    } else{
+                    } else {
                         this.verifyCashierTypeGroupList = [];
                     }
                 });
@@ -363,9 +363,9 @@
                     groupType : 'sale',
                     orgId : this.cashierDetail.orgId,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.verifySaleTypeGroupList = res.data ? res.data : [];
-                    } else{
+                    } else {
                         this.verifySaleTypeGroupList = [];
                     }
                 });
@@ -375,7 +375,7 @@
              */
             modifyTable () {
                 ajax.post('modifyTable',{
-                    id :this.formDataCopy.id,
+                    id : this.formDataCopy.id,
                     partnerId : this.formDataCopy.partnerId,
                     channelName : this.formDataCopy.channelName,
                     serverUrl : this.formDataCopy.serverUrl,
@@ -384,12 +384,12 @@
                     nodeType : 'table',
                     status : this.formDataCopy.isStart ? 'open' : 'close',
                 }).then(res => {
-                   if(res.success){
-                       this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
+                   if (res.success) {
+                       this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
                        this.getCashierDetail();
                        this.$emit('fresh-org',this.activeNode);
-                   }else{
-                       this.$Message.error(this.$t('failureTip', {tip: this.$t('modify')}));
+                   } else {
+                       this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
                    }
                 });
             },
@@ -416,8 +416,8 @@
         computed : {
             //款台类型
             checkerType () {
-                for(let i = 0,j = this.cashierType.length;i < j;i++){
-                    if(this.cashierDetail.checkerType === this.cashierType[i].value){
+                for (let i = 0,j = this.cashierType.length; i < j; i++) {
+                    if (this.cashierDetail.checkerType === this.cashierType[i].value) {
                         return this.cashierType[i].label;
                     }
                 }
@@ -427,7 +427,7 @@
                 permissionInfo : 'permissionInfo'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

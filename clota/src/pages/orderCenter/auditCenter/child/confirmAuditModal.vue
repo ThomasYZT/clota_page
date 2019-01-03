@@ -77,84 +77,84 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {transAudit} from '../../commFun';
-    import {mapGetters} from 'vuex';
+    import { transAudit } from '../../commFun';
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: {
-            baseInfo: Object,
-            visitorInfo: Object,
+        props : {
+            baseInfo : Object,
+            visitorInfo : Object,
             //申请数量
             'apply-num' : {
                 type : [String,Number],
                 default : 0
             }
         },
-        components: {
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
-                title: 'confirmAuditRes',   // 审核结果确认
+                visible : false,
+                title : 'confirmAuditRes', // 审核结果确认
                 //表头配置
                 columnData : [
                     {
-                        title: 'productDetailNo',      // 产品明细编号
-                        minWidth: 150,
+                        title : 'productDetailNo', // 产品明细编号
+                        minWidth : 150,
 //                        enWidth : 180,
-                        field: 'id'
+                        field : 'id'
                     },
                     {
-                        title: 'auditResult',      // 审核结果
-                        minWidth: 150,
+                        title : 'auditResult', // 审核结果
+                        minWidth : 150,
 //                        enWidth : 180,
-                        field: 'auditStatus'
+                        field : 'auditStatus'
                     },
                 ],
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //审核类型：通过or全部驳回
-                auditType: '',
+                auditType : '',
                 //审核备注
-                auditRemark: '',
+                auditRemark : '',
                 //退票手续费
-                refundProcedureFee: 0
-            }
+                refundProcedureFee : 0
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             }),
             // 是否散客退票
-            isRefund() {
-                return (this.$route.query.reqType=='refund') || (this.$route.name=='bulkRefundDetail');
+            isRefund () {
+                return (this.$route.query.reqType == 'refund') || (this.$route.name == 'bulkRefundDetail');
             },
             // 是否散客改签
-            isAlter() {
-                return (this.$route.query.reqType=='alter') || (this.$route.name=='bulkChangeDetail');
+            isAlter () {
+                return (this.$route.query.reqType == 'alter') || (this.$route.name == 'bulkChangeDetail');
             },
             //产品列表 - 通过
-            passedProducts() {
+            passedProducts () {
                 return this.tableData.filter(item => {
                     return item.auditStatus === 'success';
                 }) || [];
             },
             //产品列表 - 驳回
-            rejectProducts() {
+            rejectProducts () {
                 return this.tableData.filter(item => {
                     return item.auditStatus === 'reject';
                 }) || [];
             },
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 if (data) {
                     this.auditType = data.type;
                     let selectItemIds = data.passList.map(passItem => passItem.id);
                     this.tableData = data.productList.map(item => {
-                        if (data.type=='pass' && selectItemIds.includes(item.id)) {
+                        if (data.type == 'pass' && selectItemIds.includes(item.id)) {
                             item.auditStatus = 'success';
                         } else {
                             item.auditStatus = 'reject';
@@ -187,12 +187,12 @@
             /**
              * 获取订单退票手续费
              */
-            getRefundProcedureFee() {
+            getRefundProcedureFee () {
                 if (this.tableData.length) {
                     ajax.post('getRefundProcedureFee', {
                         orderId : this.baseInfo.orderId,
-                        orderProductId: this.tableData[0].orderProductId,
-                        orderTicketIds: this.passedProducts.map(item => item.id).join(','),  // 只传审核结果为通过的id
+                        orderProductId : this.tableData[0].orderProductId,
+                        orderTicketIds : this.passedProducts.map(item => item.id).join(','), // 只传审核结果为通过的id
                     }).then(res => {
                         if (res.success) {
                             this.refundProcedureFee = res.data;
@@ -203,22 +203,22 @@
             /**
              * 单个订单审核的确认
              */
-            confirmAudit() {
+            confirmAudit () {
                 let auditParams = {
-                    orderId: '',
-                    visitorProductId: '',
-                    productId: '',
-                    passOrderTicketIds: this.passedProducts.map(item => item.id).join(','),
-                    rejectOrderTicketIds: this.rejectProducts.map(item => item.id).join(','),
-                    reqType: '',    // 申请类型（退票-refund，改签-alter）
-                    afterAlterDate: '',     // 改签的时候，需要将改签后的日期传上
-                    remark: this.auditRemark,
+                    orderId : '',
+                    visitorProductId : '',
+                    productId : '',
+                    passOrderTicketIds : this.passedProducts.map(item => item.id).join(','),
+                    rejectOrderTicketIds : this.rejectProducts.map(item => item.id).join(','),
+                    reqType : '', // 申请类型（退票-refund，改签-alter）
+                    afterAlterDate : '', // 改签的时候，需要将改签后的日期传上
+                    remark : this.auditRemark,
                 };
                 if (this.tableData.length) {
                     Object.assign(auditParams, {
-                        orderId: this.tableData[0].orderId,
-                        visitorProductId: this.tableData[0].visitorProductId,
-                        productId: this.tableData[0].productId,
+                        orderId : this.tableData[0].orderId,
+                        visitorProductId : this.tableData[0].visitorProductId,
+                        productId : this.tableData[0].productId,
                     });
                 }
 
@@ -228,13 +228,13 @@
                     auditParams.reqType = 'alter';
                 }
 
-                if (this.auditRemark.length<=500) {
+                if (this.auditRemark.length <= 500) {
                     this.$emit('on-audit-confirmed', auditParams);
                 }
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

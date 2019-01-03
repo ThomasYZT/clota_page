@@ -18,13 +18,13 @@
 <script type="text/ecmascript-6">
 
     export default {
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
-            goVerifyManage() {
+        methods : {
+            goVerifyManage () {
                 this.$router.push({
-                    name: 'verifyManage'
+                    name : 'verifyManage'
                 });
             }
         }

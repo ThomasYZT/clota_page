@@ -48,21 +48,21 @@
 </template>
 
 <script>
-    import ajax from '../../../../../api/index'
-    import { transSMSStatus } from '../../../commFun'
+    import ajax from '../../../../../api/index';
+    import { transSMSStatus } from '../../../commFun';
     import { mapGetters } from 'vuex';
     export default {
-        props: {
-            'baseInfo': {
-                type: Object,
-                default: {}
+        props : {
+            'baseInfo' : {
+                type : Object,
+                default : {}
             },
-            'view-type': {
-                type: String,
-                default: ''
+            'view-type' : {
+                type : String,
+                default : ''
             }
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'permissionInfo'
             ]),
@@ -71,16 +71,16 @@
                 return this.permissionInfo && 'resendSms' in this.permissionInfo;
             },
             //机构对应订单角色
-            orderOrgType() {
-                if(Object.keys(this.baseInfo).length > 0 && this.baseInfo.orderOrgType) {
+            orderOrgType () {
+                if (Object.keys(this.baseInfo).length > 0 && this.baseInfo.orderOrgType) {
                     return this.baseInfo.orderOrgType;
-                }else {
+                } else {
                     return '';
                 }
             },
             //是否异常显示
             auditResultImg () {
-                if(this.baseInfo.smsStatus === 'failure' || this.baseInfo.syncStatus === 'failure'){
+                if (this.baseInfo.smsStatus === 'failure' || this.baseInfo.syncStatus === 'failure') {
                     return require('../../../../../assets/images/icon-abnormal.svg');
                 }
             },
@@ -92,21 +92,21 @@
                     this.perMissioncanResendSms;
             },
         },
-        data() {
+        data () {
             return {
                 //转换短信发送状态
-                transSMSStatus: transSMSStatus
-            }
+                transSMSStatus : transSMSStatus
+            };
         },
-        methods: {
+        methods : {
             //查看上级订单
-            toUpDetail() {
+            toUpDetail () {
                 this.$router.push({
-                    name: 'individualFirstLevel',
+                    name : 'individualFirstLevel',
                     params : {
                         orderId : this.baseInfo.orderId
                     }
-                })
+                });
             },
             /**
              * 给导游重发短信
@@ -115,15 +115,15 @@
                 ajax.post('noticeVisitorToPick',{
                     visitorProductId : this.baseInfo.visitorProductId
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{ tip: this.$t('sending') }));
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{ tip: this.$t('sending') }));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('sending') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('sending') }));
                     }
                 });
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

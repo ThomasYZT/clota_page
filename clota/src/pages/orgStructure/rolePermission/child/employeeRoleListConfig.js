@@ -6,18 +6,18 @@ export const roleHead = [
         field : 'check'
     },
     {
-        title: 'empName',//员工姓名
-        minWidth: 200,
-        field: 'nickName',
+        title : 'empName',//员工姓名
+        minWidth : 200,
+        field : 'nickName',
     },
     {
-        title: 'empAccount',//员工账号
-        minWidth: 150,
-        field: 'loginName',
+        title : 'empAccount',//员工账号
+        minWidth : 150,
+        field : 'loginName',
     },
     {
         title : 'department',//部门
-        minWidth: 150,
+        minWidth : 150,
         field : 'deptName'
     },
     {

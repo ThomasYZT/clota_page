@@ -68,62 +68,62 @@
     import pick from 'lodash/pick';
 
     export default {
-        components: {},
-        props: [],
-        data() {
+        components : {},
+        props : [],
+        data () {
             return {
-                visible: false,
-                readonly: false,
-                loading: false,
-                addPartner: {
-                    partnerId: '',
-                    startDate: '',
-                    endDate: '',
-                    saleGroupId: '',
-                    channelName: '',
-                    description: '',
-                    status: 'valid',
+                visible : false,
+                readonly : false,
+                loading : false,
+                addPartner : {
+                    partnerId : '',
+                    startDate : '',
+                    endDate : '',
+                    saleGroupId : '',
+                    channelName : '',
+                    description : '',
+                    status : 'valid',
                 },
 
                 // 表单校验
-                ruleValidate: {
-                    partnerId: [
-                        {required: true, message: this.$t('selectField',{msg : this.$t('org-partner')}), trigger: 'change'},
+                ruleValidate : {
+                    partnerId : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('org-partner') }), trigger : 'change' },
                     ],
-                    startDate: [
-                        {required: true, message: this.$t('selectField',{msg : this.$t('protocolStartDate')}), trigger: 'change'},
+                    startDate : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('protocolStartDate') }), trigger : 'change' },
                     ],
-                    endDate: [
-                        {required: true, message: this.$t('selectField',{msg : this.$t('protocolStartDate')}), trigger: 'change'},
+                    endDate : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('protocolStartDate') }), trigger : 'change' },
                     ],
-                    description: [
-                        { max: 100, message: this.$t('errorMaxLength', {field: this.$t('remark'), length: 100}), trigger: 'blur' },     // 备注不能超过100字符
+                    description : [
+                        { max : 100, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 100 }), trigger : 'blur' }, // 备注不能超过100字符
                     ]
                 },
                 // 所有合作伙伴列表
-                partners: [],
+                partners : [],
                 // 销售渠道分组列表
-                saleChannels: [],
+                saleChannels : [],
                 // 协议起止日期
-                protoDate: [],
+                protoDate : [],
                 // 新增or修改
-                type: 'add',
-            }
+                type : 'add',
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
             this.getSaleGroup();
             this.getAllPartnerList();
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
 
             /**
              * 显示模态框
              * @param data {data有值表示查看，反之新增}
              */
-            show(data) {
-                if( data.item ){
+            show (data) {
+                if ( data.item ) {
                     this.addPartner = defaultsDeep({}, pick(data.item, [...Object.keys(this.addPartner), 'id']), this.addPartner);
                     this.protoDate = [data.item.startDate, data.item.endDate];
                 }
@@ -134,7 +134,7 @@
             /**
              * 隐藏模态框
              */
-            hide() {
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
                 this.protoDate = [];
@@ -142,7 +142,7 @@
             /**
              * 创建自定义指标表单校验
              */
-            submit() {
+            submit () {
                 this.$refs.formValidate.validate((valid) => {
                     if (valid) {
                         this.confirmAddPartner();
@@ -150,9 +150,9 @@
                 });
             },
             // 获取销售渠道分组列表
-            getSaleGroup() {
+            getSaleGroup () {
                 ajax.post('getOrgGroupList', {
-                    groupType: 'sale'
+                    groupType : 'sale'
                 }).then(res => {
                     if (res.success) {
                         this.saleChannels = res.data || [];
@@ -160,7 +160,7 @@
                 });
             },
             // 获取所有合作伙伴
-            getAllPartnerList() {
+            getAllPartnerList () {
                 ajax.post('queryAllPartnerList').then(res => {
                     if (res.success) {
                         this.partners = res.data || [];
@@ -168,21 +168,21 @@
                 });
             },
             // 协议日期改变的处理
-            changeDateRange(date) {
+            changeDateRange (date) {
                 this.addPartner.startDate = date[0];
                 this.addPartner.endDate = date[1];
             },
             // 确定新增/修改合作伙伴
-            confirmAddPartner() {
+            confirmAddPartner () {
                 let partnerObj = {};
-                if (this.type=='add') {
+                if (this.type == 'add') {
                     partnerObj.apiKey = 'addPartner';
-                    partnerObj.successTip = this.$t('successTip',{tip : this.$t('addPartner')});
-                    partnerObj.failTip = this.$t('failureTip',{tip : this.$t('addPartner')});
-                } else if (this.type=='modify') {
+                    partnerObj.successTip = this.$t('successTip',{ tip : this.$t('addPartner') });
+                    partnerObj.failTip = this.$t('failureTip',{ tip : this.$t('addPartner') });
+                } else if (this.type == 'modify') {
                     partnerObj.apiKey = 'updatePartner';
-                    partnerObj.successTip = this.$t('successTip',{tip : this.$t('editPartner')});
-                    partnerObj.failTip = this.$t('failureTip',{tip : this.$t('editPartner')});
+                    partnerObj.successTip = this.$t('successTip',{ tip : this.$t('editPartner') });
+                    partnerObj.failTip = this.$t('failureTip',{ tip : this.$t('editPartner') });
                 }
                 this.addPartner.startDate = new Date(this.addPartner.startDate).format('yyyy-MM-dd');
                 this.addPartner.endDate = new Date(this.addPartner.endDate).format('yyyy-MM-dd');
@@ -202,7 +202,7 @@
                 });
             },
             // 改变合作伙伴选择的处理
-            handlePartnerChanged(selected) {
+            handlePartnerChanged (selected) {
                 if (selected) {
                     this.addPartner.channelName = this.partners.find((item, i) => {
                         return item.id === selected;
@@ -211,7 +211,7 @@
             },
 
         }
-    }
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

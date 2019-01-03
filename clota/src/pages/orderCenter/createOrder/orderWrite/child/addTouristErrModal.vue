@@ -17,8 +17,8 @@
             <ul class="pro-list">
                 <li v-for="item in touristErrList"
                     :key="item.productId"
-                    v-w-title="`${item.visitorName}最多购买${item.maxCount}个${item.productName}。`"
-                    class="detail">{{item.visitorName}}最多购买{{item.maxCount}}个{{item.productName}}。</li>
+                    :v-w-title="`${item.visitorName}` + $t('MostBuy') + `${item.maxCount}{{$t('ge')}}${item.productName}。`"
+                    class="detail">{{item.visitorName}}{{$t('MostBuy')}}{{item.maxCount}}{{$t('ge')}}{{item.productName}}。</li>
                 <li class="hint">
                     <Icon type="information-circled"></Icon>
                 </li>
@@ -48,22 +48,22 @@
                 }
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                 }
             },
             /**
@@ -73,7 +73,7 @@
                 this.$emit('input', false);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

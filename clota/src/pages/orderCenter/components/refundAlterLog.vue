@@ -50,23 +50,23 @@
 </template>
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {refundAlterLogHead} from '../auditCenter/auditConfig';
-    import {transRefundStatus} from '../commFun';
+    import { refundAlterLogHead } from '../auditCenter/auditConfig';
+    import { transRefundStatus } from '../commFun';
 
     export default {
-        components: {tableCom},
-        props: {
-            moduleInfo: Array,
+        components : { tableCom },
+        props : {
+            moduleInfo : Array,
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columnData : refundAlterLogHead,
-            }
+            };
         },
-        methods: {
+        methods : {
             // 退票
-            transRefundStatus: transRefundStatus,
+            transRefundStatus : transRefundStatus,
         },
 
     };

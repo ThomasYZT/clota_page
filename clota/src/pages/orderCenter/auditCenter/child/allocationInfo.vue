@@ -55,12 +55,12 @@
 <script type="text/ecmascript-6">
 
     export default {
-        components: {},
-        props: {
-            moduleInfo: Object,
+        components : {},
+        props : {
+            moduleInfo : Object,
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
 
     };

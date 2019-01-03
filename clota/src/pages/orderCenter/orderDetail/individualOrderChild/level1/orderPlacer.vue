@@ -22,30 +22,30 @@
 <script>
 
     export default {
-        props: {
+        props : {
             //下单人信息
-            orderVisitor: {
-                type: Object,
+            orderVisitor : {
+                type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
-        components: {},
-        data() {
-            return {}
+        components : {},
+        data () {
+            return {};
         },
-        computed: {
-            documentInfo() {
-                if(this.orderVisitor.documentInfo) {
+        computed : {
+            documentInfo () {
+                if (this.orderVisitor.documentInfo) {
                     let documentInfo = this.orderVisitor.documentInfo ? JSON.parse(this.orderVisitor.documentInfo) : [];
                     return documentInfo[0] ? documentInfo[0] : {};
-                }else{
+                } else {
                     return {};
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

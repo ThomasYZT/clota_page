@@ -71,22 +71,22 @@
                 default : true
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                 }
             },
             /**
@@ -96,7 +96,7 @@
                 this.$emit('input', false);
                 this.$router.replace({
                     name : 'createOrder'
-                })
+                });
             },
             /**
              * 删除下单失败的产品
@@ -106,7 +106,7 @@
                 this.changeValue(false);
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

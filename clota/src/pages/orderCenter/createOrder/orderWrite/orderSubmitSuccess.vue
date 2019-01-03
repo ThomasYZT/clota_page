@@ -18,14 +18,14 @@
 
 <script>
     export default {
-        data() {
+        data () {
             return {
                 type : '',
                 //订单id
                 orderId : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 继续预定订单
              */
@@ -39,10 +39,10 @@
              * @param params
              */
             getParams (params) {
-                if(params && params.type){
+                if (params && params.type) {
                     this.type = params.type;
                     this.orderId = params.orderId;
-                }else{
+                } else {
                     this.$router.push({
                         name : 'createOrder'
                     });
@@ -52,29 +52,29 @@
              * 跳转到订单详情
              */
             toOrderDetail () {
-                if(this.type === 'team'){
+                if (this.type === 'team') {
                     this.$router.push({
                         name : 'teamOrderDetail',
-                        params :{
+                        params : {
                             orderId : this.orderId
                         }
                     });
-                }else if(this.type === 'individual'){
+                } else if (this.type === 'individual') {
                     this.$router.push({
                         name : 'individualFirstLevel',
                         params : {
-                            orderId :this.orderId
+                            orderId : this.orderId
                         }
                     });
                 }
             }
         },
-        beforeRouteEnter(to,from,next){
+        beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getParams(to.params);
             });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

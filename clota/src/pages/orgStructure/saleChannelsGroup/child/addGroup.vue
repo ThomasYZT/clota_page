@@ -34,15 +34,15 @@
 <script>
     import ajax from '@/api/index.js';
     export default {
-        data() {
+        data () {
             return {
                 //新增分组是否显示
                 addGroupPopVisible : false,
                 //表单校验规则
                 ruleValidate : {
                     orgName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('groupName')}),trigger : 'blur'},
-                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('groupName'),length : 50}),trigger : 'blur'},
+                        { required : true,message : this.$t('inputField',{ field : this.$t('groupName') }),trigger : 'blur' },
+                        { max : 50,message : this.$t('errorMaxLength',{ field : this.$t('groupName'),length : 50 }),trigger : 'blur' },
                     ]
                 },
                 //分组信息
@@ -50,24 +50,24 @@
                     //新增的分组姓名
                     orgName : '',
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 新增分组
              */
             addOrgName () {
                 this.$refs.formData.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         ajax.post('addOrUpdateOrgGroup',{
                             groupType : 'sale',
                             groupName : this.formData.orgName
                         }).then(res => {
-                            if(res.success){
-                                this.$Message.success(this.$t('successTip',{msg: this.$t('addSaleChannelGroup')}));
+                            if (res.success) {
+                                this.$Message.success(this.$t('successTip',{ msg : this.$t('addSaleChannelGroup') }));
                                 this.$emit('fresh-data');
-                            }else{
-                                this.$Message.error(res.code === '0004' ? this.$t('checkNameError',{field : this.formData.orgName}) : this.$t('failureTip',{msg: this.$t('add')}));
+                            } else {
+                                this.$Message.error(res.code === '0004' ? this.$t('checkNameError',{ field : this.formData.orgName }) : this.$t('failureTip',{ msg : this.$t('add') }));
                             }
                         }).finally(() => {
                             this.addGroupPopVisible = false;
@@ -78,7 +78,7 @@
             /**
              * 新增分组
              */
-            addGroup(event) {
+            addGroup (event) {
                 this.addGroupPopVisible = true;
             },
             /**
@@ -88,7 +88,7 @@
                 this.$refs.formData.resetFields();
             }
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -122,16 +122,16 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData} from './driverConfig';
+    import { columnData } from './driverConfig';
     import ajax from '@/api/index.js';
-    import {idType} from '@/assets/js/constVariable.js';
+    import { idType } from '@/assets/js/constVariable.js';
     import delModal from '@/components/delModal/index.vue';
     import addTourGuideOrDriverModal from './addTourGuideOrDriverModal';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        props :{
+        props : {
             //查询参数
-            'search-params': {
+            'search-params' : {
                 type : Object,
                 default () {
                     return {};
@@ -143,33 +143,33 @@
             delModal,
             addTourGuideOrDriverModal
         },
-        data() {
+        data () {
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
-                if(rule.rowData.documentNo){
-                    if(rule.rowData.documentNo.length > 10){
-                        callback(this.$t('errorMaxLength', { field : this.$t('licence'), length : 10}));    // 车牌号
-                    }else{
+                if (rule.rowData.documentNo) {
+                    if (rule.rowData.documentNo.length > 10) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('licence'), length : 10 })); // 车牌号
+                    } else {
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback(this.$t('existCarNo'));     // 车牌号已存在
+                            callback(this.$t('existCarNo')); // 车牌号已存在
                         });
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('licence')}));     // 请输入车牌号
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('licence') })); // 请输入车牌号
                 }
             };
             //校验司机姓名
             const validateName = (rule,value,callback) => {
-                if(rule.rowData.staffName){
-                    if(rule.rowData.staffName.length > 20){
-                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20}));
-                    }else{
+                if (rule.rowData.staffName) {
+                    if (rule.rowData.staffName.length > 20) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('name'), length : 20 }));
+                    } else {
                         callback();
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('name')}));      // 请输入姓名
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('name') })); // 请输入姓名
                 }
             };
             return {
@@ -183,12 +183,12 @@
                 rules : {
                     idCard (rowData) {
                         return [
-                            {validator : validateIdCard,trigger: 'blur',rowData : rowData}
-                        ]
+                            { validator : validateIdCard,trigger : 'blur',rowData : rowData }
+                        ];
                     },
                     staffName (rowData) {
                         return [
-                            {validator : validateName,trigger : 'blur',rowData : rowData}
+                            { validator : validateName,trigger : 'blur',rowData : rowData }
                         ];
                     },
                 },
@@ -196,14 +196,14 @@
                 originalTableData : [],
                 //添加司机模态框是否显示
                 addDriverShow : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 选择的司机信息
              * @param val
              */
-            handleSelectionChange(val) {
+            handleSelectionChange (val) {
                 this.selectedTourGuideInfo = val;
             },
             /**
@@ -211,13 +211,13 @@
              */
             addTourGuide () {
                 //分销商下单，直接编辑导游信息
-                if(this.manageOrgs.nodeType === 'partner'){
+                if (this.manageOrgs.nodeType === 'partner') {
                     this.addDriverShow = true;
-                }else if(this.manageOrgs.nodeType === 'scenic'){
+                } else if (this.manageOrgs.nodeType === 'scenic') {
                     this.tableData.push({
                         editType : 'edit',
                         staffName : '',
-                        documentNo :'',
+                        documentNo : '',
                         phoneNumber : '',
                         modifyType : 'add'
                     });
@@ -229,8 +229,8 @@
              */
             validateIdCardNumIsExist (cardInfo) {
                 return new Promise((resolve,reject) => {
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(cardInfo !== this.tableData[i] && this.tableData[i]['documentNo'] === cardInfo['documentNo']){
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (cardInfo !== this.tableData[i] && this.tableData[i]['documentNo'] === cardInfo['documentNo']) {
                             reject();
                         }
                     }
@@ -245,7 +245,7 @@
                 this.originalTableData[index] = JSON.parse(JSON.stringify(this.tableData[index]));
                 this.$set(this.tableData[index],'editType','edit');
                 this.$set(this.tableData[index],'modifyType','modify');
-                if(this.selectedTourGuideInfo.includes(this.tableData[index])){
+                if (this.selectedTourGuideInfo.includes(this.tableData[index])) {
                     this.$refs.table.toggleRowSelection(this.tableData[index]);
                 }
             },
@@ -255,7 +255,7 @@
              */
             delIdInfo (index) {
                 this.tableData.splice(index,1);
-                this.$Message.success(this.$t('deletedField', {field: this.$t('driverInfo')}));      // 司机信息已删除
+                this.$Message.success(this.$t('deletedField', { field : this.$t('driverInfo') })); // 司机信息已删除
             },
             /**
              * 保存司机信息
@@ -265,23 +265,23 @@
                 //判断证件类型和证件号是否已经填写，并且需要判断证件号和证件类型是否已经填写过
                 Promise.all([new Promise((resolve,reject) => {//校验司机姓名
                     this.$refs.formInline.validateField('staffName' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验车牌号
                     this.$refs.formInline.validateField('idCard' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 })]).then(() => {
                     //景区直接保存修改结果，旅行社需要保存到数据库中
-                    if(this.manageOrgs.nodeType === 'partner'){
+                    if (this.manageOrgs.nodeType === 'partner') {
                         this.addOrUpdateOrgStaff({
                             id : this.tableData[index]['id'],
                             staffName : this.tableData[index]['staffName'],
@@ -289,7 +289,7 @@
                             phoneNumber : '',
                             index : index
                         });
-                    }else if(this.manageOrgs.nodeType === 'scenic'){
+                    } else if (this.manageOrgs.nodeType === 'scenic') {
                         this.$set(this.tableData[index],'editType','');
                     }
                 });
@@ -299,9 +299,9 @@
              * @param index
              */
             cancelEdit (index) {
-                if(this.tableData[index]['modifyType'] === 'add'){
+                if (this.tableData[index]['modifyType'] === 'add') {
                     this.tableData.splice(index,1);
-                }else{
+                } else {
                     this.$set(this.tableData,index,this.originalTableData[index]);
                 }
             },
@@ -314,26 +314,26 @@
                     confirmCallback : () => {
                         this.confirmDelTouristInfo();
                     }
-                })
+                });
             },
             /**
              * 判断当前司机是否可以选择
              * @param row
              * @param index
              */
-            selectableFunc (row,index){
-                return row['editType'] !== 'edit'
+            selectableFunc (row,index) {
+                return row['editType'] !== 'edit';
             },
             /**
              * 确认删除司机信息
              */
             confirmDelTouristInfo () {
-                for(let i = this.tableData.length,j = 0; i >= j;i--){
-                    if(this.selectedTourGuideInfo.includes(this.tableData[i])){
+                for (let i = this.tableData.length,j = 0; i >= j; i--) {
+                    if (this.selectedTourGuideInfo.includes(this.tableData[i])) {
                         this.tableData.splice(i,1);
                     }
                 }
-                this.$Message.success(this.$t('deletedField', {field: this.$t('driverInfo')}));      // 司机信息已删除
+                this.$Message.success(this.$t('deletedField', { field : this.$t('driverInfo') })); // 司机信息已删除
             },
             /**
              * 获取填写的司机信息
@@ -341,8 +341,8 @@
             getDriverInfo () {
                 return new Promise((resolve,reject) => {
                     let result = [];
-                    for(let i = 0,j = this.tableData.length;i < j;i++){
-                        if(this.tableData[i]['editType'] === 'edit'){
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (this.tableData[i]['editType'] === 'edit') {
                             reject('driverErr');
                         }
                         result.push({
@@ -363,7 +363,7 @@
              * @param data
              */
             getChosedInfo (data) {
-                this.tableData =  data;
+                this.tableData = data;
             },
             /**
              * 修改司机信息
@@ -373,7 +373,7 @@
              * @param phoneNumber 手机号
              * @param index
              */
-            addOrUpdateOrgStaff ({id,staffName,documentNo,phoneNumber,index}) {
+            addOrUpdateOrgStaff ({ id,staffName,documentNo,phoneNumber,index }) {
                 return ajax.post('addOrUpdateOrgStaff',{
                     id : id,
                     staffName : staffName,
@@ -382,13 +382,13 @@
                     documentNo : documentNo,
                     phoneNumber : phoneNumber,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         // 修改司机信息成功
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('modifyDriverInfo')}));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modifyDriverInfo') }));
                         this.$set(this.tableData[index],'editType','');
-                    }else{
+                    } else {
                         // 修改司机信息失败
-                        this.$Message.error(this.$t('failureTip', {tip: this.$t('modifyDriverInfo')}));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modifyDriverInfo') }));
                     }
                 });
             },
@@ -397,12 +397,12 @@
              * @param data
              * @param type 操作类型
              */
-            modifyChoosedData({data,type}) {
-                for(let i = 0,j = this.tableData.length;i < j;i++){
-                    if(this.tableData[i]['id'] === data['id']){
-                        if(type === 'modify'){
-                            this.$set(this.tableData,i,data)
-                        }else if(type === 'del'){
+            modifyChoosedData ({ data,type }) {
+                for (let i = 0,j = this.tableData.length; i < j; i++) {
+                    if (this.tableData[i]['id'] === data['id']) {
+                        if (type === 'modify') {
+                            this.$set(this.tableData,i,data);
+                        } else if (type === 'del') {
                             this.tableData.splice(i,1);
                         }
                         break;
@@ -417,15 +417,15 @@
                     visitorType : 'driver',
                     orderOrgId : this.searchParams.orderOrgId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.map(item => {
                             return {
                                 ...item,
                                 documentNo : item.documentInfo ? JSON.parse(item.documentInfo)['data'] : '',
                                 staffName : item.visitorName
-                            }
+                            };
                         }) : [];
-                    }else{
+                    } else {
                         this.tableData = [];
                     }
                 });
@@ -434,33 +434,33 @@
         computed : {
             //将要删除的司机信息
             delingTouristInfo () {
-                if(this.selectedTourGuideInfo.length > 2){
+                if (this.selectedTourGuideInfo.length > 2) {
                     return {
                         data : this.selectedTourGuideInfo.map(item => item.staffName).slice(0,2).join(','),
                         showMore : true
-                    }
-                }else{
+                    };
+                } else {
                     return {
                         data : this.selectedTourGuideInfo.map(item => item.staffName).slice(0,2).join(','),
                         showMore : false
-                    }
+                    };
                 }
             },
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             }),
         },
-        watch :{
-            'searchParams.orderOrgId' (newVal,oldVal){
-                if(newVal){
+        watch : {
+            'searchParams.orderOrgId' (newVal,oldVal) {
+                if (newVal) {
                     //当前登录的是景区的话，要查询上次填写的司机信息
-                    if(this.manageOrgs.nodeType === 'scenic'){
+                    if (this.manageOrgs.nodeType === 'scenic') {
                         this.getRecentVisitors();
                     }
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

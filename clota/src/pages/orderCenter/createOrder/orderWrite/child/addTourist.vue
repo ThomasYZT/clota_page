@@ -177,11 +177,11 @@
 </template>
 
 <script>
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {idColumns,ticketColumnData} from './addTouristConfig';
+    import { idColumns,ticketColumnData } from './addTouristConfig';
     import ajax from '@/api/index.js';
-    import {idType} from '@/assets/js/constVariable.js';
+    import { idType } from '@/assets/js/constVariable.js';
     import addTouristErrModal from './addTouristErrModal';
 
     export default {
@@ -202,14 +202,14 @@
             'added-tourist-info' : {
                 type : Array,
                 default () {
-                    return []
+                    return [];
                 }
             },
             //默认游客信息
             'default-info' : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
@@ -217,59 +217,59 @@
             tableCom,
             addTouristErrModal
         },
-        data() {
+        data () {
             //校验手机号码
-            const validatePhone =  (rule,value,callback) => {
-                if(value && validator.isMobile(value)){
+            const validatePhone = (rule,value,callback) => {
+                if (value && validator.isMobile(value)) {
                     this.validatePhoneIsExit().then(() => {
                         callback();
                     }).catch(err => {
-                        callback(this.$t('existMobilePhone'));   // 手机号码已存在
+                        callback(this.$t('existMobilePhone')); // 手机号码已存在
                     });
-                }else{
-                    callback(this.$t('errorFormat', { field : this.$t('mobilePhone')}));
+                } else {
+                    callback(this.$t('errorFormat', { field : this.$t('mobilePhone') }));
                 }
             };
             //校验证件类型
             const validateIdType = (rule,value,callback) => {
-                if(rule['rowData']['takeNum'] <= 0){
+                if (rule['rowData']['takeNum'] <= 0) {
                     callback();
-                }else{
-                    if(rule['rowData']['needId'] !== 'noRequired' ){
-                        for(let i = 0,j = this.idTableData.length;i < j;i++){
-                            if(this.idTableData[i]['type'] === rule['rowData']['idType'] &&
-                                this.idTableData[i]['editType'] !== 'edit'){
+                } else {
+                    if (rule['rowData']['needId'] !== 'noRequired' ) {
+                        for (let i = 0,j = this.idTableData.length; i < j; i++) {
+                            if (this.idTableData[i]['type'] === rule['rowData']['idType'] &&
+                                this.idTableData[i]['editType'] !== 'edit') {
                                 callback();
                             }
                         }
-                        callback(this.$t('fillCredentialsInfo'));    // 请填写证件信息
-                    }else{
+                        callback(this.$t('fillCredentialsInfo')); // 请填写证件信息
+                    } else {
                         callback();
                     }
                 }
             };
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
-                if(rule.rowData.data){
-                    if(rule.rowData.data.length > 100){
-                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100}));
-                    }else{
+                if (rule.rowData.data) {
+                    if (rule.rowData.data.length > 100) {
+                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100 }));
+                    } else {
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
-                            callback(this.$t('existID'));   // 证件已存在
+                            callback(this.$t('existID')); // 证件已存在
                         });
                     }
-                }else{
-                    callback(this.$t('inputField', {field: this.$t('IdentificationNumber')}));     // 请输入证件号
+                } else {
+                    callback(this.$t('inputField', { field : this.$t('IdentificationNumber') })); // 请输入证件号
                 }
             };
             //校验是否选择了证件
-            const validateidTypeIn =(rule,value,callback) => {
-                if(rule.rowData.type){
+            const validateidTypeIn = (rule,value,callback) => {
+                if (rule.rowData.type) {
                     callback();
-                }else{
-                    callback(this.$t('selectField', {msg: this.$t('credentialsType')}));    // 请选择证件类型
+                } else {
+                    callback(this.$t('selectField', { msg : this.$t('credentialsType') })); // 请选择证件类型
                 }
             };
             return {
@@ -281,32 +281,32 @@
                     //证件类型
                     idType : '',
                     //证件号码
-                    idNum :''
+                    idNum : ''
                 },
                 //校验规则
                 rules : {
                     name : [
-                        { required: true, message: this.$t('inputField',{field : this.$t('name')}), trigger: 'blur' },
-                        { max : 20, message: this.$t('errorMaxLength', { field : this.$t('name') , length : 20}), trigger: 'blur' },
+                        { required : true, message : this.$t('inputField',{ field : this.$t('name') }), trigger : 'blur' },
+                        { max : 20, message : this.$t('errorMaxLength', { field : this.$t('name') , length : 20 }), trigger : 'blur' },
                     ],
-                    phone: [
-                        { required: true, message: this.$t('inputField',{field : this.$t('mobilePhone')}), trigger: 'blur' },
-                        {validator :validatePhone,trigger : 'blur'}
+                    phone : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('mobilePhone') }), trigger : 'blur' },
+                        { validator : validatePhone,trigger : 'blur' }
                     ],
                     idType  (rowData) {
-                        return  [
+                        return [
                             { validator : validateIdType ,trigger : 'change',rowData : rowData }
-                        ]
+                        ];
                     },
                     idCard (rowData) {
                         return [
-                            {validator : validateIdCard,trigger: 'blur',rowData : rowData}
-                        ]
+                            { validator : validateIdCard,trigger : 'blur',rowData : rowData }
+                        ];
                     },
                     idTypeIn (rowData) {
                         return [
-                            {validator : validateidTypeIn,trigger: 'change',rowData : rowData}
-                        ]
+                            { validator : validateidTypeIn,trigger : 'change',rowData : rowData }
+                        ];
                     }
                 },
                 //证件列表表头配置
@@ -326,13 +326,13 @@
                 touristErrList : [],
                 //当前状态
                 type : 'add'
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
@@ -340,10 +340,10 @@
              */
             confirm () {
                 this.$refs.formInline.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         Promise.all([this.validateIdType(),this.validateGetTicketNum(),this.checkProductSaleRule()]).then(() => {
                             //如果有默认信息表示是修改游客信息，没有表示新增游客信息
-                            if(this.defaultInfo && Object.keys(this.defaultInfo).length > 0){
+                            if (this.defaultInfo && Object.keys(this.defaultInfo).length > 0) {
                                 this.$emit('modify-tourist',{
                                     index : this.defaultInfo['index'],
                                     data : {
@@ -353,7 +353,7 @@
                                         productInfo : this.productListDeal.filter(item => item.takeNum > 0)
                                     }
                                 });
-                            }else{
+                            } else {
                                 this.$emit('add-tourist',{
                                     name : this.formData.name,
                                     phone : this.formData.phone,
@@ -363,10 +363,10 @@
                             }
                             this.$emit('input', false);
                         }).catch(err => {
-                            if(err === 'ticketErr'){
-                                this.$Message.error('selectOneProductAtLeast');     // 最少选择一种产品信息
-                            }else if(err === 'idTypeErr'){
-                                this.$Message.warning('saveEditingCredentials');   // 请先保存正在编辑的证件类型
+                            if (err === 'ticketErr') {
+                                this.$Message.error('selectOneProductAtLeast'); // 最少选择一种产品信息
+                            } else if (err === 'idTypeErr') {
+                                this.$Message.warning('saveEditingCredentials'); // 请先保存正在编辑的证件类型
                             }
                         });
                     }
@@ -413,28 +413,28 @@
              * 保存证件类型
              * @param index
              */
-            saveCardInfo (index){
-                for(let i = 0,j = this.idTableData.length;i < j;i++){
-                    if(i !== index && this.idTableData[index]['type'] !== '' && this.idTableData[index]['type'] === this.idTableData[i]['type']){
+            saveCardInfo (index) {
+                for (let i = 0,j = this.idTableData.length; i < j; i++) {
+                    if (i !== index && this.idTableData[index]['type'] !== '' && this.idTableData[index]['type'] === this.idTableData[i]['type']) {
 //                        this.$Message.error(`${this.$t(this.idTableData[index]['type'])}已经填写，请选择其它证件类型`);
-                        this.$Message.error(this.$t('selectOtherCredentialsField', {field: this.$t(this.idTableData[index]['type'])}));
+                        this.$Message.error(this.$t('selectOtherCredentialsField', { field : this.$t(this.idTableData[index]['type']) }));
                         return;
                     }
                 }
                 //判断证件类型和证件号是否已经填写，并且需要判断证件号和证件类型是否已经填写过
                 Promise.all([new Promise((resolve,reject) => {
                     this.$refs.formInline.validateField('idCard' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
                 }),new Promise((resolve,reject) => {
                     this.$refs.formInline.validateField('idTypeIn' + index,valid => {
-                        if(valid){
+                        if (valid) {
                             reject();
-                        }else{
+                        } else {
                             resolve();
                         }
                     });
@@ -452,9 +452,9 @@
              * @param index
              */
             cancelEdit (index) {
-                if(this.idTableData[index]['modifyType'] === 'add'){
+                if (this.idTableData[index]['modifyType'] === 'add') {
                     this.delIdInfo(index);
-                }else{
+                } else {
                     // this.idTableData[index] = this.originalIDInfo.splice(index,1);
                     this.$set(this.idTableData,index,this.originalIDInfo[index]);
                 }
@@ -466,9 +466,9 @@
                 ajax.post('findProductSaleRule',{
                     productIds : this.ticketTableData.map(item => item.productId).join(',')
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.productPolicy = res.data ? res.data : {};
-                    }else{
+                    } else {
                         this.productPolicy = {};
                     }
                 });
@@ -477,10 +477,10 @@
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                     this.findProductSaleRule();
-                }else{
+                } else {
                     this.$refs.formInline.resetFields();
                     this.idTableData = [];
                 }
@@ -490,8 +490,8 @@
              */
             validateIdType ( ) {
                 return new Promise((resolve,reject) => {
-                    for(let i = 0 ,j = this.idTableData.length;i < j;i++ ){
-                        if(this.idTableData[i]['editType'] === 'edit'){
+                    for (let i = 0 ,j = this.idTableData.length; i < j; i++ ) {
+                        if (this.idTableData[i]['editType'] === 'edit') {
                             reject('idTypeErr');
                         }
                     }
@@ -503,11 +503,11 @@
              * @param rowData
              */
             takeNumChange (rowData) {
-                if(rowData.takeNum > 0){
-                    if(!rowData.idType && this.acceptCertificateType.all.length > 0){
+                if (rowData.takeNum > 0) {
+                    if (!rowData.idType && this.acceptCertificateType.all.length > 0) {
                         rowData.idType = this.productPolicy[rowData.productId].acceptIdType ? this.productPolicy[rowData.productId].acceptIdType.split(',')[0] : '';
                     }
-                }else{
+                } else {
                     rowData.idType = '';
                 }
             },
@@ -517,12 +517,12 @@
             validateGetTicketNum () {
                 return new Promise((resolve,reject) => {
                     let num = 0;
-                    for(let i = 0,j = this.productListDeal.length;i < j;i++){
+                    for (let i = 0,j = this.productListDeal.length; i < j; i++) {
                         num += this.productListDeal[i]['takeNum'];
                     }
-                    if(num <= 0){
+                    if (num <= 0) {
                         reject('ticketErr');
-                    }else{
+                    } else {
                         resolve();
                     }
                 });
@@ -536,15 +536,15 @@
                     ajax.post('checkProductSaleRule',{
                         productSaleVo : JSON.stringify(checkProducts)
                     }).then(res => {
-                        if(res.success){
-                            if(res.data && res.data.length > 0){
+                        if (res.success) {
+                            if (res.data && res.data.length > 0) {
                                 this.addTouristModalShow = true;
                                 this.touristErrList = res.data;
                                 reject();
-                            }else{
+                            } else {
                                 resolve();
                             }
-                        }else{
+                        } else {
                             reject();
                         }
                     });
@@ -557,16 +557,16 @@
             validatePhoneIsExit (phone) {
                 return new Promise((resolve,reject) => {
                     //区分当前是修改游客还是添加游客
-                    if(this.defaultInfo && Object.keys(this.defaultInfo).length > 0){
-                        for(let i = 0,j = this.addedTouristInfo.length;i < j;i++){
-                            if(i !== this.defaultInfo['index'] && this.addedTouristInfo[i]['phone'] === this.formData.phone){
+                    if (this.defaultInfo && Object.keys(this.defaultInfo).length > 0) {
+                        for (let i = 0,j = this.addedTouristInfo.length; i < j; i++) {
+                            if (i !== this.defaultInfo['index'] && this.addedTouristInfo[i]['phone'] === this.formData.phone) {
                                 reject();
                             }
                         }
                         resolve();
-                    }else{
-                        for(let i = 0,j = this.addedTouristInfo.length;i < j;i++){
-                            if(this.addedTouristInfo[i]['phone'] === this.formData.phone){
+                    } else {
+                        for (let i = 0,j = this.addedTouristInfo.length; i < j; i++) {
+                            if (this.addedTouristInfo[i]['phone'] === this.formData.phone) {
                                 reject();
                             }
                         }
@@ -580,21 +580,21 @@
              */
             validateIdCardNumIsExist (cardInfo) {
                 return new Promise((resolve,reject) => {
-                    if(this.defaultInfo && Object.keys(this.defaultInfo).length > 0){
-                        for(let i = 0,j = this.addedTouristInfo.length;i < j;i++){
+                    if (this.defaultInfo && Object.keys(this.defaultInfo).length > 0) {
+                        for (let i = 0,j = this.addedTouristInfo.length; i < j; i++) {
                             let idTableData = this.addedTouristInfo[i]['idTableData'] ? this.addedTouristInfo[i]['idTableData'] : [];
-                            for(let a = 0,b = idTableData.length;a < b;a++){
-                                if(i !== this.defaultInfo['index'] && idTableData[a]['data'] === cardInfo['data'] && idTableData[a]['type'] === cardInfo['type']){
+                            for (let a = 0,b = idTableData.length; a < b; a++) {
+                                if (i !== this.defaultInfo['index'] && idTableData[a]['data'] === cardInfo['data'] && idTableData[a]['type'] === cardInfo['type']) {
                                     reject();
                                 }
                             }
                         }
                         resolve();
-                    }else{
-                        for(let i = 0,j = this.addedTouristInfo.length;i < j;i++){
+                    } else {
+                        for (let i = 0,j = this.addedTouristInfo.length; i < j; i++) {
                             let idTableData = this.addedTouristInfo[i]['idTableData'] ? this.addedTouristInfo[i]['idTableData'] : [];
-                            for(let a = 0,b = idTableData.length;a < b;a++){
-                                if(idTableData[a]['data'] === cardInfo['data'] && idTableData[a]['type'] === cardInfo['type']){
+                            for (let a = 0,b = idTableData.length; a < b; a++) {
+                                if (idTableData[a]['data'] === cardInfo['data'] && idTableData[a]['type'] === cardInfo['type']) {
                                     reject();
                                 }
                             }
@@ -609,7 +609,7 @@
             getChcekProducts () {
                 //证件信息转对象
                 let idsObj = {};
-                for(let i = 0,j = this.idTableData.length;i < j;i++){
+                for (let i = 0,j = this.idTableData.length; i < j; i++) {
                     idsObj[this.idTableData[i]['type']] = this.idTableData[i];
                 }
                 return this.productListDeal.map(item =>{
@@ -621,26 +621,26 @@
                         count : item.takeNum,
                         productName : item.productName,
                         visitorName : this.formData.name
-                    }
+                    };
                 }).filter(item => item.count > 0);
             }
         },
         watch : {
-            productList (newVal,oldVal){
-                if(newVal){
+            productList (newVal,oldVal) {
+                if (newVal) {
                     this.ticketTableData = JSON.parse(JSON.stringify(newVal));
-                }else{
+                } else {
                     this.ticketTableData = [];
                 }
             },
             //如果默认信息不为空表示在修改游客信息
-            defaultInfo (newVal){
-                if(newVal && Object.keys(newVal).length > 0){
+            defaultInfo (newVal) {
+                if (newVal && Object.keys(newVal).length > 0) {
                     let productInfo = {};
                     this.formData.name = newVal.name;
                     this.formData.phone = newVal.phone;
                     this.idTableData = newVal.idTableData;
-                    for(let i = 0,j = newVal.productInfo.length;i < j;i++){
+                    for (let i = 0,j = newVal.productInfo.length; i < j; i++) {
                         productInfo[newVal.productInfo[i]['productId']] = newVal.productInfo[i];
                     }
                     this.ticketTableData = this.productList.map(item => {
@@ -648,19 +648,19 @@
                             ...item,
                             takeNum : productInfo[item.productId] ? '' : item.takeNum,
                             leftNum : productInfo[item.productId] ? (productInfo[item.productId]['takeNum'] + item.leftNum) : item.leftNum,
-                        }
+                        };
                     });
-                    this.type =  'edit';
-                }else{
+                    this.type = 'edit';
+                } else {
                     this.ticketTableData = JSON.parse(JSON.stringify(this.productList));
-                    this.type =  'add';
+                    this.type = 'add';
                 }
             },
             acceptCertificateType (newVal) {
-                if(!this.defaultInfo || Object.keys(this.defaultInfo).length < 1){
-                    if(newVal && newVal.all){
-                        if(newVal.all.length > 0 && this.idTableData.length < 1){
-                            this.idTableData =  [
+                if (!this.defaultInfo || Object.keys(this.defaultInfo).length < 1) {
+                    if (newVal && newVal.all) {
+                        if (newVal.all.length > 0 && this.idTableData.length < 1) {
+                            this.idTableData = [
                                 {
                                     type : 'identity',
                                     data : '',
@@ -668,8 +668,8 @@
                                     modifyType : 'add'
                                 }
                             ];
-                        }else{
-                            this.idTableData =  [];
+                        } else {
+                            this.idTableData = [];
                         }
                     }
                 }
@@ -682,22 +682,22 @@
                 let arrTmp = [];
                 let accpet = [];
                 let productIdsList = {};
-                for(let item in this.productPolicy){
+                for (let item in this.productPolicy) {
                     arrTmp = this.productPolicy[item].acceptIdType ? this.productPolicy[item].acceptIdType.split(',') : [];
-                    for(let i = 0,j = arrTmp.length;i < j;i++){
-                        if(!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired'){
+                    for (let i = 0,j = arrTmp.length; i < j; i++) {
+                        if (!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired') {
                             result.push(arrTmp[i]);
                         }
                     }
                     productIdsList[item] = [];
-                    for(let i = 0,j = idType.length;i < j;i++){
-                        if(arrTmp.includes(idType[i]['value'])){
-                            productIdsList[item].push(idType[i])
+                    for (let i = 0,j = idType.length; i < j; i++) {
+                        if (arrTmp.includes(idType[i]['value'])) {
+                            productIdsList[item].push(idType[i]);
                         }
                     }
                 }
-                for(let i = 0,j = idType.length;i < j;i++){
-                    if(result.includes(idType[i]['value'])){
+                for (let i = 0,j = idType.length; i < j; i++) {
+                    if (result.includes(idType[i]['value'])) {
                         accpet.push(idType[i]);
                     }
                 }
@@ -709,24 +709,24 @@
             },
             //产品数量限制
             productListDeal () {
-                if(this.productPolicy && Object.keys(this.productPolicy).length > 0){
+                if (this.productPolicy && Object.keys(this.productPolicy).length > 0) {
                     return this.ticketTableData.map(item => {
                         let numCount = item.takeNum;
                         let needId = this.productPolicy[item.productId] ? this.productPolicy[item.productId].needId : '';
                         let max = item.leftNum;
                         //一个证件只能购买一张票
-                        if(needId === 'one'){
+                        if (needId === 'one') {
                             max = max >= 1 ? 1 : 0;
-                            if(!item.takeNum || item.takeNum <= 0){
+                            if (!item.takeNum || item.takeNum <= 0) {
                                 numCount = 1;
                             }
-                        }else{
-                            if(!item.takeNum || item.takeNum <= 0){
+                        } else {
+                            if (!item.takeNum || item.takeNum <= 0) {
                                 numCount = item.num;
                             }
                         }
-                        if(numCount > max){
-                            if(!item.takeNum || item.takeNum <= 0){
+                        if (numCount > max) {
+                            if (!item.takeNum || item.takeNum <= 0) {
                                 numCount = max;
                             }
                         }
@@ -738,9 +738,9 @@
                             takeNum : Number(numCount),
                             idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType && this.productPolicy[item.productId].needId !== 'noRequired' ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
                             needId : needId
-                        }
+                        };
                     });
-                }else{
+                } else {
                     return this.ticketTableData.map(item => {
                         return {
                             ...item,
@@ -749,12 +749,12 @@
                             min : 0,
                             idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType && this.productPolicy[item.productId].needId !== 'noRequired' ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
                             needId : this.productPolicy[item.productId] ? this.productPolicy[item.productId].needId : ''
-                        }
+                        };
                     });
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

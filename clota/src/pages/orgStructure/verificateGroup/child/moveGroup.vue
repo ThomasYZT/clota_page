@@ -53,12 +53,12 @@
                 default : false
             }
         },
-        data() {
+        data () {
             return {
                 //表单校验规则
                 ruleValidate : {
                     selectOrgId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('saleGroup')}),trigger : 'change'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('saleGroup') }),trigger : 'change' },
                     ]
                 },
                 //分组信息
@@ -66,18 +66,18 @@
                     //移动分组时选择的分组
                     selectOrgId : ''
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 修改分组
              */
             changeOrg () {
                 this.$refs.formData.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.$emit('move-channel-group',[{
-                            checkGroupId :  this.formData.selectOrgId,
-                            id :  this.rowData.id,
+                            checkGroupId : this.formData.selectOrgId,
+                            id : this.rowData.id,
                         }]);
                         this.$emit('input',false);
                     }
@@ -90,7 +90,7 @@
                 this.$refs.formData.resetFields();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

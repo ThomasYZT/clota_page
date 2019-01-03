@@ -62,85 +62,85 @@
 <script>
     import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import delModal from '../../../../components/delModal/index'
+    import delModal from '../../../../components/delModal/index';
     import editModal from './components/editCourierModal';
-    import {configVariable} from '@/assets/js/constVariable.js';
-    import {courierInfoHead} from './courierListHead.js';
+    import { configVariable } from '@/assets/js/constVariable.js';
+    import { courierInfoHead } from './courierListHead.js';
     export default {
-        components: {
+        components : {
             tableCom,
             editModal,
             delModal
         },
-        data() {
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    keyword: '',
-                    staffType: 'guide',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    keyword : '',
+                    staffType : 'guide',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                courierInfoHead: courierInfoHead,
-                tableData: [],
-                totalCount: 0,
-                currentData: {}
-            }
+                courierInfoHead : courierInfoHead,
+                tableData : [],
+                totalCount : 0,
+                currentData : {}
+            };
         },
-        methods: {
+        methods : {
             //新增/修改导游
-            getNewPartner(type, scopeRow) {
+            getNewPartner (type, scopeRow) {
                 this.$refs.functionnalModal.show({
-                    type: type,
-                    scopeRow: scopeRow
-                })
+                    type : type,
+                    scopeRow : scopeRow
+                });
             },
             // 搜索导游
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 this.queryList();
             },
             /**
              * 获取列表信息
              */
-            queryList() {
+            queryList () {
                 ajax.post('queryPagedOrgStaff',this.queryParams).then(res => {
-                    if(res.success) {
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data ? res.data.totalRow : 0;
                     }
-                })
+                });
             },
             /**
              * 删除导游模态框
              */
-            delMember(scopeRow) {
+            delMember (scopeRow) {
                 this.currentData = scopeRow;
                 this.$refs.delModal.show({
-                    title: this.$t('delete')+this.$t('courier'),
-                    confirmCallback: () => {
-                        this.delete(scopeRow)
+                    title : this.$t('delete') + this.$t('courier'),
+                    confirmCallback : () => {
+                        this.delete(scopeRow);
                     }
-                })
+                });
             },
             /**
              * 删除导游
              */
-            delete(data) {
+            delete (data) {
                 ajax.post('batchDeleteOrgStaff', JSON.stringify([data]),
                     {
-                        headers : {'Content-Type' : 'application/json;charset-UTF-8'}
+                        headers : { 'Content-Type' : 'application/json;charset-UTF-8' }
                     }
                 ).then(res => {
-                    if(res.success) {
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('delete')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
                         this.queryList();
                     }
-                })
+                });
             }
 
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

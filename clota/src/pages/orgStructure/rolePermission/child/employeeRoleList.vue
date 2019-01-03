@@ -57,7 +57,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {roleHead} from './employeeRoleListConfig';
+    import { roleHead } from './employeeRoleListConfig';
     import addEmployee from './addEmployee';
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index.js';
@@ -76,7 +76,7 @@
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //表头配置
                 columns : roleHead,
@@ -88,14 +88,14 @@
                 employeeChosed : [],
                 //将要删除员工数据
                 delEmployees : []
-            }
+            };
         },
         components : {
             tableCom,
             addEmployee,
             delModal
         },
-        methods: {
+        methods : {
             /**
              * 查询当前权限下的员工列表
              */
@@ -107,11 +107,11 @@
              * @param data
              */
             updateSelected (data) {
-                if(this.tableData.length > 0){
-                    for(let i = 0,j = data.length;i < j;i++){
+                if (this.tableData.length > 0) {
+                    for (let i = 0,j = data.length; i < j; i++) {
                         new Promise((resolve,reject) => {
-                            for(let a = 0,b = this.tableData.length;a < b;a++){
-                                if(data[i].id === this.tableData[a].id){
+                            for (let a = 0,b = this.tableData.length; a < b; a++) {
+                                if (data[i].id === this.tableData[a].id) {
                                     reject();
                                 }
                             }
@@ -120,7 +120,7 @@
                             this.tableData.push(data[i]);
                         });
                     }
-                }else{
+                } else {
                     this.tableData = JSON.parse(JSON.stringify(data));
                 }
                 this.$emit('updateSelected',this.tableData);
@@ -128,7 +128,7 @@
             /**
              * 新增员工弹窗弹出
              */
-            addEmployee() {
+            addEmployee () {
                 this.addVisible = true;
             },
             /**
@@ -153,11 +153,11 @@
                 let delIds = [];
                 //保留的员工id
                 let leftTableData = [];
-                for(let i = 0,j = data.length;i < j;i++){
-                    for(let a = this.tableData.length - 1,b = 0;a >= b;a--){
-                        if(data[i].id === this.tableData[a].id){
+                for (let i = 0,j = data.length; i < j; i++) {
+                    for (let a = this.tableData.length - 1,b = 0; a >= b; a--) {
+                        if (data[i].id === this.tableData[a].id) {
                             delIds.push(data[i].id);
-                        }else{
+                        } else {
                             leftTableData.push(this.tableData[a]);
                         }
                     }
@@ -166,12 +166,12 @@
                     roleId : this.roleId,
                     accountIds : delIds.join(',')
                 }).then(res => {
-                    if(res.success){
-                       this.$Message.success(this.$t('successTip',{msg: this.$t('delete')}));
+                    if (res.success) {
+                       this.$Message.success(this.$t('successTip',{ msg : this.$t('delete') }));
                        this.tableData = leftTableData;
                         this.$emit('updateSelected',this.tableData);
-                    }else{
-                        this.$Message.error(res.message || this.$t('failureTip',{msg: this.$t('delete')}));
+                    } else {
+                        this.$Message.error(res.message || this.$t('failureTip',{ msg : this.$t('delete') }));
                     }
                 });
             },
@@ -191,14 +191,14 @@
             }
         },
         watch : {
-            'employeeList' (newVal,oldVal){
-                if(newVal){
+            'employeeList' (newVal,oldVal) {
+                if (newVal) {
                     this.tableData = JSON.parse(JSON.stringify(newVal));
                     this.$emit('updateSelected',this.tableData);
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

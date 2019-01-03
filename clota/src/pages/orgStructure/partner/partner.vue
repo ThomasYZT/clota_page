@@ -126,35 +126,35 @@
 //    import deleteList from '../model/deleteList.vue';
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index';
-    import {partnerListHead} from '../orgStructure';
+    import { partnerListHead } from '../orgStructure';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {configVariable, batchOperate} from '@/assets/js/constVariable';
+    import { configVariable, batchOperate } from '@/assets/js/constVariable';
     import map from 'lodash/map';
 
     export default {
-        components: {
+        components : {
             filterDrop,
             addPartner,
             delModal,
             tableCom
         },
-        data() {
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
-                    nodeType: 'partner'
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
+                    nodeType : 'partner'
                 },
-                filterParam: {
-                    keyword: '',
+                filterParam : {
+                    keyword : '',
                 },
                 // 表格表头字段名
-                columnData: partnerListHead,
+                columnData : partnerListHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
+                totalCount : 0,
 
 
                 /*
@@ -166,20 +166,20 @@
                         alert: 'normal'
                     }],
                 },*/
-                enableValue: true,  //启用，未启用变量
-                name: '', //删除弹窗名字
-                deleteName: this.$t('delete')+this.$t('cooperation'), //删除内容名字
-                partnerIds: [], //合作伙伴ids
+                enableValue : true, //启用，未启用变量
+                name : '', //删除弹窗名字
+                deleteName : this.$t('delete') + this.$t('cooperation'), //删除内容名字
+                partnerIds : [], //合作伙伴ids
 //                scopeRowData: {}, //当前被操作的行数据
                 // 批量操作下拉选项
-                batchOperate: batchOperate,
+                batchOperate : batchOperate,
                 // 已勾选的数据
-                chosenPartners: [],
-            }
+                chosenPartners : [],
+            };
         },
-        methods: {
+        methods : {
             // 初始化加载获取员工列表数据
-            queryList() {
+            queryList () {
 
                 ajax.post('queryPartnerList', this.queryParams).then(res => {
                     if (res.success) {
@@ -194,50 +194,50 @@
                 });
             },
             // 搜索员工
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
 
             // 筛选下拉组件
-            renderHeader(h, params) {
+            renderHeader (h, params) {
                 return h(filterDrop, {
-                    props: {
-                        colParams: params.column,
-                        filters: this.listFilters
+                    props : {
+                        colParams : params.column,
+                        filters : this.listFilters
                     },
-                    on: {
-                        'state-filter': this.handleAlertFilter,
-                        'alert-filter': this.handleAlertFilter,
+                    on : {
+                        'state-filter' : this.handleAlertFilter,
+                        'alert-filter' : this.handleAlertFilter,
                     }
                 });
             },
             // 筛选点击事件
-            handleAlertFilter() {
+            handleAlertFilter () {
 
             },
             //启用或者禁用
-            enable(scopeRow, isBatch) {
+            enable (scopeRow, isBatch) {
                 let partnerObj = {};
-                if (scopeRow.status=='valid') {
+                if (scopeRow.status == 'valid') {
                     partnerObj.successTip = this.$t('disabledCooperation');
-                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('disabled')});    // 禁用失败
+                    partnerObj.failTip = this.$t('failureTip', { tip : this.$t('disabled') }); // 禁用失败
                     partnerObj.status = 'invalid';
                     partnerObj.msgType = 'warning';
-                } else if (scopeRow.status=='invalid') {
+                } else if (scopeRow.status == 'invalid') {
                     partnerObj.successTip = this.$t('ableCooperation');
-                    partnerObj.failTip = this.$t('failureTip', {tip: this.$t('commissioned')});    // 启用失败
+                    partnerObj.failTip = this.$t('failureTip', { tip : this.$t('commissioned') }); // 启用失败
                     partnerObj.status = 'valid';
                     partnerObj.msgType = 'success';
                 }
 
                 ajax.post('updatePartnerStatus', {
-                    ids: isBatch==true ? this.partnerIds.join(',') : scopeRow.id,
-                    status: partnerObj.status
+                    ids : isBatch == true ? this.partnerIds.join(',') : scopeRow.id,
+                    status : partnerObj.status
                 }).then(res => {
                     if (res.success) {
-                        if (isBatch==true) {
+                        if (isBatch == true) {
                             // 批量操作提示语
                             this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + this.$t('batchOperate'));
                         } else {
@@ -256,8 +256,8 @@
              * @param type - 新增/修改 类型
              * @param scopeRow - 修改时的行数据
              **/
-            newPartnerBtn(type, scopeRow) {
-                let obj = type=='add' ? {type: type} : {item: scopeRow, type: type};
+            newPartnerBtn (type, scopeRow) {
+                let obj = type == 'add' ? { type : type } : { item : scopeRow, type : type };
                 this.$refs.addPartnerModal.show(obj);
             },
             /**
@@ -265,10 +265,10 @@
              * @param data - 被删除的行数据
              * @param isBatch - 是否批量操作  Boolean
              */
-            showDelModal(data, isBatch) {
-                if (isBatch==true) {
+            showDelModal (data, isBatch) {
+                if (isBatch == true) {
                     this.partnerIds = data.map(item => item.id);
-                    this.name = data.length>1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
+                    this.name = data.length > 1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
                 } else {
                     this.partnerIds = [data.id];
                     this.name = data.channelName;
@@ -282,13 +282,13 @@
                 });
             },
             //确认删除
-            handleDeletions() {
+            handleDeletions () {
 
                 ajax.post('deletePartners', {
-                    ids: this.partnerIds.join(',')
+                    ids : this.partnerIds.join(',')
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', {tip: this.$t('del')}));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
                         this.handleSearch();
                     }
                 });
@@ -297,14 +297,14 @@
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
              */
-            changeSelection(selection) {
+            changeSelection (selection) {
                 this.chosenPartners = selection;
-                if (selection.length>0){
+                if (selection.length > 0) {
                     this.partnerIds = map(selection, 'id');
                 }
             },
-            handleCommand(dropItem) {
-                if (this.chosenPartners.length<=0) {
+            handleCommand (dropItem) {
+                if (this.chosenPartners.length <= 0) {
                     this.$Message.warning(this.$t('selectChannelOperate'));
                     return;
                 }
@@ -319,10 +319,10 @@
                 }
             },
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

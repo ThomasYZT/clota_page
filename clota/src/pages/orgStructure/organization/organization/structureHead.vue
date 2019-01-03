@@ -90,14 +90,14 @@
     import addCashier from './child/addCashier';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: {
+        props : {
             //组织结构数据
-            'tree-data': {
-                type: Object,
-                default() {
+            'tree-data' : {
+                type : Object,
+                default () {
                     return {};
                 }
             },
@@ -110,11 +110,11 @@
             activeNode : {
                 type : Object,
                 default () {
-                    return  {};
+                    return {};
                 }
             }
         },
-        components: {
+        components : {
             delModal,
             addModal,
             addCompany,
@@ -123,47 +123,47 @@
             noData,
             editModal
         },
-        data() {
+        data () {
             return {
                 //搜索关键字
-                keyWord: '',
+                keyWord : '',
                 //当前激活菜单
-                activeTap: 'manage',
+                activeTap : 'manage',
                 //添加节点模态框是否显示
-                addModalShow: false,
+                addModalShow : false,
                 //当前操作的节点
-                currentNode: {},
+                currentNode : {},
                 //是否显示添加公司的模态框
-                addCompanyModalShow: false,
+                addCompanyModalShow : false,
                 //是否显示添加景区的模态框
-                addSceneModalShow: false,
+                addSceneModalShow : false,
                 //是否显示添加款台的模态框
-                addCashierModalShow: false,
+                addCashierModalShow : false,
                 //新增的节点信息
-                addNodeDetail: {},
-                defaultProps: {
-                    children: 'subNodes'
+                addNodeDetail : {},
+                defaultProps : {
+                    children : 'subNodes'
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 组织树render函数
              */
-            renderContent(h, {root, node, data}) {
-                if(data.id === this.activeNode.id){
+            renderContent (h, { root, node, data }) {
+                if (data.id === this.activeNode.id) {
                     this.$emit('update:activeNode',Object.assign(this.activeNode,{
                         level : node.level,
                     }));
                 }
                 // data.expand = true;
                 return h('div', {
-                    style: {
-                        display: 'inline-block',
-                        width: '100%'
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
                     },
-                    class: {
-                        'title-wrap': true,
+                    class : {
+                        'title-wrap' : true,
                         'active-node' : data.id === this.activeNode.id
                     },
                     on : {
@@ -179,28 +179,28 @@
                     }
                 }, [
                     h('span', {
-                        class: {
-                            'title-class': true
+                        class : {
+                            'title-class' : true
                         },
-                        directives: [
+                        directives : [
                             {
-                                name: 'w-title',
+                                name : 'w-title',
                                 // value: data.orgName,
-                                value: {
+                                value : {
                                     position : 'top',
-                                    msg: data.orgName,
+                                    msg : data.orgName,
                                 },
                             }
                         ],
                     }, data.orgName),
                     h('span', {
-                        class: {
-                            iconfont: 'true',
-                            'icon-delete': true,
+                        class : {
+                            iconfont : 'true',
+                            'icon-delete' : true,
                             //财务管理不允许删除节点
                             'hidden' : this.activeTap === 'economic'
                             || node.level === 1
-                            ||!('deleteNode' in this.permissionInfo)
+                            || !('deleteNode' in this.permissionInfo)
                         },
                         style : {
                             paddingRight : '5px',
@@ -208,12 +208,12 @@
                             fontSize : '14px',
                             marginTop : '9px'
                         },
-                        on: {
-                            click: (e) => {
+                        on : {
+                            click : (e) => {
                                 e.stopPropagation();
-                                if(this.activeTap === 'economic'
+                                if (this.activeTap === 'economic'
                                     || node.level === 1
-                                    ||!('deleteNode' in this.permissionInfo))return;
+                                    || !('deleteNode' in this.permissionInfo)) return;
                                 this.currentNode = data;
                                 this.$refs.delModal.show({
                                     title : `${this.$t('del')}${data.orgName}`,
@@ -225,9 +225,9 @@
                         }
                     }),
                     h('span', {
-                        class: {
-                            iconfont: 'true',
-                            'icon-node-add': true,
+                        class : {
+                            iconfont : 'true',
+                            'icon-node-add' : true,
                             //财务管理不允许添加节点
                             //核销款台或部门下不可以新建节点
                             'hidden' : this.activeTap === 'economic'
@@ -239,10 +239,10 @@
                             paddingRight : '5px',
                             fontSize : '16px'
                         },
-                        on: {
-                            click: (e) => {
+                        on : {
+                            click : (e) => {
                                 e.stopPropagation();
-                                if(this.activeTap === 'economic'
+                                if (this.activeTap === 'economic'
                                     || (data.nodeType === 'department')
                                     || data.nodeType === 'table'
                                     || !('addNode' in this.permissionInfo)) return;
@@ -251,13 +251,13 @@
                             }
                         }
                     })
-                ])
+                ]);
             },
             /**
              * 选择切换tap
              * @param tap
              */
-            switchTap(tap) {
+            switchTap (tap) {
                 this.activeTap = tap;
                 this.keyWord = '';
                 this.$emit('update:activeNode',{});
@@ -267,21 +267,21 @@
              * 打开填写新增公司的信息的模态框
              * @param data
              */
-            addCompanyShow(data) {
+            addCompanyShow (data) {
                 this.addNodeDetail = data;
                 this.addCompanyModalShow = true;
             },
             /**
              * 重新获取组织结构数据
              */
-            getStructureData() {
+            getStructureData () {
                 this.$emit('fresh-org',this.activeNode);
             },
             /**
              * 打开填写新增景区的信息的模态框
              * @param data
              */
-            addScene(data) {
+            addScene (data) {
                 this.addNodeDetail = data;
                 this.addSceneModalShow = true;
             },
@@ -289,7 +289,7 @@
              * 打开填写新增款台的信息的模态框
              * @param data
              */
-            addCashier(data) {
+            addCashier (data) {
                 this.addNodeDetail = data;
                 this.addCashierModalShow = true;
             },
@@ -297,7 +297,7 @@
              * 新增部门
              * @param data
              */
-            addDepartment(data) {
+            addDepartment (data) {
                 ajax.post('addOrgInfo',{
                     // rootId : this.rootId,
                     orgName : data.nodeName,
@@ -306,11 +306,11 @@
                     parentEconomicId : this.currentNode.id,
                     status : data.status
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('add')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                         this.getStructureData();
-                    }else{
-                        this.$Message.error(this.$t('failureTip',{tip : this.$t('add')}));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }
                 });
             },
@@ -322,22 +322,22 @@
                 ajax.post('deleteOrg',{
                     orgId : data.id
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('del')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('del') }));
                         if (data.id === this.activeNode.id) {
                             this.$emit('update:activeNode',{});
                         }
                         this.$emit('switch-tap',this.activeTap);
-                    }else{
-                        if(res.code === 'S007'){
+                    } else {
+                        if (res.code === 'S007') {
                             this.$refs.delModalTip.show({
                                 title : this.$t('notice'),
                             });
-                        }else{
-                            this.$Message.error(this.$t('failureTip',{tip : this.$t('del')}));
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('del') }));
                         }
                     }
-                })
+                });
             },
             /**
              * 过滤节点方法
@@ -345,7 +345,7 @@
              * @param data
              * @returns {boolean}
              */
-            filterNode(value, data) {
+            filterNode (value, data) {
                 if (!value) return true;
                 return data && data.orgName && data.orgName.indexOf(value) !== -1;
             },
@@ -353,35 +353,35 @@
              * 清空当前选择的节点
              * @param data
              */
-            clearDetail (data){
-                if(data === false){
+            clearDetail (data) {
+                if (data === false) {
                     this.currentNode = {};
                 }
             }
         },
         computed : {
             //公司树数据
-            companyData (){
-                if(Object.keys(this.treeData).length > 0){
+            companyData () {
+                if (Object.keys(this.treeData).length > 0) {
                     return [this.treeData];
-                }else{
+                } else {
                     return [];
                 }
             },
             //根节点id
-            rootId (){
-                if(this.treeData && this.treeData.length > 0){
+            rootId () {
+                if (this.treeData && this.treeData.length > 0) {
                     return this.treeData[0].id;
-                }else{
+                } else {
                     return '';
                 }
             },
             //默认展开的节点
             defaultExpandedKeys () {
-                if(this.activeNode){
+                if (this.activeNode) {
                     return [this.activeNode.id];
-                }else{
-                    return []
+                } else {
+                    return [];
                 }
             },
             ...mapGetters({
@@ -392,13 +392,13 @@
             //监视查询关键字，如果改变就进行查找
             keyWord (newVal,oldVal) {
                 this.$nextTick( () => {
-                    if(this.$refs.tree){
+                    if (this.$refs.tree) {
                         this.$refs.tree.filter(newVal);
                     }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

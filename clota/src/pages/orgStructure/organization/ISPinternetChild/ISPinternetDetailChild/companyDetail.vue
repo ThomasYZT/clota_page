@@ -382,9 +382,9 @@
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import editModal from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
-    import {validator} from 'klwk-ui';
+    import { validator } from 'klwk-ui';
     import selectTree from '@/components/selectTree/index.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -401,7 +401,7 @@
                 default : ''
             }
         },
-        components: {
+        components : {
             tableCom,
             employeeTable,
             openedService,
@@ -412,28 +412,28 @@
             editModal,
             selectTree
         },
-        data() {
+        data () {
             //校验邮箱
             const validateEmail = (rule,value,callback) => {
-                if(value){
-                    if(validator.isEmail(value)){
+                if (value) {
+                    if (validator.isEmail(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('errorFormat',{field : this.$t('email')}));
+                    } else {
+                        callback(this.$t('errorFormat',{ field : this.$t('email') }));
                     }
-                }else{
-                    callback(this.$t('inputField',{field : this.$t('email')}));
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('email') }));
                 }
             };
             //校验手机号
             const validatePhone = (rule,value,callback) => {
-                if(value){
-                    if(validator.isTelephone(value)){
+                if (value) {
+                    if (validator.isTelephone(value)) {
                         callback();
-                    }else{
-                        callback(this.$t('formalError',{field : this.$t('phone')}));
+                    } else {
+                        callback(this.$t('formalError',{ field : this.$t('phone') }));
                     }
-                }else{
+                } else {
                     callback();
                 }
             };
@@ -452,43 +452,43 @@
                 companyDetail : {},
                 ruleValidate : {
                     orgName : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('companyBgName'),length : 100}),trigger : 'blur'},
-                        {required : true,message : this.$t('inputField',{field : this.$t('companyBgName')}),trigger : 'blur'}
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('companyBgName'),length : 100 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
                     ],
                     checkinCode : [
-                        {min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur'},
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
                     ],
                     smsProvider : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('smsProvider')}),trigger : 'blur'}
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('smsProvider') }),trigger : 'blur' }
                     ],
                     email : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('email')}),trigger : 'blur'},
-                        {validator : validateEmail,trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
+                        { validator : validateEmail,trigger : 'blur' }
                     ],
                     linkName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('person')}),trigger : 'blur'},
-                        {max : 10,message : this.$t('errorMaxLength',{field : this.$t('person'),length : 10}),trigger : 'blur'},
+                        { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
+                        { max : 10,message : this.$t('errorMaxLength',{ field : this.$t('person'),length : 10 }),trigger : 'blur' },
                     ],
                     address : [
-                        {max : 100,message : this.$t('errorMaxLength',{field : this.$t('address'),length : 100}),trigger : 'blur'},
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' },
                     ],
                     telephone : [
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('phone'),length : 20}),trigger : 'blur'},
-                        {validator : validatePhone ,trigger : 'blur'}
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' },
+                        { validator : validatePhone ,trigger : 'blur' }
                     ],
                     tex : [
-                        {max : 20,message : this.$t('errorMaxLength',{field : this.$t('fax'),length : 20}),trigger : 'blur'},
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),trigger : 'blur' },
                     ],
                     parentManageId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('superior')}),trigger : 'blur'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('superior') }),trigger : 'blur' },
                     ],
                     parentEconomicId : [
-                        {required : true,message : this.$t('selectField',{msg : this.$t('fianceSuperior')}),trigger : 'blur'},
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
                     ]
                 }
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 取消编辑
              */
@@ -501,7 +501,7 @@
              */
             saveEdit () {
                 this.$refs.formValidate.validate(valid => {
-                    if(valid){
+                    if (valid) {
                         this.type = 'watch';
                         ajax.post('modifyOrgInfo',{
                             id : this.formDataCopy.id,
@@ -522,21 +522,21 @@
                             managerId : this.formDataCopy.managerId,
                             nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
-                            if(res.success){
-                                this.$Message.success(this.$t('successTip', {tip: this.$t('modify')}));
+                            if (res.success) {
+                                this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
                                 //修改了节点的名字,修改启用、未启用状态，修改管理上级或财务上级，需要刷新左侧的组织树
-                                if(this.formDataCopy.orgName !== this.companyDetail.orgName){
+                                if (this.formDataCopy.orgName !== this.companyDetail.orgName) {
                                     this.freshOrg();
-                                }else if(this.formDataCopy.parentManageId !== this.companyDetail.parentManageId){
+                                } else if (this.formDataCopy.parentManageId !== this.companyDetail.parentManageId) {
                                     this.freshOrg();
-                                }else if(this.formDataCopy.parentEconomicId !== this.companyDetail.parentEconomicId){
+                                } else if (this.formDataCopy.parentEconomicId !== this.companyDetail.parentEconomicId) {
                                     this.freshOrg();
-                                }else{
+                                } else {
                                     this.getCompanyDetail();
                                 }
                                 this.$store.dispatch('freshOrgs');
-                            }else{
-                                this.$Message.error(this.$t('failureTip', {tip: this.$t('modify')}));
+                            } else {
+                                this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
                             }
                         });
                     }
@@ -548,7 +548,7 @@
             edit () {
                 this.formDataCopy = defaultsDeep({
                     isStart : this.companyDetail.status === 'open',
-                }  , this.companyDetail);
+                } , this.companyDetail);
 
                 this.type = 'edit';
             },
@@ -566,16 +566,16 @@
             /**
              * 确认重置密码
              */
-            confimChangePass (){
+            confimChangePass () {
                 ajax.post('resetManagerPassword',{
                     orgId : this.activeNode.id,
                     managerId : this.companyDetail.managerId,
                     email : this.companyDetail.email,
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('resetPswSuccess',{msg: this.companyDetail.manager}));
-                    }else{
-                        this.$Message.error(res.message || this.$t('resetPswFail',{msg: this.companyDetail.manager}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('resetPswSuccess',{ msg : this.companyDetail.manager }));
+                    } else {
+                        this.$Message.error(res.message || this.$t('resetPswFail',{ msg : this.companyDetail.manager }));
                     }
                 }).finally(() => {
                     this.$refs.editModal.hide();
@@ -588,9 +588,9 @@
                 ajax.post('getOrgInfo',{
                     orgId : this.activeNode.id,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.companyDetail = res.data ? res.data.basicInfo : {};
-                    }else{
+                    } else {
                         this.companyDetail = {};
                     }
                 });
@@ -600,9 +600,9 @@
              */
             querySmsProviderList () {
                 ajax.post('getSmsProviderList').then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.smsSuppilerList = res.data ? res.data : [];
-                    }else{
+                    } else {
                         this.smsSuppilerList = [];
                     }
                 }).catch(() => {
@@ -620,24 +620,24 @@
              * @param data
              */
             changeCity (data) {
-                if(data.province && Object.keys(data.province).length > 0){
+                if (data.province && Object.keys(data.province).length > 0) {
                     this.formDataCopy.provinceCode = data.province.provinceid;
                     this.formDataCopy.province = data.province.province;
-                }else{
+                } else {
                     this.formDataCopy.provinceCode = '000000';
                     this.formDataCopy.province = '';
                 }
-                if(data.city && Object.keys(data.city).length > 0){
+                if (data.city && Object.keys(data.city).length > 0) {
                     this.formDataCopy.cityCode = data.city.cityid;
                     this.formDataCopy.city = data.city.city;
-                }else{
+                } else {
                     this.formDataCopy.cityCode = '000000';
                     this.formDataCopy.city = '';
                 }
-                if(data.area && Object.keys(data.area).length > 0){
+                if (data.area && Object.keys(data.area).length > 0) {
                     this.formDataCopy.districtCode = data.area.areaid;
                     this.formDataCopy.district = data.area.area;
-                }else{
+                } else {
                     this.formDataCopy.districtCode = '000000';
                     this.formDataCopy.district = '';
                 }
@@ -651,9 +651,9 @@
                     manageType : 'manage',
                     nodeType : this.activeNode.type,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.superiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
-                    }else{
+                    } else {
                         this.superiorList = [];
                     }
                 });
@@ -667,9 +667,9 @@
                     manageType : 'economic',
                     nodeType : this.activeNode.type,
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.fianceSuperiorList = res.data ? res.data.filter(item => item.id !== this.activeNode.id) : [];
-                    }else{
+                    } else {
                         this.fianceSuperiorList = [];
                     }
                 });
@@ -680,24 +680,24 @@
             this.getParentManages();
             this.getParentEconomic();
         },
-        computed  : {
+        computed : {
             //公司详细地址
             companyPlace () {
                 let place = '';
-                if(this.companyDetail && this.companyDetail.province){
+                if (this.companyDetail && this.companyDetail.province) {
                     place += this.companyDetail.province;
                 }
-                if(this.companyDetail && this.companyDetail.city){
+                if (this.companyDetail && this.companyDetail.city) {
                     place += this.companyDetail.city;
                 }
-                if(this.companyDetail && this.companyDetail.district){
+                if (this.companyDetail && this.companyDetail.district) {
                     place += this.companyDetail.district;
                 }
                 return place;
             },
             //默认选中的所在地信息
             defaultAddress () {
-                if(this.companyDetail && Object.keys(this.companyDetail).length > 0){
+                if (this.companyDetail && Object.keys(this.companyDetail).length > 0) {
                     return {
                         province : {
                             provinceid : this.companyDetail.provinceCode,
@@ -711,8 +711,8 @@
                             areaid : this.companyDetail.districtCode,
                             area : this.companyDetail.district,
                         },
-                    }
-                }else{
+                    };
+                } else {
                     return false;
                 }
             },
@@ -721,11 +721,11 @@
             }),
             //是否可以编辑节点信息
             canModifyNode () {
-                return this.permissionInfo && 'modifyNode' in this.permissionInfo
+                return this.permissionInfo && 'modifyNode' in this.permissionInfo;
             },
             //是否重置管理员密码
             canResetPassword () {
-                return this.permissionInfo && 'resetNodePassword' in this.permissionInfo
+                return this.permissionInfo && 'resetNodePassword' in this.permissionInfo;
             }
         },
         watch : {
@@ -738,7 +738,7 @@
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

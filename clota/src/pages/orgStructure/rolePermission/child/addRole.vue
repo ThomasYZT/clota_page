@@ -74,18 +74,18 @@
     import finaceRoleSet from './finaceRoleSet';
     import employeeRoleList from './employeeRoleList';
     import ajax from '@/api/index.js';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     export default {
         mixins : [lifeCycleMixins],
-        data() {
+        data () {
             return {
                 //上级路由列表
-                beforeRouterList: [
+                beforeRouterList : [
                     {
-                        name: 'rolePermission',
-                        router: {
-                            name: 'rolePermission'
+                        name : 'rolePermission',
+                        router : {
+                            name : 'rolePermission'
                         }
                     }
                 ],
@@ -104,8 +104,8 @@
                 ruleValidate : {
                     //角色名称校验规则
                     roleName : [
-                        {required : true,message : this.$t('inputField',{field : this.$t('roleName')}),trigger : 'blur'},
-                        {max : 50,message : this.$t('errorMaxLength',{field : this.$t('roleName'),length  : 50}),trigger : 'blur'}
+                        { required : true,message : this.$t('inputField',{ field : this.$t('roleName') }),trigger : 'blur' },
+                        { max : 50,message : this.$t('errorMaxLength',{ field : this.$t('roleName'),length : 50 }),trigger : 'blur' }
                     ],
                 },
                 //当前查看角色的id
@@ -118,7 +118,7 @@
                 manageDefaultChosed : {},
                 //财务权限默认选中节点
                 economicDefaultChosed : {}
-            }
+            };
         },
         components : {
             breadCrumbHead,
@@ -126,7 +126,7 @@
             finaceRoleSet,
             employeeRoleList
         },
-        methods: {
+        methods : {
             /**
              * 更新已选择的员工
              * @param data
@@ -138,16 +138,16 @@
              * 保存权限
              */
             save () {
-                if(!this.hasSavePermission) return;
+                if (!this.hasSavePermission) return;
                 let privileges = [...this.$refs.mangeRole.getMangePrivalige(),...this.$refs.finaceRole.getMangePrivalige()];
-                if(privileges.length <= 0){
+                if (privileges.length <= 0) {
                     this.$Message.warning(this.$t('addMenuAuthority'));
-                }else{
+                } else {
                     this.$refs.formValidate.validate(valid => {
-                        if(valid){
-                            if(this.roleId){
+                        if (valid) {
+                            if (this.roleId) {
                                 this.modifyRole(privileges);
-                            }else{
+                            } else {
                                 this.addRole(privileges);
                             }
                         }
@@ -164,15 +164,15 @@
                     roleName : this.formData.roleName,
                     accountIds : this.selectedEmployees.map(item => item.id)
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip: this.$t('add')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                         this.$router.push({
                             name : 'rolePermission'
                         });
-                    }else{
-                        this.$Message.error(res.message || this.$t('failureTip',{tip: this.$t('add')}));
+                    } else {
+                        this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t('add') }));
                     }
-                })
+                });
             },
             /**
              * 查询角色详情
@@ -181,11 +181,11 @@
                 ajax.post('findById',{
                     id : this.roleId
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.employeeList = res.data ? res.data.employeeVos : [];
                         this.formData.roleName = res.data ? res.data.role.roleName : '';
                         this.getMangePrivalige(res.data.privModelList);
-                    }else{
+                    } else {
                         this.employeeList = [];
                         this.formData.roleName = '';
                     }
@@ -196,13 +196,13 @@
              * @param params
              */
             getParams (params) {
-                if(params.type){
+                if (params.type) {
                     this.type = params.type;
-                    if(this.type === 'edit'){
+                    if (this.type === 'edit') {
                         this.roleId = params.id;
                         this.queryRoleDetail();
                     }
-                }else{
+                } else {
                     this.type = 'add';
                     this.roleId = '';
                 }
@@ -214,9 +214,9 @@
             getMangePrivalige (data) {
                 this.manageDefaultChosed = {};
                 this.economicDefaultChosed = {};
-                for(let i = 0,j = data.length;i < j;i++){
-                    if(data[i].orgType === 'manage'){
-                        if(!this.manageDefaultChosed[data[i].privOrg]){
+                for (let i = 0,j = data.length; i < j; i++) {
+                    if (data[i].orgType === 'manage') {
+                        if (!this.manageDefaultChosed[data[i].privOrg]) {
                             this.manageDefaultChosed[data[i].privOrg] = [{
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -225,7 +225,7 @@
                                 choseStatus : data[i].choseStatus,
                                 linkedPrivCode : data[i].linkedPrivCode,
                             }];
-                        }else{
+                        } else {
                             this.manageDefaultChosed[data[i].privOrg].push({
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -235,8 +235,8 @@
                                 linkedPrivCode : data[i].linkedPrivCode,
                             });
                         }
-                    }else if(data[i].orgType === 'economic'){
-                        if(!this.economicDefaultChosed[data[i].privOrg]){
+                    } else if (data[i].orgType === 'economic') {
+                        if (!this.economicDefaultChosed[data[i].privOrg]) {
                             this.economicDefaultChosed[data[i].privOrg] = [{
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -245,7 +245,7 @@
                                 choseStatus : data[i].choseStatus,
                                 linkedPrivCode : data[i].linkedPrivCode,
                             }];
-                        }else{
+                        } else {
                             this.economicDefaultChosed[data[i].privOrg].push({
                                 path : data[i].path,
                                 privCode : data[i].privCode,
@@ -269,21 +269,21 @@
                     roleName : this.formData.roleName,
                     accountIds : this.selectedEmployees.map(item => item.id)
                 }).then(res => {
-                    if(res.success){
-                        this.$Message.success(this.$t('successTip',{tip: this.$t('modify')}));
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('modify') }));
                         this.$router.push({
                             name : 'rolePermission'
                         });
-                    }else{
-                        this.$Message.error(res.message || this.$t('failureTip',{tip: this.$t('modify')}));
+                    } else {
+                        this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t('modify') }));
                     }
-                })
+                });
             },
             /**
              * 复制角色
              */
             copyRole () {
-                if(!this.hasAddRolePermission) return;
+                if (!this.hasAddRolePermission) return;
                 this.type = 'copy';
                 this.roleId = '';
                 this.formData.roleName = '';
@@ -305,21 +305,21 @@
             }),
             //面包屑上当前菜单名
             localeRouter () {
-                if(this.type === 'add'){
+                if (this.type === 'add') {
                     return 'addRole';
-                }else if(this.type === 'edit'){
+                } else if (this.type === 'edit') {
                     return 'roleDetail';
-                }else if(this.type === 'copy'){
-                    return 'copyRole'
-                }else{
+                } else if (this.type === 'copy') {
+                    return 'copyRole';
+                } else {
                     return '';
                 }
             },
             //是否有保存按钮的权限
             hasSavePermission () {
-                if(this.type === 'edit'){
+                if (this.type === 'edit') {
                     return this.permissionInfo && 'modifyRole' in this.permissionInfo;
-                }else{
+                } else {
                     return this.permissionInfo && 'addRole' in this.permissionInfo;
                 }
             },
@@ -328,11 +328,11 @@
                 return this.permissionInfo && 'addRole' in this.permissionInfo;
             },
             //是否有编辑角色的权限
-            hasModifyRolePermission (){
+            hasModifyRolePermission () {
                 return this.permissionInfo && 'modifyRole' in this.permissionInfo;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -183,7 +183,7 @@
             <i-row>
                 <i-col span="6">
                     <!--营销类别-->
-                    <FormItem label="营销类别" >
+                    <FormItem :label="$t('marketType')" >
                         <Select v-model.trim="formData.marketTypeId"
                                 :disabled="formData.orderChannel !== 'market'"
                                 style="max-width: 200px"
@@ -198,7 +198,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--营销级别-->
-                    <FormItem label="营销级别" >
+                    <FormItem :label="$t('marketLevel')" >
                         <Select v-model.trim="formData.marketLevelId"
                                 :disabled="formData.orderChannel !== 'market'"
                                 style="max-width: 200px"
@@ -370,7 +370,7 @@
                 //营销类别列表
                 marketTypeList : [],
                 //营销级别列表
-                marketLevelList  : []
+                marketLevelList : []
             };
         },
         methods : {
@@ -630,7 +630,7 @@
                             } else if (item === 'visitDate') {
                                 this.$set(this.formData['visitDate'],0,this.paramsDefault.visitDate[0] ? new Date(this.paramsDefault.visitDate[0]) : '');
                                 this.$set(this.formData['visitDate'],1,this.paramsDefault.visitDate[1] ? new Date(this.paramsDefault.visitDate[1]) : '');
-                            }  else {
+                            } else {
                                 this.$set(this.formData,item,this.paramsDefault[item]);
                             }
                         }

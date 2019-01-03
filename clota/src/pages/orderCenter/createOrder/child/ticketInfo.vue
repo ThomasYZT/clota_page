@@ -34,48 +34,48 @@
             //政策id
             'policy-id' : {
                 type : String,
-                default :''
+                default : ''
             },
             //景区名称
             'org-name' : {
                 type : String,
-                default :''
+                default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //政策信息
-                policyText :''
-            }
+                policyText : ''
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === true){
+            visibleChange (type) {
+                if (type === true) {
                     ajax.post('getPolicyBase',{
                         policyId : this.policyId
                     }).then(res => {
-                        if(res.success){
+                        if (res.success) {
                             this.policyText = res.data ? res.data.productPolicy ? res.data.productPolicy.buyTicketNotes : '' : '';
-                        }else{
+                        } else {
                             this.policyText = '';
                         }
                     });
-                }else{
+                } else {
                     this.policyText = '';
                 }
             },
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

@@ -117,39 +117,39 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {orderProductHead, batchAuditHead} from '../auditConfig';
+    import { orderProductHead, batchAuditHead } from '../auditConfig';
     import sum from 'lodash/sum';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: [],
-        components: {
+        props : [],
+        components : {
             tableCom,
         },
         data () {
             return {
-                visible: false,
-                title: '',
+                visible : false,
+                title : '',
                 //表头配置
                 columnData : orderProductHead,
                 //批量表头配置
                 batchColumnData : batchAuditHead,
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //订单数据
-                orderData: {
-                    items: [],
-                    isBatch: false
+                orderData : {
+                    items : [],
+                    isBatch : false
                 },
                 //审核备注
-                auditRemark: ''
-            }
+                auditRemark : ''
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             }),
-            orderAmountSum() {
+            orderAmountSum () {
                 if (this.orderData.isBatch && this.orderData.items.length) {
                     return sum(this.orderData.items.map(item => item.orderAmount));
                 } else {
@@ -157,16 +157,16 @@
                 }
             },
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 if (data) {
                     this.orderData = data;
                     if (data.isBatch) {
                         this.tableData = data.items;
-                        this.title = 'teamBatchCheckReject';    // 团队订单批量驳回申请
+                        this.title = 'teamBatchCheckReject'; // 团队订单批量驳回申请
                     } else {
-                        this.title = 'PRODUCT_AUDIT_REJECT';    // 驳回申请
+                        this.title = 'PRODUCT_AUDIT_REJECT'; // 驳回申请
                         this.getOrderProducts(data.items[0].id);
                     }
                 }
@@ -174,7 +174,7 @@
                 this.visible = true;
             },
             //关闭模态框
-            hide() {
+            hide () {
                 this.auditRemark = '';
                 this.orderData.items = [];
                 this.tableData = [];
@@ -185,35 +185,35 @@
              * 获取订单下的产品
              * @param id  订单id
              */
-            getOrderProducts(id) {
+            getOrderProducts (id) {
                 ajax.post('queryOrderProductByOrderId', {
-                    orderId: id
+                    orderId : id
                 }).then(res => {
-                    if(res.success && res.data){
+                    if (res.success && res.data) {
                         this.tableData = res.data || [];
                     }
                 });
             },
-            auditReject() {
-                if (this.auditRemark.length>500) {
+            auditReject () {
+                if (this.auditRemark.length > 500) {
                     return;
                 }
 
                 ajax.post('auditTeamOrder', {
-                    orderIds: this.orderData.items.map(item => item.id).join(','),
-                    remark: this.auditRemark,
-                    auditStatus: 'reject',
+                    orderIds : this.orderData.items.map(item => item.id).join(','),
+                    remark : this.auditRemark,
+                    auditStatus : 'reject',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.hide();
-                        this.$Message.success(this.$t('orderRejected'));    // 订单已驳回
+                        this.$Message.success(this.$t('orderRejected')); // 订单已驳回
                         this.$emit('on-audit-pass');
                     }
                 });
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

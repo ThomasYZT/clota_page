@@ -27,21 +27,21 @@
     export default {
         props : {
             //账户信息
-            'account-info'  : {
+            'account-info' : {
                 type : Object,
                 default () {
                     return {};
                 }
             }
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             /**
              * 付款
              */
-            payOrder() {
+            payOrder () {
                 this.$emit('pay-order');
             }
         },
@@ -51,7 +51,7 @@
                 return this.accountInfo.validatMoney < this.accountInfo.totalPrice;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

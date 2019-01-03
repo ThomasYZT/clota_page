@@ -42,26 +42,26 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom';
-    import { refundAlterListHead } from './secondLevelDetailConfig'
+    import { refundAlterListHead } from './secondLevelDetailConfig';
     export default {
-        props: {
-            refundAlterList: {
-                type: Array,
+        props : {
+            refundAlterList : {
+                type : Array,
                 default () {
                     return [];
                 }
             }
         },
-        components: {
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
-                refundAlterListHead: refundAlterListHead
-            }
+                refundAlterListHead : refundAlterListHead
+            };
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

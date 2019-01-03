@@ -63,7 +63,7 @@
 </template>
 
 <script>
-    import {paratner} from './partnerConfig';
+    import { paratner } from './partnerConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
     export default {
@@ -72,14 +72,14 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             }
         },
         components : {
             tableCom,
         },
-        data() {
+        data () {
             return {
                 //合作伙伴表头配置
                 paratner : paratner,
@@ -91,9 +91,9 @@
                 pageSize : 10,
                 //合作伙伴列表是否收起
                 isPackUp : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取合作伙伴信息
              */
@@ -104,10 +104,10 @@
                     pageNo : this.pageNo,
                     pageSize : this.pageSize
                 }).then(res => {
-                   if(res.success) {
+                   if (res.success) {
                        this.tableData = res.data ? res.data.data : [];
                        this.totalCount = res.data.totalRow;
-                   }else{
+                   } else {
                        this.tableData = [];
                        this.totalCount = 0;
                    }
@@ -120,7 +120,7 @@
                 return this.searchParams && this.searchParams.id;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

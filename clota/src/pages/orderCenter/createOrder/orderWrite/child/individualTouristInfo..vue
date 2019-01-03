@@ -62,7 +62,7 @@
         <confirm-modal ref="confirmModal">
             <div class="confirm-label">
                 <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
-                {{$t('确认删除游客信息？')}}
+                {{$t('sureToDeleteVisitorInfo')}}
             </div>
         </confirm-modal>
     </div>
@@ -258,7 +258,7 @@
         computed : {
             //是否可以添加游客
             canAddTouristInfo () {
-                for (let i = 0,j = this.productListFilter.length;i < j;i++) {
+                for (let i = 0,j = this.productListFilter.length; i < j; i++) {
                     if (this.productListFilter[i]['leftNum'] > 0) {
                         return true;
                     }

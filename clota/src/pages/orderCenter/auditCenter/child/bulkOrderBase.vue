@@ -49,21 +49,21 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import {transOrderOrg, transSMSStatus} from '../../commFun';
+    import { transOrderOrg, transSMSStatus } from '../../commFun';
 
     export default {
-        components: {},
-        props: {
-            moduleInfo: Object
+        components : {},
+        props : {
+            moduleInfo : Object
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {
+        methods : {
             // 下单渠道code转换
-            transOrderOrg: transOrderOrg,
+            transOrderOrg : transOrderOrg,
             // 短信发送状态code转换
-            transSMSStatus: transSMSStatus,
+            transSMSStatus : transSMSStatus,
         },
 
     };

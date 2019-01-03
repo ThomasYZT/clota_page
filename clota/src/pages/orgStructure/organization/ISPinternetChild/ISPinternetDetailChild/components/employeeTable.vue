@@ -36,7 +36,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {employee,depEmployee} from '../departmentConfig';
+    import { employee,depEmployee } from '../departmentConfig';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -49,7 +49,7 @@
             'search-params' : {
                 typee : Object,
                 default () {
-                    return {}
+                    return {};
                 }
             },
             //是否默认展开
@@ -66,12 +66,12 @@
         components : {
             tableCom
         },
-        data() {
+        data () {
             return {
                 //表格数据
-                tableData: [],
+                tableData : [],
                 //表头数据
-                employeeColumn : this.type === 'department' ?  depEmployee : employee ,
+                employeeColumn : this.type === 'department' ? depEmployee : employee ,
                 //员工总数
                 totalCount : 0,
                 pageNo : 1,
@@ -80,21 +80,21 @@
                 employeeNumber : '',
                 //是否展开
                 isPackUp : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取部门下员工列表
              */
             getEmployees () {
                 let params = {};
-                if(this.isDepartment){
+                if (this.isDepartment) {
                     params = {
                         deptId : this.searchParams.id,
                         pageNo : this.pageNo,
                         pageSize : this.pageSize,
                     };
-                }else{
+                } else {
                     params = {
                         orgId : this.searchParams.id,
                         pageNo : this.pageNo,
@@ -102,10 +102,10 @@
                     };
                 }
                 ajax.post('getEmployeeList',params).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
-                        this.totalCount  = this.employeeNumber = res.data.totalRow;
-                    }else{
+                        this.totalCount = this.employeeNumber = res.data.totalRow;
+                    } else {
                         this.tableData = [];
                         this.employeeNumber = '';
                         this.totalCount = 0;
@@ -122,17 +122,17 @@
         watch : {
             //默认展开的初始值
             isDefaultPackUp : {
-                handler (newVal){
-                    if(newVal === true){
+                handler (newVal) {
+                    if (newVal === true) {
                         this.isPackUp = true;
-                    }else{
+                    } else {
                         this.isPackUp = false;
                     }
                 },
                 immediate : true
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

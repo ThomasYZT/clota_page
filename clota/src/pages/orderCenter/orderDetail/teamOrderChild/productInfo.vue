@@ -58,7 +58,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import {columnData1,columnData3,columnData2} from './productInfoConfig';
+    import { columnData1,columnData3,columnData2 } from './productInfoConfig';
     export default {
         props : {
             //产品信息
@@ -74,27 +74,27 @@
                 default : ''
             }
         },
-        components :{
+        components : {
             tableCom
         },
-        data() {
+        data () {
             return {
-            }
+            };
         },
-        methods: {},
+        methods : {},
         computed : {
             columnData () {
                 //下单企业
-                if(this.viewType === 'channel') {
+                if (this.viewType === 'channel') {
                     return columnData1;
-                }else if(this.viewType === 'scenic'){//景区
+                } else if (this.viewType === 'scenic') {//景区
                     return columnData2;
-                }else if(this.viewType === 'allocation'){//中间分销商
+                } else if (this.viewType === 'allocation') {//中间分销商
                     return columnData3;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

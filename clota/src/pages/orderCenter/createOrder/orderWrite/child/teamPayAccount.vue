@@ -35,24 +35,24 @@
     export default {
         props : {
             //账户信息
-            'account-info'  : {
+            'account-info' : {
                 type : Object,
                 default () {
                     return {};
                 }
             }
         },
-        data() {
+        data () {
             return {
                 //支付方式
                 payType : 'deposit'
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 付款
              */
-            payOrder() {
+            payOrder () {
                 this.$emit('pay-order',{
                     payType : this.payType
                 });
@@ -67,9 +67,9 @@
         computed : {
             //判断是否能付款,定存需要有足够的余额，到付可以直接下单
             canPayOrder () {
-                if(this.payType === 'deposit'){
+                if (this.payType === 'deposit') {
                     return this.accountInfo.validatMoney < this.accountInfo.totalPrice;
-                }else {
+                } else {
                     return false;
                 }
             },
@@ -78,7 +78,7 @@
                 return this.accountInfo.validatMoney < this.accountInfo.totalPrice;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

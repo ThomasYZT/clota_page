@@ -34,17 +34,17 @@
     import ajax from '@/api/index.js';
 
     export default {
-        components: {
+        components : {
             structureTree,
             companyDetail,
             departmentDetail,
             cashierDetail,
             sceneDetail
         },
-        data() {
+        data () {
             return {
                 //组织结构数据
-                structureData: {},
+                structureData : {},
                 //详情路由
                 componentName : 'company',
                 //节点id
@@ -53,9 +53,9 @@
                 activeTap : 'manage',
                 //当前激活的节点
                 activeNode : {}
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 获取路由参数
              * @param params
@@ -83,22 +83,22 @@
                     manageType : this.activeTap,
                     showScene : this.activeTap === 'manage' ? 'manage' : 'privilege',
                 }).then(res => {
-                    if(res.success){
+                    if (res.success) {
                         this.structureData = res.data ? res.data : {};
-                        if(Object.keys(activeNode).length < 1){
+                        if (Object.keys(activeNode).length < 1) {
                             this.activeNode = JSON.parse(JSON.stringify({
                                 id : this.structureData.id,
                                 level : this.structureData.level,
                                 type : this.structureData.nodeType
                             }));
-                        }else{
+                        } else {
                             this.activeNode = activeNode;
                         }
-                    }else{
+                    } else {
                         this.structureData = {};
                         this.activeNode = {};
                     }
-                })
+                });
             },
             /**
              * 切换tap列表
@@ -112,7 +112,7 @@
              * 更新当前的组织树
              * @param activeNode 激活的节点信息
              */
-            freshOrgInfo(activeNode) {
+            freshOrgInfo (activeNode) {
                 this.activeNode = activeNode;
                 this.getCompanyTree();
             }
@@ -122,23 +122,23 @@
              * 右侧引入的组件
              */
             componentSelect () {
-                if(this.activeNode.type === 'company') {
-                    return 'companyDetail'
-                }else if(this.activeNode.type === 'department'){
-                    return 'departmentDetail'
-                }else if(this.activeNode.type === 'table'){
+                if (this.activeNode.type === 'company') {
+                    return 'companyDetail';
+                } else if (this.activeNode.type === 'department') {
+                    return 'departmentDetail';
+                } else if (this.activeNode.type === 'table') {
                     return 'cashierDetail';
-                }else if(this.activeNode.type === 'scenic'){
+                } else if (this.activeNode.type === 'scenic') {
                     return 'sceneDetail';
-                }else{
-                    return  '';
+                } else {
+                    return '';
                 }
             },
             //组件动态设置key
             nodeKey () {
-                if(this.activeNode){
+                if (this.activeNode) {
                     return this.activeNode.id;
-                }else{
+                } else {
                     return '';
                 }
             }
@@ -146,7 +146,7 @@
         created () {
             this.getCompanyTree();
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

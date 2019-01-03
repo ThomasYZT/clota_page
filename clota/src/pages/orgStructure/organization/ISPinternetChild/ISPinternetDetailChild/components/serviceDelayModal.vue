@@ -51,7 +51,7 @@
 </template>
 
 <script>
-    import {monthEnum} from '../../../../../../assets/js/constVariable';
+    import { monthEnum } from '../../../../../../assets/js/constVariable';
     import ajax from '@/api/index.js';
     export default {
         props : {
@@ -73,7 +73,7 @@
                 default : ''
             }
         },
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
@@ -82,21 +82,21 @@
                 },
                 //服务期限列表
                 monthEnum : monthEnum,
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 模态框状态改变
              */
-            changeValue(data) {
+            changeValue (data) {
                 this.$emit('input', data);
             },
             /**
              * 模态框显示或隐藏
              * @param type
              */
-            visibleChange(type) {
-                if(type === false){
+            visibleChange (type) {
+                if (type === false) {
                     this.formData.serverTime = 1;
                 }
             },
@@ -121,23 +121,23 @@
                     serviceIds : this.serviceList.map(item => item.serviceId),
                     extensionTime : this.formData.serverTime
                 }).then(res => {
-                    if(res.status === 200){
-                        this.$Message.success(this.$t('successTip',{tip : this.$t('delay')}));
+                    if (res.status === 200) {
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delay') }));
                         this.$emit('fresh-data');
-                    }else{
-                        this.$Message.success(this.$t('failureTip',{tip : this.$t('delay')}));
+                    } else {
+                        this.$Message.success(this.$t('failureTip',{ tip : this.$t('delay') }));
                     }
                 }).finally(() => {
                     this.$emit('input', false);
-                }) ;
+                });
             }
         },
         computed : {
             //服务延期后预计结束时间
             serviceDelayedInfo () {
                 let result = [];
-                if(this.serviceList && this.serviceList.length > 0){
-                    for(let i = 0, j = this.serviceList.length;i < j;i++){
+                if (this.serviceList && this.serviceList.length > 0) {
+                    for (let i = 0, j = this.serviceList.length; i < j; i++) {
                         result.push(Object.assign({
                              estimateEndtime : this.serviceList[i].endTime
                                 ? this.serviceList[i].endTime.replace(/-/g,'/').toDate().addMonths(this.formData.serverTime).format('yyyy-MM-dd hh:mm:ss')
@@ -148,7 +148,7 @@
                 return result;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
