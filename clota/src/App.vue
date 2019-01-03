@@ -2,6 +2,8 @@
 
 <template>
     <div id="app" :class="skinType">
+        <Input v-model="physicNum" style="width: 300px"/>
+        <Button type="primary" @click="setTest"> 设置</Button>
         <router-view v-if="noFrame && isRouterActive"/>
         <main-frame v-else >
             <transition name="el-fade-in">
@@ -25,7 +27,9 @@
         data () {
             return {
                 //路由页面是否显示
-                isRouterActive : true
+                isRouterActive : true,
+                //物理卡号
+                physicNum : ''
             };
         },
         methods : {
@@ -38,6 +42,9 @@
                     this.isRouterActive = true;
                 });
             },
+            setTest () {
+                this.$store.commit('updatecardTest',this.physicNum)
+            }
         },
         computed : {
             noFrame () {

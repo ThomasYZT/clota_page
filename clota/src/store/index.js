@@ -87,7 +87,8 @@ export default new Vuex.Store({
         staticPayAccount : [{
             value : 'cash',
             label : 'cash'
-        }]
+        }],
+        cardTest : ''
 
     },
     getters : {
@@ -163,7 +164,7 @@ export default new Vuex.Store({
         //固定支付方式
         staticPayAccount : state => {
             return state.staticPayAccount;
-        }
+        },
     },
     mutations : {
         //更新左侧菜单是否收起
@@ -248,6 +249,9 @@ export default new Vuex.Store({
         //修改在线支付方式
         updateOnlineAccountList (state,onlineAccountList) {
             state.onlineAccountList = onlineAccountList;
+        },
+        updatecardTest (state,card) {
+            state.cardTest = card;
         }
     },
     actions : {
@@ -386,8 +390,8 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            // store.commit('updateCardReadEnabled',true);
-            // return;
+            store.commit('updateCardReadEnabled',true);
+            return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
             if (window.rd ) {
                 try {
@@ -408,8 +412,9 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                // store.commit('updateCardReadEnabled',true);
-                // resolve('111');
+                store.commit('updateCardReadEnabled',true);
+                console.log(store.state.cardTest)
+                resolve(store.state.cardTest);
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {
