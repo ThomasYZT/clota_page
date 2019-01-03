@@ -6,9 +6,9 @@
                 <img src="../../assets/images/logo.svg" alt="">
             </div>
             <div class="lang">
-                <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">中文</span>
+                <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">{{$t('chinese')}}</span>
                 <span class="lang-split-line">|</span>
-                <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">English</span>
+                <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">{{$t('english')}}</span>
             </div>
         </div>
         <!-- 登录模块 -->

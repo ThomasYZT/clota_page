@@ -11,7 +11,7 @@
             class-name="vertical-center-modal"
             :mask-closable="false"
             :width="560"
-            :title="$t('填写转账流水号')"
+            :title="$t('fillTransferNumber')"
             @on-cancel="hide">
 
             <!--内容区域-->

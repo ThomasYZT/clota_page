@@ -46,7 +46,7 @@
         </table-com>
 
         <div slot="footer" class="modal-footer">
-            <Button type="ghost" @click="toggle()" >{{$t("关闭")}}</Button>
+            <Button type="ghost" @click="toggle()" >{{$t("close")}}</Button>
         </div>
     </Modal>
 </template>

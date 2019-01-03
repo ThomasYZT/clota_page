@@ -47,9 +47,9 @@
     export default {
         data () {
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -87,31 +87,31 @@
                 ruleValidate : {
                     //信用额度
                     creditBalance : [
-                        { required : true, message: this.$t('errorEmpty', { msg : this.$t('信用额度')}), trigger: 'blur' },
-                        { validator : validateMethod.validateMoney, trigger: 'blur' },
-                        { validator : validateMethod.emoji, trigger: 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('creditBalance') }), trigger : 'blur' },
+                        { validator : validateMethod.validateMoney, trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
                     //预警额度
                     alarmValue : [
-                        { required : true, message: this.$t('errorEmpty', { msg : this.$t('预警额度')}), trigger: 'blur' },
-                        { validator : validateMethod.validateMoney, trigger: 'blur' },
-                        { validator : validateMethod.emoji, trigger: 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('warningLines') }), trigger : 'blur' },
+                        { validator : validateMethod.validateMoney, trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ]
 
                 },
-            }
+            };
         },
-        methods: {
+        methods : {
 
             show ( data ) {
-                if( data ){
+                if ( data ) {
                     this.formData = defaultsDeep({}, data.item );
                 }
                 this.visible = true;
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
             },
@@ -120,31 +120,31 @@
             // 确定
             confirm () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
+                    if (valid) {
                         this.confirmRecharge(this.formData);
                     }
-                })
+                });
             },
 
             // 确认充值
             confirmRecharge ( params ) {
                 ajax.post('updatePartnerAccount', {
-                    id: params.id,
-                    creditBalance: params.creditBalance,
-                    alarmValue: params.alarmValue
+                    id : params.id,
+                    creditBalance : params.creditBalance,
+                    alarmValue : params.alarmValue
                 }).then(res => {
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('modify')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('modify') }));
                         this.hide();
-                        this.$emit('updata-list', { item: this.formData, index: this.index});
+                        this.$emit('updata-list', { item : this.formData, index : this.index });
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('modify')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('modify') }));
                     }
-                })
+                });
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

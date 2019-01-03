@@ -112,12 +112,12 @@
                         this.addDisabled = true;
                     }
                     this.$emit('upload-success',this.uploadList);
-                    this.$Message.success(this.$t('上传成功'));
+                    this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
                 } else {
                     if (res.code === 'S003') {
-                        this.$Message.error( this.$t('上传失败'));
+                        this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
                     } else {
-                        this.$Message.error( '解析失败' );
+                        this.$Message.error( 'analysisFail' );
                     }
                 }
                 this.$store.commit('changePromisings','del');

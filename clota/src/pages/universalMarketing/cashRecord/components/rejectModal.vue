@@ -16,12 +16,12 @@
         <!--内容区域-->
         <div style="padding: 15px 20px;">
             <i class="iconfont icon-warn"></i>
-            <span class="tip-word">{{$t('驳回申请后，是否允许再次申请提现？')}}</span>
+            <span class="tip-word">{{$t('wetherCanApplyCashAfterReject')}}</span>
         </div>
         <!--自定义页脚-->
         <div slot="footer">
-            <i-button type="primary" @click="handleAllow('reject')">{{$t('允许')}}</i-button>
-            <i-button type="ghost" @click="handleAllow('reject_no_req')">{{$t('不允许')}}</i-button>
+            <i-button type="primary" @click="handleAllow('reject')">{{$t('allow')}}</i-button>
+            <i-button type="ghost" @click="handleAllow('reject_no_req')">{{$t('notAllowWithoutfield')}}</i-button>
         </div>
     </Modal>
 </template>

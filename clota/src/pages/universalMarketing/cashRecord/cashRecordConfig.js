@@ -6,17 +6,17 @@ export const cashRecordHead = [
         field : 'orderId'
     },
     {
-        title : '用户编码', // 用户编码
+        title : 'userCode', // 用户编码
         minWidth : 130,
         field : 'userId'
     },
     {
-        title : '销售用户姓名', // 销售用户姓名
+        title : 'saleUserName', // 销售用户姓名
         minWidth : 130,
         field : 'userName'
     },
     {
-        title : '销售用户手机号', // 用户手机号
+        title : 'saleUserPhoneNumber', // 用户手机号
         width : 150,
         field : 'mobile'
     },
@@ -31,33 +31,33 @@ export const cashRecordHead = [
         field : 'productName'
     },
     {
-        title : '终端售价', // 终端售价
+        title : 'terminalSalePrice', // 终端售价
         width : 160,
         enWidth : 180,
         type : 'money',
         field : 'itemSalePrice'
     },
     {
-        title : '销售政策产品单价', // 销售政策产品单价
+        title : 'salePolicyProductUnitPrice', // 销售政策产品单价
         width : 160,
         enWidth : 180,
         type : 'money',
         field : 'settlePrice'
     },
     {
-        title : '已核销数量', // 已核销数量
+        title : 'varyfiedNum', // 已核销数量
         width : 130,
         field : 'withdrawQuantity'
     },
     {
-        title : '订单核销金额', // 订单核销金额
+        title : 'orderVaryfiedMoney', // 订单核销金额
         width : 130,
         enWidth : 150,
         type : 'money',
         field : 'checkAmount'
     },
     {
-        title : '佣金总额', // 佣金
+        title : 'totalCommission', // 佣金
         width : 110,
         type : 'money',
         field : 'orderSalary'
@@ -68,7 +68,7 @@ export const cashRecordHead = [
         field : 'withdrawStatus'
     },
     {
-        title : '操作时间', // 操作时间
+        title : 'operateTime', // 操作时间
         width : 190,
         field : 'updatedTime'
     },
@@ -81,9 +81,9 @@ export const cashRecordHead = [
 
 // 审核状态列表
 export const auditStatusList = [
-    { label : '全部', value : 'reject_no_req,reject,success,auditing,pass' },
-    { label : '已提现', value : 'success' },
-    { label : '待审核', value : 'auditing' },
-    { label : '已通过', value : 'pass' },
-    { label : '已驳回', value : 'reject_no_req,reject' },
+    { label : 'all', value : 'reject_no_req,reject,success,auditing,pass' },
+    { label : 'withdrawals', value : 'success' },
+    { label : 'waitChecking', value : 'auditing' },
+    { label : 'hasPassed', value : 'pass' },
+    { label : 'rejected', value : 'reject_no_req,reject' },
 ];
