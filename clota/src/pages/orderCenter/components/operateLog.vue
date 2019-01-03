@@ -164,7 +164,7 @@
                             // 核销数量：
                             return {
                                 content : `${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
-                            ${this.$t('remark')}：${contentsObj.remark}`
+                            ${this.$t('remark')}：${contentsObj.remark ? contentsObj.remark : '-'}`
                             };
                         } else {
                             // 核销数量：
