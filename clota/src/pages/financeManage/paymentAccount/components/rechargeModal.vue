@@ -74,15 +74,15 @@
     import common from '@/assets/js/common';
 
     export default {
-        props: ['row-data'],
-        components: {
+        props : ['row-data'],
+        components : {
             loopForPayResult
         },
         data () {
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -105,23 +105,23 @@
             };
 
             return {
-                visible: false,
+                visible : false,
                 //表单数据
-                formData: {
-                    partner: '',
-                    rechargeAmount: 0,
-                    payType: '',
-                    remark: '',
+                formData : {
+                    partner : '',
+                    rechargeAmount : 0,
+                    payType : '',
+                    remark : '',
                 },
                 //校验规则
-                ruleValidate: {
-                    rechargeAmount: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('rechargeAmount')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMethod.validateMoney, trigger: 'blur' },
+                ruleValidate : {
+                    rechargeAmount : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('rechargeAmount') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMethod.validateMoney, trigger : 'blur' },
                     ],
                     payType : [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('payType')}), trigger: 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('payType') }), trigger : 'blur' },
                     ]
                 },
                 //模态框标题
@@ -134,18 +134,18 @@
                 transactionId : '',
                 //账户交易信息
                 payInfo : {},
-            }
+            };
         },
-        watch: {
+        watch : {
 
         },
-        methods: {
+        methods : {
             /**
              *  显示模态框
              */
             show ( data ) {
                 this.visible = true;
-                if( data ){
+                if ( data ) {
                     this.formData = defaultsDeep(this.formData, data.item );
                 }
                 this.controlModal();
@@ -153,13 +153,13 @@
             /**
              *  关闭模态框
              */
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {
-                    partner: '',
-                    rechargeAmount: 0,
-                    payType: '',
-                    remark: '',
+                    partner : '',
+                    rechargeAmount : 0,
+                    payType : '',
+                    remark : '',
                 };
                 this.payInfo = {};
             },
@@ -181,10 +181,10 @@
              */
             confirm () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
+                    if (valid) {
                         this.confirmRecharge(this.formData);
                     }
-                })
+                });
             },
             /**
              *  确认充值
@@ -192,12 +192,12 @@
             confirmRecharge ( params ) {
                 let newWindow = window.open();
                 ajax.post('recharge', {
-                    orgAccountId: params.id,
-                    amount: this.formData.rechargeAmount,
-                    paymentType: this.formData.payType,
-                    remark: this.formData.remark
+                    orgAccountId : params.id,
+                    amount : this.formData.rechargeAmount,
+                    paymentType : this.formData.payType,
+                    remark : this.formData.remark
                 }).then(res => {
-                    if( res.success && res.data ) {
+                    if ( res.success && res.data ) {
                         this.payNow({
                             bizId : res.data,
                             merchantId : this.payInfo.merchantId,
@@ -207,14 +207,14 @@
                             newWindow : newWindow,
                         });
                     } else {
-                        this.$Message.error(res.message || this.$t('failureTip',{'tip' : this.$t('topUp')}));
+                        this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('topUp') }));
                     }
                 });
             },
             /**
              * 支付接口调用
              */
-            payNow ({bizId, payType, payMoney, merchantId, partnerId, newWindow}) {
+            payNow ({ bizId, payType, payMoney, merchantId, partnerId, newWindow }) {
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -237,9 +237,9 @@
                         this.hide();
                         this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
                     } else {
-                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('buy')}));
+                        this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                     }
-                })
+                });
             },
             /**
              * 开启查询支付结果
@@ -271,7 +271,7 @@
                 'onlineAccountList'
             ])
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

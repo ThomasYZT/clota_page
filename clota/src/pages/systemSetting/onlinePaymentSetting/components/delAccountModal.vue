@@ -11,9 +11,9 @@
         <div class="modal-body">
             <div>
                 <i class="iconfont icon-help"></i>
-                您正在删除 : <span class="payment-name">{{accountData.paymentName}}</span>
+                {{$t('youAreDeleting')}} <span class="payment-name">{{accountData.paymentName}}</span>
             </div>
-            <p><span class="warn-tip">本操作不可撤销，</span>确认删除？</p>
+            <p><span class="warn-tip">{{$t('operationIrrevocable')}}</span>{{$t('sureToDel')}}</p>
         </div>
 
         <div slot="footer" class="modal-footer">
@@ -29,21 +29,21 @@
     import ajax from '@/api/index';
 
     export default {
-        props: ['modal-title'],
-        components: {},
+        props : ['modal-title'],
+        components : {},
         data () {
             return {
-                visible: false,
-                accountData: {}
-            }
+                visible : false,
+                accountData : {}
+            };
         },
-        watch: {
+        watch : {
 
         },
-        methods: {
+        methods : {
 
             show ( data ) {
-                if( data ){
+                if ( data ) {
                     this.accountData = Object.assign({}, data.item);
                     this.index = data.index;
                 }
@@ -51,29 +51,29 @@
             },
 
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
 
             },
 
 
             // 确定删除
-            confirmDel() {
+            confirmDel () {
                 ajax.post('deleteOnlineAccount', {
-                    id: this.accountData.id
+                    id : this.accountData.id
                 }).then((res) => {
-                    if(res.success){
-                        this.$Message.success(this.$t(this.title)+ this.$t('successTip', {tip: ''}) + '！');
+                    if (res.success) {
+                        this.$Message.success(this.$t(this.title) + this.$t('successTip', { tip : '' }) + '！');
                     } else {
-                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');
+                        this.$Message.warning('queryChannelSet ' + this.$t('failureTip', { tip : 'del' }) + '！');
                     }
-                })
+                });
                 this.$emit('on-delete');
                 this.visible = false;
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

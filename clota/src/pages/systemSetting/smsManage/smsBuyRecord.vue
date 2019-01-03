@@ -76,13 +76,13 @@
     import ajax from '../../../api/index';
     import { mapGetters } from 'vuex';
     import { smsByRecordHead } from './smsBuyRecordConfig';
-    import adjustModal from './components/adjustModal'
+    import adjustModal from './components/adjustModal';
     export default {
-        components: {
+        components : {
             tableCom,
             adjustModal
         },
-        data() {
+        data () {
             return {
                 columnData : smsByRecordHead,
                 filterData : {
@@ -93,14 +93,14 @@
                 totalCount : 0,
                 //总共购买短信条数
                 totalSym : 0
-            }
+            };
         },
         computed : {
             ...mapGetters([
                 'manageOrgs'
             ])
         },
-        methods: {
+        methods : {
             /**
              * 获取表格数据
              */
@@ -118,7 +118,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             },
             /**
              * 调整短息数量
@@ -140,10 +140,10 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('searchPayResult') }));
                     }
-                })
+                });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

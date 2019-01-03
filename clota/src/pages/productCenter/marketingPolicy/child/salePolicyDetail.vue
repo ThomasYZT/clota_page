@@ -520,7 +520,7 @@
                     } else {
                         this.$router.push({
                             name : 'marketingPolicy'
-                        })
+                        });
                     }
                 }
             },

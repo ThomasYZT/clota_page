@@ -89,34 +89,34 @@
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import rechargeModal from './components/rechargeModal.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {paymentHead} from '../financeManageConfig';
-    import ajax from '@/api/index'
+    import { configVariable } from '@/assets/js/constVariable';
+    import { paymentHead } from '../financeManageConfig';
+    import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {tableCom, rechargeModal},
-        props: {},
-        data() {
+        components : { tableCom, rechargeModal },
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    keyword: '',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    keyword : '',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    name: '',
+                filterParam : {
+                    name : '',
                 },
                 // 表格表头字段名
-                columnData: paymentHead,
+                columnData : paymentHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
-            }
+                totalCount : 0,
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'permissionInfo'
             ]),
@@ -125,16 +125,16 @@
                 return this.permissionInfo && this.permissionInfo['applyPaymentAccountRecharge'] === 'allow';
             }
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             /**
              * 查询付款账户列表
              **/
-            queryList() {
+            queryList () {
                 ajax.post('queryPayAccounts', this.queryParams).then((res) => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
@@ -147,7 +147,7 @@
             },
 
             // 搜索信息
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 this.queryList();
             },
@@ -155,9 +155,9 @@
              * 显示充值弹窗，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            handleRecharge(scopeRow) {
+            handleRecharge (scopeRow) {
                 if (!this.canRecharge) return;
-                this.$refs.rechargeModal.show({item: scopeRow});
+                this.$refs.rechargeModal.show({ item : scopeRow });
             },
         }
     };

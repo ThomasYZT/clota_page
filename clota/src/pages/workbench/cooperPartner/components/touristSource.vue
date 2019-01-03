@@ -51,7 +51,7 @@
                     data : [],
                     legend : []
                 },
-            }
+            };
         },
         created () {
             this.getTradeRatio();

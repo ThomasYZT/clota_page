@@ -28,14 +28,14 @@
             tableHead : {
                 type : Array,
                 default () {
-                    return []
+                    return [];
                 }
             },
         },
         data () {
             return {
                 tableData : [],
-            }
+            };
         },
         computed : {
         },

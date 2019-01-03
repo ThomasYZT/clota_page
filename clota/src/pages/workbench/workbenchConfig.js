@@ -7,7 +7,7 @@ export const businessHead = [
     },
     {
         title : 'productName', // 产品名称
-        minWidth : 130,
+        minWidth : 150,
         field : 'name'
     },
     {
@@ -26,7 +26,7 @@ export const businessHead = [
 export const pendingMattersHead = [
     {
         title : 'index', // 序号
-        minWidth : 70,
+        minWidth : 100,
         field : ''
     },
     {

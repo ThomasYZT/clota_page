@@ -21,7 +21,7 @@
             :on-success="uploadSuc">
             <i class="el-icon-plus" ></i>
         </el-upload>
-        <Modal :title="$t('图片预览')" v-model="dialogVisible">
+        <Modal :title="$t('picturePreview')" v-model="dialogVisible">
             <img :src="dialogImageUrl" style="width: 100%">
         </Modal>
     </div>
@@ -33,15 +33,15 @@
     import ajaxConfig from '@/api/index.js';
 
     export default {
-        props: {
+        props : {
             //上传图片数量限制
             quantityLimit : {
-                type: Number,
-                default: 5
+                type : Number,
+                default : 5
             },
             //默认显示的照片
             defaultList : {
-                type: Array,
+                type : Array,
                 default () {
                     return [];
                 }
@@ -59,8 +59,8 @@
                 }
             }
         },
-        components: {},
-        data() {
+        components : {},
+        data () {
             return {
                 //已上传文件列表
                 uploadList : [],
@@ -72,25 +72,25 @@
                 limit : false,
                 //是否显示添加按钮
                 addDisabled : false
-            }
+            };
         },
-        computed: {
+        computed : {
             //返回上传接口地址
-            action() {
+            action () {
                 return config.HOST + api.imgUpload;
             },
             //上传文件的headers
             headers () {
                 return {
                     token : ajaxConfig.getToken()
-                }
+                };
             },
             //图片限制大小
             limitSize () {
                 return this.size * 1024;
             }
         },
-        methods: {
+        methods : {
             /**
              * 文件上传成功
              * @param response
@@ -98,19 +98,19 @@
              * @param fileList
              */
             uploadSuc (res, file, fileList) {
-                if(res.success){
+                if (res.success) {
                     this.uploadList.push(res.data);
                     //若已上传文件到达上传数量限制，则不显示上传按钮
                     if (this.uploadList.length === this.quantityLimit) {
                         this.addDisabled = true;
                     }
                     this.$emit('upload-success',this.uploadList);
-                    this.$Message.success(this.$t('上传成功'));
-                }else{
-                    if(res.code === 'S003'){
-                        this.$Message.error( this.$t('上传失败'));
-                    }else{
-                        this.$Message.error( '解析失败' );
+                    this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
+                } else {
+                    if (res.code === 'S003') {
+                        this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                    } else {
+                        this.$Message.error( 'analysisFail' );
                     }
                 }
                 this.$store.commit('changePromisings','del');
@@ -120,8 +120,8 @@
              * @param file
              * @param fileList
              */
-            handleRemove(file, fileList) {
-                if(this.limit) {
+            handleRemove (file, fileList) {
+                if (this.limit) {
                     //删除图片，消除超出限制的状态
                     this.limit = false;
                 } else {
@@ -137,7 +137,7 @@
              * 点击预览图片
              * @param file
              */
-            handlePictureCardPreview(file) {
+            handlePictureCardPreview (file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
             },
@@ -147,8 +147,8 @@
              * @param file
              * @param fileList
              */
-            uploadFail(err, file, fileList) {
-                this.$message.error('图片上传失败');
+            uploadFail (err, file, fileList) {
+                this.$message.error('failureTip', { tip : this.$t('upload') });
                 this.$store.commit('changePromisings','del');
             },
             /**
@@ -194,18 +194,18 @@
             reset () {
                 this.$refs.imgUpload.clearFiles();
                 //已上传文件列表
-                this.uploadList = [],
+                this.uploadList = [];
                 //预览图片url
-                this.dialogImageUrl = '',
+                this.dialogImageUrl = '';
                 //是否显示预览图片
-                this.dialogVisible = false,
+                this.dialogVisible = false;
                 //是否到达文件数量限制
-                this.limit = false,
+                this.limit = false;
                 //是否显示添加按钮
-                this.addDisabled = false
+                this.addDisabled = false;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

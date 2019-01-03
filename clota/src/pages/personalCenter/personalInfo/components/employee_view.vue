@@ -50,17 +50,17 @@
 
 <script>
   export default {
-      props: {
-          accountInfo: {
-              type: Object,
-              default: {}
+      props : {
+          accountInfo : {
+              type : Object,
+              default : {}
           }
       },
-      data() {
-          return {}
+      data () {
+          return {};
       },
-      methods: {}
-  }
+      methods : {}
+  };
 </script>
 
 <style lang="scss" scoped>

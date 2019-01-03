@@ -60,7 +60,7 @@
                                 ...item,
                                 isFolder : true,
                                 children : [],
-                            }
+                            };
                         }) : [];
                     } else {
                         this.fileList = [];
@@ -82,7 +82,7 @@
                                 return {
                                     ...item,
                                     isLeaf : true,
-                                }
+                                };
                             }) : []);
                         } else {
                             resolve([]);

@@ -8,7 +8,7 @@
     <div class="withdraw-filter">
         <ul class="clearfix">
             <li>
-                <span class="filter-label">{{$t('审核状态')}}</span>
+                <span class="filter-label">{{$t('auditStatus')}}</span>
                 <Select v-model="filterParams.auditStatus" class="field-item">
                     <Option v-for="item in auditStatusList"
                             :key="item.value"
@@ -18,7 +18,7 @@
                 </Select>
             </li>
             <li>
-                <span class="filter-label">{{$t('营销类别')}}</span>
+                <span class="filter-label">{{$t('marketType')}}</span>
                 <Select v-model="filterParams.marketTypeId" class="field-item">
                     <Option v-for="item in marketingTypes"
                             :key="item.id"
@@ -28,7 +28,7 @@
                 </Select>
             </li>
             <li>
-                <span class="filter-label">{{$t('营销等级')}}</span>
+                <span class="filter-label">{{$t('marketingLevel')}}</span>
                 <Select v-model="filterParams.marketLevelId" class="field-item">
                     <Option v-for="item in marketingLevels"
                             :key="item.id"
@@ -68,7 +68,7 @@
                 marketingLevels : [],
                 // 全部营销等级
                 allMarketLevel : [{ id : 'all', levelName : 'all' }],
-            }
+            };
         },
         computed : {},
         created () {

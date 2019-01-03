@@ -12,7 +12,7 @@
             class-name="vertical-center-modal"
             :mask-closable="false"
             :width="560"
-            :title="$t('审核提现信息')"
+            :title="$t('auditCashInfo')"
             @on-cancel="hide">
 
             <!--内容区域-->
@@ -26,7 +26,7 @@
                     <div>{{withdrawInfo.orderId | contentFilter}}</div>
                 </Form-item>
                 <!--销售用户姓名-->
-                <Form-item :label="$t('colonSetting', { key: $t('销售用户姓名') })">
+                <Form-item :label="$t('colonSetting', { key: $t('saleUserName') })">
                     <div>{{withdrawInfo.userName | contentFilter}}</div>
                 </Form-item>
                 <!--收款账户类型-->
@@ -34,7 +34,7 @@
                     <div>{{ $t(transAccountType(withdrawInfo.accountType)) | contentFilter }}</div>
                 </Form-item>
                 <!--收款账号/卡号-->
-                <Form-item :label="$t('colonSetting', { key: $t('收款账号/卡号') })">
+                <Form-item :label="$t('colonSetting', { key: $t('gatheringAccountAndCardNo') })">
                     <div>{{withdrawInfo.accountInfo | contentFilter}}</div>
                 </Form-item>
                 <!--订单金额-->
@@ -42,7 +42,7 @@
                     <div>{{withdrawInfo.checkAmount | contentFilter}}</div>
                 </Form-item>
                 <!--佣金-->
-                <Form-item :label="$t('colonSetting', { key: $t('佣金') })">
+                <Form-item :label="$t('colonSetting', { key: $t('commission') })">
                     <div>{{withdrawInfo.orderSalary | contentFilter}}</div>
                 </Form-item>
                 <!--备注-->
@@ -50,7 +50,7 @@
                     <Input v-model="auditParams.remark"
                            type="textarea"
                            :rows="4"
-                           :placeholder="$t('inputField', {field: $t('备注信息或驳回理由')})"/>
+                           :placeholder="$t('inputField', {field: $t('remarkOrRejectReason')})"/>
                 </Form-item>
 
             </Form>
@@ -105,7 +105,7 @@
                         { validator : validateMethod.remark, trigger : 'change' }
                     ]
                 },
-            }
+            };
         },
         computed : {},
         created () {
@@ -159,15 +159,15 @@
                 }).then(res => {
                     if (res.success) {
                         if (this.auditParams.auditStatus == 'pass') {
-                            this.$Message.success(this.$t('提现审核通过'));
+                            this.$Message.success(this.$t('pass', { field : this.$t('withdrawCashAudit') }));
                             this.hide();
                         } else {
-                            this.$Message.success(this.$t('提现审核驳回'));
+                            this.$Message.success(this.$t('sthReject', { field : this.$t('withdrawCashAudit') }));
                             this.$refs.rejectModal.hide();
                         }
                         this.$emit('on-audited');
                     } else {
-                        this.$Message.error(this.$t('提现审核失败'));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('withdrawCashAudit') }));
                     }
                 });
             },

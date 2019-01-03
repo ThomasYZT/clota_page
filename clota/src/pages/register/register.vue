@@ -10,9 +10,9 @@
                     <img src="../../assets/images/logo.svg" alt="">
                 </div>
                 <div class="lang">
-                    <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">中文</span>
+                    <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">{{$t('chinese')}}</span>
                     <span class="lang-split-line">|</span>
-                    <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">English</span>
+                    <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">{{$t('english')}}</span>
                 </div>
             </div>
 
@@ -44,25 +44,25 @@
     import personalRegister from './child/personalRegister';
     import { mapGetters } from 'vuex';
     export default {
-        components: {
+        components : {
             companyRegister,
             personalRegister
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             })
         },
-        methods: {
+        methods : {
             //改变语言
-            changeLang(lang) {
+            changeLang (lang) {
                 this.$store.commit('setLang',lang);
             },
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

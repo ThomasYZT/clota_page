@@ -55,34 +55,34 @@
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import resetPwdModal from './components/resetPwdModal.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {employeeInfoHead} from './resetPwdConfig';
-    import ajax from '@/api/index'
+    import { configVariable } from '@/assets/js/constVariable';
+    import { employeeInfoHead } from './resetPwdConfig';
+    import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {tableCom, resetPwdModal},
-        props: {},
-        data() {
+        components : { tableCom, resetPwdModal },
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    keyword: '',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    keyword : '',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    name: '',
+                filterParam : {
+                    name : '',
                 },
                 // 表格表头字段名
-                columnData: employeeInfoHead,
+                columnData : employeeInfoHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
-            }
+                totalCount : 0,
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'permissionInfo'
             ]),
@@ -91,13 +91,13 @@
                 return this.permissionInfo && this.permissionInfo['operateResetPassword'] === 'allow';
             }
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
-            queryList() {
+        watch : {},
+        methods : {
+            queryList () {
                 ajax.post('getEmployeeList',this.queryParams).then((res) => {
                     if (res.success) {
                         if (res.data && res.data.data) {
@@ -112,7 +112,7 @@
             },
 
             // 搜索员工
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
@@ -121,8 +121,8 @@
              * 显示重置密码弹窗，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            handleReset(scopeRow) {
-                this.$refs.resetPwdModal.show({item: scopeRow});
+            handleReset (scopeRow) {
+                this.$refs.resetPwdModal.show({ item : scopeRow });
             },
         }
     };

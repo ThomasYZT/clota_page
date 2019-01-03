@@ -18,7 +18,7 @@
                                 :placeholder="$t('selectField',{msg: ''})"
                                 :value="item.accountType"
                                 :key="index">
-                            {{ item.payTypeName }}
+                            {{ $t(item.payTypeName) }}
                         </Option>
                     </Select>
                 </Form-item>
@@ -62,16 +62,16 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
 
     export default {
-        props: ['length','modal-title','has-paytype-list'],
-        components: {
+        props : ['length','modal-title','has-paytype-list'],
+        components : {
             tableCom,
         },
         data () {
 
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
@@ -79,121 +79,121 @@
             };
 
             //校验正整数
-            const validateNumber = (rule,value,callback) => {
-                common.validateInteger(value).then(() => {
-                    callback();
-                }).catch(err => {
-                    if(err === 'errorMaxLength'){
-                        callback(this.$t(err,{field : this.$t('storedValueRatio'),length : 10}));
-                    }else{
-                        callback(this.$t(err,{field : this.$t('storedValueRatio')}));
-                    }
-                });
-            };
+            // const validateNumber = (rule,value,callback) => {
+            //     common.validateInteger(value).then(() => {
+            //         callback();
+            //     }).catch(err => {
+            //         if (err === 'errorMaxLength') {
+            //             callback(this.$t(err,{ field : this.$t('storedValueRatio'),length : 10 }));
+            //         } else {
+            //             callback(this.$t(err,{ field : this.$t('storedValueRatio') }));
+            //         }
+            //     });
+            // };
 
 
             return {
-                visible: false,
+                visible : false,
                 //步骤
-                step: 0,
+                step : 0,
                 //表单数据
-                index: null,
-                formData: {
-                    accountType: '',
-                    merchantNum: '',
-                    appId: '',
-                    appKey: '',
-                    appSecret: '',
-                    remark: '',
+                index : null,
+                formData : {
+                    accountType : '',
+                    merchantNum : '',
+                    appId : '',
+                    appKey : '',
+                    appSecret : '',
+                    remark : '',
                 },
                 //校验规则
-                ruleValidate: {
-                    accountType: [
-                        { required: true, message: this.$t('selectField',{msg : this.$t('accountOwnership')}), trigger: 'change' },
+                ruleValidate : {
+                    accountType : [
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('accountOwnership') }), trigger : 'change' },
                     ],
-                    merchantNumber: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('merchantNum')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    merchantNumber : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('merchantNum') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    appId: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('appID')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    appId : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('appID') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    appKey: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('appKEY')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    appKey : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('appKEY') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    appSecret: [
-                        { required: true, message: this.$t('errorEmpty', {msg: this.$t('appSECRET')}), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
+                    appSecret : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('appSECRET') }), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
                     ],
-                    remark: [
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { max: 20, message: this.$t('errorMaxLength',{field : this.$t('remark'),length : 20}), trigger: 'blur' },
+                    remark : [
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { max : 20, message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 20 }), trigger : 'blur' },
                     ],
 
                 },
                 //存储所选表格数据
-                selectData: [],
+                selectData : [],
                 //表头信息
-                moneyColumnData: [
+                moneyColumnData : [
                     {
-                        title: '',
-                        minWidth: 110,
-                        field: '',
+                        title : '',
+                        minWidth : 110,
+                        field : '',
                     },
                     {
-                        title: 'principalCanBeUsedInRangeSetting',
-                        minWidth: 400,
-                        field: 'orgName'
-                    },
-                ],
-                sendColumnData: [
-                    {
-                        title: '',
-                        minWidth: 110,
-                        field: '',
-                    },
-                    {
-                        title: 'complimentaryAmountCanBeUsedToSetTheRange',
-                        minWidth: 400,
-                        field: 'orgName'
+                        title : 'principalCanBeUsedInRangeSetting',
+                        minWidth : 400,
+                        field : 'orgName'
                     },
                 ],
-                accountList: []
-            }
+                sendColumnData : [
+                    {
+                        title : '',
+                        minWidth : 110,
+                        field : '',
+                    },
+                    {
+                        title : 'complimentaryAmountCanBeUsedToSetTheRange',
+                        minWidth : 400,
+                        field : 'orgName'
+                    },
+                ],
+                accountList : []
+            };
         },
-        watch: {
+        watch : {
 
         },
-        methods: {
+        methods : {
 
             show ( data ) {
                 this.index = this.length;
                 this.accountList = [
-                    {accountType: 'alipay', payTypeName: '支付宝支付账户'},
-                    {accountType: 'weixin', payTypeName: '微信支付账户'}
-                ]
-                if( data ){
+                    { accountType : 'alipay', payTypeName : 'zfbPayAccount' },
+                    { accountType : 'weixin', payTypeName : 'wxPayAccount' }
+                ];
+                if ( data ) {
                     this.formData = defaultsDeep({}, data.item);
                     this.index = data.index;
                 }
 
                 //获取未添加过的账户类型信息
-                if(data.item) {
+                if (data.item) {
                     //console.log(this.hasPaytypeList)
                     this.accountList.forEach((item, index) => {
-                        if(item.accountType == data.item.accountType) {
-                            this.accountList.splice( index-1,1)
+                        if (item.accountType == data.item.accountType) {
+                            this.accountList.splice( index - 1,1);
                         }
-                    })
-                }else {
+                    });
+                } else {
                     //console.log(this.hasPaytypeList)
-                    for(let i=0, len=this.accountList.length; i<len;) {
-                        if(this.hasPaytypeList.indexOf(this.accountList[i].accountType) > -1){
+                    for (let i = 0, len = this.accountList.length; i < len;) {
+                        if (this.hasPaytypeList.indexOf(this.accountList[i].accountType) > -1) {
                             this.accountList.splice(i,1);
                             len -= 1;
-                        }else {
+                        } else {
                             i++;
                         }
                     }
@@ -210,46 +210,46 @@
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
+                    if (valid) {
                         //校验成功，触发新增账户接口
-                        this.saveAccountInfo()
+                        this.saveAccountInfo();
                     }
-                })
+                });
             },
             /**
              * 提交账户信息
              */
-            saveAccountInfo() {
+            saveAccountInfo () {
                 ajax.post('addOnlineAccount', {
                     ...this.formData
                 }).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         this.$emit('updata-list');
                         this.hide();
-                        this.$Message.success(this.$t(this.title)+ this.$t('successTip', {tip: ''}) + '！');
+                        this.$Message.success(this.$t(this.title) + this.$t('successTip', { tip : '' }) + '！');
                     } else {
-                        this.$Message.warning('queryChannelSet '+ this.$t('failureTip', {tip: 'del'}) +'！');
+                        this.$Message.warning('queryChannelSet ' + this.$t('failureTip', { tip : 'del' }) + '！');
                     }
-                })
+                });
             },
             //关闭模态框
-            hide(){
+            hide () {
                 this.visible = false;
                 this.formData = {
-                    accountType: '',
-                    merchantNumber: '',
-                    appId: '',
-                    appKey: '',
-                    appSecret: '',
-                    remark: '',
+                    accountType : '',
+                    merchantNumber : '',
+                    appId : '',
+                    appKey : '',
+                    appSecret : '',
+                    remark : '',
                 };
                 this.selectData = [];
                 this.index = null;
                 this.step = null;
-                if( this.$refs.moneyMultiTablePlug ){
+                if ( this.$refs.moneyMultiTablePlug ) {
                     this.$refs.moneyMultiTablePlug.clearSelection();
                 }
-                if( this.$refs.sendMultiTablePlug ){
+                if ( this.$refs.sendMultiTablePlug ) {
                     this.$refs.sendMultiTablePlug.clearSelection();
                 }
                 this.$refs.formValidate.resetFields();
@@ -261,10 +261,10 @@
             save () {
                 this.formData.corpusAppliedOrgId = [];
                 this.formData.donateAppliedOrgId = [];
-                if(this.selectData && this.selectData.length > 0 ){
+                if (this.selectData && this.selectData.length > 0 ) {
                     this.selectData[0].forEach( (item) => {
                         this.formData.corpusAppliedOrgId.push(item.id);
-                    })
+                    });
 
                     this.selectData[1].forEach( (item) => {
                         this.formData.donateAppliedOrgId.push(item.id);
@@ -287,7 +287,7 @@
             },
 
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

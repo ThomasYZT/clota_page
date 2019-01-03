@@ -58,16 +58,16 @@
 
 <script>
   export default {
-      props: {
-          accountInfo: {
-              type: Object,
-              default: {}
+      props : {
+          accountInfo : {
+              type : Object,
+              default : {}
           }
       },
-      data() {
-          return {}
+      data () {
+          return {};
       },
-      methods: {},
+      methods : {},
       computed : {
           //地区信息
           districtInfo () {
@@ -77,7 +77,7 @@
               return '';
           }
       }
-  }
+  };
 </script>
 
 <style lang="scss" scoped>

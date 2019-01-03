@@ -102,49 +102,49 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import auditRechargeModal from './components/auditModal.vue';
     import recallModal from './components/recallModal.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {rechargeHead} from '../financeManageConfig';
+    import { configVariable } from '@/assets/js/constVariable';
+    import { rechargeHead } from '../financeManageConfig';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {tableCom, auditRechargeModal ,recallModal},
-        props: {},
-        data() {
+        components : { tableCom, auditRechargeModal ,recallModal },
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    keyword: '',
+                filterParam : {
+                    keyword : '',
                 },
                 // 表格表头字段名
-                columnData: rechargeHead,
+                columnData : rechargeHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
-            }
+                totalCount : 0,
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'manageOrgs'
             ])
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        filters: {
+        filters : {
 
         },
-        methods: {
+        methods : {
             /**
              * 查询充值记录列表
              **/
-            queryList() {
+            queryList () {
                 ajax.post('queryRechargeList', this.queryParams).then((res) => {
                     if (res.data && res.data.data) {
                         this.tableData = res.data ? res.data.data : [];
@@ -156,7 +156,7 @@
                 });
             },
             // 搜索信息
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
@@ -165,15 +165,15 @@
              * 显示审核弹窗，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            handleAudit(scopeRow) {
-                this.$refs.auditModal.show({item: scopeRow});
+            handleAudit (scopeRow) {
+                this.$refs.auditModal.show({ item : scopeRow });
             },
             /**
              * 显示撤回弹窗，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            handleRecall(scopeRow) {
-                this.$refs.recallModal.show({item: scopeRow});
+            handleRecall (scopeRow) {
+                this.$refs.recallModal.show({ item : scopeRow });
             },
             /**
              * 查询
@@ -189,7 +189,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('updateStatus') }));
                     }
-                })
+                });
             }
         }
     };

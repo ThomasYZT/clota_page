@@ -80,21 +80,21 @@
             columnData : {
                 type : Array,
                 default () {
-                    return []
+                    return [];
                 }
             },
             //表格数据
             tableData : {
                 type : Array,
                 default () {
-                    return []
+                    return [];
                 }
             },
         },
         data () {
             return {
                 date : [new Date().addMonths(-1), new Date()],
-            }
+            };
         },
         computed : {},
         created () {

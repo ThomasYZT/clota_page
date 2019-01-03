@@ -506,7 +506,7 @@
                 } else {
                     this.$router.push({
                         name : 'ticketType'
-                    })
+                    });
                 }
             }
 

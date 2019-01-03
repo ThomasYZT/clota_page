@@ -533,9 +533,9 @@
                                         </template>
                                     </el-table-column>
                                 </table-com>
-                                <p class="remark">1、若退票免手续费，则无需设置任何档位。</p>
-                                <p class="remark">2、各档费率应覆盖产品提前销售的时间。例如，产品提前30天销售，则设置退票费率档位应覆盖游玩日期当之前30天。</p>
-                                <p class="remark">3、游客在设置的费率期限外申请退票，系统将按免手续费处理。</p>
+                                <p class="remark">{{$t('productCenter.refundTip1')}}</p>
+                                <p class="remark">{{$t('productCenter.refundTip2')}}</p>
+                                <p class="remark">{{$t('productCenter.refundTip3')}}</p>
                             </template>
                         </Form-item>
                     </div>
@@ -1123,7 +1123,7 @@
                 if (this.marketingData && this.marketingData.length > 0) {
                     for (let i = 0, len = this.marketingData.length; i < len; i++) {
                         if (this.marketingData[i].editable) {
-                            this.$Message.error(this.$t('pleaseSave',  { field : this.$t('allPeopleMarketSetting') }));
+                            this.$Message.error(this.$t('pleaseSave', { field : this.$t('allPeopleMarketSetting') }));
                             return;
                         }
                     }
@@ -1271,7 +1271,7 @@
              * @param data
              */
             initData (data) {
-                console.log(data)
+                console.log(data);
                 let formData = pick(data.productPolicy, ['id','productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
                 'buyTicketNotes']);
                 formData.saleTime = [data.productPolicy.saleStartTime, data.productPolicy.saleEndTime];
@@ -1354,7 +1354,7 @@
                         levelId : item.levelId,
                         levelName : item.levelName,
                         editable : false
-                    }
+                    };
                 }) : [];
 
                 this.formData = defaultsDeep( {}, formData );
@@ -1403,7 +1403,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.marketingLevelList = res.data ? res.data.data.map((item) => {
-                            return  {
+                            return {
                                 label : item.levelName,
                                 value : item.id
                             };
@@ -1425,7 +1425,7 @@
                     } else {
                         this.marketingLevelList = [];
                     }
-                })
+                });
             },
             /**
              *  营销类别变化时触发

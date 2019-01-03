@@ -101,10 +101,10 @@
             //校验是否为数字、且大于0、且大于销售政策产品单价
             const validateNumber = (rule, value, callback) => {
                 if (value && !validator.isNumber(value)) {
-                    callback(new Error( this.$t('numError', { field : this.$t('终端售价') }) ));
+                    callback(new Error( this.$t('numError', { field : this.$t('terminalSalePrice') }) ));
                 } else {
                     if (parseFloat(this.modifyModel.settlePrice) >= parseFloat(value)) {
-                        callback(new Error( this.$t('NoSmallerThan', { field1 : '终端售价', field2 : '销售政策产品单价' })));
+                        callback(new Error( this.$t('NoSmallerThan', { field1 : 'terminalSalePrice', field2 : 'salePolicyProductUnitPrice' })));
                     } else {
                         callback();
                     }
@@ -131,7 +131,7 @@
                 //表单验证
                 ruleValidate : {
                     modifiedSalePrice : [
-                        { required : true, message : this.$t('inputField', { field : '终端售价' }), trigger : 'blur' },
+                        { required : true, message : this.$t('inputField', { field : 'terminalSalePrice' }), trigger : 'blur' },
                         { validator : validateNumber },
                     ]
                 },
@@ -142,7 +142,7 @@
                     //销售政策产品单价
                     settlePrice : '',
                 }
-            }
+            };
         },
         computed : {
             ...mapGetters([
@@ -240,7 +240,7 @@
                             }
                         });
                     }
-                })
+                });
             },
             /**
              * 查看销售政策详情

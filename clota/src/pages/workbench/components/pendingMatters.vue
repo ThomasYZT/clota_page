@@ -85,7 +85,7 @@
                 columnData : pendingMattersHead,
                 //表格数据
                 tableData : [],
-            }
+            };
         },
         methods : {
             /**

@@ -60,4 +60,4 @@ export const disableHeadConfig = [
         width : 110,
         field : 'auditStatus'
     },
-]
+];

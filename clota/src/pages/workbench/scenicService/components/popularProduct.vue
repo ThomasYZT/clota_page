@@ -25,7 +25,7 @@
 </template>
 <script>
     import ajax from '@/api/index.js';
-    import column from '../../components/column.vue'
+    import column from '../../components/column.vue';
     export default {
         components : {
             column
@@ -40,7 +40,7 @@
                     series : [],
                     xAxisData : []
                 }
-            }
+            };
         },
         computed : {},
         created () {

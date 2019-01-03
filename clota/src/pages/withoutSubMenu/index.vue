@@ -16,11 +16,11 @@
         components : {
             mainFrame
         },
-        data() {
-            return {}
+        data () {
+            return {};
         },
-        methods: {}
-    }
+        methods : {}
+    };
 </script>
 
 <style lang="scss" scoped>

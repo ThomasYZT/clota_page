@@ -134,7 +134,7 @@
                     MARKET_WITHDRAW_PASS : 'passed', //通过
                     MARKET_WITHDRAW_SUCCESS : 'hasTransfer', //已转账
                 },
-            }
+            };
         },
         computed : {
             ...mapGetters([

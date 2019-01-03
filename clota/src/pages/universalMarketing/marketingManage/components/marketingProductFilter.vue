@@ -8,7 +8,7 @@
     <div class="marketing-filter-box">
         <ul class="clearfix">
             <li>
-                <span class="filter-label">{{$t('营销类别')}}</span>
+                <span class="filter-label">{{$t('marketType')}}</span>
                 <Select v-model="filterParams.marketTypeId" class="field-item">
                     <Option v-for="item in marketingTypes"
                             :key="item.id"
@@ -18,7 +18,7 @@
                 </Select>
             </li>
             <li>
-                <span class="filter-label">{{$t('营销等级')}}</span>
+                <span class="filter-label">{{$t('marketingLevel')}}</span>
                 <Select v-model="filterParams.marketLevelId" class="field-item">
                     <Option v-for="item in marketingLevels"
                             :key="item.id"
@@ -74,7 +74,7 @@
                 allMarketLevel : [{ id : 'all', levelName : 'all' }],
                 // 销售政策列表
                 salesPolicy : [],
-            }
+            };
         },
         computed : {
             // policyItem () {

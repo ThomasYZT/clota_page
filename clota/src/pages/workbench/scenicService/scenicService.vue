@@ -91,7 +91,7 @@
                     //未处理通知
                     workBackNum : {},
                 }
-            }
+            };
         },
         computed : {},
         created () {

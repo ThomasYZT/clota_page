@@ -54,34 +54,34 @@
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import buySmsModal from './components/buySmsModal.vue';
-    import {configVariable} from '@/assets/js/constVariable';
-    import {smsPkgHead} from './buySmsConfig';
-    import ajax from '@/api/index'
+    import { configVariable } from '@/assets/js/constVariable';
+    import { smsPkgHead } from './buySmsConfig';
+    import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 
     export default {
-        components: {tableCom, buySmsModal},
-        props: {},
-        data() {
+        components : { tableCom, buySmsModal },
+        props : {},
+        data () {
             return {
                 // 获取数据的请求参数
-                queryParams: {
-                    keyword: '',
-                    pageNo: 1,                                      // 当前页码数
-                    pageSize: configVariable.pageDefaultSize,       // 每页显示数量
+                queryParams : {
+                    keyword : '',
+                    pageNo : 1, // 当前页码数
+                    pageSize : configVariable.pageDefaultSize, // 每页显示数量
                 },
-                filterParam: {
-                    name: '',
+                filterParam : {
+                    name : '',
                 },
                 // 表格表头字段名
-                columnData: smsPkgHead,
+                columnData : smsPkgHead,
                 // 列表数据
-                tableData: [],
+                tableData : [],
                 // 数据总条数
-                totalCount: 0,
-            }
+                totalCount : 0,
+            };
         },
-        computed: {
+        computed : {
             ...mapGetters([
                 'permissionInfo'
             ]),
@@ -90,13 +90,13 @@
                 return this.permissionInfo && this.permissionInfo['buySmsPackage'] === 'allow';
             }
         },
-        created() {
+        created () {
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
-            queryList() {
+        watch : {},
+        methods : {
+            queryList () {
                 ajax.post('getSmsPackageList', this.queryParams).then((res) =>{
                     if (res.success) {
                         if (res.data && res.data.data) {
@@ -107,12 +107,12 @@
                             this.totalCount = 0;
                         }
                     }
-                })
+                });
                 this.totalCount = this.tableData.length;
             },
 
             // 搜索短信套餐
-            handleSearch() {
+            handleSearch () {
                 this.queryParams.pageNo = 1;
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
@@ -121,9 +121,9 @@
              * 显示购买短信弹窗，并传入当前被操作的行数据
              * @param scopeRow - 行数据
              */
-            handleBuy(scopeRow) {
+            handleBuy (scopeRow) {
                 if (!this.canBuySms) return;
-                this.$refs.buySmsModal.show({item: scopeRow});
+                this.$refs.buySmsModal.show({ item : scopeRow });
             },
         }
     };

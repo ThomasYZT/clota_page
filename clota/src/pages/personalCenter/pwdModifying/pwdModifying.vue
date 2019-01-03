@@ -15,26 +15,26 @@
                   label-position="top">
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('旧密码')" prop="oldPassword"><!--旧密码-->
+                    <Form-item :label="$t('oldPassword')" prop="oldPassword"><!--旧密码-->
                         <Input v-model.trim="pwdForm.oldPassword"
                                type="password"
-                               :placeholder="$t('inputField', {field: $t('旧密码')})"/>
+                               :placeholder="$t('inputField', {field: $t('oldPassword')})"/>
                     </Form-item>
                 </div>
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('新密码')" prop="newPassword"><!--新密码-->
+                    <Form-item :label="$t('newPassword')" prop="newPassword"><!--新密码-->
                         <Input v-model.trim="pwdForm.newPassword"
                                type="password"
-                               :placeholder="$t('inputField', {field: $t('password')})"/>
+                               :placeholder="$t('inputField', {field: $t('newPassword')})"/>
                     </Form-item>
                 </div>
 
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('确认密码')" prop="rePassword"><!--确认密码-->
+                    <Form-item :label="$t('surePassword')" prop="rePassword"><!--确认密码-->
                         <Input v-model.trim="pwdForm.rePassword"
                                type="password"
-                               :placeholder="$t('请再次输入密码')"/>
+                               :placeholder="$t('surePasswordAgain')"/>
                     </Form-item>
                 </div>
 
@@ -45,7 +45,7 @@
             <Button type="primary"
                     :loading="loading"
                     @click="formValidateFunc">
-                {{$t('提交')}}
+                {{$t('submit')}}
             </Button>
             <Button type="ghost"
                     @click="resetField()">
@@ -55,36 +55,36 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
     import MD5 from 'crypto-js/md5';
     export default {
-        components: {},
-        props: {},
-        data() {
+        components : {},
+        props : {},
+        data () {
             let self = this;
             const validateMethod = {
-                emoji :  (rule, value, callback) => {
+                emoji : (rule, value, callback) => {
                     if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') ));    // 输入内容不合规则
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
                     }
                 },
 
                 //密码只能是数字+26个英文大小写字母
-                pwdRule: (rule, value, callback) => {
+                pwdRule : (rule, value, callback) => {
                     let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
-                    if(!reg.test(value)) {
+                    if (!reg.test(value)) {
                         callback(new Error( this.$t('errorPwdRule') ));
-                    }else {
-                        callback()
+                    } else {
+                        callback();
                     }
                 },
 
                 // 校验再次输入的密码是否与新密码相同
-                isEqNewPwd: (rule, value, callback) => {
+                isEqNewPwd : (rule, value, callback) => {
                     if (value != self.pwdForm.newPassword) {
-                        callback(new Error( this.$t('再次输入的密码与新密码不同') ));    // 输入的密码与新密码不同
+                        callback(new Error( this.$t('passwordNotEqual') )); // 输入的密码与新密码不同
                     } else {
                         callback();
                     }
@@ -94,73 +94,73 @@
 
             return {
                 // 表单数据绑定
-                pwdForm: {
-                    oldPassword: '',
-                    newPassword: '',
-                    rePassword: '',
+                pwdForm : {
+                    oldPassword : '',
+                    newPassword : '',
+                    rePassword : '',
                 },
-                loading: false,
+                loading : false,
                 // 校验规则
-                ruleValidate: {
-                    oldPassword: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('旧密码')}), trigger: 'blur'},     // 旧密码不能为空
-                        {validator: validateMethod.emoji, trigger: 'blur'}
+                ruleValidate : {
+                    oldPassword : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('oldPassword') }), trigger : 'blur' }, // 旧密码不能为空
+                        { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
-                    newPassword: [
-                        {required: true, message: this.$t('errorEmpty', {msg: this.$t('新密码')}), trigger: 'blur'},     // 新密码不能为空
-                        {validator: validateMethod.emoji, trigger: 'blur'},
-                        {validator: validateMethod.pwdRule, trigger: 'blur'},
+                    newPassword : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('newPassword') }), trigger : 'blur' }, // 新密码不能为空
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMethod.pwdRule, trigger : 'blur' },
                     ],
-                    rePassword: [
-                        { required: true, message: this.$t('请再次输入密码'), trigger: 'blur' },
-                        { validator: validateMethod.emoji, trigger: 'blur' },
-                        { validator: validateMethod.isEqNewPwd, trigger: 'blur' },
-                        { validator: validateMethod.pwdRule, trigger: 'blur'},
+                    rePassword : [
+                        { required : true, message : this.$t('surePasswordAgain'), trigger : 'blur' },
+                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { validator : validateMethod.isEqNewPwd, trigger : 'blur' },
+                        { validator : validateMethod.pwdRule, trigger : 'blur' },
                     ],
 
                 },
 
                 // 空的表单字段内容
-                emptyPwdForm: {},
-            }
+                emptyPwdForm : {},
+            };
         },
-        computed: {},
-        created() {
+        computed : {},
+        created () {
             this.emptyPwdForm = JSON.stringify(this.pwdForm);
         },
-        mounted() {
+        mounted () {
         },
-        watch: {},
-        methods: {
+        watch : {},
+        methods : {
             //表单校验
             formValidateFunc () {
                 this.$refs.formValidate.validate((valid) => {
-                    if(valid){
+                    if (valid) {
                         this.changePassWord(this.pwdForm);
                     }
-                })
+                });
             },
 
             // 重置表单字段内容
-            resetField() {
+            resetField () {
                 Object.assign(this.pwdForm, JSON.parse(this.emptyPwdForm));
             },
 
             //修改密码
-            changePassWord(params) {
+            changePassWord (params) {
                 ajax.post('modifyPassword', {
-                    password: MD5(params.oldPassword).toString(),
-                    newPassword: MD5(params.newPassword).toString()
+                    password : MD5(params.oldPassword).toString(),
+                    newPassword : MD5(params.newPassword).toString()
                 }).then((res) =>{
-                    if( res.success ) {
-                        this.$Message.success(this.$t('successTip',{'tip' : this.$t('modify')}));
+                    if ( res.success ) {
+                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('modify') }));
                         this.$refs.formValidate.resetFields();
                     } else if (res.code === 'A011') {
-                        this.$Message.error(this.$t('原密码错误'));
+                        this.$Message.error(this.$t('oldPasswordError'));
                     } else {
-                        this.$Message.error(this.$t('failureTip',{'tip' : this.$t('modify')}));
+                        this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('modify') }));
                     }
-                })
+                });
             }
         }
     };

@@ -13,12 +13,12 @@
         <div class="modal-body">
             <div class="box-title">
                 <h4 class="title">
-                    <span class="iconfont icon-chenggong"></span>提交资料成功
+                    <span class="iconfont icon-chenggong"></span>{{$t('submitDatumSuccess')}}
                 </h4>
             </div>
 
             <div class="box-body">
-                <span class="body-content">等待审核。我们将会把审核结果发送至邮箱{{email | contentFilter}}，请注意查收</span>
+                <span class="body-content">{{$t('registerSuccessTip', { info : email ? email : '-' })}}</span>
             </div>
         </div>
 
@@ -36,14 +36,14 @@
             return {
                 visible : false,
                 email : '',
-            }
+            };
         },
         methods : {
             /**
              * 控制模态框是否显示
              */
             show (data) {
-                if(data) {
+                if (data) {
                     this.email = data;
                     this.visible = true;
                 }
@@ -60,12 +60,12 @@
              */
             confirm () {
                 this.$router.replace({
-                    name: 'login'
+                    name : 'login'
                 });
                 this.hide();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

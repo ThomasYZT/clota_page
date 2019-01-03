@@ -19,20 +19,20 @@ export const marketingProductHead = [
         field : 'printPrice'
     },
     {
-        title : '销售政策产品单价', // 销售政策产品单价
+        title : 'salePolicyProductUnitPrice', // 销售政策产品单价
         width : 160,
         enWidth : 180,
         type : 'money',
         field : 'settlePrice'
     },
     {
-        title : '终端售价', // 终端售价
+        title : 'terminalSalePrice', // 终端售价
         minWidth : 130,
         type : 'money',
         field : 'salePrice'
     },
     {
-        title : '佣金', // 佣金
+        title : 'commission', // 佣金
         width : 110,
         type : 'money',
         field : 'commission'

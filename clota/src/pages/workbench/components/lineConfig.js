@@ -122,8 +122,8 @@ export default function (xAxisData, seriesData, legendData) {
     };
     if (seriesData) {
         seriesData.forEach(item => {
-            seriesOption.push(defaultsDeep(item, option))
-        })
+            seriesOption.push(defaultsDeep(item, option));
+        });
     } else {
         seriesOption = [option];
     }

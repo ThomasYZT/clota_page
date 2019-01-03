@@ -6,9 +6,9 @@
                 <img src="../../assets/images/logo.svg" alt="">
             </div>
             <div class="lang">
-                <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">中文</span>
+                <span class="lang-list" :class="{ active : lang === 'zh-CN' }" @click="changeLang('zh-CN')">{{$t('chinese')}}</span>
                 <span class="lang-split-line">|</span>
-                <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">English</span>
+                <span class="lang-list" :class="{ active : lang === 'en' }" @click="changeLang('en')">{{$t('english')}}</span>
             </div>
         </div>
         <!-- 登录模块 -->
@@ -78,16 +78,16 @@
         },
         data() {
             return {
-                formInline: {
-                    user: '', //登录账号
-                    password: '' //登录密码
+                formInline : {
+                    user : '', //登录账号
+                    password : '' //登录密码
                 },
-                ruleInline: {
-                    user: [
-                        {required: true, message: this.$t("uesrNameText"), trigger: 'blur'}
+                ruleInline : {
+                    user : [
+                        { required : true, message : this.$t("uesrNameText"), trigger : 'blur' }
                     ],
-                    password: [
-                        {required: true, message: this.$t("passwordText"), trigger: 'blur'},
+                    password : [
+                        { required : true, message : this.$t("passwordText"), trigger : 'blur' },
                     ]
                 },
                 //错误提示信息
@@ -96,25 +96,25 @@
                 isLoging : false,
                 //是否记住密码
                 rememberAccount : false
-            }
+            };
         },
-        methods: {
+        methods : {
             //改变语言
-            changeLang(lang) {
+            changeLang (lang) {
                 this.$store.commit('setLang',lang);
             },
             //登录提交表单
-            handleSubmit(name) {
+            handleSubmit (name) {
                 this.errMsg = '';
-                if(this.rememberAccount){
+                if (this.rememberAccount) {
                     localStorage.setItem('logName',this.formInline.user);
-                }else {
+                } else {
                     localStorage.removeItem('logName');
                 }
                    localStorage.removeItem('manageOrg');
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        if(this.isLoging) return;
+                        if (this.isLoging) return;
                         this.isLoging = true;
                         ajax.post('login',{
                             loginName : this.formInline.user,
@@ -127,40 +127,40 @@
                                 this.$store.dispatch('getUserInfo',{
                                     userInfo : res.data,
                                 }).then(route => {
-                                    if(route && route.path){
+                                    if (route && route.path) {
                                         this.$router.push({
-                                            path: route.path
+                                            path : route.path
                                         },() => {
                                             setTimeout(() => {
                                                 this.isLoging = false;
                                             },500);
                                         });
-                                    }else{
+                                    } else {
                                         this.errMsg = this.$t('loginError');
                                         this.isLoging = false;
                                     }
                                 });
-                            }else if(res.toString() === 'Error: Network Error'){//网络错误
+                            } else if (res.toString() === 'Error: Network Error') {//网络错误
                                 this.errMsg = this.$t('serverFail');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.code === 'A001'){//账号或密码错误
+                            } else if (res.code === 'A001') {//账号或密码错误
                                 this.errMsg = this.$t('accoutOrPassErr');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.code === 'A002'){//账户未启用，或已关闭
+                            } else if (res.code === 'A002') {//账户未启用，或已关闭
                                 this.errMsg = this.$t('accountFundError');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.code === 'A009'){//账户没有菜单权限，请联系管理员开通权限
+                            } else if (res.code === 'A009') {//账户没有菜单权限，请联系管理员开通权限
                                 this.errMsg = this.$t('accountPrivaligeError');
                                 setTimeout(() => {
                                     this.isLoging = false;
                                 },500);
-                            }else if(res.code === 'O005'){//该机构或上级机构未启用
+                            } else if (res.code === 'O005') {//该机构或上级机构未启用
                                 this.errMsg = this.$t('accountInvalid');
                                 setTimeout(() => {
                                     this.isLoging = false;
@@ -179,16 +179,16 @@
                             },500);
                         });
                     }
-                })
+                });
             },
             /**
              * 跳转至合作伙伴注册界面
              */
-            toRegist() {
-                this.$router.push({name: 'register'})
+            toRegist () {
+                this.$router.push({ name : 'register' });
             }
         },
-        computed: {
+        computed : {
             ...mapGetters({
                 lang : 'lang'
             })
@@ -200,7 +200,7 @@
                 this.$refs.noticeModal.show();
             }, 1000)
         },
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
