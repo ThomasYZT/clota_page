@@ -69,7 +69,7 @@
                     <div class="check-group-wrap">{{$t('recharge')}}
                         <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
                             <Input v-model.trim="settingData.growthFromCharging.moneyToGgowth"
-                                   :disabled="settingData.growthFromCharging.chargingAddGrowth !== 'true' ? true : false"
+                                   :disabled="settingData.growthFromCharging.chargingAddGrowth !== 'true'"
                                    @on-blur="checkInputBlurFunc(settingData.growthFromCharging.moneyToGgowth,'moneyToGgowthError')"
                                    type="text"
                                    class="single-input"
@@ -91,10 +91,10 @@
                         <Radio label="immediately">
                             <span>{{$t('rechartSucEffective')}}</span>
                         </Radio>
-                        <Radio label="stored" :class="{'ivu-form-item-error': error.storeTimeError}">
+                        <Radio label="checkout_after" :class="{'ivu-form-item-error': error.storeTimeError}">
                             <span>{{$t('rechartSuc')}}</span>
                             <Input v-model.trim="settingData.growthEffModeWhileCharging.storedTime"
-                                   :disabled="settingData.growthEffModeWhileCharging.storedType !== 'stored' ? true : false"
+                                   :disabled="settingData.growthEffModeWhileCharging.storedType !== 'checkout_after' ? true : false"
                                    @on-blur="checkInputBlurFunc(settingData.growthEffModeWhileCharging.storedTime,'storeTimeError')"
                                    type="text"
                                    class="single-input"
@@ -172,14 +172,14 @@
                 //Number型
                 numberProps: ['growthSet','storedTime'],
                 //String型
-                stringProps: ['growthSet','storedTime'],
+                stringProps: ['growthSet','storedTime','chargingAddGrowth'],
             }
         },
         watch: {
 
             //储值获得成长值生效设置
             'settingData.growthEffModeWhileCharging.storedType' : function (newVal, oldVal) {
-                if (newVal !== 'stored') {
+                if (newVal !== 'checkout_after') {
                     this.error.moneyToGgowthError = '';
                 }
             },
@@ -188,6 +188,13 @@
             'settingData.growthEffectiveMode.growthType' : function (newVal, oldVal) {
                 if(newVal !== 'checkout_after'){
                     this.error.growthTimeError = '';
+                }
+            },
+
+            //储值获得成长值比例设置
+            'settingData.growthFromCharging.chargingAddGrowth' : function (newVal, oldVal) {
+                if(newVal === 'false'){
+                    this.error.moneyToGgowthError = '';
                 }
             },
 
@@ -222,7 +229,7 @@
                             //处理数据
                             let params = {
                                 growthEffModeWhileCharging : res.data.growthEffModeWhileCharging ?
-                                    JSON.parse(res.data.growthEffModeWhileCharging) : this.settingData.growthEffModeWhileCharging,
+                                    JSON.parse(res.data.growthEffModeWhileCharging)  : this.settingData.growthEffModeWhileCharging,
                                 growthFromCharging : res.data.growthFromCharging ?
                                     JSON.parse(res.data.growthFromCharging) : this.settingData.growthFromCharging,
                                 growthRateWhileConsume: JSON.parse(res.data.growthRateWhileConsume),
@@ -292,7 +299,7 @@
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
 
-                if (this.settingData.growthEffModeWhileCharging.storedType === 'stored' &&
+                if (this.settingData.growthEffModeWhileCharging.storedType === 'checkout_after' &&
                     !this.checkInputBlurFunc(this.settingData.growthEffModeWhileCharging.storedTime, 'storedTimeError') ) {
                     return false;
                 }
@@ -330,7 +337,7 @@
                 }
 
                 //校验表情符号
-                if (val && val.isUtf16()) {
+                if (val && String(val).isUtf16()) {
                     this.error[errorField] = this.$t('errorIrregular'); // 输入内容不合规则
                     return false
                 } else {
