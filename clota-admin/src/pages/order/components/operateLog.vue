@@ -112,8 +112,8 @@
                             //退票审核，
                             return {
                                 content : `${this.$t('refundAndAudit')}，${this.$t('passedNum')}：${contentsObj.passNum}
-                            ${'passOrderTicketIds' in contentsObj ? ( '，' + this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
-                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark + ',' ) : '' }
+                            ${'passOrderTicketIds' in contentsObj ? ( '，' + this.$t('productDetailNo') + '：' + contentsObj.passOrderTicketIds ) : '' }
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + ',' ) : '' }
                             ${this.$t('rejectedNum')}：${contentsObj.rejectNum}。`,
                                 className : contentsObj.rejectedNum === '0' ? 'green-status' : 'red-status'
                             };
@@ -133,9 +133,9 @@
                             // 改签审核，通过数量：
                             return {
                                 content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
-                            ${contentsObj['alterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.alterDate) : '' }
-                            ${contentsObj['rejectNum'] ? ( '，' + this.$t('rejectedNum') + ':' + contentsObj.rejectNum + '。' ) : '' }。
-                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark + '。' ) : '' }`,
+                            ${contentsObj['alterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + '：' + contentsObj.alterDate) : '' }
+                            ${contentsObj['rejectNum'] ? ( '，' + this.$t('rejectedNum') + '：' + contentsObj.rejectNum + '。' ) : '' }。
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。' ) : '' }`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
                         } else {
@@ -143,9 +143,9 @@
                             return {
                                 content : `${this.$t('alterAndAudit')}，
                             ${this.$t('passedNum')}：${contentsObj.passNum}
-                            ${'passOrderTicketIds' in contentsObj ? ( '，' + this.$t('productDetailNo') + ':' + contentsObj.passOrderTicketIds ) : '' }
-                            ${contentsObj['afterAlterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + ':' + contentsObj.afterAlterDate ) : '' }
-                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`,
+                            ${'passOrderTicketIds' in contentsObj ? ( '，' + this.$t('productDetailNo') + '：' + contentsObj.passOrderTicketIds ) : '' }
+                            ${contentsObj['afterAlterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + '：' + contentsObj.afterAlterDate ) : '' }
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark) : '' }。`,
                                 className : !contentsObj.passedNum === '0' ? 'red-status' : 'green-status'
                             };
                         }
@@ -165,13 +165,15 @@
                     case 'ORDER_AUDIT_REJECT' :
                         // 审核不通过，备注：
                         return {
-                            content : `${this.$t('checkNoPass')}，${this.$t('remark')}：${contentsObj.remark}。`
+                            content : `${this.$t('preCheckReject')}
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。') : '' }`
                         };
                     //"团队订单审核通过
                     case 'ORDER_AUDIT_PASS' :
                         // 审核通过，备注：
                         return {
-                            content : `${this.$t('checkPass')}，${this.$t('remark')}：${contentsObj.remark}。`
+                            content : `${this.$t('preCheckPass')}
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。') : '' }`
                         };
                     //核销
                     case 'ORDER_VERIFY_TICKET' :
@@ -179,8 +181,8 @@
                         if (this.isProductLog) {
                             // 核销数量：
                             return {
-                                content : `${this.$t('verifySN')}：${contentsObj.checkSerialNo}。
-                            ${this.$t('remark')}：${contentsObj.remark}`
+                                content : `${this.$t('verifySN')}：${contentsObj.checkSerialNo}
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。') : '' }`
                             };
                         } else {
                             // 核销数量：
@@ -188,7 +190,7 @@
                                 content : `${this.$t('verificationNum')}：${contentsObj.verifyNum}，
                             ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
                             ${this.$t('verifySN')}：${contentsObj.checkSerialNo}
-                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + ':' + contentsObj.remark) : '' }。`
+                            ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。') : '' }`
                             };
                         }
                     //过期核销 -- 订单
@@ -211,13 +213,13 @@
                     //团队退单 -- 驳回
                     case 'ORDER_CANCEL_AUDIT_REJECT' :
                         return {
-                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('reject')}，
-                        ${this.$t('remark')}：${contentsObj.remark}`
+                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('reject')}
+                        ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。') : '' }`
                         };
                     case 'ORDER_CANCEL_AUDIT_PASS' :
                         return {
-                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('checkPass')}，
-                        ${this.$t('remark')}：${contentsObj.remark}`
+                            content : `${this.$t('teamOrderCancelApply')}：${this.$t('checkPass')}
+                        ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。') : '' }`
                         };
                     default : return '';
                 }

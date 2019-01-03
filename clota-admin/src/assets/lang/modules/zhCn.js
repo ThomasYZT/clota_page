@@ -609,4 +609,6 @@ export default {
     'reserveAuditWaiting' : '预定待审',
     'teamOrderCancelApply' : '团队订单取消申请',
     'applyCancelOrder' : '申请取消订单',
+    'preCheckPass' : '预审核通过',
+    'preCheckReject' : '预审核不通过',
 };

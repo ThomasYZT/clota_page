@@ -18,7 +18,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.firstLevelOrgName | contentFilter}}-{{scope.row.firstLevelSettlePrice | moneyFilter | contentFilter}}
+                    {{scope.row.firstLevelOrgName | contentFilter}}/{{scope.row.firstLevelSettlePrice | moneyFilter | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -29,7 +29,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.secondLevelOrgName | contentFilter}}-{{scope.row.secondLevelSettlePrice | moneyFilter | contentFilter}}
+                    {{scope.row.secondLevelOrgName | contentFilter}}/{{scope.row.secondLevelSettlePrice | moneyFilter | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -40,7 +40,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.thirdLevelOrgName | contentFilter}}-{{scope.row.thirdLevelSettlePrice | moneyFilter | contentFilter}}
+                    {{scope.row.thirdLevelOrgName | contentFilter}}/{{scope.row.thirdLevelSettlePrice | moneyFilter | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
