@@ -84,7 +84,11 @@
                     </no-data>
                 </div>
                 <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
-                    <div class="info-title">{{$t('储值账户信息')}}</div>
+                    <div class="info-title">
+                        {{$t('储值账户信息')}}
+                            <span class="add-account"
+                                @click="addAccount">+ {{$t("newAccount")}}</span>
+                    </div>
                     <!--储值账户信息-->
                     <store-account-info v-for="item in charTableData"
                                         :key="item.id"
@@ -250,13 +254,12 @@
 
         </div>
 
-        <!--会员3期暂时去掉-->
         <!--新增账户modal-->
-        <!--<add-account-modal ref="addAccount"-->
-                           <!--:store="defineAccount"-->
-                           <!--:detail="choosedCard"-->
-                           <!--@add-success="listCardAccountInfo(choosedCard)">-->
-        <!--</add-account-modal>-->
+        <add-account-modal ref="addAccount"
+                           :store="defineAccount"
+                           :detail="choosedCard"
+                           @add-success="listCardAccountInfo(choosedCard)">
+        </add-account-modal>
 
         <!--新增储值modal-->
         <add-fund-modal ref="addFund"
@@ -323,8 +326,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import storeAccountInfo from '../../newCard/components/storeAccountInfo';
     import integralAccountInfo from '../../newCard/components/integralAccountInfo.vue';
-    // 会员3期暂时去掉
-    // import addAccountModal from '../components/addAccountModal.vue';
+    import addAccountModal from '../components/addAccountModal.vue';
     import addFundModal from '../../components/addFundModal.vue';
     import toCashModal from '../components/taCashModal.vue';
     import modifyBalanceModal from '../components/modifyBalanceModal.vue';
@@ -348,8 +350,7 @@
         mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
-            // 会员3期暂时去掉
-            // addAccountModal,
+            addAccountModal,
             addFundModal,
             toCashModal,
             modifyBalanceModal,
@@ -543,12 +544,10 @@
                 return obj ? this.$t(obj.desc) : '-';
             },
 
-
-            // 会员3期暂时去掉
-            // //显示新增账号弹窗
-            // addAccount () {
-            //     this.$refs.addAccount.show();
-            // },
+            //显示新增账号弹窗
+            addAccount () {
+                this.$refs.addAccount.show();
+            },
             //根据会员卡获取账户信息
             listCardAccountInfo ( params ) {
                 if (!params.id) return;
@@ -1128,6 +1127,13 @@
             font-size: $font_size_16px;
             color: $color_000;
             padding: 0 0 20px 0;
+
+            .add-account{
+                color: $color_blue;
+                vertical-align: baseline;
+                padding-left: 10px;
+                display: inline-block;
+            }
         }
         .no-data-wrap{
             @include block_outline(100%,200px);
