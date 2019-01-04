@@ -181,6 +181,33 @@ export default {
                     },
                 }
             },
+            //财务报表
+            financeReport : {
+                path : '/financeReport',
+                component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/index.vue'),
+                name : 'financeReport',
+                meta : {
+                    menuName : 'financeReport', //lang.config.js 里面的语言键值
+                    _name : 'economic-report',
+                    iconClass : 'icon-diamond',
+                    rightPath : topMenuName + '.' + 'financeReport',
+                    isMenu : true,
+                },
+                children : {
+                    //收支明细报表
+                    paymentsAnalysis : {
+                        path : '/financeReport/paymentsAnalysis',
+                        name : 'paymentsAnalysis',
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/paymentsAnalysis.vue'),
+                        meta : {
+                            menuName : 'paymentsAnalysis', //lang.config.js 里面的语言键值
+                            _name : 'revenueStatement',
+                            rightPath : topMenuName + '.' + 'paymentsAnalysis',
+                            isMenu : true,
+                        },
+                    },
+                }
+            },
             //经营报表
             manageReport : {
                 path : '/manageReport',
@@ -299,18 +326,6 @@ export default {
                             menuName : 'smsSendAnalysis', //lang.config.js 里面的语言键值
                             _name : 'smsSendRecordAnalysis',
                             rightPath : topMenuName + '.' + 'smsSendAnalysis',
-                            isMenu : true,
-                        },
-                    },
-                    //收支明细报表
-                    paymentsAnalysis : {
-                        path : '/manageReport/paymentsAnalysis',
-                        name : 'paymentsAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/paymentsAnalysis.vue'),
-                        meta : {
-                            menuName : 'paymentsAnalysis', //lang.config.js 里面的语言键值
-                            _name : 'revenueStatement',
-                            rightPath : topMenuName + '.' + 'paymentsAnalysis',
                             isMenu : true,
                         },
                     },
