@@ -126,7 +126,7 @@
             </i-row>
             <i-row>
                 <i-col span="24">
-                    <Form-item :label="cardType === 'personalCard' ? $t('address') : $t('公司地址')" prop="homeAddr" style="width: 100%;"><!--地址-->
+                    <Form-item :label="cardType === 'personalCard' ? $t('address') : $t('companyAddress')" prop="homeAddr" style="width: 100%;"><!--地址-->
                         <Input v-model.trim="cardParam.homeAddr"
                                :placeholder="$t('inputField', {field: $t('familyAddress')})"/><!--请输入家庭地址-->
                     </Form-item>
@@ -141,7 +141,7 @@
 
             <!--收款方式-->
             <h3 style="margin-top: 35px;">{{$t('paymentMethod')}}</h3>
-            <Form-item prop="payType" label="收款方式" >
+            <Form-item prop="payType" :label="$t('paymentMethod')" >
                 <RadioGroup v-model="cardParam.payType">
                     <Radio v-for="(item,index) in payAccountList"
                            :disabled="selectedCard.salePrice <= 0"
@@ -227,7 +227,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('colonSetting',{ key : cardType === 'personalCard' ? $t('address') : $t('公司地址') })">
+                    <FormItem :label="$t('colonSetting',{ key : cardType === 'personalCard' ? $t('address') : $t('companyAddress') })">
                         <div class="word-wrap" v-w-title="cardParam.homeAddr">
                             {{cardParam.homeAddr | contentFilter}}
                         </div>

@@ -10,7 +10,7 @@
             <Form ref="formDynamic" :model="formDynamic">
 
                 <div class="content-item">
-                    <div class="title">{{$t('会员卡有效期')}}</div><!--会员卡有效期-->
+                    <div class="title">{{$t('memberCardValidity')}}</div><!--会员卡有效期-->
                     <el-collapse :value="collapseOpened">
                         <el-collapse-item v-for="(item,title,index) in memberLevelsData"
                                           :key="index"
@@ -219,11 +219,11 @@
                 <!--新开卡会员积分赠送设置-->
                 <div class="content-item">
                     <div class="title">
-                        {{$t('新开卡会员积分赠送设置')}}
+                        {{$t('newCardMenberFreeScoreSetting')}}
                         <Tooltip placement="top" transfer>
                             <span class="iconfont icon-note"></span>
                             <div slot="content">
-                                <div class="tip-trade">{{$t('新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。')}}</div>
+                                <div class="tip-trade">{{$t('newCardMenberFreeScoreSettingTip')}}</div>
                             </div>
                         </Tooltip>
                     </div>
@@ -231,14 +231,14 @@
                         <i-switch v-model="settingData.openCardSendScore.isSwitch"
                                   @on-change="settingData.openCardSendScore.score = ''">
                         </i-switch>
-                        <span class="text">{{$t('新开卡会员赠送')}}<!--会员生日当天消费可获得-->
+                        <span class="text">{{$t('newCardDonate')}}<!--会员生日当天消费可获得-->
                         <Input v-model.trim="settingData.openCardSendScore.score"
                                :disabled="!settingData.openCardSendScore.isSwitch"
                                @on-blur="checkInputBlurFunc(settingData.openCardSendScore.score, 'memberDonateIntegerErr')"
                                type="text"
                                class="single-input"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        {{$t('积分')}}</span><!--倍积分-->
+                        {{$t('integral')}}</span><!--倍积分-->
                         <div class="ivu-form-item-error-tip"
                              style="left: 173px;"
                              v-if="error.memberDonateIntegerErr">{{error.memberDonateIntegerErr}}
@@ -248,9 +248,9 @@
 
                 <!--短信发送设置-->
                 <div class="content-item">
-                    <div class="title">{{$t('短信发送设置')}}</div>
+                    <div class="title">{{$t('smsSendSetting')}}</div>
                     <div :class="{'ivu-form-item-error': error.tradeAmountErr, 'main': true}">
-                        <span class="text">{{$t('交易金额大于')}}</span><!--交易金额大于-->
+                        <span class="text">{{$t('tradeMoneyMoreThan')}}</span><!--交易金额大于-->
                         <Input v-model.trim="settingData.smsSend"
                                @on-blur="checkInputIsMoney(settingData.smsSend,'tradeAmountErr')"
                                type="text"
@@ -260,14 +260,14 @@
                              style="left: 100px;"
                              v-if="error.tradeAmountErr">{{error.tradeAmountErr}}
                         </div>
-                        {{$t('时发送短信')}}<!--时发送短信-->
+                        {{$t('whenSendSms')}}<!--时发送短信-->
                     </div>
                 </div>
                 <!--补卡收费标准-->
                 <div class="content-item">
-                    <div class="title">{{$t('补卡收费标准')}}</div>
+                    <div class="title">{{$t('cardReplacementCostStandard')}}</div>
                     <div :class="{'ivu-form-item-error': error.replaceCardFeeErr, 'main': true}">
-                        <span class="text">{{$t('补卡收费')}}</span><!--补卡收费-->
+                        <span class="text">{{$t('cardReplacementCost')}}</span><!--补卡收费-->
                         <Input v-model.trim="settingData.replacementCardFee"
                                @on-blur="checkInputIsMoney(settingData.replacementCardFee,'replaceCardFeeErr')"
                                type="text"

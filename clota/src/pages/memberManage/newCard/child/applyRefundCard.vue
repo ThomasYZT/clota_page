@@ -28,7 +28,7 @@
                 <!--会员卡信息-->
                 <member-card-detail :card-info="choosedCard">
                 </member-card-detail>
-                <div class="info-title">{{$t('储值账户信息')}}</div>
+                <div class="info-title">{{$t('privalige.storage-account')}}</div>
                 <!--储值账户信息-->
                 <store-account-info v-for="(item,index) in chargeAccount"
                                     :class="{'last-item-class' : index === chargeAccount.length - 1 }"
@@ -36,7 +36,7 @@
                                     :charge-info="item">
                 </store-account-info>
                 <template v-if="choosedCard.cardTypeId !== '1'">
-                    <div class="info-title">{{$t('积分账户信息')}}</div>
+                    <div class="info-title">{{$t('integerAccountName')}}</div>
                     <!--积分账户信息-->
                     <integral-account-info v-for="item in integerAccount"
                                            :key="item.id"
@@ -64,15 +64,15 @@
                 <span>{{$t('sureToReturnMemInfo')}}</span>
                 <ul class="tips-label">
                     <li>
-                        <span class="key-label">线上返回金额：</span>
+                        <span class="key-label">{{$t('colonSetting', { key : $t('backMoneyFromOnline') })}}</span>
                         <span class="value-label">{{refundMoneyInfo.sumOnlineMoney | moneyFilter | contentFilter}}</span>
                     </li>
                     <li>
-                        <span class="key-label">返回现金：</span>
+                        <span class="key-label">{{$t('colonSetting', { key : $t('backMoney') })}}</span>
                         <span class="value-label">{{refundMoneyInfo.sumCashMoney | moneyFilter | contentFilter}}</span>
                     </li>
                     <li>
-                        <span class="key-label">返还总额：</span>
+                        <span class="key-label">{{$t('colonSetting', { key : $t('backTotalMoney') })}}：</span>
                         <span class="value-label">{{refundMoneyInfo.sumRefundMoney | moneyFilter | contentFilter}}</span>
                     </li>
                 </ul>
@@ -203,9 +203,9 @@
                                 this.confirmRefund();
                             }
                         });
-                    }  else if (res.code === 'M018') {
-                        this.$Message.error('该会员卡已使用，不可退卡');
-                    }  else {
+                    } else if (res.code === 'M018') {
+                        this.$Message.error('memberCardInusedTip');
+                    } else {
                         this.refundMoneyInfo = {};
                     }
                 });
@@ -227,7 +227,7 @@
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('refundedCard') }));
                         this.listCardsByMemberId();
                     } else if (res.code === 'M018') {
-                        this.$Message.error('该会员卡已使用，不可退卡');
+                        this.$Message.error('memberCardInusedTip');
                     } else {
                         this.listCardsByMemberId();
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('refundedCard') }));

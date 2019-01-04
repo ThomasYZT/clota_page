@@ -3,7 +3,7 @@
 <template>
 	<div class="sms-send-record">
 		<bread-crumb-head
-			locale-router="短信发送记录"
+			:locale-router="$t('smsSendRecord')"
 			:before-router-list="beforeRouterList">
 		</bread-crumb-head>
 		<div class="hr"></div>
@@ -26,7 +26,7 @@
 				:min-width="row.minWidth">
 				<template slot-scope="scope">
 					<ul class="operate-list">
-						<li @click="toDetail(scope.row)">{{$t('详细')}}</li>
+						<li @click="toDetail(scope.row)">{{$t('detail')}}</li>
 					</ul>
 				</template>
 			</el-table-column>
@@ -68,12 +68,12 @@
 						field : 'sendTime'
 					},
 					{
-						title : '发送数量',
+						title : 'sendNum',
                         width : 110,
 						field : 'count'
 					},
 					{
-						title : '会员类型',
+						title : 'memberType',
 						minWidth : 100,
 						field : 'sendRangeText'
 					},

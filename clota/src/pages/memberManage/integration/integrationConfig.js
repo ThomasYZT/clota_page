@@ -2,7 +2,7 @@
 //积分折扣率表头配置
 export const columnData = [
     {
-        title : '会员类别', // 会员类别
+        title : 'memberTypes', // 会员类别
         minWidth : 100,
         enMinWidth : 160,
         field : 'typeName'
@@ -42,7 +42,7 @@ export const columnData = [
 //活动积分折扣率表头配置
 export const specialColumnData = [
     {
-        title : '会员类别', // 会员类别
+        title : 'memberTypes', // 会员类别
         minWidth : 160,
         enMinWidth : 160,
         field : 'typeName'
@@ -66,7 +66,7 @@ export const specialColumnData = [
         field : 'discountRate'
     },
     {
-        title : '有效期', // 有效期
+        title : 'validityPeriod', // 有效期
         width : 230,
         enWidth : 230,
         field : ''

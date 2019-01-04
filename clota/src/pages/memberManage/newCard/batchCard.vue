@@ -58,7 +58,7 @@
                     <h3>{{$t('paymentMethod')}}</h3>
                     <Form label-position="top" :model="cardParam">
                         <Form-item prop="payType"
-                                   label="收款方式"
+                                   :label="$t('paymentMethod')"
                                    :rules="{ required : true,trigger : 'change' }" >
                             <RadioGroup v-model="cardParam.payType">
                                 <Radio v-for="(item,index) in payAccountList"

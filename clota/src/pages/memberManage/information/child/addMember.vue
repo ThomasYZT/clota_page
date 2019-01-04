@@ -330,7 +330,7 @@
                         { validator : validateMethod.emoji, trigger : 'blur' }
                     ],
                     phoneNum : [
-                        { required : true, message : this.$t('errorEmpty', { field : this.$t('mobilePhone') }), trigger : 'blur' }, // 手机号不能为空
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('mobilePhone') }), trigger : 'blur' }, // 手机号不能为空
                         { validator : validateMethod.mobile, trigger : 'blur' }
                     ],
                     gender : [

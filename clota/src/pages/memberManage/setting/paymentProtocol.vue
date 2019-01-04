@@ -8,7 +8,7 @@
     <div class="pay-protocol">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="$t('支付协议设置')">
+            :locale-router="$t('paymentSetting')">
         </bread-crumb-head>
 
         <div class="protocol-content">
@@ -18,7 +18,7 @@
                     @click="editFlag = true">{{$t('edit')}}
             </Button>
 
-            <h3>{{$t('支付协议')}}</h3>
+            <h3>{{$t('paymentAgreement')}}</h3>
             <Input v-model.trim="protocol.paymentAgreement"
                    :class="{'edit-disabled': !editFlag}"
                    type="textarea"

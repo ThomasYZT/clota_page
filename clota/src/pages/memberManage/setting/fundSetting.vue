@@ -246,14 +246,14 @@
             <!--</div>-->
 
             <div class="content-item">
-                <div class="title">{{$t('消费时优先扣除账户设置')}}</div>
+                <div class="title">{{$t('settingOfPriority')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.priorityDeductionInConsumption">
                         <Radio label="corpus">
                             <span>{{$t('corpusAccount')}}</span>
                         </Radio>
                         <Radio label="donate">
-                            <span>{{$t('赠送金额账户')}}</span>
+                            <span>{{$t('donateMoneyAccount')}}</span>
                         </Radio>
                     </RadioGroup>
                 </div>

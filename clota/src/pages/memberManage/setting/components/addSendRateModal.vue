@@ -112,15 +112,15 @@
             const validateLowerValue = (rule,value,callback) => {
                 common.validateMoney(value,0,10).then(() => {
                     if (common.isNotEmpty(this.formData.topValue) && Number(value) > Number(this.formData.topValue)) {
-                        callback(this.$t('储值范围错误'));
+                        callback(this.$t('storeValueRangeErr'));
                     } else {
                         callback();
                     }
                 }).catch(err => {
                     if (err === 'errorMaxLength') {
-                        callback(this.$t('errorMaxLength',{ field : this.$t('储值最小值'),length : 10 }));
+                        callback(this.$t('errorMaxLength',{ field : this.$t('storeValueMin'),length : 10 }));
                     } else {
-                        callback(this.$t(err,{ field : this.$t('储值最小值') }));
+                        callback(this.$t(err,{ field : this.$t('storeValueMin') }));
                     }
                 });
             };
@@ -128,15 +128,15 @@
             const validateTopValue = (rule,value,callback) => {
                 common.validateMoney(value,0,10).then(() => {
                     if (common.isNotEmpty(this.formData.lowerValue) && Number(value) < Number(this.formData.lowerValue)) {
-                        callback(this.$t('储值范围错误'));
+                        callback(this.$t('storeValueRangeErr'));
                     } else {
                         callback();
                     }
                 }).catch(err => {
                     if (err === 'errorMaxLength') {
-                        callback(this.$t('errorMaxLength',{ field : this.$t('储值最大值'),length : 10 }));
+                        callback(this.$t('errorMaxLength',{ field : this.$t('storeValueMax'),length : 10 }));
                     } else {
-                        callback(this.$t(err,{ field : this.$t('储值最大值') }));
+                        callback(this.$t(err,{ field : this.$t('storeValueMax') }));
                     }
                 });
             };

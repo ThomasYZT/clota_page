@@ -63,7 +63,7 @@
                                 :key="index"
                                 :type="choosedCard.id === item.id ? 'primary' : 'ghost'"
                                 @click="choseCard(item)">
-                            {{item.levelDesc}}{{(item.isMotherCard === 'false' && item.cardTypeId === '1') ? $t('bracketSetting',{ content : $t('副卡') }) : ''}}
+                            {{item.levelDesc}}{{(item.isMotherCard === 'false' && item.cardTypeId === '1') ? $t('bracketSetting',{ content : $t('viceCard') }) : ''}}
                         </Button>
                     </ButtonGroup>
                     <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
@@ -80,7 +80,7 @@
                     </no-data>
                 </div>
                 <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
-                    <div class="info-title">{{$t('储值账户信息')}}</div>
+                    <div class="info-title">{{$t('privalige.storage-account')}}</div>
                     <!--储值账户信息-->
                     <store-account-info v-for="item in charTableData"
                                         :key="item.id"
@@ -102,7 +102,7 @@
                     </store-account-info>
                     <!--积分账户信息-->
                     <template v-if="choosedCard.cardTypeId !== '1'">
-                        <div class="info-title">{{$t('积分账户信息')}}</div>
+                        <div class="info-title">{{$t('integerAccountName')}}</div>
                         <integral-account-info :account-info="scoreData">
                             <div class="operate-right">
                                 <span @click="viewIntegration(scoreData)">{{$t("integralDetail")}}</span>
@@ -133,9 +133,9 @@
                     <!--</div>-->
                     <!--享受积分、折扣率信息-->
                     <div class="content-info">
-                        <div class="title">{{$t("会员权益")}}</div>
+                        <div class="title">{{$t("privalige.member-right")}}</div>
                         <div class="operate">
-                            <span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("会员权益") }`}}</span>
+                            <span class="pointer" @click="viewCardRateDetail">{{`${ $t("check") }${ $t("privalige.member-right") }`}}</span>
                         </div>
                     </div>
 
@@ -300,7 +300,7 @@
         <edit-modal ref="editModal">
             <Form ref="formData" :model="formData">
                 <!--请输入登录密码-->
-                <FormItem prop="password" :label="$t('请输入登录密码')" :rules="[  {
+                <FormItem prop="password" :label="$t('inputField', { field : $t('loginPassword') })" :rules="[  {
                             required : true,
                             message : $t('inputField',{ field : $t('password') }),
                             trigger : 'blur'
@@ -860,7 +860,7 @@
             validatePassword () {
                 return new Promise((resolve,reject) => {
                     this.$refs.editModal.show({
-                        title : this.$t('请输入登录密码'),
+                        title : this.$t('inputField', { field : this.$t('loginPassword')}),
                         confirmCallback : () => {
                             this.$refs.formData.validate(valid => {
                                 if (valid) {
@@ -871,7 +871,7 @@
                                             if (res.data) {
                                                 resolve();
                                             } else {
-                                                this.$Message.error('登录密码错误');
+                                                this.$Message.error(this.$t('sthErr', { field : this.$t('loginPassword') }));
                                             }
                                         }
                                         reject();

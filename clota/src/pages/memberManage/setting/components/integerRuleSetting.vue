@@ -4,7 +4,7 @@
     <div class="integer-rule-set">
         <div class="title">
             {{$t('setRulesForMemberPointTransactionDeduction')}}
-            <span class="blue-label" @click="addRule">+ {{$t('新增规则')}}</span>
+            <span class="blue-label" @click="addRule">+ {{$t('addRule')}}</span>
         </div>
         <div class="main">
             <table-com
@@ -23,7 +23,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scoped">
-                        {{$t(`${scoped.row.integrate}积分兑换${scoped.row.money}元`)}}
+                        {{scoped.row.integrate + $t('scoreToMoney', { money : scoped.row.money })}}
                     </template>
                 </el-table-column>
                 <!--最多抵扣单笔订单金额-->
@@ -142,7 +142,7 @@
                     index : index
                 };
                 this.$refs.delModal.show({
-                    title : this.$t('删除会员积分交易抵扣规则'),
+                    title : this.$t('deleteMemberScoreRule'),
                     confirmCallback : () => {
                         this.$emit('del-rule',index);
                     }

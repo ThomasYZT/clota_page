@@ -17,23 +17,23 @@ export const levelListHead = [
         field : 'levelNum'
     },
     {
-        title : '会员卡名称', // 会员卡名称
+        title : 'memberCardName', // 会员卡名称
         minWidth : 140,
         field : 'levelDesc'
     },
     {
-        title : '功能', // 功能
+        title : 'function', // 功能
         minWidth : 150,
         field : 'channelName'
     },
     {
-        title : '售卡金额（元）', // 售卡金额（元）
+        title : 'cardSaleMoneyWithUnit', // 售卡金额（元）
         minWidth : 150,
         field : 'salePrice',
         type : 'money'
     },
     {
-        title : '卡内余额（元）', // 卡内余额（元）
+        title : 'cardBalanceWithUnit', // 卡内余额（元）
         minWidth : 150,
         field : 'amountInCard',
         type : 'money'

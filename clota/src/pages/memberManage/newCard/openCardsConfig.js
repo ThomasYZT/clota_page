@@ -1,8 +1,8 @@
 // 批量开卡列表表头
 export const batchEntityCardHead = [
     {
-        title : 'index',    // 序号
-        width : 100,
+        title : 'index', // 序号
+        width : 150,
         field : ''
     },
     {
@@ -17,7 +17,7 @@ export const batchEntityCardHead = [
     },
     {
         title : 'operate', // 物理卡号
-        width : 100,
+        width : 110,
         field : ''
     }
 ];

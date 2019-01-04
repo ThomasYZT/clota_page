@@ -2,7 +2,7 @@
 <template>
     <div class="member-data-pie">
         <div class="data-header">
-            <div class="title">{{$t("企业会员卡数量")}}</div>
+            <div class="title">{{$t("enterpriseMemberCardNum")}}</div>
         </div>
         <div class="filter-head">
             <!--时间范围选择-->
@@ -11,13 +11,13 @@
                   @click="changeTimeType('all')">{{$t("all")}}</span>
             <span :class="{'active': timeType === 'today'}"
                   class="date-range"
-                  @click="changeTimeType('today')">{{$t("今日")}}</span>
+                  @click="changeTimeType('today')">{{$t("today")}}</span>
             <span :class="{'active': timeType === 'week'}"
                   class="date-range"
-                  @click="changeTimeType('week')">{{$t("本周")}}</span>
+                  @click="changeTimeType('week')">{{$t("thisWeek")}}</span>
             <span :class="{'active': timeType === 'month'}"
                   class="date-range"
-                  @click="changeTimeType('month')">{{$t("本月")}}</span>
+                  @click="changeTimeType('month')">{{$t("thisMonth")}}</span>
             <div class="date-range-filter">
                 <DatePicker v-model="autoDefTIme"
                             format="yyyy-MM-dd"

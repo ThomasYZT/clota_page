@@ -13,7 +13,7 @@
 
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="145">
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('会员卡名称') + '：'" prop="levelDesc"><!--等级名称-->
+                    <Form-item :label="$t('memberCardName') + '：'" prop="levelDesc"><!--等级名称-->
                         <Input v-model.trim="formData.levelDesc"
                                type="text"
                                :placeholder="$t('inputField', {field: $t('memberLevelName')})"/><!--请输入会员级别名称，例：黄金会员-->
@@ -44,24 +44,24 @@
                     <!--</Form-item>-->
                 <!--</div>-->
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('会员卡功能') + '：'" prop="function"><!--会员卡功能-->
+                    <Form-item :label="$t('memberCardFunction') + '：'" prop="function"><!--会员卡功能-->
                         <CheckboxGroup v-model="formData.function">
                             <Checkbox v-for="item in rightList"
                                        :key="item.value"
                                        :label="item.value">
-                                    {{item.label}}
+                                    {{$t(item.label)}}
                             </Checkbox>
                         </CheckboxGroup>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('售卡金额') + '：'" prop="salePrice"><!--售卡金额-->
+                    <Form-item :label="$t('cardSaleMoney') + '：'" prop="salePrice"><!--售卡金额-->
                         <Input v-model.trim="formData.salePrice"
                                type="text"/>
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('卡内金额') + '：'" prop="amountInCard"><!--卡内金额-->
+                    <Form-item :label="$t('moneyInCard') + '：'" prop="amountInCard"><!--卡内金额-->
                         <Input v-model.trim="formData.amountInCard"
                                type="text"/>
                     </Form-item>
@@ -235,15 +235,15 @@
                 //功能列表
                 rightList : [
                     {
-                        label : '储值',
+                        label : 'recharge',
                         value : 'isRecharge'
                     },
                     {
-                        label : '折扣',
+                        label : 'allowance',
                         value : 'isDiscount'
                     },
                     {
-                        label : '积分',
+                        label : 'integral',
                         value : 'isScore'
                     }
                 ],
@@ -314,7 +314,7 @@
                             required : true,
                             validator : validateMoney ,
                             trigger : 'blur',
-                            _field : '售卡金额'
+                            _field : 'cardSaleMoney'
                         }
                     ],
                     amountInCard : [
@@ -322,13 +322,13 @@
                             required : true,
                             validator : validateMoney ,
                             trigger : 'blur',
-                            _field : '卡内金额'
+                            _field : 'moneyInCard'
                         }
                     ],
                     function : [
                         {
                             required : true,
-                            message : this.$t('selectField',{ msg : this.$t('会员卡功能') }),
+                            message : this.$t('selectField',{ msg : this.$t('memberCardFunction') }),
                             trigger : 'change',
                             type : 'array'
                         }

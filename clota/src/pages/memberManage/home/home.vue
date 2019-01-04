@@ -23,7 +23,7 @@
 
         <!--个人会员卡分布信息-->
         <div class="home-chart">
-            <div class="chart-header">{{$t("个人会员卡数量")}}</div>
+            <div class="chart-header">{{$t("personelMemberCardNum")}}</div>
             <div class="chart-content">
                 <personal-card-info>
                 </personal-card-info>

@@ -17,8 +17,8 @@
                             style="width:170px"
                             @on-change="queryList">
                         <Option value="all">{{$t('all')}}</Option>
-                        <Option value="common">{{$t('普通卡')}}</Option>
-                        <Option value="password">{{$t('密码卡')}}</Option>
+                        <Option value="common">{{$t('normalCard')}}</Option>
+                        <Option value="password">{{$t('passwordCard')}}</Option>
                     </Select>
                     <Input v-model.trim="keyword"
                            style="width: 240px;margin-left: 15px;margin-right: 15px;"
@@ -88,7 +88,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.entityCardType === 'password' ? $t('密码卡') : $t('普通卡')}}
+                        {{scope.row.entityCardType === 'password' ? $t('passwordCard') : $t('normalCard')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -166,11 +166,11 @@
                 //导入方式列表
                 importTypeList : [
                     {
-                        label : '普通卡',
+                        label : 'normalCard',
                         value : 'common'
                     },
                     {
-                        label : '密码卡',
+                        label : 'passwordCard',
                         value : 'password'
                     }
                 ]
