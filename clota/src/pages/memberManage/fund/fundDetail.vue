@@ -127,7 +127,7 @@
                 //上级路由列表
                 beforeRouterList : [
                     {
-                        name : 'fund',
+                        name : 'fundInfo',
                         router : {
                             name : 'fundInfo'
                         }

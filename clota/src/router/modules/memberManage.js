@@ -422,7 +422,7 @@ export default {
                 component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/addCard.vue'),
                 meta : {
                     menuName : 'card', //lang.config.js 里面的语言键值
-                    _name : 'members-coupon',
+                    _name : 'addMembersCoupon',
                     rightPath : topMenuName + '.' + 'card',
                 },
             },
@@ -468,7 +468,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
                         meta : {
                             menuName : 'fund', //lang.config.js 里面的语言键值
-                            _name : 'storage-account',
+                            _name : 'storage-account-detail',
                             rightPath : topMenuName + '.' + 'fundInfo',
                         },
                     },

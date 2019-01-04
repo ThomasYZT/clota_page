@@ -9,7 +9,7 @@
             </Tabs>
         </div>
 
-        <div class="btn-wrap" v-if="tabsName === 'created'">
+        <div class="btn-wrap" v-if="canAddMembersCoupon">
             <Button type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button><!--新增卡券-->
         </div>
         <!--已创建的卡券信息-->
@@ -67,7 +67,7 @@
                     <ul class="operate-list">
                         <!--会员3期暂时去掉-->
                         <!--<li @click="modifyFunc(scope.row)">{{$t('modify')}}</li>-->
-                        <li @click="obsoloteCoupon(scope.row)">{{$t('obsolete')}}</li>
+                        <li v-if="canOperateMembersCoupon" @click="obsoloteCoupon(scope.row)">{{$t('obsolete')}}</li>
                         <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
                     </ul>
                 </template>
@@ -126,7 +126,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <!--<li @click="reloadCoupon(scope.row)">重新启用</li>-->
-                        <li @click="reloadCoupon(scope.row)">{{$t('recommissioned')}}</li>
+                        <li v-if="canOperateMembersCoupon" @click="reloadCoupon(scope.row)">{{$t('recommissioned')}}</li>
                         <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
                     </ul>
                 </template>
@@ -148,6 +148,7 @@
     import { columnData } from './cardConfig';
     import delModal from './delModal';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -354,6 +355,19 @@
                         conditionChannelId : data.conditionChannelId,
                     };
                 }
+            },
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以新增卡券
+            canAddMembersCoupon () {
+                return this.tabsName === 'created' && this.permissionInfo && this.permissionInfo['addMembersCoupon'] === 'allow';
+            },
+            //是否可以作废和重新启用卡券
+            canOperateMembersCoupon () {
+                return this.permissionInfo && this.permissionInfo['operateMembersCoupon'] === 'allow';
             },
         }
     };
