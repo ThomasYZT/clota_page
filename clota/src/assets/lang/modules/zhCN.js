@@ -1858,7 +1858,7 @@ export default {
     'privalige.point-setting' : '积分、折扣率设置',
     'privalige.activity-point-setting' : '特定活动积分折扣率设置',
     'privalige.members-storage' : '储值管理',
-    'privalige.storage-account' : '储值账户信息',
+    'privalige.storage-account' : '账户储值信息',
     'privalige.storage-account-detail' : '资金交易明细',
     'privalige.storage-transfer' : '转账',
     'privalige.init-setting' : '初始化设置',

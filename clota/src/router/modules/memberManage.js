@@ -259,7 +259,7 @@ export default {
                 meta : {
                     menuName : 'memberInfo', //lang.config.js 里面的语言键值
                     _name : 'members-info',
-                    rightPath : topMenuName + '.' + 'fundInfo'
+                    rightPath : topMenuName + '.' + 'memberInfo'
                 },
             },
             infoRate : {
@@ -450,6 +450,17 @@ export default {
                             isMenu : true
                         },
                     },
+                    perFundInfo : {
+                        //会员管理--会员信息--个人资金交易明细
+                        path : '/memberManage/fundInfo/perFundDetail',
+                        name : 'perFundDetail',
+                        component : () => import(/* webpackChunkName: "memberInfo" */ '../../pages/memberManage/information/child/fundDetail.vue'),
+                        meta : {
+                            menuName : 'perFundDetail', //lang.config.js 里面的语言键值
+                            _name : 'storage-account',
+                            rightPath : topMenuName + '.' + 'fundInfo'
+                        },
+                    },
                     //会员管理-账户资金交易明细
                     accountFianceDetail : {
                         path : '/memberManage/fiance/account/fianceDetail',
@@ -479,7 +490,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/fund/fundDetail.vue'),
                         meta : {
                             menuName : 'fundDetail', //lang.config.js 里面的语言键值
-                            _name : 'storage-transfer',
+                            _name : 'storage-account-detail',
                             rightPath : topMenuName + '.' + 'fundDetail',
                             isMenu : true
                         },

@@ -1,21 +1,15 @@
-<!--无权限或不存在的页面-->
+无权限或不存在的页面
 
 <template>
     <div class="permission-not">
-        <main-frame>
-            <div class="wrap">
-                <img src="../../assets/images/icon-no-permission.png" class="img-pic" alt="">
-            </div>
-        </main-frame>
+        <div class="wrap">
+            <img src="../../assets/images/icon-no-permission.png" class="img-pic" alt="">
+        </div>
     </div>
 </template>
 
 <script>
-    import mainFrame from '@/components/mainFrame/mainFrame';
     export default {
-        components : {
-            mainFrame
-        },
         data () {
             return {};
         },

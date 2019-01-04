@@ -11,8 +11,9 @@
                   ref="menu"
                   v-if="subMenuList.length > 0"
                   @on-open-change="openChange">
-                <template v-for="item in subMenuList">
+                <template v-for="(item,index) in subMenuList">
                     <menu-com
+                        :key="index"
                         :menu-info="item"
                         :menu-deep="2"
                         :children-menu="item.children"
