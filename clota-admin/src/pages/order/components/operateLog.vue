@@ -4,8 +4,8 @@
     <div class="order-operate-log">
         <div class="title" v-if="showTitle">{{$t('orderOperateLog')}}</div>
         <Steps direction="vertical" size="small" class="ivu-steps-clota">
-            <Step v-for="item in operateLogDeal"
-                  :key="item.createdTime"
+            <Step v-for="(item,index) in operateLogDeal"
+                  :key="index"
                   icon="clota"
                   :class="item.className"
                   :title="item.contentDeal" >

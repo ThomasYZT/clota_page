@@ -55,7 +55,10 @@
         </ul>
 
         <!--重发短信-->
-        <Button  v-if="canResendMsg" type="primary" class="ivu-btn-108px" @click="reSendMsg">{{$t('reSending')}}</Button>
+        <Button  :disabled="!canResendMsg"
+                 type="primary"
+                 class="ivu-btn-108px"
+                 @click="reSendMsg">{{$t('reSending')}}</Button>
         <div class="audit-result">
             <img :src="auditResultImg" alt="">
         </div>
@@ -83,7 +86,10 @@
             },
         },
         data () {
-            return {};
+            return {
+                //短信重发次数
+                smsLeft : -1
+            };
         },
         methods : {
             /**
@@ -98,18 +104,34 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('sending') })); // 发送失败
                     }
+                    this.checkResendSMS();
                 });
             },
             //支付状态过滤
             transPaymentStatus : transPaymentStatus,
             //短信发送状态
-            transSMSStatus : transSMSStatus
+            transSMSStatus : transSMSStatus,
+            /**
+             * 校验重发短信次数
+             */
+            checkResendSMS () {
+                ajax.post('checkResendSMS',{
+                    visitorProductId : this.baseInfo.visitorProductId
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.smsLeft = res.data;
+                    } else {
+                        this.smsLeft = -1;
+                    }
+                });
+            }
         },
         computed : {
             //是否可以重发短信
             canResendMsg () {
                 //景区下，审核成功，取票前可重发短信
-                return this.baseInfo.auditStatus === 'success' &&
+                return this.smsLeft >= 0 && this.smsLeft <= 5 &&
+                    this.baseInfo.auditStatus === 'success' &&
                     this.productInfoList.some(item => item.quantityPicked + item.quantityRefunded === 0);
             },
             //审核结果图片
@@ -138,6 +160,13 @@
                     } else {
                         return require('../../../../assets/images/icon-canceled.svg');
                     }
+                }
+            }
+        },
+        watch : {
+            baseInfo (newVal) {
+                if (newVal && Object.keys(newVal).length > 0) {
+                    this.checkResendSMS();
                 }
             }
         }

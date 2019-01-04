@@ -49,5 +49,7 @@ export default {
     'passCancelTeamOrderApply' : 'order/passCancelTeamOrderApply.json',
     //取消订单审核不通过
     'rejectCancelTeamOrderApply' : 'order/rejectCancelTeamOrderApply.json',
+    //校验重发短信次数
+    'checkResendSMS' : 'order/checkResendSMS.json',
 
 };

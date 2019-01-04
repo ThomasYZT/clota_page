@@ -37,7 +37,7 @@
                     @click.native="toUpDetail">
                 {{$t('CheckOrdersFromSuperiors')}}
             </Button>
-            <Button v-if="canResendMsg"
+            <Button :disabled="!canResendMsg"
                     type="primary"
                     @click="reSendMsg">
                 {{$t('reSending')}}
@@ -70,7 +70,8 @@
             //是否可以重发短信
             canResendMsg () {
                 //未取票数量大于0,且从订单查询页面跳转过啦，可以重新发送短信
-                return (this.baseInfo.quantity - this.baseInfo.quantityRefunded - this.baseInfo.quantityPicked > 0) &&
+                return this.smsLeft >= 0 && this.smsLeft <= 5 &&
+                    (this.baseInfo.quantity - this.baseInfo.quantityRefunded - this.baseInfo.quantityPicked > 0) &&
                     this.$route.name === 'individualOrderDetail2Level';
             },
             //是否可以查看上级订单
@@ -82,7 +83,9 @@
         data () {
             return {
                 //转换短信发送状态
-                transSMSStatus : transSMSStatus
+                transSMSStatus : transSMSStatus,
+                //短信重发次数
+                smsLeft : -1
             };
         },
         methods : {
@@ -107,8 +110,30 @@
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('sending') }));
                     }
+                    this.checkResendSMS();
                 });
             },
+            /**
+             * 校验重发短信次数
+             */
+            checkResendSMS () {
+                ajax.post('checkResendSMS',{
+                    visitorProductId : this.baseInfo.visitorProductId
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.smsLeft = res.data;
+                    } else {
+                        this.smsLeft = -1;
+                    }
+                });
+            }
+        },
+        watch : {
+            baseInfo (newVal) {
+                if (newVal && Object.keys(newVal).length > 0) {
+                    this.checkResendSMS();
+                }
+            }
         }
     };
 </script>
