@@ -146,20 +146,7 @@
         },
         data () {
             return {
-                beforeRouterList : [
-                    {
-                        name : 'memberInfo', // 会员信息
-                        router : {
-                            name : 'memberInfo'
-                        },
-                    },
-                    {
-                        name : 'memberDetail', // 会员详情
-                        router : {
-                            name : 'infoDetail'
-                        },
-                    },
-                ],
+
                 localeRouter : 'selfFundTradeDetail', // 个人资金交易明细
                 // 查询数据
                 queryParams : {
@@ -296,6 +283,43 @@
                     '&operType=' + (this.queryParams.operType === 'all' ? '' : this.queryParams.operType) +
                     '&startDate=' + (this.queryParams.startDate ? new Date(this.queryParams.startDate).format('yyyy-MM-dd 00:00:00') : '') +
                     '&endDate=' + (this.queryParams.endDate ? new Date(this.queryParams.endDate).format('yyyy-MM-dd 23:59:59') : '');
+            },
+            //是否是从储值账户信息过来的页面
+            isStoredAccount () {
+                return this.$route.name === 'perFundDetail';
+            },
+            beforeRouterList () {
+                if (this.isStoredAccount) {
+                    return [
+                        {
+                            name : 'fundInfo', // 储值账户信息
+                            router : {
+                                name : 'fundInfo'
+                            },
+                        },
+                        {
+                            name : 'storageDetail', // 储值明细
+                            router : {
+                                name : 'fund'
+                            },
+                        },
+                    ];
+                } else {
+                    return [
+                        {
+                            name : 'memberInfo', // 会员信息
+                            router : {
+                                name : 'memberInfo'
+                            },
+                        },
+                        {
+                            name : 'memberDetail', // 会员详情
+                            router : {
+                                name : 'infoDetail'
+                            },
+                        },
+                    ];
+                }
             },
         }
     };

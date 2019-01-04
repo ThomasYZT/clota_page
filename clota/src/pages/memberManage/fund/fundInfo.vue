@@ -26,6 +26,7 @@
             <ul class="account-operate">
                 <li class="list" @click="toFundDetail(item,key)">{{$t('storageDetail')}}</li><!--储值明细-->
                 <li class="list"
+                    v-if="canShowMoneyDetail"
                     v-w-title="$t('fundDetail')"
                     @click="toTradeDetail(item,key)">{{$t('fundDetail')}}</li><!--资金交易明细-->
             </ul>
@@ -35,6 +36,8 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         data () {
             return {
@@ -115,6 +118,15 @@
             next(vm => {
                 vm.queryMemberAccountDefine();
             });
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以查看资金交易明细
+            canShowMoneyDetail () {
+                return this.permissionInfo && this.permissionInfo['storage-account-detail'] === 'allow';
+            }
         }
     };
 </script>
@@ -144,7 +156,7 @@
             margin-bottom: 30px;
 
             &:nth-of-type(3n){
-                margin: 0 5px 30px 5%;
+                margin: 0 5% 30px 5%;
             }
 
             .account-detail{

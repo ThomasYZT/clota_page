@@ -2,11 +2,9 @@
 
 <template>
     <div class="without-sub-menu">
-        <mainFrame>
-            <div class="area-con">
-                {{$t('moduleWithoutMenu')}}
-            </div>
-        </mainFrame>
+        <div class="area-con">
+            {{$t('moduleWithoutMenu')}}
+        </div>
     </div>
 </template>
 
