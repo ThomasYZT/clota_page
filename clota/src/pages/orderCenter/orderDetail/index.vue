@@ -537,12 +537,19 @@
             },
             //是否显示取消团队订单按钮
             returnTeamMenuShow () {
-                if ((this.queryParams.orderType === '' || this.queryParams.orderType === 'team') &&
-                    this.queryParams.allocationStatus === 'false') {
-                    return {
-                        show : true,
-                        width : 170
-                    };
+                if (this.permissionInfo && 'applyRefund' in this.permissionInfo) {
+                    if ((this.queryParams.orderType === '' || this.queryParams.orderType === 'team') &&
+                        this.queryParams.allocationStatus === 'false') {
+                        return {
+                            show : true,
+                            width : 170
+                        };
+                    } else {
+                        return {
+                            show : false,
+                            width : 80,
+                        };
+                    }
                 } else {
                     return {
                         show : false,
