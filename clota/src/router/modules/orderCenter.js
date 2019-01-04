@@ -204,7 +204,7 @@ export default {
                         component : () => import(/* webpackChunkName: "orderCenter" */ '../../pages/orderCenter/auditCenter/chargeBack.vue'),
                         meta : {
                             menuName : 'chargeBack', //lang.config.js 里面的语言键值
-                            _name : 'individual-alter',
+                            _name : 'teamOrder-cancel_audit',
                             rightPath : topMenuName + '.' + 'chargeBack',
                             isMenu : true
                         },
