@@ -99,7 +99,7 @@ const apiList = {
     //支付结果同步结果
     syncPayTransactionResult : '/external/pay/syncPayTransactionResult',
     //撤销交易
-    revocation : '/api/external/pay/revocation',
+    revocation : '/external/pay/revocation',
     //获取支付账户
     queryOnlinePayAccount : '/external/account/queryOnlinePayAccount',
     //根据openId及会员卡号查询卡信息
