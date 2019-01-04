@@ -2392,4 +2392,7 @@ export default {
     'whenSendSms' : '时发送短信',
     'cardReplacementCostStandard' : '补卡收费标准',
     'cardReplacementCost' : '补卡费用',
+    'privalige.members-coupon' : '会员卡券',
+    'privalige.addMembersCoupon' : '新增卡券',
+    'privalige.operateMembersCoupon' : '作废和重新启用卡券',
 };
