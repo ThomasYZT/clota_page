@@ -96,7 +96,7 @@
             getFormdata () {
                 let returnObj = {};
                 //因为saas平台操作日志和运维平台操作日志的筛选条件不同，所以这里要区别对待
-                if (this.logType === 'operate') {
+                if (this.logType === 'operate') { //运营平台操作日志
                     for (let item in this.formData) {
                         if (item === 'date') {
                             if (this.formData['date'] &&
@@ -108,7 +108,7 @@
                             }
                         } else if (item === 'sysOperationScene') {
                             if (this.formData[item] && this.formData[item] !== 'all') {
-                                returnObj['operationScene'] = this.formData['sysOperationScene'];
+                                returnObj['sysOperationScene'] = this.formData['sysOperationScene'];
                             }
                         } else {
                             if (this.formData[item]) {
