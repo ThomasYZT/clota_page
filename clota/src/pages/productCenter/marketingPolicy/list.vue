@@ -23,7 +23,7 @@
             <Button v-if="canAddSalePolicy" type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
             <template v-if="dropdownList.length > 0">
                 <Button type="error"
-                        v-if="isDisabled"
+                        v-if="isDisabled || dropdownList.filter(item => item.show).length < 1"
                         disabled>{{$t('batchOperate')}}<i class="el-icon-arrow-down el-icon--right"></i></Button>
                 <el-dropdown @command="handleCommand" trigger="click" v-else>
                 <span class="el-dropdown-link">
@@ -32,7 +32,7 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item v-for="(item,index) in dropdownList"
                                           :key="index"
-                                          v-show="(item.value === 'forbidden' && disenable) || (item.value === 'checkPass' && passable) || (item.value === 'commissioned' && openable) || (item.value === 'delete' && deletable) || (item.value === 'reject' && rebuttable) || (item.value === 'commitCheck' && auditable)"
+                                          v-show="item.show"
                                           :command="item.value">
                             {{$t(item.name)}}
                         </el-dropdown-item>
@@ -284,18 +284,18 @@
             dropdownList () {
                 let result = [];
                 if (this.canAuditPolicy) {
-                    result.push({ name : 'checkPass', value : 'checkPass' });//审核通过
-                    result.push({ name : 'reject', value : 'reject' });//驳回
+                    result.push({ name : 'checkPass', value : 'checkPass' ,show : this.passable });//审核通过
+                    result.push({ name : 'reject', value : 'reject' ,show : this.rebuttable });//驳回
                 }
                 if (this.canApplyAuditPolicy) {
-                    result.push({ name : 'commitCheck', value : 'commitCheck' });//提交审核
+                    result.push({ name : 'commitCheck', value : 'commitCheck' ,show : this.auditable });//提交审核
                 }
                 if (this.canDelPolicy) {
-                    result.push({ name : 'delete', value : 'delete' });//删除
+                    result.push({ name : 'delete', value : 'delete',show : this.deletable });//删除
                 }
                 if (this.canDisabledPolicy) {
-                    result.push({ name : 'forbidden', value : 'forbidden' });//禁用
-                    result.push({ name : 'commissioned', value : 'commissioned' });//启用
+                    result.push({ name : 'forbidden', value : 'forbidden' ,show : this.disenable });//禁用
+                    result.push({ name : 'commissioned', value : 'commissioned' ,show : this.openable });//启用
                 }
                 return result;
             }
