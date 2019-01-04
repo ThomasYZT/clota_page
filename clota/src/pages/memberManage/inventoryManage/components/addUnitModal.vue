@@ -5,14 +5,16 @@
 <template>
     <Modal v-model="isShow"
            class-name="vertical-center-modal"
-           :title="$t('addMeasurementUnit')">
+           :mask-closable="false"
+           :title="$t('addMeasurementUnit')"
+           @on-cancel="hide()">
         <Form ref="formList"
               :model="formData"
               :rules="ruleValidate"
               label-position="right"
-              :label-width="100">
+              :label-width="120">
             <i-row>
-                <i-col span="18" offset="4">
+                <i-col span="18" offset="3">
                     <Form-item :label="$t('colonSetting', { key : $t('unitName') })" prop="unitNames">
                         <Input v-model.trim="formData.unitNames" :placeholder="$t('inputField', { field : $t('unitName') })" style="width: 200px"></Input>
                     </Form-item>
@@ -21,8 +23,8 @@
         </Form>
 
         <div slot="footer">
-            <Button class="ivu-btn-90px" type="primary" @click="save">{{$t('save')}}</Button>
-            <Button class="ivu-btn-90px" type="default" @click="hide">{{$t('cancel')}}</Button>
+            <Button class="ivu-btn-90px" type="primary" @click="save()">{{$t('save')}}</Button>
+            <Button class="ivu-btn-90px" type="default" @click="hide()">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -88,7 +90,7 @@
                     unitNames : ''
                 };
                 this.$refs.formList.resetFields();
-                this.toggle();
+                this.isShow = false;
                 this.$emit('restore');
             }
         }

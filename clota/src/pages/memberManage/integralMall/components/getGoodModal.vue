@@ -4,6 +4,7 @@
 -->
 <template>
     <Modal v-model="isShow"
+           width="500"
            class-name="vertical-center-modal"
            :title="$t('GetTheGoods')">
         <Form ref="formInline"
@@ -23,16 +24,16 @@
         <!-- 领取奖品时显示 -->
         <Form v-else
               label-position="right"
-              :label-width="100">
+              :label-width="150">
             <i-row>
-                <i-col span="10" offset="7">
+                <i-col span="14" offset="5">
                     <Form-item :label="$t('colonSetting', { key : $t('goodInfo') })">
                         <span>{{exchangeInfo.goodsName}}</span>
                     </Form-item>
                 </i-col>
             </i-row>
             <i-row>
-                <i-col span="10" offset="7">
+                <i-col span="14" offset="5">
                     <Form-item :label="$t('colonSetting', { key : $t('changerInfo') })">
                         <span>{{exchangeInfo.memberName}}</span>
                     </Form-item>
@@ -143,4 +144,11 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    /deep/ .ivu-form {
+        margin-top: 20px;
+    }
+
+    /deep/ .ivu-modal-body {
+        min-height: 164px;
+    }
 </style>

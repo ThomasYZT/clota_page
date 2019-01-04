@@ -46,6 +46,7 @@
                           :rules="ruleValidate">
                         <FormItem prop="modifiedSalePrice">
                             <i-input v-model.trim="modifyModel.modifiedSalePrice"
+                                     type="text"
                                      ref="salePriceInput"></i-input>
                         </FormItem>
                     </Form>
@@ -208,7 +209,7 @@
             modifyPrice (scopeData) {
                 if (!this.canModifyMarketPrice) return;
                 this.currRowIndex = scopeData.$index;
-                this.modifyModel.modifiedSalePrice = scopeData.row.salePrice;
+                this.modifyModel.modifiedSalePrice = scopeData.row.salePrice.toString();
                 this.modifyModel.settlePrice = scopeData.row.settlePrice;
             },
             /**
