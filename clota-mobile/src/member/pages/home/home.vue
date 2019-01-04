@@ -148,6 +148,7 @@
         created () {
             //暂时注释，方便测试
             //this.queryUnboundCard();
+            console.log(this.cardInfoList);
         },
         computed : {
             ...mapGetters([
