@@ -98,7 +98,8 @@
             updateOnlineAccount () {
                 ajax.post('updateOnlineAccount', {
                     id : this.accountInfo.id,
-                    useStatus : this.accountInfo.useStatus === 'enabled' ? 'not_enabled' : 'enabled'
+                    useStatus : this.accountInfo.useStatus === 'enabled' ? 'not_enabled' : 'enabled',
+                    accountType : this.accountInfo.accountType,
                 }).then(res => {
                     if (res.success) {
                         this.$emit('updateAccount');
