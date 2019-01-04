@@ -10,13 +10,14 @@
 
         <div class="modal-body">
 
-            <div class="steps-wrap">
-                <Steps :current="step">
-                    <Step title="" icon="record"></Step>
-                    <Step title="" icon="record"></Step>
-                    <Step title="" icon="record"></Step>
-                </Steps>
-            </div>
+            <!--会员4期暂时去掉-->
+            <!--<div class="steps-wrap">-->
+                <!--<Steps :current="step">-->
+                    <!--<Step title="" icon="record"></Step>-->
+                    <!--<Step title="" icon="record"></Step>-->
+                    <!--<Step title="" icon="record"></Step>-->
+                <!--</Steps>-->
+            <!--</div>-->
 
             <!--step 1-->
             <template v-if="step === 0">
@@ -24,14 +25,10 @@
                     <div class="ivu-form-item-wrap">
                         <!--账户归属-->
                         <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
-                            <Select v-model="formData.accountBelonging"
-                                    @on-change="changeAccountBelonging">
-                                <Option v-for="(item, index) in tableData"
-                                        :value="item.id"
-                                        :key="index">
-                                    {{ item.orgName }}
-                                </Option>
-                            </Select>
+                            <select-tree v-model="formData.accountBelonging"
+                                         :tree="treeData"
+                                         style="width: 280px;">
+                            </select-tree>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -123,17 +120,20 @@
         </div>
 
         <div slot="footer" class="modal-footer">
+            <!--会员4期暂时去掉-->
+            <!--<template v-if="step === 0">-->
+                <!--<Button type="primary" @click="nextStep(true)" >{{$t('nextStep')}}</Button>-->
+                <!--<Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>-->
+            <!--</template>-->
+            <!--<template v-if="step === 1">-->
+                <!--<Button type="primary" @click="nextStep(false)" >{{$t('nextStep')}}</Button>-->
+                <!--<Button type="ghost" @click="prevStep" >{{$t('lastStep')}}</Button>-->
+            <!--</template>-->
             <template v-if="step === 0">
-                <Button type="primary" @click="nextStep(true)" >{{$t('nextStep')}}</Button>
-                <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
-            </template>
-            <template v-if="step === 1">
-                <Button type="primary" @click="nextStep(false)" >{{$t('nextStep')}}</Button>
-                <Button type="ghost" @click="prevStep" >{{$t('lastStep')}}</Button>
-            </template>
-            <template v-if="step === 2">
                 <Button type="primary" @click="save" >{{$t("save")}}</Button>
-                <Button type="ghost" @click="prevStep" >{{$t('lastStep')}}</Button>
+                <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
+                <!--会员4期暂时去掉-->
+                <!--<Button type="ghost" @click="prevStep" >{{$t('lastStep')}}</Button>-->
             </template>
         </div>
 
@@ -146,11 +146,13 @@
     import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import selectTree from '@/components/selectTree/index.vue';
 
     export default {
         props : ['length','table-data','send-data'],
         components : {
             tableCom,
+            selectTree
         },
         data () {
 
@@ -283,7 +285,9 @@
                         value : 'gameCoin',
                         label : 'gameCoin'
                     }
-                ]
+                ],
+                //账户数据列表
+                treeData : []
             };
         },
         watch : {
@@ -300,6 +304,7 @@
                     this.index = data.index;
                 }
                 this.visible = true;
+                this.getOrgTree();
             },
 
             //账户归属信息改变
@@ -445,8 +450,8 @@
                         unit : this.formData.unit,
                         rate : (Number(this.formData.rateNumerator) / Number(this.formData.rateDenominator)).toFixed(2),
                         exchangeToCash : this.formData.exchangeToCash,
-                        corpusAppliedOrgId : this.formData.corpusAppliedOrgId.join(','),
-                        donateAppliedOrgId : this.formData.donateAppliedOrgId.join(','),
+                        corpusAppliedOrgId : this.formData.accountBelonging,
+                        donateAppliedOrgId : this.formData.accountBelonging,
                         rateDenominator : this.formData.rateDenominator,
                         rateNumerator : this.formData.rateNumerator
                     })
@@ -466,6 +471,21 @@
                     }
                 });
             },
+            /**
+             * 获取组织树列表
+             */
+            getOrgTree () {
+                ajax.post('getRootOrgTree',{
+                    showScene : 'manage',
+                    manageType : 'manage',
+                }).then(res =>{
+                    if (res.success) {
+                        this.treeData = res.data ? res.data : {};
+                    } else {
+                        this.treeData = {};
+                    }
+                });
+            },
 
         },
     };
@@ -477,7 +497,7 @@
 
         .modal-body{
             padding: 0 14px;
-            height: 430px;
+            height: 230px;
 
             .steps-wrap{
                 padding-top: 5px;
