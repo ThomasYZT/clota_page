@@ -12,7 +12,7 @@
                   @click="changeTimeType('today')">{{$t("today")}}</span>
             <span :class="{'active': timeType === 'week'}"
                   class="date-range"
-                  @click="changeTimeType('week')">{{$t("nowWeek")}}</span>
+                  @click="changeTimeType('week')">{{$t("thisWeek")}}</span>
             <span :class="{'active': timeType === 'month'}"
                   class="date-range"
                   @click="changeTimeType('month')">{{$t("thisMonth")}}</span>

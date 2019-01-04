@@ -14,7 +14,7 @@
 
                 <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="145">
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('会员卡名称') + '：'" prop="levelDesc"><!--等级名称-->
+                        <Form-item :label="$t('memberCardName') + '：'" prop="levelDesc"><!--等级名称-->
                             <Input v-model.trim="formData.levelDesc"
                                    type="text"
                                    :placeholder="$t('inputField', {field: $t('memberLevelName')})"/><!--请输入会员级别名称，例：黄金会员-->
@@ -56,13 +56,13 @@
                         <!--</Form-item>-->
                     <!--</div>-->
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('售卡金额') + '：'" prop="salePrice"><!--售卡金额-->
+                        <Form-item :label="$t('cardSaleMoney') + '：'" prop="salePrice"><!--售卡金额-->
                             <Input v-model.trim="formData.salePrice"
                                    type="text"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('卡内金额') + '：'" prop="amountInCard"><!--卡内金额-->
+                        <Form-item :label="$t('moneyInCard') + '：'" prop="amountInCard"><!--卡内金额-->
                             <Input v-model.trim="formData.amountInCard"
                                    type="text"/>
                         </Form-item>
@@ -77,7 +77,7 @@
                                         :key="item.value">
                                     <div class="time-list-item">
                                         <span class="time-label" v-if="item.value !== 'add'">
-                                            {{ item.label }}
+                                            {{ $t(item.label) }}
                                             <template v-if="item.value !== 'forEver'">
                                                 {{$t('time.' + formData.effUnit)}}
                                             </template>
@@ -85,11 +85,11 @@
                                         <span class="time-label blue-label add-label"
                                               v-else
                                               @click.stop="addEffectTime">
-                                            {{ item.label }}
+                                            {{ $t(item.label) }}
                                         </span>
                                         <span v-if="item.value !== 'add' && item.value !== 'forEver' && item.value !== formData.effTime"
                                               class="operate-label"
-                                              @click.stop="delTimeItem(index)">{{$t('删除')}}</span>
+                                              @click.stop="delTimeItem(index)">{{$t('delete')}}</span>
                                     </div>
                                 </Option>
                             </Select>
@@ -148,7 +148,7 @@
                   :label-width="80">
                 <!--新增有效期-->
                 <FormItem prop="addEffectTimeValue"
-                          :label="$t('有效期')"
+                          :label="$t('validityPeriod')"
                           :rules="[{ required : true, validator : validateEffectTime,trigger : 'blur' }]">
                     <Input v-model.trim="effectFormData.addEffectTimeValue" style="width: 280px"/>
                     {{$t('time.year')}}
@@ -487,7 +487,7 @@
                 document.body.click();
                 this.currentData = this.effTimeList[index];
                 this.$refs.delModal.show({
-                    title : this.$t('删除有效期'),
+                    title : this.$t('deletePermanentValidity'),
                     confirmCallback : () => {
                         this.deleteEffectTime(this.currentData.id);
                     }
@@ -511,7 +511,7 @@
             addEffectTime () {
                 document.body.click();
                 this.$refs.editModal.show({
-                    title : this.$t('新增有效期(年)'),
+                    title : this.$t('addPermanentValidity'),
                     confirmCallback : () => {
                         this.confirmAddEffectTime();
                     },
@@ -534,17 +534,17 @@
                         if (value > 0 && value < 99) {
                             callback();
                         } else {
-                            callback(this.$t('请输入大于0且小于99的值'));
+                            callback(this.$t('inputField', { field : this.$t('valueRangeInfo', { val1 : '0', val2 : '99' }) }));
                         }
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t('有效期值'),length : 10 }));
+                            callback(this.$t(err,{ field : this.$t('permanentValidityValue'),length : 10 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t('有效期值') }));
+                            callback(this.$t(err,{ field : this.$t('permanentValidityValue') }));
                         }
                     });
                 } else {
-                    callback(this.$t('inputField',{ field : this.$t('有效期值') }));
+                    callback(this.$t('inputField',{ field : this.$t('permanentValidityValue') }));
                 }
             },
             /**
@@ -571,7 +571,7 @@
                         this.getEffTimeList();
                         this.effectFormData.addEffectTimeValue = '';
                     } else if (res.code === 'M046') {
-                        this.$Message.error('有效期已存在');
+                        this.$Message.error('permanentValidityExist');
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }
@@ -607,11 +607,11 @@
                     };
                 }),[
                     {
-                        label : '永久有效',
+                        label : 'permanentValidity',
                         value : 'forEver'
                     },
                     {
-                        label : '新增有效期',
+                        label : 'addPermanentValidityWithoutUnit',
                         value : 'add'
                     },
                 ]);

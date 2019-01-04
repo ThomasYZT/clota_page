@@ -85,7 +85,7 @@
                 </div>
                 <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
                     <div class="info-title">
-                        {{$t('储值账户信息')}}
+                        {{$t('storeValueAccountInfo')}}
                             <span class="add-account"
                                 @click="addAccount">+ {{$t("newAccount")}}</span>
                     </div>

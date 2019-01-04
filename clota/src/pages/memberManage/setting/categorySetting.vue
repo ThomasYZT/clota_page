@@ -12,7 +12,7 @@
                 <Button type="primary"
                         :disabled="tableData.length > 11"
                         @click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>
-                <span class="tips">{{$t('最多新增12个会员类别')}}</span><!--最多新增12个会员类别-->
+                <span class="tips">{{$t('mostAddNumOfMemberType', { num : '12' })}}</span><!--最多新增12个会员类别-->
             </div>
             <div class="table-wrap">
                 <table-com
@@ -32,7 +32,7 @@
                         <template slot-scope="scoped">
                             <ul class="operate-list">
                                 <li class="blue-label" @click.stop="showEditMemberModal(scoped.row)">{{$t('modify')}}</li>
-                                <li class="blue-label" @click.stop="toDetail(scoped.row)">{{$t('设置会员卡级别')}}</li>
+                                <li class="blue-label" @click.stop="toDetail(scoped.row)">{{$t('setMemberLevel')}}</li>
                                 <!--会员3期暂时去掉-->
                                 <!--<li class="red-label"-->
                                     <!--@click.stop="delMemberLevel($event,scoped.row)">-->

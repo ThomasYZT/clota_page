@@ -28,7 +28,7 @@ export const levelListHead = [
     //     field : 'channelName'
     // },
     {
-        title : '成长值范围', // 成长值范围
+        title : 'growthRange', // 成长值范围
         minWidth : 150,
         field : 'growThScope'
     },

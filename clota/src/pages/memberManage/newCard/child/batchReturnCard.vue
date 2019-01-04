@@ -3,14 +3,14 @@
 <template>
     <div class="batch-return-card">
         <bread-crumb-head
-            locale-router="批量退卡"
+            :locale-router="$t('batchRefundCard')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="container">
             <div class="title">
                 <Button type="primary"
                         :disabled="tableData.length >= 50 || !cardReadEnabled"
-                        @click="readEntityCard">{{$t('读取实体卡')}}</Button>
+                        @click="readEntityCard">{{$t('readEntityCard')}}</Button>
             </div>
             <table-com
                 :column-data="columnData"
@@ -60,22 +60,22 @@
                              @confirm-data="confirmDataInfo">
             <Form  :label-width="110">
                 <i-col span="12">
-                    <FormItem :label="$t('colonSetting',{ key : $t('本次退卡数量') })">
+                    <FormItem :label="$t('colonSetting',{ key : $t('thisTimeRefundCardNum') })">
                         {{tableData.length | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('colonSetting',{ key : $t('返还总额') })">
+                    <FormItem :label="$t('colonSetting',{ key : $t('backTotalMoney') })">
                         {{sumRefundMoney | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('colonSetting',{ key : $t('线上返回金额') })">
+                    <FormItem :label="$t('colonSetting',{ key : $t('backMoneyFromOnline') })">
                         {{sumOnlineMoney | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
                 <i-col span="12">
-                    <FormItem :label="$t('colonSetting',{ key : $t('返回现金') })">
+                    <FormItem :label="$t('colonSetting',{ key : $t('backMoney') })">
                         {{sumCashMoney | moneyFilter | contentFilter}}
                     </FormItem>
                 </i-col>
@@ -161,9 +161,9 @@
                             sumRefundMoney : res.data.sumRefundMoney,
                         });
                     } else if (res.code === 'M018') {
-                        this.$Message.error('该会员卡已使用，不可退卡');
+                        this.$Message.error(this.$t('memberCardInusedTip'));
                     } else if (res.code === 'M036') {
-                        this.$Message.error('会员卡不存在');
+                        this.$Message.error(this.$t('memberCardNotExisit'));
                     } else {
                         this.refundMoneyInfo = {};
                     }
@@ -184,10 +184,10 @@
                     cardIds : this.tableData.map(item => item.cardId).join(',')
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('批量退卡') }));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('batchRefundCard') }));
                         this.tableData = [];
                     } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('批量退卡') }));
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('batchRefundCard') }));
                     }
                 });
             }

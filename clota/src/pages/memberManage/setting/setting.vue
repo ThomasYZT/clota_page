@@ -163,11 +163,11 @@
 
                 <!--短信发送设置-->
                 <div class="content-item">
-                    <div class="title">{{$t('短信发送设置')}}</div>
+                    <div class="title">{{$t('smsSendSetting')}}</div>
 
                     <div class="main">
                         <div :class="{'ivu-form-item-error': error.tradeAmountErr, 'main': true}">
-                            <span class="text">{{$t('交易金额大于')}}</span><!--交易金额大于-->
+                            <span class="text">{{$t('tradeMoneyMoreThan')}}</span><!--交易金额大于-->
                             <Input v-model.trim="settingData.smsSend"
                                    @on-blur="checkInputIsMoney(settingData.smsSend,'tradeAmountErr')"
                                    type="text"
@@ -177,7 +177,7 @@
                                  style="left: 100px;"
                                  v-if="error.tradeAmountErr">{{error.tradeAmountErr}}
                             </div>
-                            {{$t('时发送短信')}}<!--时发送短信-->
+                            {{$t('whenSendSms')}}<!--时发送短信-->
                         </div>
                     </div>
                 </div>
@@ -201,10 +201,10 @@
 
                 <!--微信端推送交易记录设置-->
                 <div class="content-item">
-                    <div class="title">{{$t('微信端推送交易记录设置')}}</div>
+                    <div class="title">{{$t('wxPushExchangeRecordSetting')}}</div>
                     <div :class="{'ivu-form-item-error': error.wxPushErr, 'main': true}">
                         <div class="switcher">
-                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" ></i-switch><span>{{$t('是否在微信公众号推送储值账户交易信息')}}</span>
+                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" ></i-switch><span>{{$t('whetherPushInfoOnWx')}}</span>
                         </div>
                         <!--<div class="switcher">-->
                             <!--<i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>-->

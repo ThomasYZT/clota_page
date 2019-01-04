@@ -279,7 +279,7 @@
             <!--新开卡会员积分赠送设置-->
             <div class="content-item">
                 <div class="title">
-                    {{$t('新开卡会员积分赠送设置')}}
+                    {{$t('newCardMenberFreeScoreSetting')}}
                     <!--<Tooltip placement="top" transfer>-->
                         <!--<span class="iconfont icon-note"></span>-->
                         <!--<div slot="content">-->
@@ -291,14 +291,14 @@
                     <i-switch v-model="settingData.openCardSendScore.isSwitch"
                               @on-change="settingData.openCardSendScore.score = ''">
                     </i-switch>
-                    <span class="text">{{$t('新开卡会员赠送')}}<!--会员生日当天消费可获得-->
+                    <span class="text">{{$t('newCardDonate')}}<!--会员生日当天消费可获得-->
                         <Input v-model.trim="settingData.openCardSendScore.score"
                                :disabled="!settingData.openCardSendScore.isSwitch"
                                @on-blur="checkInputBlurFunc(settingData.openCardSendScore.score, 'memberDonateIntegerErr')"
                                type="text"
                                class="single-input"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        {{$t('积分')}}</span><!--倍积分-->
+                        {{$t('integral')}}</span><!--倍积分-->
                     <div class="ivu-form-item-error-tip"
                          style="left: 173px;"
                          v-if="error.memberDonateIntegerErr">{{error.memberDonateIntegerErr}}

@@ -64,7 +64,7 @@
                         slot-scope="row">
                         <template slot-scope="scoped">
                             <template v-if="scoped.row.effTime === null">
-                                {{$t('永久有效')}}
+                                {{$t('permanentValidity')}}
                             </template>
                             <template v-else>
                                 {{scoped.row.effTime}}{{$t('time.' + scoped.row.effTimeUnit)}}

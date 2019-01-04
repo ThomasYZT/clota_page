@@ -11,7 +11,7 @@
         <div class="container">
             <Button class="batch-return-card"
                     type="primary"
-                    @click="batchReturnCard">{{$t('批量退卡')}}</Button>
+                    @click="batchReturnCard">{{$t('batchRefundCard')}}</Button>
             <member-info @click-row-todo="toFunc">
             </member-info>
         </div>

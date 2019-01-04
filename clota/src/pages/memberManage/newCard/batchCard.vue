@@ -21,7 +21,7 @@
                                 @click="readEntityCard">{{$t('readEntityCard')}}</Button>
                         <Button type="primary"
                                 style="margin-left: 10px;"
-                                @click="openCardRightNow">{{$t('快速开卡')}}</Button>
+                                @click="openCardRightNow">{{$t('openCardSpeedly')}}</Button>
                     </div>
                     <table-com
                         :show-pagination="false"

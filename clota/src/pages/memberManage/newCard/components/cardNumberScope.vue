@@ -2,7 +2,7 @@
 
 <template>
     <Modal
-        :title="$t('快速开卡')"
+        :title="$t('openCardSpeedly')"
         :mask-closable="false"
         :value="value"
         :width="520"
@@ -11,7 +11,7 @@
         class="card-number-scope"
         class-name="vertical-center-modal">
         <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
-            <FormItem label="卡片编号区间：">
+            <FormItem :label="$t('colonSetting', { key : $t('cardNoRange') })">
                 <i-row>
                     <i-col style="display: inline-block;">
                         <FormItem prop="smallNum">
@@ -59,7 +59,7 @@
                         if (common.isNotEmpty(this.formData.bigNum)) {
                             if (validator.isNumber(this.formData.bigNum)) {
                                 if (this.formData.bigNum < this.formData.smallNum) {
-                                    callback(this.$t('errorGreaterThan',{ small : this.$t('起始值'),big : this.$t('结束值') }));
+                                    callback(this.$t('errorGreaterThan',{ small : this.$t('startingValue'),big : this.$t('endValue') }));
                                 } else {
                                     callback();
                                 }
@@ -71,13 +71,13 @@
                         }
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t('卡片编号起始值'),length : 20 }));
+                            callback(this.$t(err,{ field : this.$t('cardNoStartValue'),length : 20 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t('卡片编号起始值') }));
+                            callback(this.$t(err,{ field : this.$t('cardNoStartValue') }));
                         }
                     });
                 } else {
-                    callback(this.$t('inputField',{ field : this.$t('卡片编号起始值') }));
+                    callback(this.$t('inputField',{ field : this.$t('cardNoStartValue') }));
                 }
             };
             //校验开卡范围最大值值
@@ -87,7 +87,7 @@
                         if (common.isNotEmpty(this.formData.smallNum)) {
                             if (validator.isNumber(this.formData.smallNum)) {
                                 if (this.formData.bigNum < this.formData.smallNum) {
-                                    callback(this.$t('sizeErrorS',{ filed1 : this.$t('结束值'),filed2 : this.$t('起始值') }));
+                                    callback(this.$t('sizeErrorS',{ filed1 : this.$t('endValue'),filed2 : this.$t('startingValue') }));
                                 } else {
                                     callback();
                                 }
@@ -99,13 +99,13 @@
                         }
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t('卡片编号结束值'),length : 20 }));
+                            callback(this.$t(err,{ field : this.$t('cardNoEndValue'),length : 20 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t('卡片编号结束值') }));
+                            callback(this.$t(err,{ field : this.$t('cardNoEndValue') }));
                         }
                     });
                 } else {
-                    callback(this.$t('inputField',{ field : this.$t('卡片编号结束值') }));
+                    callback(this.$t('inputField',{ field : this.$t('cardNoEndValue') }));
                 }
             };
 			return {
@@ -180,7 +180,7 @@
                             this.$emit('get-num-scope',carInfo);
                             this.cancel();
                         } else {
-                            this.$Message.warning(this.$t('未查询到实体卡信息'));
+                            this.$Message.warning(this.$t('notQueryEntityCardInfo'));
                             this.cancel();
                         }
                     }
