@@ -2,8 +2,8 @@
 
 <template>
     <div class="owner-card-vice-card" >
-        <div class="title" v-if="cardInfo.isMotherCard === 'true'">副卡信息<span class="add-vice-card" @click="addViceCard">+新增副卡</span></div>
-        <div class="title" v-else>主卡信息</div>
+        <div class="title" v-if="cardInfo.isMotherCard === 'true'">{{$t('viceCardInfo')}}<span class="add-vice-card" @click="addViceCard">+{{$t('addViceCard')}}</span></div>
+        <div class="title" v-else>{{$t('mainCardInfo')}}</div>
         <Form ref="formValidate" >
             <table-com
                 auto-height
@@ -187,12 +187,12 @@
                     fixed="right">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li v-if="!scope.row.edit && scope.row.cardStatus === 'active'" class="red-label" @click="stopAccount(scope.row)">{{$t('停用')}}</li>
-                            <li v-else-if="!scope.row.edit && scope.row.cardStatus === 'frozen'" @click="startAccount(scope.row)">{{$t('启用')}}</li>
+                            <li v-if="!scope.row.edit && scope.row.cardStatus === 'active'" class="red-label" @click="stopAccount(scope.row)">{{$t('stopUsing')}}</li>
+                            <li v-else-if="!scope.row.edit && scope.row.cardStatus === 'frozen'" @click="startAccount(scope.row)">{{$t('commissioned')}}</li>
                             <template v-else-if="scope.row.edit">
                                 <li @click="saveAccount(scope.row)">{{$t('save')}}</li>
                                 <li @click="cancelAdd(scope.$index)">{{$t('cancel')}}</li>
-                                <li @click="readEntityCardInfo(scope.$index)" :class="{ disabled : !cardReadEnabled }">{{$t('读取实体卡')}}</li>
+                                <li @click="readEntityCardInfo(scope.$index)" :class="{ disabled : !cardReadEnabled }">{{$t('readEntityCard')}}</li>
                             </template>
                         </ul>
                     </template>
@@ -203,7 +203,7 @@
         <confirm-modal ref="confirmModal">
             <div class="confirm-label">
                 <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
-                {{$t('是否确认停用该会员')}}
+                {{$t('sureToStopMember')}}
             </div>
         </confirm-modal>
         <!--设置支付密码模态框-->
@@ -323,16 +323,16 @@
                 }).then(res => {
                     if (res.success) {
                         if (status === 'active') {
-                            this.$Message.success('启用成功');
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('commissioned') }));
                         } else {
-                            this.$Message.success('停用成功');
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('stopUsing') }));
                         }
                         this.findMainOrViceCard();
                     } else {
                         if (status === 'active') {
-                            this.$Message.error('启用失败');
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('commissioned') }));
                         } else {
-                            this.$Message.error('停用失败');
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('stopUsing') }));
                         }
                     }
                 });

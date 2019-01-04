@@ -193,7 +193,7 @@
             delMemberLevel (event, rowData) {
                 this.currentData = rowData;
                 this.$refs.delModal.show({
-                    title : this.$t('删除会员级别'),
+                    title : this.$t('deleteMemberLevel'),
                     confirmCallback : () => {
                         this.deleteLevelInfo(rowData);
                     }
@@ -240,13 +240,13 @@
             getFunctions (rowData) {
                 let result = [];
                 if ( rowData['isScore'] === 'true' ) {
-                    result.push(this.$t('积分'));
+                    result.push(this.$t('integral'));
                 }
                 if ( rowData['isDiscount'] === 'true' ) {
-                    result.push(this.$t('折扣'));
+                    result.push(this.$t('allowance'));
                 }
                 if ( rowData['isRecharge'] === 'true' ) {
-                    result.push(this.$t('储值'));
+                    result.push(this.$t('recharge'));
                 }
                 return result.join(',');
             }

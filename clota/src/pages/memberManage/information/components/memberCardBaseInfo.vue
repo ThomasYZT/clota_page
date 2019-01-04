@@ -4,13 +4,13 @@
     <div class="member-card-info">
         <template v-if="memberDetail.cardTypeId === '3'">
             <div class="form-item-wrap">
-                <label>{{$t("企业名称")}}：</label>
+                <label>{{$t("company_name")}}：</label>
                 <span v-w-title="memberDetail.companyName">
                     {{memberDetail.companyName | contentFilter}}
             </span>
             </div>
             <div class="form-item-wrap">
-                <label>{{$t("企业地址")}}：</label>
+                <label>{{$t("company_address")}}：</label>
                 <span v-w-title="memberDetail.homeAddr">
                     {{memberDetail.homeAddr | contentFilter}}
             </span>
@@ -26,8 +26,8 @@
             <label>{{$t("entityCardFaceNum")}}：</label>
             <span v-w-title="memberDetail.tpNo">
                     {{memberDetail.tpNo  | contentFilter}}
-                <span class="value-status" v-if="memberDetail.cardStatus === 'loss'">{{$t('bracketSetting',{ content : $t('已挂失') })}}</span>
-                <span class="value-status" v-if="memberDetail.cardStatus === 'return'">{{$t('bracketSetting',{ content : $t('已退卡') })}}</span>
+                <span class="value-status" v-if="memberDetail.cardStatus === 'loss'">{{$t('bracketSetting',{ content : $t('ReportedLoss') })}}</span>
+                <span class="value-status" v-if="memberDetail.cardStatus === 'return'">{{$t('bracketSetting',{ content : $t('ReturnedCard') })}}</span>
             </span>
         </div>
         <div class="form-item-wrap">
@@ -75,7 +75,7 @@
             </span>
         </div>
         <div class="form-item-wrap">
-            <label>{{$t("购买日期")}}：</label>
+            <label>{{$t("buyDate")}}：</label>
             <span v-w-title="memberDetail.createdTime">{{memberDetail.createdTime  | contentFilter}}</span>
         </div>
         <div class="form-item-wrap" v-if="memberDetail.cardTypeId !== '1'">
@@ -123,7 +123,7 @@
         <edit-modal ref="editModal">
             <Form ref="formData" :model="formData" :rules="ruleValidate">
                 <!--请输入登录密码-->
-                <FormItem prop="password" :label="$t('请输入登录密码')">
+                <FormItem prop="password" :label="$t('inputField', { field : $t('loginPassword') })">
                     <Input v-model.trim="formData.password" type="password" style="width: 280px"/>
                 </FormItem>
             </Form>
@@ -195,10 +195,10 @@
                     id : this.memberDetail.id
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('修改支付密码成功');
+                        this.$Message.success('successTip', { tip : this.$t('modifyPayPassword') });
                         this.$emit('fresh-data');
                     } else {
-                        this.$Message.error('修改支付密码失败');
+                        this.$Message.error('failureTip', { tip : this.$t('modifyPayPassword') });
                     }
                 });
             },
@@ -207,7 +207,7 @@
              */
             changeHouseMoney () {
                 this.$refs.editModal.show({
-                    title : this.$t('请输入登录密码'),
+                    title : this.$t('inputField', { field : this.$t('loginPassword') }),
                     confirmCallback : () => {
                         this.$refs.formData.validate(valid => {
                             if (valid) {
@@ -232,7 +232,7 @@
                         if (res.data) {
                             this.changeHouseMoneyModalShow = true;
                         } else {
-                            this.$Message.error('登录密码错误');
+                            this.$Message.error(this.$t('sthErr', { field : this.$t('loginPassword') }));
                         }
                     }
                 }).finally(() => {

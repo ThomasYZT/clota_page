@@ -10,7 +10,7 @@
             <Form ref="formDynamic" :model="formDynamic">
 
                 <div class="content-item">
-                    <div class="title">{{$t('会员卡有效期')}}</div><!--会员卡有效期-->
+                    <div class="title">{{$t('memberCardValidity')}}</div><!--会员卡有效期-->
                     <el-collapse :value="collapseOpened">
                         <el-collapse-item v-for="(item,title,index) in memberLevelsData"
                                           :key="index"
@@ -183,9 +183,9 @@
                 </div>
                 <!--补卡收费标准-->
                 <div class="content-item">
-                    <div class="title">{{$t('补卡收费标准')}}</div>
+                    <div class="title">{{$t('cardReplacementCostStandard')}}</div>
                     <div :class="{'ivu-form-item-error': error.replaceCardFeeErr, 'main': true}">
-                        <span class="text">{{$t('补卡收费')}}</span><!--补卡收费-->
+                        <span class="text">{{$t('cardReplacementCost')}}</span><!--补卡收费-->
                         <Input v-model.trim="settingData.replacementCardFee"
                                @on-blur="checkInputIsMoney(settingData.replacementCardFee,'replaceCardFeeErr')"
                                type="text"

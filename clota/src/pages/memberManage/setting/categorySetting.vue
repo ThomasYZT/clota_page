@@ -148,7 +148,7 @@
             delMemberLevel (event, rowData) {
                 this.currentData = rowData;
                 this.$refs.delModal.show({
-                    title : this.$t('删除会员级别'),
+                    title : this.$t('deleteMemberLevel'),
                     confirmCallback : () => {
                         this.deleteLevelInfo(rowData);
                     }

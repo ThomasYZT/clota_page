@@ -10,7 +10,7 @@
         <ul class="table-wrap">
             <!--默认账户显示账户合计-->
             <li class="wrap-li" v-if="chargeInfo.accountDefineId === '1'">
-                <span class="label-key">{{$t('colonSetting' , { key : $t('账户合计') })}}</span>
+                <span class="label-key">{{$t('colonSetting' , { key : $t('accountTotalAdd') })}}</span>
                 <span class="label-value">{{(chargeInfo.corpusBalance + chargeInfo.donateBalance) | moneyFilter | contentFilter }} {{$t('yuan')}}</span>
             </li>
             <li class="wrap-li">

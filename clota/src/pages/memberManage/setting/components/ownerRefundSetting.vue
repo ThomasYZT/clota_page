@@ -2,7 +2,7 @@
 
 <template>
     <div class="owner-account-percent">
-        <div class="title">{{$t('房款返还至各业态账户的比例设置')}}</div>
+        <div class="title">{{$t('SettingOfhousingFundBackto')}}</div>
         <Form ref="formInline"
               :label-width="60">
             <template v-for="(item,index) in formData">
@@ -73,17 +73,17 @@
                         if (total === 100) {
                             callback();
                         } else {
-                            callback('返款比例的和必须为100%');
+                            callback(this.$t('FundBacktoTip'));
                         }
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t('errorMaxLength',{ field : this.$t('返款比例'),length : 10 }));
+                            callback(this.$t('errorMaxLength',{ field : this.$t('backMoneyRate'),length : 10 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t('返款比例') }));
+                            callback(this.$t(err,{ field : this.$t('backMoneyRate') }));
                         }
                     });
                 } else {
-                    callback(this.$t('inputField', { field : this.$t('返款比例') }));
+                    callback(this.$t('inputField', { field : this.$t('backMoneyRate') }));
                 }
             },
             /**

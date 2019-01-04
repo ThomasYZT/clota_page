@@ -244,7 +244,7 @@
                 if (rule.data) {
                     if (validator.isMobile(rule.data)) {
                         if ( this.mainCardInfo.phoneNum === rule.data ) {
-                            callback('手机号码重复');
+                            callback(this.$t('phoneNumRepeat'));
                         } else {
                             callback();
                         }

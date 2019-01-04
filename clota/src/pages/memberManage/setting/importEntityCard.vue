@@ -3,7 +3,7 @@
 <template>
     <div class="import-entity-card">
         <bread-crumb-head
-            :locale-router="importType === 'common' ? $t('普通卡批量导入') : $t('密码卡批量导入')"
+            :locale-router="importType === 'common' ? $t('normalCardBatchImport') : $t('passwordCardBatchImport')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div  class="content">
@@ -307,9 +307,9 @@
             //导出模板名称
             realName () {
                 if (this.importType === 'common') {
-                    return '普通卡导入模板.xlsx';
+                    return this.$t('normalCardImportTemplate') + '.xlsx';
                 } else {
-                    return '密码卡导入模板.xlsx';
+                    return this.$t('passwordCardImportTemplate') + '.xlsx';
                 }
             },
             //实体卡参数

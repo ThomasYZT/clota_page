@@ -3,7 +3,7 @@
 <template>
 	<Modal
 		v-model="value"
-		:title="title"
+		:title="$t(title)"
 		class-name="add-integer-rule vertical-center-modal"
 		:width="lang === 'zh-CN' ? 540 : 580"
 		:mask-closable="false"
@@ -11,34 +11,34 @@
 		@on-cancel="hide">
 		<div class="modal-body">
 			<Form ref="formValidate"
-				  :model="formData"
-				  :rules="ruleValidate"
-				  :label-width="lang === 'zh-CN' ? 135 : 160">
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 135 : 160">
 				<i-row>
 					<i-col>
-						<Form-item :label="$t('规则名称')" prop="ruleName">
+						<Form-item :label="$t('ruleName')" prop="ruleName">
 							<Input v-model.trim="formData.ruleName"
-								   style="width: 320px;"
-								   :placeholder="$t('inputPlaceholder')"/>
+                                   style="width: 320px;"
+                                   :placeholder="$t('inputPlaceholder')"/>
 						</Form-item>
 					</i-col>
 				</i-row>
 				<i-row>
 					<i-col span="13">
-						<Form-item :label="$t('请设置兑换比例')" prop="integrate">
+						<Form-item :label="$t('subscriptionRatio')" prop="integrate">
 							<Input v-model.trim="formData.integrate"
-								   :placeholder="$t('inputPlaceholder')"/>
+                                   :placeholder="$t('inputPlaceholder')"/>
 						</Form-item>
 					</i-col>
 					<i-col span="8">
 						<div class="integral-rate">
-							<span class="font">{{$t(`积分兑换${formData.money}元`)}}</span>
+							<span class="font">{{$t('scoreToMoney', { money : $t(formData.money) })}}</span>
 						</div>
 					</i-col>
 				</i-row>
 				<i-row>
 					<i-col>
-						<Form-item :label="$t('请设置有效期')" prop="date">
+						<Form-item :label="$t('validityPeriod')" prop="date">
 							<DatePicker v-model="formData.date"
 										:editable="false"
 										:options="dateOptions"
@@ -51,11 +51,11 @@
 				<i-row>
 					<i-col >
 						<Form-item :label-width="235"
-								   :label="$t('抵扣比例最多是单笔订单总额的')"
-								   prop="highProportion">
+                                   :label="$t('discountRateMostIs')"
+                                   prop="highProportion">
 							<i-input v-model.trim="formData.highProportion"
-									 style="width : 223px;"
-									 :placeholder="$t('inputPlaceholder')">
+                                     style="width : 223px;"
+                                     :placeholder="$t('inputPlaceholder')">
 								<span slot="append">%</span>
 							</i-input>
 						</Form-item>
@@ -63,7 +63,7 @@
 				</i-row>
 				<i-row>
 					<i-col>
-						<Form-item :label="$t('是否启用')" >
+						<Form-item :label="$t('isStarted')" >
 							<i-switch v-model="formData.isSwitch"></i-switch>
 						</Form-item>
 					</i-col>
@@ -130,11 +130,11 @@
 					let endTime = value[1] ? value[1].valueOf() : 0;
 					for (let i = 0,j = this.hasSelectedTime.length; i < j; i++) {
 						if ( startTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && startTime <= this.hasSelectedTime[i]['endTime'] ) {
-							callback('当前选择的时间区间和已存在的时间区间重合');
+							callback('timeZoneCoincideTip');
 						} else if ( endTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime <= this.hasSelectedTime[i]['endTime'] ) {
-							callback('当前选择的时间区间和已存在的时间区间重合');
+							callback('timeZoneCoincideTip');
 						} else if ( startTime <= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime >= this.hasSelectedTime[i]['endTime'] ) {
-							callback('当前选择的时间区间和已存在的时间区间重合');
+							callback('timeZoneCoincideTip');
 						} else {
 							callback();
 						}
@@ -150,26 +150,26 @@
 					if (value > 0 && value < 100) {
 						callback();
 					} else {
-						callback(this.$t('rangeError',{ field : this.$t('比例'),min : 0,max : 100 }));
+						callback(this.$t('rangeError',{ field : this.$t('rate'),min : 0,max : 100 }));
 					}
 				}).catch(err => {
 					if (err === 'errorMaxLength') {
-						callback(this.$t('errorMaxLength',{ field : this.$t('比例'),length : 3 }));
+						callback(this.$t('errorMaxLength',{ field : this.$t('rate'),length : 3 }));
 					} else {
-						callback(this.$t(err,{ field : this.$t('比例') }));
+						callback(this.$t(err,{ field : this.$t('rate') }));
 					}
 				});
 			};
 			//校验规则名称是否重复
 			const validateRuleName = (rule,value,callback) => {
 				if (value) {
-					 if (this.hasSelectedTime.some(item => item['ruleName'] === value) ) {
-						 callback('规则名称已存在');
-					 } else {
-						 callback();
-					 }
+                    if (this.hasSelectedTime.some(item => item['ruleName'] === value) ) {
+                        callback('ruleNameHas');
+                    } else {
+                        callback();
+                    }
 				} else {
-					callback(this.$t('inputField', { field : this.$t('规则名称') }));
+					callback(this.$t('inputField', { field : this.$t('ruleName') }));
 				}
 			};
 			return {
@@ -193,12 +193,12 @@
 					ruleName : [
 						{
 							required : true,
-							message : this.$t('inputField', { field : this.$t('规则名称') }),
+							message : this.$t('inputField', { field : this.$t('ruleName') }),
 							trigger : 'blur'
 						},
 						{
 							max : 20,
-							message : this.$t('errorMaxLength',{ field : this.$t('规则名称'),length : 20 }),
+							message : this.$t('errorMaxLength',{ field : this.$t('ruleName'),length : 20 }),
 							trigger : 'blur'
 						},
 						{
@@ -299,7 +299,7 @@
 		computed : {
 			//模态框标题
 			title () {
-				return '修改积分兑规则';
+				return 'modifyScoreExchangeRule';
 			},
 			...mapGetters({
 				lang : 'lang'

@@ -2,32 +2,32 @@
 //积分交易规则抵扣规则设置
 export const columnData = [
     {
-        title : '规则名称',
+        title : 'ruleName',
         minWidth : 200,
         field : 'ruleName'
     },
     {
-        title : '兑换比例',
+        title : 'subscriptionRatio',
         minWidth : 180,
         field : 'cardStatus'
     },
     {
-        title : '起始时间',
+        title : 'beginningTime',
         minWidth : 150,
         field : 'startTime'
     },
     {
-        title : '结束时间',
+        title : 'endTime',
         minWidth : 150,
         field : 'endTime'
     },
     {
-        title : '最多抵扣单笔订单总额',
+        title : 'mostDeductionPerOrder',
         minWidth : 200,
         field : 'highProportion'
     },
     {
-        title : '是否启用',
+        title : 'isStarted',
         minWidth : 100,
         field : 'isSwitch'
     },

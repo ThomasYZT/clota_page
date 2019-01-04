@@ -11,14 +11,14 @@
         class="add-product-type"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title" >新增产品类别</span>
+            <span class="title" >{{$t('addProductType')}}</span>
         </div>
         <div class="target-body">
             <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="100">
-                <FormItem label="类别名称" prop="typeName">
+                <FormItem :label="$t('typeName')" prop="typeName">
                     <Input v-model.trim="formData.typeName"/>
                 </FormItem>
-                <FormItem label="备注" prop="remark">
+                <FormItem :label="$t('remark')" prop="remark">
                     <Input v-model.trim="formData.remark" height="58" type="textarea"/>
                 </FormItem>
             </Form>
@@ -27,10 +27,10 @@
             <Button type="primary"
                     :loading="saveIng"
                     class="ivu-btn-90px"
-                    @click="save">保存</Button>
+                    @click="save">{{$t('save')}}</Button>
             <Button type="ghost"
                     class="ivu-btn-90px"
-                    @click="cancel">取消</Button>
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -64,8 +64,8 @@
                 //表单校验规则
                 ruleValidate : {
                     typeName : [
-                        { required : true,message : this.$t('inputField',{ field : '类别名称' }),trigger : 'blur' },
-                        { max : 20,message : this.$t('errorMaxLength',{ field : '类别名称',length : 20 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('typeName') }),trigger : 'blur' },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('typeName'),length : 20 }),trigger : 'blur' },
                     ],
                     remark : [
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 100 }),trigger : 'blur' },
@@ -124,10 +124,10 @@
                     remark : this.formData.remark,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('新增成功');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                         this.$emit('fresh-data');
                     } else {
-                        this.$Message.error(res.message || '新增失败');
+                        this.$Message.error(res.message || this.$t('failureTip', { tip : this.$t('add') }));
                     }
                 }).finally(() =>{
                     this.saveIng = false;
@@ -144,10 +144,10 @@
                     id : this.productData.id
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('修改成功');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
                         this.$emit('fresh-data');
                     } else {
-                        this.$Message.error(res.message || '修改失败');
+                        this.$Message.error(res.message || this.$t('failureTip', { tip : this.$t('modify') }));
                     }
                 }).finally(() =>{
                     this.saveIng = false;

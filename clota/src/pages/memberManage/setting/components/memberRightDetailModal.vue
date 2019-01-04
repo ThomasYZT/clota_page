@@ -2,7 +2,7 @@
 
 <template>
     <Modal
-        title="会员卡权益"
+        :title="$t('memberCardRight')"
         :mask-closable="false"
         :value="value"
         :width="550"
@@ -18,7 +18,7 @@
                         <i-switch v-model="item.isEnable" @on-change="changeValidateStatus(index,'birthday')"></i-switch>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <span class="word-label">生日当天限购</span>
+                        <span class="word-label">{{$t('limitedInbirthDay')}}</span>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <FormItem :prop="'birthdayNum' + index"
@@ -30,7 +30,7 @@
                         </FormItem>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <span class="word-label">张</span>
+                        <span class="word-label">{{$t('paper')}}</span>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <FormItem :prop="'birthdayDiscount' + index"
@@ -42,7 +42,7 @@
                         </FormItem>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <span class="word-label">折门票</span>
+                        <span class="word-label">{{$t('discountTicket')}}</span>
                     </i-col>
                 </i-row>
             </template>
@@ -53,7 +53,7 @@
                         <i-switch v-model="item.isEnable" @on-change="changeValidateStatus(index,'ticket')"></i-switch>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <span class="word-label">每月</span>
+                        <span class="word-label">{{$t('everyMonth')}}</span>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <FormItem :prop="'ticketNum' + index"
@@ -65,7 +65,7 @@
                         </FormItem>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <span class="word-label">张</span>
+                        <span class="word-label">{{$t('paper')}}</span>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <FormItem
@@ -95,10 +95,10 @@
                             </i-input>
                         </FormItem>
                     </i-col>
-                    <i-col style="display: inline-block;width : auto;"><span class="word-label">元门票</span></i-col>
+                    <i-col style="display: inline-block;width : auto;"><span class="word-label">{{$t('moneyTicket')}}</span></i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <span class="blue-label" v-if="index === 0" @click="addTicket">新增</span>
-                        <span class="red-label" v-else @click="delTicket(index)">删除</span>
+                        <span class="blue-label" v-if="index === 0" @click="addTicket">{{$t('add')}}</span>
+                        <span class="red-label" v-else @click="delTicket(index)">{{$t('delete')}}</span>
                     </i-col>
                 </i-row>
             </template>
@@ -118,8 +118,8 @@
                         </FormItem>
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
-                        <span class="blue-label" v-if="index === 0" @click="addDesc">新增</span>
-                        <span class="red-label" v-else @click="delDesc(index)">删除</span>
+                        <span class="blue-label" v-if="index === 0" @click="addDesc">{{$t('add')}}</span>
+                        <span class="red-label" v-else @click="delDesc(index)">{{$t('delete')}}</span>
                     </i-col>
                 </i-row>
             </template>
@@ -372,7 +372,7 @@
                         for (let i = 0,j = tickets.length; i < j; i++) {
                             if (i !== rule.index) {
                                 if (scenicId === tickets[i]['rule']['scenicId']) {
-                                    callback('当前景区已选择，请重新选择景区');
+                                    callback('sceneHasSelectedTip');
                                 } else {
                                     callback();
                                 }

@@ -61,17 +61,17 @@
 						field : 'id'
 					},
                     {
-                        title : '会员卡类型',
+                        title : 'memberCardType',
                         minWidth : 100,
                         field : 'typeName'
                     },
 					{
-						title : '级别名称',
+						title : 'levelName',
 						minWidth : 100,
 						field : 'levelDesc'
 					},
 					{
-						title : '会员权益',
+						title : 'privalige.member-right',
 						width : 150,
 						field : ''
 					}
@@ -114,8 +114,8 @@
 			 * @param rowData 行数据
 			 */
 			checkDetail (rowData) {
-			    this.currentData = rowData;
-				this.showDetailModal = true;
+               this.currentData = rowData;
+               this.showDetailModal = true;
 			}
 		}
 	};

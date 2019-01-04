@@ -6,12 +6,12 @@ export const columnData = [
         field : 'custName'
     },
     {
-        title : '电话',//电话
+        title : 'telephone',//电话
         minWidth : 177,
         field : 'phoneNum',
     },
     {
-        title : '性别',//性别
+        title : 'gender',//性别
         minWidth : 150,
         field : 'gender'
     },
@@ -38,12 +38,12 @@ export const columnData = [
         field : 'tradePassword',
     },
     {
-        title : '会员编号',//会员编号
+        title : 'memberNum',//会员编号
         minWidth : 180,
         field : 'cardCode'
     },
     {
-        title : '实体卡卡面号',//实体卡卡面号
+        title : 'entityCardFaceNum',//实体卡卡面号
         minWidth : 180,
         field : 'tpCardNo'
     },
