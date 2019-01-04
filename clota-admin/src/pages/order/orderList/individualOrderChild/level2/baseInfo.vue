@@ -66,6 +66,7 @@
                 if (this.baseInfo.smsStatus === 'failure' || this.baseInfo.syncStatus === 'failure') {
                     return require('../../../../../assets/images/icon-abnormal.svg');
                 }
+                return '';
             },
             //是否可以重发短信
             canResendMsg () {

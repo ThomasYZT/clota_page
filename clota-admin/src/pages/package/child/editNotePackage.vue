@@ -202,9 +202,11 @@
              * 新增短信套餐
              */
             addSmsPackage () {
+                let provider = this.smsProviderList.find(item => item.id === this.formData.smsProvider);
                 ajax.post('addSmsPackage',{
                     packageName : this.formData.packageName,
                     providerId : this.formData.smsProvider,
+                    provider : provider ? provider['provider'] : '',
                     price : this.formData.price,
                     smsCount : this.formData.number,
                 }).then(res => {
