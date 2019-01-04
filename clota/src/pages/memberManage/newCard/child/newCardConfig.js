@@ -2,7 +2,7 @@
 export const secondaryCardHead = [
     {
         title : 'index', // 序号
-        width : 100,
+        width : 130,
         field : 'index'
     },
     {

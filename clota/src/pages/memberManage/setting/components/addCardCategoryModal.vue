@@ -11,13 +11,13 @@
         class="add-card-category"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
-            <span class="title" >会员类别设置</span>
+            <span class="title" >{{$t('memberTypeSetting')}}</span>
         </div>
         <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="150">
-            <FormItem label="会员卡类别名称" prop="memberCategoryName">
+            <FormItem :label="$t('memberCardTypeName')" prop="memberCategoryName">
                 <Input v-model.trim="formData.memberCategoryName"
                        style="width: 280px"
-                       placeholder="请输入会员类别名称如:企业会员卡"/>
+                       :placeholder="$t('inputField', { field : $t('memberCardTypeNameInputTip') })"/>
             </FormItem>
             <FormItem :label="$t('remark')" prop="remark">
                 <Input v-model.trim="formData.remark"
@@ -70,9 +70,9 @@
                 //表单校验规则
                 ruleValidate : {
                     memberCategoryName : [
-                        { required : true,message : this.$t('inputField',{ field : this.$t('会员卡类别名称') }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : this.$t('memberCardTypeName') }),trigger : 'blur' },
                         { validator : validateMemberCategoryName,trigger : 'blur' },
-                        { max : 20, message : this.$t('errorMaxLength',{ field : this.$t('会员卡类别名称'),length : 20 }),trigger : 'blur' }
+                        { max : 20, message : this.$t('errorMaxLength',{ field : this.$t('memberCardTypeName'),length : 20 }),trigger : 'blur' }
                     ],
                     remark : [
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 100 }),trigger : 'blur' }
@@ -138,13 +138,13 @@
                     remark : this.formData.remark,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('新增会员类别成功');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('addMemberType') }));
                         this.$emit('fresh-data');
                         this.cancel();
                     } else if (res.code === 'M024') {
-                        this.$Message.error('会员卡类别名称已存在');
+                        this.$Message.error(this.$t('memberCardTypeNameExist'));
                     } else {
-                        this.$Message.error('新增会员类别失败');
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('addMemberType') }));
                     }
                 }).finally(() => {
                     this.saveIng = false;
@@ -161,13 +161,13 @@
                     id : this.formData.id
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('修改会员类别成功');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modifyMemberType') }));
                         this.$emit('fresh-data');
                         this.cancel();
                     } else if (res.code === 'M024') {
-                        this.$Message.error('会员卡类别名称已存在');
+                        this.$Message.error(this.$t('memberCardTypeNameExist'));
                     } else {
-                        this.$Message.error('修改会员类别失败');
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modifyMemberType') }));
                     }
                 }).finally(() => {
                     this.saveIng = false;

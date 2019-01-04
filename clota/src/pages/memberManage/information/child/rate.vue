@@ -12,7 +12,7 @@
         <div class="rate-content">
 
             <div class="table-wrap" v-if="memberRights.length > 0">
-                <div class="title-wrap">{{$t('会员权益')}}</div><!--会员权益-->
+                <div class="title-wrap">{{$t('privalige.member-right')}}</div><!--会员权益-->
                 <ul class="member-rights">
                     <template v-for="(item,index) in memberRights">
                         <li class="member-rights-list"
@@ -35,7 +35,7 @@
                     </template>
                 </ul>
             </div>
-            <div class="general-discount-title">会员积分权益说明</div>
+            <div class="general-discount-title">{{$t('memberRightDescription')}}</div>
             <div class="rights-wrap">
                 <div class="table-wrap" :class="{'width-500' : lang === 'zh-CN' , 'width-660' : lang === 'en'}">
                     <div class="title-normal">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <template v-if="activityCanShow">
-                <div class="general-discount-title">特定活动积分折扣权益说明</div>
+                <div class="general-discount-title">{{$t('specialActivityMemberRight')}}</div>
                 <special-activity-info :activity-card-data="activityCardData"
                                        :activity-store-data="activityStoreData"
                                        :activity-product-data="activityProductData">

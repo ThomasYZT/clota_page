@@ -18,10 +18,10 @@
                   :model="formData"
                   :rules="ruleValidate"
                   :label-width="lang === 'zh-CN' ? 100 : 180">
-                <FormItem :label="$t('卡类型')" prop="entityCardType">
+                <FormItem :label="$t('cardType')" prop="entityCardType">
                     <Select v-model="formData.entityCardType" :disabled="disabledChangeCardType">
-                        <Option value="common">{{$t('普通卡')}}</Option>
-                        <Option value="password">{{$t('密码卡')}}</Option>
+                        <Option value="common">{{$t('normalCard')}}</Option>
+                        <Option value="password">{{$t('passwordCard')}}</Option>
                     </Select>
                 </FormItem>
                 <FormItem :label="$t('cardFaceNum')" prop="faceNum">
@@ -30,7 +30,7 @@
                 <FormItem :label="$t('physicalCardNo')" prop="physicalNum">
                     <Input v-model.trim="formData.physicalNum"/>
                 </FormItem>
-                <FormItem :label="$t('涂层密码')" prop="password"
+                <FormItem :label="$t('coatingPassword')" prop="password"
                           v-if="formData.entityCardType === 'password'">
                     <Input v-model.trim="formData.password"/>
                 </FormItem>
@@ -109,7 +109,7 @@
                     entityCardType : [
                         {
                             required : true,
-                            message : this.$t('selectField',{ msg : this.$t('卡类型') }),
+                            message : this.$t('selectField',{ msg : this.$t('cardType') }),
                             trigger : 'blur'
                         }
                     ],

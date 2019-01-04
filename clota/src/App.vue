@@ -33,10 +33,13 @@
              * 重新加载页面
              */
             reload () {
-                this.isRouterActive = false;
-                this.$nextTick(() => {
-                    this.isRouterActive = true;
-                });
+                // this.isRouterActive = false;
+                // this.$nextTick(() => {
+                //     this.isRouterActive = true;
+                // });
+                this.$router.replace({
+                    name : this.$route.name
+                })
             },
         },
         computed : {

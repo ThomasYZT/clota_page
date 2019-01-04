@@ -2,7 +2,7 @@
 
 <template>
     <div class="owner-account-percent">
-        <div class="title">{{$t('业主使用已返还金额在各业态进行消费时单笔订单可用金额比例设置')}}</div>
+        <div class="title">{{$t('ownerCardConsumeTip')}}</div>
         <Form ref="formInline"
               :label-width="60">
             <template v-for="(item,index) in formData['refundPercent']">
@@ -21,7 +21,7 @@
             </template>
             <i-row>
                 <i-col style="display: inline-block;width : auto;">
-                    <span class="tip-label">酒店消费时需额外支付</span>
+                    <span class="tip-label">{{$t('hotelConsumeNeedPayMore')}}</span>
                 </i-col>
                 <i-col style="display: inline-block;width : auto;">
                     <FormItem prop="hotelNeedPay"
@@ -35,7 +35,7 @@
                     </FormItem>
                 </i-col>
                 <i-col style="display: inline-block;width : auto;">
-                    <span  class="tip-label">元,其余可用业主卡内金额消费</span>
+                    <span  class="tip-label">{{$t('yuan')}},{{$t('otherOwnerCardRule')}}</span>
                 </i-col>
             </i-row>
         </Form>
@@ -87,19 +87,19 @@
                 if (common.isNotEmpty(rule.data)) {
                     common.validateMoney(rule.data,0,10).then(() => {
                         if (rule.data > 100) {
-                            callback('消费金额比例最多为100%');
+                            callback(this.$t('consumeMoneyRateMostTip'));
                         } else {
                             callback();
                         }
                     }).catch(err => {
                         if (err === 'errorMaxLength') {
-                            callback(this.$t('errorMaxLength',{ field : this.$t('返款比例'),length : 10 }));
+                            callback(this.$t('errorMaxLength',{ field : this.$t('backMoneyRate'),length : 10 }));
                         } else {
-                            callback(this.$t(err,{ field : this.$t('返款比例') }));
+                            callback(this.$t(err,{ field : this.$t('backMoneyRate') }));
                         }
                     });
                 } else {
-                    callback(this.$t('inputField', { field : this.$t('返款比例') }));
+                    callback(this.$t('inputField', { field : this.$t('backMoneyRate') }));
                 }
             },
             /**
@@ -127,9 +127,9 @@
                     callback();
                 }).catch(err => {
                     if (err === 'errorMaxLength') {
-                        callback(this.$t('errorMaxLength',{ field : this.$t('支付费用'),length : 10 }));
+                        callback(this.$t('errorMaxLength',{ field : this.$t('payMoney'),length : 10 }));
                     } else {
-                        callback(this.$t(err,{ field : this.$t('支付费用') }));
+                        callback(this.$t(err,{ field : this.$t('payMoney') }));
                     }
                 });
             },

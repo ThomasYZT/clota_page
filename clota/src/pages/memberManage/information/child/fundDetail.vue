@@ -38,11 +38,11 @@
             </div>
             <ul class="total-amount">
                 <li class="amount-record">
-                    <span class="key-label">{{$t('colonSetting', { key : $t('已支出') })}}</span>
+                    <span class="key-label">{{$t('colonSetting', { key : $t('hasPayed') })}}</span>
                     <span class="value-label">{{disbursement | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
                 </li>
                 <li class="amount-record">
-                    <span class="key-label">{{$t('colonSetting', { key : $t('储值总额') })}}</span>
+                    <span class="key-label">{{$t('colonSetting', { key : $t('storeTotalValue') })}}</span>
                     <span class="value-label">{{storeAmount | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
                 </li>
             </ul>

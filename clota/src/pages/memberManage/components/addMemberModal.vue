@@ -266,15 +266,15 @@
                 //功能列表
                 rightList : [
                     {
-                        label : '储值',
+                        label : 'recharge',
                         value : 'isRecharge'
                     },
                     {
-                        label : '折扣',
+                        label : 'allowance',
                         value : 'isDiscount'
                     },
                     {
-                        label : '积分',
+                        label : 'integral',
                         value : 'isScore'
                     }
                 ],
@@ -350,7 +350,7 @@
                             required : true,
                             validator : validateMoney ,
                             trigger : 'blur',
-                            _field : '售卡金额'
+                            _field : 'cardSaleMoney'
                         }
                     ],
                     amountInCard : [
@@ -358,13 +358,13 @@
                             required : true,
                             validator : validateMoney ,
                             trigger : 'blur',
-                            _field : '卡内金额'
+                            _field : 'moneyInCard'
                         }
                     ],
                     function : [
                         {
                             required : true,
-                            message : this.$t('selectField',{ msg : this.$t('会员卡功能') }),
+                            message : this.$t('selectField',{ msg : this.$t('memberCardFunction') }),
                             trigger : 'change',
                             type : 'array'
                         }

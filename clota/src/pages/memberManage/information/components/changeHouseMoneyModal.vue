@@ -2,7 +2,7 @@
 
 <template>
     <Modal
-        :title="$t('修改购房金额')"
+        :title="$t('modifyBuyHouseMoney')"
         :mask-closable="false"
         :value="value"
         :width="600"
@@ -96,25 +96,25 @@
                 //购房记录表头配置
                 columnData : [
                     {
-                        title : '修改时间', // 修改时间
+                        title : 'modifiedTime', // 修改时间
                         minWidth : 190,
                         field : 'updatedTime',
                         type : 'time'
                     },
                     {
-                        title : '原购房金额', // 原购房金额
+                        title : 'oldBuyHouseMoeny', // 原购房金额
                         width : 150,
                         field : 'oldMoney',
                         type : 'money'
                     },
                     {
-                        title : '修改后购房金额', // 修改后购房金额
+                        title : 'buyHouseMoneyAfterModify', // 修改后购房金额
                         minWidth : 150,
                         field : 'newMoney',
                         type : 'money'
                     },
                     {
-                        title : '操作人', // 操作人
+                        title : 'operator', // 操作人
                         width : 100,
                         field : 'optUser'
                     },
@@ -165,10 +165,10 @@
                     homeMoney : this.formData.houseMoney,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('修改购房金额成功');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modifyBuyHouseMoney') }));
                         this.$emit('fresh-data');
                     } else {
-                        this.$Message.error('修改购房金额失败');
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modifyBuyHouseMoney') }));
                     }
                 }).finally(() => {
                     this.$emit('input',false);

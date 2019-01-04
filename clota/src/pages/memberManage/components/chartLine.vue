@@ -1,8 +1,8 @@
 <template>
     <!--折线图-->
     <div class="member-chart-line">
-        <span class="title-info" v-if="type === 'money'">会员消费金额统计</span>
-        <span class="title-info" v-else>会员消费积分统计</span>
+        <span class="title-info" v-if="type === 'money'">{{$t('memberConsumeStatistics')}}</span>
+        <span class="title-info" v-else>{{$t('memberScoreOfConsumeStatistics')}}</span>
         <div class="chart-left">
             <div class="lagend-container">
                 <div class="chart-title">{{$t(data.label1)}}</div>

@@ -4,13 +4,13 @@
     <div class="member-card-info">
         <template v-if="cardInfo.cardTypeId === '3'">
             <div class="form-item-wrap">
-                <label>{{$t("企业名称")}}：</label>
+                <label>{{$t("company_name")}}：</label>
                 <span v-w-title="cardInfo.companyName">
                     {{cardInfo.companyName | contentFilter}}
             </span>
             </div>
             <div class="form-item-wrap">
-                <label>{{$t("企业地址")}}：</label>
+                <label>{{$t("company_address")}}：</label>
                 <span v-w-title="cardInfo.homeAddr">
                     {{cardInfo.homeAddr | contentFilter}}
             </span>
@@ -26,8 +26,8 @@
             <label>{{$t("entityCardFaceNum")}}：</label>
             <span v-w-title="cardInfo.tpNo">
                     {{cardInfo.tpNo  | contentFilter}}
-                <span class="value-status" v-if="cardInfo.cardStatus === 'loss'">{{$t('bracketSetting',{ content : $t('已挂失') })}}</span>
-                <span class="value-status" v-if="cardInfo.cardStatus === 'return'">{{$t('bracketSetting',{ content : $t('已退卡') })}}</span>
+                <span class="value-status" v-if="cardInfo.cardStatus === 'loss'">{{$t('bracketSetting',{ content : $t('ReportedLoss') })}}</span>
+                <span class="value-status" v-if="cardInfo.cardStatus === 'return'">{{$t('bracketSetting',{ content : $t('ReturnedCard') })}}</span>
             </span>
         </div>
         <div class="form-item-wrap">
@@ -69,7 +69,7 @@
             </span>
         </div>
         <div class="form-item-wrap">
-            <label>{{$t("购买日期")}}：</label>
+            <label>{{$t("buyDate")}}：</label>
             <span v-w-title="cardInfo.createdTime">{{cardInfo.createdTime  | contentFilter}}</span>
         </div>
         <div class="form-item-wrap" v-if="cardInfo.cardTypeId !== '1'">

@@ -6,20 +6,20 @@
 		<header-tabs router-name="memberActivity"></header-tabs>
 		<div class="content">
 			<div class="btn-wrap">
-				<Button type="primary" @click="showRecord">发送记录</Button>
+				<Button type="primary" @click="showRecord">{{$t('sendRecord')}}</Button>
 			</div>
 			<Form ref="formValidate"
-				  :model="formData"
-				  label-position="left"
-				  :rules="ruleValidate"
-				  :label-width="110">
-				<FormItem label="短信内容：" prop="content">
+                  :model="formData"
+                  label-position="left"
+                  :rules="ruleValidate"
+                  :label-width="110">
+				<FormItem :label="$t('colonSetting', { key : $t('smsContent') })" prop="content">
 					<i-input v-model.trim="formData.content"
-							 type="textarea"
-							 style="width: 480px" >
+                             type="textarea"
+                             style="width: 480px" >
 					</i-input>
 				</FormItem>
-				<FormItem label="会员卡：" prop="sendRange">
+				<FormItem :label="$t('colonSetting', { key : $t('membershipCard') })" prop="sendRange">
 					<Select v-model="formData.sendRange"
 							multiple
 							style="width: 480px"
@@ -31,9 +31,9 @@
 						</Option>
 					</Select>
 				</FormItem>
-				<FormItem label="接受短信数量：" prop="接受短信数量">{{formData.smsCount | contentFilter}}</FormItem>
+				<FormItem :label="$t('colonSetting', { key : $t('smsNumRecieve') })">{{formData.smsCount | contentFilter}}</FormItem>
 				<FormItem >
-					<Button type="primary" :loading="sending" class="ivu-btn-90px" @click="send">发送</Button>
+					<Button type="primary" :loading="sending" class="ivu-btn-90px" @click="send">{{$t('sending')}}</Button>
 				</FormItem>
 			</Form>
 		</div>
@@ -63,19 +63,19 @@
 					content : [
 						{
 							required : true,
-							message : this.$t('inputField',{ field : this.$t('短信内容') }),
+							message : this.$t('inputField',{ field : this.$t('smsContent') }),
 							trigger : 'blur'
 						},
 						{
 							max : 100,
-							message : this.$t('errorMaxLength',{ field : this.$t('短信内容'),length : 100 }) ,
+							message : this.$t('errorMaxLength',{ field : this.$t('smsContent'),length : 100 }) ,
 							trigger : 'blur'
 						}
 					],
 					sendRange : [
 						{
 							required : true,
-							message : this.$t('selectField',{ msg : this.$t('会员卡级别') }),
+							message : this.$t('selectField',{ msg : this.$t('memberCardLevel') }),
 							trigger : 'change',
 							type : 'array'
 						}

@@ -26,7 +26,7 @@ export const columnData = [
     {
         title : 'operate',
         width : 363,
-        enWidth : 450,
+        enWidth : 600,
     }
 ];
 
@@ -64,7 +64,7 @@ export const activityfColumnData = [
     {
         title : 'operate',
         width : 363,
-        enWidth : 450,
+        enWidth : 600,
     }
 ];
 

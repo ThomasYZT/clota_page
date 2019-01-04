@@ -3,13 +3,13 @@
 <template>
 	<div class="sms-send-detail">
 		<bread-crumb-head
-			locale-router="详情"
+			:locale-router="$t('details')"
 			:before-router-list="beforeRouterList">
 		</bread-crumb-head>
 		<Form ref="formInline">
 			<i-row>
 				<i-col style="width: auto;display: inline-block">
-					<FormItem prop="user" label="发送状态" :label-width="80">
+					<FormItem prop="user" :label="$t('sendStatus')" :label-width="80">
 						<Select v-model="formData.status"
 								style="width: 280px"
 								@on-change="queryList">
@@ -25,12 +25,12 @@
 					<Button type="primary"
 							:disabled="selectedSmsRecord.length < 1"
 							@click="reSendSms">
-						{{$t('重发短信')}}
+						{{$t('reSending')}}
 					</Button>
 				</i-col>
 				<i-col style="display: inline-block;width:auto;float: right">
 					<span class="sms-count">
-					发送短信总量：{{totalCount | contentFilter}}条
+					{{$t('colonSetting', { key : $t('smsSendTotalNum') })}}{{totalCount | contentFilter}}{{$t('item')}}
 					</span>
 				</i-col>
 			</i-row>
@@ -103,15 +103,15 @@
 						value : 'all'
 					},
 					{
-						label : '发送中',
+						label : 'isRending',
 						value : 'wait,doing,req_success'
 					},
 					{
-						label : '发送成功',
+						label : 'sendSuccess',
 						value : 'success'
 					},
 					{
-						label : '发送失败',
+						label : 'sendFail',
 						value : 'req_failure,failure'
 					}
 				],

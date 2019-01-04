@@ -255,7 +255,7 @@
                     </FormItem>
                 </i-col>
                 <!--<i-row v-if="viceCardInfo.length > 0">副卡信息</i-row>-->
-                <div class="card-title" v-if="viceCardInfo.length > 0">副卡信息</div>
+                <div class="card-title" v-if="viceCardInfo.length > 0">{{$t('viceCardInfo')}}</div>
                 <template v-for="(item,index) in viceCardInfo">
                     <i-col span="12" :key="index + 'custName'">
                         <FormItem :label="$t('colonSetting',{ key : $t('name') })">

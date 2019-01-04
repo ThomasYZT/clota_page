@@ -4,7 +4,7 @@
     <div class="pay-type-select">
         <div class="card-info-title">{{$t('payTypeSelect')}}</div>
         <Form :model="formData" label-position="top">
-            <FormItem label="收款方式" prop="payType" :rules="{ required : true,trigger : 'change' }">
+            <FormItem :label="$t('paymentMethod')" prop="payType" :rules="{ required : true,trigger : 'change' }">
                 <RadioGroup v-model="formData.payType" @on-change="payTypeChange">
                     <Radio v-for="(item,index) in payAccountList"
                            :key="index"

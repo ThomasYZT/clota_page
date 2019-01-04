@@ -41,7 +41,7 @@
                 </div>
                 <!--开始时间-->
                 <div class="ivu-form-item-wrap" v-if="isActivity">
-                    <Form-item :label="$t('开始时间')" prop="startTime">
+                    <Form-item :label="$t('startTime')" prop="startTime">
                         <DatePicker v-model.trim="formData.startTime"
                                     :options="dateOptions"
                                     :editable="false"
@@ -54,7 +54,7 @@
                 </div>
                 <!--结束时间-->
                 <div class="ivu-form-item-wrap" v-if="isActivity">
-                    <Form-item :label="$t('结束时间')" prop="endTime">
+                    <Form-item :label="$t('endTime')" prop="endTime">
                         <DatePicker v-model.trim="formData.endTime"
                                     :options="dateOptions"
                                     :editable="false"

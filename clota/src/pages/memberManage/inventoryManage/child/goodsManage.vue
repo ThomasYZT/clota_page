@@ -107,11 +107,11 @@ export default {
 			//商品状态类型 选择列表
 			goodsStatusList : [
 				{
-					label : '入库商品',
+					label : 'inGoods',
 					value : '0'
 				},
 				{
-					label : '入库商品',
+					label : 'inGoods',
 					value : '1'
 				},
 			],

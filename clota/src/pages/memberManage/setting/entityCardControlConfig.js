@@ -22,7 +22,7 @@ export const cardHead = [
         field : 'faceNum'
     },
     {
-        title : '卡类型',
+        title : 'cardType',
         minWidth : 110,
         field : 'entityCardType'
     },
