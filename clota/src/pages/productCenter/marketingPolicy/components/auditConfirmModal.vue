@@ -21,8 +21,7 @@
                     :column-data="columnData"
                     :table-data="tableData"
                     :border="true"
-                    height="300"
-                    :ofset-height="220">
+                    :table-com-min-height="200">
                     <el-table-column
                         slot="column1"
                         slot-scope="row"
@@ -115,7 +114,6 @@
                     this.products = [];
                     this.tableData = [];
                     this.confirmCallback = function () {};
-
                 }
             },
             /**
@@ -147,5 +145,8 @@
             font-size: 14px;
             color: #333;
         }
+    }
+    /deep/ .ivu-modal-body {
+        min-height: 180px;
     }
 </style>
