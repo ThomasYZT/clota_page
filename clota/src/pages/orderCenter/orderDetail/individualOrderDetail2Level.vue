@@ -12,7 +12,8 @@
             <!--订单基本信息-->
             <baseInfo :baseInfo="baseInfo"
                       :reSend-times="reSendTimes"
-                      :viewType="orderOrgType">
+                      :viewType="orderOrgType"
+                      @get-resend-time="countSmsSend">
             </baseInfo>
 
             <!--游客信息-->
@@ -155,9 +156,9 @@
                         bizId : this.orderDetailInfo.baseInfo.visitorProductId,
                     }).then(res => {
                         if (res.success) {
-                            this.reSendTimes = res.data ? Number(res.data) : 0;
+                            this.reSendTimes = res.data
                         } else {
-                            this.reSendTimes = 0;
+                            this.reSendTimes = -1;
                         }
                     });
                 }

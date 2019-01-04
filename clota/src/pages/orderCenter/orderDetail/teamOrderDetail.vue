@@ -12,7 +12,8 @@
                        :reSend-times="reSendTimes"
                        :is-over-due="isOverdue"
                        :product-info-list="productInfoList"
-                       :view-type="viewType">
+                       :view-type="viewType"
+                       @get-resend-time="countSmsSend">
             </base-info>
             <!--产品信息-->
             <product-info :product-info-list="productInfoList"
@@ -132,9 +133,9 @@
                         bizId : this.orderDetailInfo.baseInfo.visitorProductId,
                     }).then(res => {
                         if (res.success) {
-                            this.reSendTimes = res.data ? Number(res.data) : 0;
+                            this.reSendTimes = res.data;
                         } else {
-                            this.reSendTimes = 0;
+                            this.reSendTimes = -1;
                         }
                     });
                 }

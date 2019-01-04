@@ -133,6 +133,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('sending') }));
                     }
+                    this.$emit('get-resend-time');
                 });
             }
         },

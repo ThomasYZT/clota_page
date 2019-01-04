@@ -200,6 +200,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('sending') })); // 发送失败
                     }
+                    this.$emit('get-resend-time');
                 });
             },
             //支付状态过滤
