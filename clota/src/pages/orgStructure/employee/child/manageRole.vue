@@ -150,6 +150,7 @@
                     for (let i = 0,j = this.choosedNodes.length; i < j; i++) {
                         if (this.choosedNodes[i]['linkedPrivCode'] === data['privCode']) {
                             this.$set(data,'disabled',true);
+                            break;
                         } else {
                             this.$set(data,'disabled',false);
                         }
