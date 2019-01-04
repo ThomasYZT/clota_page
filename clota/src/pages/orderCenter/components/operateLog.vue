@@ -133,7 +133,7 @@
                         if (this.isProductLog) {
                             // 改签审核，通过数量：
                             return {
-                                content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
+                                content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}
                             ${contentsObj['alterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + '：' + contentsObj.alterDate) : '' }
                             ${contentsObj['rejectNum'] ? ( '，' + this.$t('rejectedNum') + '：' + contentsObj.rejectNum ) : '' }
                             ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。' ) : '' }`,
