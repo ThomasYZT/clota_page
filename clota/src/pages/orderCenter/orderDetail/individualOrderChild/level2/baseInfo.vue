@@ -67,9 +67,9 @@
                 default : ''
             },
             //可重发短信次数
-            'reSend-times' : {
+            'resend-times' : {
                 type : [String,Number],
-                default : 0
+                default : ''
             }
         },
         computed : {
@@ -130,6 +130,8 @@
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('sending') }));
+                    } else if (res.code && res.code === 'OD004') {
+                        this.$Message.error(this.$t('短信重发次数已达上限，不可再次重发短信'));
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('sending') }));
                     }

@@ -9,7 +9,7 @@
         <div class="content">
             <!--基本信息-->
             <base-info :base-info="baseInfo"
-                       :reSend-times="reSendTimes"
+                       :resend-times="reSendTimes"
                        :is-over-due="isOverdue"
                        :product-info-list="productInfoList"
                        :view-type="viewType"

@@ -304,4 +304,6 @@ export default {
     'getTableauTrustedUrl' : '/report/getTableauTrustedUrl',
     //批量退卡
     'batchRefundCard' : '/member/batchRefundCard',
+    //查看卡级下的账户信息
+    'queryLevelAccount' : '/member/memberAccount/queryLevelAccount',
 };

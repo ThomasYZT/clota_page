@@ -11,7 +11,7 @@
         <div class="content">
             <!--订单基本信息-->
             <baseInfo :baseInfo="baseInfo"
-                      :reSend-times="reSendTimes"
+                      :resend-times="reSendTimes"
                       :viewType="orderOrgType"
                       @get-resend-time="countSmsSend">
             </baseInfo>
@@ -156,7 +156,7 @@
                         bizId : this.orderDetailInfo.baseInfo.visitorProductId,
                     }).then(res => {
                         if (res.success) {
-                            this.reSendTimes = res.data
+                            this.reSendTimes = res.data;
                         } else {
                             this.reSendTimes = -1;
                         }
