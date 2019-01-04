@@ -107,6 +107,7 @@
     import common from '@/assets/js/common.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import ajax from '@/api/index.js';
 
     export default {
         props : ['length','table-data'],
@@ -286,6 +287,7 @@
                         }
                     },300);
                 }
+                this.queryLevelAccount();
             },
             //保存
             save () {
@@ -338,6 +340,14 @@
                 return h('div',{
                     style : {}
                 },[h('span',data.label)]);
+            },
+            /**
+             * 查看级别下所有账户信息
+             */
+            queryLevelAccount () {
+                ajax.post('queryLevelAccount').then(res => {
+
+                });
             }
         },
     };

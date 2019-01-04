@@ -841,7 +841,6 @@
              * @param{Object} item 会员卡信息
              */
             choseCard (item) {
-                console.log(this.memberBaseDetail.custName);
                 this.choosedCard = Object.assign({
                     ...item,
                 },{
@@ -1133,6 +1132,7 @@
                 vertical-align: baseline;
                 padding-left: 10px;
                 display: inline-block;
+                cursor: pointer;
             }
         }
         .no-data-wrap{
