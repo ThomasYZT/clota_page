@@ -135,7 +135,7 @@
                             return {
                                 content : `${contentsObj.auditType === 'success' ? this.$t('checkPass') : this.$t('checkNoPass')}，
                             ${contentsObj['alterDate'] ? ( '，' + this.$t('playDateUpgradeTo') + '：' + contentsObj.alterDate) : '' }
-                            ${contentsObj['rejectNum'] ? ( '，' + this.$t('rejectedNum') + '：' + contentsObj.rejectNum + '。' ) : '' }。
+                            ${contentsObj['rejectNum'] ? ( '，' + this.$t('rejectedNum') + '：' + contentsObj.rejectNum ) : '' }
                             ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。' ) : '' }`,
                                 className : contentsObj.auditType === 'success' ? 'green-status' : 'red-status'
                             };
