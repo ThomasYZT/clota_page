@@ -297,7 +297,7 @@
              * 设置右侧默认选中的菜单节点
              */
             setDefaultMenuChosed () {
-                let handlerChoseNode = this.handlerChosedMenu[this.activeNodeId] ? this.handlerChosedMenu[this.activeNodeId] : [];
+                let handlerChoseNode = this.handlerChosedMenu[this.activeNodeId] ? this.handlerChosedMenu[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
                 if (this.activeNodeId in this.privaligeInfo) {
                     let chosedNode = this.privaligeInfo[this.activeNodeId] ? this.privaligeInfo[this.activeNodeId].filter(item => item.choseStatus !== 'half') : [];
                     // this.choosedNodes = JSON.parse(JSON.stringify(chosedNode));
@@ -460,6 +460,7 @@
                                         privType : newVal[i]['privType'],
                                         ranges : newVal[i]['ranges'],
                                         linkedPrivCode : newVal[i]['linkedPrivCode'],
+                                        choseStatus : newVal[i]['choseStatus'],
                                     });
                                 } else {
                                     this.handlerChosedMenu[newVal[i]['privOrg']] = [{
@@ -468,6 +469,7 @@
                                         privType : newVal[i]['privType'],
                                         ranges : newVal[i]['ranges'],
                                         linkedPrivCode : newVal[i]['linkedPrivCode'],
+                                        choseStatus : newVal[i]['choseStatus'],
                                     }];
                                 }
                             }

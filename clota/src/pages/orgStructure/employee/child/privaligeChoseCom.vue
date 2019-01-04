@@ -211,7 +211,8 @@
         computed : {
             //额外菜单权限中不包括半选的菜单
             extraPrivaligeDeal () {
-                return this.extraPrivalige.filter(item => item.choseStatus !== 'half');
+                // return this.extraPrivalige.filter(item => item.choseStatus !== 'half');
+                return this.extraPrivalige;
             }
         }
     };
