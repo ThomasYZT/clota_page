@@ -26,6 +26,7 @@
                         <!--账户归属-->
                         <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
                             <select-tree v-model="formData.accountBelonging"
+                                         :disabled="formData.id === '1'"
                                          :tree="treeData"
                                          style="width: 280px;">
                             </select-tree>
@@ -34,13 +35,16 @@
                     <div class="ivu-form-item-wrap">
                         <!--账户名称-->
                         <Form-item :label="$t('accountName')" prop="accountName">
-                            <Input v-model.trim="formData.accountName" :placeholder="$t('inputField', {field: ''})"/>
+                            <Input v-model.trim="formData.accountName"
+                                   :disabled="formData.id === '1'"
+                                   :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <!--单位-->
                         <Form-item :label="$t('unit')" prop="unit">
-                            <Select v-model="formData.unit">
+                            <Select v-model="formData.unit"
+                                    :disabled="formData.id === '1'" >
                                 <Option v-for="item in unitList"
                                         :value="item.value"
                                         :key="item.value">
@@ -53,17 +57,20 @@
                         <!--储值比率-->
                         <Form-item :label="$t('storedValueRatio')" prop="rateDenominator">
                             <Input v-model.trim="formData.rateNumerator"
+                                   :disabled="formData.id === '1'"
                                    :placeholder="$t('inputField', {field: ''})"
                                    class="single-input"/>
                             <span style="padding: 0 5px;">:</span>
                             <Input v-model.trim="formData.rateDenominator"
+                                   :disabled="formData.id === '1'"
                                    :placeholder="$t('inputField', {field: ''})"
                                    class="single-input"/>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <!--是否允许兑现-->
-                        <FormItem :label="$t('whetherCashingIsAllowed')">
+                        <FormItem :label="$t('whetherCashingIsAllowed')"
+                                  :disabled="formData.id === '1'" >
                             <RadioGroup v-model="formData.exchangeToCash">
                                 <Radio label="true">{{$t('allowCash')}}</Radio>
                                 <Radio label="false">{{$t('notAllowCash')}}</Radio>
@@ -158,7 +165,7 @@
 
             const validateMethod = {
                 emoji : (rule, value, callback) => {
-                    if (value && value.isUtf16()) {
+                    if (value && String(value).isUtf16()) {
                         callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
@@ -182,7 +189,7 @@
             //校验分子
             const validateRateNumerator = (rule,value,callback) => {
                 common.validateInteger( this.formData.rateNumerator ).then(() => {
-                    if (value && value.isUtf16()) {
+                    if (value && String(value).isUtf16()) {
                         callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
                     } else {
                         callback();
@@ -214,7 +221,7 @@
                 formData : {
                     accountBelonging : '',
                     accountName : '',
-                    unit : this.$t('yuan'),
+                    unit : '',
                     rate : '1',
                     rateNumerator : '1',
                     rateDenominator : '1',
@@ -229,15 +236,17 @@
                         { validator : validateOnly, trigger : 'blur' },
                     ],
                     accountName : [
+                        { required : true,message : this.$t('inputField',{ field : this.$t('accountName') }),trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { max : 20, message : this.$t('errorMaxLength',{ field : this.$t('accountName'),length : 20 }), trigger : 'blur' },
                     ],
                     unit : [
-                        { validator : validateMethod.emoji, trigger : 'blur' },
-                        { max : 10, message : this.$t('errorMaxLength',{ field : this.$t('unit'),length : 20 }), trigger : 'blur' },
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('unit') }),trigger : 'change' },
+                        { validator : validateMethod.emoji, trigger : 'change' },
+                        { max : 10, message : this.$t('errorMaxLength',{ field : this.$t('unit'),length : 20 }), trigger : 'change' },
                     ],
                     rateDenominator : [
-                        { validator : validateMethod.emoji, trigger : 'blur' },
+                        { required : true,validator : validateMethod.emoji, trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' },
                         { validator : validateRateNumerator, trigger : 'blur' },
                     ],
@@ -290,11 +299,11 @@
                 treeData : []
             };
         },
-        watch : {
-            'formData.rateNumerator' : function (newVal) {
-                this.$refs.formValidate.validateField('rateDenominator');
-            },
-        },
+        // watch : {
+        //     'formData.rateNumerator' : function (newVal) {
+        //         this.$refs.formValidate.validateField('rateDenominator');
+        //     },
+        // },
         methods : {
 
             show ( data ) {
@@ -390,7 +399,7 @@
                 this.formData = {
                     accountBelonging : '',
                     accountName : '',
-                    unit : this.$t('yuan'),
+                    unit : '',
                     rate : '1',
                     rateNumerator : '1',
                     rateDenominator : '1',
@@ -429,45 +438,61 @@
 
             //保存
             save () {
-                this.formData.corpusAppliedOrgId = [];
-                this.formData.donateAppliedOrgId = [];
-                if (this.selectData && this.selectData.length > 0 ) {
-                    this.selectData[0].forEach( (item, index) => {
-                        this.formData.corpusAppliedOrgId.push(item.id);
-                    });
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        this.formData.corpusAppliedOrgId = [];
+                        this.formData.donateAppliedOrgId = [];
+                        if (this.selectData && this.selectData.length > 0 ) {
+                            this.selectData[0].forEach( (item, index) => {
+                                this.formData.corpusAppliedOrgId.push(item.id);
+                            });
 
-                    this.selectData[1].forEach( (item, index) => {
-                        this.formData.donateAppliedOrgId.push(item.id);
-                    });
-                }
-                let params = {
-                    typeModelJson : JSON.stringify({
-                        id : '',
-                        accountName : this.formData.accountName
-                    }),
-                    extModelJson : JSON.stringify({
-                        accountBelonging : this.formData.accountBelonging,
-                        unit : this.formData.unit,
-                        rate : (Number(this.formData.rateNumerator) / Number(this.formData.rateDenominator)).toFixed(2),
-                        exchangeToCash : this.formData.exchangeToCash,
-                        corpusAppliedOrgId : this.formData.accountBelonging,
-                        donateAppliedOrgId : this.formData.accountBelonging,
-                        rateDenominator : this.formData.rateDenominator,
-                        rateNumerator : this.formData.rateNumerator
-                    })
-                };
-                this.updateMemberAccountDefine(params);
+                            this.selectData[1].forEach( (item, index) => {
+                                this.formData.donateAppliedOrgId.push(item.id);
+                            });
+                        }
+                        let params = {
+                            typeModelJson : JSON.stringify({
+                                id : ('id' in this.formData) ? this.formData.id : '',
+                                accountName : this.formData.accountName
+                            }),
+                            extModelJson : JSON.stringify({
+                                accountBelonging : this.formData.accountBelonging,
+                                unit : this.formData.unit,
+                                rate : (Number(this.formData.rateNumerator) / Number(this.formData.rateDenominator)).toFixed(2),
+                                exchangeToCash : this.formData.exchangeToCash,
+                                corpusAppliedOrgId : this.formData.accountBelonging,
+                                donateAppliedOrgId : this.formData.accountBelonging,
+                                rateDenominator : this.formData.rateDenominator,
+                                rateNumerator : this.formData.rateNumerator,
+                                cardTypeId : ('id' in this.formData) ? this.formData.cardTypeId : '',
+                                cardLevelId : ('id' in this.formData) ? this.formData.cardLevelId : '',
+                            })
+                        };
+                        this.updateMemberAccountDefine(params);
+                    }
+                });
             },
 
             //保存储值账户设置
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
                     if ( res.success ) {
-                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('add') }));
+                        if ('id' in params) {
+                            this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('edit') }));
+                        } else {
+                            this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('add') }));
+                        }
                         this.hide();
                         this.$emit('updata-list', { item : this.formData, index : this.index });
+                    } else if (res.message && res.message === 'M007') {
+                        this.$Message.error(this.$t('accountExists'));
                     } else {
-                        this.$Message.warning(res.message || this.$t('failureTip',{ 'tip' : this.$t('add') }));
+                        if ('id' in params) {
+                            this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('edit') }));
+                        } else {
+                            this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('add') }));
+                        }
                     }
                 });
             },

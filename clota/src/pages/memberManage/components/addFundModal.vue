@@ -30,24 +30,28 @@
                         <Form-item :label="$t('PrincipalAccBalance') + ':'">
                       <span class="yellow-color">
                         {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
-                    </span>{{accountInfo.unit || ''}}
+                    </span>{{$t(accountInfo.unit)}}
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('giftAccBalance') + ':'">
                         <span class="yellow-color">
                         {{accountInfo.donateBalance | moneyFilter | contentFilter }}
-                        </span>{{accountInfo.unit}}
+                        </span>{{$t(accountInfo.unit)}}
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap double-input">
                         <Form-item :label="$t('increaseStorageSum') + '：'" prop="amount">
                             <!--@on-blur="getTotalAmount"-->
                             <Input v-model.trim="formData.amount"
+                                   style="width: 90px;"
                                    :placeholder="$t('inputField', {field: ''})"/>
                             <span class="font">{{$t('actualIncrease')}}</span>
-                            <Input disabled :value="formData.totalAmount" :placeholder="$t('inputField', {field: ''})"/>
-                            <span>{{accountInfo.unit}}</span>
+                            <Input disabled
+                                   :value="formData.totalAmount"
+                                   style="width: 90px;"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                            <span>{{$t(accountInfo.unit)}}</span>
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -229,6 +233,7 @@
                         });
                     } else {
                         this.$refs.payResultModal.setStage('fail');
+                        this.payModalShow = true;
                     }
                 }).finally(() => {
                     this.hide();
@@ -251,7 +256,7 @@
                     if ( res.success ) {
                        this.formData.totalAmount = res.data;
                     } else {
-                        this.$Message.warning(res.message || 'getRechargeActMoney ' + this.$t('failure') + '！');
+                        this.$Message.warning(res.message || 'getRechargeActMoney ' + this.$t('failure'));
                     }
                 });
             },
@@ -315,10 +320,6 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .add-fund-modal{
-
-        .modal-body{
-            padding: 20px 0 ;
-        }
 
         .ivu-form-item-wrap{
 

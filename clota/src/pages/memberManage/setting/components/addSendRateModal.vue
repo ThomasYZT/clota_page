@@ -259,10 +259,10 @@
                         directives : [
                             {
                                 name : 'w-title',
-                                value : data.name + ( data.unit ? this.$t('bracketSetting',{ content : data.unit }) : '' )
+                                value : data.name + ( data.unit ? this.$t('bracketSetting',{ content : this.$t(data.unit) }) : '' )
                             }
                         ],
-                    }, data.name + ( data.unit ? this.$t('bracketSetting',{ content : data.unit }) : '' ))
+                    }, data.name + ( data.unit ? this.$t('bracketSetting',{ content : this.$t(data.unit) }) : '' ))
                 ]);
             },
             /**
