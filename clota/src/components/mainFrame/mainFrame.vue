@@ -7,13 +7,13 @@
         <div class="frame-content">
             <frame-sidebar v-if="hasSidebar">
             </frame-sidebar>
+            <!--加载中插件-->
+            <transition name="fade">
+                <loading v-if="isLoading">
+                </loading>
+            </transition>
             <div class="router-con" :class="{'pick-up' : menuIsPackUp, 'no-sider-bar' : !hasSidebar}">
                 <slot></slot>
-                <!--加载中插件-->
-                <transition name="fade">
-                    <loading v-if="isLoading">
-                    </loading>
-                </transition>
                 <!--设置信息-->
                 <settting>
                 </settting>
