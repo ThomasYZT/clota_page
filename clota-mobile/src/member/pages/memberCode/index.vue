@@ -57,9 +57,10 @@
                 </div>
             </popup-header>
             <group gutter="0">
-                <radio :options="accountList" v-model="accountPreChosed">
+                <radio :options="accountList" v-model="accountPreChosed">      
                     <template slot-scope="props" slot="each-item">
                         {{accountList[props.index]['accountName']}}：{{accountList[props.index]['accountBalance'] | moneyFilter}}
+                        {{accountList[props.index]['accountDefineId'] === '1' ? $t('yuan') : $t(accountList[props.index]['unit'])}}
                     </template>
                 </radio>
             </group>

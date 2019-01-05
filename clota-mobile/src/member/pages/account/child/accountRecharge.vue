@@ -13,8 +13,8 @@
             </x-input>
             <div class="actual-money">
                 <span class="label">{{$t('actualToAccount')}}</span>
-                <span class="account">{{actualMoney | moneyFilter | contentFilter}}</span>
-                <span class="other-data">{{$t('includeDonate',{num : donateMoney})}}</span>
+                <span class="account">{{actualMoney | moneyFilter | contentFilter}}{{accountDefineId !== '1' ? $t(unit) : $t('yuan')}}</span>
+                <span class="other-data">{{$t('bracketSetting',{ content : $t('includeDonate',{num : donateMoney}) + (accountDefineId !== '1' ? $t(unit) : $t('yuan')) })}}</span>
             </div>
         </div>
         <div class="pay-type-chose">
@@ -67,7 +67,11 @@
                 //支付接口参数对象
                 payFormData : {},
                 //选择的支付方式
-                chosedAccount : {}
+                chosedAccount : {},
+                //账户单位
+                unit : '',
+                //账户id
+                accountDefineId : ''
             };
         },
         computed : {
@@ -114,6 +118,8 @@
                     this.accountTypeId = params.accountTypeId;
                     this.accountTypeName = params.accountName;
                     this.accounId = params.accounId;
+                    this.unit = params.unit;
+                    this.accountDefineId = params.accountDefineId;
                     this.setTitle();
                     this.queryOnlinePayAccount();
                 } else {

@@ -17,15 +17,15 @@
                         <span class="iconfont icon-arrow-right"></span>
                     </div>
                     <div class="asset-info">{{item.accountBalance | moneyFilter | contentFilter}}</div>
-                    <div class="asset-tip">{{$t('allAssets')}}</div>
+                    <div class="asset-tip">{{$t('allAssets')}}{{item.accountDefineId === '1' ? ($t('bracketSetting',{ content : $t('yuan') })) : $t(item.unit)}}</div>
                     <div class="account-type" :class="{'auto-width' : item.accountDefineId === '4'}">
                         <div class="account-priciple-left">
                             <div class="money-num">{{item.corpusBalance | moneyFilter | contentFilter}}</div>
-                            <div class="money-label">{{$t('rechargeMoney')}}</div>
+                            <div class="money-label">{{$t('rechargeMoney')}}{{item.accountDefineId === '1' ? ($t('bracketSetting',{ content : $t('yuan') })) : $t(item.unit)}}</div>
                         </div>
                         <div class="account-donate-left" v-show="item.accountDefineId !== '4'">
                             <div class="money-num">{{item.donateBalance | moneyFilter | contentFilter}}</div>
-                            <div class="money-label">{{$t('donateMoney')}}</div>
+                            <div class="money-label">{{$t('donateMoney')}}{{item.accountDefineId === '1' ? ($t('bracketSetting',{ content : $t('yuan') })) : $t(item.unit)}}</div>
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,9 @@
                     params : {
                         accountTypeId : this.accountList[this.accountShow] ? this.accountList[this.accountShow].accountDefineId : '',
                         accountName : this.accountList[this.accountShow] ? this.accountList[this.accountShow].accountName : '',
-                        accounId : this.accountList[this.accountShow] ? this.accountList[this.accountShow].id : ''
+                        accounId : this.accountList[this.accountShow] ? this.accountList[this.accountShow].id : '',
+                        unit : this.accountList[this.accountShow] ? this.accountList[this.accountShow].unit : '',
+                        accountDefineId : this.accountList[this.accountShow] ? this.accountList[this.accountShow].accountDefineId : '',
                     }
                 });
             },
