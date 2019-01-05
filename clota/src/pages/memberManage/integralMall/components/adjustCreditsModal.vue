@@ -57,7 +57,7 @@
                     //商品id
                     id : '',
                     //商品上下架状态
-                    goodsStatus : '',
+                    //goodsStatus : '',
                     //商品兑换积分
                     requiredCredits : '',
                 },
@@ -80,7 +80,7 @@
                 if (data) {
                     this.detail = data;
                     this.formData.id = this.detail.id;
-                    this.formData.goodsStatus = this.detail.goodsStatus;
+                    //this.formData.goodsStatus = this.detail.goodsStatus;
                     this.formData.requiredCredits = this.detail.requiredCredits ? this.detail.requiredCredits.toString() : '';
                     this.visible = true;
                 } else {
