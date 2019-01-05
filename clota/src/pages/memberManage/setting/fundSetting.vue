@@ -596,9 +596,7 @@
 
             //查询储值账户
             queryMemberAccountDefine () {
-                ajax.post('queryAccountSetList',{
-                    accountType : 'charging',
-                }).then(res => {
+                ajax.post('queryAccountSetList').then(res => {
                     if (res.success) {
                         this.tableData = res.data || [];
                     } else {

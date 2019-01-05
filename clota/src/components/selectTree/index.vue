@@ -16,10 +16,12 @@
             <div class="tree-wrap" v-show="treeShow" v-clickoutside="hideTree" :style="{width : width}">
                 <el-tree :data="tree"
                          v-transfer-dom
+                         ref="nodeTree"
                          :default-expand-all="true"
                          :props="defaultProps"
                          :expand-on-click-node="false"
                          @node-click="choseNode"
+                         :filter-node-method="nodeFilter"
                          :render-content="renderContent">
                 </el-tree>
             </div>
@@ -72,7 +74,6 @@
                 },
                 //组织id与name对应数据
                 treeIdToName : {},
-                orgName : ''
             };
         },
         methods : {
@@ -129,22 +130,38 @@
                     }, data.orgName)
                 ]);
             },
+            /**
+             * 筛选节点信息
+             * @param{String} value 筛选信息
+             * @param{Object} data 节点信息
+             */
+            nodeFilter (value,data) {
+                return !this.disabledNodeIds.includes(data.id);
+            }
+        },
+        computed : {
+            //显示选中的节点信息
+            orgName () {
+                if (this.value) {
+                    return this.treeIdToName[this.value];
+                } else {
+                    return '';
+                }
+            }
         },
         watch : {
-            treeIdToName : {
-                deep : true,
+            tree : {
                 handler (newVal) {
-                    if (newVal && Object.keys(newVal)) {
-                        this.orgName = newVal[this.value];
-                    } else {
-                        this.orgName = '';
+                    if (newVal) {
+                        this.$nextTick(() => {
+                            if (this.$refs.nodeTree) {
+                                this.$refs.nodeTree.filter('id');
+                            }
+                        });
                     }
-                }
-            },
-            value (newVal) {
-                if (newVal) {
-                    this.orgName = this.treeIdToName[newVal];
-                }
+                },
+                deep : true,
+                immediate : true
             }
         }
     };
