@@ -12,7 +12,8 @@
             <Steps :current="0"
                    direction="vertical" class="register-steps">
                 <Step title="">
-                    <FormItem :label="$t('inputPersonalInfo')">
+                    <FormItem :label="$t('inputPersonalInfo')"
+                              :label-width="300">
                     </FormItem>
                     <!-- 选择姓名 -->
                     <FormItem :label="$t('name')" prop="orgName">
@@ -288,5 +289,8 @@
             font-size: 12px;
             color: $color_yellow;
         }
+    }
+    /deep/ .ivu-form-item-label {
+        text-indent: -4px;
     }
 </style>

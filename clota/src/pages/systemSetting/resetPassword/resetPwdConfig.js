@@ -87,6 +87,7 @@ export const employeeInfoHead = [
     {
         title : 'operate',
         width : 80,
+        enWidth : 110,
         field : ''
     },
 ];

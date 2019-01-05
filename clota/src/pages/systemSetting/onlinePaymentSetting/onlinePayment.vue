@@ -231,12 +231,12 @@
 
         .account-info{
             float: left;
-            @include block_outline(30%,200px);
+            @include block_outline(32%,200px);
             background: $color_fff;
             border: 1px solid $color_E9E9E9;
             border-radius: 2px;
             margin-bottom: 30px;
-            margin-right: 5%;
+            margin-right: 15px;
 
             .account-detail{
                 @include block_outline($height : auto);
@@ -346,6 +346,5 @@
                 }
             }
         }
-
     }
 </style>
