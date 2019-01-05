@@ -1,7 +1,6 @@
 <template>
     <!--会员管理--储值管理--储值账户-->
     <div class="funds">
-
         <div class="breadcrumb-box">
             <bread-crumb-head
                 :locale-router="'storageDetail'"
@@ -17,7 +16,7 @@
                     v-for="item in accountList"
                     :value="item.id"
                     :key="item.id">
-                   {{ item.accountName }}
+                    {{ item.accountName }}
                 </Option>
             </Select>
             <Select v-model="queryParams.levelId" @on-change="queryList">
@@ -48,7 +47,6 @@
             <Button type="primary" @click="queryList">{{$t('query')}}</Button>
             <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
         </div>
-
         <table-com
             v-if="tableShow"
             :column-data="columnData"
@@ -107,6 +105,7 @@
                 :label="row.title"
                 :prop="row.field"
                 :key="row.index"
+                fixed="right"
                 :width="row.width"
                 :min-width="row.minWidth"
                 slot-scope="row">
@@ -117,19 +116,15 @@
                 </template>
             </el-table-column>
         </table-com>
-
     </div>
 </template>
-
 <script>
-
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './fundConfig';
     import ajax from '@/api/index.js';
     import { cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -186,7 +181,6 @@
                 accountIds : [],
                 //会员中心初始化，用于重置查询条件时重置账户类型
                 accountTypeIdInit : ''
-
             };
         },
         created () {
@@ -196,7 +190,6 @@
             this.queryChannelSet();
         },
         methods : {
-
             //查询会员级别
             queryMemberLevels () {
                 ajax.post('queryMemberLevels', {
@@ -207,11 +200,10 @@
                     if (res.success) {
                         this.enumData.level = res.data.data || [];
                     } else {
-                        this.$Message.warning(res.message || 'queryMemberLevels ' + $t('queryFailure') + '！');
+                        this.$Message.warning(res.message || 'queryMemberLevels ' + this.$t('queryFailure') + '！');
                     }
                 });
             },
-
             //查询渠道列表
             queryChannelSet () {
                 ajax.post('queryChannelSet', {
@@ -222,11 +214,10 @@
                     if (res.success) {
                         this.enumData.channel = res.data.data || [];
                     } else {
-                        this.$Message.warning('queryChannelSet ' + $t('queryFailure') + '！');
+                        this.$Message.warning('queryChannelSet ' + this.$t('queryFailure') + '！');
                     }
                 });
             },
-
             /**
              * 储值账户列表
              */
@@ -252,7 +243,6 @@
                     this.totalCount = 0;
                 });
             },
-
             /**
              * 获取枚举数据展示字段
              * @param name String 枚举字段名
@@ -260,9 +250,8 @@
              */
             getEnumFieldShow ( name, val ) {
                 let obj = this.enumData[name].find((item) => val === item.name);
-                return this.$t(obj.desc);
+                return obj ? this.$t(obj.desc) : '';
             },
-
             //重置查询数据
             reset () {
                 this.queryParams.keyWord = "";
@@ -272,7 +261,6 @@
                 this.queryParams.cardStatus = "null";
                 this.queryList();
             },
-
             /**
              * 查询账户类型
              */
@@ -296,10 +284,8 @@
                 }).finally(() => {
                     this.accountList.unshift({
                         id : 'all',
-                        accountName : this.$t('allAccount')
+                        accountName : this.$t('all')
                     });
-                    this.queryParams.accountTypeId = 'all';
-                    this.accountTypeIdInit = 'all';
                 });
             },
             /**
@@ -308,10 +294,9 @@
              */
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
-                    // this.queryParams.accountTypeId = 'all';
-                    // this.accountTypeIdInit = 'all';
+                    this.queryParams.accountTypeId = params.id;
+                    this.accountTypeIdInit = params.id;
                 }
-                this.queryMemberAccountDefine();
             },
             /**
              * 动态给行添加类名
@@ -345,17 +330,17 @@
                 if (rowData.accountTypeId === '1') {
                     return this.$t('yuan');
                 } else if (rowData.unit) {
-                    return this.$t(rowData.unit);
+                    return rowData.unit;
                 } else {
                     return '';
                 }
             }
         },
-        // beforeRouteEnter (to,from,next) {
-        //     next(vm => {
-        //         vm.queryMemberAccountDefine();
-        //     });
-        // },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.queryMemberAccountDefine();
+            });
+        },
         computed : {
             //表格是否显示
             tableShow () {
@@ -364,7 +349,6 @@
         }
     };
 </script>
-
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .funds{
@@ -373,47 +357,36 @@
         overflow: auto;
         background: $color-fff;
         border-radius: 4px;
-
         .breadcrumb-box{
             height: 50px;
             line-height: 50px;
             background: $color_F4F6F8;
         }
-
         .header-wrap{
             height: 100px;
             line-height: 40px;
             padding: 10px 20px;
-
             /deep/ .ivu-select{
                 width: 180px;
                 margin-right: 5px;
             }
-
             /deep/ .ivu-input-wrapper{
                 width: 240px;
                 margin-right: 15px;
             }
-
             .ivu-btn + .ivu-btn{
                 margin-left: 5px;
             }
-
         }
-
         .frozen-cla{
             font-size: $font_size_12px;
             color: $color_red;
         }
-
         /deep/ .frozen-tr{
             color: $color_gray;
         }
-
         .operate-list{
             @include table_operate();
         }
-
     }
-
 </style>

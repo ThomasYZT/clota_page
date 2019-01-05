@@ -7,7 +7,6 @@
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>
-
         <div class="fund-account-header">
             <Select v-model="queryParams.accountTypeId"
                     style="width:180px"
@@ -94,20 +93,17 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span v-if="scope.row.accountTypeId === '1'">
-                        {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t('yuan')}}
+                       {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t('yuan')}}
                     </span>
                     <span v-else>
-                        {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t(scope.row.unit)}}
+                     {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t(scope.row.unit)}}
                     </span>
                 </template>
             </el-table-column>
         </table-com>
-
     </div>
 </template>
-
 <script>
-
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './fundDetailConfig';
     import ajax from '@/api/index.js';
@@ -115,7 +111,6 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import { mapGetters } from 'vuex';
-
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -228,13 +223,12 @@
              * @param params
              */
             getParams (params) {
-                // 会员3期暂时去掉
-                // if (params && Object.keys(params).length > 0 && this.fromAccountStore) {
-                //     this.$set(this.queryParams,'accountTypeId',params.id);
-                //     this.queryParams.accountTypeId = params.id;
-                // } else {
+                if (params && Object.keys(params).length > 0 && this.fromAccountStore) {
+                    this.$set(this.queryParams,'accountTypeId',params.id);
+                    this.queryParams.accountTypeId = params.id;
+                } else {
                     this.$set(this.queryParams,'accountTypeId','all');
-                // }
+                }
             },
             /**
              * 获取本次交易金额
@@ -256,7 +250,6 @@
                     return `${label}${rowData.amount}${unit}`;
                 }
             }
-
         },
         created () {
             this.queryMemberAccountDefine();
@@ -270,7 +263,7 @@
                 return this.$route.name === 'fianceDetail';
             },
             ...mapGetters({
-              lang : 'lang'
+                lang : 'lang'
             }),
             //表格是否显示
             tableShow () {
@@ -288,7 +281,6 @@
         }
     };
 </script>
-
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .member-fund-account{
@@ -297,32 +289,25 @@
         overflow: auto;
         background: $color-fff;
         border-radius: 4px;
-
         .breadcrumb-box{
             height: 50px;
             line-height: 50px;
             background: $color_F4F6F8;
         }
-
         .fund-account-header{
             height: 50px;
             line-height: 50px;
             padding: 0 20px;
         }
-
         .green-color{
             color: $color_green;
         }
-
         .red-color{
             color: $color_red;
         }
-
         .page-wrap{
             margin-top: 30px;
             text-align: center;
         }
     }
-
 </style>
-
