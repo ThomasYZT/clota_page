@@ -65,10 +65,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span class="green-color" v-if="scope.row.amount > -1">
-                            +{{ scope.row.amount | moneyFilter | contentFilter }}{{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
+                            +{{ scope.row.amount | moneyFilter | contentFilter }}{{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
                         </span>
                         <span class="red-color" v-if="scope.row.amount < 0">
-                            {{ scope.row.amount }}{{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
+                            {{ scope.row.amount }}{{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
                         </span>
                     </template>
                 </el-table-column>
@@ -96,14 +96,14 @@
                     <template slot-scope="scope">
                         <span v-if="scope.row.accountSubType === 'corpus'"><!--本金-->
                             {{$t('principal')}}：{{ scope.row.amount | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
                         </span>
                         <span v-else-if="scope.row.accountSubType === 'donate'"><!--赠送-->
                             {{$t('sendGift')}}：{{ scope.row.amount  | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
                         </span>
                         <span v-else>{{ scope.row.amount  | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}</span>
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -114,7 +114,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span>{{ scope.row.endingBalance | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : fundDetail.unit}}</span>
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}</span>
                     </template>
                 </el-table-column>
             </table-com>

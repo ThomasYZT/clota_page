@@ -60,6 +60,7 @@
                 <radio :options="accountList" v-model="accountPreChosed">
                     <template slot-scope="props" slot="each-item">
                         {{accountList[props.index]['accountName']}}：{{accountList[props.index]['accountBalance'] | moneyFilter}}
+                        {{accountList[props.index]['accountDefineId'] === '1' ? $t('yuan') : $t(accountList[props.index]['unit'])}}
                     </template>
                 </radio>
             </group>
@@ -128,6 +129,8 @@
             choseAccount () {
                 this.accountChosed = this.accountPreChosed;
                 this.visible = false;
+                this.getPayRandomCode();
+                this.updateCodeInterval();
             },
             /**
              * 账户列表弹出
@@ -141,7 +144,7 @@
             getAccountInfo () {
                 ajax.post('listCardAccountInfo',{
                     cardId : this.cardInfo.id,
-                    memberId : this.userInfo.memberIdf
+                    memberId : this.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
                         this.accountList = res.data ? res.data.map((item,index) => {
@@ -169,6 +172,9 @@
              * 显示预览二维码
              */
             showPreImage () {
+                //todo 实时更新预览未解决
+                //暂时去掉
+                return;
                 this.prevList = [
                     {
                         src : this.$refs.qrCode.imgData,
@@ -184,6 +190,9 @@
              * 显示预览一维码
              */
             pre1CodeImage () {
+                //todo 实时更新预览未解决
+                //暂时去掉
+                return;
                 this.preRotate = true;
                 this.prevList = [
                     {
@@ -200,10 +209,13 @@
              * 定时更新付款二维码
              */
             updateCodeInterval () {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                }
                 //每隔1分钟刷新一次二维码
                 this.timer = setInterval(() => {
                     this.getPayRandomCode();
-                }, 60000)
+                }, 60000);
             },
             /**
              * 获取账户随机支付码
@@ -251,6 +263,23 @@
         beforeRouteLeave (to,from,next) {
             clearInterval(this.timer);
             next();
+        },
+        watch : {
+            // 'payCode' (newVal) {
+            //     if (newVal) {
+            //         this.$nextTick(() => {
+            //             this.$set(this.prevList[0],'src',this.$refs.barcode.$el.src);
+            //             this.$refs.previewer.goTo(0);
+            //             // this.prevList = [
+            //             //     {
+            //             //         src : this.$refs.barcode.$el.src,
+            //             //         w : 600,
+            //             //         h : 240
+            //             //     }
+            //             // ];
+            //         });
+            //     }
+            // }
         }
     };
 </script>
@@ -392,11 +421,11 @@
     }
 
     .img-preview .pswp__img{
-        padding: 49px;
+        padding: 20px;
         background: #ffffff;
     }
     .img-pre-rotate .pswp__img{
         transform: rotate(90deg);
-        padding: 20px;
+        padding: 10px;
     }
 </style>

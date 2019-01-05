@@ -107,7 +107,7 @@
                     return '(' + this.$t('yuan') + ')';
                 } else {
                     if (rowData.unit) {
-                        return '(' + rowData.unit + ')';
+                        return '(' + this.$t(rowData.unit) + ')';
                     } else {
                         return '';
                     }

@@ -95,10 +95,8 @@
                                         :charge-info="item">
                         <div class="operate-right">
                             <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
-                            <template v-if="item.accountDefineId === '1'">
-                                <span class="split-line"></span>
-                                <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
-                            </template>
+                            <span class="split-line"></span>
+                            <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
                             <!--会员3期暂时去掉-->
                             <!--<span class="split-line"></span>-->
                             <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->
@@ -447,8 +445,6 @@
             };
         },
         created () {
-            //查询自定义账户--用于新增账户
-            this.queryDefineAccountType();
             //查询收款方式--用于新增储值
             this.queryPaymentType();
             //获取储值账户-(本金/赠送金额)应用范围
@@ -472,7 +468,9 @@
 
             //查询自定义账户
             queryDefineAccountType () {
-                ajax.post('queryDefineAccountType', {}).then(res => {
+                ajax.post('queryDefineAccountType', {
+                    cardId : this.memberInfo.cardId
+                }).then(res => {
                     if (res.success) {
                         this.defineAccount = res.data || [];
                     } else {
@@ -797,6 +795,8 @@
                     // this.getGrowthBalance(params.detail);
                     //查询会员卡信息
                     this.listCardsByMemberId();
+                    //查询自定义账户--用于新增账户
+                    this.queryDefineAccountType();
                 } else {
                     this.$router.push({
                         name : 'memberInfo'

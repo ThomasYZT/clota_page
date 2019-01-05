@@ -94,10 +94,10 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <span v-if="scope.row.accountTypeId === '1'">
-                        {{scope.row.endingBalance}}{{$t('yuan')}}
+                        {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t('yuan')}}
                     </span>
                     <span v-else>
-                        {{scope.row.endingBalance}}{{scope.row.unit}}
+                        {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t(scope.row.unit)}}
                     </span>
                 </template>
             </el-table-column>
@@ -244,7 +244,7 @@
                 let unit = '';
                 let label = rowData.amount > 0 ? '+' : '';
                 if (rowData.unit) {
-                    unit = rowData.unit;
+                    unit = this.$t(rowData.unit);
                 } else if (rowData.accountTypeId === '1') {
                     unit = this.$t('yuan'); // '元'
                 }

@@ -80,7 +80,7 @@
                 ajax.post('addAccountInfo', {
                     accountTypeId : this.data.accountTypeId,
                     memberId : this.detail.id,
-                    cardId : this.detail.cardId,
+                    cardId : this.detail.id,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(`${this.$t('newAccount')}${this.$t('success')}！`); // 新增账号成功

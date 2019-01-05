@@ -5,7 +5,7 @@
 -->
 
 <template>
-    <div class="charge-account-info" :class="{ 'split-class' : chargeInfo.accountDefineId > 4 }">
+    <div class="charge-account-info">
         <div class="title">{{chargeInfo.accountName | contentFilter}}</div>
         <ul class="table-wrap">
             <!--默认账户显示账户合计-->

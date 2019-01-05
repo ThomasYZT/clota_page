@@ -2415,4 +2415,5 @@ export default {
     'setMemberLevel' : '设置会员卡级别',
     'smsResendTimesToMaxTip' : '短信重发次数已达上限，不可再次重发短信',
     'financeReport' : '财务报表',
+    'accountExists' : '账户已存在',
 };

@@ -610,7 +610,7 @@
                 let item = {
                     accountBelonging : '',
                     accountName : '',
-                    unit : this.$t('yuan'),
+                    unit : '',
                     rate : '1',
                     rateNumerator : '1',
                     rateDenominator : '1',
@@ -631,7 +631,8 @@
             },
             //点击储值账户的编辑账户，显示编辑账户弹窗
             showModifyAccountModal ( item, index ) {
-                this.$refs.modifyAccount.show({ item, index });
+                this.findAccountSetDetail(item.accountBelonging,item.cardTypeId,item.cardLevelId,item.accountTypeId,index);
+                // this.$refs.modifyAccount.show({ item, index });
             },
             //查询修改原因
             listAdjustReason () {
@@ -702,6 +703,42 @@
                 this.formDynamic.reason[index]._status = 0;
             },
 
+
+            /**
+             * 获取储值账户详情
+             * @param{String} accountBelonging 账户归属
+             * @param{String} cardTypeId 会员卡类型id
+             * @param{String} cardLevelId 会员卡级id
+             * @param{String} accountTypeId 账户id
+             * @param{String} index
+             */
+            findAccountSetDetail (accountBelonging,cardTypeId,cardLevelId,accountTypeId,index) {
+                ajax.post('findAccountSetDetail',{
+                    accountBelonging,
+                    cardTypeId,
+                    cardLevelId,
+                    accountTypeId,
+                }).then(res => {
+                    if (res.success) {
+                        let accountInfo = res.data ? res.data : {};
+                        this.$refs.addAccount.show({ item : {
+                                id : accountInfo.id,
+                                accountBelonging : accountInfo.accountBelonging,
+                                accountName : accountInfo.accountName,
+                                unit : accountInfo.unit,
+                                rate : accountInfo.rate,
+                                rateNumerator : accountInfo.rateNumerator,
+                                rateDenominator : accountInfo.rateDenominator,
+                                exchangeToCash : accountInfo.exchangeToCash,
+                                corpusAppliedOrgId : accountInfo.corpusAppliedOrgId,
+                                donateAppliedOrgId : accountInfo.donateAppliedOrgId,
+                                cardTypeId : cardTypeId,
+                                cardLevelId : cardLevelId,
+                            }, index });
+                    }
+                });
+            }
+
         },
     };
 </script>
@@ -755,7 +792,6 @@
                     position: relative;
                     display: inline-block;
                     min-width: 690px;
-                    padding-right: 55px;
                     text-align: center;
                     vertical-align: middle;
 
