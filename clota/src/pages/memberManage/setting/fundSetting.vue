@@ -85,19 +85,6 @@
                                 :auto-height="true"
                                 :border="false">
                                 <el-table-column
-                                    slot="column0"
-                                    :label="row.title"
-                                    :prop="row.field"
-                                    :key="row.index"
-                                    :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip
-                                    slot-scope="row">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.accountBelonging ? showAccountBelongName(scope.row.accountBelonging) : '-' }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
                                     slot="column1"
                                     :label="row.title"
                                     :prop="row.field"
@@ -265,7 +252,6 @@
         <!--储值赠送金额比例设置modal-->
         <send-rate-modal ref="sendRate"
                          :length="settingData.donateWhileRecharge.length"
-                         :table-data="listAccountTable"
                          @submit-date="submitAddSend"></send-rate-modal>
 
     </div>
@@ -331,7 +317,7 @@
                     {
                         title : 'accountOwnership',
                         minWidth : 140,
-                        field : 'accountBelonging',
+                        field : 'orgName',
                     },
                     {
                         title : 'accountName',
@@ -610,16 +596,14 @@
 
             //查询储值账户
             queryMemberAccountDefine () {
-                ajax.post('queryMemberAccountDefine',{
+                ajax.post('queryAccountSetList',{
                     accountType : 'charging',
-                    pageNo : 1,
-                    pageSize : 99999,
                 }).then(res => {
                     if (res.success) {
-                        this.tableData = res.data.data || [];
+                        this.tableData = res.data || [];
                     } else {
                         this.tableData = [];
-                        this.$Message.warning(res.message || 'queryMemberAccountDefine ' + this.$t('queryFailure') + '！');
+                        this.$Message.warning(res.message || 'queryMemberAccountDefine ' + this.$t('queryFailure'));
                     }
                 });
             },
@@ -650,11 +634,6 @@
             //点击储值账户的编辑账户，显示编辑账户弹窗
             showModifyAccountModal ( item, index ) {
                 this.$refs.modifyAccount.show({ item, index });
-            },
-            //展示账户归属名称
-            showAccountBelongName ( val ) {
-                let obj = this.listAmountRangeTable.find((item) => val === item.id);
-                return obj ? this.$t(obj.orgName) : '-';
             },
             //查询修改原因
             listAdjustReason () {

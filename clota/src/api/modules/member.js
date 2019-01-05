@@ -306,4 +306,6 @@ export default {
     'batchRefundCard' : '/member/batchRefundCard',
     //查看卡级下的账户信息
     'queryLevelAccount' : '/member/memberAccount/queryLevelAccount',
+    //查看储值账户信息
+    'queryAccountSetList' : '/member/memberAccount/queryAccountSetList',
 };

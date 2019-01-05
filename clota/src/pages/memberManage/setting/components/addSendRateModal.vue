@@ -4,7 +4,7 @@
         v-model="visible"
         :title="title"
         class-name="add-account-modal vertical-center-modal"
-        width="650"
+        width="720"
         :mask-closable="false"
         @on-cancel="hide">
 
@@ -24,6 +24,7 @@
                                 <FormItem prop="lowerValue">
                                     <Input type="text"
                                            v-model.trim="formData.lowerValue"
+                                           style="width: 80px;"
                                            :placeholder="$t('inputField', {field: ''})"
                                            class="single-input"/>
                                 </FormItem>
@@ -32,6 +33,7 @@
                             <i-col style="display: inline-block;width : auto;">
                                 <FormItem prop="topValue">
                                     <Input type="text"
+                                           style="width: 80px;"
                                            v-model.trim="formData.topValue"
                                            :placeholder="$t('inputField', {field: ''})"
                                            class="single-input"/>
@@ -44,8 +46,9 @@
                                 <FormItem prop="gift">
                                     <Input type="text"
                                            v-model.trim="formData.gift"
+                                           style="width: 80px;"
                                            :placeholder="$t('inputField', {field: ''})"
-                                           class="single-input"/> {{$t('yuan')}}
+                                           class="single-input"/> {{$t('variousUnit')}}
                                 </FormItem>
                             </i-col>
                         </i-row>
@@ -58,39 +61,10 @@
                          :props="defaultProps"
                          :default-expand-all="true"
                          show-checkbox
+                         node-key="uniqueName"
+                         ref="accountTree"
                          :render-content="renderContent">
                 </el-tree>
-                <!--<table-com-->
-                    <!--ref="ruleMultiTablePlug"-->
-                    <!--:table-com-min-height="320"-->
-                    <!--:column-data="columnData"-->
-                    <!--:height="370"-->
-                    <!--:table-data="tableData"-->
-                    <!--@selection-change="handleSelectionChange"-->
-                    <!--:border="false">-->
-                    <!--<el-table-column-->
-                        <!--slot="column0"-->
-                        <!--:label="row.title"-->
-                        <!--:prop="row.field"-->
-                        <!--:key="row.index"-->
-                        <!--:width="row.width"-->
-                        <!--:min-width="row.minWidth"-->
-                        <!--type="selection"-->
-                        <!--slot-scope="row">-->
-                    <!--</el-table-column>-->
-                    <!--<el-table-column-->
-                        <!--slot="column1"-->
-                        <!--:label="row.title"-->
-                        <!--:prop="row.field"-->
-                        <!--:key="row.index"-->
-                        <!--:width="row.width"-->
-                        <!--:min-width="row.minWidth"-->
-                        <!--slot-scope="row">-->
-                        <!--<template slot-scope="scope">-->
-                            <!--{{scope.row.typeName}}-{{scope.row.levelDesc}}-->
-                        <!--</template>-->
-                    <!--</el-table-column>-->
-                <!--</table-com>-->
             </div>
         </div>
 
@@ -105,15 +79,11 @@
 
 <script>
     import common from '@/assets/js/common.js';
-    import tableCom from '@/components/tableCom/tableCom.vue';
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
 
     export default {
-        props : ['length','table-data'],
-        components : {
-            tableCom,
-        },
+        props : ['length'],
         data () {
             //校验储值的最低值
             const validateLowerValue = (rule,value,callback) => {
@@ -171,23 +141,6 @@
                     scope : '',
                     _status : 1,
                 },
-                //表格多选列表
-                multipleSelection : [],
-                //表头信息
-                columnData : [
-                    {
-                        title : '',
-                        minWidth : 110,
-                        field : '',
-                    },
-                    {
-                        title : 'applicationScope',
-                        minWidth : 400,
-                        // 会员3期暂时去掉
-                        // field : 'accountName'
-                        field : 'levelDesc'
-                    },
-                ],
                 //表单校验规则
                 ruleValidate : {
                     lowerValue : [
@@ -217,7 +170,7 @@
                 defaultProps : {
                     children : 'cardLevelAccountVos',
                     label : 'name'
-                }
+                },
             };
         },
         methods : {
@@ -238,34 +191,27 @@
                 }
 
                 this.visible = true;
-
-                if ( data ) {
-                    setTimeout( () => {
-                        if (data.item.scope && JSON.parse(data.item.scope) && JSON.parse(data.item.scope).length > 0) {
-                            JSON.parse(data.item.scope).forEach( item => {
-                                this.tableData.forEach( (list,index) => {
-                                    if (item.id === list.id) {
-                                        if (this.$refs.ruleMultiTablePlug) {
-                                            this.$refs.ruleMultiTablePlug.toggleRowSelection(this.tableData[index], true);
-                                        }
-                                    }
-                                });
-                            });
-                        }
-                    },300);
-                }
                 this.queryLevelAccount();
             },
             //保存
             save () {
                 this.$refs.formValidate.validate((valid) => {
                     if (valid) {
-                        if (this.multipleSelection.length > 0) {
-                            let list = [];
-                            this.multipleSelection.forEach( (item, index) => {
-                                list.push({ id : item.id });
+                        let accountSelected = this.$refs.accountTree.getCheckedNodes();
+                        if (accountSelected.length > 0) {
+                            let scopeData = [];
+                            accountSelected.forEach(item => {
+                                //cardLevelAccountVos 为空表示是账户信息
+                                if (!item.cardLevelAccountVos) {
+                                    let levelId = item.uniqueName.split('_')[0];
+                                    scopeData.push({
+                                        id : levelId,
+                                        accountTypeId : item.id,
+                                        uniqueName : item.uniqueName,
+                                    });
+                                }
                             });
-                            this.formData.scope = JSON.stringify(list);
+                            this.formData.scope = JSON.stringify(scopeData);
                             this.$emit('submit-date', { item : JSON.parse(JSON.stringify(this.formData)), index : this.index });
                             this.hide();
                         } else {
@@ -273,10 +219,6 @@
                         }
                     }
                 });
-            },
-
-            handleSelectionChange (val) {
-                this.multipleSelection = val;
             },
 
             //关闭模态框
@@ -289,11 +231,8 @@
                     scope : '',
                     _status : 1,
                 };
-                this.multipleSelection = [];
-                if ( this.$refs.ruleMultiTablePlug ) {
-                    this.$refs.ruleMultiTablePlug.clearSelection();
-                }
                 this.index = null;
+                this.cardAccountInfo = [];
                 this.$refs.formValidate.resetFields();
             },
             /**
@@ -304,9 +243,27 @@
              * @param{Object} data 当前节点上的数据
              */
             renderContent (h, { root, node, data }) {
-                return h('div',{
-                    style : {}
-                },[h('span',data.name)]);
+                return h('div', {
+                    style : {
+                        display : 'inline-block',
+                        width : '100%'
+                    },
+                    class : {
+                        'title-wrap' : true,
+                    },
+                }, [
+                    h('span', {
+                        class : {
+                            'title-class' : true
+                        },
+                        directives : [
+                            {
+                                name : 'w-title',
+                                value : data.name + ( data.unit ? this.$t('bracketSetting',{ content : data.unit }) : '' )
+                            }
+                        ],
+                    }, data.name + ( data.unit ? this.$t('bracketSetting',{ content : data.unit }) : '' ))
+                ]);
             },
             /**
              * 查看级别下所有账户信息
@@ -318,6 +275,12 @@
                     } else {
                         this.cardAccountInfo = [];
                     }
+                }).finally(() => {
+                    this.$nextTick(() => {
+                        let scopeData = this.formData.scope ? JSON.parse(this.formData.scope) : [];
+                        let defaultChoosedAccount = scopeData.map(item => item.uniqueName);
+                        this.$refs.accountTree.setCheckedKeys(defaultChoosedAccount);
+                    });
                 });
             }
         },
@@ -337,8 +300,6 @@
             /deep/ .ivu-form-item-wrap{
                 position: relative;
                 display: inline-block;
-                width: 580px;
-                padding-right: 55px;
                 text-align: left;
                 vertical-align: middle;
                 margin: 5px 0 15px;
@@ -379,6 +340,51 @@
         .table-wrap{
             height: calc(100% - 100px);
             overflow: auto;
+
+            /deep/ .title-wrap {
+                @include absolute_pos(relative, 0, 0, 0, -20px);
+                padding-left: 20px;
+                cursor: pointer;
+
+                &:hover {
+                    background: $color_fafa;
+
+                    .title-class {
+                        color: $color_blue;
+                    }
+
+                    .iconfont:not(.hidden) {
+                        display: inline-block;
+                    }
+                }
+
+                &.active-node{
+
+                    .title-class {
+                        color: $color_blue;
+                    }
+                }
+
+                .title-class {
+                    @include overflow_tip(unquote('calc(100% - 2px)'), 36px);
+                    display: inline-block;
+                    padding: 7px 0;
+                    line-height: 22px;
+                    font-size: 16px;
+                    color: #333333;
+                    vertical-align: middle;
+                }
+
+                .iconfont {
+                    display: none;
+                    color: $color_blue;
+                    font-size: 14px;
+                    float: right;
+                    margin-top: 7px;
+                    cursor: pointer;
+                }
+            }
         }
+
     }
 </style>
