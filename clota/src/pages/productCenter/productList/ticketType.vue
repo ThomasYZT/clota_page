@@ -238,7 +238,7 @@
                         params.prop = 'p.updated_time';
                     }
 
-                    Object.assign(this.filterParam, { orderBy : JSON.stringify([{ name : `${params.prop}`, val : `${order}` }, { name : 'p.audit_status', val : 'asc' }]) });
+                    Object.assign(this.filterParam, { orderBy : JSON.stringify([{ name : 'p.audit_status', val : 'asc' }, { name : `${params.prop}`, val : `${order}` }]) });
                     Object.assign(this.queryParams, this.filterParam);
                     this.queryParams.pageNo = 1;
                     this.queryList();
