@@ -5,7 +5,7 @@
 <template>
   <div class="integral-detail">
       <div class="score-board">
-          <h5 class="score">{{query.num}}</h5>
+          <h5 class="score">{{cardInfo.pointBalance}}</h5>
           <p class="name">{{$t('integralDetail')}}</p>
       </div>
 
@@ -43,7 +43,7 @@
     import Scroll from '@/components/scroll/scroll';
     import scoreItem from './components/scoreItem';
     import ajax from '@/member/api/index.js';
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
     import Vue from 'vue';
 
     export default {
@@ -85,6 +85,9 @@
             };
         },
         methods : {
+            ...mapActions([
+                'getCardListInfo'
+            ]),
             /**
              * 获取页面信息
              */
@@ -108,6 +111,7 @@
                                 this.refresh();
                                 this.pageSetting.pageSize -= 10;
                             }
+                            this.getCardListInfo();
                         } else {
                             this.infoList = [];
                         }
