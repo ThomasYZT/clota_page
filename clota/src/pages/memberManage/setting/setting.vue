@@ -306,11 +306,6 @@
                     replaceCardFeeErr : '',//补卡收费金额错误,
                     wxPushErr : '',//微信端推送交易记录 标题设置错误
                 },
-                tableData : [{
-                    date : '2016-05-02',
-                    name : '王小虎',
-                    address : '上海市普陀区金沙江路 1518 弄'
-                }],
                 //会员类别及会员级别数据
                 memberLevelsData : {}
             };
