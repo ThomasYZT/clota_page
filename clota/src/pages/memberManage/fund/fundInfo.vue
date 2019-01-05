@@ -1,48 +1,40 @@
 1<!--储值信息-->
-
 <template>
     <div class="fund-info">
         <div class="title">{{$t('fundInfo')}}</div><!--账户储值信息-->
         <div class="account-info"
-            v-for="(item,key,i) in accountList"
-            :key="i">
+             v-for="(item,i) in accountList"
+             :key="i">
             <div class="account-detail">
                 <div class="img-area" >
-                    <img v-if="key === 'defaultAccount'" src="../../../assets/images/icon-default-account.svg" alt="">
+                    <img v-if="item.id === '1'" src="../../../assets/images/icon-default-account.svg" alt="">
                     <img v-else src="../../../assets/images/icon-common-account.svg" alt="">
                 </div>
                 <div class="fund-list">
-                    <div class="account-name">
-                        {{$t(key)}}{{'(' + $t('yuan') + ')'}}
+                    <div class="account-name" v-w-title="item.accountName + (item.unit ? `（${item.unit}）` : '')">
+                        {{item.accountName}}{{getUnit(item)}}
                     </div>
-                    <div class="money-area">
-                        <div class="account-money" v-for="(list,ik) in item" :key="ik">
-                            {{list | moneyFilter}}
-                            <span class="label-info">{{$t('account.' + ik)}}</span>
-                        </div>
-                    </div>
+                    <div class="account-money">{{item.amount | moneyFilter}}</div>
                 </div>
             </div>
             <ul class="account-operate">
-                <li class="list" @click="toFundDetail(item,key)">{{$t('storageDetail')}}</li><!--储值明细-->
+                <li class="list" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
                 <li class="list"
                     v-if="canShowMoneyDetail"
                     v-w-title="$t('fundDetail')"
-                    @click="toTradeDetail(item,key)">{{$t('fundDetail')}}</li><!--资金交易明细-->
+                    @click="toTradeDetail(item)">{{$t('fundDetail')}}</li><!--资金交易明细-->
             </ul>
         </div>
     </div>
 </template>
-
 <script>
     import ajax from '@/api/index.js';
     import { mapGetters } from 'vuex';
-
     export default {
         data () {
             return {
                 //账户列表
-                accountList : {}
+                accountList : []
             };
         },
         methods : {
@@ -50,28 +42,19 @@
              * 获取所欲的账户信息
              */
             queryMemberAccountDefine () {
-                //会员3期暂时去掉
-                // ajax.post('queryChargingAccountInfo',{
-                //     accountType : 'charging',
-                //     pageNo : 1,
-                //     pageSize : 99999,
-                // }).then(res => {
-                //    if (res.success) {
-                //         this.accountList = res.data ? res.data : [];
-                //    } else {
-                //        this.accountList = [];
-                //    }
-                // }).catch(() => {
-                //     this.accountList = [];
-                // });
-                ajax.post('statisChargingAccount').then(res => {
+                ajax.post('queryChargingAccountInfo',{
+                    accountType : 'charging',
+                    pageNo : 1,
+                    pageSize : 99999,
+                    orgId : this.manageOrgs.id
+                }).then(res => {
                     if (res.success) {
-                        this.accountList = res.data ? res.data : {};
+                        this.accountList = res.data ? res.data : [];
                     } else {
-                        this.accountList = {};
+                        this.accountList = [];
                     }
-                }).catch(() => {
-                    this.accountList = {};
+                }).catch(err => {
+                    this.accountList = [];
                 });
             },
             /**
@@ -87,15 +70,11 @@
             /**
              * 跳转到储值明细页面
              * @param data
-             * @param key
              */
-            toFundDetail (data,key) {
+            toFundDetail (data) {
                 this.$router.push({
                     name : 'fund',
-                    params : {
-                        data,
-                        key
-                    }
+                    params : data
                 });
             },
             /**
@@ -121,7 +100,8 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
+                'manageOrgs'
             ]),
             //是否可以查看资金交易明细
             canShowMoneyDetail () {
@@ -130,21 +110,18 @@
         }
     };
 </script>
-
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .fund-info{
         @include block_outline();
         padding: 0 30px 0 30px;
         @include padding_place();
-
         .title{
             @include block_outline($height : 62px);
             padding: 20px 0;
             font-size: $font_size_16px;
             color:$color_333;
         }
-
         .account-info{
             position: relative;
             float: left;
@@ -154,7 +131,6 @@
             border: 1px solid $color_E9E9E9;
             border-radius: 2px;
             margin-bottom: 30px;
-
             &:nth-of-type(3n){
                 margin: 0 5% 30px 5%;
             }

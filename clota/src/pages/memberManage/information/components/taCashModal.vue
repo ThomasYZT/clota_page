@@ -17,7 +17,7 @@
                     <Form-item :label="accountInfo.accountName + $t('PrincipalAccBalance') + ':'">
                       <span class="yellow-color">
                         {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
-                    </span>{{accountInfo.unit || ''}}
+                    </span> {{accountInfo.accountDefineId === '1' ? $t('yuan') : $t(accountInfo.unit)}}
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap show-item">

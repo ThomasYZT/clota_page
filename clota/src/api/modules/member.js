@@ -310,4 +310,6 @@ export default {
     'queryAccountSetList' : '/member/memberAccount/queryAccountSetList',
     //查看储值账户信息详情
     'findAccountSetDetail' : '/member/memberAccount/findAccountSetDetail',
+    //查看储值账户信息
+    'getRootOrgTreeWithCompany' : '/organize/getRootOrgTreeWithCompany',
 };

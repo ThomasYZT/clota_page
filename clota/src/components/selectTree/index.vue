@@ -97,7 +97,7 @@
              * @param node
              */
             choseNode (data,node) {
-                if (this.disabledNodeIds.includes(data.id)) return;
+                if (this.disabledNodeIds.includes(data.id) || data.disabled) return;
                 this.$emit('input',data.id);
                 this.hideTree();
             },
@@ -119,7 +119,7 @@
                     h('span', {
                         class : {
                             'title-class' : true,
-                            'disabled-node' : this.disabledNodeIds.includes(data.id)
+                            'disabled-node' : this.disabledNodeIds.includes(data.id) || data.disabled
                         },
                         directives : [
                             {

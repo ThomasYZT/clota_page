@@ -11,15 +11,15 @@
             <!--默认账户显示账户合计-->
             <li class="wrap-li" v-if="chargeInfo.accountDefineId === '1'">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('accountTotalAdd') })}}</span>
-                <span class="label-value">{{(chargeInfo.corpusBalance + chargeInfo.donateBalance) | moneyFilter | contentFilter }} {{$t('yuan')}}</span>
+                <span class="label-value">{{(chargeInfo.corpusBalance + chargeInfo.donateBalance) | moneyFilter | contentFilter }} {{chargeInfo.accountDefineId === '1' ? $t('yuan') : $t(chargeInfo.unit)}}</span>
             </li>
             <li class="wrap-li">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('principal') })}}</span>
-                <span class="label-value">{{ chargeInfo.corpusBalance | moneyFilter | contentFilter }} {{$t('yuan')}}</span>
+                <span class="label-value">{{ chargeInfo.corpusBalance | moneyFilter | contentFilter }} {{chargeInfo.accountDefineId === '1' ? $t('yuan') : $t(chargeInfo.unit)}}</span>
             </li>
             <li class="wrap-li" v-if="chargeInfo.accountDefineId === '1'">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('giftSum') })}}</span>
-                <span class="label-value">{{ chargeInfo.donateBalance | moneyFilter | contentFilter }} {{$t('yuan')}}</span>
+                <span class="label-value">{{ chargeInfo.donateBalance | moneyFilter | contentFilter }} {{chargeInfo.accountDefineId === '1' ? $t('yuan') : $t(chargeInfo.unit)}}</span>
             </li>
         </ul>
         <div class="operate-taps">

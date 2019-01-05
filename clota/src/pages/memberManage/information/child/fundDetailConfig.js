@@ -3,7 +3,7 @@
 export const fundDetailHead = [
     {
         title : 'transactionAmountThisTime', // 本次交易金额
-        minWidth : 150,
+        minWidth : 190,
         enMinWidth : 290,
         field : 'amount'
     },

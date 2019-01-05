@@ -26,6 +26,7 @@
                         <!--账户归属-->
                         <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
                             <select-tree v-model="formData.accountBelonging"
+                                         @input="changeAccountBelonging"
                                          :disabled="formData.id === '1'"
                                          :tree="treeData"
                                          style="width: 280px;">
@@ -500,7 +501,7 @@
              * 获取组织树列表
              */
             getOrgTree () {
-                ajax.post('getRootOrgTree',{
+                ajax.post('getRootOrgTreeWithCompany',{
                     showScene : 'manage',
                     manageType : 'manage',
                 }).then(res =>{
