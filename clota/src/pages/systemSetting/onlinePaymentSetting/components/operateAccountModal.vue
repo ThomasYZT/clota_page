@@ -34,13 +34,15 @@
         </div>
 
         <del-modal ref="delModal">
-            <span class="content-text">
-                <span class="yellow-label">
-                    {{$t('areYouSureAccount', { field : (accountInfo.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')) + $t('payType.' + accountInfo.accountType)  })}}
+            <div class="tip-modal-wrapper">
+                <span class="content-text">
+                    <span class="yellow-label">
+                        {{$t('areYouSureAccount', { field : (accountInfo.useStatus === 'enabled' ? $t('stopUsing') : $t('commissioned')) + $t('payType.' + accountInfo.accountType)  })}}
+                    </span>
                 </span>
-            </span>
-            <span v-if="accountInfo.useStatus === 'enabled'">{{$t('disabledAccount', { account : $t('payType.' + accountInfo.accountType) })}}</span>
-            <span v-else><span class="red-label">{{$t('irreversible')}}</span>，{{$t('whetherSure')}}？</span>
+                <span v-if="accountInfo.useStatus === 'enabled'">{{$t('disabledAccount', { account : $t('payType.' + accountInfo.accountType) })}}</span>
+                <span v-else><span class="red-label">{{$t('irreversible')}}</span>，{{$t('whetherSure')}}？</span>
+            </div>
         </del-modal>
     </Modal>
 </template>
@@ -137,5 +139,9 @@
 
     /deep/ .ivu-modal-body {
         min-height: 164px;
+    }
+
+    /deep/ .tip-modal-wrapper {
+        width: 80%;
     }
 </style>

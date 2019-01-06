@@ -340,7 +340,7 @@
                             this.savePortrait(res.data);
                         } else {
                             this.$vux.toast.show({
-                                text : '上传头像失败',
+                                text : this.$t('operateFail', { msg : this.$t('uploadAvatar')}),
                                 type : 'text',
                                 width : '3rem'
                             });

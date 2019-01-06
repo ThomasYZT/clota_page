@@ -12,7 +12,8 @@
             <Steps :current="0"
                    direction="vertical" class="register-steps">
                 <Step title="">
-                    <FormItem :label-width="180" :label="$t('pleaseInputCompanyBaseInfo')">
+                    <FormItem :label-width="400"
+                              :label="$t('pleaseInputCompanyBaseInfo')">
                     </FormItem>
                     <!-- 企业编号 -->
                     <FormItem :label="$t('companyNo')" prop="enterpriseNumber">
@@ -298,5 +299,9 @@
             font-size: 12px;
             color: $color_yellow;
         }
+    }
+
+    /deep/ .ivu-form-item-label {
+        text-indent: -4px;
     }
 </style>

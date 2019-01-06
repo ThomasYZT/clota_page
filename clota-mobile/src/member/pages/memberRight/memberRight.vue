@@ -21,13 +21,13 @@
                 <!--每月优惠门票-->
               <ul class="right-list" v-if="rightInfo.ticket.length > 0">
                   <li v-for="(item, index) in rightInfo.ticket" :key="index" v-if="item.isEnable">
-                      <span class="spot"></span><span>每月 {{item.rule.num}} 张 {{item.rule.scenicName}} {{item.rule.discount}} 元门票</span>
+                      <span class="spot"></span><span>{{$t('perMonth')}} {{item.rule.num}} {{$t('leaf')}} {{item.rule.scenicName}} {{item.rule.discount}} {{$t('yuan')}} {{$t('playTicket')}}</span>
                   </li>
               </ul>
                 <!--生日购票优惠-->
               <ul class="right-list" v-if="rightInfo.birthday.length > 0">
                   <li v-for="(item, index) in rightInfo.birthday" :key="index" v-if="item.isEnable">
-                      <span class="spot"></span><span>生日当天限购 {{item.rule.num | contentFilter}} 张 {{cardInfo.orgName}} {{item.rule.discount | contentFilter}} 折门票</span>
+                      <span class="spot"></span><span>{{$t('birthdayPurchaseLimit')}} {{item.rule.num | contentFilter}} {{$t('leaf')}} {{cardInfo.orgName}} {{item.rule.discount | contentFilter}} {{$t('discountTicket')}}</span>
                   </li>
               </ul>
           </template>
