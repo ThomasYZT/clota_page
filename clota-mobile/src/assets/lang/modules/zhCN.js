@@ -298,4 +298,5 @@ export default {
     'police' : '警官证',
     'M045' : '手机号未注册',
     'pleaseSetTradePass' : '请先设置交易密码',
+    'getLocationErr' : '位置信息获取失败',
 };

@@ -3,6 +3,7 @@
 // import ajax from '../api/index';
 // const ajax = require('../api/index');
 import Vue from 'vue';
+import qqMap from 'qqMap';
 //全民营销state信息
 export const marketingState = {
     marketing : {
@@ -214,5 +215,40 @@ export const marketActions = {
                 commit('marketUpdateTypeId','');
             }
         });
-    }
+    },
+    /**
+     * 获取位置信息
+     * @param{Object} store
+     */
+    marketGetLocation (store) {
+        return new Promise((resolve,reject) => {
+            //第一个参数是在腾讯地图申请的key（申请地址:https://lbs.qq.com/console/mykey.html）
+            let geolocation = new qqMap.maps.Geolocation('RX7BZ-4ZBKR-XGHWI-WOFNG-CTENJ-ZIFNQ', 'mapqq');
+            geolocation.getLocation((locationInfo) => {
+                store.commit('updateLocationInfo',{
+                    location : locationInfo.nation + locationInfo.province + locationInfo.city + locationInfo.addr,
+                    longitude : locationInfo.lng,
+                    latitude : locationInfo.lat,
+                });
+                setTimeout(() => {
+                    store.commit('marketUpdateIsGettingLocation',false);
+                },500);
+                resolve(locationInfo);
+            },(err) => {
+                store.commit('updateLocationInfo',{
+                    location : '',
+                    longitude : '',
+                    latitude : '',
+                });
+                setTimeout(() => {
+                    store.commit('marketUpdateIsGettingLocation',false);
+                    store.dispatch('showToast', 'getLocationErr');
+                },500);
+                reject(err);
+            },{
+                //是否在定位失败时给出提示引导用户打开授权或打开定位开关。（即将支持）
+                failTipFlag : true
+            });
+        });
+    },
 };

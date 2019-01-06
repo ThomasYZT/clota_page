@@ -46,8 +46,6 @@ import {
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
 import VueBarcode from '@xkeshi/vue-barcode';
-//引入地图工具
-import VueAMap from 'vue-amap';
 
 
 // // 按需引入 Echarts 图表
@@ -105,14 +103,6 @@ plugin.install = function (Vue, options) {
     Vue.directive('click-outside', ClickOutsideDirective);
 
     Vue.use(WechatPlugin);
-    //地图插件
-    Vue.use(VueAMap);
-
-    VueAMap.initAMapApiLoader({
-        key : '91e8fc59f5a65ca490ce419c646b7b35',
-        plugin : ['Geolocation'],
-        v : '1.4.4'
-    });
 
     // 公用样式，指令及方法
     // Vue.use(klwkUi);

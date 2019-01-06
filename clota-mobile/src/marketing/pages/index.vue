@@ -2,10 +2,6 @@
 
 <template>
     <div class="marketing">
-        <el-amap :plugin="plugin"
-                 v-if="marketIsGettingLocation"
-                 class="amap-demo">
-        </el-amap>
         <div class="view-content" :class="{ 'full-height' : !showTabbar }">
             <router-view>
             </router-view>
@@ -63,34 +59,7 @@
     import ajax from '@/marketing/api/index';
     export default {
         data () {
-            let self = this;
             return {
-                plugin : [{
-                    enableHighAccuracy : true,//是否使用高精度定位，默认:true
-                    pName : 'Geolocation',
-                    events : {
-                        init (o) {
-                            // o 是高德地图定位插件实例
-                            o.getCurrentPosition((status, result) => {
-                                if (result && result.position) {
-                                    self.$store.commit('updateLocationInfo',{
-                                        location : result.formattedAddress,
-                                        longitude : result.position.lng,
-                                        latitude : result.position.lat,
-                                    });
-                                    self.$nextTick();
-                                } else {
-                                    self.$store.commit('updateLocationInfo',{
-                                        location : '',
-                                        longitude : '',
-                                        latitude : '',
-                                    });
-                                }
-                                self.$store.commit('marketUpdateIsGettingLocation',false);
-                            });
-                        }
-                    }
-                }]
             };
         },
         methods : {
@@ -150,6 +119,14 @@
                 isWeixin : 'isWeixin',
                 marketIsGettingLocation : 'marketIsGettingLocation',
             })
+        },
+        watch : {
+            //重新获取位置信息
+            marketIsGettingLocation (newVal) {
+                if (newVal) {
+                    this.$store.dispatch('marketGetLocation');
+                }
+            }
         }
     };
 </script>
@@ -158,10 +135,6 @@
     .marketing{
         position: relative;
         @include block_outline();
-
-        .amap-demo{
-            display: none;
-        }
 
         .tabbar-img{
             @include block_outline(20px,20px);
