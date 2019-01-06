@@ -5,7 +5,7 @@
 <template>
     <div class="member-card"
          :class="[memberVipCardClass]">
-        <div class="member-status" v-if="info.status === 'frozen'">已冻结</div>
+        <div class="member-status" v-if="info.status === 'frozen'">{{$t('frozen')}}</div>
         <div class="card-content">
             <div class="person-info">
                 <div class="left">

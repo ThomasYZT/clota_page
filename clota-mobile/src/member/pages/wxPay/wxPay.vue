@@ -1,7 +1,7 @@
 <template>
     <div class="wx-pay">
         <x-button class="button"
-                  @click.native="wxPayConfig">微信支付测试</x-button>
+                  @click.native="wxPayConfig">{{$t('weChatPaymentTest')}}</x-button>
     </div>
 </template>
 

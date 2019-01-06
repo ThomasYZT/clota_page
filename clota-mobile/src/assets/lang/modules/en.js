@@ -295,4 +295,12 @@ export default {
     'driver' : 'driver',
     'officer' : 'Military officer card',
     'police' : 'Police officer\'s card',
+    'frozen' : 'Frozen',
+    'weChatPaymentTest' : 'WeChat payment test',
+    'uploadAvatar' : 'Upload avatar',
+    'birthdayPurchaseLimit' : 'Birthday limit purchase',
+    'leaf' : 'leaf',
+    'discountTicket' : 'Fold tickets',
+    'playTicket' : 'ticket',
+    'perMonth' : 'Monthly',
 };
