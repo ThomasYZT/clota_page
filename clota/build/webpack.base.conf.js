@@ -46,6 +46,9 @@ module.exports = smp.wrap({
         },
         modules: [path.resolve(__dirname, "src"), "node_modules"],
     },
+    externals: {
+        qqMap : 'qq'
+    },
     module: {
         noParse: /node_modules\/(element-ui\.js)/,
         rules: [

@@ -30,7 +30,6 @@
                         <!-- 获取经纬度坐标值 -->
                         <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })">
                             <span class="click-btn" @click="getPosition">{{$t('clickHereGetValue')}}</span>
-                            <el-amap v-if="isCreateMap" v-show="false" vid="amapDemo" :plugin="plugins"></el-amap>
                         </FormItem>
                         <!-- 经度 -->
                         <FormItem :label="$t('colonSetting', { key : $t('longitude') })"  prop="longitude">
@@ -163,23 +162,6 @@
                 },
                 //坐标值
                 coordinates : [],
-                isCreateMap : false,
-                plugins : [
-                    {
-                        pName : 'Geolocation',
-                        events : {
-                            init : (o) => {
-                                o.getCurrentPosition((status, result) => {
-                                    if (result && result.position) {
-                                        this.formData.longitude = result.position.lng.toString();
-                                        this.formData.latitude = result.position.lat.toString();
-                                        this.isCreateMap = false;
-                                    }
-                                });
-                            }
-                        }
-                    }
-                ]
             };
         },
         computed : {
@@ -295,8 +277,16 @@
                 //     }
                 // });
             },
+            /**
+             * 获取位置信息
+             */
             getPosition () {
-                this.isCreateMap = true;
+                this.$store.dispatch('getLocation').then(locationInfo => {
+                    this.formData.longitude = String(locationInfo.lng);
+                    this.formData.latitude = String(locationInfo.lat);
+                }).catch(() => {
+                    this.$Message.error(this.$t('failureTip', { tip : this.$t('getLocationInfo') }));
+                });
             }
         }
     };

@@ -444,7 +444,6 @@
                     effTime : data.effTime === 'forEver' ? null : data.effTime,
                     effTimeUnit : data.effTime === 'forEver' ? null : data.effUnit,
                     levelEffSetId : levelEffSetId.length > 0 ? levelEffSetId[0]['id'] : '',
-                    cardForm : 'sale'
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('save') })); // 操作成功

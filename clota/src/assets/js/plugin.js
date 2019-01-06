@@ -54,8 +54,6 @@ import Loading from 'element-ui/lib/loading';
 
 //引入qr-code工具
 import QRcode from 'qrcode';
-//引入地图工具
-import VueAMap from 'vue-amap';
 
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
@@ -144,14 +142,6 @@ plugin.install = function (Vue, options) {
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
-    Vue.use(VueAMap);
-
-    //全局注入获取经纬度插件
-    VueAMap.initAMapApiLoader({
-        key : '91e8fc59f5a65ca490ce419c646b7b35',
-        plugin : ['Geolocation'],
-        v : '1.4.4'
-    });
 
     // 注入全局变量
     Vue.mixin({

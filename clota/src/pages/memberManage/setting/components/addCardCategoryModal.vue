@@ -136,6 +136,7 @@
                 ajax.post('saveOrUpdateCardType',{
                     typeName : this.formData.memberCategoryName,
                     remark : this.formData.remark,
+                    cardForm : 'sale'
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('addMemberType') }));
@@ -158,7 +159,8 @@
                 ajax.post('saveOrUpdateCardType',{
                     typeName : this.formData.memberCategoryName,
                     remark : this.formData.remark,
-                    id : this.formData.id
+                    id : this.formData.id,
+                    cardForm : 'sale'
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('modifyMemberType') }));

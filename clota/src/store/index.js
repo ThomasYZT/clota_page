@@ -7,6 +7,7 @@ import routerClect from '../router/routerClect';
 import ajax from '@/api/index.js';
 import { getFourRoute, getNoSubMenuRoute } from '../router/constRouter';
 import debounce from 'lodash/debounce';
+import qqMap from 'qqMap';
 
 Vue.use(Vuex);
 //子路由深度复制
@@ -483,6 +484,24 @@ export default new Vuex.Store({
                 }
                 this.commit('updateOnlineAccountList',onlineAccountList);
             });
-        },200)
+        },200),
+        /**
+         * 获取位置信息
+         * @return {Promise<any>}
+         */
+        getLocation () {
+            return new Promise((resolve,reject) => {
+                //第一个参数是在腾讯地图申请的key（申请地址:https://lbs.qq.com/console/mykey.html）
+                let geolocation = new qqMap.maps.Geolocation('RX7BZ-4ZBKR-XGHWI-WOFNG-CTENJ-ZIFNQ', 'mapqq');
+                geolocation.getLocation((locationInfo) => {
+                    resolve(locationInfo);
+                },(err) => {
+                    reject(err);
+                },{
+                    //是否在定位失败时给出提示引导用户打开授权或打开定位开关。（即将支持）
+                    failTipFlag : true
+                });
+            });
+        }
     }
 });
