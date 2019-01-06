@@ -186,7 +186,7 @@
             .icon-arrow-right{
                 display: inline-block;
                 transform: rotate(90deg);
-                font-size: $font_size_15px;
+                font-size: $font_size_13px;
                 color: #8395A7;
             }
         }

@@ -14,7 +14,7 @@
             </span>
             <div class="bar"></div>
             <span class="product-filter" @click="productFilterShow = true">
-                产品
+                <span :class="{ 'text-filter' : choosedProductInfo.length > 0 }">产品</span>
                 <img v-if="choosedProductInfo.length > 0" class="filter" src="../../../assets/images/icon-filter-activated.svg" alt="">
                 <img v-else class="filter" src="../../../assets/images/icon-filter.svg" alt="">
             </span>
@@ -310,7 +310,7 @@
             .icon-arrow-right{
                 display: inline-block;
                 transform: rotate(90deg);
-                font-size: $font_size_15px;
+                font-size: $font_size_13px;
                 color: #8395A7;
             }
 
@@ -319,6 +319,10 @@
                 float: right;
                 font-size: $font_size_14px;
                 color: $color_333;
+
+                .text-filter{
+                    color: $color_red;
+                }
 
                 &:before{
                     @include absolute_pos(absolute,$top : 5px);

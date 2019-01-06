@@ -67,6 +67,7 @@
             background: $color_fff;
             float: left;
             border: 1px solid #FAFAFA;
+            border-radius: 4px;
 
             &:nth-of-type(2){
                 float: right;
