@@ -203,7 +203,7 @@
                         content : '';
                         @include block_outline(4px,15px);
                         background: #0073EB;
-                        @include absolute_pos(absolute,$left : 20px,$top : 12px);
+                        @include absolute_pos(absolute,$left : 15px,$top : 12px);
                     }
                 }
 

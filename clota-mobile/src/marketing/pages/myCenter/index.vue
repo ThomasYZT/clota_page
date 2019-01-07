@@ -2,7 +2,10 @@
 
 <template>
     <div class="my-center">
-        <div class="toast-info" v-if="canShowLocationTips">您还未允许系统定位手机的权限，请前往设置允许权限</div>
+        <div class="toast-info" v-if="canShowLocationTips">
+            <x-icon type="ios-information" size="18"></x-icon>
+            您还未允许系统定位手机的权限，请前往设置允许权限
+        </div>
         <div class="base-info">
             <img class="head-img" src="../../../assets/images/icon-avator.svg" alt="">
             <div class="info-name">
@@ -166,7 +169,7 @@
                 vm.queryUserInfo();
             });
         },
-        created () {
+        mounted () {
             this.$store.commit('marketUpdateIsGettingLocation',true);
         }
     };
@@ -233,6 +236,11 @@
             color: #F5A623;
             padding-left: 29px;
             font-size: $font_size_11px;
+
+            svg[type = 'ios-information'] {
+                fill: $color_yellow;
+                margin-right: 5px;
+            }
         }
 
         .base-info{

@@ -463,5 +463,9 @@
                 }
             }
         }
+
+        .button{
+            max-width: calc(100% - 15px) !important;
+        }
     }
 </style>

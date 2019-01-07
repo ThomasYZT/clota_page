@@ -102,7 +102,7 @@
         position: relative;
         @include block_outline($height : 115px);
         background: $color_fff;
-        margin-bottom : 8px;
+        margin-top : 8px;
         padding: 14px 14px 0;
         display: flex;
         flex-direction: row;
@@ -115,6 +115,8 @@
             .iconfont{
                 font-size: $font_size_16px;
                 line-height: 22px;
+                border: 0.5px solid #C5C5C5;
+                border-radius: 12px;
 
                 .icon-not-allow-select{
                     background: #F1F4FB;

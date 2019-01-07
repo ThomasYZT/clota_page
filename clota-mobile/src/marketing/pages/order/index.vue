@@ -341,8 +341,7 @@
             }
         }
         .tab-wrap{
-            @include block_outline($height : 45px);
-            /*margin-bottom: 8px;*/
+            background: $color_fff;
         }
         /deep/ .vux-tab-ink-bar{
             background: #046FDB;
