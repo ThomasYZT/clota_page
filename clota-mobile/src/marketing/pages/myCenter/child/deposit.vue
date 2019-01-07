@@ -9,6 +9,7 @@
             <div class="tips">{{$t('可提现金额(元)')}}</div>
         </div>
         <div class="money-detail-box">
+            <div class="mark"></div>
             <div class="top">
                 <div class="detail-box border-right">
                     <div class="num-info">{{accountDetail.haveWithdrawAmount | moneyFilter | contentFilter}}</div>
@@ -235,6 +236,12 @@
             border-radius: 0 0 8px 8px;
             @include absolute_pos(absolute,$left : 19px,$top : 115px);
             padding: 30px 20px;
+
+            .mark{
+                @include block_outline($height : 24px);
+                @include absolute_pos(absolute,$left : 0,$top : -12px);
+                background: url("../../../../assets/images/icon-shadow.png") repeat-x;
+            }
 
             .top,.bottom{
                 @include block_outline($height : 50%);

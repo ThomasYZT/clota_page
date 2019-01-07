@@ -251,6 +251,7 @@
                         color: #F7981C;
                         font-size: $font_size_14px;
                         text-align: right;
+                        font-weight: bold;
                     }
                 }
             }
