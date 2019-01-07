@@ -12,6 +12,7 @@
             <div class="system-name">{{$t('全民营销系统')}}</div>
             <div class="content">
                 <x-input :title="$t('mobile')"
+                         ref="mobile"
                          v-model="formData.phoneNum"
                          class="c-input"
                          text-align="right"
@@ -19,6 +20,7 @@
                          :placeholder="$t('请输入您的手机号')" >
                 </x-input>
                 <x-input :title="$t('登录密码')"
+                         ref="password"
                          v-model="formData.password"
                          class="c-input"
                          text-align="right"
@@ -27,6 +29,7 @@
                          :placeholder="$t('inputField',{ field : $t('登录密码') })">
                 </x-input>
                 <x-input :title="$t('validCode')"
+                         ref="code"
                          v-if="showValidateCode"
                          v-model="formData.code"
                          class="c-input"
@@ -107,7 +110,14 @@
                 }).then(() => {
                     return this.validateCode();
                 }).then(() => {
-                    this.queryUserType();
+                    this.$refs.mobile.blur();
+                    this.$refs.password.blur();
+                    if (this.$refs.code) {
+                        this.$refs.code.blur();
+                    }
+                    setTimeout(() => {
+                        this.queryUserType();
+                    },200);
                 });
             },
             /**
@@ -348,7 +358,9 @@
             });
         },
         created () {
-            this.setLoginErrNum();
+            let countLoginErrNum = sessionStorage.getItem('loginErr') ? Number(sessionStorage.getItem('loginErr')) : 0;
+            this.showValidateCode = countLoginErrNum >= 3;
+            // this.setLoginErrNum();
         }
     };
 </script>

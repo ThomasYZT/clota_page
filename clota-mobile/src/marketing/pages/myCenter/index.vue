@@ -166,6 +166,9 @@
                 vm.queryUserInfo();
             });
         },
+        created () {
+            this.$store.commit('marketUpdateIsGettingLocation',true);
+        }
     };
 </script>
 <style lang="scss" scoped>

@@ -19,6 +19,18 @@
                        style="width: 280px"
                        :placeholder="$t('inputField', { field : $t('memberCardTypeNameInputTip') })"/>
             </FormItem>
+            <FormItem :label="$t('会员卡类型')" prop="cardType">
+                <RadioGroup v-model="formData.cardType">
+                    <Radio label="male">{{$t('个人')}}</Radio>
+                    <Radio label="female">{{$t('企业')}}</Radio>
+                </RadioGroup>
+            </FormItem>
+            <FormItem :label="$t('会员卡属性')" prop="attribute">
+                <RadioGroup v-model="formData.attribute">
+                    <Radio label="male">{{$t('成长型')}}</Radio>
+                    <Radio label="female">{{$t('售卖型')}}</Radio>
+                </RadioGroup>
+            </FormItem>
             <FormItem :label="$t('remark')" prop="remark">
                 <Input v-model.trim="formData.remark"
                        style="width: 280px"
@@ -65,7 +77,9 @@
                     remark : '',
                     //会员卡类别名称
                     memberCategoryName : '',
-                    id : ''
+                    id : '',
+                    cardType : '',
+                    attribute : ''
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -76,6 +90,20 @@
                     ],
                     remark : [
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('remark'),length : 100 }),trigger : 'blur' }
+                    ],
+                    cardType : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{ msg : this.$t('会员卡类型') }),
+                            trigger : 'change'
+                        }
+                    ],
+                    attribute : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{ msg : this.$t('会员卡属性') }),
+                            trigger : 'change'
+                        }
                     ]
                 },
                 //保存数据中
