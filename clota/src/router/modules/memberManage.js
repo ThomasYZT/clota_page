@@ -42,7 +42,7 @@ export default {
                 meta : {
                     menuName : 'openNewCard', //lang.config.js 里面的语言键值
                     _name : 'members-card',
-                    iconClass : 'icon-home',
+                    iconClass : 'icon-open-new-card',
                     rightPath : topMenuName + '.' + 'openNewCard',
                     isMenu : true
                 },
@@ -754,7 +754,7 @@ export default {
                 meta : {
                     _name : 'invoicing-management',
                     menuName : 'inventoryManage',
-                    iconClass : 'icon-home',
+                    iconClass : 'icon-goods-control',
                     rightPath : topMenuName + '.' + 'inventoryManage',
                     isMenu : true
                 },
@@ -815,7 +815,7 @@ export default {
                 meta : {
                     _name : 'integral-mall',
                     menuName : 'integralMall', //lang.config.js 里面的语言键值
-                    iconClass : 'icon-home',
+                    iconClass : 'icon-integer-mall',
                     rightPath : topMenuName + '.' + 'integralMall',
                     isMenu : true
                 },

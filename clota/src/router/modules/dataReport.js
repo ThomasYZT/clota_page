@@ -30,7 +30,7 @@ export default {
                 meta : {
                     menuName : 'memberReport', //lang.config.js 里面的语言键值
                     _name : 'member-report',
-                    iconClass : 'icon-check-group',
+                    iconClass : 'icon-member-report',
                     rightPath : topMenuName + '.' + 'memberReport',
                     isMenu : true,
                 },
@@ -114,7 +114,7 @@ export default {
                 meta : {
                     menuName : 'memberReportCommon', //lang.config.js 里面的语言键值
                     _name : 'member-report',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-member-report',
                     rightPath : topMenuName + '.' + 'memberReportCommon',
                     isMenu : true,
                 },
@@ -189,7 +189,7 @@ export default {
                 meta : {
                     menuName : 'financeReport', //lang.config.js 里面的语言键值
                     _name : 'economic-report',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-finance-report',
                     rightPath : topMenuName + '.' + 'financeReport',
                     isMenu : true,
                 },
@@ -216,7 +216,7 @@ export default {
                 meta : {
                     menuName : 'manageReport', //lang.config.js 里面的语言键值
                     _name : 'manage-report',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-manage-report',
                     rightPath : topMenuName + '.' + 'manageReport',
                     isMenu : true,
                 },
