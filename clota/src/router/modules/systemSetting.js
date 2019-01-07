@@ -30,7 +30,7 @@ export default {
                     _name : 'payment-account', //
                     menuName : 'onlinePaymentSetting', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'onlinePaymentSetting',
-                    iconClass : 'icon-pay-online',
+                    iconClass : 'icon-pay-account',
                     isMenu : true
                 },
             },
