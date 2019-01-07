@@ -73,7 +73,7 @@
                             <Select v-model="formData.effTime" style="width:280px">
                                 <Option v-for="(item,index) in effTimeListDetail"
                                         :value="item.value"
-                                        :label="item.value !== 'forEver' ? (item.label + $t('time.' + formData.effUnit)) : item.label"
+                                        :label="item.value !== 'forEver' ? (item.label + $t('time.' + formData.effUnit)) : $t(item.label)"
                                         :key="item.value">
                                     <div class="time-list-item">
                                         <span class="time-label" v-if="item.value !== 'add'">

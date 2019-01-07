@@ -9,6 +9,7 @@ const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const webpack = require('webpack')
 
 const smp = new SpeedMeasurePlugin();
 
@@ -150,5 +151,11 @@ module.exports = smp.wrap({
             loaders: ['babel-loader?cacheDirectory=true'],
             threadPool: happyThreadPool,
         }),
+        new webpack.DefinePlugin({
+            //接口环境配置,默认是开发
+            APIENV : JSON.stringify(process.env.npm_config_api_env ? process.env.npm_config_api_env : 'dev'),
+        }),
     ]
 })
+
+console.log(process.env.npm_config_api_env);

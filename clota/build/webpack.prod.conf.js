@@ -38,6 +38,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         new webpack.DefinePlugin({
             'process.env': env,
             HTTP_ENV: JSON.stringify(process.env.npm_config_http_env ? process.env.npm_config_http_env : ''),
+            //是否开启调试模式
             DEBUGGER : JSON.stringify(process.env.npm_config_debugger ? process.env.npm_config_debugger : ''),
         }),
         // new UglifyJsPlugin({

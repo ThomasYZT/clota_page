@@ -123,7 +123,7 @@ export default {
                     partnerAbality : {
                         path : '/memberReportCommon/memberGradeAnalysis',
                         name : 'memberGradeAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberGradeAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/report.vue'),
                         meta : {
                             menuName : 'memberGradeAnalysis', //lang.config.js 里面的语言键值
                             _name : 'memberLevel',
@@ -135,7 +135,7 @@ export default {
                     memberConsumeAnalysis : {
                         path : '/memberReportCommon/memberConsumeAnalysis',
                         name : 'memberConsumeAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberConsumeAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/report.vue'),
                         meta : {
                             menuName : 'memberConsumeAnalysis', //lang.config.js 里面的语言键值
                             _name : 'memberConsume',
@@ -147,7 +147,7 @@ export default {
                     channelAnalysis : {
                         path : '/memberReportCommon/channelAnalysis',
                         name : 'channelAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/channelAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/report.vue'),
                         meta : {
                             menuName : 'channelAnalysis', //lang.config.js 里面的语言键值
                             _name : 'memberCount',
@@ -159,7 +159,7 @@ export default {
                     memberIntegerAnalysis : {
                         path : '/memberReportCommon/memberIntegerAnalysis',
                         name : 'memberIntegerAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberIntegerAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/report.vue'),
                         meta : {
                             menuName : 'memberIntegerAnalysis', //lang.config.js 里面的语言键值
                             _name : 'memberScore',
@@ -171,7 +171,7 @@ export default {
                     memberRechargeAnalysis : {
                         path : '/memberReportCommon/memberRechargeAnalysis',
                         name : 'memberRechargeAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/memberRechargeAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/report.vue'),
                         meta : {
                             menuName : 'memberRechargeAnalysis', //lang.config.js 里面的语言键值
                             _name : 'memberCharging',
@@ -198,7 +198,7 @@ export default {
                     paymentsAnalysis : {
                         path : '/financeReport/paymentsAnalysis',
                         name : 'paymentsAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/paymentsAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'paymentsAnalysis', //lang.config.js 里面的语言键值
                             _name : 'revenueStatement',
@@ -225,7 +225,7 @@ export default {
                     partnerAbality : {
                         path : '/manageReport/partnerAbality',
                         name : 'partnerAbality',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/partnerAbalityAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'partnerAbality', //lang.config.js 里面的语言键值
                             _name : 'partnerAnalysis',
@@ -237,7 +237,7 @@ export default {
                     enterGardenTimeAnalysis : {
                         path : '/manageReport/enterGardenTimeAnalysis',
                         name : 'enterGardenTimeAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/enterGardenTimeAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'enterGardenTimeAnalysis', //lang.config.js 里面的语言键值
                             _name : 'admissionPeriodAnalysis',
@@ -249,7 +249,7 @@ export default {
                     marketAnalysis : {
                         path : '/manageReport/marketAnalysis',
                         name : 'marketAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/marketAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'marketAnalysis', //lang.config.js 里面的语言键值
                             _name : 'marketAnalysis',
@@ -261,7 +261,7 @@ export default {
                     productSaleRankList : {
                         path : '/manageReport/productSaleRankList',
                         name : 'productSaleRankList',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/productSaleRankList.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'productSaleRankList', //lang.config.js 里面的语言键值
                             _name : 'productSaleAnalysis',
@@ -273,7 +273,7 @@ export default {
                     individualProductAnalysis : {
                         path : '/manageReport/individualProductAnalysis',
                         name : 'individualProductAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/individualProductAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'individualProductAnalysis', //lang.config.js 里面的语言键值
                             _name : 'individualProductAnalysis',
@@ -285,7 +285,7 @@ export default {
                     teamProductAnalysis : {
                         path : '/manageReport/teamProductAnalysis',
                         name : 'teamProductAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/teamProductAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'teamProductAnalysis', //lang.config.js 里面的语言键值
                             _name : 'teamProductAnalysis',
@@ -297,7 +297,7 @@ export default {
                     individualOrderAnalysis : {
                         path : '/manageReport/individualOrderAnalysis',
                         name : 'individualOrderAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/individualOrderAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'individualOrderAnalysis', //lang.config.js 里面的语言键值
                             _name : 'individualOrderAnalysis',
@@ -309,7 +309,7 @@ export default {
                     teamOrderAnalysis : {
                         path : '/manageReport/teamOrderAnalysis',
                         name : 'teamOrderAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/teamOrderAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'teamOrderAnalysis', //lang.config.js 里面的语言键值
                             _name : 'teamOrderAnalysis',
@@ -321,7 +321,7 @@ export default {
                     smsSendAnalysis : {
                         path : '/manageReport/smsSendAnalysis',
                         name : 'smsSendAnalysis',
-                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/smsSendRecordAnalysis.vue'),
+                        component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/report.vue'),
                         meta : {
                             menuName : 'smsSendAnalysis', //lang.config.js 里面的语言键值
                             _name : 'smsSendRecordAnalysis',

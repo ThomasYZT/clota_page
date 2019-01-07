@@ -20,6 +20,7 @@
                                 :column-data="getColumnData(item)"
                                 :table-data="getTableData(item)"
                                 :border="true"
+                                :auto-height="true"
                                 :height="95">
                             </table-com>
                         </el-collapse-item>
@@ -693,7 +694,11 @@
             getTableData (data) {
                 let tableData = [{}];
                 for (let i = 0,j = data.length; i < j; i++) {
-                    tableData[0][data[i]['levelDesc']] = data[i]['effTime'] + this.$t('time.' + data[i]['effTimeUnit']);
+                    if (data[i]['effTime'] === null || data[i]['effTime'] === '') {
+                        tableData[0][data[i]['levelDesc']] = this.$t('permanentValidity');
+                    } else {
+                        tableData[0][data[i]['levelDesc']] = data[i]['effTime'] + (data[i]['effTimeUnit'] ? this.$t('time.' + data[i]['effTimeUnit']) : '' );
+                    }
                 }
                 return tableData;
             }
