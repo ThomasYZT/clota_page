@@ -53,6 +53,7 @@
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
     import debounce from 'lodash/debounce';
+    import merge from 'lodash/merge';
     export default {
         props : {
             //默认选中的节点
@@ -206,8 +207,19 @@
                 ajax.post('getAllPrivilege',{
                     orgId : data.id
                 }).then(res => {
-                    if (res.success) {
-                        this.menuList = res.data ? res.data : [];
+                    if (res.success && res.data) {
+                        let allowPrivateCode = {};
+                        for (let i = 0,j = res.data.length; i < j; i++) {
+                            let privCode = res.data[i]['privCode'];
+                            if (privCode in allowPrivateCode) {
+                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode],res.data[i]);
+                            } else {
+                                allowPrivateCode[privCode] = res.data[i];
+                            }
+                        }
+                        for (let privCode in allowPrivateCode) {
+                            this.menuList.push(allowPrivateCode[privCode]);
+                        }
                     } else {
                         this.menuList = [];
                     }
