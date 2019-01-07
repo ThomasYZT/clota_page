@@ -236,6 +236,7 @@
             border-radius: 0 0 8px 8px;
             @include absolute_pos(absolute,$left : 19px,$top : 115px);
             padding: 30px 20px;
+            overflow: hidden;
 
             .mark{
                 @include block_outline($height : 24px);
