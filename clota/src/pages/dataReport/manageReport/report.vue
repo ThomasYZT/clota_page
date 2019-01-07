@@ -68,7 +68,7 @@
                 } else if (this.$route.name === 'smsSendAnalysis') {//短信发送记录报表
                     reportParams = `views/${env}/sheet13?iframeSizedToWindow=true&:embed=y&:showAppBanner=false&:display_count=no&:showVizHome=no`;
                 }
-                return this.reportBaseUrl + reportParams + '&:nowOrgId=' + this.manageOrgs.id;
+                return this.reportBaseUrl + reportParams + '&nowOrgId=' + this.manageOrgs.id;
             }
         }
     };

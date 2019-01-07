@@ -9,7 +9,7 @@
         <div class="audit-log" v-if="type === 'team'">
             {{$t('teamProductTips')}}
         </div>
-        <Button type="primary" @click="toOrderDetail">{{$t('viewDetail')}}</Button>
+        <Button type="primary" v-if="canShowDetail" @click="toOrderDetail">{{$t('viewDetail')}}</Button>
         <div class="text-wrap">
             <span class="continue-btn" @click="continueReserve">{{$t('continueReserve')}}</span>
         </div>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
     export default {
         data () {
             return {
@@ -52,6 +53,7 @@
              * 跳转到订单详情
              */
             toOrderDetail () {
+                if (!this.canShowDetail) return;
                 if (this.type === 'team') {
                     this.$router.push({
                         name : 'teamOrderDetail',
@@ -73,6 +75,15 @@
             next(vm => {
                 vm.getParams(to.params);
             });
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以查看订单详情
+            canShowDetail () {
+                return this.permissionInfo && 'orderDetail' in this.permissionInfo;
+            },
         }
     };
 </script>
