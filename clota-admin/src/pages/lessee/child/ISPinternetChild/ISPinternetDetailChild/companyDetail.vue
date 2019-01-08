@@ -278,6 +278,10 @@
             :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}">
         </opened-service>
+        <!--服务初始化配置-->
+        <service-init-config
+            :isDefaultPackUp="true" >
+        </service-init-config>
         <!--下属公司-->
         <sub-company
             :search-params="{id : activeNode.id}">
@@ -324,6 +328,7 @@
     import editModal from '@/components/editModal/index.vue';
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
+    import serviceInitConfig from './components/serviceInitConfig';
 
     export default {
         props : {
@@ -345,7 +350,8 @@
             subDepartment,
             cityPlugin,
             editModal,
-            onlineReceipt
+            onlineReceipt,
+            serviceInitConfig
         },
         data () {
             //校验邮箱

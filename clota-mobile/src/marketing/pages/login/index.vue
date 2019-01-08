@@ -208,7 +208,7 @@
                     orgCode : orgCode
                 }).then(res => {
                     if (res.success) {
-                        this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
+                        this.$store.commit('marketUpdateCompanyName',res.data ? res.data.companyName : '');
                         this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
                         this.$store.commit('marketUpdatOrgAddress',res.data ? res.data.orgAddress : '');
                     } else if (res.code && res.code !== '300') {
@@ -234,7 +234,11 @@
              */
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
+                    this.$store.commit('marketUpdateCompanyCode',params.companyCode);
                     this.queryOrgInfo(params.companyCode);
+                    this.createIMGValidCode();
+                } else if (this.marketINgCompanyCode) {
+                    this.queryOrgInfo(this.marketINgCompanyCode);
                     this.createIMGValidCode();
                 }
             },

@@ -245,13 +245,13 @@
                         font-size: $font_size_14px;
                         color: $color_333;
                         flex: 1;
+                        font-weight: bold;
                     }
 
                     .order-type{
                         color: #F7981C;
                         font-size: $font_size_14px;
                         text-align: right;
-                        font-weight: bold;
                     }
                 }
             }

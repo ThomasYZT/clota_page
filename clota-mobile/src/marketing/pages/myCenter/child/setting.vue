@@ -50,6 +50,8 @@
                 @click.native="toAccount">
             </cell>
         </group>
+        <x-button class="button"
+                  @click.native="logOut">{{$t('退出登录')}}</x-button>
     </div>
 </template>
 
@@ -150,6 +152,15 @@
                     xing += '*';
                 }
                 return idNum.substring(0,frontLen) + xing + idNum.substring(idNum.length - endLen);
+            },
+            /**
+             * 退出登录
+             */
+            logOut () {
+                localStorage.removeItem('marketToken');
+                this.$router.replace({
+                   name : 'marketingLogin'
+                });
             }
         },
         computed : {

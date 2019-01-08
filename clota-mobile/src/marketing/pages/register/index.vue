@@ -137,6 +137,7 @@
                 if (params && Object.keys(params).length > 0) {
                     this.getRegisterParams(params.Ucid,params.Ycode);
                     this.companyCode = params.companyCode;
+                    this.$store.commit('marketUpdateCompanyCode',params.companyCode);
                 }
             }
         },

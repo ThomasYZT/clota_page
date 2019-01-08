@@ -94,7 +94,12 @@
              */
             getParams (params) {
                 if (params && 'posterData' in params) {
-                    this.posterData = params.posterData ? params.posterData : [];
+                    this.posterData = params.posterData ? params.posterData.map(item => {
+                        return {
+                            ...item,
+                            posterSize : item.posterSize ? Number(item.posterSize / 1024 / 1024 ).toFixed(2) : ''
+                        };
+                    }) : [];
                 } else {
                     this.$router.push({
                         name : 'marketingOwnerCenter'

@@ -42,7 +42,11 @@ export const marketingGetters = {
     },
     //公司编码
     marketINgCompanyCode : state => {
-        return state.marketing.companyCode;
+        if (state.marketing.companyCode) {
+            return state.marketing.companyCode;
+        } else {
+            return localStorage.getItem('marketingCompanyCode');
+        }
     },
     //组织id
     marketOrgId : state => {
@@ -139,6 +143,7 @@ export const marketMutations = {
     },
     //更新公司code
     marketUpdateCompanyCode (state,companyCode) {
+        localStorage.setItem('marketingCompanyCode',companyCode);
         state.marketing.companyCode = companyCode;
     },
     /**
