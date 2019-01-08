@@ -88,8 +88,9 @@ export default new Vuex.Store({
         staticPayAccount : [{
             value : 'cash',
             label : 'cash'
-        }]
-
+        }],
+        //会员配置信息
+        memberConfigInfo : {}
     },
     getters : {
         //左侧菜单是否收起
@@ -116,7 +117,16 @@ export default new Vuex.Store({
         },
         //用户信息
         userInfo : state => {
-            return state.userInfo;
+            if (state.userInfo) {
+                return state.userInfo;
+            } else {
+                try {
+                    let userInfo = sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : {};
+                    return userInfo;
+                } catch (e) {
+                    return {};
+                }
+            }
         },
         //是否显示页面加载中
         isLoading : state => {
@@ -164,6 +174,37 @@ export default new Vuex.Store({
         //固定支付方式
         staticPayAccount : state => {
             return state.staticPayAccount;
+        },
+        //会员配置信息
+        memberConfigInfo : (state) => {
+            return state.memberConfigInfo;
+        },
+        //会员配置信息中不需要的权限
+        memberConfigNotPermission : (state) => {
+            //排除的权限
+            let result = {};
+            if (state.memberConfigInfo) {
+                //单账户
+                if (state.memberConfigInfo.accountPattern && state.memberConfigInfo.accountPattern === 'single') {
+                    Object.assign(result,{
+
+                    });
+                }
+                //如果不包含成长型的会员卡
+                if (state.memberConfigInfo.cardType && state.memberConfigInfo.cardType === 'sale') {
+                    Object.assign(result,{
+                        'growth-setting' : 'allow',
+                    });
+                }
+                //如果不包含售卖型的会员卡
+                if (state.memberConfigInfo.cardType && state.memberConfigInfo.cardType === 'growth') {
+                    Object.assign(result,{
+                        'batchNewCard' : 'allow',//批量开卡
+                        'batchNewCard' : 'allow',//退卡
+                    });
+                }
+            }
+            return result;
         }
     },
     mutations : {
@@ -192,6 +233,7 @@ export default new Vuex.Store({
         },
         //设置用户信息
         updateUserInfo (state,data) {
+            sessionStorage.setItem('userInfo',JSON.stringify(data));
             state.userInfo = data;
         },
         //更新路由信息
@@ -249,6 +291,10 @@ export default new Vuex.Store({
         //修改在线支付方式
         updateOnlineAccountList (state,onlineAccountList) {
             state.onlineAccountList = onlineAccountList;
+        },
+        //更新会员配置信息
+        updateMemberConfigInfo (state,memberConfigInfo) {
+            state.memberConfigInfo = memberConfigInfo;
         }
     },
     actions : {
@@ -262,27 +308,18 @@ export default new Vuex.Store({
                         sessionStorage.setItem('token',res.data ? res.data.token : '');
                         return new Promise((resolve, reject) => {
                             let privCode = {};
-                            let privateData = res.data ? res.data.privileges ? res.data.privileges : [] : [];
+                            let privateData = res.data ? (res.data.privileges ? res.data.privileges : []) : [];
                             //获取账号的菜单权限
                             for (let i = 0,j = privateData.length; i < j; i++) {
                                 privCode[privateData[i]['privCode']] = 'allow';
                             }
-                            let routers = childDeepClone(routerClect, privCode);
-                            routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
-                            //重新设置路由信息
-                            resetRouter(routers);
-                            store.commit('updatePermissionInfo',privCode);
-                            store.commit('updateRouteInfo',routers);
-                            // 如果有权限，则跳转到有权限的第一个页面
-                            if (routers.length > 0) {
+                            return store.dispatch('getServiceSetting',privCode).then(routers => {
                                 if (replaceRoute === 'replaceRoute' || !route) {
                                     resolve(routers[0]);
                                 } else {
                                     resolve(route);
                                 }
-                            } else {
-                                reject();
-                            }
+                            });
                         }).catch(err => {
                             console.log(err);
                         });
@@ -355,12 +392,17 @@ export default new Vuex.Store({
                             };
                         }
                     }) : [];
+                    //如果账户下没有机构信息，则退出登录
+                    if (manageOrgs.length < 1) {
+                        return Promise.reject();
+                    }
                     let userInfo = {
                         ...store.state.userInfo,
                         manageOrgs : manageOrgs
                     };
-                    sessionStorage.setItem('userInfo',JSON.stringify(userInfo));
+                    store.commit('updateUserInfo',userInfo);
                     for (let i = 0,j = manageOrgs.length; i < j; i++) {
+                        //如果当前保存的机构id还在，则使用保存机构的id去获取信息
                         if (store.getters.manageOrgs.id === manageOrgs[i].id) {
                             store.commit('updateManageOrgs',manageOrgs[i]);
                             store.commit('updatemanageOrgList',manageOrgs);
@@ -369,6 +411,7 @@ export default new Vuex.Store({
                     }
                     store.commit('updateManageOrgs',manageOrgs[0]);
                     store.commit('updatemanageOrgList',manageOrgs);
+                    //这里表示不登录保存的机构，而是登录有权限的第一个机构
                     return 'replaceRoute';
                 } else {
                     store.commit('updatemanageOrgList',[]);
@@ -501,6 +544,46 @@ export default new Vuex.Store({
                     //是否在定位失败时给出提示引导用户打开授权或打开定位开关。（即将支持）
                     failTipFlag : true
                 });
+            });
+        },
+        /**
+         * 获取会员配置信息
+         * @param{Object} store
+         * @param{Object} privCode 权限信息
+         */
+        getServiceSetting (store,privCode) {
+            return ajax.post('getServiceSetting',{
+                serviceCode : 'member',
+            }).then(res => {
+                if (res.success) {
+                    let routers = [];
+                    store.commit('updateMemberConfigInfo',{
+                        accountPattern : res.data ? res.data.accountPattern : '',
+                        cardType : res.data ? res.data.cardType : '',
+                        memberPoint : res.data ? res.data.memberPoint : '',
+                        memberRecharge : res.data ? res.data.memberRecharge : '',
+                    });
+                    let memberConfigNotPermission = store.getters.memberConfigNotPermission;
+                    for (let item in memberConfigNotPermission) {
+                        if (item in privCode) {
+                            delete privCode[item];
+                        }
+                    }
+                    routers = childDeepClone(routerClect, privCode);
+                    routers.push(getFourRoute({ menuName : 'notFound', lightMenu : '', _name : '' }));
+                    //重新设置路由信息
+                    resetRouter(routers);
+                    store.commit('updatePermissionInfo',privCode);
+                    store.commit('updateRouteInfo',routers);
+                    // 如果有权限，则跳转到有权限的第一个页面
+                    if (routers.length > 0) {
+                        return routers;
+                    } else {
+                        return Promise.reject();
+                    }
+                } else {
+                    return Promise.reject();
+                }
             });
         }
     }
