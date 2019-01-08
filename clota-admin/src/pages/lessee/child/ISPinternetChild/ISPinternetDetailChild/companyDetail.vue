@@ -282,6 +282,9 @@
         <service-init-config
             :isDefaultPackUp="true" >
         </service-init-config>
+        <!-- 公众号配置 -->
+        <official-accounts-setting :isDefaultPackUp="true">
+        </official-accounts-setting>
         <!--下属公司-->
         <sub-company
             :search-params="{id : activeNode.id}">
@@ -329,6 +332,7 @@
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
     import serviceInitConfig from './components/serviceInitConfig';
+    import officialAccountsSetting from './components/officialAccountsSetting'
 
     export default {
         props : {
@@ -351,7 +355,8 @@
             cityPlugin,
             editModal,
             onlineReceipt,
-            serviceInitConfig
+            serviceInitConfig,
+            officialAccountsSetting
         },
         data () {
             //校验邮箱
