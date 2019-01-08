@@ -38,7 +38,7 @@
                             <span class="info-val" v-w-title="item[2].value">{{item[2].value | contentFilter}}</span>
                         </div>
                     </li>
-                    <li class="list" v-if="item.length === 2">
+                    <li class="list" v-if="item.length === 2" :key="index">
                         <div class="info-list4">
                             <span class="info-key">{{item[0].label}}：</span>
                             <span class="info-val" v-w-title="item[0].value">{{item[0].value | contentFilter}}</span>
@@ -57,8 +57,7 @@
             </ul>
 
             <!--在线收款账户-->
-            <online-receipt :node-info="channelDetailInfo"
-                            :show-pick-up="false"
+            <online-receipt :show-pick-up="false"
                             :receipt-account-info="lessDetail"
                             @fresh-org-data="getLesseeDetail">
             </online-receipt>
@@ -417,6 +416,7 @@
                 }).then(res => {
                     if (res.status === 200) {
                         this.lessDetail = res.data ? res.data : {};
+                        this.lessDetail.auditStatus = this.auditStatus;
                     } else {
                         this.lessDetail = {};
                     }
