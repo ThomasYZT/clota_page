@@ -46,6 +46,8 @@ const apiList = {
     getManageOrgs : '/account/getManageOrgs',
     //获取短信供应商列表
     'getSmsProviderList' : '/sms/getSmsProviderList',
+    //获取会员配置信息
+    'getServiceSetting' : '/privilege/getMemberServiceSetting',
     //首页接口
     ...index,
     //会员信息接口

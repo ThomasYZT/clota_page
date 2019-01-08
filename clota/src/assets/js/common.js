@@ -27,12 +27,19 @@ export default {
      * 获取用户信息
      */
     getUserInfo () {
-        let userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-        let manageOrgs = userInfo && userInfo.manageOrgs ? userInfo.manageOrgs : [];
-        return {
-            userInfo,
-            manageOrgs,
-        };
+        try {
+            let userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+            let manageOrgs = userInfo && userInfo.manageOrgs ? userInfo.manageOrgs : [];
+            return {
+                userInfo,
+                manageOrgs,
+            };
+        } catch (e) {
+            return {
+                userInfo : {},
+                manageOrgs : []
+            };
+        }
     },
 
     /**

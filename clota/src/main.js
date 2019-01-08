@@ -35,27 +35,15 @@ router.beforeEach((to, from, next) => {
     if (to.name === 'login' || to.name === 'register') {
         next();
     } else {
+        let userInfo = common.getUserInfo().userInfo;
         //判断是否已经获取用户信息
-        if (Object.keys(store.getters.userInfo).length > 0 ) {
+        if (userInfo && Object.keys(userInfo).length > 0 ) {
             //判断是否已经保存权限信息，如果permissionInfo不为null表示已经获取过权限
             //这里判断了如果有保存的权限信息，就不再继续判断是否有路由的权限，因为如果没有这个权限会跳转到无权限的页面
             if (store.getters.permissionInfo !== null) {
                 next();
             } else {
-                //查询本地存储的用户信息是否还有，如果没有则直接跳转到登录页面
-                let manageOrgs = common.getUserInfo().manageOrgs;
-                if (manageOrgs && Object.keys(manageOrgs).length > 0) {
-                    let orgIndex = localStorage.getItem('orgId');
-                    if (orgIndex === '' || orgIndex === null) {
-                        store.commit('updateManageOrgs',manageOrgs[0]);
-                    } else {
-                        for (let i = 0,j = manageOrgs.length; i < j; i++) {
-                            if (orgIndex === manageOrgs[i].id) {
-                                store.commit('updateManageOrgs',manageOrgs[i]);
-                                break;
-                            }
-                        }
-                    }
+                if (ajax.getToken()) {
                     store.dispatch('getUserRight', to).then((toRouter) => {
                         if (toRouter) {
                             next({ ...to, replace : true });
@@ -76,35 +64,9 @@ router.beforeEach((to, from, next) => {
                 }
             }
         } else {
-            //判断是否本地有存储token，有的话，直接重新获取用户信息
-            if (ajax.getToken()) {
-                let userInfo = common.getUserInfo().userInfo;
-                store.dispatch('getUserInfo',{
-                    userInfo : userInfo,
-                    route : to
-                }).then(route => {
-                    if ((!route || !route.path ) || route.path === to.path) {
-                        if (to.query && Object.keys(to.query).length > 0) {
-                            next({
-                                path : to.path,
-                                query : to.query
-                            });
-                        } else {
-                            next({
-                                path : to.path
-                            });
-                        }
-                    } else {
-                        next({
-                            path : route.path
-                        });
-                    }
-                });
-            } else {
-                next({
-                    name : 'login'
-                });
-            }
+            next({
+                name : 'login'
+            });
         }
     }
 });
