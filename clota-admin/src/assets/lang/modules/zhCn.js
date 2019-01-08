@@ -613,4 +613,5 @@ export default {
     'preCheckReject' : '预审核不通过',
     'notExpired' : '未过期',
     'hasExpired' : '已过期',
+    'other' : '其它',
 };

@@ -43,9 +43,10 @@
                             let data = [];
                             let legend = [];
                             res.data.regionList.map(item => {
-                                legend.push(item.regionName);
+                                let regionName = item.regionName ? item.regionName : this.$t('other');
+                                legend.push(regionName);
                                 data.push({
-                                    name : item.regionName,
+                                    name : regionName,
                                     value : item.count
                                 });
                             });
