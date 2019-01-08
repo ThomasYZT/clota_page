@@ -55,6 +55,7 @@
             </x-input>
             <cell v-show="stage === 3"
                   :title="$t('所属类别')"
+                  is-link
                   @click.native="typeChooseModalShow = true"
                   :value="typeName">
             </cell>
