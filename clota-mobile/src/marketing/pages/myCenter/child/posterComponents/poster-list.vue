@@ -8,7 +8,7 @@
             </div>
             <div class="poster-desc">
                 <div class="poster-name">{{item.posterName}}</div>
-                <div class="poster-size">{{item.size}}</div>
+                <div class="poster-size">{{item.posterSize | contentFilter}}M</div>
             </div>
         </div>
     </div>

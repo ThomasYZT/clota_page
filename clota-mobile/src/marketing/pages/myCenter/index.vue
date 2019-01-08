@@ -234,8 +234,11 @@
             line-height: 35px;
             @include overflow_tip();
             color: #F5A623;
-            padding-left: 29px;
+            padding-left: 19px;
             font-size: $font_size_11px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
 
             svg[type = 'ios-information'] {
                 fill: $color_yellow;
