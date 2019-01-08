@@ -575,7 +575,11 @@
                     if (res.success) {
                         this.$Message.success(this.$t('resetPswSuccess',{ msg : this.companyDetail.manager }));
                     } else {
-                        this.$Message.error(res.message || this.$t('resetPswFail',{ msg : this.companyDetail.manager }));
+                        if (res.code && res.code === 'A012') {
+                            this.$Message.error(this.$t(res.code));
+                        } else {
+                            this.$Message.error(res.message || this.$t('resetPswFail',{ msg : this.companyDetail.manager }));
+                        }
                     }
                 }).finally(() => {
                     this.$refs.editModal.hide();

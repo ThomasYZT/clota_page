@@ -57,7 +57,8 @@
             </ul>
 
             <!--在线收款账户-->
-            <online-receipt :show-pick-up="false"
+            <online-receipt v-if="auditStatus === 'success'"
+                            :show-pick-up="false"
                             :receipt-account-info="lessDetail"
                             @fresh-org-data="getLesseeDetail">
             </online-receipt>

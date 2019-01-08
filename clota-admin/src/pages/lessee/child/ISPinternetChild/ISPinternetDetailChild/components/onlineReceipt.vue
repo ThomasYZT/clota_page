@@ -319,16 +319,17 @@
             cancelEdit () {
                 this.isEditing = false;
                 this.resetFormData();
-                let parentOrgPaymentChannel = (this.receiptAccountInfo.parentOrgPaymentChannel && this.receiptAccountInfo.parentOrgPaymentChannel.paramData) ?
+                let parentOrgPaymentChannelInfo = (this.receiptAccountInfo.parentOrgPaymentChannel && this.receiptAccountInfo.parentOrgPaymentChannel.paramData) ?
                     JSON.parse(this.receiptAccountInfo.parentOrgPaymentChannel.paramData) : {};
-                let orgPaymentChannel = (this.receiptAccountInfo.orgPaymentChannel && this.receiptAccountInfo.orgPaymentChannel.paramData) ?
+                let orgPaymentChannelInfo = (this.receiptAccountInfo.orgPaymentChannel && this.receiptAccountInfo.orgPaymentChannel.paramData) ?
                     JSON.parse(this.receiptAccountInfo.orgPaymentChannel.paramData) : {};
+                let orgPaymentChannel = this.receiptAccountInfo.orgPaymentChannel;
                 this.setReceiptAccountInfo({
                     useCorpPayAcc : this.receiptAccountInfo.useCorpPayAcc === 'true' ? true : false,
                     paymentChannel : this.receiptAccountInfo.useCorpPayAcc === 'true' ? 'useCorpPayAcc' :
-                        this.receiptAccountInfo.orgPaymentChannel.paymentChannel,
+                        orgPaymentChannel ? orgPaymentChannel.paymentChannel : 'none',
                     paymentChannelInfo : this.receiptAccountInfo.useCorpPayAcc === 'true' ?
-                        parentOrgPaymentChannel : orgPaymentChannel,
+                        parentOrgPaymentChannelInfo : orgPaymentChannelInfo,
                 });
             },
             /**
@@ -437,7 +438,7 @@
              */
             setReceiptAccountInfo ({ useCorpPayAcc, paymentChannel, paymentChannelInfo }) {
                 this.useCorpPayAcc = useCorpPayAcc;
-                this.paymentChannel = paymentChannel;
+                this.paymentChannel = paymentChannel ? paymentChannel : 'none';
 
                 if (paymentChannel === 'yinshi' ||
                     (useCorpPayAcc && this.parentOrgPaymentChannel.paymentChannel === 'yinshi') ||
@@ -663,15 +664,16 @@
             receiptAccountInfo : {
                 handler (newVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
-                        let parentOrgPaymentChannel = (newVal.parentOrgPaymentChannel && newVal.parentOrgPaymentChannel.paramData) ?
+                        let parentOrgPaymentChannelInfo = (newVal.parentOrgPaymentChannel && newVal.parentOrgPaymentChannel.paramData) ?
                             JSON.parse(newVal.parentOrgPaymentChannel.paramData) : {};
-                        let orgPaymentChannel = (newVal.orgPaymentChannel && newVal.orgPaymentChannel.paramData) ?
+                        let orgPaymentChannelInfo = (newVal.orgPaymentChannel && newVal.orgPaymentChannel.paramData) ?
                             JSON.parse(newVal.orgPaymentChannel.paramData) : {};
                         this.setReceiptAccountInfo({
                             useCorpPayAcc : newVal.useCorpPayAcc === 'true' ? true : false,
-                            paymentChannel : newVal.useCorpPayAcc === 'true' ? 'useCorpPayAcc' : newVal.orgPaymentChannel.paymentChannel,
+                            paymentChannel : newVal.useCorpPayAcc === 'true' ? 'useCorpPayAcc' :
+                                newVal.orgPaymentChannel ? newVal.orgPaymentChannel.paymentChannel : 'none',
                             paymentChannelInfo : newVal.useCorpPayAcc === 'true' ?
-                                parentOrgPaymentChannel : orgPaymentChannel,
+                                parentOrgPaymentChannelInfo : orgPaymentChannelInfo,
                         });
                     }
                 },

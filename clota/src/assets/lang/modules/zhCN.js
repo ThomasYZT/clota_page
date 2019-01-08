@@ -2419,4 +2419,5 @@ export default {
     'financeReport' : '财务报表',
     'accountExists' : '账户已存在',
     'getLocationInfo' : '获取位置信息',
+    'A012' : '重置密码太过频繁，请稍后再试',
 };
