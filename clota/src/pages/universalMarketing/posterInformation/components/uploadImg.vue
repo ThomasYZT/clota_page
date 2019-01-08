@@ -103,10 +103,14 @@
             /**
              * 文件上传成功
              * @param {object} res
+             * @param {object} file 当前上传的文件
              */
-            uploadSuc (res) {
+            uploadSuc (res,file) {
                 if (res.success) {
-                    this.uploadList.push(res.data);
+                    this.uploadList.push({
+                        url : res.data,
+                        size : file.size
+                    });
                     //若已上传文件到达上传数量限制，则不显示上传按钮
                     if (this.uploadList.length === this.quantityLimit) {
                         this.addDisabled = true;

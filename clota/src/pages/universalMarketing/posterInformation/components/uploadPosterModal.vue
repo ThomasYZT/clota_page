@@ -92,7 +92,9 @@
                     //posterType : '',
                     //海报图片地址
                     posterUrl : '',
-                    img : []
+                    img : [],
+                    //上传文件大小
+                    size : ''
                 },
                 //表单验证规则
                 ruleValidate : {
@@ -154,8 +156,13 @@
              *  添加海报
              */
             addPoster () {
-                this.formData.posterUrl = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0] : '';
-                ajax.post('marketing-addPoster', this.formData).then(res => {
+                this.formData.posterUrl = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0]['url'] : '';
+                this.formData.posterSize = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0]['size'] : '';
+                ajax.post('marketing-addPoster', {
+                    posterName : this.formData.posterName,
+                    posterUrl : this.formData.posterUrl,
+                    posterSize : this.formData.posterSize,
+                }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                         this.$emit('addSuccess');
