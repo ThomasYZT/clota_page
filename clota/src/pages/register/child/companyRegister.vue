@@ -15,10 +15,10 @@
                     <FormItem :label-width="400"
                               :label="$t('pleaseInputCompanyBaseInfo')">
                     </FormItem>
-                    <!-- 企业编号 -->
-                    <FormItem :label="$t('companyNo')" prop="enterpriseNumber">
-                        <Input v-model="formDataCompany.enterpriseNumber" :placeholder="$t('inputField', { field : $t('companyNo') })"></Input>
-                    </FormItem>
+                    <!-- 企业编号 暂时去掉 -->
+                    <!--<FormItem :label="$t('companyNo')" prop="enterpriseNumber">-->
+                        <!--<Input v-model="formDataCompany.enterpriseNumber" :placeholder="$t('inputField', { field : $t('companyNo') })"></Input>-->
+                    <!--</FormItem>-->
                     <!-- 企业名称 -->
                     <FormItem :label="$t('company_name')" prop="orgName">
                         <Input v-model="formDataCompany.orgName" :placeholder="$t('inputField', { field : $t('company_name') })"></Input>
@@ -119,7 +119,7 @@
                     //合作伙伴类型
                     partnerType : 'company',
                     //企业编号
-                    enterpriseNumber : '',
+                    //enterpriseNumber : '',
                     //姓名，企业名称
                     orgName : '',
                     //联系人
@@ -148,10 +148,10 @@
                 //企业注册表单校验
                 companyRuleValidate : {
                     //企业编号
-                    enterpriseNumber : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('companyNo') }), trigger : 'blur' },
-                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('companyNo'),length : 20 }),trigger : 'blur' }
-                    ],
+                    // enterpriseNumber : [
+                    //     { required : true, message : this.$t('errorEmpty', { msg : this.$t('companyNo') }), trigger : 'blur' },
+                    //     { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('companyNo'),length : 20 }),trigger : 'blur' }
+                    // ],
                     //企业名称
                     orgName : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('company_name') }), trigger : 'blur' },
