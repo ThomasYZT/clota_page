@@ -601,4 +601,24 @@ export const overdueStatus = [
     },
 ];
 
+//支付渠道类型字典数据
+export const paymentChannelList = [
+    {
+        label : 'UseSuperiorPaymentAccount', //使用上级收款账户
+        value : 'useCorpPayAcc',
+    },
+    {
+        label : 'yinshiPayment', //银石支付
+        value : 'yinshi',
+    },
+    {
+        label : 'weChatOrAlipayDirect', //微信支付宝直连
+        value : 'wxorali',
+    },
+    {
+        label : 'notOpen', //不开通
+        value : 'none',
+    }
+];
+
 

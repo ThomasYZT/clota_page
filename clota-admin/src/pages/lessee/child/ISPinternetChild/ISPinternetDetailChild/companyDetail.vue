@@ -269,8 +269,7 @@
         </Form>
 
         <!--在线收款账户-->
-        <online-receipt :node-info="activeNode"
-                        :receipt-account-info="companyDetail"
+        <online-receipt :receipt-account-info="companyDetail"
                         @fresh-org-data="getCompanyDetail">
         </online-receipt>
 

@@ -85,28 +85,57 @@
              * 菜单组织树
              */
             menuRenderContent (h, { root, node, data }) {
-                return h('div', {
-                    style : {
-                        display : 'inline-block',
-                        width : '100%'
-                    },
-                    class : {
-                        'title-wrap' : true,
-                        'disabled' : data.disabled
-                    },
-                }, [
-                    h('span', {
-                        class : {
-                            'title-class' : true
-                        },
-                        directives : [
-                            {
-                                name : 'w-title',
-                                value : data.orgName
+                if (data.disabled) {
+                    return h(
+                        'tooltip',
+                        {
+                            props : {
+                                content : '该机构未启用',
+                                transfer : true,
+                                placement : 'left-start'
                             }
-                        ],
-                    }, data.orgName)
-                ]);
+                        }, [
+                            h('div', {
+                                style : {
+                                    display : 'inline-block',
+                                    width : '100%'
+                                },
+                                class : {
+                                    'title-wrap' : true,
+                                    'disabled' : data.disabled
+                                },
+                            }, [
+                                h('span', {
+                                    class : {
+                                        'title-class' : true
+                                    },
+                                }, data.orgName)
+                            ])
+                        ]
+                    )
+                } else {
+                    return h('div', {
+                        style : {
+                            display : 'inline-block',
+                            width : '100%'
+                        },
+                        class : {
+                            'title-wrap' : true,
+                        },
+                    }, [
+                        h('span', {
+                            class : {
+                                'title-class' : true
+                            },
+                            directives : [
+                                {
+                                    name : 'w-title',
+                                    value : data.orgName
+                                }
+                            ],
+                        }, data.orgName)
+                    ]);
+                }
             },
         },
         mounted () {
@@ -132,7 +161,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
 
     .org-tree-wrap{
         padding: 5px 0 10px 0;
@@ -226,6 +255,13 @@
 
         /deep/ .tree-list{
             overflow-x: hidden;
+        }
+
+        /deep/ .ivu-tooltip {
+            width: 100%;
+            .ivu-tooltip-rel {
+                width: 100%;
+            }
         }
     }
 </style>

@@ -613,4 +613,9 @@ export default {
     'preCheckReject' : '预审核不通过',
     'notExpired' : '未过期',
     'hasExpired' : '已过期',
+    'UseSuperiorPaymentAccount' : '使用上级收款账户',
+    'yinshiPayment' : '银石支付',
+    'weChatOrAlipayDirect' : '微信支付宝直连',
+    'notOpen' : '不开通',
+
 };
