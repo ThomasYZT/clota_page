@@ -121,16 +121,22 @@
                     }
                 });
                 if (canEdit) {
-                    forEach(this.typeList, (item,index, arr) => {
-                        if (data.label === item.label) {
-                            this.$set(arr[index],'type','edit');
-                            return false;
-                        }
-                    });
+                    this.changeEditStatus(data);
                 } else {
                     this.$Message.warning(this.$t('haveUnsavedMarketTypeTip'));
                 }
-
+            },
+            /**
+             *  修改编辑状态
+             *  @param {object} data
+             */
+            changeEditStatus (data) {
+                forEach(this.typeList, (item,index, arr) => {
+                    if (data.label === item.label) {
+                        this.$set(arr[index],'type','edit');
+                        return false;
+                    }
+                });
             },
             /**
              *  删除
