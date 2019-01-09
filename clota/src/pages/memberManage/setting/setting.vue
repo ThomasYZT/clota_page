@@ -204,31 +204,66 @@
                     <!--微信端推送交易记录设置-->
                     <div class="content-item">
                         <div class="title">{{$t('wxPushExchangeRecordSetting')}}</div>
-                        <div :class="{'ivu-form-item-error': error.wxPushErr, 'main': true}">
+                        <div :class="{'main': true}">
                             <div class="switcher">
                                 <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" ></i-switch><span>{{$t('whetherPushInfoOnWx')}}</span>
                             </div>
                             <!--<div class="switcher">-->
                             <!--<i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>-->
                             <!--</div>-->
-                            <span class="text">{{$t('title')}}</span>
-                            <Input type="text"
-                                   v-model="settingData.wxMpTemplateInfoSet.title"
-                                   @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr')"
-                                   style="margin: 0 10px;width: 300px;"></Input>
-                            <div class="ivu-form-item-error-tip"
-                                 style="left: 50px;"
-                                 v-if="error.wxPushErr">{{error.wxPushErr}}
+                            <div class="text" :class="{'ivu-form-item-error': error.wxPushErr}">
+                                <span class="text">{{$t('title')}}</span>
+                                <Input type="text"
+                                       v-model="settingData.wxMpTemplateInfoSet.title"
+                                       :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
+                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10)"
+                                       style="margin: 0 10px;width: 300px;"></Input>
+                                <div class="ivu-form-item-error-tip"
+                                     v-if="error.wxPushErr">{{error.wxPushErr}}
+                                </div>
+                            </div>
+
+                            <div class="text" :class="{'ivu-form-item-error': error.chargeTemplateIdErr}">
+                                <span class="text">{{$t('会员充值通知模版ID：')}}</span>
+                                <Input type="text"
+                                       :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
+                                       v-model="settingData.wxMpTemplateInfoSet.chargeTemplateId"
+                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr', 1, 20)"
+                                       style="margin: 0 10px;width: 300px;"></Input>
+                                <div class="ivu-form-item-error-tip"
+                                     v-if="error.chargeTemplateIdErr">{{error.chargeTemplateIdErr}}
+                                </div>
+                            </div>
+                            <div class="text" :class="{'ivu-form-item-error': error.consumeTemplateIdErr}">
+                                <span class="text">{{$t('消费成功通知模版ID：')}}</span>
+                                <Input type="text"
+                                       :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
+                                       v-model="settingData.wxMpTemplateInfoSet.consumeTemplateId"
+                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr', 1, 20)"
+                                       style="margin: 0 10px;width: 300px;"></Input>
+                                <div class="ivu-form-item-error-tip"
+                                     v-if="error.consumeTemplateIdErr">{{error.consumeTemplateIdErr}}
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!--微信推送消息模版ID-->
+                    <!--<div class="content-item">-->
+                        <!--<div class="title">{{$t('微信推送消息模板ID')}}</div>-->
+                        <!--<div :class="{'main': true}">-->
+
+                        <!--</div>-->
+                    <!--</div>-->
 
                     <!--微信会员卡推送设置 (仅公众号配置开通支付即会员才显示)-->
                     <div class="content-item" v-if="WxMpSetInfo.payGiftCard === 'true'">
                         <div class="title">{{$t('微信会员卡推送设置')}}</div>
                         <div :class="{'main': true}">
                             <div class="switcher">
-                                <Select style="width:200px" :placeholder="$t('selectField', { msg : '要推送的会员卡' } )">
+                                <Select v-model="wxPushMemberLevelConfig.id"
+                                        style="width:200px"
+                                        :placeholder="$t('selectField', { msg : '要推送的会员卡' } )">
                                     <Option v-for="item in levelsOfGrowthList"
                                             :value="item.id" :key="item.value">{{ item.levelDesc }}</Option>
                                 </Select>
@@ -236,24 +271,6 @@
                         </div>
                     </div>
 
-                    <!--微信推送消息模版ID-->
-                    <!--<div class="content-item">-->
-                    <!--<div class="title">{{$t('微信推送消息模板ID')}}</div>-->
-                    <!--<div :class="{'main': true}">-->
-                    <!--<div class="switcher">-->
-                    <!--<span class="text">{{$t('会员充值通知ID：')}}</span>-->
-                    <!--<Input type="text"-->
-                    <!--v-model="settingData.wxPushTemplateIds.rechargeTemplateId"-->
-                    <!--style="margin: 0 10px;width: 300px;"></Input>-->
-                    <!--</div>-->
-                    <!--<div class="switcher">-->
-                    <!--<span class="text">{{$t('消费成功通知ID：')}}</span>-->
-                    <!--<Input type="text"-->
-                    <!--v-model="settingData.wxPushTemplateIds.consumeTemplateID"-->
-                    <!--style="margin: 0 10px;width: 300px;"></Input>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
                 </template>
 
 
@@ -319,7 +336,11 @@
                     wxMpTemplateInfoSet : {
                         showStoreValue : false,
                         // showIntegration : false,
-                        title : ''
+                        title : '',
+                        //重置模版id
+                        chargeTemplateId : '',
+                        //消费模板ID
+                        consumeTemplateId : '',
                     },
                     //微信会员卡推送设置
                     wxMemberCardPushSetting : {
@@ -352,11 +373,17 @@
                     tradeAmountErr : '',//交易金额错误
                     replaceCardFeeErr : '',//补卡收费金额错误,
                     wxPushErr : '',//微信端推送交易记录 标题设置错误
+                    chargeTemplateIdErr : '',//微信端充值提醒模版id错误
+                    consumeTemplateIdErr : '',//微信端消费提醒模版id错误
                 },
                 //会员类别及会员级别数据
-                memberLevelsData : {},
+                memberLevelsData : {
+                    id : '',
+                },
                 //成长型会员卡级别列表
                 levelsOfGrowthList : [],
+                //微信会员卡推送设置
+                wxPushMemberLevelConfig : {},
             };
         },
         watch : {
@@ -436,7 +463,9 @@
                                     wxMpTemplateInfoSet : res.data.wxMpTemplateInfoSet ? JSON.parse(res.data.wxMpTemplateInfoSet) : {
                                         showStoreValue : false,
                                         // showIntegration : false,
-                                        title : ''
+                                        title : '',
+                                        chargeTemplateId : '',
+                                        consumeTemplateId : '',
                                     }
                                 };
                                 params.wxMpTemplateInfoSet.showStoreValue = params.wxMpTemplateInfoSet.showStoreValue ? JSON.parse(params.wxMpTemplateInfoSet.showStoreValue) : false;
@@ -698,12 +727,12 @@
              * @param data
              * @param errType
              */
-            checkInputMaxErr (data, errType) {
-                if (String(data).length < 0) {
-                    this.error[errType] = this.$t('errorMinLength', { field : this.$t('title'), length : 1 });
+            checkInputMaxErr (data, errType, minLen, maxLen) {
+                if (String(data).length < minLen) {
+                    this.error[errType] = this.$t('errorMinLength', { field : this.$t(''), length : minLen });
                     return false;
-                } else if (String(data).length > 10) {
-                    this.error[errType] = this.$t('errorMaxLength', { field : this.$t('title'), length : 10 });
+                } else if (String(data).length > maxLen) {
+                    this.error[errType] = this.$t('errorMaxLength', { field : this.$t(''), length : maxLen });
                     return false;
                 } else {
                     this.error[errType] = '';
@@ -775,6 +804,18 @@
                         this.WxMpSetInfo = {};
                     }
                 })
+            },
+            /**
+             * 查询微信会员卡推送设置
+             */
+            queryDefaultDrawMemberLevel () {
+                ajax.post('queryDefaultDrawMemberLevel').then(res => {
+                    if (res.success && res.data) {
+                        this.wxPushMemberLevelConfig.id = res.data.id ? res.data.id : '';
+                    } else {
+                        this.wxPushMemberLevelConfig.id = '';
+                    }
+                });
             }
         },
     };
@@ -921,6 +962,12 @@
             .ivu-btn + .ivu-btn {
                 margin-left: 20px;
             }
+        }
+
+        .text {
+            position: relative;
+            padding: 5px 0;
+            margin-bottom: 15px !important;
         }
 
     }

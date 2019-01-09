@@ -227,6 +227,8 @@ export default {
     'queryLevelsOfGrowth' : '/member/memberLevel/queryLevelsOfGrowth',
     //查询会员管理微信公众号配置
     'queryMemberWxMpSet' : '/member/memberBasicSet/queryMemberWxMpSet',
+    //查询微信会员卡推送设置
+    'queryDefaultDrawMemberLevel' : 'member/memberLevel/queryDefaultDrawMemberLevel',
 
     /***********************************会员统计***********************************/
     //获取会员总量
