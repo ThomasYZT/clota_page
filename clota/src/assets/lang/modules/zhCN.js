@@ -1521,7 +1521,7 @@ export default {
     'reqRefundForProducts' : '您正在申请对以下产品进行退票',
     'productNeedsRefund' : '需要退票的产品',
     'refundProductTip' : '提示：您申请退票的产品中包含已核销的产品',
-    'alterProductTip' : '提示：您申请改签的产品中包含按产品规则不允许改签的产品',
+    'alterProductTip' : '提示：您申请改签的产品中包含按产品规则不允许改签的产品，是否继续申请？',
     'productQuantity' : '产品数量',
     'teamOrderBaseInfo' : '团队订单基本信息',
     'whetherPickTicket' : '是否取票',
@@ -2420,4 +2420,5 @@ export default {
     'accountExists' : '账户已存在',
     'getLocationInfo' : '获取位置信息',
     'A012' : '重置密码太过频繁，请稍后再试',
+    'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
 };

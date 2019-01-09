@@ -619,5 +619,5 @@ export default {
     'notOpen' : '不开通',
     'tour' : '旅行社',
     'market' : '全民营销',
-
+    'other' : '其它',
 };

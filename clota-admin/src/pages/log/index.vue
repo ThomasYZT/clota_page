@@ -2,7 +2,7 @@
 
 <template>
     <div class="log">
-        <router-view>
+        <router-view :key="$route.name">
         </router-view>
     </div>
 </template>
