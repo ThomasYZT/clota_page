@@ -136,12 +136,13 @@
                                     :min-width="row.minWidth"
                                     slot-scope="row">
                                     <template slot-scope="scope">
-                                        <ul class="operate-list">
+                                        <ul class="operate-list" v-if="scope.row.accountTypeId !== '1'">
                                             <li class="blue-label"
                                                 @click="showModifyAccountModal(scope.row, scope.$index)">
                                                 {{$t('editAccount')}}
                                             </li>
                                         </ul>
+                                        <template v-else>-</template>
                                     </template>
                                 </el-table-column>
                             </table-com>
