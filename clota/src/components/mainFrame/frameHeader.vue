@@ -148,12 +148,12 @@
                 if (routerInfo) {
                     return routerInfo.filter(item => {
                         //判断是否需要显示二级菜单
-                        if (item.children && item.children.length > 0) {
-                            item.children = item.children.filter(list => list.meta && list.meta.showInMenu === true);
-                        } else {
-                            item.children = [];
-                        }
-                        item.showSubMenu = false;
+                        // if (item.children && item.children.length > 0) {
+                        //     item.children = item.children.filter(list => list.meta && list.meta.isMenu === true);
+                        // } else {
+                        //     item.children = [];
+                        // }
+                        // item.showSubMenu = false;
                         return item.meta && item.meta.isMenu;
                         //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
                         // if (item.name) {

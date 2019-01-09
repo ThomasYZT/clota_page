@@ -7,8 +7,6 @@ import orgStructureRouter from './modules/orgStructureRouter';
 import memberManageRouter from './modules/memberManage';
 // 系统设置路由
 import systemSettingRouter from './modules/systemSetting';
-// 个人中心路由
-import personalCenterRouter from './modules/personalCenter';
 // 产品中心路由
 import productCenterRouter from './modules/productCenter';
 // 财务管理路由
@@ -21,19 +19,21 @@ import dataReport from './modules/dataReport';
 import universalMarketing from './modules/universalMarketing';
 //工作台
 import workbench from './modules/workbench';
+// 个人中心路由
+import personalCenterRouter from './modules/personalCenter';
 //帮助中心
 import helperCenter from './modules/helperCenter';
 
 export default {
-    ...orgStructureRouter,
-    ...memberManageRouter,
-    ...systemSettingRouter,
-    ...personalCenterRouter,
-    ...productCenterRouter,
-    ...financeManageRouter,
-    ...orderCenter,
-    ...dataReport,
-    ...universalMarketing,
     ...workbench,
+    ...systemSettingRouter,
+    ...orgStructureRouter,
+    ...productCenterRouter,
+    ...orderCenter,
+    ...universalMarketing,
+    ...memberManageRouter,
+    ...financeManageRouter,
+    ...dataReport,
+    ...personalCenterRouter,
     ...helperCenter,
 };
