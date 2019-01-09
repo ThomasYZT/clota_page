@@ -631,9 +631,9 @@
                     saleType : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleType') }), trigger : 'change' },
                     ],
-                    gardenGroupId : [
-                        { validator : validateGardenGroup, trigger : 'change' }
-                    ],
+                    // gardenGroupId : [
+                    //     { validator : validateGardenGroup, trigger : 'change' }
+                    // ],
                     equipmentGroupIds : [
                         { validator : validateEquipmentGroup, trigger : 'change' }
                     ],
