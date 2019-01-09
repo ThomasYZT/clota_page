@@ -29,7 +29,7 @@ export default {
                 name : 'memberReport',
                 meta : {
                     menuName : 'memberReport', //lang.config.js 里面的语言键值
-                    _name : 'member-report',
+                    _name : 'reigao-member-report',
                     iconClass : 'icon-member-report',
                     rightPath : topMenuName + '.' + 'memberReport',
                     isMenu : true,
@@ -45,7 +45,7 @@ export default {
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/cardSaleReport/index.vue'),
                         meta : {
                             menuName : 'memberReport', //lang.config.js 里面的语言键值
-                            _name : 'member-report',
+                            _name : 'reigao-member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
                         },
                     },
@@ -56,7 +56,7 @@ export default {
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/consumeReport/index.vue'),
                         meta : {
                             menuName : 'consumeReport', //lang.config.js 里面的语言键值
-                            _name : 'member-report',
+                            _name : 'reigao-member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
                         },
                     },
@@ -67,7 +67,7 @@ export default {
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/consumeReport/child/memberConsumeDetail.vue'),
                         meta : {
                             menuName : 'consumeRecord', //lang.config.js 里面的语言键值
-                            _name : 'member-report',
+                            _name : 'reigao-member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
                         },
                     },
@@ -78,7 +78,7 @@ export default {
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/storeValueReport/index.vue'),
                         meta : {
                             menuName : 'storeValueReport', //lang.config.js 里面的语言键值
-                            _name : 'member-report',
+                            _name : 'reigao-member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
                         },
                     },
@@ -89,7 +89,7 @@ export default {
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/mutipleChannelReport/index.vue'),
                         meta : {
                             menuName : 'mutipleChannelReport', //lang.config.js 里面的语言键值
-                            _name : 'member-report',
+                            _name : 'reigao-member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
                         },
                     },
@@ -100,7 +100,7 @@ export default {
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/scoreReport/index.vue'),
                         meta : {
                             menuName : 'scoreReport', //lang.config.js 里面的语言键值
-                            _name : 'member-report',
+                            _name : 'reigao-member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
                         },
                     },

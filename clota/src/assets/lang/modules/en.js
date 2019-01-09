@@ -2415,4 +2415,5 @@ export default {
     'financeReport' : 'Financial Statement',
     'accountExists' : 'Account already exists',
     'getLocationInfo' : 'Get location information',
+    'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
 };

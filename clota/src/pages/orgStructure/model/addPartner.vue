@@ -17,7 +17,11 @@
                         filterable
                         :disabled="type=='modify'"
                         @on-change="handlePartnerChanged">
-                    <Option v-for="item in partners" :value="item.id" :key="item.id">{{ item.orgName }}</Option>
+                    <Option v-for="item in partners"
+                            :value="item.id"
+                            :key="item.id"
+                            v-w-title="item.orgName"
+                            class="overflow-tip-list">{{ item.orgName }}</Option>
                 </Select>
             </Form-item>
 
@@ -34,7 +38,11 @@
 
             <Form-item :label="$t('saleChannelsGroup')" prop="saleGroupId">
                 <Select v-model="addPartner.saleGroupId">
-                    <Option v-for="item in saleChannels" :value="item.id" :key="item.id">{{ item.groupName }}</Option>
+                    <Option v-for="item in saleChannels"
+                            :value="item.id"
+                            :key="item.id"
+                            v-w-title="item.groupName"
+                            class="overflow-tip-list">{{ item.groupName }}</Option>
                 </Select>
             </Form-item>
 
