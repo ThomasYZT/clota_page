@@ -106,6 +106,9 @@
             show ( data ) {
                 if ( data ) {
                     this.formData = defaultsDeep({}, data.item );
+                    this.formData.creditBalance = this.formData.creditBalance.toString();
+                    this.formData.alarmValue = this.formData.alarmValue.toString();
+
                 }
                 this.visible = true;
             },
