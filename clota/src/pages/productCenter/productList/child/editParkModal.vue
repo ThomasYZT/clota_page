@@ -214,6 +214,7 @@
                                 </Option>
                             </Select>
                             <Input :value="formData.parkName"
+                                   v-else
                                    disabled
                                    placeholder=""/>
                             <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
