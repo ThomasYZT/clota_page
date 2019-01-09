@@ -507,6 +507,7 @@
                                                              v-model.trim="scope.row.procedureRates"
                                                              :placeholder="$t('inputField', {field: ''})">
                                                 </InputNumber>
+                                                (0.00 ~ 1.00)
                                             </template>
                                             <template v-else>
                                                 {{scope.row.procedureRates | contentFilter}}
