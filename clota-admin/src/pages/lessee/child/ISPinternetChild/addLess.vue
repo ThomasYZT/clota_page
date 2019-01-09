@@ -149,7 +149,7 @@
                 <i-row>
                     <!--企业编码-->
                     <i-col span="17">
-                        <FormItem :label="$t('enterpriseCode')" prop="companyCode">
+                        <FormItem :label="$t('companyCode')" prop="companyCode">
                             <Input v-model.trim="formData.companyCode" style="width: 280px"/>
                             <span class="tips">用于与线下系统对接</span>
                         </FormItem>
@@ -462,7 +462,7 @@
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
                     ],
                     companyCode : [
-                        { max : 8,message : this.$t('errorMaxLength',{ field : this.$t('enterpriseCode'),length : 8 }),trigger : 'blur' }
+                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
                     ],
                     fax : [
                         {
