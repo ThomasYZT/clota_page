@@ -13,7 +13,7 @@
 
         <div class="modal-body">
             <template v-if="tableData.length !== 0">
-                <div class="tip">
+                <div class="warning-tip">
                     <span>{{$t('productCenter.editOrAddPolicyTip')}}</span>
                 </div>
                 <table-com
@@ -137,13 +137,23 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .modal-body {
-        &.fix-height {
-
-        }
-        .tip {
+    /deep/ .modal-body {
+        min-height: 180px;
+        .warning-tip {
+            margin-bottom: 10px;
             font-size: 14px;
             color: #333;
+        }
+
+        .tip {
+            position: relative;
+            height: 180px;
+            font-size: 14px;
+            color: #333;
+            span {
+                @include center_center();
+
+            }
         }
     }
     /deep/ .ivu-modal-body {
