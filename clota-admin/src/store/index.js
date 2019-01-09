@@ -169,27 +169,6 @@ export default new Vuex.Store({
                     this.$Message.error(this.$t('interfaceError'));
                 });
             });
-
-            // ajax.get('getPrivileges').then(res => {
-            //
-            // }).catch(err => {
-            //     router.replace({
-            //         name : 'login'
-            //     });
-            // });
-            // commit('updatePermissionInfo',{
-            //   'index' : 'allow',
-            //   'lessee' : 'allow',
-            //   'ISPinternet' : 'allow',
-            //   'server' : 'allow',
-            // },1);
-            // return ajaxList.getUserRight(param).then(res => {
-            //   if(res.success) {
-            //     commit('updateUserRight',res.data);
-            //   }else{
-            //     console.error('getUserRight：获取用户信息失败')
-            //   }
-            // });
         },
         //获取用户信息
         getUserInfo (store) {
