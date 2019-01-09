@@ -917,6 +917,11 @@
             //查询核销设备组
             getOrgGroupList ( data ) {
                 this.enumData.group = [];
+                this.formData.gardenGroupId = '';
+                this.checkPoint = [];
+                this.formData.itemCheckTimes = 0;
+                this.formData.equipmentGroupIds = [];
+                this.playPoint = [];
                 ajax.post('getOrgGroupList', {
                     orgId : data.id,
                     groupType : 'check',
