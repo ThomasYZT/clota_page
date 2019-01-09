@@ -210,12 +210,13 @@
                 ajax.post('getAllPrivilege',{
                     orgId : data.id
                 }).then(res => {
-                    if (res.success) {
+                    this.menuList = [];
+                    if (res.success && res.data && res.data.length > 0) {
                         let allowPrivateCode = {};
-                        for (let i = 0,j = res.data.length; i < j; i++) {
+                        for (let i = 0, j = res.data.length; i < j; i++) {
                             let privCode = res.data[i]['privCode'];
                             if (privCode in allowPrivateCode) {
-                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode],res.data[i]);
+                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode], res.data[i]);
                             } else {
                                 allowPrivateCode[privCode] = res.data[i];
                             }
@@ -223,8 +224,6 @@
                         for (let privCode in allowPrivateCode) {
                             this.menuList.push(allowPrivateCode[privCode]);
                         }
-                    } else {
-                        this.menuList = [];
                     }
                 }).finally(() => {
                     this.setDefaultMenuChosed();
