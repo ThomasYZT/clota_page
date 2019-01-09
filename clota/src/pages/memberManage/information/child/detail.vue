@@ -87,7 +87,8 @@
                     <div class="info-title">
                         {{$t('storeValueAccountInfo')}}
                             <span class="add-account"
-                                @click="addAccount">+ {{$t("newAccount")}}</span>
+                                  v-if="isMutipleAccount"
+                                    @click="addAccount">+ {{$t("newAccount")}}</span>
                     </div>
                     <!--储值账户信息-->
                     <store-account-info v-for="item in charTableData"
@@ -457,12 +458,24 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
+                'memberConfigInfo'
             ]),
             //是否可以修改会员信息
             canModifyMemberInfo () {
                 return this.permissionInfo && this.permissionInfo['modifyMembersInfo'] === 'allow';
-            }
+            },
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
         },
         methods : {
 
@@ -560,7 +573,26 @@
                         //区分账户类型数据
                         this.accountData.forEach( item => {
                             if (item.accountType === 'charging') {
-                                this.charTableData.push(item);
+                                //如果是多账户只展示默认账户信息，如果不是展示所有账户信息
+                                if (this.isMutipleAccount) {
+                                    //开卡账户只在售卖型会员卡类型下才可以显示
+                                    if (item.accountDefineId === '4') {
+                                        if (this.cardIsSaling) {
+                                            this.charTableData.push(item);
+                                        }
+                                    } else {
+                                        this.charTableData.push(item);
+                                    }
+                                } else {
+                                    //开卡账户只在售卖型会员卡类型下才可以显示
+                                    if (item.accountDefineId === '4') {
+                                        if (this.cardIsSaling) {
+                                            this.charTableData.push(item);
+                                        }
+                                    } else if (item.accountDefineId === '1') {
+                                        this.charTableData.push(item);
+                                    }
+                                }
                             }
                             if (item.accountType === 'score') {
                                 this.scoreData = item;

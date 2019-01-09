@@ -12,7 +12,7 @@
                 <Button type="primary"
                         :disabled="tableData.length > 11"
                         @click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>
-                <span class="tips">{{$t('mostAddNumOfMemberType', { num : '12' })}}</span><!--最多新增12个会员类别-->
+                <!--<span class="tips">{{$t('mostAddNumOfMemberType', { num : '12' })}}</span>&lt;!&ndash;最多新增12个会员类别&ndash;&gt;-->
             </div>
             <div class="table-wrap">
                 <table-com
@@ -73,6 +73,7 @@
     import headerTabs from './components/headerTabs.vue';
     import delModal from '@/components/delModal/index.vue';
     import addCardCategoryModal from './components/addCardCategoryModal';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -125,7 +126,14 @@
             queryList () {
                 ajax.post('queryCardTypeList').then(res => {
                     if (res.success) {
-                        this.tableData = res.data ? res.data : [];
+                        this.tableData = res.data ? res.data.filter(item => {
+                            if (this.cardIsSaling) {
+                                return item.cardForm === 'sale';
+                            } else if (this.cardIsGrowth) {
+                                return item.cardForm === 'growth';
+                            }
+                            return false;
+                        }) : [];
                         this.usedLevels = this.tableData.map(item => {
                             return item.levelNum;
                         });
@@ -186,6 +194,25 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是成长型型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
         }
     };
 </script>

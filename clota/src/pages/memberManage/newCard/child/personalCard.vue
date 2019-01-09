@@ -99,7 +99,7 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row>
+            <i-row v-if="cardIsSaling">
                 <i-col span="12">
                     <Form-item :label="$t('payPass')" prop="tradePassword">
                         <span class="blue-label"
@@ -139,18 +139,20 @@
                               @set-card-data="getCardData">
             </entity-card-info>
 
-            <!--收款方式-->
-            <h3 style="margin-top: 35px;">{{$t('paymentMethod')}}</h3>
-            <Form-item prop="payType" :label="$t('paymentMethod')" >
-                <RadioGroup v-model="cardParam.payType">
-                    <Radio v-for="(item,index) in payAccountList"
-                           :disabled="selectedCard.salePrice <= 0"
-                           :key="index"
-                           :label="item.value">
-                        {{$t('onlineAccount.' + item.value)}}
-                    </Radio>
-                </RadioGroup>
-            </Form-item>
+            <template v-if="cardIsSaling">
+                <!--收款方式-->
+                <h3 style="margin-top: 35px;">{{$t('paymentMethod')}}</h3>
+                <Form-item prop="payType" :label="$t('paymentMethod')" >
+                    <RadioGroup v-model="cardParam.payType">
+                        <Radio v-for="(item,index) in payAccountList"
+                               :disabled="selectedCard.salePrice <= 0"
+                               :key="index"
+                               :label="item.value">
+                            {{$t('onlineAccount.' + item.value)}}
+                        </Radio>
+                    </RadioGroup>
+                </Form-item>
+            </template>
         </Form>
         <!--footer 按钮-->
         <div class="content-footer">
@@ -178,7 +180,7 @@
                         {{selectedCard.levelName | contentFilter}}
                     </FormItem>
                 </i-col>
-                <i-col span="12">
+                <i-col span="12" v-if="cardIsSaling">
                     <FormItem :label="$t('colonSetting',{ key : $t('memberCardSales') })">
                         {{selectedCard.salePrice | moneyFilter | contentFilter}}
                     </FormItem>
@@ -590,8 +592,16 @@
                 return '';
             },
             ...mapGetters([
-                'payAccountList'
-            ])
+                'payAccountList',
+                'memberConfigInfo'
+            ]),
+            //是否显示会员卡售卡信息
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            }
         },
         watch : {
             //监听会员卡售价的大小，如果小于0，只能选择现金支付

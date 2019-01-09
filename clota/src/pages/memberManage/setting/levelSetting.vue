@@ -15,8 +15,9 @@
                             :disabled="tableData.length > 11"
                             @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
                     <Button type="primary"
-                        :disabled="tableData.length < 1"
-                        @click="showRuleModal">{{$t('promotionSetting')}}</Button><!--晋级设置-->
+                            v-if="cardIsGrowth"
+                            :disabled="tableData.length < 1"
+                            @click="showRuleModal">{{$t('promotionSetting')}}</Button><!--晋级设置-->
                     <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
                 </template>
             </div>
@@ -41,6 +42,7 @@
                         <!--</template>-->
                     <!--</el-table-column>-->
                     <el-table-column
+                        v-if="cardIsGrowth"
                         slot="column3"
                         :label="row.title"
                         :prop="row.field"
@@ -51,6 +53,34 @@
                         slot-scope="row">
                         <template slot-scope="scoped">
                             {{scoped.row.lowerGrowthValue | contentFilter }}-{{scoped.row.highestGrowthValue | contentFilter }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        v-if="cardIsSaling"
+                        slot="column4"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            {{scoped.row.salePrice | moneyFilter | contentFilter}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        v-if="cardIsSaling"
+                        slot="column5"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            {{scoped.row.amountInCard | moneyFilter | contentFilter}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -122,6 +152,7 @@
     import delModal from '@/components/delModal/index.vue';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -250,6 +281,25 @@
                 }
                 return result.join(',');
             }
+        },
+        computed : {
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是成长型型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
         }
     };
 </script>

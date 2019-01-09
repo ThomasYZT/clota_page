@@ -128,8 +128,6 @@
                         }
                     }
                 ],
-                //交易类型列表
-                tradeType1 : moneyTradeTypes,
                 // 查询数据
                 queryParams : {
                     //账户id
@@ -206,7 +204,24 @@
                     pageSize : 99999
                 }).then(res => {
                     if (res.success) {
-                        this.accountList = res.data.data ? res.data.data : [];
+                        this.accountList = res.data ? res.data.data.filter(item => {
+                            //如果是多账户可以显示除了默认账户外的其它账户
+                            if (this.isMutipleAccount) {
+                                //如果是售卖型会员卡，才可以显示开卡账户
+                                if (this.cardIsSaling) {
+                                    return true;
+                                } else {
+                                    return item.id !== '4';
+                                }
+                            } else {
+                                //如果是售卖型会员卡，才可以显示开卡账户
+                                if (this.cardIsSaling) {
+                                    return item.id === '4' || item.id === '1';
+                                } else {
+                                    return item.id === '1';
+                                }
+                            }
+                        }) : [];
                         this.accountList.unshift({
                             id : 'all',
                             accountName : this.$t('allAccount') // 全部账户
@@ -263,12 +278,32 @@
                 return this.$route.name === 'fianceDetail';
             },
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                memberConfigInfo : 'memberConfigInfo',
             }),
             //表格是否显示
             tableShow () {
                 return this.queryParams.accountTypeId && this.accountList && this.accountList.length > 0;
-            }
+            },
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
+            //交易类型列表
+            tradeType1 () {
+                if (this.cardIsSaling) {
+                    return moneyTradeTypes;
+                } else {
+                    return moneyTradeTypes.slice(0,-1);
+                }
+            },
         },
         watch : {
             '$route' (newVal,oldVal) {

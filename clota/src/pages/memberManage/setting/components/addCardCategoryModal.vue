@@ -27,8 +27,8 @@
             </FormItem>
             <FormItem :label="$t('会员卡属性')" prop="attribute">
                 <RadioGroup v-model="formData.attribute">
-                    <Radio label="male">{{$t('成长型')}}</Radio>
-                    <Radio label="female">{{$t('售卖型')}}</Radio>
+                    <Radio label="growth" v-if="cardIsGrowth">{{$t('成长型')}}</Radio>
+                    <Radio label="sale" v-if="cardIsSaling">{{$t('售卖型')}}</Radio>
                 </RadioGroup>
             </FormItem>
             <FormItem :label="$t('remark')" prop="remark">
@@ -51,6 +51,8 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //绑定的模态框是否显示的变量
@@ -164,7 +166,7 @@
                 ajax.post('saveOrUpdateCardType',{
                     typeName : this.formData.memberCategoryName,
                     remark : this.formData.remark,
-                    cardForm : 'sale'
+                    cardForm : this.memberConfigInfo['cardType']
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('addMemberType') }));
@@ -188,7 +190,7 @@
                     typeName : this.formData.memberCategoryName,
                     remark : this.formData.remark,
                     id : this.formData.id,
-                    cardForm : 'sale'
+                    cardForm : this.memberConfigInfo['cardType']
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('modifyMemberType') }));
@@ -212,6 +214,37 @@
                 } else {
                     return 'add';
                 }
+            },
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是成长型型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+        },
+        watch : {
+            'memberConfigInfo.cardType' : {
+                handler (newVal) {
+                    if (newVal === 'sale') {
+                        this.formData.attribute = 'sale';
+                    } else if (newVal === 'growth') {
+                        this.formData.attribute = 'growth';
+                    } else {
+                        this.formData.attribute = '';
+                    }
+                },
+                immediate : true
             }
         }
     };

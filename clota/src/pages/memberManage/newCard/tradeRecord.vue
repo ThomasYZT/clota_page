@@ -209,6 +209,7 @@
 	import ajax from '@/api/index.js';
     import confirmMemberInfo from './components/confirmDetailModal';
     import reRessiueCardModal from './components/reRessiueCardModal';
+    import { mapGetters } from 'vuex';
 
 	export default {
 		components : {
@@ -229,8 +230,6 @@
 					//关键字
 					keyWord : ''
 				},
-				//交易类型列表
-				tradeTypeList : tradeTypeList,
 				//表头配置
 				columnData : tradeRecordHead,
 				tableData : [],
@@ -332,7 +331,27 @@
                     this.queryList();
                 });
             }
-		}
+		},
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否显示会员卡售卡信息
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //交易类型列表
+            tradeTypeList () {
+                if (this.cardIsSaling) {
+                    return tradeTypeList;
+                } else {
+                    return tradeTypeList.slice(0,2);
+                }
+            },
+        }
 	};
 </script>
 <style lang="scss" scoped>
