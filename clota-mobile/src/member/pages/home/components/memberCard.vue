@@ -20,7 +20,7 @@
                   </span>
                 </div>
                 <div class="right">
-                    <div  class="card-level">
+                    <div  class="card-level" style="display: flex;align-items: center;">
                         <i class="iconfont icon-level"></i>
                         <span class="level-name">{{info.levelDesc}}</span>
                     </div>
@@ -33,7 +33,7 @@
                     <span>{{info.orgName | contentFilter}}</span>
                 </div>
                 <div class="card-info">
-                    <div style="font-weight: bold">{{info.cardCode | formatCardCode}}</div>
+                    <div style="font-weight: bold;font-size: 18px;">{{info.cardCode | formatCardCode}}</div>
                     <div v-show="info.inCode" @click="toEnterScenicCode">
                         <span>{{$t('enterSenicCode')}}</span>
                         <i class="iconfont icon-code"></i>
@@ -325,6 +325,16 @@
                             font-size: 8px;
                             line-height: 24px;
                             text-align: center;
+
+                            .icon-level{
+                                font-size: $font_size_12px;
+                            }
+
+                            .level-name{
+                                font-size: $font_size_12px;
+                                margin-left: 3px;
+                            }
+
                             i {
                                 font-size: 8px;
                                 opacity: 1;
@@ -348,7 +358,7 @@
                     height: 19px;
                     width: 100%;
                     margin-bottom: 9px;
-                    font-size: 12.5px;
+                    font-size: 14px;
                 }
 
                 .card-info {

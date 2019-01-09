@@ -122,6 +122,7 @@
             <!--退票手续费-->
             <div class="service-charge">{{$t('cancellationCharge')}}：<span class="charge">{{refundFee | moneyFilter}} {{$t('yuan')}}</span></div>
             <div class="err-message" v-if="errMsg">{{errMsg}}</div>
+            <div class="err-message" v-if="returnRuleNotAllowMsg">{{returnRuleNotAllowMsg}}</div>
         </div>
         <div slot="footer">
             <Button type="primary"
@@ -174,7 +175,7 @@
                 //错误信息
                 errMsg : '',
                 //退票费
-                refundFee : 0
+                refundFee : 0,
             };
         },
         methods : {
@@ -278,6 +279,15 @@
                     return [];
                 }
             },
+            //勾选了按规则不可退的产品错误信息
+            returnRuleNotAllowMsg () {
+                let canNotReturn = this.selectedTicket.filter(item => item.policyReturnRule === 'notAllow');
+                if (canNotReturn.length > 0) {
+                    return this.$t('returnRuleNotAllowMsg');
+                } else {
+                    return '';
+                }
+            }
         },
         watch : {
             selectedTicket (newVal) {

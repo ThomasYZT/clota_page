@@ -89,7 +89,7 @@
                     result.push({ name : 'reportLoss', desc : 'reportLoss' });
                 }
                 //退卡
-                if ('product-type' in this.permissionInfo) {
+                if ('backCard' in this.permissionInfo) {
                     result.push({ name : 'refundedCard', desc : 'refundedCard' });
                 }
                 return result;

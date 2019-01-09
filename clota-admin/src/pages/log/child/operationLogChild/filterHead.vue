@@ -20,7 +20,7 @@
                                 :clearable="true"
                                 @on-change="emitFreshData">
                             <Option v-for="item in operateTypeDeal"
-                                    :value="item.lable"
+                                    :value="logType === 'operate' ? item.lable : item.value"
                                     :key="item.lable">
                                 {{ item.lable === 'all' ? $t('all') :  item.lable }}
                             </Option>
@@ -188,6 +188,7 @@
             //日志类型改变，重新获取操作类型
             logType : {
                 handler (newVal,oldVal) {
+                    this.formData.sysOperationScene = 'all';
                     if (newVal === 'operate') {
                         this.querySelectOpScene();
                     } else if (newVal === 'sass') {

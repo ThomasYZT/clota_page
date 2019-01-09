@@ -54,6 +54,8 @@
     import noData from '@/components/noDataTip/noData-tip.vue';
     import debounce from 'lodash/debounce';
     import merge from 'lodash/merge';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //默认选中的节点
@@ -94,6 +96,8 @@
                 privaligeInfo : {},
                 //选择的菜单权限节点
                 choosedNodes : [],
+                //会员服务配置信息中剔除的权限
+                memberConfigPermission : {}
             };
         },
         components : {
@@ -204,26 +208,10 @@
              */
             getMenuPrivalige (data) {
                 this.activeNodeId = data.id;
-                ajax.post('getAllPrivilege',{
-                    orgId : data.id
-                }).then(res => {
-                    if (res.success && res.data) {
-                        let allowPrivateCode = {};
-                        for (let i = 0,j = res.data.length; i < j; i++) {
-                            let privCode = res.data[i]['privCode'];
-                            if (privCode in allowPrivateCode) {
-                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode],res.data[i]);
-                            } else {
-                                allowPrivateCode[privCode] = res.data[i];
-                            }
-                        }
-                        for (let privCode in allowPrivateCode) {
-                            this.menuList.push(allowPrivateCode[privCode]);
-                        }
-                    } else {
-                        this.menuList = [];
-                    }
-                }).finally(() => {
+                Promise.all([
+                    this.getMemberServiceSetting(data),
+                    this.getAllPrivilege(data)
+                ]).finally(() => {
                     this.setDefaultMenuChosed();
                 });
             },
@@ -263,20 +251,6 @@
                         this.$refs.menuTree.setChecked(data.privCode,false,true);
                     });
                 }
-                // this.$nextTick(() => {
-                //     let havedChosedNodes =this.$refs.menuTree.getCheckedNodes();
-                //     this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
-                //         return {
-                //             ...item,
-                //             choseStatus : ''
-                //         }
-                //     }),...halfCheckedNodes.map(item => {
-                //         return {
-                //             ...item,
-                //             choseStatus : 'half'
-                //         }
-                //     })];
-                // });
             },
             /**
              * 设置右侧默认选中的菜单节点
@@ -321,7 +295,6 @@
                 this.$nextTick(() => {
                     let havedChosedNodes = this.$refs.menuTree.getCheckedNodes();
                     let halfCheckedNodes = this.$refs.menuTree.getHalfCheckedNodes();
-                    // console.log(havedChosedNodes)
                     this.choosedNodes = JSON.parse(JSON.stringify(havedChosedNodes.filter(item => !item.disabled)));
                     // this.choosedNodes = JSON.parse(JSON.stringify(havedChosedNodes));
                     this.privaligeInfo[this.activeNodeId] = [...havedChosedNodes.map(item => {
@@ -343,7 +316,55 @@
              * @param{Object} data 权限数据
              */
             menuNodeFilter (value,data) {
-                return data.privAttr ? (data.privAttr === 'economic' || data.privAttr === 'both') : false;
+                if (data.privCode in this.memberConfigPermission) {
+                    return false;
+                } else {
+                    return data.privAttr ? (data.privAttr === 'economic' || data.privAttr === 'both') : false;
+                }
+            },
+            /**
+             * 获取会员配置信息
+             * @param{Object} data 节点信息
+             */
+            getMemberServiceSetting (data) {
+                return ajax.post('getServiceSetting',{
+                    serviceCode : 'member',
+                    orgId : data.id,
+                    companyId : data.manageCompanyId,
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.$store.dispatch('getMemberConfigPermissionNot',res.data).then(res => {
+                            this.memberConfigPermission = res;
+                        });
+                    } else {
+                        this.memberConfigPermission = {};
+                    }
+                });
+            },
+            /**
+             * 获取节点下的全部权限信息
+             * @param{Object} data 权限信息
+             */
+            getAllPrivilege (data) {
+                return ajax.post('getAllPrivilege',{
+                    orgId : data.id
+                }).then(res => {
+                    this.menuList = [];
+                    if (res.success && res.data && res.data.length > 0) {
+                        let allowPrivateCode = {};
+                        for (let i = 0,j = res.data.length; i < j; i++) {
+                            let privCode = res.data[i]['privCode'];
+                            if (privCode in allowPrivateCode) {
+                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode],res.data[i]);
+                            } else {
+                                allowPrivateCode[privCode] = res.data[i];
+                            }
+                        }
+                        for (let privCode in allowPrivateCode) {
+                            this.menuList.push(allowPrivateCode[privCode]);
+                        }
+                    }
+                });
             }
         },
         computed : {
@@ -355,6 +376,9 @@
                     return [];
                 }
             },
+            ...mapGetters([
+                'manageOrgs',
+            ])
         },
         created () {
             this.getOrgTree();

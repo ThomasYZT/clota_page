@@ -2416,4 +2416,5 @@ export default {
     'accountExists' : 'Account already exists',
     'getLocationInfo' : 'Get location information',
     'A012' : '重置密码太过频繁，请稍后再试',
+    'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
 };
