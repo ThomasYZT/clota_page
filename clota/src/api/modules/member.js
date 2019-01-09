@@ -223,7 +223,10 @@ export default {
     'querySmsQueues' : '/sms/querySmsQueues',
     //重发短信
     'reSendSms' : '/sms/reSendSms',
-
+    //查询所有成长型的会员卡级别
+    'queryLevelsOfGrowth' : '/member/memberLevel/queryLevelsOfGrowth',
+    //查询会员管理微信公众号配置
+    'queryMemberWxMpSet' : '/member/memberBasicSet/queryMemberWxMpSet',
 
     /***********************************会员统计***********************************/
     //获取会员总量

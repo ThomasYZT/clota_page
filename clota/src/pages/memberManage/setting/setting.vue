@@ -200,27 +200,62 @@
                     </div>
                 </div>
 
-                <!--微信端推送交易记录设置-->
-                <div class="content-item">
-                    <div class="title">{{$t('wxPushExchangeRecordSetting')}}</div>
-                    <div :class="{'ivu-form-item-error': error.wxPushErr, 'main': true}">
-                        <div class="switcher">
-                            <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" ></i-switch><span>{{$t('whetherPushInfoOnWx')}}</span>
-                        </div>
-                        <!--<div class="switcher">-->
+                <template  v-if="Object.keys(WxMpSetInfo).length !== 0">
+                    <!--微信端推送交易记录设置-->
+                    <div class="content-item">
+                        <div class="title">{{$t('wxPushExchangeRecordSetting')}}</div>
+                        <div :class="{'ivu-form-item-error': error.wxPushErr, 'main': true}">
+                            <div class="switcher">
+                                <i-switch v-model="settingData.wxMpTemplateInfoSet.showStoreValue" ></i-switch><span>{{$t('whetherPushInfoOnWx')}}</span>
+                            </div>
+                            <!--<div class="switcher">-->
                             <!--<i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>-->
-                        <!--</div>-->
-                        <span class="text">{{$t('title')}}</span>
-                        <Input type="text"
-                               v-model="settingData.wxMpTemplateInfoSet.title"
-                               @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr')"
-                               style="margin: 0 10px;width: 300px;"></Input>
-                        <div class="ivu-form-item-error-tip"
-                             style="left: 50px;"
-                             v-if="error.wxPushErr">{{error.wxPushErr}}
+                            <!--</div>-->
+                            <span class="text">{{$t('title')}}</span>
+                            <Input type="text"
+                                   v-model="settingData.wxMpTemplateInfoSet.title"
+                                   @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr')"
+                                   style="margin: 0 10px;width: 300px;"></Input>
+                            <div class="ivu-form-item-error-tip"
+                                 style="left: 50px;"
+                                 v-if="error.wxPushErr">{{error.wxPushErr}}
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <!--微信会员卡推送设置 (仅公众号配置开通支付即会员才显示)-->
+                    <div class="content-item" v-if="WxMpSetInfo.payGiftCard === 'true'">
+                        <div class="title">{{$t('微信会员卡推送设置')}}</div>
+                        <div :class="{'main': true}">
+                            <div class="switcher">
+                                <Select style="width:200px" :placeholder="$t('selectField', { msg : '要推送的会员卡' } )">
+                                    <Option v-for="item in levelsOfGrowthList"
+                                            :value="item.id" :key="item.value">{{ item.levelDesc }}</Option>
+                                </Select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--微信推送消息模版ID-->
+                    <!--<div class="content-item">-->
+                    <!--<div class="title">{{$t('微信推送消息模板ID')}}</div>-->
+                    <!--<div :class="{'main': true}">-->
+                    <!--<div class="switcher">-->
+                    <!--<span class="text">{{$t('会员充值通知ID：')}}</span>-->
+                    <!--<Input type="text"-->
+                    <!--v-model="settingData.wxPushTemplateIds.rechargeTemplateId"-->
+                    <!--style="margin: 0 10px;width: 300px;"></Input>-->
+                    <!--</div>-->
+                    <!--<div class="switcher">-->
+                    <!--<span class="text">{{$t('消费成功通知ID：')}}</span>-->
+                    <!--<Input type="text"-->
+                    <!--v-model="settingData.wxPushTemplateIds.consumeTemplateID"-->
+                    <!--style="margin: 0 10px;width: 300px;"></Input>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </template>
+
 
             </Form>
 
@@ -285,8 +320,19 @@
                         showStoreValue : false,
                         // showIntegration : false,
                         title : ''
-                    }
+                    },
+                    //微信会员卡推送设置
+                    wxMemberCardPushSetting : {
+                        levelId : '',
+                    },
+                    //微信推送消息模板ID设置
+                    // wxPushTemplateIds : {
+                    //     rechargeTemplateId : '',
+                    //     consumeTemplateID : '',
+                    // }
                 },
+                //公众号配置信息
+                WxMpSetInfo : {},
                 //copy数据，用于数据重置
                 copySetData : {},
                 // 支付协议内容
@@ -308,7 +354,9 @@
                     wxPushErr : '',//微信端推送交易记录 标题设置错误
                 },
                 //会员类别及会员级别数据
-                memberLevelsData : {}
+                memberLevelsData : {},
+                //成长型会员卡级别列表
+                levelsOfGrowthList : [],
             };
         },
         watch : {
@@ -348,6 +396,9 @@
             //查询证件类型
             this.queryDocument();
             this.getMemberLevelsInType();
+            //查询所有成长型的会员卡级别
+            this.queryMemberWxMpSet();
+            this.queryLevelsOfGrowth();
         },
         computed : {
             //默认打开的折叠面板
@@ -360,7 +411,6 @@
             }
         },
         methods : {
-
             //查询会员基础设置
             findBasicSet () {
                 ajax.post('findBasicSet', {}).then(res => {
@@ -701,8 +751,31 @@
                     }
                 }
                 return tableData;
+            },
+            /**
+             * 查询所有成长型的会员卡级别
+             */
+            queryLevelsOfGrowth () {
+                ajax.post('queryLevelsOfGrowth').then(res => {
+                    if (res.success) {
+                        this.levelsOfGrowthList = res.data ? res.data : [];
+                    } else {
+                        this.levelsOfGrowthList = [];
+                    }
+                });
+            },
+            /**
+             * 查询会员管理微信公众号配置
+             */
+            queryMemberWxMpSet () {
+                ajax.post('queryMemberWxMpSet').then(res => {
+                    if (res.success) {
+                        this.WxMpSetInfo = res.data ? res.data : {};
+                    } else {
+                        this.WxMpSetInfo = {};
+                    }
+                })
             }
-
         },
     };
 </script>
