@@ -306,4 +306,7 @@ export default {
     'M045' : '手机号未注册',
     'pleaseSetTradePass' : '请先设置交易密码',
     'getLocationErr' : '位置信息获取失败',
+    'M049' : '会员需要注册',
+    'M050' : '会员需要购买卡',
+    'M051' : '无会员卡类型',
 };

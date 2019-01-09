@@ -112,6 +112,14 @@
                                         text : this.$t(res.message),
                                         type : 'cancel',
                                     });
+                                    this.$router.push({
+                                        name : 'mobileRegister'
+                                    });
+                                } else if (res.message && (res.message === 'M049' || res.message === 'M050' || res.message === 'M051')) {
+                                    this.$vux.toast.show({
+                                        text : this.$t(res.message),
+                                        type : 'cancel',
+                                    });
                                 } else {
                                     this.$vux.toast.show({
                                         text : this.$t('operateFail',{ msg : this.$t('send') }),
