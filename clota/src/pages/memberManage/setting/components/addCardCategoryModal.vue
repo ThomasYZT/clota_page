@@ -21,8 +21,8 @@
             </FormItem>
             <FormItem :label="$t('会员卡类型')" prop="cardType">
                 <RadioGroup v-model="formData.cardType">
-                    <Radio label="male">{{$t('个人')}}</Radio>
-                    <Radio label="female">{{$t('企业')}}</Radio>
+                    <Radio :disabled="personCardDisabled" label="personal">{{$t('个人')}}</Radio>
+                    <Radio :disabled="companyCardDisabled" label="enterprise">{{$t('企业')}}</Radio>
                 </RadioGroup>
             </FormItem>
             <FormItem :label="$t('会员卡属性')" prop="attribute">
@@ -109,7 +109,9 @@
                     ]
                 },
                 //保存数据中
-                saveIng : false
+                saveIng : false,
+                personCardDisabled : false,
+                companyCardDisabled : false
             };
         },
         methods : {
@@ -166,7 +168,8 @@
                 ajax.post('saveOrUpdateCardType',{
                     typeName : this.formData.memberCategoryName,
                     remark : this.formData.remark,
-                    cardForm : this.memberConfigInfo['cardType']
+                    cardForm : this.formData.attribute,
+                    type : this.formData.cardType,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('addMemberType') }));
@@ -190,7 +193,8 @@
                     typeName : this.formData.memberCategoryName,
                     remark : this.formData.remark,
                     id : this.formData.id,
-                    cardForm : this.memberConfigInfo['cardType']
+                    cardForm : this.formData.attribute,
+                    type : this.formData.cardType,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('modifyMemberType') }));
@@ -203,6 +207,16 @@
                     }
                 }).finally(() => {
                     this.saveIng = false;
+                });
+            },
+            /**
+             * 获取会员卡类型新增个数
+             */
+            countCardTypeByType () {
+                ajax.post('countCardTypeByType').then(res => {
+                    if (res.success) {
+
+                    }
                 });
             }
         },

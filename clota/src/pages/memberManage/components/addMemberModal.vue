@@ -21,7 +21,7 @@
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
-                        <Form-item :label="$t('memberGrade') + '：'" prop="levelNum"><!--会员等级-->
+                        <Form-item :label="$t('memberGrade') + '：'" prop="levelNum" v-if="cardAttribute === 'growth'"><!--会员等级-->
                             <Select v-model="formData.levelNum"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     style="width: 280px;"><!--请选择会员等级-->
@@ -32,7 +32,7 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap" v-if="cardIsGrowth">
+                    <div class="ivu-form-item-wrap" v-if="cardAttribute === 'growth'">
                         <Form-item :label="$t('memberGrowthRange') + '：'" prop="highestGrowthValue"><!--会员成长值范围-->
                             <Input v-model.trim="formData.lowerGrowthValue"
                                 :placeholder="$t('inputField', {field: ''})"
@@ -55,13 +55,13 @@
                             <!--</CheckboxGroup>-->
                         <!--</Form-item>-->
                     <!--</div>-->
-                    <div class="ivu-form-item-wrap" v-if="cardIsSaling">
+                    <div class="ivu-form-item-wrap" v-if="cardAttribute === 'sale'">
                         <Form-item :label="$t('cardSaleMoney') + '：'" prop="salePrice"><!--售卡金额-->
                             <Input v-model.trim="formData.salePrice"
                                    type="text"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap" v-if="cardIsSaling">
+                    <div class="ivu-form-item-wrap" v-if="cardAttribute === 'sale'">
                         <Form-item :label="$t('moneyInCard') + '：'" prop="amountInCard"><!--卡内金额-->
                             <Input v-model.trim="formData.amountInCard"
                                    type="text"/>
@@ -172,6 +172,11 @@
             'card-type-id' : {
               type : String,
               default : ''
+            },
+            //会员卡属性
+            cardAttribute : {
+                type : String,
+                default : ''
             }
         },
         components : {
