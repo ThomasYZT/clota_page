@@ -30,55 +30,64 @@
 
                 <div class="form-wrap">
                     <div class="setting-box">
-                        <span class="">会员管理-微信公众账号配置：</span>
+                        <h4 class="form-title">会员管理-微信公众账号配置：</h4>
                         <Form ref="memberSetting"
-                              :rule="memberConfigRule"
-                              :mode="memberConfig"
+                              :rules="memberConfigRule"
+                              :model="memberConfig"
                               label-position="right"
-                              :label-width="120">
+                              :label-width="130">
                             <i-row>
                                 <i-col span="20">
                                     <FormItem label="AppID" prop="appID">
-                                        <Input v-model="memberConfig.appID"
-                                               :placeholder="$t('请输入')"
+                                        <Input v-model.trim="memberConfig.appID"
+                                               type="text"
+                                               :placeholder="$t('inputField', { field : 'appID' })"
+                                               :disabled="!isEditing"
                                                style="width: 200px"></Input>
                                     </FormItem>
                                 </i-col>
                                 <i-col span="20">
                                     <FormItem label="AppSecret" prop="appSecret">
-                                        <Input v-model="memberConfig.appSecret"
-                                               :placeholder="$t('请输入')"
+                                        <Input v-model.trim="memberConfig.appSecret"
+                                               type="text"
+                                               :disabled="!isEditing"
+                                               :placeholder="$t('inputField', { field : 'appSecret' })"
                                                style="width: 200px"></Input>
                                     </FormItem>
                                 </i-col>
                                 <i-col span="20">
-                                    <FormItem label="微信卡包" prop="wxPachageUse">
-                                        <Checkbox v-model="memberConfig.wxPachageUse"
-                                                  :placeholder="$t('请输入')">{{''}}</Checkbox>
+                                    <FormItem label="微信卡包" prop="wxPackageUse">
+                                        <Checkbox v-model="memberConfig.wxPackageUse"
+                                                  :disabled="!isEditing">{{''}}</Checkbox>
                                     </FormItem>
                                 </i-col>
                             </i-row>
                             <transition name="fade">
-                                <i-row v-if="memberConfig.wxPachageUse">
+                                <i-row v-if="memberConfig.wxPackageUse">
                                     <i-col span="20">
                                         <FormItem label="支付即会员" prop="payBeMember">
                                             <Checkbox v-model="memberConfig.payBeMember"
-                                                      :placeholder="$t('请输入')">{{''}}</Checkbox>
+                                                      :disabled="!isEditing">{{''}}</Checkbox>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="20">
                                         <FormItem label="微信支付商户号" prop="merchantId">
                                             <Input v-model="memberConfig.merchantId"
-                                                   :placeholder="$t('请输入')"
+                                                   type="text"
+                                                   :disabled="!isEditing"
+                                                   :placeholder="$t('inputField', { field : '微信支付商户号' })"
                                                    style="width: 200px"></Input>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="20">
-                                        <FormItem label="有效期" prop="merchantId">
+                                        <FormItem label="有效期" prop="time">
                                             <DatePicker v-model="memberConfig.time"
                                                         type="daterange"
+                                                        :editable="false"
+                                                        transfer
                                                         placement="bottom-end"
-                                                        :placeholder="$t('请选择')" style="width: 200px"></DatePicker>
+                                                        :disabled="!isEditing"
+                                                        :placeholder="$t('selectField', { msg : '有效期' })"></DatePicker>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="20">
@@ -87,7 +96,9 @@
                                                 <i-col span="6" class="first-input">
                                                     <FormItem prop="payMin">
                                                         <Input v-model="memberConfig.payMin"
-                                                               :placeholder="$t('请输入')"
+                                                               type="text"
+                                                               :disabled="!isEditing"
+                                                               :placeholder="$t('inputField', { field : '金额' })"
                                                                style="width: 170px"></Input>
                                                     </FormItem>
                                                 </i-col>
@@ -97,7 +108,9 @@
                                                 <i-col span="6">
                                                     <FormItem prop="payMax">
                                                         <Input v-model="memberConfig.payMax"
-                                                               :placeholder="$t('请输入')"
+                                                               type="text"
+                                                               :disabled="!isEditing"
+                                                               :placeholder="$t('inputField', { field : '金额' })"
                                                                style="width: 170px"></Input>
                                                     </FormItem>
                                                 </i-col>
@@ -109,11 +122,32 @@
                         </Form>
                     </div>
                     <div class="setting-box">
-                        <span class="">全民营销-微信公众账号配置：</span>
+                        <h4 class="form-title">全民营销-微信公众账号配置：</h4>
                         <Form ref="marketSetting"
-                              :rule="marketConfigRule"
-                              :model="marketConfig">
-
+                              :rules="marketConfigRule"
+                              :model="marketConfig"
+                              label-position="right"
+                              :label-width="120">
+                            <i-row>
+                                <i-col span="20">
+                                    <FormItem label="AppID" prop="appID">
+                                        <Input v-model="marketConfig.appID"
+                                               type="text"
+                                               :placeholder="$t('inputField', { field : 'appID' })"
+                                               :disabled="!isEditing"
+                                               style="width: 200px"></Input>
+                                    </FormItem>
+                                </i-col>
+                                <i-col span="20">
+                                    <FormItem label="AppSecret" prop="appSecret">
+                                        <Input v-model="marketConfig.appSecret"
+                                               type="text"
+                                               :placeholder="$t('inputField', { field : 'appSecret' })"
+                                               :disabled="!isEditing"
+                                               style="width: 200px"></Input>
+                                    </FormItem>
+                                </i-col>
+                            </i-row>
                         </Form>
                     </div>
 
@@ -144,7 +178,7 @@
                 memberConfig : {
                     appID : '',
                     appSecret : '',
-                    wxPachageUse : false,
+                    wxPackageUse : false,
                     payBeMember : false,
                     merchantId : '',
                     time : [],
@@ -159,23 +193,71 @@
             };
         },
         computed : {
+            //会员基础配置是否必填
+            memberBaseConfigRequired () {
+                if (this.memberConfig.appID || this.memberConfig.appSecret) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            //会员卡包配置是否必填
+            wxPackageRequired () {
+                return this.memberConfig.wxPackageUse
+            },
+            //全民营销基础配置是否必填
+            marketBaseConfigRequired () {
+                if (this.marketConfig.appID || this.marketConfig.appSecret) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             //会员表单校验规则
             memberConfigRule () {
                 return {
-                    appID : [],
-                    appSecret : [],
-                    wxPachageUse : [],
-                    payBeMember : [],
-                    merchantId : [],
-                    time : [],
-                    payRange : [],
+                    appID : [
+                        { required : this.memberBaseConfigRequired,
+                          message : this.$t('inputField', { field : this.$t('appID') }), trigger : 'blur'},
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('appID'),length : 50 }) }
+                    ],
+                    appSecret : [
+                        { required : this.memberBaseConfigRequired,
+                          message : this.$t('inputField', { field : this.$t('appSecret') }), trigger : 'blur'},
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('appID'),length : 50 }) }
+                    ],
+                    merchantId : [
+                        { required : this.wxPackageRequired,
+                          message : this.$t('inputField', { field : this.$t('appID') }), trigger : 'blur'},
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('appID'),length : 50 }) }],
+                    time : [
+                        { required : this.wxPackageRequired, type : 'array', min : 2, message : this.$t('selectField', { msg : this.$t('有效期') }), trigger : 'change' }
+                    ],
+                    payMin : [
+                        { required : this.wxPackageRequired,
+                          message : this.$t('inputField', { field : this.$t('金额') }), trigger : 'blur'},
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) }
+                    ],
+                    payMax : [
+                        { required : this.wxPackageRequired,
+                          message : this.$t('inputField', { field : this.$t('金额') }), trigger : 'blur'},
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) }
+                    ],
                 }
             },
             //全民营销表单校验规则
             marketConfigRule () {
                 return {
-                    appID : [],
-                    appSecret : [],
+                    appID : [
+                        { required : this.marketBaseConfigRequired,
+                          message : this.$t('inputField', { field : this.$t('appID') }), trigger : 'blur'},
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('appID'),length : 50 }) }
+                    ],
+                    appSecret : [
+                        { required : this.marketBaseConfigRequired,
+                          message : this.$t('inputField', { field : this.$t('appSecret') }), trigger : 'blur'},
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('appID'),length : 50 }) }
+                    ],
                 }
             },
         },
@@ -198,7 +280,7 @@
              */
             validateData () {
 
-            }
+            },
         }
     };
 </script>
@@ -272,6 +354,13 @@
                 .first-input {
                     /deep/ .ivu-form-item-content {
                         width: auto;
+                    }
+                }
+
+                .setting-box {
+                    .form-title {
+                        margin-bottom: 10px;
+                        color: #333;
                     }
                 }
             }
