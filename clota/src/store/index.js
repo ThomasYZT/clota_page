@@ -52,6 +52,32 @@ const childDeepClone = (childrenList, data) => {
     return children;
 };
 
+/**
+ * 获取会员配置下不存在的权限
+ * @param{Object} memberConfigInfo 会员配置信息
+ * @return {{}}
+ */
+const getMemberConfigPermissionNot = (memberConfigInfo) => {
+    //排除的权限
+    let result = {};
+    if (memberConfigInfo) {
+        //如果不包含成长型的会员卡
+        if (memberConfigInfo.cardType && memberConfigInfo.cardType === 'sale') {
+            Object.assign(result,{
+                'growth-setting' : 'not-allow',//成长值
+            });
+        }
+        //如果不包含售卖型的会员卡
+        if (memberConfigInfo.cardType && memberConfigInfo.cardType === 'growth') {
+            Object.assign(result,{
+                'batchNewCard' : 'not-allow',//批量开卡
+                'backCard' : 'not-allow',//退卡
+            });
+        }
+    }
+    return result;
+};
+
 export default new Vuex.Store({
     state : {
         //左侧菜单是否收起
@@ -181,24 +207,7 @@ export default new Vuex.Store({
         },
         //会员配置信息中不需要的权限
         memberConfigNotPermission : (state) => {
-            //排除的权限
-            let result = {};
-            if (state.memberConfigInfo) {
-                //如果不包含成长型的会员卡
-                if (state.memberConfigInfo.cardType && state.memberConfigInfo.cardType === 'sale') {
-                    Object.assign(result,{
-                        'growth-setting' : 'allow',
-                    });
-                }
-                //如果不包含售卖型的会员卡
-                if (state.memberConfigInfo.cardType && state.memberConfigInfo.cardType === 'growth') {
-                    Object.assign(result,{
-                        'batchNewCard' : 'allow',//批量开卡
-                        'backCard' : 'allow',//退卡
-                    });
-                }
-            }
-            return result;
+            return getMemberConfigPermissionNot(state.memberConfigInfo);
         }
     },
     mutations : {
@@ -548,6 +557,8 @@ export default new Vuex.Store({
         getServiceSetting (store,privCode) {
             return ajax.post('getServiceSetting',{
                 serviceCode : 'member',
+                orgId : store.getters.manageOrgs.id,
+                companyId : store.getters.manageOrgs.manageCompanyId,
             }).then(res => {
                 if (res.success) {
                     let routers = [];
@@ -580,6 +591,10 @@ export default new Vuex.Store({
                     return Promise.reject();
                 }
             });
-        }
+        },
+        //获取会员配置信息
+        getMemberConfigPermissionNot (state,memberConfigInfo) {
+            return getMemberConfigPermissionNot(memberConfigInfo);
+        },
     }
 });

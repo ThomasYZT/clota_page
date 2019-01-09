@@ -48,6 +48,8 @@
     import noData from '@/components/noDataTip/noData-tip.vue';
     import debounce from 'lodash/debounce';
     import merge from 'lodash/merge';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //默认选中的节点
@@ -91,7 +93,9 @@
                 //手动选取的其它菜单权限
                 handlerChosedMenu : {},
                 //选择的菜单权限节点
-                choosedNodes : []
+                choosedNodes : [],
+                //会员服务配置信息中剔除的权限
+                memberConfigPermission : {}
             };
         },
         components : {
@@ -207,26 +211,10 @@
                     type : 'finance',
                     data : data.orgName
                 });
-                ajax.post('getAllPrivilege',{
-                    orgId : data.id
-                }).then(res => {
-                    if (res.success) {
-                        let allowPrivateCode = {};
-                        for (let i = 0,j = res.data.length; i < j; i++) {
-                            let privCode = res.data[i]['privCode'];
-                            if (privCode in allowPrivateCode) {
-                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode],res.data[i]);
-                            } else {
-                                allowPrivateCode[privCode] = res.data[i];
-                            }
-                        }
-                        for (let privCode in allowPrivateCode) {
-                            this.menuList.push(allowPrivateCode[privCode]);
-                        }
-                    } else {
-                        this.menuList = [];
-                    }
-                }).finally(() => {
+                Promise.all([
+                    this.getMemberServiceSetting(data),
+                    this.getAllPrivilege(data)
+                ]).finally(() => {
                     this.setDefaultMenuChosed();
                 });
             },
@@ -370,7 +358,55 @@
              * @param{Object} data 权限数据
              */
             menuNodeFilter (value,data) {
-                return data.privAttr ? (data.privAttr === 'economic' || data.privAttr === 'both') : false;
+                if (data.privCode in this.memberConfigPermission) {
+                    return false;
+                } else {
+                    return data.privAttr ? (data.privAttr === 'economic' || data.privAttr === 'both') : false;
+                }
+            },
+            /**
+             * 获取会员配置信息
+             * @param{Object} data 节点信息
+             */
+            getMemberServiceSetting (data) {
+                return ajax.post('getServiceSetting',{
+                    serviceCode : 'member',
+                    orgId : data.id,
+                    companyId : data.manageCompanyId,
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.$store.dispatch('getMemberConfigPermissionNot',res.data).then(response => {
+                            this.memberConfigPermission = response;
+                        });
+                    } else {
+                        this.memberConfigPermission = {};
+                    }
+                });
+            },
+            /**
+             * 获取节点下的全部权限信息
+             * @param{Object} data 权限信息
+             */
+            getAllPrivilege (data) {
+                return ajax.post('getAllPrivilege',{
+                    orgId : data.id
+                }).then(res => {
+                    this.menuList = [];
+                    if (res.success && res.data && res.data.length > 0) {
+                        let allowPrivateCode = {};
+                        for (let i = 0,j = res.data.length; i < j; i++) {
+                            let privCode = res.data[i]['privCode'];
+                            if (privCode in allowPrivateCode) {
+                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode],res.data[i]);
+                            } else {
+                                allowPrivateCode[privCode] = res.data[i];
+                            }
+                        }
+                        for (let privCode in allowPrivateCode) {
+                            this.menuList.push(allowPrivateCode[privCode]);
+                        }
+                    }
+                });
             }
         },
         computed : {
@@ -399,6 +435,9 @@
                 }
                 return result;
             },
+            ...mapGetters([
+                'manageOrgs',
+            ])
         },
         created () {
             this.getOrgTree();
