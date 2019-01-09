@@ -48,7 +48,7 @@
                                            :value="item.gift"
                                            disabled
                                            :placeholder="$t('inputField', {field: ''})"
-                                           class="single-input"/> {{$t('variousUnit')}}
+                                           class="single-input"/> {{isMutipleAccount ? $t('variousUnit') : $t('yuan')}}
                                     <span class="add-span blue-color"
                                           @click="showSendRateModal(item,index)">{{$t('applicationScope')}}</span><!--应用范围-->
                                     <span class="add-span blue-color"
@@ -74,7 +74,7 @@
                 <!--储值账户设置-->
                 <div class="content-item">
                     <div class="title">{{$t('storeValueAccountSettings')}}
-                        <span class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>
+                        <span v-if="isMutipleAccount" class="add-span blue-color" @click="AddAccount">+ {{$t('newAccount')}}</span>
                     </div>
                     <div class="main">
                         <div class="table-wrap">
@@ -272,6 +272,7 @@
     import { validator } from 'klwk-ui';
     import ownerRefundSetting from './components/ownerRefundSetting.vue';
     import ownerCardConsumeConfig from './components/ownerCardConsumeConfig';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -599,7 +600,13 @@
             queryMemberAccountDefine () {
                 ajax.post('queryAccountSetList').then(res => {
                     if (res.success) {
-                        this.tableData = res.data || [];
+                        this.tableData = res.data ? res.data.filter(item => {
+                            if (this.isMutipleAccount) {
+                                return true;
+                            } else {
+                                return item.accountTypeId === '1';
+                            }
+                        }) : [];
                     } else {
                         this.tableData = [];
                         this.$Message.warning(res.message || 'queryMemberAccountDefine ' + this.$t('queryFailure'));
@@ -741,6 +748,29 @@
             }
 
         },
+        computed : {
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是成长型型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
+        }
     };
 </script>
 

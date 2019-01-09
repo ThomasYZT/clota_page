@@ -263,14 +263,18 @@
                             this.storeData = commonDiscountInfo.storeVos;
                             this.activityStoreData = activityDiscountInfo.storeVos;
                             for (let key in commonDiscountInfo.productMap) {
-                                commonDiscountInfo.productMap[key].forEach( item => {
-                                    this.productData.push(item);
-                                });
+                                if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
+                                    commonDiscountInfo.productMap[key].forEach( item => {
+                                        this.productData.push(item);
+                                    });
+                                }
                             }
                             for (let key in commonDiscountInfo.productMap) {
-                                activityDiscountInfo.productMap[key].forEach( item => {
-                                    this.activityProductData.push(item);
-                                });
+                                if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
+                                    activityDiscountInfo.productMap[key].forEach( item => {
+                                        this.activityProductData.push(item);
+                                    });
+                                }
                             }
                         }
                     } else {

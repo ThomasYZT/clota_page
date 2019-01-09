@@ -49,6 +49,7 @@
     import vueEcharts from '@/components/vueEcharts/eCharts.vue';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -221,34 +222,26 @@
                         endTime : this.autoDefTIme[1] ? this.autoDefTIme[1].format('yyyy-MM-dd') : '',
                     };
                 }
-            }
+            },
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是成长型型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
         },
         methods : {
-            // /**
-            //  * 获取会员等级数量
-            //  */
-            // getMemberLevelCount () {
-            //     this.memberCount = 0;
-            //     ajax.post('getMemberLevelCount').then(res => {
-            //         if (res.success) {
-            //             this.memberLevelData = res.data ? res.data.map(item => {
-            //                 this.memberCount += item.levelCount;
-            //                 return {
-            //                     value : item.levelCount,
-            //                     label : item.levelName
-            //                 };
-            //             }) : [];
-            //         } else {
-            //             this.memberLevelData = [];
-            //         }
-            //     }).catch(err => {
-            //         this.memberLevelData = [];
-            //     }).finally(() => {
-            //         this.$nextTick(() => {
-            //             this.$refs.vueChart ? this.$refs.vueChart.refresh() : '';
-            //         });
-            //     });
-            // },
             /**
              * 获取对应时间的消费数据
              * @param timeType 时间类型

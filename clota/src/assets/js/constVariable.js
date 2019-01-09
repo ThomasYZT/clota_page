@@ -651,16 +651,12 @@ export const tradeTypeList = [
         value : 'all'
     },
     {
-        label : '开卡记录',
-        value : 'open_card'
-    },
-    {
-        label : '批量开卡记录',
-        value : 'batch_open_card'
-    },
-    {
         label : '补卡记录',
         value : 'reissue_card'
+    },
+    {
+        label : '开卡记录',
+        value : 'open_card'
     },
     {
         label : '退卡记录',
@@ -669,7 +665,11 @@ export const tradeTypeList = [
     {
         label : '储值',
         value : 'recharge'
-    }
+    },
+    {
+        label : '批量开卡记录',
+        value : 'batch_open_card'
+    },
 ];
 
 //银行列表

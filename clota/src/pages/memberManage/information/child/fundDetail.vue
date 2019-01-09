@@ -136,6 +136,7 @@
     import { moneyTradeTypes } from '@/assets/js/constVariable.js';
     import ajaxConfig from '@/config/index.js';
     import apiList from '@/api/apiList.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -158,8 +159,6 @@
                     pageNo : 1,
                     pageSize : 10,
                 },
-                // 枚举数据
-                type : moneyTradeTypes,
                 // 表格数据
                 tableData : [],
                 //总条数
@@ -320,6 +319,24 @@
                         },
                     ];
                 }
+            },
+            //交易类型枚举数据
+            type () {
+                if (this.cardIsSaling) {
+                    return moneyTradeTypes;
+                } else {
+                    return moneyTradeTypes.slice(0,-1);
+                }
+            },
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
             },
         }
     };

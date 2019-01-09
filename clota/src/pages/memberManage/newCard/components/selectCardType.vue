@@ -43,7 +43,7 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row>
+            <i-row v-if="showCardPrice">
                 <i-col span="24">
                     <Form-item :label="$t('colonSetting',{ key : $t('memberCardSales') })" class="auto-item-content">
                         <span>{{cardLevelInfo.salePrice | moneyFilter | contentFilter}} {{$t('yuan')}}</span>
@@ -58,6 +58,7 @@
 </template>
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -171,6 +172,16 @@
                 }
                 return {};
             },
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否显示会员卡售价和卡内金额
+            showCardPrice () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            }
         }
     };
 </script>

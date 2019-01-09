@@ -32,7 +32,7 @@
                             </Select>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap" v-if="cardIsGrowth">
                         <Form-item :label="$t('memberGrowthRange') + '：'" prop="highestGrowthValue"><!--会员成长值范围-->
                             <Input v-model.trim="formData.lowerGrowthValue"
                                 :placeholder="$t('inputField', {field: ''})"
@@ -55,13 +55,13 @@
                             <!--</CheckboxGroup>-->
                         <!--</Form-item>-->
                     <!--</div>-->
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap" v-if="cardIsSaling">
                         <Form-item :label="$t('cardSaleMoney') + '：'" prop="salePrice"><!--售卡金额-->
                             <Input v-model.trim="formData.salePrice"
                                    type="text"/>
                         </Form-item>
                     </div>
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap" v-if="cardIsSaling">
                         <Form-item :label="$t('moneyInCard') + '：'" prop="amountInCard"><!--卡内金额-->
                             <Input v-model.trim="formData.amountInCard"
                                    type="text"/>
@@ -164,6 +164,7 @@
     import common from '@/assets/js/common.js';
     import delModal from '@/components/delModal/index.vue';
     import editModal from '@/components/editModal/index.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -615,7 +616,24 @@
                         value : 'add'
                     },
                 ]);
-            }
+            },
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是成长型型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
         }
     };
 </script>

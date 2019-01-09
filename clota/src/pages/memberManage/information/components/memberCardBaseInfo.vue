@@ -86,7 +86,7 @@
             <label>{{$t("effectiveEndDate")}}：</label>
             <span v-w-title="memberDetail.expDate">{{memberDetail.expDate  | contentFilter}}</span>
         </div>
-        <div class="form-item-wrap">
+        <div class="form-item-wrap" v-if="cardIsSaling">
             <label>{{$t("payPass")}}：</label>
             <span>
                 {{memberDetail.passwd ? '●●●●●●' :  '' | contentFilter}}
@@ -138,6 +138,7 @@
     import changeHouseMoneyModal from './changeHouseMoneyModal';
     import editModal from '@/components/editModal/index.vue';
     import MD5 from 'crypto-js/md5';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -239,6 +240,18 @@
                     this.$refs.editModal.hide();
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
         }
     };
 </script>

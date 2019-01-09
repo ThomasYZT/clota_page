@@ -48,7 +48,7 @@
                                            v-model.trim="formData.gift"
                                            style="width: 80px;"
                                            :placeholder="$t('inputField', {field: ''})"
-                                           class="single-input"/> {{$t('variousUnit')}}
+                                           class="single-input"/>{{isMutipleAccount ? $t('variousUnit') : $t('yuan')}}
                                 </FormItem>
                             </i-col>
                         </i-row>
@@ -63,6 +63,7 @@
                          show-checkbox
                          node-key="uniqueName"
                          ref="accountTree"
+                         :filter-node-method="menuNodeFilter"
                          :render-content="renderContent">
                 </el-tree>
             </div>
@@ -81,6 +82,7 @@
     import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : ['length'],
@@ -280,10 +282,32 @@
                         let scopeData = this.formData.scope ? JSON.parse(this.formData.scope) : [];
                         let defaultChoosedAccount = scopeData.map(item => item.uniqueName);
                         this.$refs.accountTree.setCheckedKeys(defaultChoosedAccount);
+                        this.$refs.accountTree.filter('account');
                     });
                 });
-            }
+            },
+            /**
+             * 筛选账户信息
+             * @param{String} value 筛选值
+             * @param{Object} data 账户数据
+             */
+            menuNodeFilter (value,data) {
+                if (this.isMutipleAccount) {
+                    return true;
+                } else {
+                    return data.id === '1';
+                }
+            },
         },
+        computed : {
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
+        }
     };
 </script>
 

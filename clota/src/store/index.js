@@ -322,6 +322,8 @@ export default new Vuex.Store({
                                 } else {
                                     resolve(route);
                                 }
+                            }).catch(err => {
+                                reject(err);
                             });
                         }).catch(err => {
                             console.log(err);

@@ -125,6 +125,8 @@
     import { cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -272,7 +274,24 @@
                     pageSize : 99999
                 }).then(res => {
                     if (res.success) {
-                        this.accountList = res.data.data ? res.data.data : [];
+                        this.accountList = res.data ? res.data.data.filter(item => {
+                            //如果是多账户可以显示除了默认账户外的其它账户
+                            if (this.isMutipleAccount) {
+                                //如果是售卖型会员卡，才可以显示开卡账户
+                                if (this.cardIsSaling) {
+                                    return true;
+                                } else {
+                                    return item.id !== '4';
+                                }
+                            } else {
+                                //如果是售卖型会员卡，才可以显示开卡账户
+                                if (this.cardIsSaling) {
+                                    return item.id === '4' || item.id === '1';
+                                } else {
+                                    return item.id === '1';
+                                }
+                            }
+                        }) : [];
                         this.accountList.forEach(item => {
                             this.accountIds.push(item.id);
                         });
@@ -345,7 +364,21 @@
             //表格是否显示
             tableShow () {
                 return !!this.queryParams.accountTypeId;
-            }
+            },
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
         }
     };
 </script>
