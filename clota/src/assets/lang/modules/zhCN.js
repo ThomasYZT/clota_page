@@ -2420,4 +2420,5 @@ export default {
     'accountExists' : '账户已存在',
     'getLocationInfo' : '获取位置信息',
     'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
+    'marketingPositionTip' : '说明：游客在下述区域范围内扫码购票时，销售用户将不能获得佣金收入。'
 };
