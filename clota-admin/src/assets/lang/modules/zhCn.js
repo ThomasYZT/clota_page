@@ -617,5 +617,7 @@ export default {
     'yinshiPayment' : '银石支付',
     'weChatOrAlipayDirect' : '微信支付宝直连',
     'notOpen' : '不开通',
+    'tour' : '旅行社',
+    'market' : '全民营销',
 
 };

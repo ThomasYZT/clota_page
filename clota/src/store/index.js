@@ -184,12 +184,6 @@ export default new Vuex.Store({
             //排除的权限
             let result = {};
             if (state.memberConfigInfo) {
-                //单账户
-                if (state.memberConfigInfo.accountPattern && state.memberConfigInfo.accountPattern === 'single') {
-                    Object.assign(result,{
-
-                    });
-                }
                 //如果不包含成长型的会员卡
                 if (state.memberConfigInfo.cardType && state.memberConfigInfo.cardType === 'sale') {
                     Object.assign(result,{
@@ -200,7 +194,7 @@ export default new Vuex.Store({
                 if (state.memberConfigInfo.cardType && state.memberConfigInfo.cardType === 'growth') {
                     Object.assign(result,{
                         'batchNewCard' : 'allow',//批量开卡
-                        'batchNewCard' : 'allow',//退卡
+                        'backCard' : 'allow',//退卡
                     });
                 }
             }
@@ -563,6 +557,7 @@ export default new Vuex.Store({
                         memberPoint : res.data ? res.data.memberPoint : '',
                         memberRecharge : res.data ? res.data.memberRecharge : '',
                     });
+                    //删除会员配置中的权限
                     let memberConfigNotPermission = store.getters.memberConfigNotPermission;
                     for (let item in memberConfigNotPermission) {
                         if (item in privCode) {

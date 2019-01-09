@@ -70,11 +70,12 @@
                     </div>
                     <div class="ivu-form-item-wrap">
                         <!--是否允许兑现-->
-                        <FormItem :label="$t('whetherCashingIsAllowed')"
-                                  :disabled="formData.id === '1'" >
+                        <FormItem :label="$t('whetherCashingIsAllowed')" >
                             <RadioGroup v-model="formData.exchangeToCash">
-                                <Radio label="true">{{$t('allowCash')}}</Radio>
-                                <Radio label="false">{{$t('notAllowCash')}}</Radio>
+                                <Radio label="true"
+                                       :disabled="formData.id === '1'">{{$t('allowCash')}}</Radio>
+                                <Radio label="false"
+                                       :disabled="formData.id === '1'">{{$t('notAllowCash')}}</Radio>
                             </RadioGroup>
                         </FormItem>
                     </div>
