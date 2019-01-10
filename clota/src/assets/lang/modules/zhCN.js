@@ -2085,6 +2085,7 @@ export default {
     'nowUpQuantity' : '当前上架数量',
     'upNum' : '上架数量',
     'overDueVarifyNum' : '过期系统自动核销数量',
+    'overDueVarify' : '过期系统自动核销',
     'systemer' : '系统',
     'teamOrderCancelApply' : '团队订单取消申请',
     'please' : '请{msg}',

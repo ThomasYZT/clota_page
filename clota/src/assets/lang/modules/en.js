@@ -2081,6 +2081,7 @@ export default {
     'nowUpQuantity' : 'current number of shelves',
     'upNum' : 'the number of shelves',
     'overDueVarifyNum' : 'Expired system auto-offload quantity',
+    'overDueVarify' : 'Expired system automatic write-off',
     'systemer' : 'system',
     'teamOrderCancelApply' : 'Team Order Cancellation Request',
     'please' : 'Please {msg}',
