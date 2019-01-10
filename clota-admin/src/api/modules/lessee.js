@@ -73,4 +73,8 @@ export default {
     'getCompanyPayInfo' : 'tenant/getCompanyPayInfo.json',
     //更新合作伙伴信息
     'updatePartner' : 'tenantPartner/updatePartner.json',
+    //查询公司公众号配置
+    'getWxMpSet' : 'tenant/getWxMpSet.json',
+    //配置公司公众号配置
+    'setWxMpSet' : 'tenant/setWxMpSet.json',
 };

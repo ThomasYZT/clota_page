@@ -16,13 +16,20 @@
             <div class="data-wrap" v-if="isPackUp">
                 <div class="edit-wrap">
                     <div class="edit-left-bar">
-                        <span class="inline-label">支付渠道：</span>
-                        <Select v-model="paymentChannel"
-                                :disabled="!isEditing"
-                                @on-change="paymentChannelChange"
-                                style="width:150px">
-                            <Option v-for="item in paymentChannelList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
-                        </Select>
+                        <Form :label-width="120">
+                            <i-row>
+                                <i-col span="10">
+                                    <FormItem :label="$t('colonSetting',{ key : '支付渠道' })">
+                                        <Select v-model="paymentChannel"
+                                                :disabled="!isEditing"
+                                                @on-change="paymentChannelChange"
+                                                style="width:150px">
+                                            <Option v-for="item in paymentChannelList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                                        </Select>
+                                    </FormItem>
+                                </i-col>
+                            </i-row>
+                        </Form>
                     </div>
                     <template v-if="!(nodeType === 'partner' && (auditStatus === 'reject' || auditStatus === 'audit'))">
                         <div class="edit-right-bar" v-if="!isEditing" @click="editAccountInfo">
