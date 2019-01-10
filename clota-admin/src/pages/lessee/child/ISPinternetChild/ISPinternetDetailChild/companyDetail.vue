@@ -277,7 +277,7 @@
         <opened-service
             :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}"
-            @fresh-member-config-info="getMemberServiceSetting">
+            @fresh-member-config-info="getMemberServiceSetting"
             :search-params="{id : activeNode.id}"
             @fresh-wxMpSet-data="getWxMpSet">
         </opened-service>
