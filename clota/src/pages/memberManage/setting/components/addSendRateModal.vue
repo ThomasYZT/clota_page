@@ -58,6 +58,7 @@
             <div class="title">{{$t('scopeOfApplicationOfTheRule')}}：</div>
             <div class="table-wrap">
                 <el-tree :data="cardAccountInfo"
+                         v-show="filteredData.length > 0"
                          :props="defaultProps"
                          :default-expand-all="true"
                          show-checkbox
@@ -66,6 +67,8 @@
                          :filter-node-method="menuNodeFilter"
                          :render-content="renderContent">
                 </el-tree>
+                <no-data v-show="filteredData.length < 1">
+                </no-data>
             </div>
         </div>
 
@@ -83,8 +86,12 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import ajax from '@/api/index.js';
     import { mapGetters } from 'vuex';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
+        components : {
+            noData
+        },
         props : ['length'],
         data () {
             //校验储值的最低值
@@ -173,6 +180,8 @@
                     children : 'cardLevelAccountVos',
                     label : 'name'
                 },
+                //过滤后的数据
+                filteredData : []
             };
         },
         methods : {
@@ -282,6 +291,7 @@
                         let scopeData = this.formData.scope ? JSON.parse(this.formData.scope) : [];
                         let defaultChoosedAccount = scopeData.map(item => item.uniqueName);
                         this.$refs.accountTree.setCheckedKeys(defaultChoosedAccount);
+                        this.filteredData = [];
                         this.$refs.accountTree.filter('account');
                     });
                 });
@@ -293,6 +303,7 @@
              */
             menuNodeFilter (value,data) {
                 if (this.isMutipleAccount) {
+                    this.filteredData.push(data);
                     return true;
                 } else {
                     return data.id === '1';
@@ -362,6 +373,7 @@
         }
 
         .table-wrap{
+            position: relative;
             height: calc(100% - 100px);
             overflow: auto;
 

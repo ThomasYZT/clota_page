@@ -263,9 +263,9 @@
              */
             getCompanyCardTypeInfo () {
                 this.memberCount = 0;
-                ajax.post('countCardsByTyeId',{
+                ajax.post('countCardsByType',{
                     ...this.serachParams,
-                    cardTypeId : '3'//业主卡-1 个人会员卡-2 企业卡-3
+                    cardType : 'enterprise'
                 }).then(res => {
                     if (res.success) {
                         this.memberLevelData = res.data ? res.data.map(item => {

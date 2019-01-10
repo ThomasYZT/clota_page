@@ -277,11 +277,17 @@
         <opened-service
             :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}"
+            @fresh-member-config-info="getMemberServiceSetting">
+            :search-params="{id : activeNode.id}"
             @fresh-wxMpSet-data="getWxMpSet">
         </opened-service>
         <!--服务初始化配置-->
         <service-init-config
-            :isDefaultPackUp="true" >
+            v-if="showMemberConfig"
+            :default-setting="memberConfigInfo"
+            :search-params="{id : activeNode.id}"
+            :isDefaultPackUp="true"
+            @fresh-member-config="getMemberServiceSetting">
         </service-init-config>
         <!-- 公众号配置 -->
         <official-accounts-setting v-if="marketWx || memberWx"
@@ -407,6 +413,8 @@
                 companyDetail : {},
                 validateEmail : validateEmail,
                 validatePhone : validatePhone,
+                //会员服务配置信息
+                memberConfigInfo : {}
                 //微信公众号配置
                 wxMpSet : {},
 
@@ -605,6 +613,20 @@
                 });
             },
             /**
+             * 获取会员服务初始化配置信息
+             */
+            getMemberServiceSetting () {
+                ajax.post('getMemberServiceSetting',{
+                    orgId : this.activeNode.id,
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.memberConfigInfo = res.data ? res.data : {};
+                    } else {
+                        this.memberConfigInfo = {};
+                    }
+                });
+            },
+            /**
              * 获取微信公众号配置信息(仅公司节点)
              */
             getWxMpSet () {
@@ -733,7 +755,14 @@
                           trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },
                     ]
+                };
+            },
+            //是否显示会员初始化配置
+            showMemberConfig () {
+                if (this.memberConfigInfo) {
+                    return this.memberConfigInfo.memberPoint === 'true' || this.memberConfigInfo.memberRecharge === 'true';
                 }
+                return false;
             },
             //公司是否开启全民营销模块
             marketWx () {

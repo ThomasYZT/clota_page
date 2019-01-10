@@ -28,14 +28,16 @@
                 <!--会员卡信息-->
                 <member-card-detail :card-info="choosedCard">
                 </member-card-detail>
-                <div class="info-title">{{$t('privalige.storage-account')}}</div>
-                <!--储值账户信息-->
-                <store-account-info v-for="(item,index) in chargeAccount"
-                                    :class="{'last-item-class' : index === chargeAccount.length - 1 }"
-                                    :key="item.id"
-                                    :charge-info="item">
-                </store-account-info>
-                <template v-if="choosedCard.cardTypeId !== '1'">
+                <template v-if="showMemberRecharge">
+                    <div class="info-title">{{$t('privalige.storage-account')}}</div>
+                    <!--储值账户信息-->
+                    <store-account-info v-for="(item,index) in chargeAccount"
+                                        :class="{'last-item-class' : index === chargeAccount.length - 1 }"
+                                        :key="item.id"
+                                        :charge-info="item">
+                    </store-account-info>
+                </template>
+                <template v-if="choosedCard.cardTypeId !== '1' && showMemberPoint">
                     <div class="info-title">{{$t('integerAccountName')}}</div>
                     <!--积分账户信息-->
                     <integral-account-info v-for="item in integerAccount"
@@ -91,6 +93,7 @@
     import ajax from '@/api/index.js';
     import confirmModal from '@/components/delModal/index.vue';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import { mapGetters } from 'vuex';
 
 	export default {
         mixins : [ lifeCycleMixins ],
@@ -244,6 +247,19 @@
                     name : 'refundedCard'
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员积分账户信息
+            showMemberPoint () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberPoint'] && this.memberConfigInfo['memberPoint'] === 'true';
+            },
+            //是否可以显示会员储值账户信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         }
 	};
 </script>

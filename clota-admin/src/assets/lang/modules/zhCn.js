@@ -620,5 +620,6 @@ export default {
     'tour' : '旅行社',
     'market' : '全民营销',
     'other' : '其它',
-    'validatedDate' : '有效期'
+    'overDueVarifyNum' : '过期系统自动核销数量',
+    'validatedDate' : '有效期',
 };

@@ -138,6 +138,7 @@
                             memberCard : this.memberCard,
                             levelName : this.cardLevelInfo.levelDesc,
                             salePrice : this.cardLevelInfo.salePrice,
+                            type : this.cardTypeInfo.type
                         });
                     } else {
                         this.$emit('on-change-card', {
@@ -168,6 +169,15 @@
                 for (let i = 0,j = this.cardLevelList.length; i < j; i++) {
                     if (this.cardLevelList[i]['id'] === this.memberCard.levelId) {
                         return this.cardLevelList[i];
+                    }
+                }
+                return {};
+            },
+            //当前选择的会员卡类别信息
+            cardTypeInfo () {
+                for (let i = 0,j = this.cardTypes.length; i < j; i++) {
+                    if (this.cardTypes[i]['id'] === this.memberCard.cardTypeId) {
+                        return this.cardTypes[i];
                     }
                 }
                 return {};

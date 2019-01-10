@@ -54,7 +54,7 @@
                             multiple
                             style="width:280px">
                         <Option v-for="item in serviceList"
-                                :value="item.id"
+                                :value="item.serviceId"
                                 :key="item.id">
                             {{ item.serviceName }}
                         </Option>
@@ -297,6 +297,8 @@
                     this.getSysAccountByToken();
                     this.getParentManages();
                     this.queryServiceList();
+                    this.formData.fianceSuperior = this.chosedNodeDetail.id;
+                    this.formData.manageSuperior = this.chosedNodeDetail.id;
                 }
             },
             /**
@@ -341,13 +343,14 @@
                     nodeType : 'scenic',
                     status : status,
                     businessAccountId : this.formData.service,
+                    serviceIds : this.formData.openedServices
                 }).then(res => {
                     if (res.status === 200) {
                         this.$emit('fresh-structure-data');
                         this.$emit('input', false);
                         this.$Message.success('新增成功');
                     } else {
-                        this.$Message.error(res.message | '新增失败');
+                        this.$Message.error(res.message || '新增失败');
                     }
                 });
             },

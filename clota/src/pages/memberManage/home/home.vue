@@ -31,7 +31,7 @@
         </div>
 
         <!--会员消费数据概览-->
-        <div class="home-chart">
+        <div class="home-chart" v-if="showMemberRecharge">
             <div class="chart-header">{{$t("memberConsumptionOverview")}}</div>
             <div class="chart-content">
                 <chart-line :data="vipPlace" type="money">
@@ -40,7 +40,7 @@
         </div>
 
         <!--会员积分数据概览-->
-        <div class="home-chart">
+        <div class="home-chart" v-if="showMemberPoint">
             <div class="chart-header">{{$t("memberIntergralOverview")}}</div>
             <div class="chart-content">
                 <chart-line :data="integrationPlace" type="integra">
@@ -61,6 +61,7 @@
     import ajax from '@/api/index.js';
     import memberDataOverview from '../components/memberDataOverview';
     import personalCardInfo from '../components/personalCardInfo';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -208,6 +209,19 @@
             this.getLastWeekMemberConsumeSum();
             this.getNowWeekMemberIntegraSum();
             this.getLastWeekMemberSendIntegraSum();
+        },
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员消费信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
+            //是否可以显示会员积分信息
+            showMemberPoint () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberPoint'] && this.memberConfigInfo['memberPoint'] === 'true';
+            },
         }
     };
 </script>

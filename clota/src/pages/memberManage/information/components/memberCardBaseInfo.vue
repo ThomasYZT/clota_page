@@ -2,7 +2,7 @@
 
 <template>
     <div class="member-card-info">
-        <template v-if="memberDetail.cardTypeId === '3'">
+        <template v-if="memberDetail.type === 'enterprise'">
             <div class="form-item-wrap">
                 <label>{{$t("company_name")}}：</label>
                 <span v-w-title="memberDetail.companyName">
@@ -103,7 +103,7 @@
             <label>{{$t("remark")}}：</label>
             <span v-w-title="memberDetail.remark">{{memberDetail.remark  | contentFilter}}</span>
         </div>
-        <div class="form-item-wrap" v-if="memberDetail.cardTypeId === '2'"  >
+        <div class="form-item-wrap" v-if="memberDetail.type === 'personal'">
             <label>{{$t("address")}}：</label>
             <span v-w-title="memberDetail.homeAddr">{{memberDetail.homeAddr  | contentFilter}}</span>
         </div>

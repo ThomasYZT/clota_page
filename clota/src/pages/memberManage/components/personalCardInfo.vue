@@ -81,18 +81,12 @@
              * 获取个人卡和业主卡数量信息
              */
             countCardsByTyeId () {
-                Promise.all([
-                    ajax.post('countCardsByTyeId',{
-                        ...this.serachParams,
-                        cardTypeId : 1 //业主卡-1 个人会员卡-2 企业卡-3
-                    }),
-                    ajax.post('countCardsByTyeId',{
-                        ...this.serachParams,
-                        cardTypeId : 2 //业主卡-1 个人会员卡-2 企业卡-3
-                    })
-                ]).then(([personData,ownerData]) => {
-                    if (personData.success && ownerData.success) {
-                        let result = [...(personData.data ? personData.data : []),...(ownerData.data ? ownerData.data : [])];
+                ajax.post('countCardsByType',{
+                    ...this.serachParams,
+                    cardType : 'personal'
+                }).then((personData) => {
+                    if (personData.success) {
+                        let result = [...(personData.data ? personData.data : [])];
                         this.xAxis = [];
                         this.seriesData = [];
                         result.map(item => {

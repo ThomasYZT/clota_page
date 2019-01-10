@@ -20,15 +20,15 @@
                        :placeholder="$t('inputField', { field : $t('memberCardTypeNameInputTip') })"/>
             </FormItem>
             <FormItem :label="$t('会员卡类型')" prop="cardType">
-                <RadioGroup v-model="formData.cardType">
-                    <Radio :disabled="personCardDisabled" label="personal">{{$t('个人')}}</Radio>
-                    <Radio :disabled="companyCardDisabled" label="enterprise">{{$t('企业')}}</Radio>
+                <RadioGroup v-model="formData.cardType" >
+                    <Radio :disabled="canAddCardType.personDisabled || !!formData.id" label="personal">{{$t('个人')}}</Radio>
+                    <Radio :disabled="canAddCardType.companyDisabled || !!formData.id" label="enterprise">{{$t('企业')}}</Radio>
                 </RadioGroup>
             </FormItem>
             <FormItem :label="$t('会员卡属性')" prop="attribute">
-                <RadioGroup v-model="formData.attribute">
-                    <Radio label="growth" v-if="cardIsGrowth">{{$t('成长型')}}</Radio>
-                    <Radio label="sale" v-if="cardIsSaling">{{$t('售卖型')}}</Radio>
+                <RadioGroup v-model="formData.attribute" @on-change="attibuteChange">
+                    <Radio label="growth" v-if="cardIsGrowth" :disabled="!!formData.id">{{$t('成长型')}}</Radio>
+                    <Radio label="sale" v-if="cardIsSaling" :disabled="!!formData.id">{{$t('售卖型')}}</Radio>
                 </RadioGroup>
             </FormItem>
             <FormItem :label="$t('remark')" prop="remark">
@@ -110,8 +110,8 @@
                 },
                 //保存数据中
                 saveIng : false,
-                personCardDisabled : false,
-                companyCardDisabled : false
+                //各种会员卡类型的数量
+                memberCardTypeCount : {}
             };
         },
         methods : {
@@ -127,11 +127,16 @@
                         this.formData.memberCategoryName = this.cardDefaultInfo.typeName;
                         this.formData.remark = this.cardDefaultInfo.remark;
                         this.formData.id = this.cardDefaultInfo.id;
+                        this.formData.cardType = this.cardDefaultInfo.type;
+                        this.formData.attribute = this.cardDefaultInfo.cardForm;
                     } else {
                         this.formData.memberCategoryName = '';
                         this.formData.remark = '';
                         this.formData.id = '';
+                        this.formData.cardType = '';
+                        // this.formData.attribute = '';
                     }
+                    this.countCardTypeByType();
                 }
             },
             /**
@@ -165,23 +170,61 @@
              */
             addCategoryInfo () {
                 this.saveIng = true;
-                ajax.post('saveOrUpdateCardType',{
-                    typeName : this.formData.memberCategoryName,
-                    remark : this.formData.remark,
-                    cardForm : this.formData.attribute,
-                    type : this.formData.cardType,
-                }).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('addMemberType') }));
-                        this.$emit('fresh-data');
-                        this.cancel();
-                    } else if (res.code === 'M024') {
-                        this.$Message.error(this.$t('memberCardTypeNameExist'));
+                ajax.post('countCardTypeByType').then(response => {
+                    if (response.success && response.data) {
+                        if (this.formData.attribute === 'sale') {
+                            let dataInfo = response.data['sale'];
+                            if (this.formData.cardType === 'personal' && dataInfo['personal'] >= 2) {
+                                return Promise.reject('sale_personal');
+                            } else if (this.formData.cardType === 'enterprise' && dataInfo['enterprise'] >= 2) {
+                                return Promise.reject('sale_enterprise');
+                            }
+                        } else if (this.formData.attribute === 'growth') {
+                            let dataInfo = response.data['growth'];
+                            if (this.formData.cardType === 'personal' && dataInfo['personal'] >= 2) {
+                                return Promise.reject('growth_personal');
+                            } else if (this.formData.cardType === 'enterprise' && dataInfo['enterprise'] >= 2) {
+                                return Promise.reject('growth_enterprise');
+                            }
+                        }
+                    } else {
+                        return Promise.reject('');
+                    }
+                }).then(() => {
+                    ajax.post('saveOrUpdateCardType',{
+                        typeName : this.formData.memberCategoryName,
+                        remark : this.formData.remark,
+                        cardForm : this.formData.attribute,
+                        type : this.formData.cardType,
+                    }).then(res => {
+                        if (res.success) {
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('addMemberType') }));
+                            this.$emit('fresh-data');
+                            this.cancel();
+                        } else if (res.code === 'M025') {
+                            this.$Message.error(this.$t('memberCardTypeNameExist'));
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('addMemberType') }));
+                        }
+                    }).finally(() => {
+                        this.saveIng = false;
+                    });
+                }).catch((err) => {
+                    if (err) {
+                        if (err === 'sale_personal') {
+                            this.$Message.error('最多新增2张售卖型个人会员卡');
+                        } else if (err === 'sale_enterprise') {
+                            this.$Message.error('最多新增2张售卖型企业会员卡');
+                        } else if (err === 'growth_personal') {
+                            this.$Message.error('最多新增2张成长型型个人会员卡');
+                        } else if (err === 'growth_enterprise') {
+                            this.$Message.error('最多新增2张成长型型企业会员卡');
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('addMemberType') }));
+                        }
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('addMemberType') }));
                     }
-                }).finally(() => {
-                    this.saveIng = false;
                 });
             },
             /**
@@ -200,7 +243,7 @@
                         this.$Message.success(this.$t('successTip', { tip : this.$t('modifyMemberType') }));
                         this.$emit('fresh-data');
                         this.cancel();
-                    } else if (res.code === 'M024') {
+                    } else if (res.code === 'M025') {
                         this.$Message.error(this.$t('memberCardTypeNameExist'));
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('modifyMemberType') }));
@@ -214,10 +257,18 @@
              */
             countCardTypeByType () {
                 ajax.post('countCardTypeByType').then(res => {
-                    if (res.success) {
-
+                    if (res.success && res.data) {
+                        this.memberCardTypeCount = res.data;
+                    } else {
+                        this.memberCardTypeCount = {};
                     }
                 });
+            },
+            /**
+             * 会员卡属性改变
+             */
+            attibuteChange () {
+                this.formData.cardType = '';
             }
         },
         computed : {
@@ -246,6 +297,39 @@
                     (this.memberConfigInfo['cardType'] === 'growth' ||
                         this.memberConfigInfo['cardType'] === 'sale_growth');
             },
+            //是否可以新增个人类型会员卡和企业型会员卡
+            canAddCardType () {
+                if (this.formData.attribute === 'sale') {
+                    if (this.memberCardTypeCount['sale'] && Object.keys(this.memberCardTypeCount['sale']).length > 0) {
+                        return {
+                            personDisabled : this.memberCardTypeCount['sale']['personal'] >= 2,
+                            companyDisabled : this.memberCardTypeCount['sale']['enterprise'] >= 2,
+                        };
+                    } else {
+                        return {
+                            personDisabled : true,
+                            companyDisabled : true,
+                        };
+                    }
+                } else if (this.formData.attribute === 'growth') {
+                    if (this.memberCardTypeCount['growth'] && Object.keys(this.memberCardTypeCount['growth']).length > 0) {
+                        return {
+                            personDisabled : this.memberCardTypeCount['growth']['personal'] >= 2,
+                            companyDisabled : this.memberCardTypeCount['growth']['enterprise'] >= 2,
+                        };
+                    } else {
+                        return {
+                            personDisabled : true,
+                            companyDisabled : true,
+                        };
+                    }
+                } else {
+                    return {
+                        personDisabled : true,
+                        companyDisabled : true,
+                    };
+                }
+            }
         },
         watch : {
             'memberConfigInfo.cardType' : {

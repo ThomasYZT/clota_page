@@ -1,15 +1,15 @@
 <!--服务初始化配置 -->
 
 <template>
-	<div class="service-init-config">
-		<div class="pick-up-title" >
-			<span class="label">{{$t('服务初始化配置')}}</span>
-			<span class="back-up"
-				  @click="isPackUp = !isPackUp">
-					{{$t(isPackUp ? 'backUp' : 'upLoad')}}
-				<span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
-			</span>
-		</div>
+    <div class="service-init-config">
+        <div class="pick-up-title" >
+            <span class="label">{{$t('服务初始化配置')}}</span>
+            <span class="back-up"
+                  @click="isPackUp = !isPackUp">
+                    {{$t(isPackUp ? 'backUp' : 'upLoad')}}
+                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+            </span>
+        </div>
 
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
@@ -22,8 +22,13 @@
                         <span class="cancel" @click="cancelEdit">{{$t('cancel')}}</span>
                     </template>
                 </div>
-                <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="380">
-                    <FormItem :label="$t('该租户已开通会员-储值服务，请设置储值账户类型:')" prop="accountType">
+                <Form ref="formValidate"
+                      :model="formData"
+                      :rules="ruleValidate"
+                      :label-width="380">
+                    <FormItem :label="$t('该租户已开通会员-储值服务，请设置储值账户类型:')"
+                              v-if="defaultSetting.memberRecharge === 'true'"
+                              prop="accountType">
                         <Select v-model="formData.accountType"
                                 style="width: 280px;"
                                 transfer
@@ -36,7 +41,9 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem :label="$t('该租户已开通会员相关服务，请设置其会员卡相关配置:')" prop="accountType">
+                    <FormItem :label="$t('该租户已开通会员相关服务，请设置其会员卡相关配置:')"
+                              v-if="defaultSetting.memberRecharge === 'true' || defaultSetting.memberPoint === 'true'"
+                              prop="accountType">
                         <Select v-model="formData.accountAttribute"
                                 style="width: 280px;"
                                 transfer
@@ -52,34 +59,41 @@
                 </Form>
             </div>
         </transition>
-	</div>
+    </div>
 </template>
 
 <script>
     import ajax from '@/api/index.js';
 
-	export default {
-		props : {
-			//是否默认展开
-			'isDefaultPackUp' : {
-				type : Boolean,
-				default : false
-			},
+    export default {
+        props : {
+            //是否默认展开
+            'isDefaultPackUp' : {
+                type : Boolean,
+                default : false
+            },
             //初始化设置默认配置信息
             'default-setting' : {
-			    type : Object,
+                type : Object,
                 default () {
-			        return {};
+                    return {};
                 }
-            }
-		},
-		data () {
-			return {
-				//是否收起
-				isPackUp : true,
+            },
+            //表格查询参数
+            'search-params' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+        },
+        data () {
+            return {
+                //是否收起
+                isPackUp : true,
                 //表单数据
                 formData : {
-				    //账户类型
+                    //账户类型
                     accountType : '',
                     //账户属性
                     accountAttribute : ''
@@ -92,9 +106,9 @@
                 },
                 //是否正在编辑中
                 isEditing : false,
-			};
-		},
-		methods : {
+            };
+        },
+        methods : {
             /**
              * 服务初始化配置
              */
@@ -114,14 +128,17 @@
              * 保存编辑数据
              */
             saveEdit () {
-                this.isEditing = false;
-                ajax.post('',{
-
+                ajax.post('setUserService',{
+                    orgId : this.searchParams.id,
+                    accountPattern : this.formData.accountType,
+                    cardType : this.formData.accountAttribute,
                 }).then(res => {
                     if (res.status === 200) {
-
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('save') }));
+                        this.isEditing = false;
+                        this.$emit('fresh-member-config');
                     } else {
-
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('save') }));
                     }
                 });
             }
@@ -165,85 +182,110 @@
                 } else if (this.formDataCopy.accountAttribute === 'sale') {
                     growthDisabled = true;
                     saleDisabled = false;
-                } else if (this.formDataCopy.accountAttribute === 'both') {
+                } else if (this.formDataCopy.accountAttribute === 'sale_growth') {
                     growthDisabled = true;
                     saleDisabled = true;
                 }
-                return [
-                    {
-                        label : this.$t('成长型'),
-                        value : 'growth',
-                        disabled : growthDisabled
-                    },
-                    {
-                        label : this.$t('售卖型'),
-                        value : 'sale',
-                        disabled : saleDisabled
-                    },
-                    {
-                        label : this.$t('成长型+售卖型'),
-                        value : 'both',
-                        disabled : false
-                    }
-                ];
+                //如果只开通了会员积分，那么只有成长型的会员卡配置
+                if (this.defaultSetting.memberPoint === 'true' && this.defaultSetting.memberRecharge === 'false') {
+                    return [
+                        {
+                            label : this.$t('成长型'),
+                            value : 'growth',
+                            disabled : growthDisabled
+                        },
+                        {
+                            label : this.$t('售卖型'),
+                            value : 'sale',
+                            disabled : true
+                        },
+                        {
+                            label : this.$t('成长型+售卖型'),
+                            value : 'sale_growth',
+                            disabled : true
+                        }
+                    ];
+                } else {
+                    return [
+                        {
+                            label : this.$t('成长型'),
+                            value : 'growth',
+                            disabled : growthDisabled
+                        },
+                        {
+                            label : this.$t('售卖型'),
+                            value : 'sale',
+                            disabled : saleDisabled
+                        },
+                        {
+                            label : this.$t('成长型+售卖型'),
+                            value : 'sale_growth',
+                            disabled : false
+                        }
+                    ];
+                }
             }
         },
         watch : {
-		    //从默认设置中获取服务初始化配置
-		    defaultSetting : {
-		        handler (newVal) {
+            //从默认设置中获取服务初始化配置
+            defaultSetting : {
+                handler (newVal) {
                     if (newVal && Object.keys(newVal).length > 0) {
+                        this.formData.accountType = newVal.accountPattern;
+                        this.formData.accountAttribute = newVal.cardType;
+                    } else {
                         this.formData.accountType = '';
                         this.formData.accountAttribute = '';
                     }
+                    this.isEditing = false;
                 },
                 immediate : true
             }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
-	.service-init-config{
+    @import '~@/assets/scss/base';
+    .service-init-config{
 
-		.pick-up-title{
-			@include block_outline($height: 59px);
-			padding: 25px 0 10px 0;
+        .pick-up-title{
+            @include block_outline($height: 59px);
+            padding: 25px 0 10px 0;
 
-			.label {
-				display: inline-block;
-				font-size: $font_size_16px;
-				color: $color_333;
-				line-height: 24px;
-				vertical-align: middle;
-			}
+            .label {
+                display: inline-block;
+                font-size: $font_size_16px;
+                color: $color_333;
+                line-height: 24px;
+                vertical-align: middle;
+            }
 
-			.back-up {
-				font-size: $font_size_14px;
-				color: $color_blue;
-				display: inline-block;
-				margin-left: 10px;
-				margin-top: 2px;
-				vertical-align: middle;
-				cursor: pointer;
+            .back-up {
+                font-size: $font_size_14px;
+                color: $color_blue;
+                display: inline-block;
+                margin-left: 10px;
+                margin-top: 2px;
+                vertical-align: middle;
+                cursor: pointer;
 
-				.icon-pull-down{
-					display: inline-block;
-					transition: all 0.5s;
+                .icon-pull-down{
+                    display: inline-block;
+                    transition: all 0.5s;
 
-					&::before{
-						color: $color_blue;
-						font-size: 12px;
-					}
+                    &::before{
+                        color: $color_blue;
+                        font-size: 12px;
+                    }
 
-					&.icon-reverse{
-						transform: rotate(180deg);
-						transition: all 0.5s;
-					}
+                    &.icon-reverse{
+                        transform: rotate(180deg);
+                        transition: all 0.5s;
+                    }
 
-				}
-			}
-		}
+                }
+            }
+        }
 
         .table-wrap{
 
@@ -263,5 +305,5 @@
                 }
             }
         }
-	}
+    }
 </style>

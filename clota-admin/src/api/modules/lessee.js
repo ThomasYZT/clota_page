@@ -77,4 +77,8 @@ export default {
     'getWxMpSet' : 'tenant/getWxMpSet.json',
     //配置公司公众号配置
     'setWxMpSet' : 'tenant/setWxMpSet.json',
+    //保存会员配置
+    'setUserService' : 'tenant/setUserService.json',
+    //获取会员配置
+    'getMemberServiceSetting' : 'tenant/getMemberServiceSetting.json',
 };

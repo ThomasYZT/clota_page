@@ -330,6 +330,8 @@
                     } else {
                         this.tableData = [];
                     }
+                }).finally(() => {
+                    this.$emit('fresh-member-config-info');
                 });
             },
             /**
