@@ -278,7 +278,6 @@
             :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}"
             @fresh-member-config-info="getMemberServiceSetting"
-            :search-params="{id : activeNode.id}"
             @fresh-wxMpSet-data="getWxMpSet">
         </opened-service>
         <!--服务初始化配置-->
@@ -414,7 +413,7 @@
                 validateEmail : validateEmail,
                 validatePhone : validatePhone,
                 //会员服务配置信息
-                memberConfigInfo : {}
+                memberConfigInfo : {},
                 //微信公众号配置
                 wxMpSet : {},
 
