@@ -10,7 +10,7 @@
                   :class="item.className"
                   :title="item.contentDeal" >
                 <span class="time">{{item.createdTime}}</span>
-                <span class="operater">{{$t('operator')}}：{{item.createOrg}} {{item.createName ? item.createName : $t('systemer')}} </span>
+                <span class="operater">{{$t('operator')}}：{{item.orgName}} {{item.createUserName ? item.createUserName : ''}} </span>
             </Step>
         </Steps>
     </div>
