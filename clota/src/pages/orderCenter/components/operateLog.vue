@@ -201,6 +201,20 @@
                         ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
                         ${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
                         };
+                    //团队系统自动核销
+                    case 'ORDER_TEAM_OVERDUE_VERIFY' :
+                        return {
+                            content : `${this.$t('overDueVarifyNum')}：${contentsObj.verifyNum}，
+                            ${this.$t('amount')}：${contentsObj.num}，
+                            ${this.$t('productDetailNo')}：${contentsObj.ticketId}，
+                            ${this.$t('verifySN')}：${contentsObj.checkSerialNo}`
+                        };
+                    //散客系统自动核销
+                    case 'ORDER_INDIVIDUAL_OVERDUE_VERIFY' :
+                        return {
+                            content : `${this.$t('overDueVarifyNum')}：${contentsObj.verifyNum}，
+                            ${this.$t('amount')}：${contentsObj.num}`
+                        }
                     //过期核销 -- 产品明细
                     case 'ORDER_OVERDUE_VERIFY_TICKET' :
                         return {
