@@ -84,31 +84,33 @@
                     </no-data>
                 </div>
                 <template v-if="choosedCard && Object.keys(choosedCard).length > 0">
-                    <div class="info-title">
-                        {{$t('storeValueAccountInfo')}}
+                    <template v-if="showMemberRecharge">
+                        <div class="info-title">
+                            {{$t('storeValueAccountInfo')}}
                             <span class="add-account"
                                   v-if="isMutipleAccount"
-                                    @click="addAccount">+ {{$t("newAccount")}}</span>
-                    </div>
-                    <!--储值账户信息-->
-                    <store-account-info v-for="item in charTableData"
-                                        :key="item.id"
-                                        :charge-info="item">
-                        <div class="operate-right">
-                            <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
-                            <span class="split-line"></span>
-                            <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
-                            <!--会员3期暂时去掉-->
-                            <!--<span class="split-line"></span>-->
-                            <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->
-                            <template v-if="item.exchangeToCash === 'true'">
-                                <span class="split-line"></span>
-                                <span @click="showCashModal(item)">{{$t("cash")}}</span>
-                            </template>
+                                  @click="addAccount">+ {{$t("newAccount")}}</span>
                         </div>
-                    </store-account-info>
+                        <!--储值账户信息-->
+                        <store-account-info v-for="item in charTableData"
+                                            :key="item.id"
+                                            :charge-info="item">
+                            <div class="operate-right">
+                                <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
+                                <span class="split-line"></span>
+                                <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
+                                <!--会员3期暂时去掉-->
+                                <!--<span class="split-line"></span>-->
+                                <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->
+                                <template v-if="item.exchangeToCash === 'true'">
+                                    <span class="split-line"></span>
+                                    <span @click="showCashModal(item)">{{$t("cash")}}</span>
+                                </template>
+                            </div>
+                        </store-account-info>
+                    </template>
                     <!--积分账户信息-->
-                    <template v-if="choosedCard.cardTypeId !== '1'">
+                    <template v-if="choosedCard.cardTypeId !== '1' && showMemberPoint">
                         <div class="info-title">{{$t('integerAccountName')}}</div>
                         <integral-account-info :account-info="scoreData">
                             <div class="operate-right">
@@ -234,8 +236,8 @@
                     <div class="content-info" v-if="setting.allowAdjustRechargeAccount === 'true' || setting.allowAdjustScoreAccount === 'true'">
                         <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
                         <div class="operate">
-                            <div><span @click="showAssetModal" v-if="setting.allowAdjustRechargeAccount === 'true'">{{$t("modifyStorageBalance")}}</span></div>
-                            <div v-if="choosedCard.cardTypeId !== '1' && setting.allowAdjustScoreAccount === 'true'">
+                            <div><span @click="showAssetModal" v-if="setting.allowAdjustRechargeAccount === 'true' && showMemberRecharge">{{$t("modifyStorageBalance")}}</span></div>
+                            <div v-if="choosedCard.cardTypeId !== '1' && setting.allowAdjustScoreAccount === 'true' && showMemberPoint">
                                 <span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span>
                             </div>
                         </div>
@@ -475,6 +477,14 @@
             //是否是多账户类型
             isMutipleAccount () {
                 return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
+            //是否可以显示会员积分信息
+            showMemberPoint () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberPoint'] && this.memberConfigInfo['memberPoint'] === 'true';
+            },
+            //是否可以显示会员储值账户信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
             },
         },
         methods : {

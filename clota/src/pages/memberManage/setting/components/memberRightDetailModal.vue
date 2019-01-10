@@ -412,7 +412,7 @@
              */
             saveRightInfo () {
                 let rights = this.getRights();
-                ajax.post('updateMemberLevel',{
+                ajax.post('updateMemberLevelRights',{
                     id : this.detailInfo.id,
                     rights : rights
                 }).then(res => {

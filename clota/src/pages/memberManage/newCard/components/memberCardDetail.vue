@@ -2,7 +2,7 @@
 
 <template>
     <div class="member-card-info">
-        <template v-if="cardInfo.cardTypeId === '3'">
+        <template v-if="cardInfo.type === 'enterprise'">
             <div class="form-item-wrap">
                 <label>{{$t("company_name")}}：</label>
                 <span v-w-title="cardInfo.companyName">
@@ -80,7 +80,7 @@
             <label>{{$t("effectiveEndDate")}}：</label>
             <span v-w-title="cardInfo.expDate">{{cardInfo.expDate  | contentFilter}}</span>
         </div>
-        <div class="form-item-wrap">
+        <div class="form-item-wrap" v-if="cardIsSaling">
             <label>{{$t("payPass")}}：</label>
             <span>
                 {{tradePassword | contentFilter}}
@@ -96,7 +96,7 @@
             <label>{{$t("remark")}}：</label>
             <span v-w-title="cardInfo.remark">{{cardInfo.remark  | contentFilter}}</span>
         </div>
-        <div class="form-item-wrap" v-if="cardInfo.cardTypeId === '2'"  >
+        <div class="form-item-wrap" v-if="cardInfo.type === 'personal'"  >
             <label>{{$t("address")}}：</label>
             <span v-w-title="cardInfo.homeAddr">{{cardInfo.homeAddr  | contentFilter}}</span>
         </div>
@@ -105,6 +105,7 @@
 
 <script>
     import { vipStatusEnum } from '@/assets/js/constVariable';
+    import { mapGetters } from 'vuex';
 	export default {
 		props : {
 			//会员卡信息
@@ -132,6 +133,16 @@
             },
         },
         computed : {
+            ...mapGetters({
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
             //交易密码显示格式
             tradePassword () {
                 if (this.cardInfo && this.cardInfo.passwd) {

@@ -20,15 +20,15 @@
                        :placeholder="$t('inputField', { field : $t('memberCardTypeNameInputTip') })"/>
             </FormItem>
             <FormItem :label="$t('会员卡类型')" prop="cardType">
-                <RadioGroup v-model="formData.cardType" :disabled="formData.id">
-                    <Radio :disabled="canAddCardType.personDisabled || formData.id" label="personal">{{$t('个人')}}</Radio>
-                    <Radio :disabled="canAddCardType.companyDisabled || formData.id" label="enterprise">{{$t('企业')}}</Radio>
+                <RadioGroup v-model="formData.cardType" >
+                    <Radio :disabled="canAddCardType.personDisabled || !!formData.id" label="personal">{{$t('个人')}}</Radio>
+                    <Radio :disabled="canAddCardType.companyDisabled || !!formData.id" label="enterprise">{{$t('企业')}}</Radio>
                 </RadioGroup>
             </FormItem>
             <FormItem :label="$t('会员卡属性')" prop="attribute">
-                <RadioGroup v-model="formData.attribute" @on-change="attibuteChange" :disabled="formData.id">
-                    <Radio label="growth" v-if="cardIsGrowth" :disabled="formData.id">{{$t('成长型')}}</Radio>
-                    <Radio label="sale" v-if="cardIsSaling" :disabled="formData.id">{{$t('售卖型')}}</Radio>
+                <RadioGroup v-model="formData.attribute" @on-change="attibuteChange">
+                    <Radio label="growth" v-if="cardIsGrowth" :disabled="!!formData.id">{{$t('成长型')}}</Radio>
+                    <Radio label="sale" v-if="cardIsSaling" :disabled="!!formData.id">{{$t('售卖型')}}</Radio>
                 </RadioGroup>
             </FormItem>
             <FormItem :label="$t('remark')" prop="remark">
@@ -134,7 +134,7 @@
                         this.formData.remark = '';
                         this.formData.id = '';
                         this.formData.cardType = '';
-                        this.formData.attribute = '';
+                        // this.formData.attribute = '';
                     }
                     this.countCardTypeByType();
                 }
@@ -339,7 +339,7 @@
                     } else if (newVal === 'growth') {
                         this.formData.attribute = 'growth';
                     } else {
-                        this.formData.attribute = 'growth';
+                        this.formData.attribute = '';
                     }
                 },
                 immediate : true

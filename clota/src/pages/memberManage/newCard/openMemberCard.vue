@@ -56,16 +56,16 @@
              */
             handleCardChanged (cardData) {
                 // 判断动态组件当前是哪个
-                switch (cardData.memberCard.cardTypeId) {
-                    case '1':
-                        this.currentCardType = 'ownerCard';
-                        this.selectedCard = cardData;
-                        break;
-                    case '2':
+                switch (cardData.type) {
+                    // case '1':
+                    //     this.currentCardType = 'ownerCard';
+                    //     this.selectedCard = cardData;
+                    //     break;
+                    case 'personal'://个人会员卡
                         this.currentCardType = 'personalCard';
                         this.selectedCard = cardData;
                         break;
-                    case '3':
+                    case 'enterprise'://企业会员卡
                         this.currentCardType = 'companyCard';
                         this.selectedCard = cardData;
                         break;

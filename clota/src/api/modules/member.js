@@ -319,4 +319,8 @@ export default {
     'getRootOrgTreeWithCompany' : '/organize/getRootOrgTreeWithCompany',
     //计算会员卡类型总数
     'countCardTypeByType' : '/member/memberLevel/countCardTypeByType',
+    //修改会员权益
+    'updateMemberLevelRights' : '/member/memberLevel/updateMemberLevelRights',
+    //计算会员数据统计信息
+    'countCardsByType' : '/member/report/countCardsByType',
 };

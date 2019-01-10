@@ -117,6 +117,21 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="showMemberPoint"
+                    slot="column6"
+                    :label="row.title"
+                    :prop="row.field"
+                    :key="row.index"
+                    :width="row.width"
+                    :min-width="row.minWidth"
+                    show-overflow-tooltip
+                    slot-scope="row">
+                    <template slot-scope="scoped">
+                       {{scoped.row.pointBalance | contentFilter}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    v-if="showMemberRecharge"
                     slot="column7"
                     :label="row.title"
                     :prop="row.field"
@@ -225,12 +240,21 @@
         computed : {
             ...mapGetters({
                 lang : 'lang',
+                memberConfigInfo : 'memberConfigInfo',
                 permissionInfo : 'permissionInfo',
             }),
             //是否可以修改会员信息
             canModifyMemberInfo () {
                 return this.permissionInfo && this.permissionInfo['modifyMembersInfo'] === 'allow';
-            }
+            },
+            //是否可以显示会员积分账户信息
+            showMemberPoint () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberPoint'] && this.memberConfigInfo['memberPoint'] === 'true';
+            },
+            //是否可以显示会员储值账户信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         },
         methods : {
             // 获取会员级别列表
