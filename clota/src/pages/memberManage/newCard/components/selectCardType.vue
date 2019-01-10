@@ -17,7 +17,7 @@
                         <Select v-model="memberCard.cardTypeId"
                                 style="width: 280px"
                                 @on-change="cardTypeChange">
-                            <Option v-for="item in cardTypes"
+                            <Option v-for="item in cardTypesDeal"
                                     :key="item.id"
                                     :value="item.id"
                                     :placeholder="$t('selectField', {field: ''})">
@@ -43,7 +43,7 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row v-if="showCardPrice">
+            <i-row v-if="cardTypeInfo.cardForm === 'sale'">
                 <i-col span="24">
                     <Form-item :label="$t('colonSetting',{ key : $t('memberCardSales') })" class="auto-item-content">
                         <span>{{cardLevelInfo.salePrice | moneyFilter | contentFilter}} {{$t('yuan')}}</span>
@@ -138,7 +138,8 @@
                             memberCard : this.memberCard,
                             levelName : this.cardLevelInfo.levelDesc,
                             salePrice : this.cardLevelInfo.salePrice,
-                            type : this.cardTypeInfo.type
+                            type : this.cardTypeInfo.type,
+                            cardForm : this.cardTypeInfo.cardForm
                         });
                     } else {
                         this.$emit('on-change-card', {
@@ -185,12 +186,35 @@
             ...mapGetters([
                 'memberConfigInfo'
             ]),
-            //是否显示会员卡售价和卡内金额
-            showCardPrice () {
+            //是否是售卖型会员卡
+            cardIsSale () {
                 return this.memberConfigInfo &&
                     this.memberConfigInfo['cardType'] &&
                     (this.memberConfigInfo['cardType'] === 'sale' ||
                         this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是成长型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //会员卡类别数据
+            cardTypesDeal () {
+                if (this.cardIsSale && this.cardIsGrowth) {
+                    if (this.$route.name === 'newBatchCard') {
+                        return this.cardTypes.filter(item => item.cardForm === 'sale');
+                    } else {
+                        return this.cardTypes;
+                    }
+                } else if (this.cardIsSale) {
+                    return this.cardTypes.filter(item => item.cardForm === 'sale');
+                } else if (this.cardIsGrowth) {
+                    return this.cardTypes.filter(item => item.cardForm === 'growth');
+                } else {
+                    return [];
+                }
             }
         }
     };

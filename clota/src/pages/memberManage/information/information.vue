@@ -5,7 +5,7 @@
         <div class="filter-wrap">
             <!--会员卡类型-->
             <Select v-model="queryParams.cardTypeId" @on-change="cardTypeChange">
-                <Option v-for="item in enumData.memberCardTypes"
+                <Option v-for="item in memberCardTypesList"
                         :key="item.label"
                         :value="item.value">
                     {{$t(item.label)}}
@@ -127,7 +127,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                       {{scoped.row.pointBalance | contentFilter}}
+                        {{scoped.row.pointBalance | contentFilter}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -141,7 +141,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scoped">
-                        <span>{{ scoped.row.moneyBalance | moneyFilter | contentFilter }}{{$t('yuan')}}</span>
+                        {{ scoped.row.moneyBalance | moneyFilter | contentFilter }}{{$t('yuan')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -217,12 +217,7 @@
                     //性别
                     genderEnum : genderEnum,
                     //会员卡类型
-                    memberCardTypes : [
-                        {
-                            label : 'allMemCardTyps',
-                            value : 'all'
-                        },
-                    ]
+                    memberCardTypes : []
                 },
                 //列表表头
                 infoListHead : infoListHead,
@@ -255,6 +250,39 @@
             showMemberRecharge () {
                 return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
             },
+            //是否是售卖型会员卡
+            cardIsSale () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是成长型会员卡
+            cardIsGrowth () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'growth' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //会员卡类型数据
+            memberCardTypesList () {
+                let result = [];
+                if (this.cardIsSale && this.cardIsGrowth) {
+                    result = this.enumData.memberCardTypes;
+                } else if (this.cardIsSale) {
+                    result = this.enumData.memberCardTypes.filter(item => item.cardForm === 'sale');
+                } else if (this.cardIsGrowth) {
+                    result = this.enumData.memberCardTypes.filter(item => item.cardForm === 'growth');
+                } else {
+                    result = [];
+                }
+                return [].concat([
+                    {
+                        label : 'allMemCardTyps',
+                        value : 'all'
+                    }
+                ],result);
+            }
         },
         methods : {
             // 获取会员级别列表
@@ -380,6 +408,7 @@
                             return {
                                 label : item.typeName,
                                 value : item.id,
+                                cardForm : item.cardForm,
                             };
                         }) : []));
                     }

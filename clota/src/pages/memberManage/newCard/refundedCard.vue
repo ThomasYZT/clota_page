@@ -10,6 +10,7 @@
         <header-tabs :router-name="'refundedCard'"></header-tabs>
         <div class="container">
             <Button class="batch-return-card"
+                    v-if="showBatchReturnCard"
                     type="primary"
                     @click="batchReturnCard">{{$t('batchRefundCard')}}</Button>
             <member-info @click-row-todo="toFunc">
@@ -21,6 +22,7 @@
     import { configVariable } from '@/assets/js/constVariable';
     import headerTabs from './components/newCardTabs.vue';
     import memberInfo from './components/memberInfo';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -57,6 +59,15 @@
                     name : 'batchRefundCard'
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否显示批量退卡
+            showBatchReturnCard () {
+                return this.permissionInfo && this.permissionInfo['newBatchCard'] === 'allow';
+            },
         }
     };
 </script>

@@ -597,10 +597,7 @@
             ]),
             //是否显示会员卡售卡信息
             cardIsSaling () {
-                return this.memberConfigInfo &&
-                    this.memberConfigInfo['cardType'] &&
-                    (this.memberConfigInfo['cardType'] === 'sale' ||
-                        this.memberConfigInfo['cardType'] === 'sale_growth');
+                return this.selectedCard && this.selectedCard.cardForm === 'sale';
             }
         },
         watch : {

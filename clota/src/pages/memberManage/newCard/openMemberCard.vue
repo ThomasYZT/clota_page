@@ -20,9 +20,9 @@
                                :key="currentCardType"
                                :selected-card="selectedCard">
                 </personal-card>
-                <owner-card v-show="currentCardType === 'ownerCard'"
-                            :selected-card="selectedCard">
-                </owner-card>
+                <!--<owner-card v-show="currentCardType === 'ownerCard'"-->
+                            <!--:selected-card="selectedCard">-->
+                <!--</owner-card>-->
             </div>
         </div>
     </div>
