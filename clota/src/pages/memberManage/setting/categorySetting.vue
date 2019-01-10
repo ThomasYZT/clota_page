@@ -127,7 +127,9 @@
                 ajax.post('queryCardTypeList').then(res => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.filter(item => {
-                            if (this.cardIsSaling) {
+                            if (this.cardIsSaling && this.cardIsGrowth) {
+                                return true;
+                            } else if (this.cardIsSaling) {
                                 return item.cardForm === 'sale';
                             } else if (this.cardIsGrowth) {
                                 return item.cardForm === 'growth';
@@ -177,6 +179,8 @@
                         this.queryList();
                     } else if (res.code === 'M021') {
                         this.$Message.error(this.$t('levelExistCard')); // 该会员级别下已存在会员信息，不能删除
+                    } else if (res.code === 'M025') {
+                        this.$Message.error(this.$t('categoryExist')); // 会员卡类别已存在
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                     }
@@ -190,7 +194,8 @@
                 this.$router.push({
                     name : 'levelSetting',
                     params : {
-                        id : data.id
+                        id : data.id,
+                        cardForm : data.cardForm
                     }
                 });
             }

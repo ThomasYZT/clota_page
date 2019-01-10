@@ -317,4 +317,6 @@ export default {
     'findAccountSetDetail' : '/member/memberAccount/findAccountSetDetail',
     //查看储值账户信息
     'getRootOrgTreeWithCompany' : '/organize/getRootOrgTreeWithCompany',
+    //计算会员卡类型总数
+    'countCardTypeByType' : '/member/memberLevel/countCardTypeByType',
 };

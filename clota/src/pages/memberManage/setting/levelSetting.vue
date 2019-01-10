@@ -15,7 +15,7 @@
                             :disabled="tableData.length > 11"
                             @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
                     <Button type="primary"
-                            v-if="cardIsGrowth"
+                            v-if="cardAttribute === 'growth'"
                             :disabled="tableData.length < 1"
                             @click="showRuleModal">{{$t('promotionSetting')}}</Button><!--晋级设置-->
                     <span class="tips">{{$t('max12MemberLevels')}}</span><!--最多新增12个会员级别-->
@@ -27,6 +27,20 @@
                     :column-data="levelListHead"
                     :table-data="tableData"
                     :border="true">
+                    <el-table-column
+                        v-if="cardAttribute === 'growth'"
+                        slot="column1"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                           {{scoped.row.levelNum | contentFilter}}
+                        </template>
+                    </el-table-column>
                     <!--会员4期暂时去掉-->
                     <!--<el-table-column-->
                         <!--slot="column3"-->
@@ -42,7 +56,7 @@
                         <!--</template>-->
                     <!--</el-table-column>-->
                     <el-table-column
-                        v-if="cardIsGrowth"
+                        v-if="cardAttribute === 'growth'"
                         slot="column3"
                         :label="row.title"
                         :prop="row.field"
@@ -56,7 +70,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        v-if="cardIsSaling"
+                        v-if="cardAttribute === 'sale'"
                         slot="column4"
                         :label="row.title"
                         :prop="row.field"
@@ -70,7 +84,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        v-if="cardIsSaling"
+                        v-if="cardAttribute === 'sale'"
                         slot="column5"
                         :label="row.title"
                         :prop="row.field"
@@ -124,6 +138,7 @@
 
         <!--新增会员modal-->
         <add-member-modal ref="addMember"
+                          :cardAttribute="cardAttribute"
                           :card-type-id="cardTypeId"
                           @modify-success="queryList">
         </add-member-modal>
@@ -183,7 +198,9 @@
                     }
                 ],
                 //会员类别id
-                cardTypeId : ''
+                cardTypeId : '',
+                //会员卡属性
+                cardAttribute : ''
             };
         },
         methods : {
@@ -257,6 +274,7 @@
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
                     this.cardTypeId = params.id;
+                    this.cardAttribute = params.cardForm;
                     this.queryList();
                 } else {
                     this.$router.push({
