@@ -306,6 +306,8 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
+                }).finally(() => {
+                    this.$emit('fresh-member-config-info');
                 });
             },
             /**

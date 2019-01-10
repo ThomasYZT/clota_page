@@ -648,7 +648,7 @@
     .add-member-modal{
 
         .time-list-item{
-            @include block_outline();
+            @include block_outline($height : 20px);
             display: flex;
 
             .time-label{

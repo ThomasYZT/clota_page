@@ -9,22 +9,26 @@
 
             <Form ref="formDynamic" :model="formDynamic">
 
-                <div class="content-item">
+                <div class="content-item card-valid-time">
                     <div class="title">{{$t('memberCardValidity')}}</div><!--会员卡有效期-->
-                    <el-collapse :value="collapseOpened">
-                        <el-collapse-item v-for="(item,title,index) in memberLevelsData"
-                                          :key="index"
-                                          :title="title"
-                                          :name="title">
-                            <table-com
-                                :column-data="getColumnData(item)"
-                                :table-data="getTableData(item)"
-                                :border="true"
-                                :auto-height="true"
-                                :height="95">
-                            </table-com>
-                        </el-collapse-item>
-                    </el-collapse>
+                    <template v-if='memberLevelsData.length > 0'>
+                        <el-collapse :value="collapseOpened">
+                            <el-collapse-item v-for="(item,title,index) in memberLevelsData"
+                                              :key="index"
+                                              :title="title"
+                                              :name="title">
+                                <table-com
+                                    :column-data="getColumnData(item)"
+                                    :table-data="getTableData(item)"
+                                    :border="true"
+                                    :auto-height="true"
+                                    :height="95">
+                                </table-com>
+                            </el-collapse-item>
+                        </el-collapse>
+                    </template>
+                    <no-data v-else class="no-data-wrap">
+                    </no-data>
                 </div>
 
 
@@ -294,11 +298,13 @@
     import headerTabs from './components/headerTabs.vue';
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         components : {
             headerTabs,
-            tableCom
+            tableCom,
+            noData
         },
         data () {
             return {
@@ -838,6 +844,15 @@
 
             .content-item {
                 margin-bottom: 30px;
+
+                &.card-valid-time{
+                    position: relative;
+                    min-height: 200px;
+
+                    .no-data-wrap{
+                        width:500px;
+                    }
+                }
 
                 /deep/ .ivu-form-item-wrap {
                     position: relative;

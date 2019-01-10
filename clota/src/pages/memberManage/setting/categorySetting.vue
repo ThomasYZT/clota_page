@@ -10,7 +10,7 @@
             <div class="btn-wrap">
                 <!--新增会员类别-->
                 <Button type="primary"
-                        :disabled="tableData.length > 11"
+                        :disabled="!canAddCardType"
                         @click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>
                 <!--<span class="tips">{{$t('mostAddNumOfMemberType', { num : '12' })}}</span>&lt;!&ndash;最多新增12个会员类别&ndash;&gt;-->
             </div>
@@ -96,6 +96,8 @@
                 currentData : {},
                 //是否显示新增会员卡类别名称
                 showAddModal : false,
+                //会员卡类型计数
+                memberCardTypeCount : {}
             };
         },
         created () {
@@ -142,6 +144,8 @@
                     } else {
                         this.$Message.warning(res.message || 'queryMemberLevels ' + this.$t('queryFailure') + '！');
                     }
+                }).finally(() => {
+                    this.countCardTypeByType();
                 });
             },
 
@@ -198,6 +202,18 @@
                         cardForm : data.cardForm
                     }
                 });
+            },
+            /**
+             * 获取会员卡类型新增个数
+             */
+            countCardTypeByType () {
+                ajax.post('countCardTypeByType').then(res => {
+                    if (res.success && res.data) {
+                        this.memberCardTypeCount = res.data;
+                    } else {
+                        this.memberCardTypeCount = {};
+                    }
+                });
             }
         },
         computed : {
@@ -218,6 +234,28 @@
                     (this.memberConfigInfo['cardType'] === 'growth' ||
                         this.memberConfigInfo['cardType'] === 'sale_growth');
             },
+            //是否可以新增会员卡类别
+            canAddCardType () {
+                if (this.memberCardTypeCount && Object.keys(this.memberCardTypeCount).length > 0) {
+                    //成长型会销售型会员卡下最多分别可以新增2张个人卡和2张企业卡
+                    if (this.memberConfigInfo && this.memberConfigInfo['cardType'] === 'sale_growth') {
+                        return (this.memberCardTypeCount['growth']['enterprise'] < 2 ||
+                            this.memberCardTypeCount['growth']['personal'] < 2 ||
+                            this.memberCardTypeCount['sale']['personal'] < 2 ||
+                            this.memberCardTypeCount['sale']['enterprise'] < 2 );
+                    } else if (this.cardIsSaling) {
+                        return (this.memberCardTypeCount['sale']['personal'] < 2 ||
+                            this.memberCardTypeCount['sale']['enterprise'] < 2 );
+                    } else if (this.cardIsGrowth) {
+                        return (this.memberCardTypeCount['growth']['personal'] < 2 ||
+                            this.memberCardTypeCount['growth']['enterprise'] < 2 );
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
         }
     };
 </script>

@@ -59,6 +59,8 @@
                             </template>
                         </div>
                     </div>
+                    <no-data v-else class="no-data-wrap">
+                    </no-data>
                 </div>
 
                 <!--<div class="content-item">
@@ -273,6 +275,7 @@
     import ownerRefundSetting from './components/ownerRefundSetting.vue';
     import ownerCardConsumeConfig from './components/ownerCardConsumeConfig';
     import { mapGetters } from 'vuex';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         components : {
@@ -283,7 +286,8 @@
             sendRateModal,
             tableCom,
             ownerRefundSetting,
-            ownerCardConsumeConfig
+            ownerCardConsumeConfig,
+            noData
         },
         data () {
             return {
@@ -789,6 +793,11 @@
             overflow: auto;
 
             .content-item{
+
+                .no-data-wrap{
+                    position: relative;
+                    @include block_outline(500px,200px);
+                }
 
                 .add-span {
                     font-size: $font_size_14px;

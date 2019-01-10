@@ -7,7 +7,7 @@
             :router-name="routerName">
         </header-tabs>
         <div class="content">
-            <ul class="cardtype-area">
+            <ul class="cardtype-area" v-if="memTableData.length > 0">
                 <li class="card-type-list"
                     v-for="(item,index) in memTableData"
                     :class="{ 'active' : chosedMemCard === item.id }"
@@ -16,6 +16,10 @@
                     {{item.content}}
                 </li>
             </ul>
+            <div class="cardtype-area" v-else>
+                <no-data >
+                </no-data>
+            </div>
             <div class="channel-area">
                 <div class="title">{{$t('memberChannelChoose')}}</div>
                 <table-com
@@ -55,6 +59,10 @@
                          @check="treeChecked"
                          :render-content="renderContent">
                 </el-tree>
+                <div class="tree-area" v-else>
+                    <no-data >
+                    </no-data>
+                </div>
             </div>
         </div>
         <div class="btn-area">
@@ -69,11 +77,13 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { cardScopeHead,memCardHead } from './cardScopeConfig';
     import ajax from '@/api/index.js';
+    import noData from '@/components/noDataTip/noData-tip.vue';
 
     export default {
         components : {
             headerTabs,
-            tableCom
+            tableCom,
+            noData
         },
         data () {
             return {
@@ -395,6 +405,7 @@
             padding: 25px 60px;
 
             .cardtype-area{
+                position: relative;
                 @include block_outline(322px);
                 background: #fbfcfe;
                 float: left;
@@ -459,6 +470,11 @@
             .ivu-btn + .ivu-btn{
                 margin-left: 20px;
             }
+        }
+
+        .tree-area{
+            position: relative;
+            @include block_outline(500px,200px);
         }
     }
 </style>
