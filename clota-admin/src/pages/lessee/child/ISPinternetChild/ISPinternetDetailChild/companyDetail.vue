@@ -276,14 +276,21 @@
         <!--已开通服务-->
         <opened-service
             :isDefaultPackUp="true"
-            :search-params="{id : activeNode.id}">
+            :search-params="{id : activeNode.id}"
+            @fresh-wxMpSet-data="getWxMpSet">
         </opened-service>
         <!--服务初始化配置-->
         <service-init-config
             :isDefaultPackUp="true" >
         </service-init-config>
         <!-- 公众号配置 -->
-        <official-accounts-setting :isDefaultPackUp="true">
+        <official-accounts-setting v-if="marketWx || memberWx"
+                                   :marketWx="marketWx"
+                                   :memberWx="memberWx"
+                                   :wxMpSet="wxMpSet"
+                                   :isDefaultPackUp="true"
+                                   :search-params="{id : activeNode.id}"
+                                   @fresh-wxMpSet-data="getWxMpSet">
         </official-accounts-setting>
         <!--下属公司-->
         <sub-company
@@ -400,6 +407,8 @@
                 companyDetail : {},
                 validateEmail : validateEmail,
                 validatePhone : validatePhone,
+                //微信公众号配置
+                wxMpSet : {},
 
             };
         },
@@ -595,11 +604,26 @@
                     }
                 });
             },
+            /**
+             * 获取微信公众号配置信息(仅公司节点)
+             */
+            getWxMpSet () {
+                ajax.post('getWxMpSet', {
+                    orgId : this.activeNode.id
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.wxMpSet = res.data ? res.data : {};
+                    } else {
+                        this.wxMpSet = {};
+                    }
+                })
+            }
         },
         created () {
             this.querySmsProviderList();
             this.querySysAccoutList();
             this.getParentManages();
+            this.getWxMpSet();
         },
         computed : {
             //公司详细地址
@@ -710,7 +734,23 @@
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },
                     ]
                 }
-            }
+            },
+            //公司是否开启全民营销模块
+            marketWx () {
+                if (this.wxMpSet && this.wxMpSet.marketWx) {
+                    return this.wxMpSet.marketWx === 'true' ? true : false;
+                } else {
+                    return false;
+                }
+            },
+            //公司是否开启会员模块
+            memberWx () {
+                if (this.wxMpSet && this.wxMpSet.memberWx) {
+                    return this.wxMpSet.memberWx === 'true' ? true : false;
+                } else {
+                    return false;
+                }
+            },
         },
         watch : {
             //节点更换，重新请求节点数据

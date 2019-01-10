@@ -620,4 +620,5 @@ export default {
     'tour' : '旅行社',
     'market' : '全民营销',
     'other' : '其它',
+    'validatedDate' : '有效期'
 };

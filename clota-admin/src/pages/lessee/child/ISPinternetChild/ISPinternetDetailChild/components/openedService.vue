@@ -17,13 +17,13 @@
                     <template v-if="type === 'company'">
                         <Button type="primary"
                                 :disabled="!canRecoverService"
-                                @click="recoverService(selectedService.map(item => item.serviceId))">恢复</Button>
+                                @click="recoverService(selectedService.map(item => item.serviceCode), selectedService.map(item => item.serviceId))">恢复</Button>
                         <Button type="primary"
                                 :disabled="!canPauseService"
-                                @click="paushService(selectedService.map(item => item.serviceId))">暂停</Button>
+                                @click="paushService(selectedService.map(item => item.serviceCode), selectedService.map(item => item.serviceId))">暂停</Button>
                         <Button type="primary"
                                 :disabled="!canDelayService"
-                                @click="delayService(selectedService)">延期</Button>
+                                @click="delayService(selectedService.map(item => item.serviceCode), selectedService)">延期</Button>
                         <Button type="primary" @click="addService">开通服务</Button>
                     </template>
                     <template v-else-if="type === 'scene'">
@@ -39,9 +39,6 @@
                     :column-data="openedServiceHead"
                     :table-data="tableData"
                     :border="true"
-                    :page-no-d.sync="pageNo"
-                    :show-pagination="true"
-                    :page-size-d.sync="pageSize"
                     :total-count="totalCount"
                     :auto-height="true"
                     :table-com-min-height="280"
@@ -79,16 +76,16 @@
                             <template v-if="type === 'company'">
                                 <ul class="operate-info">
                                     <li class="custome"
-                                        @click="delayService([scoped.row])"
+                                        @click="delayService([scoped.row.serviceCode], [scoped.row])"
                                         v-if="scoped.row.runStatus === 'normal'">延期</li>
                                     <li class="custome"
-                                        @click="paushService([scoped.row.serviceId])"
+                                        @click="paushService([scoped.row.serviceCode], [scoped.row.serviceId])"
                                         v-if="scoped.row.runStatus === 'normal'">暂停</li>
                                     <li class="custome"
                                         @click="openService(scoped.row.serviceId)"
                                         v-if="scoped.row.runStatus === 'expire'">开通服务</li>
                                     <li class="custome"
-                                        @click="recoverService([scoped.row.serviceId])"
+                                        @click="recoverService([scoped.row.serviceCode], [scoped.row.serviceId])"
                                         v-if="scoped.row.runStatus === 'invalid'">恢复</li>
                                 </ul>
                             </template>
@@ -109,14 +106,15 @@
             :org-id="searchParams.id"
             :opened-services="tableData"
             v-model="openServiceModalShow"
-            @fresh-data="queryList">
+            @fresh-data="freshData">
         </open-service-modal>
         <!--服务延期模态框-->
         <service-delay-modal
             v-model="serviceDelayModalShow"
             :org-id="searchParams.id"
             :service-list="operateServiceList"
-            @fresh-data="queryList">
+            :service-codes="operateServiceCodes"
+            @fresh-data="freshData">
         </service-delay-modal>
         <!--删除服务模态框-->
         <del-modal ref="delModal">
@@ -191,12 +189,15 @@
                 serviceDelayModalShow : false,
                 //当前操作的服务里列表
                 operateServiceList : [],
+                //当前操作的服务类型列表
+                operateServiceCodes : [],
                 //是否收起
                 isPackUp : true,
                 pageNo : 1,
                 pageSize : 10,
                 //需要开通的服务id
-                openedServiceId : ''
+                openedServiceId : '',
+                allService : [],
             };
         },
         methods : {
@@ -211,15 +212,24 @@
              * 延期服务
              * @param data
              */
-            delayService (data) {
+            delayService (serviceCodes, data) {
+                this.operateServiceCodes = serviceCodes;
                 this.operateServiceList = data;
                 this.serviceDelayModalShow = true;
             },
             /**
              * 暂停服务
+             * @param serviceCodes 服务类别列表
              * @param serviceIds 服务id
              */
-            paushService (serviceIds) {
+            paushService (serviceCodes, serviceIds) {
+                if (this.type === 'company') {
+                    serviceIds = this.allService.filter((item) => {
+                        return serviceCodes.includes(item.serviceCode);
+                    }).map((item) => {
+                        return item.serviceId;
+                    });
+                }
                 ajax.post('updateServicesStatus',{
                     orgId : this.searchParams.id,
                     serviceIds : serviceIds,
@@ -228,6 +238,7 @@
                     if (res.status === 200) {
                         this.$Message.success('暂停成功');
                         this.queryList();
+                        this.$emit('fresh-wxMpSet-data');
                     } else {
                         this.$Message.error('暂停失败');
                     }
@@ -237,7 +248,14 @@
              * 恢复服务
              * @param serviceIds 服务id
              */
-            recoverService (serviceIds) {
+            recoverService (serviceCodes, serviceIds) {
+                if (this.type === 'company') {
+                    serviceIds = this.allService.filter((item) => {
+                        return serviceCodes.includes(item.serviceCode);
+                    }).map((item) => {
+                        return item.serviceId;
+                    });
+                }
                 ajax.post('updateServicesStatus',{
                     orgId : this.searchParams.id,
                     serviceIds : serviceIds,
@@ -246,6 +264,7 @@
                     if (res.status === 200) {
                         this.$Message.success('恢复成功');
                         this.queryList();
+                        this.$emit('fresh-wxMpSet-data');
                     } else {
                         this.$Message.error('恢复失败');
                     }
@@ -296,15 +315,20 @@
             queryList () {
                 ajax.post('getOrgServices',{
                     id : this.searchParams.id,
-                    page : this.pageNo,
-                    pageSize : this.pageSize
+                    page : 1,
+                    pageSize : 999,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.tableData = res.data ? res.data.list : [];
-                        this.totalCount = Number(res.data.totalRecord);
+                        if (this.type === 'company') {
+                            this.allService = res.data ? res.data.list : [];
+                            this.tableData = res.data ? res.data.list.filter((item) => {
+                                return item.isBase === 'false';
+                            }) : [];
+                        } else {
+                            this.tableData = res.data ? res.data.list : [];
+                        }
                     } else {
                         this.tableData = [];
-                        this.totalCount = 0;
                     }
                 });
             },
@@ -324,6 +348,13 @@
                         this.$Message.error('删除失败');
                     }
                 });
+            },
+            /**
+             * 刷新数据
+             */
+            freshData () {
+                this.queryList();
+                this.$emit('fresh-wxMpSet-data')
             }
         },
         computed : {

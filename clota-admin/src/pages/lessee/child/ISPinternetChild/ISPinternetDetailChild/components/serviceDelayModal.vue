@@ -60,6 +60,13 @@
                 type : Boolean,
                 default : false
             },
+            //当前操作的服务类型列表
+            'service-codes' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
             //当前操作的服务列表
             'service-list' : {
                 type : Array,
