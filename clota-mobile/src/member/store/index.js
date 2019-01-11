@@ -34,10 +34,10 @@ export const memberGetters = {
     },
     //会员卡信息
     cardInfo : state => {
-        let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-        if (cardInfo && Object.keys(cardInfo).length > 0) {
-            state.cardInfo = cardInfo;
-        }
+        // let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
+        // if (cardInfo && Object.keys(cardInfo).length > 0) {
+        //     state.cardInfo = cardInfo;
+        // }
         return state.cardInfo;
     },
     //会员卡列表信息
