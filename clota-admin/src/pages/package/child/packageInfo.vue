@@ -158,7 +158,9 @@
                 let serverName = [];
                 if (rowData.services && rowData.services.length > 0) {
                     for (let i = 0,j = rowData.services.length; i < j; i++) {
-                        serverName.push(rowData.services[i]['serviceName']);
+                        if (rowData.services[i]['isBase'] === 'false') {
+                            serverName.push(rowData.services[i]['serviceName']);
+                        }
                     }
                 }
                 return serverName.join(',');

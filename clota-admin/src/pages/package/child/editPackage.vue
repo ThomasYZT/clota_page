@@ -33,9 +33,9 @@
                         <FormItem :label="$t('choseService')"
                                   prop="services"
                                   v-if="type === 'add' || type === 'edit'">
-                            <CheckboxGroup v-model="formData.services" >
-                                <Checkbox :label="item.id"
-                                          v-for="(item,i) in serviceList"
+                            <CheckboxGroup v-model="formData.services">
+                                <Checkbox :label="item.serviceCode"
+                                          v-for="(item) in serviceList"
                                           :vlaue="item.id"
                                           :key="item.id">
                                     <span>{{item.serviceName}}</span>
@@ -46,9 +46,9 @@
                                   prop="services"
                                   v-else>
                             <CheckboxGroup v-model="formData.services" >
-                                <Checkbox :label="item.id"
+                                <Checkbox :label="item.serviceCode"
                                           :disabled="true"
-                                          v-for="(item,i) in serviceList"
+                                          v-for="(item) in serviceList"
                                           :vlaue="item.id"
                                           :key="item.id">
                                     <span>{{item.serviceName}}</span>
@@ -134,7 +134,9 @@
                 //服务列表
                 serviceList : [],
                 //套餐id
-                packageId : ''
+                packageId : '',
+                //所有服务
+                allServices : [],
             };
         },
         methods : {
@@ -190,11 +192,17 @@
                     serviceStatus : 'normal'
                 }).then(res => {
                     if (res.status === 200) {
-                        this.serviceList = res.data ? res.data : [];
+                        //this.serviceList = res.data ? res.data : [];
+                        this.allServices = res.data ? res.data : [];
+                        this.serviceList = res.data ? res.data.filter((item) => {
+                            return item.isBase === 'false';
+                        }) : [];
                     } else {
+                        this.allServices = [];
                         this.serviceList = [];
                     }
                 }).catch(err => {
+                    this.allServices = [];
                     this.serviceList = [];
                 });
             },
@@ -204,7 +212,9 @@
             addPackage () {
                 ajax.post('addPackage',{
                     packageName : this.formData.packageName,
-                    serviceids : this.formData.services.join(',')
+                    serviceids : this.allServices.filter((item) => {
+                        return this.formData.services.includes(item.serviceCode)
+                    }).map(item => item.id).join(','),
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('新增成功');
@@ -225,7 +235,9 @@
                 ajax.post('updatePackage',{
                     id : this.packageId,
                     packageName : this.formData.packageName,
-                    serviceids : this.formData.services.join(',')
+                    serviceids : this.allServices.filter((item) => {
+                        return this.formData.services.includes(item.serviceCode)
+                    }).map(item => item.id).join(','),
                 }).then(res => {
                     if (res.status === 200) {
                         this.$Message.success('编辑成功');
@@ -248,12 +260,21 @@
                 }).then(res => {
                     if (res.status === 200) {
                         this.formData.packageName = res.data.comboName;
-                        this.formData.services = res.data.services ? res.data.services.map(item => item.id) : [];
+                        this.formData.services = res.data.services ? Array.from(new Set(res.data.services.map(item => item.serviceCode))) : [];
                     } else {
                         this.formData.packageName = '';
                         this.formData.services = [];
                     }
                 });
+            },
+            /**
+             *  更改选择的服务
+             *  @param {array} data
+             */
+            serviceChange (data) {
+                let set = new Set(data);
+                let _arr = Array.from(set);
+                this.formData.server = _arr;
             }
         },
         computed : {

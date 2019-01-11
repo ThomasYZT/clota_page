@@ -270,7 +270,8 @@
                         if (this.packageList[i].id === data) {
                             if (this.packageList[i].services && this.packageList[i].services.length > 0) {
                                 for (let a = 0,b = this.packageList[i].services.length; a < b; a++) {
-                                    if (!(this.packageList[i].services[a].serviceCode in this.openedServicesObj)) {
+                                    if (!(this.packageList[i].services[a].serviceCode in this.openedServicesObj) &&
+                                        !(this.formData.servers.includes(this.packageList[i].services[a].serviceCode))) {
                                         this.formData.servers.push(this.packageList[i].services[a].serviceCode);
                                     }
                                 }
