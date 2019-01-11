@@ -26,7 +26,7 @@
             <template v-if="!openedServiceId">
                 <FormItem label="选择服务" prop="servers">
                     <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
-                        <Checkbox :label="item.id"
+                        <Checkbox :label="item.serviceCode"
                                   v-for="(item,index) in serverList"
                                   :disabled="item.disabled"
                                   :key="index">
@@ -38,7 +38,7 @@
             <template v-else>
                 <FormItem label="选择服务" prop="servers">
                     <CheckboxGroup v-model="formData.servers" @on-change="serviceChange">
-                        <Checkbox :label="item.id"
+                        <Checkbox :label="item.serviceCode"
                                   v-for="(item,index) in serverList"
                                   v-if="item.id === openedServiceId"
                                   :disabled="true"
@@ -141,7 +141,9 @@
                 //服务列表
                 serverList : [],
                 //套餐列表
-                packageList : []
+                packageList : [],
+                //所有服务列表
+                allServices : [],
             };
         },
         methods : {
@@ -188,7 +190,7 @@
                 ajax.post('addServices',{
                     orgId : this.orgId,
                     // serviceIds : this.formData.servers,
-                    serviceIds : this.serverList.filter(item => this.formData.servers.includes(item.id) && !item.disabled ).map(item => item.id),
+                    serviceIds : this.allServices.filter(item => this.formData.servers.includes(item.serviceCode) && !item.disabled ).map(item => item.id),
                     startTime : new Date(startTime).format('yyyy-MM-dd 00:00:00'),
                     endTime : new Date(startTime).addMonths(this.formData.serverTime).format('yyyy-MM-dd 23:59:59'),
                 }).then(res => {
@@ -208,26 +210,32 @@
             getServerList () {
                 ajax.post('getServices').then(res => {
                     if (res.status === 200) {
-                        this.serverList = res.data ? res.data : [];
+                        this.allServices = res.data ? res.data : [];
+                        this.serverList = res.data ? res.data.filter((item) => {
+                            return item.isBase === 'false';
+                        }) : [];
                         if (this.openedServiceId) {
-                            for (let i = 0,j = this.serverList.length; i < j; i++) {
-                                if (this.serverList[i].id === this.openedServiceId) {
-                                    this.formData.servers = [this.serverList[i].id];
+                            for (let i = 0,j = this.allServices.length; i < j; i++) {
+                                if (this.allServices[i].id === this.openedServiceId) {
+                                    this.formData.servers = [this.allServices[i].serviceCode];
                                     break;
                                 }
                             }
                         } else {
                             this.formData.servers = [];
-                            for (let i = 0,j = this.serverList.length; i < j; i++) {
-                                if (this.serverList[i].id in this.openedServicesObj) {
-                                    this.$set(this.serverList[i],'disabled',true);
-                                    this.formData.servers.push(this.serverList[i]['id']);
+                            for (let i = 0,j = this.allServices.length; i < j; i++) {
+                                if (this.allServices[i].serviceCode in this.openedServicesObj) {
+                                    this.$set(this.allServices[i],'disabled',true);
+                                    if (!this.formData.servers.includes(this.allServices[i]['serviceCode'])) {
+                                        this.formData.servers.push(this.allServices[i]['serviceCode']);
+                                    }
                                 } else {
-                                    this.$set(this.serverList[i],'disabled',false);
+                                    this.$set(this.allServices[i],'disabled',false);
                                 }
                             }
                         }
                     } else {
+                        this.allServices = [];
                         this.serverList = [];
                     }
                 });
@@ -278,6 +286,9 @@
              * @param data
              */
             serviceChange (data) {
+                let set = new Set(data);
+                let _arr = Array.from(set);
+                this.formData.server = _arr;
                 this.formData.packageId = '';
             }
         },
@@ -301,7 +312,7 @@
                 let obj = {};
                 if (this.openedServices && this.openedServices.length > 0) {
                     for (let i = 0,j = this.openedServices.length; i < j; i++) {
-                        obj[this.openedServices[i].serviceId] = true;
+                        obj[this.openedServices[i].serviceCode] = true;
                     }
                 }
                 return obj;
