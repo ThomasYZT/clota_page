@@ -6,7 +6,7 @@
 
         </router-view>
         <!--tab菜单栏-->
-        <tabbar v-if="isTabbarShow && cardInfo.cardTypeId !== '1'"
+        <tabbar v-if="isTabbarShow && cardInfo.cardTypeId !== '1' && hasPointMenu"
                 v-model="actived" >
             <tabbar-item v-for="(item, index) in tabbarList"
                          :key="index" @on-item-click="tabbarChange(item.routeName)">
@@ -74,7 +74,12 @@
         computed : {
             ...mapGetters({
                 cardInfo : 'cardInfo',
+                memberConfigInfo : 'memberConfigInfo',
             }),
+            //是否有积分服务
+            hasPointMenu () {
+                return this.memberConfigInfo && this.memberConfigInfo.memberPoint === 'true';
+            }
         },
 	};
 </script>

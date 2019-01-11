@@ -251,7 +251,7 @@ export default {
     'after tomorrow' : '后天',
     'bracketSetting' : '（{content}）',
     'expire_score' : '积分失效',
-    'activityMemberRightInfo' : '特点活动积分折扣权益说明',
+    'activityMemberRightInfo' : '特定活动积分折扣权益说明',
     'thisCardIsFrozen' : '该卡已冻结，暂无权限',
 
     'errorMsg.MK001' : '账号或密码错误',
@@ -307,4 +307,6 @@ export default {
     'M045' : '手机号未注册',
     'pleaseSetTradePass' : '请先设置交易密码',
     'getLocationErr' : '位置信息获取失败',
+    'rightExplain' : '会员享受权益说明',
+    'companyHasNotMemberService' : '当前公司暂未开通会员服务',
 };

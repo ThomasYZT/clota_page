@@ -14,7 +14,7 @@
                 <div class="header">
                     <div class="account-list-chose" @click="showAccount">
                         {{item.accountName}}
-                        <span class="iconfont icon-arrow-right"></span>
+                        <span v-if="accountList.length > 1" class="iconfont icon-arrow-right"></span>
                     </div>
                     <div class="asset-info">{{item.accountBalance | moneyFilter | contentFilter}}</div>
                     <div class="asset-tip">{{$t('allAssets')}}{{item.accountDefineId === '1' ? ($t('bracketSetting',{ content : $t('yuan') })) : $t(item.unit)}}</div>
@@ -108,19 +108,33 @@
         computed : {
             ...mapGetters([
                 'userInfo',
-                'cardInfo'
+                'cardInfo',
+                'memberConfigInfo',
             ]),
             //是否是业主账户信息
             isOwnerCard () {
                 return this.cardInfo.cardTypeId === '1';
-            }
+            },
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
         },
         methods : {
             /**
              * 显示所有账户信息
              */
             showAccount () {
-                this.visible = true;
+                if (this.accountList.length > 1) {
+                    this.visible = true;
+                }
             },
             /**
              * 充值
@@ -160,7 +174,21 @@
                     memberId : this.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
-                        this.accountList = res.data ? res.data.map((item,index) => {
+                        this.accountList = res.data ? res.data.filter(item => {
+                            if (this.isMutipleAccount) {
+                                if (this.cardIsSaling) {//多账户、售卖型
+                                    return true;
+                                } else {//多账户非售卖型
+                                    return item.accountDefineId !== '4';
+                                }
+                            } else {
+                                if (this.cardIsSaling) {//单账户、售卖型
+                                    return true;
+                                } else {//单账户非售卖型
+                                    return item.accountDefineId !== '4';
+                                }
+                            }
+                        }).map((item,index) => {
                             return {
                                 ...item,
                                 name : item.accountName,

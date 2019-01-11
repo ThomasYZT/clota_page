@@ -9,7 +9,7 @@
           <div class="account-list-chose" @click="showAccount">
               <p class="account-name">
                   {{chosedAccount[0] ? chosedAccount[0] : ''}}
-                  <span class="iconfont icon-arrow-right"></span>
+                  <span v-if="accountList.length > 1" class="iconfont icon-arrow-right"></span>
               </p>
           </div>
           <div class="scroll-wrapper" v-if="infoList.length !== 0">
@@ -96,8 +96,20 @@
         computed : {
             ...mapGetters([
                 'userInfo',
-                'cardInfo'
-            ])
+                'cardInfo',
+                'memberConfigInfo',
+            ]),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
         },
         methods : {
             //获取页面数据
@@ -112,7 +124,21 @@
                     if (res.success && res.data) {
                         //业主卡返回全部账户类型
                         if (this.cardInfo.cardTypeId === "1") {
-                            this.accountList = res.data.data.map(item => {
+                            this.accountList = res.data.data.filter(item => {
+                                if (this.isMutipleAccount) {
+                                    if (this.cardIsSaling) {//多账户、售卖型
+                                        return true;
+                                    } else {//多账户非售卖型
+                                        return item.accountDefineId !== '4';
+                                    }
+                                } else {
+                                    if (this.cardIsSaling) {//单账户、售卖型
+                                        return true;
+                                    } else {//单账户非售卖型
+                                        return item.accountDefineId !== '4';
+                                    }
+                                }
+                            }).map(item => {
                                     return {
                                         ...item,
                                         name : item.accountName,
@@ -193,7 +219,9 @@
              * 显示所有账户信息
              */
             showAccount () {
-                this.visible = true;
+                if (this.accountList.length > 1) {
+                    this.visible = true;
+                }
             },
             /**
              * 账户列表修改

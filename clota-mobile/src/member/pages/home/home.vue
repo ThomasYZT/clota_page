@@ -4,7 +4,7 @@
 -->
 <template>
     <!--v-show="cardInfo && Object.keys(cardInfo).length > 0"-->
-  <div class="home" >
+  <div class="home" :class="{'full-height' : !hasPointMenu}">
       <swiper ref="swiper"
               :show-dots="cardInfoList.length > 1"
               class="home-swiper"
@@ -48,95 +48,14 @@
     import labelItem from './components/labelItem';
     import memberCard from './components/memberCard';
     import ajax from '../../api/index';
+
     export default {
         components : {
             labelItem,
             memberCard
         },
         data () {
-            let labelList = [
-                {
-                    title : 'integralDetail',
-                    link : '/integralDetail',
-                    routeName : 'integralDetail',
-                    iconClass : 'icon-my-points',
-                    info : '',
-                    params : {},
-                    iconColor : '#F46462'
-                },
-                {
-                    title : 'accountOfStoreValue',
-                    link : '/account',
-                    routeName : 'account',
-                    iconClass : 'icon-default-account',
-                    info : '',
-                    params : {},
-                    iconColor : '#368CE3'
-                },
-                {
-                    title : 'myOrder',
-                    link : '/order',
-                    routeName : 'order',
-                    iconClass : 'icon-my-orders',
-                    info : '',
-                    params : {},
-                    iconColor : '#FF9700'
-                },
-                {
-                    title : 'checkFlow',
-                    link : '/checkFlow',
-                    routeName : 'checkFlow',
-                    iconClass : 'icon-check-flow1',
-                    info : '',
-                    params : {},
-                    iconColor : '#6F62E5'
-                },
-                {
-                    title : 'memberCode',
-                    link : '/memberCode',
-                    routeName : 'memberCode',
-                    iconClass : 'icon-member-code',
-                    info : '',
-                    params : {},
-                    iconColor : '#F46462'
-                },
-                // {
-                //     title : 'card',
-                //     link : '/card',
-                //     iconClass : 'icon-my-package',
-                //     info : '',
-                //     params : {},
-                //     iconColor : '#368CE3'
-                // },
-                {
-                    title : 'memberRight',
-                    link : '/memberRight',
-                    routeName : 'memberRight',
-                    iconClass : 'icon-member-rights',
-                    info : '',
-                    params : {},
-                    iconColor : '#6F62E5'
-                },
-                {
-                    title : 'integralMall',
-                    link : '/integralMall',
-                    routeName : 'integralMall',
-                    iconClass : 'icon-integral-mall-select',
-                    info : '',
-                    params : {},
-                    iconColor : '#6F62E5'
-                },
-                /*,
-                {
-                    title: '安全设置',
-                    link: '/integralDetail',
-                    iconClass: 'icon-my-points',
-                    info: '',
-                    iconColor: '#F46462'
-                }*/
-            ];
             return {
-                labelList : labelList,
                 //会员卡列表数据
                 memberCardList : [],
                 // 展示卡包
@@ -156,7 +75,8 @@
                 'userInfo',
                 'cardInfo',
                 'cardInfoList',
-                'companyCode'
+                'companyCode',
+                'memberConfigInfo',
             ]),
             //当前卡索引
             cardIndex () {
@@ -170,6 +90,109 @@
                 } else {
                     return 0;
                 }
+            },
+            //是否有积分服务
+            hasPointMenu () {
+                return this.memberConfigInfo && this.memberConfigInfo.memberPoint === 'true';
+            },
+            //是否有储值服务
+            hasRechargeMenu () {
+                return this.memberConfigInfo && this.memberConfigInfo.memberRecharge === 'true';
+            },
+            //功能菜单列表
+            labelList () {
+                let baseFunc = [
+                    {
+                        title : 'myOrder',
+                        link : '/order',
+                        routeName : 'order',
+                        iconClass : 'icon-my-orders',
+                        info : '',
+                        params : {},
+                        iconColor : '#FF9700'
+                    },
+                    {
+                        title : 'memberRight',
+                        link : '/memberRight',
+                        routeName : 'memberRight',
+                        iconClass : 'icon-member-rights',
+                        info : '',
+                        params : {},
+                        iconColor : '#6F62E5'
+                    },
+                    // {
+                    //     title : 'card',
+                    //     link : '/card',
+                    //     iconClass : 'icon-my-package',
+                    //     info : '',
+                    //     params : {},
+                    //     iconColor : '#368CE3'
+                    // },
+                    /*,
+					{
+						title: '安全设置',
+						link: '/integralDetail',
+						iconClass: 'icon-my-points',
+						info: '',
+						iconColor: '#F46462'
+					}*/
+                ];
+                //是否开通积分服务
+                if (this.hasPointMenu) {
+                    baseFunc = baseFunc.concat([
+                        {
+                            title : 'integralDetail',
+                            link : '/integralDetail',
+                            routeName : 'integralDetail',
+                            iconClass : 'icon-my-points',
+                            info : '',
+                            params : {},
+                            iconColor : '#F46462'
+                        },
+                        {
+                            title : 'integralMall',
+                            link : '/integralMall',
+                            routeName : 'integralMall',
+                            iconClass : 'icon-integral-mall-select',
+                            info : '',
+                            params : {},
+                            iconColor : '#6F62E5'
+                        },
+                    ]);
+                }
+                //配置储值套餐信息
+                if (this.hasRechargeMenu) {
+                    baseFunc = baseFunc.concat([
+                        {
+                            title : 'accountOfStoreValue',
+                            link : '/account',
+                            routeName : 'account',
+                            iconClass : 'icon-default-account',
+                            info : '',
+                            params : {},
+                            iconColor : '#368CE3'
+                        },
+                        {
+                            title : 'memberCode',
+                            link : '/memberCode',
+                            routeName : 'memberCode',
+                            iconClass : 'icon-member-code',
+                            info : '',
+                            params : {},
+                            iconColor : '#F46462'
+                        },
+                        {
+                            title : 'checkFlow',
+                            link : '/checkFlow',
+                            routeName : 'checkFlow',
+                            iconClass : 'icon-check-flow1',
+                            info : '',
+                            params : {},
+                            iconColor : '#6F62E5'
+                        },
+                    ]);
+                }
+                return baseFunc;
             }
         },
         methods : {
@@ -309,6 +332,10 @@
         height: calc(100% - 50px);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+
+        &.full-height{
+            height: 100%;
+        }
 
         .person-img {
             width: 50%;

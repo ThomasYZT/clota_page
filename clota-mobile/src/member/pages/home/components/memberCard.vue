@@ -95,11 +95,11 @@
             //vip卡类名
             memberVipCardClass () {
                 let cardType = '';
-                if (this.info.cardTypeId === '1') {
-                    //业主卡
-                    cardType += 'owner-card ';
-                    return cardType;
-                } else if (this.info.cardTypeId === '2') {
+                // if (this.info.cardTypeId === '1') {
+                //     //业主卡
+                //     cardType += 'owner-card ';
+                //     return cardType;
+                // } else if (this.info.cardTypeId === '2') {
                     //个人卡
                     cardType += 'personal-card ';
                     switch (this.info.levelNum) {
@@ -119,11 +119,11 @@
                             cardType += 'four-level ';
                     }
                     return cardType;
-                } else if (this.info.cardTypeId === '3') {
-                    //企业卡
-                    cardType = 'company-card ';
-                    return cardType;
-                }
+                // } else if (this.info.cardTypeId === '3') {
+                //     //企业卡
+                //     cardType = 'company-card ';
+                //     return cardType;
+                // }
             },
             //头像信息
             memberHeadImg () {
@@ -192,7 +192,6 @@
         height: 170px;
         margin: 11px auto;
         border-radius: 13px;
-        box-shadow: #A6AABE 0 5px 10px;
         background-size: 100% 100%;
         overflow: hidden;
 
@@ -219,18 +218,21 @@
             color: #fff;
             &.one-level {
                 background-image: url("../../../../assets/images/personal-card-lv1.png");
+                box-shadow: #a8adc8 0 5px 10px;
                 .card-level{
                     background: rgba(220, 220, 220, .2);
                 }
             }
             &.two-level {
                 background-image: url("../../../../assets/images/personal-card-lv2.png");
+                box-shadow: #dfcc9b 0 5px 10px;
                 .card-level{
                     background: rgba(220, 220, 220, .2);
                 }
             }
             &.three-level {
                 background-image: url("../../../../assets/images/personal-card-lv3.png");
+                box-shadow: #ceaf9b 0 5px 10px;
                 .card-level{
                     background: rgba(220, 220, 220, .2);
                 }
@@ -238,6 +240,7 @@
             &.four-level {
                 color: #F0D890;
                 background-image: url("../../../../assets/images/personal-card-lv4.png");
+                box-shadow: #B1B1B1 0 5px 10px;
                 .card-level{
                     background: rgba(220, 220, 220, .2);
                 }

@@ -306,4 +306,6 @@ export default {
     'M045' : '手机号未注册',
     'pleaseSetTradePass' : '请先设置交易密码',
     'getLocationErr' : '位置信息获取失败',
+    'rightExplain' : '会员享受权益说明',
+    'companyHasNotMemberService' : '当前公司暂未开通会员服务',
 };
