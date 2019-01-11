@@ -266,13 +266,12 @@
              */
             packageChange (data) {
                 if (data) {
-                    this.formData.servers = [];
                     for (let i = 0,j = this.packageList.length; i < j; i++) {
                         if (this.packageList[i].id === data) {
                             if (this.packageList[i].services && this.packageList[i].services.length > 0) {
                                 for (let a = 0,b = this.packageList[i].services.length; a < b; a++) {
-                                    if (!(this.packageList[i].services[a].id in this.openedServicesObj)) {
-                                        this.formData.servers.push(this.packageList[i].services[a].id);
+                                    if (!(this.packageList[i].services[a].serviceCode in this.openedServicesObj)) {
+                                        this.formData.servers.push(this.packageList[i].services[a].serviceCode);
                                     }
                                 }
                                 break;
