@@ -19,6 +19,8 @@ export const memberState = {
     companyCode : '10000059',
     //错误码
     errCode : '',
+    //会员配置信息
+    memberConfigInfo : {}
 };
 
 export const memberGetters = {
@@ -40,10 +42,10 @@ export const memberGetters = {
     },
     //会员卡列表信息
     cardInfoList : state => {
-        let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
-        if (cardInfoList && Object.keys(cardInfoList).length > 0) {
-            state.cardInfoList = cardInfoList;
-        }
+        // let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
+        // if (cardInfoList && Object.keys(cardInfoList).length > 0) {
+        //     state.cardInfoList = cardInfoList;
+        // }
         return state.cardInfoList;
     },
     hashKey : state => {
@@ -82,6 +84,10 @@ export const memberGetters = {
         state.isLogin = userInfo && Object.keys(userInfo).length > 0;
         return state.isLogin;
     },
+    //会员配置信息
+    memberConfigInfo : state => {
+        return state.memberConfigInfo;
+    }
 };
 
 export const memberMutations = {
@@ -160,36 +166,64 @@ export const memberMutations = {
             this.commit('updateCardInfo',{});
         }
     },
+    /**
+     * 更新会员配置信息
+     * @param{Object} state
+     * @param{Object} memberConfigInfo 会员配置信息
+     */
+    updateMemberConfig (state, memberConfigInfo) {
+        state.memberConfigInfo = memberConfigInfo;
+    }
 };
 
 export const memberActions = {
     //获取会员卡列表
     getCardListInfo ({ commit, dispatch }) {
         const ajax = require('../api/index').default;
-        return new Promise((resolve, reject) => {
-            ajax.post('queryMemberCardList', {
-                memberId : this.getters.userInfo.memberId
-            }).then(res => {
-                if (res.success) {
-                    let memberCardList = res.data ? res.data : [];
-                    if (memberCardList.length > 0) {
-                        //存储卡列表数据
-                        commit('updateCardInfoList', memberCardList);
-                        resolve();
+        return Promise.all([
+            new Promise((resolve, reject) => {
+                ajax.post('queryMemberCardList', {
+                    memberId : this.getters.userInfo.memberId
+                }).then(res => {
+                    if (res.success) {
+                        let memberCardList = res.data ? res.data : [];
+                        if (memberCardList.length > 0) {
+                            //存储卡列表数据
+                            commit('updateCardInfoList', memberCardList);
+                            resolve();
+                        } else {
+                            //会员卡列表数据为空
+                            commit('updateCardInfoList', []);
+                            dispatch('showToast', 'userHasNoCard');
+                            reject();
+                        }
                     } else {
-                        //会员卡列表数据为空
                         commit('updateCardInfoList', []);
-                        dispatch('showToast', 'userHasNoCard');
+                        dispatch('showToast', 'getDataFailure');
                         reject();
                     }
-                } else {
-                    commit('updateCardInfoList', []);
-                    dispatch('showToast', 'getDataFailure');
+                }).catch(() => {
                     reject();
-                }
-            }).catch(() => {
-                reject();
-            });
-        });
-    }
+                });
+            }),
+            new Promise((resolve,reject) => {
+                ajax.post('getMemberServiceSetting',{
+                    serviceCode : 'member',
+                    orgId : this.getters.userInfo.orgId,
+                }).then(res => {
+                    if (res.success && res.data) {
+                        if (res.data.cardType) {
+                            //更新会员配置
+                            commit('updateMemberConfig', res.data);
+                            resolve();
+                        } else {
+                            reject('serviceError');
+                        }
+                    } else {
+                        reject();
+                    }
+                });
+            })
+        ]);
+    },
 };

@@ -41,6 +41,7 @@
                 </cell>
                 <!-- 交易密码 -->
                 <cell
+                    v-if="hasRechargeMenu"
                     class="trade-pass"
                     :title="$t('tradePass')"
                     is-link
@@ -452,6 +453,7 @@
                 userInfo : 'userInfo',
                 cardInfo : 'cardInfo',
                 weixinIsConfiged : 'weixinIsConfiged',
+                memberConfigInfo : 'memberConfigInfo',
             }),
             //证件号码
             idNum () {
@@ -488,7 +490,11 @@
             //有无权限编辑
             hasPermission () {
                 return !(this.cardInfo.status === 'frozen');
-            }
+            },
+            //是否有储值服务和是否是售卖型会员卡
+            hasRechargeMenu () {
+                return this.memberConfigInfo && this.memberConfigInfo.memberRecharge === 'true' && (this.memberConfigInfo.cardType === 'sale' || this.memberConfigInfo.cardType === 'sale_growth');
+            },
         }
     };
 </script>

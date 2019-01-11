@@ -106,6 +106,8 @@ const apiList = {
     queryCardInfoByDecryptCode : '/wechat/mp/card/queryCardInfoByDecryptCode',
     //获取账户随机支付码
     getPayRandomCode : '/external/memberAccount/getPayRandomCode',
+    //获取会员配置信息
+    getMemberServiceSetting : '/external/extprivilege/getMemberServiceSetting',
 };
 
 export default apiList;

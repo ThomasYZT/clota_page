@@ -6,7 +6,7 @@
   <div class="member-right" v-show="isShow">
       <div class="member-right-content">
           <div class="head-tab">
-              <p :class="{small: isEn}">{{$t('memberRightInfo')}}</p>
+              <p :class="{small: isEn}">{{hasPointMenu ? $t('memberRightInfo') : $t('rightExplain')}}</p>
           </div>
 
           <!-- 会员权益 -->
@@ -38,89 +38,89 @@
               </div>
           </template>
 
-          <!-- 会员积分权益折扣说明 -->
-          <h3 class="category">{{$t('memberVos')}}</h3>
-          <template v-if="commonMemberVos && commonMemberVos.length > 0">
-              <illustration-board v-for="(item, index) in commonMemberVos"
-                                  :key="item.id"
-                                  :info="item"
-                                  class="ill-item1">
-              </illustration-board>
-          </template>
-          <div class="no-data-area" v-else>
-              <no-data>
-              </no-data>
-          </div>
+          <template v-if="hasPointMenu">
+              <!-- 会员积分权益折扣说明 -->
+              <h3 class="category">{{$t('memberVos')}}</h3>
+              <template v-if="commonMemberVos && commonMemberVos.length > 0">
+                  <illustration-board v-for="(item, index) in commonMemberVos"
+                                      :key="item.id"
+                                      :info="item"
+                                      class="ill-item1">
+                  </illustration-board>
+              </template>
+              <div class="no-data-area" v-else>
+                  <no-data>
+                  </no-data>
+              </div>
 
-          <h3 class="category">{{$t('storeVos')}}</h3>
-          <template v-if="commonStoreVos && commonStoreVos.length > 0">
-              <illustration-board v-for="(item, index) in commonStoreVos"
-                                  :key="item.index"
-                                  :info="item"
-                                  class="ill-item2">
-              </illustration-board>
-          </template>
-          <div class="no-data-area" v-else>
-              <no-data>
-              </no-data>
-          </div>
+              <h3 class="category">{{$t('storeVos')}}</h3>
+              <template v-if="commonStoreVos && commonStoreVos.length > 0">
+                  <illustration-board v-for="(item, index) in commonStoreVos"
+                                      :key="item.index"
+                                      :info="item"
+                                      class="ill-item2">
+                  </illustration-board>
+              </template>
+              <div class="no-data-area" v-else>
+                  <no-data>
+                  </no-data>
+              </div>
 
-          <h3 class="category">{{$t('productMap')}}</h3>
-          <template v-if="commonProductArr && commonProductArr.length > 0">
-              <illustration-board v-for="(item, index) in commonProductArr"
-                                  :key="item.id"
-                                  :info="item"
-                                  class="ill-item3">
-              </illustration-board>
-          </template>
-          <div class="no-data-area" v-else>
-              <no-data>
-              </no-data>
-          </div>
+              <h3 class="category">{{$t('productMap')}}</h3>
+              <template v-if="commonProductArr && commonProductArr.length > 0">
+                  <illustration-board v-for="(item, index) in commonProductArr"
+                                      :key="item.id"
+                                      :info="item"
+                                      class="ill-item3">
+                  </illustration-board>
+              </template>
+              <div class="no-data-area" v-else>
+                  <no-data>
+                  </no-data>
+              </div>
 
-          <div class="head-tab activity-tab">
-              <p :class="{small: isEn}">{{$t('activityMemberRightInfo')}}</p>
-          </div>
+              <div class="head-tab activity-tab">
+                  <p :class="{small: isEn}">{{$t('activityMemberRightInfo')}}</p>
+              </div>
 
-          <!-- 特定活动会员积分权益折扣说明 -->
-          <h3 class="category">{{$t('memberVos')}}</h3>
-          <template v-if="activityMemberVos && activityMemberVos.length > 0">
-              <illustration-board v-for="(item, index) in activityMemberVos"
-                                  :key="item.id"
-                                  :info="item"
-                                  class="ill-item1">
-              </illustration-board>
+              <!-- 特定活动会员积分权益折扣说明 -->
+              <h3 class="category">{{$t('memberVos')}}</h3>
+              <template v-if="activityMemberVos && activityMemberVos.length > 0">
+                  <illustration-board v-for="(item, index) in activityMemberVos"
+                                      :key="item.id"
+                                      :info="item"
+                                      class="ill-item1">
+                  </illustration-board>
+              </template>
+              <div class="no-data-area" v-else>
+                  <no-data>
+                  </no-data>
+              </div>
+              <h3 class="category">{{$t('storeVos')}}</h3>
+              <template v-if="activityStoreVos && activityStoreVos.length > 0">
+                  <illustration-board v-for="(item, index) in activityStoreVos"
+                                      :key="item.index"
+                                      :info="item"
+                                      class="ill-item2">
+                  </illustration-board>
+              </template>
+              <div class="no-data-area" v-else>
+                  <no-data>
+                  </no-data>
+              </div>
+              <h3 class="category">{{$t('productMap')}}</h3>
+              <template v-if="activityProductArr && activityProductArr.length > 0">
+                  <illustration-board v-for="(item, index) in activityProductArr"
+                                      :key="item.id"
+                                      :info="item"
+                                      class="ill-item3">
+                  </illustration-board>
+              </template>
+              <div class="no-data-area" v-else>
+                  <no-data>
+                  </no-data>
+              </div>
           </template>
-          <div class="no-data-area" v-else>
-              <no-data>
-              </no-data>
-          </div>
-
-          <h3 class="category">{{$t('storeVos')}}</h3>
-          <template v-if="activityStoreVos && activityStoreVos.length > 0">
-              <illustration-board v-for="(item, index) in activityStoreVos"
-                                  :key="item.index"
-                                  :info="item"
-                                  class="ill-item2">
-              </illustration-board>
-          </template>
-          <div class="no-data-area" v-else>
-              <no-data>
-              </no-data>
-          </div>
-
-          <h3 class="category">{{$t('productMap')}}</h3>
-          <template v-if="activityProductArr && activityProductArr.length > 0">
-              <illustration-board v-for="(item, index) in activityProductArr"
-                                  :key="item.id"
-                                  :info="item"
-                                  class="ill-item3">
-              </illustration-board>
-          </template>
-          <div class="no-data-area" v-else>
-              <no-data>
-              </no-data>
-          </div>
       </div>
   </div>
 </template>
@@ -214,11 +214,16 @@
             ...mapGetters([
                 'userInfo',
                 'cardInfo',
-                'lang'
+                'lang',
+                'memberConfigInfo',
             ]),
             isEn () {
                 return this.lang === 'en';
-            }
+            },
+            //是否有积分服务
+            hasPointMenu () {
+                return this.memberConfigInfo && this.memberConfigInfo.memberPoint === 'true';
+            },
         },
         methods : {
             /**

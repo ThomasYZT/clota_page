@@ -296,6 +296,10 @@
                 //获取会员卡列表
                 this.getCardListInfo().then(() => {
                     this.$router.replace({ name : 'home' });
+                }).catch(err => {
+                    if (err === 'serviceError') {
+                        this.$vux.toast.text(this.$t('companyHasNotMemberService'));
+                    }
                 });
             }
         },

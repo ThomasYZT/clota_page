@@ -147,7 +147,21 @@
                     memberId : this.userInfo.memberId
                 }).then(res => {
                     if (res.success) {
-                        this.accountList = res.data ? res.data.map((item,index) => {
+                        this.accountList = res.data ? res.data.filter(item => {
+                            if (this.isMutipleAccount) {
+                                if (this.cardIsSaling) {//多账户、售卖型
+                                    return true;
+                                } else {//多账户非售卖型
+                                    return item.accountDefineId !== '4';
+                                }
+                            } else {
+                                if (this.cardIsSaling) {//单账户、售卖型
+                                    return true;
+                                } else {//单账户非售卖型
+                                    return item.accountDefineId !== '4';
+                                }
+                            }
+                        }).map((item,index) => {
                             return {
                                 ...item,
                                 value : String(index),
@@ -252,8 +266,20 @@
             },
             ...mapGetters({
                 userInfo : 'userInfo',
-                cardInfo : 'cardInfo'
-            })
+                cardInfo : 'cardInfo',
+                memberConfigInfo : 'memberConfigInfo',
+            }),
+            //是否是售卖型会员卡
+            cardIsSaling () {
+                return this.memberConfigInfo &&
+                    this.memberConfigInfo['cardType'] &&
+                    (this.memberConfigInfo['cardType'] === 'sale' ||
+                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            },
+            //是否是多账户类型
+            isMutipleAccount () {
+                return this.memberConfigInfo && this.memberConfigInfo['accountPattern'] && this.memberConfigInfo['accountPattern'] === 'multiple';
+            },
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
