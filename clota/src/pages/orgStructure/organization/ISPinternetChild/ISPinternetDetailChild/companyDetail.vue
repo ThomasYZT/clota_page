@@ -341,6 +341,13 @@
             :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}">
         </opened-service>
+        <!--服务初始化配置-->
+        <service-init-config
+            v-if="showMemberConfig"
+            :default-setting="memberConfigInfo"
+            :search-params="{id : activeNode.id}"
+            :isDefaultPackUp="true">
+        </service-init-config>
         <!--下属公司-->
         <sub-company
             :activeTap="activeTap"
@@ -385,6 +392,7 @@
     import { validator } from 'klwk-ui';
     import selectTree from '@/components/selectTree/index.vue';
     import { mapGetters } from 'vuex';
+    import serviceInitConfig from './components/serviceInitConfig';
 
     export default {
         props : {
@@ -410,7 +418,8 @@
             subDepartment,
             cityPlugin,
             editModal,
-            selectTree
+            selectTree,
+            serviceInitConfig
         },
         data () {
             //校验邮箱
@@ -721,7 +730,8 @@
                 }
             },
             ...mapGetters({
-                permissionInfo : 'permissionInfo'
+                permissionInfo : 'permissionInfo',
+                memberConfigInfo : 'memberConfigInfo',
             }),
             //是否可以编辑节点信息
             canModifyNode () {
@@ -730,7 +740,14 @@
             //是否重置管理员密码
             canResetPassword () {
                 return this.permissionInfo && 'resetNodePassword' in this.permissionInfo;
-            }
+            },
+            //是否显示会员初始化配置
+            showMemberConfig () {
+                if (this.memberConfigInfo) {
+                    return this.memberConfigInfo.memberPoint === 'true' || this.memberConfigInfo.memberRecharge === 'true';
+                }
+                return false;
+            },
         },
         watch : {
             //节点更换，重新请求节点数据

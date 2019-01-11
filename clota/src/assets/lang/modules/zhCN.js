@@ -2427,4 +2427,7 @@ export default {
     'validPartnerError' : '以下合作伙伴因为未在合作协议有效期内启用失败:',
     'marketingPositionTip' : '说明：游客在下述区域范围内扫码购票时，销售用户将不能获得佣金收入。',
     'haveUnsavedMarketTypeTip' : '您有尚未保存的营销类别',
+    'delPartnerFail' : '以下合作伙伴删除失败',
+    'delPartnerFailReason1' : '{orgName}的收付款尚未结清',
+    'delPartnerFailReason2' : '{orgName}的协议尚未过期',
 };

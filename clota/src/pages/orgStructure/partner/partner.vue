@@ -138,6 +138,28 @@
             </ul>
         </noticeModal>
 
+        <!--删除失败提示框-->
+        <noticeModal ref="delErrModal">
+            <ul class="pro-list">
+                <li class="detail">{{$t('delPartnerFail')}}</li>
+                <li class="detail partner-list"
+                    v-for="(item,index) in noExpireErrorPartner"
+                    v-w-title="$t('delPartnerFailReason2',{ orgName : item.channelName})"
+                    :key="index">
+                    {{$t('delPartnerFailReason2',{ orgName : item.channelName}) | contentFilter}}
+                </li>
+                <li class="detail partner-list"
+                    v-for="(item,index) in noSettleErrorPartner"
+                    v-w-title="$t('delPartnerFailReason1',{ orgName : item.channelName})"
+                    :key="index">
+                    {{$t('delPartnerFailReason1',{ orgName : item.channelName}) | contentFilter}}
+                </li>
+                <li class="hint">
+                    <Icon type="information-circled"></Icon>
+                </li>
+            </ul>
+        </noticeModal>
+
     </div>
 </template>
 
@@ -202,7 +224,11 @@
                 // 已勾选的数据
                 chosenPartners : [],
                 //启用失败的合作伙伴
-                validPartnersErr : []
+                validPartnersErr : [],
+                //协议期未过期删除失败的合作伙伴
+                noExpireErrorPartner : [],
+                //尾款未结清删除失败的合作伙伴
+                noSettleErrorPartner : []
             };
         },
         methods : {
@@ -335,13 +361,24 @@
             },
             //确认删除
             handleDeletions () {
-
                 ajax.post('deletePartners', {
                     ids : this.partnerIds.join(',')
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
+                        if (res.data && Object.keys(res.data).length > 0) {
+                            this.noExpireErrorPartner = res.data['noExpire'];
+                            this.noSettleErrorPartner = res.data['noSettle'];
+                            this.$refs.delErrModal.show({
+                                title : this.$t('notice'),
+                                showCancel : false,
+                                confirmBtn : this.$t('close')
+                            });
+                        } else {
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
+                        }
                         this.handleSearch();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                     }
                 });
             },

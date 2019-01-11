@@ -8,7 +8,7 @@ export const saleGroup = [
     {
         title : 'channelCode',//渠道编码
         minWidth : 200,
-        field : 'id',
+        field : 'partnerId',
     },
     {
         title : 'channelName',//渠道名称

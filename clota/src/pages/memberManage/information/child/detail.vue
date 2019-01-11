@@ -97,8 +97,10 @@
                                             :charge-info="item">
                             <div class="operate-right">
                                 <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
-                                <span class="split-line"></span>
-                                <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
+                                <template v-if="item.accountDefineId !== '4'">
+                                    <span class="split-line"></span>
+                                    <span  @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
+                                </template>
                                 <!--会员3期暂时去掉-->
                                 <!--<span class="split-line"></span>-->
                                 <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->

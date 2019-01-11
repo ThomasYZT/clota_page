@@ -11,7 +11,7 @@
 
                 <div class="content-item card-valid-time">
                     <div class="title">{{$t('memberCardValidity')}}</div><!--会员卡有效期-->
-                    <template v-if='memberLevelsData.length > 0'>
+                    <template v-if='Object.keys(memberLevelsData).length > 0'>
                         <el-collapse :value="collapseOpened">
                             <el-collapse-item v-for="(item,title,index) in memberLevelsData"
                                               :key="index"

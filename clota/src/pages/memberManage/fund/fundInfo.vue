@@ -18,7 +18,7 @@
                 </div>
             </div>
             <ul class="account-operate">
-                <li class="list" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
+                <li v-if="item.id !== '4'" class="list" @click="toFundDetail(item)">{{$t('storageDetail')}}</li><!--储值明细-->
                 <li class="list"
                     v-if="canShowMoneyDetail"
                     v-w-title="$t('fundDetail')"
