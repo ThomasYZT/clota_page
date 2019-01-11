@@ -46,10 +46,10 @@
                         <Radio label="immediately">
                             <span>{{$t('rechartSucEffective')}}</span>
                         </Radio>
-                        <Radio label="stored" :class="{'ivu-form-item-error': error.growthTimeError}">
+                        <Radio label="checkout_after" :class="{'ivu-form-item-error': error.growthTimeError}">
                             <span>{{$t('rechartSuc')}}</span>
                             <Input v-model.trim="settingData.scoreEffModeWhileCharging.storedTime"
-                                   :disabled="settingData.scoreEffModeWhileCharging.storedType !== 'stored' ? true : false"
+                                   :disabled="settingData.scoreEffModeWhileCharging.storedType !== 'checkout_after' ? true : false"
                                    @on-blur="checkInputBlurFunc(settingData.scoreEffModeWhileCharging.storedTime,'growthTimeError')"
                                    type="text"
                                    class="single-input"
@@ -486,7 +486,7 @@
 
             //储值获得积分、成长值生效设置
             'settingData.scoreEffModeWhileCharging.storedType' : function (newVal, oldVal) {
-                if (newVal !== 'stored') {
+                if (newVal !== 'checkout_after') {
                     this.error.storedTimeError = '';
                 }
             },
@@ -694,7 +694,7 @@
                     return false;
                 }
 
-                if (this.settingData.scoreEffModeWhileCharging.storedType === 'stored' &&
+                if (this.settingData.scoreEffModeWhileCharging.storedType === 'checkout_after' &&
                     !this.checkInputBlurFunc(this.settingData.scoreEffModeWhileCharging.storedTime, 'storedTimeError') ) {
                     return false;
                 }

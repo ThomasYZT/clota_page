@@ -66,7 +66,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/batchCard.vue'),
                         meta : {
                             menuName : 'newBatchCard', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'batchNewCard',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -88,7 +88,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/associateEntityCard.vue'),
                         meta : {
                             menuName : 'associateEntityCard', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'associatedEntityCard',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -99,7 +99,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyForAssociateEntityCard.vue'),
                         meta : {
                             menuName : 'applyAssociateCard', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'associatedEntityCard',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -110,7 +110,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/reissueCard.vue'),
                         meta : {
                             menuName : 'replenishCard', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'supplementCard',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -121,7 +121,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyReissuceCard.vue'),
                         meta : {
                             menuName : 'applyReissuceCard', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'supplementCard',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -132,7 +132,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/applyCardForLostList.vue'),
                         meta : {
                             menuName : 'reportLoss', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'reportLoss',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -143,7 +143,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/applyForLost.vue'),
                         meta : {
                             menuName : 'reportLoss', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'reportLoss',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -154,7 +154,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/refundedCard.vue'),
                         meta : {
                             menuName : 'refundedCard', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'backCard',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },
@@ -165,7 +165,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/newCard/child/batchReturnCard.vue'),
                         meta : {
                             menuName : 'refundedCard', //lang.config.js 里面的语言键值
-                            _name : 'new-card',
+                            _name : 'batchNewCard',
                             rightPath : topMenuName + '.' + 'newCard',
                         },
                     },

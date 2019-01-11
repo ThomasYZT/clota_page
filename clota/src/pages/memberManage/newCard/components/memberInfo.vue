@@ -7,6 +7,7 @@
                 <i-col style="width: auto;display:inline-block;">
                     <Input v-model.trim="formData.keyWord"
                            :placeholder="$t('memberSearchKeyWord')"
+                           @on-enter="queryList"
                            style="width: 280px"/>
                 </i-col>
                 <i-col style="width: auto;display:inline-block;margin-left: 10px">

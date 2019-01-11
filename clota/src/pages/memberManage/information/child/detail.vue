@@ -272,6 +272,7 @@
 
         <!--兑现modal-->
         <to-cash-modal ref="toCash"
+                       :memberBaseDetail="memberBaseDetail"
                        :detail="choosedCard"
                        :store="allFundsAccount"
                        @add-success="listCardAccountInfo(choosedCard)">
@@ -492,7 +493,7 @@
             //查询自定义账户
             queryDefineAccountType () {
                 ajax.post('queryDefineAccountType', {
-                    cardId : this.memberInfo.cardId
+                    cardId : this.choosedCard.id
                 }).then(res => {
                     if (res.success) {
                         this.defineAccount = res.data || [];
@@ -611,6 +612,7 @@
                         // 会员3期暂时去掉
                         //查询成长值
                         // this.getGrowthBalance(params);
+                        this.queryDefineAccountType();
                     } else {
                         this.accountData = [];
                         this.charTableData = [];
@@ -838,7 +840,7 @@
                     //查询会员卡信息
                     this.listCardsByMemberId();
                     //查询自定义账户--用于新增账户
-                    this.queryDefineAccountType();
+                    // this.queryDefineAccountType();
                 } else {
                     this.$router.push({
                         name : 'memberInfo'
@@ -890,10 +892,7 @@
                 });
                 //查询会员卡下的账户信息
                 this.listCardAccountInfo(this.choosedCard);
-                // this.updateStorgeInfo({
-                //     detail : this.memberInfo,
-                //
-                // });
+                this.queryDefineAccountType();
             },
             /**
              * 校验登录密码

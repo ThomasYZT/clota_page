@@ -61,6 +61,12 @@ const getMemberConfigPermissionNot = (memberConfigInfo) => {
     //排除的权限
     let result = {};
     if (memberConfigInfo) {
+        //如果没有配置会员卡属性，那么不可显示会员主页信息
+        if (!memberConfigInfo.cardType) {
+            Object.assign(result,{
+                'members' : 'not-allow',//会员主页
+            });
+        }
         //如果不包含成长型的会员卡
         if (memberConfigInfo.cardType && memberConfigInfo.cardType === 'sale') {
             Object.assign(result,{

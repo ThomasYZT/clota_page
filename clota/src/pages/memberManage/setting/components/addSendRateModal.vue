@@ -306,6 +306,9 @@
                     this.filteredData.push(data);
                     return true;
                 } else {
+                    if (data.id === '1') {
+                        this.filteredData.push(data);
+                    }
                     return data.id === '1';
                 }
             },

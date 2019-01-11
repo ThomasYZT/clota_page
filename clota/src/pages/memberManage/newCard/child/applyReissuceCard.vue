@@ -213,7 +213,7 @@
                     if (res.success) {
                         this.$refs.payResultModal.setStage('success');
                         this.payModalShow = true;
-                        this.cancelOperate();
+                        // this.cancelOperate();
                     } else if (res.code === 'P002') {
                         this.startSearchForPayResult({
                             ...(res.data ? res.data : {})
@@ -343,5 +343,8 @@
                 }
             }
         }
+    }
+    .confirm-label{
+        max-width: 250px;
     }
 </style>

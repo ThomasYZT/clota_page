@@ -77,7 +77,7 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        props : ['store','detail'],
+        props : ['store','detail','memberBaseDetail'],
         components : {},
         data () {
 
@@ -191,8 +191,8 @@
                 this.$refs.formValidate.validate((valid) => {
                     if ( valid ) {
                         let params = {
-                            memberId : this.detail.id,
-                            cardId : this.detail.cardId,
+                            memberId : this.memberBaseDetail.id,
+                            cardId : this.detail.id,
                             accountId : this.accountInfo.id,
                             accountTypeId : this.accountInfo.accountDefineId,
                             amount : '-' + this.formData.fromAmount,

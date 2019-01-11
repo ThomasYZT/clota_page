@@ -458,9 +458,7 @@
                     } else if (res.code === 'M003') {
                         this.$Message.error(this.$t('changeMemLevelPlease')); // 会员级别已存在，请重新选择会员级别
                     } else {
-                        this.$Message.warning(res.code
-                            ? this.$t(res.code) :
-                            ('updateMemberLevel ' + this.$t('failureTip', { tip : this.$t('save') }))); // 操作失败
+                        this.$Message.warning(('updateMemberLevel ' + this.$t('failureTip', { tip : this.$t('save') }))); // 操作失败
                     }
                 });
             },
