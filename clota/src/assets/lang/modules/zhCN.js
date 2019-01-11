@@ -2430,4 +2430,6 @@ export default {
     'delPartnerFail' : '以下合作伙伴删除失败',
     'delPartnerFailReason1' : '{orgName}的收付款尚未结清',
     'delPartnerFailReason2' : '{orgName}的协议尚未过期',
+    'changStoredValue' : '修改储值数值',
+    'changScoreValue' : '修改积分数值',
 };

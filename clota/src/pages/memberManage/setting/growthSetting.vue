@@ -68,9 +68,9 @@
                     </RadioGroup>
                     <div class="check-group-wrap">{{$t('recharge')}}
                         <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
-                            <Input v-model.trim="settingData.growthFromCharging.moneyToGgowth"
+                            <Input v-model.trim="settingData.growthFromCharging.moneyToGrowth"
                                    :disabled="settingData.growthFromCharging.chargingAddGrowth !== 'true'"
-                                   @on-blur="checkInputBlurFunc(settingData.growthFromCharging.moneyToGgowth,'moneyToGgowthError')"
+                                   @on-blur="checkInputBlurFunc(settingData.growthFromCharging.moneyToGrowth,'moneyToGgowthError')"
                                    type="text"
                                    class="single-input"
                                    :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
@@ -146,7 +146,7 @@
                     //储值成长值比例设置
                     growthFromCharging : {
                         chargingAddGrowth : '',//Boolean
-                        moneyToGgowth : '',//储值额-积分 Number
+                        moneyToGrowth : '',//储值额-积分 Number
                         growth : 1,//积分
                     },
                     //成长值设置
@@ -305,7 +305,7 @@
                 }
 
                 if (this.settingData.growthFromCharging.chargingAddGrowth === 'true' &&
-                    !this.checkInputBlurFunc(this.settingData.growthFromCharging.moneyToGgowth, 'moneyToGgowthError') ) {
+                    !this.checkInputBlurFunc(this.settingData.growthFromCharging.moneyToGrowth, 'moneyToGgowthError') ) {
                     return false;
                 }
 

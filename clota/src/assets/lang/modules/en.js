@@ -2423,4 +2423,6 @@ export default {
     'validPartnerError' : '以下合作伙伴因为未在合作协议有效期内启用失败:',
     'marketingPositionTip' : '说明：游客在下述区域范围内扫码购票时，销售用户将不能获得佣金收入。',
     'haveUnsavedMarketTypeTip' : '您有尚未保存的营销类别',
+    'changStoredValue' : '修改储值数值',
+    'changScoreValue' : '修改积分数值',
 };
