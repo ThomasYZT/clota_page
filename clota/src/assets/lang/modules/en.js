@@ -2081,6 +2081,7 @@ export default {
     'nowUpQuantity' : 'current number of shelves',
     'upNum' : 'the number of shelves',
     'overDueVarifyNum' : 'Expired system auto-offload quantity',
+    'overDueVarify' : 'Expired system automatic write-off',
     'systemer' : 'system',
     'teamOrderCancelApply' : 'Team Order Cancellation Request',
     'please' : 'Please {msg}',
@@ -2420,4 +2421,6 @@ export default {
     'categoryExist' : '会员卡类别已存在',
     'partnerCannotOpen' : '协议期外不可启用',
     'validPartnerError' : '以下合作伙伴因为未在合作协议有效期内启用失败:',
+    'marketingPositionTip' : '说明：游客在下述区域范围内扫码购票时，销售用户将不能获得佣金收入。',
+    'haveUnsavedMarketTypeTip' : '您有尚未保存的营销类别',
 };

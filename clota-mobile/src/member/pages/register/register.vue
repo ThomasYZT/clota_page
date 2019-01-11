@@ -351,7 +351,8 @@
              */
             getOAuth2UserInfo (code) {
                 // 已经存在用户信息则不用获取
-                let wxUserInfo = localStorage.getItem('wxUserInfo') && localStorage.getItem('wxUserInfo')!=={} ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
+                let wxUserInfo = localStorage.getItem('wxUserInfo') && localStorage.getItem('wxUserInfo') !== '{}' ?
+                    JSON.parse(localStorage.getItem('wxUserInfo')) : {};
                 if (wxUserInfo && wxUserInfo.openId) {
                     this.wxUserInfo = wxUserInfo;
                     this.queryDocument();

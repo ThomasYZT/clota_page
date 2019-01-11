@@ -107,7 +107,7 @@ export const refundColumn = [
     },
     {
         title : 'operate', // 操作
-        width : 220,
+        width : 120,
         field : ''
     },
 ];

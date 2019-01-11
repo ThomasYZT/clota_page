@@ -17,7 +17,7 @@
                  slot-scope="{ node, data }">
                 <div class="label">
                     <span v-w-title="node.label" v-if="data.type !== 'edit' && data.type !== 'add'">{{node.label}}</span>
-                    <Input v-else v-model="data.label" :placeholder="$t('inputField', { field : $t('marketType') })" style="width: 130px;"></Input>
+                    <Input v-else v-model.trim="data.label" :placeholder="$t('inputField', { field : $t('marketType') })" style="width: 130px;"></Input>
                 </div>
                 <div class="tool-box" v-if="canOperateMarketType">
                     <template v-if="data.type === 'edit' || data.type === 'add'">
@@ -113,6 +113,24 @@
              *  @param {object} data
              */
             edit (data) {
+                let canEdit = true;
+                forEach(this.typeList, (item) => {
+                    if (item.type === 'edit') {
+                        canEdit = false;
+                        return false;
+                    }
+                });
+                if (canEdit) {
+                    this.changeEditStatus(data);
+                } else {
+                    this.$Message.warning(this.$t('haveUnsavedMarketTypeTip'));
+                }
+            },
+            /**
+             *  修改编辑状态
+             *  @param {object} data
+             */
+            changeEditStatus (data) {
                 forEach(this.typeList, (item,index, arr) => {
                     if (data.label === item.label) {
                         this.$set(arr[index],'type','edit');

@@ -253,6 +253,9 @@
                         </template>
                     </el-table-column>
                 </table-com>
+                <p class="remark">{{$t('productCenter.refundTip1')}}</p>
+                <p class="remark">{{$t('productCenter.refundTip2')}}</p>
+                <p class="remark">{{$t('productCenter.refundTip3')}}</p>
 
                 <!--改签规则-->
                 <br/>
@@ -603,6 +606,14 @@
     .modal-footer{
         /deep/ .ivu-btn{
             padding: 5px 30px;
+        }
+    }
+
+    .remark {
+        margin-top: 5px;
+        color: $color_yellow;
+        &:last-child {
+            margin-bottom: 20px;
         }
     }
 </style>

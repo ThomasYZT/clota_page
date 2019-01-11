@@ -309,4 +309,7 @@ export default {
     'getLocationErr' : '位置信息获取失败',
     'rightExplain' : '会员享受权益说明',
     'companyHasNotMemberService' : '当前公司暂未开通会员服务',
+    'M049' : '会员需要注册',
+    'M050' : '会员需要购买卡',
+    'M051' : '无会员卡类型',
 };

@@ -1,3 +1,4 @@
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 import i18n from '../assets/lang/lang.config';
@@ -23,11 +24,12 @@ const childDeepClone = (childrenList, data) => {
                 children.push(getFourRoute({ menuName : '404', lightMenu : router.meta._name, _name : router.meta._name }));
                 if (children.length > 1) {
                     //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
+                    //子路由中的菜单路由
+                    let childMenu = children.filter(item => item.meta && (item.meta.isMenu || item.meta.isStaticMenu));
                     children.push({
                         path : '',
                         redirect : {
-                            // name : children[0].name ? children[0].name : children[0].meta._name
-                            path : children[0].path ? children[0].path : ''
+                            path : childMenu.length > 0 ? childMenu[0].path : ''
                         }
                     });
                     router['children'] = children;

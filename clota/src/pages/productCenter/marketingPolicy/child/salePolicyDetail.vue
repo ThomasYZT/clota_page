@@ -283,6 +283,9 @@
                                     </template>
                                </el-table-column>
                             </table-com>
+                            <p class="remark">{{$t('productCenter.refundTip1')}}</p>
+                            <p class="remark">{{$t('productCenter.refundTip2')}}</p>
+                            <p class="remark">{{$t('productCenter.refundTip3')}}</p>
                         </div>
                     </Form-item>
                 </div>
@@ -694,6 +697,13 @@
             /deep/ .ivu-btn {
                 min-width: 108px;
                 margin-right: 15px;
+            }
+        }
+
+        .remark {
+            color: $color_yellow;
+            &:last-child {
+                margin-bottom: 20px;
             }
         }
     }

@@ -90,7 +90,6 @@
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
     import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
-
     export default {
         components : {
             marketingProductFilter,
@@ -105,7 +104,12 @@
                     callback(new Error( this.$t('numError', { field : this.$t('terminalSalePrice') }) ));
                 } else {
                     if (parseFloat(this.modifyModel.settlePrice) > parseFloat(value)) {
-                        callback(new Error( this.$t('NoSmallerThan', { field1 : this.$t('terminalSalePrice'), field2 : this.$t('salePolicyProductUnitPrice') })));
+                        this.$Message.error(
+                            this.$t('NoSmallerThan', { field1 : this.$t('terminalSalePrice'), field2 : this.$t('salePolicyProductUnitPrice') })
+                        )
+                        callback(new Error(
+                            this.$t('NoSmallerThan', { field1 : this.$t('terminalSalePrice'), field2 : this.$t('salePolicyProductUnitPrice') }))
+                        );
                     } else {
                         callback();
                     }
@@ -133,7 +137,7 @@
                 ruleValidate : {
                     modifiedSalePrice : [
                         { required : true, message : this.$t('inputField', { field : 'terminalSalePrice' }), trigger : 'blur' },
-                        { validator : validateNumber },
+                        { validator : validateNumber, trigger : 'blur' },
                     ]
                 },
                 //修改表单数据

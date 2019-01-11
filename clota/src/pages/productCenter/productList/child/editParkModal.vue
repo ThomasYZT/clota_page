@@ -214,6 +214,7 @@
                                 </Option>
                             </Select>
                             <Input :value="formData.parkName"
+                                   v-else
                                    disabled
                                    placeholder=""/>
                             <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
@@ -631,9 +632,9 @@
                     saleType : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleType') }), trigger : 'change' },
                     ],
-                    gardenGroupId : [
-                        { validator : validateGardenGroup, trigger : 'change' }
-                    ],
+                    // gardenGroupId : [
+                    //     { validator : validateGardenGroup, trigger : 'change' }
+                    // ],
                     equipmentGroupIds : [
                         { validator : validateEquipmentGroup, trigger : 'change' }
                     ],
@@ -916,6 +917,11 @@
             //查询核销设备组
             getOrgGroupList ( data ) {
                 this.enumData.group = [];
+                this.formData.gardenGroupId = '';
+                this.checkPoint = [];
+                this.formData.itemCheckTimes = 0;
+                this.formData.equipmentGroupIds = [];
+                this.playPoint = [];
                 ajax.post('getOrgGroupList', {
                     orgId : data.id,
                     groupType : 'check',
