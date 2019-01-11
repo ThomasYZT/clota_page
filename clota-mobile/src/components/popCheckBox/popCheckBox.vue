@@ -3,6 +3,7 @@
 <template>
     <popup v-transfer-dom
            :value="value"
+           @on-show="popupShow"
            @input="changeStatus">
         <!--上拉多选标题栏-->
         <popup-header :left-text="leftText"
@@ -82,6 +83,12 @@
             confirmOperate () {
                 this.changeStatus(false);
                 this.$emit('get-choosed-lists',this.operateChoosed);
+            },
+            /**
+             * 弹窗显示
+             */
+            popupShow () {
+                this.operateChoosed = this.choosedListDefault;
             }
         }
 	};
