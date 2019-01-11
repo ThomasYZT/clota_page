@@ -52,8 +52,8 @@
 
             <Form-item :label="$t('ifStartProtocol')" prop="status">
                 <RadioGroup v-model="addPartner.status">
-                    <Radio label="valid"><span>{{$t('commissioned')}}</span></Radio>
-                    <Radio label="invalid"><span>{{$t('nowNoEnabled')}}</span></Radio>
+                    <Radio label="valid" :disabled="statusDisabled"><span>{{$t('commissioned')}}</span></Radio>
+                    <Radio label="invalid" :disabled="statusDisabled"><span>{{$t('nowNoEnabled')}}</span></Radio>
                 </RadioGroup>
             </Form-item>
 
@@ -90,7 +90,7 @@
                     saleGroupId : '',
                     channelName : '',
                     description : '',
-                    status : 'valid',
+                    status : 'invalid',
                 },
 
                 // 表单校验
@@ -118,7 +118,17 @@
                 type : 'add',
             };
         },
-        computed : {},
+        computed : {
+            //启用协议不可选择
+            statusDisabled () {
+                if (this.addPartner && this.addPartner.startDate && this.addPartner.endDate) {
+                    if (new Date().valueOf() < this.addPartner.startDate.toDate().valueOf() || new Date().valueOf() > this.addPartner.endDate.toDate().addDays(1).valueOf()) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
         created () {
             this.getSaleGroup();
             this.getAllPartnerList();
@@ -179,6 +189,9 @@
             changeDateRange (date) {
                 this.addPartner.startDate = date[0];
                 this.addPartner.endDate = date[1];
+                if (new Date().valueOf() < date[0].toDate().valueOf() || new Date().valueOf() > date[1].toDate().addDays(1).valueOf()) {
+                    this.addPartner.status = 'invalid';
+                }
             },
             // 确定新增/修改合作伙伴
             confirmAddPartner () {
@@ -204,6 +217,8 @@
                         this.$Message.success( partnerObj.successTip + '：' + (partnerName ? partnerName.orgName : '') );
                         this.$emit('on-add-success');
                         this.hide();
+                    } else if (res.code && res.code === 'O008') {
+                        this.$Message.error(this.$t('partnerCannotOpen'));
                     } else {
                         this.$Message.error(res.message ? res.message : partnerObj.failTip);
                     }

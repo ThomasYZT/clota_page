@@ -2,7 +2,11 @@
 
 <template>
     <div class="manage-report-wrap">
-        <iframe class="iframe-tabel" :key="reportUrl" :src="reportUrl" frameborder="0"></iframe>
+        <iframe v-if='reportBaseUrl'
+                class="iframe-tabel"
+                :key="reportUrl"
+                :src="reportUrl"
+                frameborder="0"></iframe>
     </div>
 </template>
 

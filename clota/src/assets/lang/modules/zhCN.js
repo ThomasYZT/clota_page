@@ -2422,4 +2422,6 @@ export default {
     'A012' : '重置密码太过频繁，请稍后再试',
     'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
     'categoryExist' : '会员卡类别已存在',
+    'partnerCannotOpen' : '协议期外不可启用',
+    'validPartnerError' : '以下合作伙伴因为未在合作协议有效期内启用失败:',
 };
