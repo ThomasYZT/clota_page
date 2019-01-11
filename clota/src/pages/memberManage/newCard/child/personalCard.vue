@@ -99,7 +99,7 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row v-if="cardIsSaling">
+            <i-row v-if="showMemberRecharge">
                 <i-col span="12">
                     <Form-item :label="$t('payPass')" prop="tradePassword">
                         <span class="blue-label"
@@ -598,7 +598,11 @@
             //是否显示会员卡售卡信息
             cardIsSaling () {
                 return this.selectedCard && this.selectedCard.cardForm === 'sale';
-            }
+            },
+            //是否可以显示支付密码
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         },
         watch : {
             //监听会员卡售价的大小，如果小于0，只能选择现金支付

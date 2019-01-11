@@ -35,7 +35,7 @@
             <span class="key-label">{{$t('colonSetting',{ key : $t('address') })}}</span>
             <span class="value-label" v-w-title="memberInfo.homeAddr">{{memberInfo.homeAddr | contentFilter}}</span>
         </i-col>
-        <i-col class="split-class" v-if="showCardPrice">
+        <i-col class="split-class" v-if="showMemberRecharge">
             <span class="key-label">{{$t('colonSetting',{ key : $t('payPass') })}}</span>
             <span class="value-label">{{tradePassword | contentFilter}}</span>
         </i-col>
@@ -66,13 +66,10 @@
             ...mapGetters([
                 'memberConfigInfo'
             ]),
-            //是否显示会员卡售价和卡内金额
-            showCardPrice () {
-                return this.memberConfigInfo &&
-                    this.memberConfigInfo['cardType'] &&
-                    (this.memberConfigInfo['cardType'] === 'sale' ||
-                        this.memberConfigInfo['cardType'] === 'sale_growth');
-            }
+            //是否可以显示支付密码
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         },
         data () {
             return {};

@@ -80,7 +80,7 @@
             <label>{{$t("effectiveEndDate")}}：</label>
             <span v-w-title="cardInfo.expDate">{{cardInfo.expDate  | contentFilter}}</span>
         </div>
-        <div class="form-item-wrap" v-if="cardIsSaling">
+        <div class="form-item-wrap" v-if="showMemberRecharge">
             <label>{{$t("payPass")}}：</label>
             <span>
                 {{tradePassword | contentFilter}}
@@ -136,12 +136,9 @@
             ...mapGetters({
                 memberConfigInfo : 'memberConfigInfo',
             }),
-            //是否是售卖型会员卡
-            cardIsSaling () {
-                return this.memberConfigInfo &&
-                    this.memberConfigInfo['cardType'] &&
-                    (this.memberConfigInfo['cardType'] === 'sale' ||
-                        this.memberConfigInfo['cardType'] === 'sale_growth');
+            //是否可以显示支付密码
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
             },
             //交易密码显示格式
             tradePassword () {
