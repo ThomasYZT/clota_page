@@ -11,15 +11,15 @@
             <span class="address">
                 <popover placement="bottom">
                     <div slot="content" class="popover-demo-content">
-                       {{marketLocationInfo | contentFilter}}
+                       {{sceneAddress | contentFilter}}
                     </div>
-                    <span>{{$t('colonSetting',{ key : $t('地址') })}}{{marketLocationInfo | contentFilter}}</span>
+                    <span>{{$t('colonSetting',{ key : $t('地址') })}}{{sceneAddress | contentFilter}}</span>
                 </popover>
             </span>
-            <span class="re-get-location" @click="getLocation">
-                <span class="iconfont icon-fresh" :class="{ 'rotate' : marketIsGettingLocation }"></span>
-                <span class="label">{{$t('重新获取')}}</span>
-            </span>
+            <!--<span class="re-get-location" @click="getLocation">-->
+                <!--<span class="iconfont icon-fresh" :class="{ 'rotate' : marketIsGettingLocation }"></span>-->
+                <!--<span class="label">{{$t('重新获取')}}</span>-->
+            <!--</span>-->
         </div>
         <div class="product-list">
             <scroll-wrap :item-data="productList"
@@ -86,7 +86,9 @@
                 //选择的产品信息
                 choosedProductInfo : {},
                 //是否显示提示框
-                confirmShow : false
+                confirmShow : false,
+                //景区地址
+                sceneAddress : ''
             };
         },
         components : {
@@ -118,9 +120,11 @@
                     if (res.success) {
                         this.productList = res.data ? res.data.modelPagedList.data : [];
                         document.title = res.data ? res.data.orgName : '';
+                        this.sceneAddress = res.data ? res.data.orgAddress : '';
                         this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
                     } else {
                         this.productList = [];
+                        this.sceneAddress = '';
                         document.title = '';
                         this.$store.commit('marketUpdateOrgId','');
                     }
@@ -204,7 +208,6 @@
             .address{
                 line-height: 30px;
                 display: inline-block;
-                max-width: calc(100% - 95px);
                 text-overflow: clip;
                 overflow-x: auto;
                 float: left;
@@ -218,8 +221,7 @@
                 float: left;
 
                 .icon-fresh{
-                    padding-top: 4px;
-                    vertical-align: middle;
+                    vertical-align: text-top;
                     transition: all 0.3s;
                     transform: rotate(360deg);
 
