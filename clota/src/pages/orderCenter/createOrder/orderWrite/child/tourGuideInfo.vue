@@ -166,14 +166,14 @@
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
                 if (rule.rowData.documentNo) {
-                    if (rule.rowData.documentNo.length > 100) {
-                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100 }));
-                    } else {
+                    if (validator.isIdCard(rule.rowData.documentNo)) {
                         this.validateIdCardNumIsExist(rule.rowData).then(() => {
                             callback();
                         }).catch(() => {
                             callback(this.$t('existID')); // 证件已存在
                         });
+                    } else {
+                        callback(this.$t('errorFormat',{ field : this.$t('IdentificationNumber') }));
                     }
                 } else {
                     callback(this.$t('inputField', { field : this.$t('IdentificationNumber') })); // 请输入证件号

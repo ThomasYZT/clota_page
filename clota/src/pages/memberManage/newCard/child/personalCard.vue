@@ -79,7 +79,8 @@
                     <Form-item :label="$t('credentialsType')" prop="certificationType">
                         <Select v-model="cardParam.certificationType"
                                 style="width: 280px"
-                                :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
+                                :placeholder="$t('selectField', {msg: $t('credentialsType')})"
+                                @on-change="idTypeChange"><!--请选择证件类型-->
                             <Option v-for="item in enumData.idType"
                                     :key="item.id"
                                     :value="item.id">
@@ -314,14 +315,22 @@
             //校验字符串是否包含数字和字母
             const validateNumAndStr = (rule, value, callback) => {
                 if (common.isNotEmpty(value)) {
-                    if (/^[A-Za-z0-9]{0,}$/g.test(value)) {
-                        if (value.length > rule.maxLength) {
-                            callback(this.$t('errorMaxLength', { field : rule.name, length : rule.maxLength }));
-                        } else {
+                    if (this.cardParam.certificationType === '1') {
+                        if (validator.isIdCard(value)) {
                             callback();
+                        } else {
+                            callback(this.$t('errorFormat', { field : rule.name }));
                         }
                     } else {
-                        callback(this.$t('filterError', { field : rule.name }));
+                        if (/^[A-Za-z0-9]{0,}$/g.test(value)) {
+                            if (value.length > rule.maxLength) {
+                                callback(this.$t('errorMaxLength', { field : rule.name, length : rule.maxLength }));
+                            } else {
+                                callback();
+                            }
+                        } else {
+                            callback(this.$t('errorFormat', { field : rule.name }));
+                        }
                     }
                 } else {
                     callback();
@@ -577,6 +586,14 @@
                     this.$refs.payResultModal.setStage('scan');
                     this.payModalShow = true;
                     this.showConfirmModal = false;
+                }
+            },
+            /**
+             * 选择的证件类型修改，重新校验证件编号
+             */
+            idTypeChange () {
+                if (this.cardParam.idCardNumber) {
+                    this.$refs.formValidate.validateField('idCardNumber');
                 }
             }
         },

@@ -45,7 +45,7 @@
             </ul>
             <div class="org-info" @click="toggleOrgStatus" v-clickoutside="closeTree">
                 <span class="org-name" v-w-title="manageOrgs.orgName">{{manageOrgs.orgName}}</span>
-                <span class="iconfont icon-down"></span>
+                <span v-if="manageOrgList.length > 1" class="iconfont icon-down"></span>
             </div>
             <transition name="fade">
                 <org-tree v-if="orgTreeShow" @hide-tree="orgTreeShow = false">
@@ -97,7 +97,7 @@
              * 切换组织树的显示状态
              */
             toggleOrgStatus () {
-                if (this.isLoading) return;
+                if (this.isLoading || this.manageOrgList.length <= 1) return;
                 this.orgTreeShow = !this.orgTreeShow;
             },
             /**
@@ -128,6 +128,7 @@
                 operateLine : 'operateLine',
                 manageOrgs : 'manageOrgs',
                 isLoading : 'isLoading',
+                manageOrgList : 'manageOrgList',
             }),
             //当前激活的菜单
             activeMenu () {
@@ -278,7 +279,7 @@
 
             .org-info{
                 @include block_outline(atuo,20px);
-                margin: 18px 0 0 0;
+                margin: 20px 0 0 0;
                 padding-right: 15px;
                 float: right;
                 color: $color_fff;
