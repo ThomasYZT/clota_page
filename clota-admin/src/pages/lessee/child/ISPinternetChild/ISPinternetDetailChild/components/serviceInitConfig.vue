@@ -186,7 +186,7 @@
                     growthDisabled = true;
                     saleDisabled = true;
                 }
-                //如果只开通了会员积分，那么只有成长型的会员卡配置
+                //如果只开通了会员积分服务，那么只有成长型的会员卡配置
                 if (this.defaultSetting.memberPoint === 'true' && this.defaultSetting.memberRecharge === 'false') {
                     return [
                         {

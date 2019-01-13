@@ -143,10 +143,12 @@
         </productDetailModal>
         <!--退票申请 模态框-->
         <refundModal ref="refundModal"
+                     :refund-ticket-info="chosedData"
                      @fresh-data="$emit('fresh-data')">
         </refundModal>
         <!--改签申请 模态框-->
         <ticketChangingModal ref="ticketChangingModal"
+                             :refund-ticket-info="chosedData"
                              @fresh-data="$emit('fresh-data')">
         </ticketChangingModal>
     </div>

@@ -555,7 +555,6 @@ export default {
     'totalOrderAmount' : '订单金额合计',
     'teamBatchCheckReject' : '团队订单批量驳回申请',
     'refundProductTip' : '提示：您申请退票的产品中包含已核销的产品',
-    'alterProductTip' : '提示：您申请改签的产品中包含按产品规则不允许改签的产品',
     'sending' : '发送',
     'ApplicationForRefundSuccess' : '发起退票申请成功',
     'ApplicationForRefundFail' : '发起退票申请失败',
@@ -622,4 +621,6 @@ export default {
     'other' : '其它',
     'overDueVarifyNum' : '过期系统自动核销数量',
     'validatedDate' : '有效期',
+    'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
+    'alterProductTip' : '提示：您申请改签的产品中包含按产品规则不允许改签的产品，是否继续申请？',
 };

@@ -19,6 +19,9 @@
             </FormItem>
         </Form>
 
+        <div class="err-message" v-if="errMsg">{{errMsg}}</div>
+        <div class="err-message" v-if="returnRuleNotAllowMsg">{{returnRuleNotAllowMsg}}</div>
+
         <div class="btn-wrapper" slot="footer">
             <Button class="btn-88px" type="primary" @click="save">{{$t('confirm')}}</Button>
             <Button class="btn-88px" type="default" @click="toggle">{{$t('cancel')}}</Button>
@@ -30,6 +33,15 @@
     import tableCom from '@/components/tableCom/tableCom';
     import ajax from '@/api/index';
     export default {
+        props : {
+            //申请退票的产品信息
+            'refund-ticket-info' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         components : {
             tableCom
         },
@@ -103,6 +115,28 @@
                         this.toggle();
                     }
                 });
+            }
+        },
+        computed : {
+            //错误提示信息
+            errMsg () {
+                let data = this.refundTicketInfo;
+                for (let i = 0,j = data.length; i < j; i++) {
+                    //如果景区退票的时候选择了已核销的产品需要给出提示
+                    if (data[i]['verifyStatus'] === 'true') {
+                        return this.$t('refundProductTip');// 提示：您申请退票的产品中包含已核销的产品
+                    }
+                }
+                return '';
+            },
+            //勾选了按规则不可退的产品错误信息
+            returnRuleNotAllowMsg () {
+                let canNotReturn = this.refundTicketInfo.filter(item => item.policyReturnRule === 'notAllow');
+                if (canNotReturn.length > 0) {
+                    return this.$t('returnRuleNotAllowMsg');
+                } else {
+                    return '';
+                }
             }
         }
     };
