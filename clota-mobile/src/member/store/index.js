@@ -16,7 +16,7 @@ export const memberState = {
     //用户是否登录
     isLogin : false,
     //公司id
-    companyCode : '10000059',
+    companyCode : '00000194',
     //错误码
     errCode : '',
     //会员配置信息
