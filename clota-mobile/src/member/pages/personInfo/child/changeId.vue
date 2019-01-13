@@ -28,6 +28,8 @@
     import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import { validator } from 'klwk-ui';
+
     export default {
         mixins : [lifeCycleMixins],
         data () {
@@ -100,12 +102,30 @@
                             width : '5rem'
                         });
                         reject();
-                    } else if (this.formData.idCard.length > 40) {
-                        this.$vux.toast.show({
-                            text : this.$t('maxLengthErr',{ field : this.$t('idCard'),length : 40 }),
-                            type : 'text',
-                            width : '5.2rem'
-                        });
+                    } else if (this.formData && this.formData.idCard) {
+                        if (this.formData.idType[0] === '1') {
+                            if (validator.isIdCard(this.formData.idCard)) {
+                                resolve();
+                            } else {
+                                this.$vux.toast.show({
+                                    text : this.$t('errFormat',{ field : this.$t('idCard') }),
+                                    type : 'text',
+                                    width : '5.2rem'
+                                });
+                                reject();
+                            }
+                        } else {
+                            if (this.formData.idCard.length > 40) {
+                                this.$vux.toast.show({
+                                    text : this.$t('maxLengthErr',{ field : this.$t('idCard'),length : 40 }),
+                                    type : 'text',
+                                    width : '5.2rem'
+                                });
+                                reject();
+                            } else {
+                                resolve();
+                            }
+                        }
                         reject();
                     } else {
                         resolve();

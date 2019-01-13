@@ -180,11 +180,27 @@
                             if (this.formData[i]['idNum'] === '') {
                                 this.$vux.toast.text(this.$t('请输入证件号'));
                                 reject();
-                            } else if (this.formData[i].idNum.length > 50) {
-                                this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('idCard'),length : 50 }));
-                                reject();
-                            } else if (!(/^\w+$/.test(this.formData[i].idNum))) {
-                                this.$vux.toast.text(this.$t('请输入正确证件号'));
+                            } else if (this.formData[i]['idNum']) {
+                                if (this.formData[i]['idType'] === 'identity') {
+                                    if (validator.isIdCard(this.formData[i]['idNum'])) {
+                                        resolve();
+                                    } else {
+                                        this.$vux.toast.show({
+                                            text : this.$t('errFormat',{ field : this.$t('idCard') }),
+                                            type : 'text',
+                                            width : '5.2rem'
+                                        });
+                                        reject();
+                                    }
+                                } else {
+                                    if (this.formData[i].idNum.length > 40) {
+                                        this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('idCard'),length : 40 }));
+                                        reject();
+                                    } else {
+                                        resolve();
+                                    }
+                                }
+                            } else {
                                 reject();
                             }
                         }
