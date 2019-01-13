@@ -57,25 +57,21 @@ export const memberGetters = {
     },
     //公司id
     companyCode : state => {
-        let companyCode = '';
-        if (!state.companyCode) {
-            let url = location.href;
-            if (url.indexOf('?') !== -1) {
-                let query = url.split("?")[1];
-                let queryArr = query.split("&");
-                queryArr.forEach(function (item) {
-                    let key = item.split("=")[0];
-                    let value = item.split("=")[1];
-                    if (key === 'companyCode') {
-                        companyCode = value;
-                    }
-                });
-                return companyCode;
-            } else {
-                return companyCode;
-            }
+        let companyCode = state.companyCode;
+        let url = location.href;
+        if (url.indexOf('?') !== -1) {
+            let query = url.split("?")[1];
+            let queryArr = query.split("&");
+            queryArr.forEach(function (item) {
+                let key = item.split("=")[0];
+                let value = item.split("=")[1];
+                if (key === 'companyCode') {
+                    companyCode = value;
+                }
+            });
+            return companyCode;
         } else {
-            return state.companyCode;
+            return companyCode;
         }
     },
     //是否登录
