@@ -166,9 +166,11 @@
             nodeListCanChose () {
                 if (this.nodeDetail) {
                     if (this.nodeDetail.nodeType === 'company') {
-                        return this.nodeList.filter(item => item.label !== 'cashier');
+                        return this.nodeList.filter(item => item.value !== 'cashier');
                     } else if (this.nodeDetail.nodeType === 'scenic' ) {
-                        return this.nodeList.filter(item => item.label !== 'company');
+                        return this.nodeList.filter(item => item.value !== 'company');
+                    } else if (this.nodeDetail.nodeType === 'partner') {
+                        return this.nodeList.filter(item => item.value === 'department');
                     } else {
                         return [];
                     }

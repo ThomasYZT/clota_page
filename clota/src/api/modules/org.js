@@ -116,5 +116,7 @@ export default {
     'queryScenicByOrgId' : '/organize/queryScenicByOrgId',
     //生成自营渠道appid/appSecretId
     'generateChannelAccount' : '/selfChannel/generateChannelAccount',
+    //合作伙伴获取组织架构信息
+    'getWholeOrgTree' : '/organize/getWholeOrgTree',
 
 };
