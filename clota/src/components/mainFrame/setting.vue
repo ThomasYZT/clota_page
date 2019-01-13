@@ -138,7 +138,7 @@
 	@import '~@/assets/scss/base';
     .system-setting{
         @include block_outline(0);
-        @include absolute_pos(absolute,$top : 0,$right : -10px);
+        @include absolute_pos(absolute,$top : 0,$right : 0);
         z-index: 9999;
         background: #FFFFFF;
         box-shadow: -2px 0 14px 0 rgba(0,0,0,0.10);

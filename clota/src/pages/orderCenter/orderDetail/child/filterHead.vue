@@ -215,6 +215,7 @@
                     <!--审核状态-->
                     <FormItem :label="$t('auditStatus')" >
                         <Select v-model.trim="formData.auditStatus"
+                                :disabled="formData.orderType === 'individual'"
                                 style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in auditStatusList"
@@ -378,6 +379,9 @@
              * 订单类型改变，查询所属景区信息
              */
             orderTypeChange () {
+                if (this.formData.orderType === 'individual') {
+                    this.formData.auditStatus = 'allStatus';
+                }
                 ajax.post('getScenicList',{
                     allocationStatus : this.formData.allocationStatus,
                     orderType : this.formData.orderType
