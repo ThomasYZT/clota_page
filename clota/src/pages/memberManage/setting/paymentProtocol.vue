@@ -8,7 +8,7 @@
     <div class="pay-protocol">
         <bread-crumb-head
             :before-router-list="beforeRouterList"
-            :locale-router="$t('paymentSetting')">
+            locale-router="paymentSetting">
         </bread-crumb-head>
 
         <div class="protocol-content">
@@ -51,9 +51,9 @@
                 //面包屑上级路由信息
                 beforeRouterList : [
                     {
-                        name : 'memberSetting', // 基础设置
+                        name : 'fundSetting', // 储值设置
                         router : {
-                            name : 'memberSetting'
+                            name : 'fundSetting'
                         },
                     },
                 ],

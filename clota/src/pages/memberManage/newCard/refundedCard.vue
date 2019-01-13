@@ -66,7 +66,7 @@
             ]),
             //是否显示批量退卡
             showBatchReturnCard () {
-                return this.permissionInfo && this.permissionInfo['newBatchCard'] === 'allow';
+                return this.permissionInfo && this.permissionInfo['batchNewCard'] === 'allow';
             },
         }
     };

@@ -2332,7 +2332,7 @@ export default {
     'ruleName' : 'Rule name',
     'subscriptionRatio' : 'Conversion ratio',
     'beginningTime' : 'Start time',
-    'mostDeductionPerOrder' : 'Maximum deductible single order total',
+    'mostDeductionPerOrder' : '最多抵扣单笔订单总额比例',
     'memberCardRight' : 'Membership card equity',
     'limitedInbirthDay' : 'Birthday purchase limit',
     'discountTicket' : 'Discount tickets',

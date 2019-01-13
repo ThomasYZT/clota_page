@@ -741,7 +741,7 @@ export default {
                         component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/paymentProtocol.vue'),
                         meta : {
                             menuName : 'entityCard', //lang.config.js 里面的语言键值
-                            _name : 'basic-setting',
+                            _name : 'storage-setting',
                             rightPath : topMenuName + '.' + 'memberSetting'
                         },
                     }

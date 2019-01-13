@@ -2336,7 +2336,7 @@ export default {
     'ruleName' : '规则名称',
     'subscriptionRatio' : '兑换比例',
     'beginningTime' : '起始时间',
-    'mostDeductionPerOrder' : '最多抵扣单笔订单总额',
+    'mostDeductionPerOrder' : '最多抵扣单笔订单总额比例',
     'memberCardRight' : '会员卡权益',
     'limitedInbirthDay' : '生日当天限购',
     'discountTicket' : '折门票',

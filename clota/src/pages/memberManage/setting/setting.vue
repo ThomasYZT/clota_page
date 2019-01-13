@@ -159,12 +159,6 @@
                 <!--<span class="a-link-el" @click="toEntityCardDetail">{{$t('cardManagement')}}</span>-->
                 <!--</div>-->
                 <!--</div>-->
-                <div class="content-item">
-                    <div class="title">{{$t('paymentSetting')}}</div>
-                    <div class="main">
-                        <span class="a-link-el" @click="toSetPayProtocol">{{$t('paymentSetting')}}</span>
-                    </div>
-                </div>
 
                 <!--短信发送设置-->
                 <div class="content-item">
@@ -362,8 +356,6 @@
                 WxMpSetInfo : {},
                 //copy数据，用于数据重置
                 copySetData : {},
-                // 支付协议内容
-                paymentAgreement : '',
                 idTypeIndex : 1,
                 formDynamic : {
                     reason : [],
@@ -450,7 +442,6 @@
                     if (res.success) {
                         if (res.data) {
                             this.id = res.data.id;
-                            this.paymentAgreement = res.data.paymentAgreement;
                             if (Object.keys(res.data).length > 0) {
                                 //处理数据
                                 let params = {
@@ -696,15 +687,6 @@
             toEntityCardDetail () {
                 this.$router.push({
                     name : 'entityCard'
-                });
-            },
-            /**
-             * 跳转到支付协议设置
-             */
-            toSetPayProtocol () {
-                this.$router.push({
-                    name : 'paymentProtocol',
-                    params : { paymentAgreement : this.paymentAgreement, id : this.id }
                 });
             },
 

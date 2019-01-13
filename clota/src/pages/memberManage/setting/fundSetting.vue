@@ -209,6 +209,13 @@
                     </div>
                 </div>
 
+                <div class="content-item">
+                    <div class="title">{{$t('paymentSetting')}}</div>
+                    <div class="main">
+                        <span class="a-link-el" @click="toSetPayProtocol">{{$t('paymentSetting')}}</span>
+                    </div>
+                </div>
+
                 <!--会员4期暂时去掉-->
                 <!--房款返还至各业态账户的比例设置-->
                 <!--<owner-refund-setting class="content-item"-->
@@ -373,6 +380,8 @@
                         callback();
                     }
                 },
+                // 支付协议内容
+                paymentAgreement : '',
             };
         },
         created () {
@@ -444,6 +453,7 @@
                 ajax.post('findBasicSet', {}).then(res => {
                     if ( res.success) {
                         if (res.data) {
+                            this.paymentAgreement = res.data.paymentAgreement;
                             this.id = res.data.id;
                             //处理数据
                             let params = {
@@ -749,7 +759,17 @@
                             }, index });
                     }
                 });
-            }
+            },
+
+            /**
+             * 跳转到支付协议设置
+             */
+            toSetPayProtocol () {
+                this.$router.push({
+                    name : 'paymentProtocol',
+                    params : { paymentAgreement : this.paymentAgreement, id : this.id }
+                });
+            },
 
         },
         computed : {
@@ -879,6 +899,11 @@
                 }
                 .table-wrap{
                     width: 650px;
+                }
+
+                .a-link-el {
+                    cursor: pointer;
+                    color: $color_blue;
                 }
             }
 
