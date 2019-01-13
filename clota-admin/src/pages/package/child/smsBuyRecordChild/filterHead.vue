@@ -10,6 +10,7 @@
                     <!--租户列表-->
                     <FormItem :label="$t('lessee')">
                         <Select v-model="formData.orgId"
+                                ref="lesseeref"
                                 :transfer="true"
                                 filterable
                                 @on-change="search">

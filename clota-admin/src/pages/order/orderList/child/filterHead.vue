@@ -238,13 +238,14 @@
                 <!--团队订单预审核状态-->
                     <FormItem :label="$t('团队订单审核状态')" :label-width="150" >
                         <Select v-model.trim="formData.auditStatus"
-                            style="max-width: 200px"
-                            @on-change="searchProductList">
-                            <Option v-for="item  in auditStatusList"
-                                :key="item.value"
-                                :value="item.value">
-                                {{$t(item.label)}}
-                            </Option>
+                                :disabled="formData.orderType === 'individual'"
+                                style="max-width: 200px"
+                                @on-change="searchProductList">
+                                <Option v-for="item  in auditStatusList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                    {{$t(item.label)}}
+                                </Option>
                         </Select>
                     </FormItem>
                 </i-col>
@@ -369,6 +370,9 @@
              * 订单类型改变，查询所属景区信息
              */
             orderTypeChange () {
+                if (this.formData.orderType === 'individual') {
+                    this.formData.auditStatus = 'allStatus';
+                }
                 ajax.post('getAllScenic').then(res => {
                     if (res.status === 200) {
                         this.belongScene = res.data ? [].concat([{
