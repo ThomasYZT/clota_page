@@ -1,16 +1,26 @@
 <!--新开会员卡二级菜单-->
 
 <template>
-    <router-view>
-    </router-view>
+    <div style="background: #fff;">
+        <Input v-model="physicalNum" style="width: 200px" @on-enter="changeNum"/>
+        <router-view>
+        </router-view>
+    </div>
 </template>
 
 <script>
     export default {
         data () {
-            return {};
+            return {
+                //物理卡号
+                physicalNum : ''
+            };
         },
-        methods : {}
+        methods : {
+            changeNum () {
+                this.$store.commit('updatecardTest',this.physicalNum);
+            }
+        }
     };
 </script>
 

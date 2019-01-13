@@ -74,7 +74,7 @@
                         this.selectedCard = {};
                         break;
                 }
-            },
+            }
         },
     };
 </script>
