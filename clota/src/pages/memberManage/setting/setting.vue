@@ -161,7 +161,7 @@
                 <!--</div>-->
 
                 <!--短信发送设置-->
-                <div class="content-item">
+                <div class="content-item" v-if="showMemberRecharge">
                     <div class="title">{{$t('smsSendSetting')}}</div>
 
                     <div class="main">
@@ -198,7 +198,7 @@
                     </div>
                 </div>
 
-                <template  v-if="Object.keys(WxMpSetInfo).length !== 0">
+                <template  v-if="Object.keys(WxMpSetInfo).length !== 0 && showMemberRecharge">
                     <!--微信端推送交易记录设置-->
                     <div class="content-item">
                         <div class="title">{{$t('wxPushExchangeRecordSetting')}}</div>
@@ -293,6 +293,7 @@
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -433,7 +434,14 @@
                     result.push(item);
                 }
                 return result;
-            }
+            },
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员储值相关信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         },
         methods : {
             //查询会员基础设置

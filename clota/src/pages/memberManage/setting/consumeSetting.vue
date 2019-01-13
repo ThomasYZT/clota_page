@@ -10,7 +10,7 @@
             <Form ref="formDynamic" :model="formDynamic">
 
             <!--储值积分比例设置-->
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('storeIntegetSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreFromCharging.chargingAddScore" vertical>
@@ -39,7 +39,7 @@
             </div>
 
             <!--储值获得积分生效设置-->
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('storeIntegetRatioSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreEffModeWhileCharging.storedType" vertical>
@@ -64,7 +64,7 @@
             </div>
 
             <!--会员积分生效设置-->
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('memberIntegralSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreEffectiveMode.isIntegralType" vertical>
@@ -92,7 +92,7 @@
             </div>
 
             <!--会员生日积分多倍积分-->
-            <div class="content-item">
+            <div class="content-item" >
                 <div class="title">{{$t('multiIntegralForBirth')}}</div>
                 <div :class="{'ivu-form-item-error': error.multipleError, 'main': true}">
                     <i-switch v-model="settingData.scoreMultipleOnBirthday.isSwitch"></i-switch>
@@ -211,6 +211,7 @@
 
             <!--会员积分交易抵扣规则设置-->
             <integer-rule-setting class="content-item"
+                                  v-if="showMemberRecharge"
                                   :rule-data="settingData.scoreOffsetInConsumption"
                                   @add-integer-rule="addIntegerRule"
                                   @edit-integer-rule="editIntegetRule"
@@ -260,7 +261,7 @@
                 <!--</div>-->
             <!--</div>-->
 
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
                 <div class="main">
                     <RadioGroup :value="String(settingData.handingWithScoreGrowthWhileRefund.score)"
@@ -369,6 +370,7 @@
     import headerTabs from './components/headerTabs.vue';
     import { validator } from 'klwk-ui';
     import integerRuleSetting from './components/integerRuleSetting';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -889,6 +891,15 @@
             },
 
         },
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员储值相关信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
+        }
     };
 </script>
 
