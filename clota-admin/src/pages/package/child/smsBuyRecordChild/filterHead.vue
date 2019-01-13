@@ -45,6 +45,7 @@
                     <FormItem :label="$t('buyTime')">
                         <DatePicker type="daterange"
                                     :editable="false"
+                                    :placeholder="$t('selectField',{ msg : '' })"
                                     v-model.trim="formData.purchaseTime"
                                     :transfer="true"
                                     style="width: 100%;"
@@ -121,6 +122,7 @@
              * 重置筛选条件
              */
             reset () {
+                this.$refs.lesseeref.setQuery(null);
                 this.formData.orgId = '';
                 this.formData.smsPackageId = '';
                 this.formData.purchaseTime = [];

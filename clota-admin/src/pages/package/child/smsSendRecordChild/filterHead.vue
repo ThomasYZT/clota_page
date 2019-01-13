@@ -9,13 +9,14 @@
                 <i-col span="8">
                     <!--订单编号-->
                     <FormItem :label="$t('orderCode')">
-                        <Input v-model.trim="formData.orderNo" @on-enter="search"/>
+                        <Input v-model.trim="formData.orderNo" :placeholder="$t('inputPlaceholder')" @on-enter="search"/>
                     </FormItem>
                 </i-col>
                 <i-col span="8">
                     <!--租户-->
                     <FormItem :label="$t('lessee')">
                         <Select v-model="formData.orgId"
+                                ref="lesseeref"
                                 :transfer="true"
                                 filterable
                                 @on-change="search">
@@ -32,7 +33,7 @@
                 <i-col span="8">
                     <!--手机号-->
                     <FormItem :label="$t('mobileNum')">
-                        <Input v-model.trim="formData.phone" @on-enter="search"/>
+                        <Input v-model.trim="formData.phone" :placeholder="$t('inputPlaceholder')" @on-enter="search"/>
                     </FormItem>
                 </i-col>
             </i-row>
@@ -56,6 +57,7 @@
                     <FormItem :label="$t('sendTime')">
                         <DatePicker type="daterange"
                                     :editable="false"
+                                    :placeholder="$t('selectField',{ msg : '' })"
                                     v-model="formData.sendTime"
                                     :transfer="true"
                                     style="width: 100%;"
@@ -167,6 +169,7 @@
              * 重置筛选条件
              */
             reset () {
+                this.$refs.lesseeref.setQuery(null);
                 this.formData.orgId = '';
                 this.formData.phone = '';
                 this.formData.orderNo = '';

@@ -10,6 +10,8 @@
                     <!--租户-->
                     <FormItem :label="$t('lessee')">
                         <Select v-model="formData.orgId"
+                                ref="lesseeref"
+                                :placeholder="$t('selectField',{ msg : '' })"
                                 :transfer="true"
                                 filterable
                                 @on-change="search">
@@ -28,6 +30,7 @@
                     <FormItem :label="$t('serviceName')">
                         <Select v-model="formData.serviceId"
                                 :transfer="true"
+                                ref="serviceRef"
                                 filterable
                                 @on-change="search">
                             <Option v-for="item in servicesList"
@@ -42,6 +45,7 @@
                     <!--操作时间-->
                     <FormItem :label="$t('operateTime')">
                         <DatePicker type="daterange"
+                                    :placeholder="$t('selectField',{ msg : '' })"
                                     :editable="false"
                                     v-model.trim="formData.operateTime"
                                     :transfer="true"
@@ -134,6 +138,8 @@
              * 重置筛选条件
              */
             reset () {
+                this.$refs.lesseeref.setQuery(null);
+                this.$refs.serviceRef.setQuery(null);
                 this.formData.serviceId = '';
                 this.formData.orgId = '';
                 this.formData.opId = '';
