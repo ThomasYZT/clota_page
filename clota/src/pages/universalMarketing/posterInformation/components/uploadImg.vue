@@ -5,6 +5,7 @@
 <template>
     <div class="upload-img">
         <el-upload
+            ref="imgUpload"
             :class="{ 'add-hidden' : addDisabled }"
             :action="action"
             :headers="headers"
@@ -66,6 +67,11 @@
                 default () {
                     return [];
                 }
+            },
+            //上传图片url地址
+            imgUpload : {
+                type : String,
+                default : api.imgUpload
             }
         },
         components : {},
@@ -86,7 +92,7 @@
         computed : {
             //返回上传接口地址
             action () {
-                return config.HOST + api.imgUpload;
+                return config.HOST + this.imgUpload;
             },
             //上传文件的headers
             headers () {
@@ -195,6 +201,13 @@
             handlEexceed () {
                 this.$Message.error(this.$t( 'mostUploadPic', { num : this.quantityLimit }));
                 this.limit = true;
+            }
+        },
+        mounted () {
+            if (this.$refs && this.$refs.imgUpload) {
+                if (this.$refs.imgUpload.fileList.length === this.quantityLimit) {
+                    this.addDisabled = true;
+                }
             }
         }
     };

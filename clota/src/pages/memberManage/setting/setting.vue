@@ -198,6 +198,7 @@
                     </div>
                 </div>
 
+                <!-- 微信端推送交易记录设置（仅配置了公众号信息才显示）-->
                 <template  v-if="Object.keys(WxMpSetInfo).length !== 0 && showMemberRecharge">
                     <!--微信端推送交易记录设置-->
                     <div class="content-item">
@@ -210,7 +211,7 @@
                             <!--<i-switch v-model="settingData.wxMpTemplateInfoSet.showIntegration" size="large"></i-switch><span>{{$t('是否在微信公众号推送积分账户交易信息')}}</span>-->
                             <!--</div>-->
                             <div class="text" :class="{'ivu-form-item-error': error.wxPushErr}">
-                                <span class="text">{{$t('title')}}</span>
+                                <span class="text">{{$t('title')}}：</span>
                                 <Input type="text"
                                        v-model="settingData.wxMpTemplateInfoSet.title"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
@@ -226,7 +227,7 @@
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.chargeTemplateId"
-                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr', 1, 20)"
+                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr')"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.chargeTemplateIdErr">{{error.chargeTemplateIdErr}}
@@ -237,7 +238,7 @@
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.consumeTemplateId"
-                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr', 1, 20)"
+                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr')"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.consumeTemplateIdErr">{{error.consumeTemplateIdErr}}
@@ -246,16 +247,8 @@
                         </div>
                     </div>
 
-                    <!--微信推送消息模版ID-->
-                    <!--<div class="content-item">-->
-                        <!--<div class="title">{{$t('微信推送消息模板ID')}}</div>-->
-                        <!--<div :class="{'main': true}">-->
-
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--微信会员卡推送设置 (仅公众号配置开通支付即会员才显示)-->
-                    <div class="content-item" v-if="WxMpSetInfo.payGiftCard === 'true'">
+                    <!--微信会员卡推送设置 (仅仅配置了公众号信息，并开通了支付即会员才显示)-->
+                    <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'">
                         <div class="title">{{$t('微信会员卡推送设置')}}</div>
                         <div :class="{'main': true}">
                             <div class="switcher">
@@ -269,9 +262,59 @@
                         </div>
                     </div>
 
+                    <!--配置微信卡包的商户信息 (仅配置了公众号信息，并开通了微信卡包才显示)-->
+                    <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.openMembercard === 'true'">
+                        <div class="title">{{$t('配置微信卡包的商户信息')}}</div>
+                        <div :class="{'main': true}">
+                            <div class="img-wrap">
+                                <span class="width-150px-label">{{$t('会员卡logo：')}}</span>
+                                <div class="inline-upload">
+                                    <imgUpload :quantityLimit="1"
+                                               :size="2"
+                                               :format="['jpeg','png']"
+                                               :defaultList="defaultMemberLogoImg"
+                                               @upload-success="uploadSuc($event, 'card-logo')"
+                                               @remove-img="removeIDimg($event, 'card-logo')"></imgUpload>
+                                    <span class="warning-tip">建议像素300*300</span>
+                                </div>
+                            </div>
+                            <div class="text" :class="{'ivu-form-item-error': error.brandNameErr}">
+                                <span class="width-150px-label">{{$t('商户名称：')}}</span>
+                                <Input type="text"
+                                       v-model.trim="wxMpSettingData.brandName"
+                                       @on-blur="checkWxPackageInfo(wxMpSettingData.brandName,'brandNameErr')"
+                                       style="margin: 0 10px;width: 300px;"></Input>
+                                <span class="warning-tip">保存后不可随意修改，请谨慎填写。</span>
+                                <div class="fixed-error ivu-form-item-error-tip"
+                                     v-if="error.brandNameErr">{{error.brandNameErr}}
+                                </div>
+                            </div>
+                            <div class="img-wrap">
+                                <span class="width-150px-label">{{$t('卡劵封面图片：')}}</span>
+                                <div class="inline-upload">
+                                    <imgUpload :quantityLimit="1"
+                                               :size="2"
+                                               :format="['jpeg','png']"
+                                               :defaultList="defaultMemberBgImg"
+                                               :imgUpload="api.uploadImage"
+                                               @upload-success="uploadSuc($event, 'card-bg')"
+                                               @remove-img="removeIDimg($event, 'card-bg')"></imgUpload>
+                                    <span class="warning-tip">图片限制：1000*600像素、大小小于1M，仅支持jpg/png/jpeg格式</span>
+                                </div>
+                            </div>
+                            <div class="text" :class="{'ivu-form-item-error': error.wxCardTitleErr}">
+                                <span class="width-150px-label">{{$t('会员卡标题：')}}</span>
+                                <Input type="text"
+                                       v-model="wxMpSettingData.wxCardTitle"
+                                       @on-blur="checkWxPackageInfo(wxMpSettingData.wxCardTitle,'wxCardTitleErr')"
+                                       style="margin: 0 10px;width: 300px;"></Input>
+                                <div class="fixed-error ivu-form-item-error-tip"
+                                     v-if="error.wxCardTitleErr">{{error.wxCardTitleErr}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </template>
-
-
             </Form>
 
         </div>
@@ -287,19 +330,22 @@
 <script>
 
     import ajax from '@/api/index';
+    import api from '@/api/apiList';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import imgUpload from '../../universalMarketing/posterInformation/components/uploadImg';
     import { mapGetters } from 'vuex';
 
     export default {
         components : {
             headerTabs,
             tableCom,
-            noData
+            noData,
+            imgUpload
         },
         data () {
             return {
@@ -355,6 +401,21 @@
                 },
                 //公众号配置信息
                 WxMpSetInfo : {},
+                //公众号配置编辑信息
+                wxMpSettingData : {
+                    //微信卡劵封面图片
+                    wxCardBackgroundPic : [],
+                    //卡套logo
+                    wxCardLogo : [],
+                    //商户名称
+                    brandName : '',
+                    //会员卡标题
+                    wxCardTitle : '',
+                },
+                //卡包默认logo图片
+                defaultMemberLogoImg : [],
+                //卡包默认背景图片
+                defaultMemberBgImg : [],
                 //copy数据，用于数据重置
                 copySetData : {},
                 idTypeIndex : 1,
@@ -374,6 +435,8 @@
                     wxPushErr : '',//微信端推送交易记录 标题设置错误
                     chargeTemplateIdErr : '',//微信端充值提醒模版id错误
                     consumeTemplateIdErr : '',//微信端消费提醒模版id错误
+                    brandNameErr : '',//微信卡包商户名称错误
+                    wxCardTitleErr : '',//微信卡包会员卡标题错误
                 },
                 //会员类别及会员级别数据
                 memberLevelsData : {
@@ -383,6 +446,7 @@
                 levelsOfGrowthList : [],
                 //微信会员卡推送设置
                 wxPushMemberLevelConfig : {},
+                api : api,
             };
         },
         watch : {
@@ -427,6 +491,10 @@
             this.queryLevelsOfGrowth();
         },
         computed : {
+            ...mapGetters([
+               'manageOrgs',
+               'memberConfigInfo'
+            ]),
             //默认打开的折叠面板
             collapseOpened () {
                 let result = [];
@@ -435,9 +503,6 @@
                 }
                 return result;
             },
-            ...mapGetters([
-                'memberConfigInfo'
-            ]),
             //是否可以显示会员储值相关信息
             showMemberRecharge () {
                 return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
@@ -492,28 +557,44 @@
                     Promise.all([
                         this.checkInputIsMoney(this.settingData.smsSend, 'tradeAmountErr'),
                         this.checkInputIsMoney(this.settingData.replacementCardFee, 'replaceCardFeeErr'),
+                        this.checkInputMaxErr(this.settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10),
+                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr'),
+                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr'),
+                        this.checkWxPackageInfo(this.wxMpSettingData.brandName,'brandNameErr'),
+                        this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr')
                     ]).then(() => {
-                        this.basicSet({
-                            id : this.id,
-                            memberValidPeriod : JSON.stringify(this.settingData.memberValidPeriod),
-                            smsSend : this.settingData.smsSend,
-                            replacementCardFee : this.settingData.replacementCardFee,
-                            notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
-                            wxMpTemplateInfoSet : JSON.stringify(this.settingData.wxMpTemplateInfoSet),
-                        });
+                        Promise.all([
+                            this.createOrModifyWxMpMemberCard(),
+                            this.basicSet({
+                                id : this.id,
+                                memberValidPeriod : JSON.stringify(this.settingData.memberValidPeriod),
+                                smsSend : this.settingData.smsSend,
+                                replacementCardFee : this.settingData.replacementCardFee,
+                                notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
+                                wxMpTemplateInfoSet : JSON.stringify(this.settingData.wxMpTemplateInfoSet),
+                            })
+                        ]).then(() => {
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
+                        }).catch(() => {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
+                        })
                     });
                 }
             },
             //会员基础设置-保存/修改
             basicSet (params) {
-                ajax.post('basicSet', params).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
-                        this.findBasicSet();
-                        this.queryDocument();
-                    } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
-                    }
+                return new Promise((resolve, reject) => {
+                    ajax.post('basicSet', params).then(res => {
+                        if (res.success) {
+                            this.findBasicSet();
+                            this.queryDocument();
+                            resolve()
+                        } else {
+                            reject()
+                        }
+                    }).catch(() => {
+                        reject();
+                    })
                 });
             },
             //点击取消重置数据
@@ -724,16 +805,77 @@
              * @param errType
              */
             checkInputMaxErr (data, errType, minLen, maxLen) {
-                if (String(data).length < minLen) {
-                    this.error[errType] = this.$t('errorMinLength', { field : this.$t(''), length : minLen });
-                    return false;
-                } else if (String(data).length > maxLen) {
-                    this.error[errType] = this.$t('errorMaxLength', { field : this.$t(''), length : maxLen });
-                    return false;
-                } else {
-                    this.error[errType] = '';
-                    return true;
-                }
+                return new Promise((resolve, reject) => {
+                    if (String(data).length < minLen) {
+                        this.error[errType] = this.$t('errorMinLength', { field : this.$t(''), length : minLen });
+                        reject();
+                    } else if (String(data).length > maxLen) {
+                        this.error[errType] = this.$t('errorMaxLength', { field : this.$t(''), length : maxLen });
+                        reject();
+                    } else {
+                        this.error[errType] = '';
+                        resolve();
+                    }
+                })
+            },
+            /**
+             *  校验是否是数字或字母
+             */
+            checkInputOnlyNumOrLetter (data, errType) {
+                let reg = /^[0-9a-zA-Z]*$/;
+                return new Promise((resolve, reject) => {
+                    if (reg.test(data)) {
+                        this.error[errType] = '';
+                        resolve();
+                    } else {
+                        this.error[errType] = this.$t('onlyNumOrLetter', { field : this.$t('') });
+                        reject();
+                    }
+                })
+            },
+            /**
+             *  校验输入的是否是汉字
+             */
+            checkInputOnlyCN (value, errType) {
+              let reg = /^[\u4e00-\u9fa5]*$/;
+              return new Promise((resolve, reject) => {
+                  if (reg.test(value)) {
+                      this.error[errType] = '';
+                      resolve();
+                  } else {
+                      this.error[errType] = this.$t('onlyChineseCharactor');
+                      reject();
+                  }
+              })
+            },
+            /**
+             *  校验推送消息模版id字段 （不能超过20哥字符，只能为字母或数字）
+             */
+            checkTemplateID (value,errType) {
+                return new Promise((resolve, reject) => {
+                    this.checkInputMaxErr(value, errType, 1, 20).then(() => {
+                        this.checkInputOnlyNumOrLetter (value, errType).then(() => {
+                            resolve();
+                        }).catch(() => {
+                            reject();
+                        })
+                    }).catch(() => {
+                        reject();
+                    })
+                })
+            },
+            checkWxPackageInfo (value, errType) {
+                return new Promise((resolve, reject) => {
+                    this.checkInputMaxErr(value,errType, 1, 20).then(() => {
+                        this.checkInputOnlyCN (value, errType).then(() => {
+                            resolve();
+                        }).catch(() => {
+                            reject();
+                        });
+                    }).catch(() => {
+                        reject();
+                    })
+                })
             },
             /**
              * 获取所有会员类别和类别下的所有级别数据
@@ -796,6 +938,29 @@
                 ajax.post('queryMemberWxMpSet').then(res => {
                     if (res.success) {
                         this.WxMpSetInfo = res.data ? res.data : {};
+                        this.wxMpSettingData = res.data ? res.data : {};
+                        if (this.WxMpSetInfo.wxCardBackgroundPic) {
+                            this.defaultMemberBgImg = [
+                                {
+                                    name : 'logo',
+                                    url : this.WxMpSetInfo.wxCardBackgroundPic
+                                }
+                            ];
+                            this.wxMpSettingData.wxCardBackgroundPic = [this.WxMpSetInfo.wxCardBackgroundPic]
+                        }
+                        if (this.WxMpSetInfo.wxCardLogo) {
+                            this.defaultMemberLogoImg = [
+                                {
+                                    name : 'logo',
+                                    url : this.WxMpSetInfo.wxCardLogo
+                                }
+                            ]
+                            this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo]
+                        }
+                        //仅仅配置了公众号信息，并开通了支付即会员才显示
+                        if (Object.keys(this.WxMpSetInfo).length > 0 && this.WxMpSetInfo.payGiftCard === 'true') {
+                            this.queryDefaultDrawMemberLevel();
+                        }
                     } else {
                         this.WxMpSetInfo = {};
                     }
@@ -812,6 +977,85 @@
                         this.wxPushMemberLevelConfig.id = '';
                     }
                 });
+            },
+            /**
+             * @param {array} data
+             * 上传图片成功
+             */
+            uploadSuc (data, type) {
+                if (type === 'card-logo') {
+                    this.wxMpSettingData.wxCardLogo = data.map((item) => {
+                        return item.url
+                    });
+                    this.defaultMemberLogoImg = this.wxMpSettingData.wxCardLogo.map((url, index) => {
+                        return {
+                            name : index,
+                            url : url,
+                        };
+                    });
+                } else if (type === 'card-bg') {
+                    this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
+                        return item.url
+                    });
+                    this.defaultMemberBgImg = this.wxMpSettingData.wxCardBackgroundPic.map((url, index) => {
+                        return {
+                            name : index,
+                            url : url,
+                        };
+                    });
+                }
+            },
+            /**
+             * @param {array} data
+             * 删除图片
+             */
+            removeIDimg (data, type) {
+                if (type === 'card-logo') {
+                    this.wxMpSettingData.wxCardLogo = data.map((item) => {
+                        return item.url
+                    });
+                    this.defaultMemberLogoImg = this.wxMpSettingData.wxCardLogo.map((url, index) => {
+                        return {
+                            name : index,
+                            url : url,
+                        };
+                    });
+                } else if (type === 'card-bg') {
+                    this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
+                        return item.url
+                    });
+                    this.defaultMemberBgImg = this.wxMpSettingData.wxCardBackgroundPic.map((url, index) => {
+                        return {
+                            name : index,
+                            url : url,
+                        };
+                    });
+                }
+            },
+            /**
+             * 创建或修改微信卡包配置信息
+             */
+            createOrModifyWxMpMemberCard () {
+                return new Promise((resolve, reject) => {
+                    ajax.post('createOrModifyWxMpMemberCard', {
+                        id : this.WxMpSetInfo.id,
+                        wxCardId : this.WxMpSetInfo.wxCardId,
+                        companyId : this.manageOrgs.manageCompanyId,
+                        brandName : this.wxMpSettingData.brandName,
+                        wxCardTitle : this.wxMpSettingData.wxCardTitle,
+                        wxCardBackgroundPic : this.wxMpSettingData.wxCardBackgroundPic[0],
+                        wxCardLogo : this.wxMpSettingData.wxCardLogo[0],
+                    }).then(res => {
+                        if (res.success) {
+                            this.queryMemberWxMpSet();
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    }).catch(() => {
+                        reject();
+                    })
+                })
             }
         },
     };
@@ -941,6 +1185,7 @@
 
         /deep/ .ivu-input-wrapper {
             vertical-align: sub;
+            margin: 0px !important;
 
             &.single-input {
                 margin: 0 10px;
@@ -973,6 +1218,37 @@
             position: relative;
             padding: 5px 0;
             margin-bottom: 15px !important;
+
+            .fixed-error {
+                &.ivu-form-item-error-tip {
+                    margin-left: 105px;
+                }
+            }
+
+            .warning-tip {
+                font-size: 12px;
+                margin-left: 10px;
+                color: $color_yellow;
+            }
+        }
+
+        .width-150px-label {
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        .img-wrap {
+            position: relative;
+            padding: 5px 0;
+            margin-bottom: 15px !important;
+        }
+        .inline-upload {
+            vertical-align: middle;
+            display: inline-block;
+            margin-bottom: 0 !important;
+            /deep/ .upload-img {
+                margin-bottom: 0px !important;
+            }
         }
 
     }

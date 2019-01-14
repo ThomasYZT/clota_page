@@ -2426,4 +2426,6 @@ export default {
     'changStoredValue' : '修改储值数值',
     'changScoreValue' : '修改积分数值',
     'companyBgName' : '公司名称',
+    'onlyNumOrLetter' : '{field}只能为字母或数字',
+    'onlyChineseCharactor' : '只能输入中文',
 };

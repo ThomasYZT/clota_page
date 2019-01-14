@@ -228,7 +228,11 @@ export default {
     //查询会员管理微信公众号配置
     'queryMemberWxMpSet' : '/member/memberBasicSet/queryMemberWxMpSet',
     //查询微信会员卡推送设置
-    'queryDefaultDrawMemberLevel' : 'member/memberLevel/queryDefaultDrawMemberLevel',
+    'queryDefaultDrawMemberLevel' : '/member/memberLevel/queryDefaultDrawMemberLevel',
+    //创建/修改微信卡套
+    'createOrModifyWxMpMemberCard' : '/member/wxCard/createOrModifyWxMpMemberCard',
+    //上传图片至微信
+    'uploadImage' : '/member/wxCard/uploadImage',
 
     /***********************************会员统计***********************************/
     //获取会员总量
