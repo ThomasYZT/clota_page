@@ -215,7 +215,7 @@
                                 <Input type="text"
                                        v-model="settingData.wxMpTemplateInfoSet.title"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
-                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10)"
+                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10, settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.wxPushErr">{{error.wxPushErr}}
@@ -227,7 +227,7 @@
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.chargeTemplateId"
-                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr')"
+                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr', settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.chargeTemplateIdErr">{{error.chargeTemplateIdErr}}
@@ -238,7 +238,7 @@
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.consumeTemplateId"
-                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr')"
+                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr', settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.consumeTemplateIdErr">{{error.consumeTemplateIdErr}}
@@ -557,9 +557,9 @@
                     Promise.all([
                         this.checkInputIsMoney(this.settingData.smsSend, 'tradeAmountErr'),
                         this.checkInputIsMoney(this.settingData.replacementCardFee, 'replaceCardFeeErr'),
-                        this.checkInputMaxErr(this.settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10),
-                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr'),
-                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr'),
+                        this.checkInputMaxErr(this.settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10, this.settingData.wxMpTemplateInfoSet.showStoreValue),
+                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr', this.settingData.wxMpTemplateInfoSet.showStoreValue),
+                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr', this.settingData.wxMpTemplateInfoSet.showStoreValue),
                         this.checkWxPackageInfo(this.wxMpSettingData.brandName,'brandNameErr'),
                         this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr')
                     ]).then(() => {
@@ -658,11 +658,6 @@
 
                 if (this.settingData.notificationBeforeCouponExpire.isSwitch &&
                     !this.checkInputBlurFunc(this.settingData.notificationBeforeCouponExpire.day, 'dayError')) {
-                    return false;
-                }
-
-                if (this.settingData.wxMpTemplateInfoSet.title &&
-                    !this.checkInputMaxErr(this.settingData.wxMpTemplateInfoSet.title,'wxPushErr')) {
                     return false;
                 }
 
@@ -839,18 +834,23 @@
              * @param data
              * @param errType
              */
-            checkInputMaxErr (data, errType, minLen, maxLen) {
+            checkInputMaxErr (data, errType, minLen, maxLen, required) {
                 return new Promise((resolve, reject) => {
-                    if (String(data).length < minLen) {
-                        this.error[errType] = this.$t('errorMinLength', { field : this.$t(''), length : minLen });
-                        reject();
-                    } else if (String(data).length > maxLen) {
-                        this.error[errType] = this.$t('errorMaxLength', { field : this.$t(''), length : maxLen });
-                        reject();
+                    if (required) {
+                        if (String(data).length < minLen) {
+                            this.error[errType] = this.$t('errorMinLength', { field : this.$t(''), length : minLen });
+                            reject();
+                        } else if (String(data).length > maxLen) {
+                            this.error[errType] = this.$t('errorMaxLength', { field : this.$t(''), length : maxLen });
+                            reject();
+                        } else {
+                            this.error[errType] = '';
+                            resolve();
+                        }
                     } else {
-                        this.error[errType] = '';
                         resolve();
                     }
+
                 })
             },
             /**
@@ -886,22 +886,26 @@
             /**
              *  校验推送消息模版id字段 （不能超过20哥字符，只能为字母或数字）
              */
-            checkTemplateID (value,errType) {
+            checkTemplateID (value, errType, required) {
                 return new Promise((resolve, reject) => {
-                    this.checkInputMaxErr(value, errType, 1, 20).then(() => {
-                        this.checkInputOnlyNumOrLetter (value, errType).then(() => {
-                            resolve();
+                    if (required) {
+                        this.checkInputMaxErr(value, errType, 1, 20, true).then(() => {
+                            this.checkInputOnlyNumOrLetter (value, errType).then(() => {
+                                resolve();
+                            }).catch(() => {
+                                reject();
+                            })
                         }).catch(() => {
                             reject();
-                        })
-                    }).catch(() => {
-                        reject();
-                    })
-                })
+                        });
+                    } else {
+                        resolve()
+                    }
+                });
             },
             checkWxPackageInfo (value, errType) {
                 return new Promise((resolve, reject) => {
-                    this.checkInputMaxErr(value,errType, 1, 20).then(() => {
+                    this.checkInputMaxErr(value,errType, 1, 20, true).then(() => {
                         this.checkInputOnlyCN (value, errType).then(() => {
                             resolve();
                         }).catch(() => {
