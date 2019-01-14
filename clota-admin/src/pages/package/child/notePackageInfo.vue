@@ -44,7 +44,7 @@
         </table-com>
         <!--删除套餐模态框-->
         <del-modal ref="delModal">
-            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除套餐：{{currendData.comboName}}</span>
+            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除套餐：{{currendData.packageName}}</span>
             <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
         </del-modal>
     </div>
