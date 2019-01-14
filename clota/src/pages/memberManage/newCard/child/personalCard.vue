@@ -95,6 +95,7 @@
                                prop="idCardNumber"
                                style="float:right;">
                         <Input v-model.trim="cardParam.idCardNumber"
+                               :disabled="!cardParam.certificationType"
                                style="width: 280px"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>
