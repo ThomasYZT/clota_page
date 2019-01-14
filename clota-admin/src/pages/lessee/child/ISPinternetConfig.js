@@ -35,11 +35,11 @@ export const columns = [
         minWidth : 100,
         field : 'status'
     },
-    {
-        title : '受理客服',
-        minWidth : 100,
-        field : 'businessAccount'
-    },
+    // {
+    //     title : '受理客服',
+    //     minWidth : 100,
+    //     field : 'businessAccount'
+    // },
     {
         title : '企业秘钥',
         minWidth : 310,
