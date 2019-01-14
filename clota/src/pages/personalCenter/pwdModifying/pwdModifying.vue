@@ -57,7 +57,7 @@
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
     import MD5 from 'crypto-js/md5';
-    import common from '../../../assets/js/common';
+    import common from '@/assets/js/common';
     export default {
         components : {},
         props : {},
