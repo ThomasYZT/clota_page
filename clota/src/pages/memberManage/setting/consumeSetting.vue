@@ -64,7 +64,7 @@
             </div>
 
             <!--会员积分生效设置-->
-            <div class="content-item" v-if="showMemberRecharge">
+            <div class="content-item">
                 <div class="title">{{$t('memberIntegralSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.scoreEffectiveMode.isIntegralType" vertical>
@@ -211,7 +211,6 @@
 
             <!--会员积分交易抵扣规则设置-->
             <integer-rule-setting class="content-item"
-                                  v-if="showMemberRecharge"
                                   :rule-data="settingData.scoreOffsetInConsumption"
                                   @add-integer-rule="addIntegerRule"
                                   @edit-integer-rule="editIntegetRule"
@@ -261,7 +260,7 @@
                 <!--</div>-->
             <!--</div>-->
 
-            <div class="content-item" v-if="showMemberRecharge">
+            <div class="content-item">
                 <div class="title">{{$t('isReturnIntegral')}}</div><!--用户退款时积分是否退还用户-->
                 <div class="main">
                     <RadioGroup :value="String(settingData.handingWithScoreGrowthWhileRefund.score)"

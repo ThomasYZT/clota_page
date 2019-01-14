@@ -55,7 +55,7 @@
             </div>
 
             <!--储值获得成长值比例设置-->
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('storeGetGrowthSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.growthFromCharging.chargingAddGrowth" vertical>
@@ -84,7 +84,7 @@
             </div>
 
             <!--储值获得成长值生效设置-->
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('storeGetGrowthSettingValidateTime')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.growthEffModeWhileCharging.storedType" vertical>
@@ -125,6 +125,7 @@
     import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -374,6 +375,15 @@
             },
 
         },
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员储值相关信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
+        }
     };
 </script>
 

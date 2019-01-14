@@ -31,6 +31,7 @@
     import departmentDetail from './ISPinternetDetailChild/departmentDetail';
     import cashierDetail from './ISPinternetDetailChild/cashierDetail';
     import sceneDetail from './ISPinternetDetailChild/sceneDetail';
+    import partnerDetail from './ISPinternetDetailChild/partnerDetail';
     import ajax from '@/api/index.js';
     import { mapGetters } from 'vuex';
 
@@ -40,7 +41,8 @@
             companyDetail,
             departmentDetail,
             cashierDetail,
-            sceneDetail
+            sceneDetail,
+            partnerDetail
         },
         data () {
             return {
@@ -165,8 +167,10 @@
                     return 'departmentDetail';
                 } else if (this.activeNode.type === 'table') {
                     return 'cashierDetail';
-                } else if (this.activeNode.type === 'scenic' || this.activeNode.type === 'partner') {
+                } else if (this.activeNode.type === 'scenic') {
                     return 'sceneDetail';
+                } else if (this.activeNode.type === 'partner') {
+                    return 'partnerDetail';
                 } else {
                     return '';
                 }

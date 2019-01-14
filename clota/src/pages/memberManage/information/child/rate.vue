@@ -113,7 +113,7 @@
                     </div>
                 </div>
             </template>
-            <template v-if="activityCanShow">
+            <template v-if="activityCanShow && showIntegerInfo">
                 <div class="general-discount-title">{{$t('specialActivityMemberRight')}}</div>
                 <special-activity-info :activity-card-data="activityCardData"
                                        :activity-store-data="activityStoreData"
@@ -165,6 +165,14 @@
             //是否显示积分折扣信息
             showIntegerInfo () {
                 return this.memberConfigInfo && this.memberConfigInfo['memberPoint'] && this.memberConfigInfo['memberPoint'] === 'true';
+            },
+            //面包屑信息
+            localeRouter () {
+                if (this.showIntegerInfo) {
+                    return 'enjoyIntegraAndDiscount';// 享受积分、折扣率信息
+                } else {
+                    return 'privalige.member-right'; //会员权益
+                }
             }
         },
         data () {
@@ -183,7 +191,6 @@
                         },
                     },
                 ],
-                localeRouter : 'enjoyIntegraAndDiscount', // 享受积分、折扣率信息
                 //会员详情数据
                 detail : {},
                 //会员卡的积分折扣率
