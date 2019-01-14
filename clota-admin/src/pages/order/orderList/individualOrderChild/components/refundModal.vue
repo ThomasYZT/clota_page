@@ -9,7 +9,7 @@
            width="420">
 
         <Form :label-width="150"
-              style="display: flex;min-height: 120px;flex-direction: column;justify-content: center"
+              style="display: flex;flex-direction: column;justify-content: center"
               label-position="right">
             <FormItem :label="$t('ApplyForRefundNum')" style="margin-bottom: 10px;">
                 {{num}}
@@ -161,6 +161,14 @@
             .btn-88px {
                 width: 88px;
             }
+        }
+
+        .err-message{
+            line-height: 16px;
+            font-size: $font_size_12px;
+            color: $color_err;
+            padding: 5px 10px;
+            text-align: left;
         }
     }
 </style>

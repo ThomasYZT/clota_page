@@ -378,11 +378,11 @@
             }
 
             .err-message{
-                height: 56px;
+                height: 36px;
                 line-height: 16px;
                 font-size: $font_size_12px;
                 color: $color_err;
-                padding: 20px 0;
+                padding: 10px 0;
                 text-align: center;
             }
         }
