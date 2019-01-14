@@ -39,7 +39,7 @@ export const packageHead = [
     },
     {
         title : '操作',
-        width : 70,
+        width : 120,
         field : 'operate'
     },
 ];

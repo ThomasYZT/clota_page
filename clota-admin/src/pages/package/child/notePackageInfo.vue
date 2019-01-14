@@ -37,10 +37,16 @@
                 <template slot-scope="scoped">
                     <ul class="operate-info">
                         <li class="operate-list" @click="editPackage(scoped.row)">修改</li>
+                        <li class="red-label" @click="delPackage(scoped.row)">删除</li>
                     </ul>
                 </template>
             </el-table-column>
         </table-com>
+        <!--删除套餐模态框-->
+        <del-modal ref="delModal">
+            <span style="padding: 0 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width : 100%;">您正在删除套餐：{{currendData.comboName}}</span>
+            <span><span style="color:#ed3f14;">本操作不可撤销</span>，是否继续？</span>
+        </del-modal>
     </div>
 </template>
 
@@ -48,11 +54,13 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { packageHead } from './notePackageConfig';
+    import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index.js';
 
     export default {
         components : {
             tableCom,
+            delModal
         },
         data () {
             return {
@@ -65,7 +73,9 @@
                 //页码
                 pageNo : 1,
                 //每页的条数
-                pageSize : 10
+                pageSize : 10,
+                //当前操作的数据
+                currendData : {}
             };
         },
         methods : {
@@ -111,6 +121,35 @@
                 }).catch(err => {
                     this.tableData = [];
                     this.totalCount = 0;
+                });
+            },
+            /**
+             * 删除套餐
+             * @param data
+             */
+            delPackage (data) {
+                this.currendData = data;
+                this.$refs.delModal.show({
+                    title : '删除套餐',
+                    confirmCallback : () => {
+                        this.confirmDel(data.id);
+                    }
+                });
+            },
+            /**
+             * 删除套餐
+             * @param id 套餐id
+             */
+            confirmDel (id) {
+                ajax.post('deleteSmsPackage',{
+                    id : id
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success('删除成功');
+                        this.queryList();
+                    } else {
+                        this.$Message.error(res.message || '删除失败');
+                    }
                 });
             }
         }
