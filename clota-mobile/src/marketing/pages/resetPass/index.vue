@@ -181,8 +181,9 @@
                         this.stage += 1;
                     });
                 } else if (this.stage === 2) {
-                    this.queryUserTypeList();
-                    this.validatePhone().then(() => {
+                    this.queryUserTypeList().then(() => {
+                        return this.validatePhone()
+                    }).then(() => {
                         return this.validateCode();
                     }).then(() => {
                         this.validatePhoneCode();
@@ -372,28 +373,38 @@
              * 查询用户所属类别列表
              */
             queryUserTypeList () {
-                ajax.post('market_queryUserTypeForReset',{
-                    phone : this.formData.phoneNum,
-                    idno : this.formData.idNum,
-                    orgId : this.marketOrgId
-                }).then(res => {
-                    if (!res.success && res.code === 'MK013') {
-                        this.typeList = res.data ? res.data.map(item => {
-                            return {
-                                key : item.id,
-                                value : item.typeName
-                            };
-                        }) : [];
-                    } else if (res.success) {
-                        this.typeList = res.data ? res.data.map(item => {
-                            return {
-                                key : item.id,
-                                value : item.typeName
-                            };
-                        }) : [];
-                    } else {
-                        this.typeList = [];
-                    }
+                return new Promise((resolve,reject) => {
+                    ajax.post('market_queryUserTypeForReset',{
+                        phone : this.formData.phoneNum,
+                        idno : this.formData.idNum,
+                        orgId : this.marketOrgId
+                    }).then(res => {
+                        if (!res.success && res.code === 'MK013') {
+                            this.typeList = res.data ? res.data.map(item => {
+                                return {
+                                    key : item.id,
+                                    value : item.typeName
+                                };
+                            }) : [];
+                            resolve();
+                        } else if (res.success) {
+                            this.typeList = res.data ? res.data.map(item => {
+                                return {
+                                    key : item.id,
+                                    value : item.typeName
+                                };
+                            }) : [];
+                            this.$set(this.typeChoosed,0,this.typeList.length > 0 ? this.typeList[0]['key'] : '');
+                            resolve();
+                        } else {
+                            this.typeList = [];
+                            this.$vux.toast.show({
+                                type : 'cancel',
+                                text : this.$t('手机号或证件号错误')
+                            });
+                            reject(res.code);
+                        }
+                    });
                 });
             },
             /**

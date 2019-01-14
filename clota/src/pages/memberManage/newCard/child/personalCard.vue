@@ -79,7 +79,8 @@
                     <Form-item :label="$t('credentialsType')" prop="certificationType">
                         <Select v-model="cardParam.certificationType"
                                 style="width: 280px"
-                                :placeholder="$t('selectField', {msg: $t('credentialsType')})"><!--请选择证件类型-->
+                                :placeholder="$t('selectField', {msg: $t('credentialsType')})"
+                                @on-change="idTypeChange"><!--请选择证件类型-->
                             <Option v-for="item in enumData.idType"
                                     :key="item.id"
                                     :value="item.id">
@@ -99,7 +100,7 @@
                     </Form-item>
                 </i-col>
             </i-row>
-            <i-row v-if="cardIsSaling">
+            <i-row v-if="showMemberRecharge">
                 <i-col span="12">
                     <Form-item :label="$t('payPass')" prop="tradePassword">
                         <span class="blue-label"
@@ -314,14 +315,22 @@
             //校验字符串是否包含数字和字母
             const validateNumAndStr = (rule, value, callback) => {
                 if (common.isNotEmpty(value)) {
-                    if (/^[A-Za-z0-9]{0,}$/g.test(value)) {
-                        if (value.length > rule.maxLength) {
-                            callback(this.$t('errorMaxLength', { field : rule.name, length : rule.maxLength }));
-                        } else {
+                    if (this.cardParam.certificationType === '1') {
+                        if (validator.isIdCard(value)) {
                             callback();
+                        } else {
+                            callback(this.$t('errorFormat', { field : rule.name }));
                         }
                     } else {
-                        callback(this.$t('filterError', { field : rule.name }));
+                        if (/^[A-Za-z0-9]{0,}$/g.test(value)) {
+                            if (value.length > rule.maxLength) {
+                                callback(this.$t('errorMaxLength', { field : rule.name, length : rule.maxLength }));
+                            } else {
+                                callback();
+                            }
+                        } else {
+                            callback(this.$t('errorFormat', { field : rule.name }));
+                        }
                     }
                 } else {
                     callback();
@@ -578,6 +587,14 @@
                     this.payModalShow = true;
                     this.showConfirmModal = false;
                 }
+            },
+            /**
+             * 选择的证件类型修改，重新校验证件编号
+             */
+            idTypeChange () {
+                if (this.cardParam.idCardNumber) {
+                    this.$refs.formValidate.validateField('idCardNumber');
+                }
             }
         },
         computed : {
@@ -598,7 +615,11 @@
             //是否显示会员卡售卡信息
             cardIsSaling () {
                 return this.selectedCard && this.selectedCard.cardForm === 'sale';
-            }
+            },
+            //是否可以显示支付密码
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         },
         watch : {
             //监听会员卡售价的大小，如果小于0，只能选择现金支付

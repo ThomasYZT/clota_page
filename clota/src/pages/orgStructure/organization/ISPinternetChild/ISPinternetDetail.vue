@@ -31,7 +31,9 @@
     import departmentDetail from './ISPinternetDetailChild/departmentDetail';
     import cashierDetail from './ISPinternetDetailChild/cashierDetail';
     import sceneDetail from './ISPinternetDetailChild/sceneDetail';
+    import partnerDetail from './ISPinternetDetailChild/partnerDetail';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -39,7 +41,8 @@
             companyDetail,
             departmentDetail,
             cashierDetail,
-            sceneDetail
+            sceneDetail,
+            partnerDetail
         },
         data () {
             return {
@@ -106,7 +109,7 @@
              */
             switchTap (tapType) {
                 this.activeTap = tapType;
-                this.getCompanyTree();
+                this.getTreeData();
             },
             /**
              * 更新当前的组织树
@@ -114,7 +117,43 @@
              */
             freshOrgInfo (activeNode) {
                 this.activeNode = activeNode;
-                this.getCompanyTree();
+                this.getTreeData();
+            },
+            /**
+             * 获取合作伙伴组织树
+             */
+            getPartnerTreeData () {
+                let activeNode = JSON.parse(JSON.stringify(this.activeNode));
+                this.activeNode = {};
+                ajax.post('getWholeOrgTree',{
+                    manageType : this.activeTap,
+                }).then(res => {
+                    if (res.success) {
+                        this.structureData = res.data ? res.data : {};
+                        if (Object.keys(activeNode).length < 1) {
+                            this.activeNode = JSON.parse(JSON.stringify({
+                                id : this.structureData.id,
+                                level : this.structureData.level,
+                                type : this.structureData.nodeType
+                            }));
+                        } else {
+                            this.activeNode = activeNode;
+                        }
+                    } else {
+                        this.structureData = {};
+                        this.activeNode = {};
+                    }
+                });
+            },
+            /**
+             * 获取组织树信息
+             */
+            getTreeData () {
+                if (this.manageOrgs.nodeType === 'partner') {
+                    this.getPartnerTreeData();
+                } else {
+                    this.getCompanyTree();
+                }
             }
         },
         computed : {
@@ -130,6 +169,8 @@
                     return 'cashierDetail';
                 } else if (this.activeNode.type === 'scenic') {
                     return 'sceneDetail';
+                } else if (this.activeNode.type === 'partner') {
+                    return 'partnerDetail';
                 } else {
                     return '';
                 }
@@ -141,10 +182,13 @@
                 } else {
                     return '';
                 }
-            }
+            },
+            ...mapGetters([
+                'manageOrgs'
+            ])
         },
         created () {
-            this.getCompanyTree();
+            this.getTreeData();
         }
     };
 </script>

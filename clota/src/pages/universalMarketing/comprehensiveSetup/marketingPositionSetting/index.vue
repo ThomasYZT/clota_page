@@ -18,6 +18,7 @@
                    @on-click="getData" />
         </div>
 
+        <h4 v-if="tableData.length > 0" class="tip">{{$t('marketingPositionTip')}}</h4>
         <tableCom :column-data="columnData"
                   :table-data="tableData"
                   :border="true"
@@ -182,6 +183,11 @@
     @import '~@/assets/scss/base';
 
     .marketing-position-setting {
+        .tip {
+            margin-bottom: 10px;
+            margin-left: 30px;
+            color: $color_yellow;
+        }
         .btn-area {
             padding: 14px 30px;
             overflow: auto;

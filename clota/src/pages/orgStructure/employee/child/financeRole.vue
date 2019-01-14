@@ -119,7 +119,8 @@
                     },
                     class : {
                         'title-wrap' : true,
-                        'active-node' : data.id === this.activeNodeId
+                        'active-node' : data.id === this.activeNodeId,
+                        'opacity-node' : data.id !== this.activeNodeId,
                     },
                     on : {
                         click : () => {
@@ -235,6 +236,7 @@
                     }
                 }
                 this.chosedOrgList = checkedKeys;
+                this.getMenuPrivalige(data);
             },
             /**
              * 组织机构选择的对应的菜单权限改变
@@ -584,6 +586,10 @@
                 .title-class {
                     color: $color_blue;
                 }
+            }
+
+            &.opacity-node{
+                opacity: 0.3;
             }
 
             .title-class {

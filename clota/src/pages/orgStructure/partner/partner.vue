@@ -17,7 +17,7 @@
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(item,index) in batchOperate"
                                       :key="index"
-                                      :disabled="chosenPartners.length <= 0"
+                                      :disabled="chosenPartners.length <= 0 || item.disabled"
                                       :command="item">{{$t(item.label)}}
                     </el-dropdown-item>
                 </el-dropdown-menu>
@@ -45,27 +45,27 @@
                 @query-data="queryList"
                 @selection-change="changeSelection">
 
-                <el-table-column
-                    slot="column3"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{new Date(scope.row.startDate).format('yyyy-MM-dd')}}
-                    </template>
-                </el-table-column>
+                <!--<el-table-column-->
+                    <!--slot="column3"-->
+                    <!--slot-scope="row"-->
+                    <!--:label="row.title"-->
+                    <!--:width="row.width"-->
+                    <!--:min-width="row.minWidth">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--{{new Date(scope.row.startDate).format('yyyy-MM-dd')}}-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
 
-                <el-table-column
-                    slot="column4"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        {{new Date(scope.row.endDate).format('yyyy-MM-dd')}}
-                    </template>
-                </el-table-column>
+                <!--<el-table-column-->
+                    <!--slot="column4"-->
+                    <!--slot-scope="row"-->
+                    <!--:label="row.title"-->
+                    <!--:width="row.width"-->
+                    <!--:min-width="row.minWidth">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--{{new Date(scope.row.endDate).format('yyyy-MM-dd')}}-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
 
                 <el-table-column
                     slot="column5"
@@ -93,7 +93,7 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <li v-if="canModifyPartner" @click="newPartnerBtn('modify', scope.row)">{{$t('modify')}}</li>
-                            <li :class="{'red-label' : scope.row.status === 'valid'}"
+                            <li :class="{'red-label' : scope.row.status === 'valid','disabled' : scope.row.disabled}"
                                 v-if="canOperatePartner"
                                 @click="enable(scope.row)">
                                 {{scope.row.status === 'valid' ? $t('disabled') : $t('commissioned')}}
@@ -121,6 +121,45 @@
             </span>
             <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span><!--本操作不可撤销，是否确认删除？-->
         </del-modal>
+
+        <!--启用失败提示框-->
+        <noticeModal ref="noticeModal">
+            <ul class="pro-list">
+                <li class="detail">{{$t('validPartnerError')}}</li>
+                <li class="detail partner-list"
+                    v-for="(item,index) in validPartnersErr"
+                    v-w-title="item.channelName"
+                    :key="index">
+                    {{item.channelName | contentFilter}}
+                </li>
+                <li class="hint">
+                    <Icon type="information-circled"></Icon>
+                </li>
+            </ul>
+        </noticeModal>
+
+        <!--删除失败提示框-->
+        <noticeModal ref="delErrModal">
+            <ul class="pro-list">
+                <li class="detail">{{$t('delPartnerFail')}}</li>
+                <li class="detail partner-list"
+                    v-for="(item,index) in noExpireErrorPartner"
+                    v-w-title="$t('delPartnerFailReason2',{ orgName : item.channelName})"
+                    :key="index">
+                    {{$t('delPartnerFailReason2',{ orgName : item.channelName}) | contentFilter}}
+                </li>
+                <li class="detail partner-list"
+                    v-for="(item,index) in noSettleErrorPartner"
+                    v-w-title="$t('delPartnerFailReason1',{ orgName : item.channelName})"
+                    :key="index">
+                    {{$t('delPartnerFailReason1',{ orgName : item.channelName}) | contentFilter}}
+                </li>
+                <li class="hint">
+                    <Icon type="information-circled"></Icon>
+                </li>
+            </ul>
+        </noticeModal>
+
     </div>
 </template>
 
@@ -139,13 +178,15 @@
     import { configVariable, batchOperate } from '@/assets/js/constVariable';
     import map from 'lodash/map';
     import { mapGetters } from 'vuex';
+    import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
         components : {
             filterDrop,
             addPartner,
             delModal,
-            tableCom
+            tableCom,
+            noticeModal
         },
         data () {
             return {
@@ -182,6 +223,12 @@
 //                scopeRowData: {}, //当前被操作的行数据
                 // 已勾选的数据
                 chosenPartners : [],
+                //启用失败的合作伙伴
+                validPartnersErr : [],
+                //协议期未过期删除失败的合作伙伴
+                noExpireErrorPartner : [],
+                //尾款未结清删除失败的合作伙伴
+                noSettleErrorPartner : []
             };
         },
         methods : {
@@ -191,7 +238,19 @@
                 ajax.post('queryPartnerList', this.queryParams).then(res => {
                     if (res.success) {
                         if (res.data && res.data.data) {
-                            this.tableData = res.data.data;
+                            this.tableData = res.data.data.map(item => {
+                                let disabled = false;
+                                if (item.status === 'invalid') {
+                                    if (new Date().valueOf() < item.startDate.toDate().valueOf() ||
+                                        new Date().valueOf() > item.endDate.toDate().addDays(1).valueOf()) {
+                                        disabled = true;
+                                    }
+                                }
+                                return {
+                                    ...item,
+                                    disabled
+                                };
+                            });
                             this.totalCount = res.data.totalRow;
                         } else {
                             this.tableData = [];
@@ -226,13 +285,13 @@
             },
             //启用或者禁用
             enable (scopeRow, isBatch) {
-                if (!this.canOperatePartner) return;
+                if (!this.canOperatePartner || scopeRow.disabled) return;
                 let partnerObj = {};
                 if (scopeRow.status == 'valid') {
                     partnerObj.successTip = this.$t('disabledCooperation');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('disabled') }); // 禁用失败
                     partnerObj.status = 'invalid';
-                    partnerObj.msgType = 'warning';
+                    partnerObj.msgType = 'success';
                 } else if (scopeRow.status == 'invalid') {
                     partnerObj.successTip = this.$t('ableCooperation');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('commissioned') }); // 启用失败
@@ -245,14 +304,23 @@
                     status : partnerObj.status
                 }).then(res => {
                     if (res.success) {
-                        if (isBatch == true) {
-                            // 批量操作提示语
-                            this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + this.$t('batchOperate'));
+                        //如果是启用，如果data不是空，表示启用失败
+                        if (scopeRow.status === 'invalid' && res.data && res.data.length > 0) {
+                            this.validPartnersErr = res.data;
+                            this.$refs.noticeModal.show({
+                                title : this.$t('notice'),
+                                showCancel : false,
+                                confirmBtn : this.$t('close')
+                            });
                         } else {
-                            // 单个操作提示语
-                            this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + scopeRow.channelName);
+                            if (isBatch === true) {
+                                // 批量操作提示语
+                                this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + this.$t('batchOperate'));
+                            } else {
+                                // 单个操作提示语
+                                this.$Message[partnerObj.msgType](partnerObj.successTip + '：' + scopeRow.channelName);
+                            }
                         }
-
                         this.queryList();
                     } else {
                         this.$Message.error(res.message ? res.message : partnerObj.failTip);
@@ -293,13 +361,24 @@
             },
             //确认删除
             handleDeletions () {
-
                 ajax.post('deletePartners', {
                     ids : this.partnerIds.join(',')
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
+                        if (res.data && Object.keys(res.data).length > 0) {
+                            this.noExpireErrorPartner = res.data['noExpire'];
+                            this.noSettleErrorPartner = res.data['noSettle'];
+                            this.$refs.delErrModal.show({
+                                title : this.$t('notice'),
+                                showCancel : false,
+                                confirmBtn : this.$t('close')
+                            });
+                        } else {
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('del') }));
+                        }
                         this.handleSearch();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                     }
                 });
             },
@@ -353,10 +432,40 @@
             batchOperate () {
                 let result = [];
                 if (this.canOperatePartner) {
-                    result = result.concat(batchOperate.slice(0,2));
+                    result = result.concat([
+                        {
+                            label : 'commissioned', // 启用
+                            value : 'valid',
+                            status : 'invalid',
+                            disabled : this.chosenPartners.filter(item => {
+                                if (item.status === 'invalid') {
+                                    if (item.endDate && item.startDate) {
+                                        if (new Date().valueOf() >= item.startDate.toDate().valueOf() &&
+                                            new Date().valueOf() <= item.endDate.toDate().addDays(1).valueOf()) {
+                                            return true;
+                                        }
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }).length < 1
+                        },
+                        {
+                            label : 'disabled', // 禁用
+                            value : 'invalid',
+                            status : 'valid',
+                            disabled : this.chosenPartners.filter(item => item.status === 'valid').length < 1
+                        }
+                    ]);
                 }
                 if (this.canDeletePartner) {
-                    result = result.concat(batchOperate.slice(2));
+                    result = result.concat([{
+                        label : 'del', // 删除
+                        value : 'del',
+                        status : 'del',
+                    },]);
                 }
                 return result;
             }
@@ -451,5 +560,29 @@
 
     .red-label {
         color: $color_red;
+    }
+
+    .pro-list{
+        max-width: 320px;
+        position: relative;
+
+        .detail{
+            line-height: 25px;
+            @include overflow_tip();
+
+            &.partner-list{
+                color: $color_err;
+            }
+        }
+
+        .hint{
+            content : '';
+            @include absolute_pos(absolute,$top : 2px,$left : -20px);
+
+            .ivu-icon-information-circled{
+                font-size: $font_size_16px;
+                color: $color_yellow;
+            }
+        }
     }
 </style>

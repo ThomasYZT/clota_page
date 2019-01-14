@@ -298,10 +298,14 @@
             },
             //交易类型列表
             tradeType1 () {
+                let result = moneyTradeTypes;
+                if (!this.isMutipleAccount) {
+                    result = result.filter(item => item.value !== 'to_cash');
+                }
                 if (this.cardIsSaling) {
-                    return moneyTradeTypes;
+                    return result;
                 } else {
-                    return moneyTradeTypes.slice(0,-1);
+                    return result.slice(0,-1);
                 }
             },
         },

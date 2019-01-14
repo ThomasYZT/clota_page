@@ -39,6 +39,7 @@
                 <i-col span="8">
                     <FormItem label="日志时间">
                         <DatePicker v-model="formData.date"
+                                    :placeholder="$t('selectField',{ msg : '' })"
                                     :editable="false"
                                     type="daterange"
                                     :transfer="true"

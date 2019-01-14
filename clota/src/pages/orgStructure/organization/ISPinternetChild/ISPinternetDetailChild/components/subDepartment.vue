@@ -59,7 +59,12 @@
             'activeTap' : {
                 type : String,
                 default : ''
-            }
+            },
+            //是否默认展开
+            'isDefaultPackUp' : {
+                type : Boolean,
+                default : false
+            },
         },
         components : {
             tableCom,
@@ -104,6 +109,19 @@
             //表格是否显示
             tableShow () {
                 return this.searchParams && this.searchParams.id;
+            }
+        },
+        watch : {
+            //默认展开的初始值
+            isDefaultPackUp : {
+                handler (newVal) {
+                    if (newVal === true) {
+                        this.isPackUp = true;
+                    } else {
+                        this.isPackUp = false;
+                    }
+                },
+                immediate : true
             }
         }
     };

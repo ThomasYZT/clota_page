@@ -16,8 +16,8 @@
             </Form-item>
             <!--自营渠道类型-->
             <Form-item :label="$t('selfSaleChannelType')" prop="type">
-                <RadioGroup v-model="addChannel.type">
-                    <Radio label="online"><span>{{$t('online')}}</span></Radio>
+                <RadioGroup v-model="addChannel.type" >
+                    <Radio label="online" :disabled="addChannel.type === 'offline'"><span>{{$t('online')}}</span></Radio>
                     <!--<Radio label="offline" style="margin-right: 0;"><span>{{$t('offline')}}</span></Radio>-->
                 </RadioGroup>
                 <!--<Tooltip placement="top" transfer>-->

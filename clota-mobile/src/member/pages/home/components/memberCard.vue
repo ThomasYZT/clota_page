@@ -95,13 +95,10 @@
             //vip卡类名
             memberVipCardClass () {
                 let cardType = '';
-                // if (this.info.cardTypeId === '1') {
-                //     //业主卡
-                //     cardType += 'owner-card ';
-                //     return cardType;
-                // } else if (this.info.cardTypeId === '2') {
-                    //个人卡
-                    cardType += 'personal-card ';
+                cardType += 'personal-card ';
+                if (this.info.cardForm === 'sale') {
+                    cardType += 'sale-card';
+                } else {
                     switch (this.info.levelNum) {
                         case 1:
                             cardType += 'one-level ';
@@ -118,7 +115,33 @@
                         default:
                             cardType += 'four-level ';
                     }
-                    return cardType;
+                }
+                return cardType;
+                // let cardType = '';
+                // if (this.info.cardTypeId === '1') {
+                //     //业主卡
+                //     cardType += 'owner-card ';
+                //     return cardType;
+                // } else if (this.info.cardTypeId === '2') {
+                //     //个人卡
+                //     cardType += 'personal-card ';
+                //     switch (this.info.levelNum) {
+                //         case 1:
+                //             cardType += 'one-level ';
+                //             break;
+                //         case 2:
+                //             cardType += 'two-level ';
+                //             break;
+                //         case 3:
+                //             cardType += 'three-level ';
+                //             break;
+                //         case 4:
+                //             cardType += 'four-level ';
+                //             break;
+                //         default:
+                //             cardType += 'four-level ';
+                //     }
+                //     return cardType;
                 // } else if (this.info.cardTypeId === '3') {
                 //     //企业卡
                 //     cardType = 'company-card ';
@@ -218,6 +241,13 @@
             color: #fff;
             &.one-level {
                 background-image: url("../../../../assets/images/personal-card-lv1.png");
+                box-shadow: #a8adc8 0 5px 10px;
+                .card-level{
+                    background: rgba(220, 220, 220, .2);
+                }
+            }
+            &.sale-card{
+                background-image: url("../../../../assets/images/icon-sale-card.png");
                 box-shadow: #a8adc8 0 5px 10px;
                 .card-level{
                     background: rgba(220, 220, 220, .2);

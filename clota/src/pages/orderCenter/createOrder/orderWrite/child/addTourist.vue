@@ -251,14 +251,22 @@
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
                 if (rule.rowData.data) {
-                    if (rule.rowData.data.length > 100) {
-                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100 }));
-                    } else {
-                        this.validateIdCardNumIsExist(rule.rowData).then(() => {
+                    if (rule.rowData.type === 'identity') {
+                        if (validator.isIdCard(rule.rowData.data)) {
                             callback();
-                        }).catch(() => {
-                            callback(this.$t('existID')); // 证件已存在
-                        });
+                        } else {
+                            callback(this.$t('errorFormat',{ field : this.$t('IdentificationNumber') }));
+                        }
+                    } else {
+                        if (rule.rowData.data.length > 40) {
+                            callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 40 }));
+                        } else {
+                            this.validateIdCardNumIsExist(rule.rowData).then(() => {
+                                callback();
+                            }).catch(() => {
+                                callback(this.$t('existID')); // 证件已存在
+                            });
+                        }
                     }
                 } else {
                     callback(this.$t('inputField', { field : this.$t('IdentificationNumber') })); // 请输入证件号

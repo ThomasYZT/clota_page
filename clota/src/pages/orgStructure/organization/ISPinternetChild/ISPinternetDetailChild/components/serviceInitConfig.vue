@@ -7,20 +7,20 @@
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
-                <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
+                <span class="iconfont icon-arrow-down" :class="{'icon-reverse' : isPackUp}"></span>
             </span>
         </div>
 
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
                 <div class="edit-wrap">
-                    <span class="edit" v-if="!isEditing" @click="edit">
-                        <span v-if="!isEditing" data-v-d42ae04c="" class="iconfont icon-edit"></span>{{$t('编辑')}}
-                    </span>
-                    <template v-else>
-                        <span class="save" @click="saveEdit">{{$t('save')}}</span>
-                        <span class="cancel" @click="cancelEdit">{{$t('cancel')}}</span>
-                    </template>
+                    <!--<span class="edit" v-if="!isEditing" @click="edit">-->
+                        <!--<span v-if="!isEditing" data-v-d42ae04c="" class="iconfont icon-edit"></span>{{$t('编辑')}}-->
+                    <!--</span>-->
+                    <!--<template v-else>-->
+                        <!--<span class="save" @click="saveEdit">{{$t('save')}}</span>-->
+                        <!--<span class="cancel" @click="cancelEdit">{{$t('cancel')}}</span>-->
+                    <!--</template>-->
                 </div>
                 <Form ref="formValidate"
                       :model="formData"
@@ -186,7 +186,7 @@
                     growthDisabled = true;
                     saleDisabled = true;
                 }
-                //如果只开通了会员积分服务，那么只有成长型的会员卡配置
+                //如果只开通了会员积分，那么只有成长型的会员卡配置
                 if (this.defaultSetting.memberPoint === 'true' && this.defaultSetting.memberRecharge === 'false') {
                     return [
                         {

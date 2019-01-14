@@ -11,7 +11,7 @@
 
                 <div class="content-item card-valid-time">
                     <div class="title">{{$t('memberCardValidity')}}</div><!--会员卡有效期-->
-                    <template v-if='memberLevelsData.length > 0'>
+                    <template v-if='Object.keys(memberLevelsData).length > 0'>
                         <el-collapse :value="collapseOpened">
                             <el-collapse-item v-for="(item,title,index) in memberLevelsData"
                                               :key="index"
@@ -159,15 +159,9 @@
                 <!--<span class="a-link-el" @click="toEntityCardDetail">{{$t('cardManagement')}}</span>-->
                 <!--</div>-->
                 <!--</div>-->
-                <div class="content-item">
-                    <div class="title">{{$t('paymentSetting')}}</div>
-                    <div class="main">
-                        <span class="a-link-el" @click="toSetPayProtocol">{{$t('paymentSetting')}}</span>
-                    </div>
-                </div>
 
                 <!--短信发送设置-->
-                <div class="content-item">
+                <div class="content-item" v-if="showMemberRecharge">
                     <div class="title">{{$t('smsSendSetting')}}</div>
 
                     <div class="main">
@@ -204,7 +198,7 @@
                     </div>
                 </div>
 
-                <template  v-if="Object.keys(WxMpSetInfo).length !== 0">
+                <template  v-if="Object.keys(WxMpSetInfo).length !== 0 && showMemberRecharge">
                     <!--微信端推送交易记录设置-->
                     <div class="content-item">
                         <div class="title">{{$t('wxPushExchangeRecordSetting')}}</div>
@@ -299,6 +293,7 @@
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -362,8 +357,6 @@
                 WxMpSetInfo : {},
                 //copy数据，用于数据重置
                 copySetData : {},
-                // 支付协议内容
-                paymentAgreement : '',
                 idTypeIndex : 1,
                 formDynamic : {
                     reason : [],
@@ -441,7 +434,14 @@
                     result.push(item);
                 }
                 return result;
-            }
+            },
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员储值相关信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         },
         methods : {
             //查询会员基础设置
@@ -450,7 +450,6 @@
                     if (res.success) {
                         if (res.data) {
                             this.id = res.data.id;
-                            this.paymentAgreement = res.data.paymentAgreement;
                             if (Object.keys(res.data).length > 0) {
                                 //处理数据
                                 let params = {
@@ -696,15 +695,6 @@
             toEntityCardDetail () {
                 this.$router.push({
                     name : 'entityCard'
-                });
-            },
-            /**
-             * 跳转到支付协议设置
-             */
-            toSetPayProtocol () {
-                this.$router.push({
-                    name : 'paymentProtocol',
-                    params : { paymentAgreement : this.paymentAgreement, id : this.id }
                 });
             },
 

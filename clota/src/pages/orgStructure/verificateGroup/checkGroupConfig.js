@@ -8,7 +8,7 @@ export const saleGroup = [
     {
         title : 'checkoutID',
         minWidth : 200,
-        field : 'id',
+        field : 'partnerId',
     },
     {
         title : 'WriteOffSalesAndDeskName',

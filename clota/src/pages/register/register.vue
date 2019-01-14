@@ -6,7 +6,7 @@
     <div class="register">
         <!-- 页面头部 -->
         <div class="header">
-                <div class="logo">
+                <div class="logo" @click="toLogin">
                     <img src="../../assets/images/logo.svg" alt="">
                 </div>
                 <div class="lang">
@@ -61,6 +61,14 @@
             changeLang (lang) {
                 this.$store.commit('setLang',lang);
             },
+            /**
+             * 跳转到登录页面
+             */
+            toLogin () {
+                this.$router.push({
+                    name : 'login'
+                });
+            }
         },
     };
 </script>
@@ -86,6 +94,7 @@
                 line-height: 53px;
                 .logo {
                     float: left;
+                    cursor: pointer;
                 }
                 .lang {
                     float: right;

@@ -31,6 +31,7 @@
                 </DatePicker>
             </FormItem>
         </Form>
+        <div class="err-message" v-if="errMsg">{{errMsg}}</div>
 
         <div class="btn-wrapper" slot="footer">
             <Button class="btn-88px" type="primary" @click="save">{{$t('confirm')}}</Button>
@@ -42,6 +43,15 @@
 <script>
     import ajax from '@/api/index';
     export default {
+        props : {
+            //申请退票的产品信息
+            'refund-ticket-info' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         components : {},
         data () {
             return {
@@ -146,7 +156,18 @@
                         return true;
                     }
                 };
-            }
+            },
+            //错误提示信息
+            errMsg () {
+                let data = this.refundTicketInfo;
+                for (let i = 0,j = data.length; i < j; i++) {
+                    //如果景区退票的时候选择了按规则不可改签的的产品需要给出提示
+                    if (data[i]['policyAlterRule'] === 'notAllow') {
+                        return this.$t('alterProductTip'); // 提示：您申请改签的产品中包含按产品规则不允许改签的产品
+                    }
+                }
+                return '';
+            },
         }
     };
 </script>

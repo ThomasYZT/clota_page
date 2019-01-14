@@ -74,7 +74,8 @@
                 <i-col span="12">
                     <FormItem label="短信供应商：" :label-width="180">
                         <Select v-model.trim="formDataCopy.smsProviderId"
-                                v-if="type === 'edit'">
+                                v-if="type === 'edit'"
+                                @on-change="smsChange">
                             <Option v-for="item in smsSuppilerList"
                                     :value="item.id"
                                     :key="item.provider">
@@ -416,7 +417,8 @@
                 memberConfigInfo : {},
                 //微信公众号配置
                 wxMpSet : {},
-
+                //是否校验短信供应商账号密码
+                validateSmsInfoRequired : false
             };
         },
         methods : {
@@ -638,6 +640,13 @@
                         this.wxMpSet = {};
                     }
                 })
+            },
+            /**
+             * 短信供应商改变
+             */
+            smsChange () {
+                //根据短信供应商信息判断是否需要填入账号和密码信息
+                this.validateSmsInfoRequired = this.formDataCopy.smsProviderId && this.formDataCopy.smsProviderId !== '5';
             }
         },
         created () {
@@ -743,13 +752,13 @@
                         { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
                     ],
                     smsProviderAccount : [
-                        { required : true,
+                        { required : this.validateSmsInfoRequired,
                           message : this.$t('inputField',{ field : this.$t('thirdPartSmsAccount') }),
                           trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsAccount'),length : 20 }),trigger : 'blur' },
                     ],
                     smsProviderPassword : [
-                        { required : true,
+                        { required : this.validateSmsInfoRequired,
                           message : this.$t('inputField',{ field : this.$t('thirdPartSmsPassword') }),
                           trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },

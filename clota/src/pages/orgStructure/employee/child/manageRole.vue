@@ -119,7 +119,8 @@
                     },
                     class : {
                         'title-wrap' : true,
-                        'active-node' : data.id === this.activeNodeId
+                        'active-node' : data.id === this.activeNodeId,
+                        'opacity-node' : data.id !== this.activeNodeId,
                     },
                     on : {
                         click : () => {
@@ -225,8 +226,11 @@
              */
             treeCheck (data,{ checkedNodes,checkedKeys }) {
                 //如果节点取消选择，那么右侧的菜单权限也要全部取消选择
+                if (!checkedKeys.includes(this.activeNodeId)) {
+                    this.$set(this.privaligeInfo,this.activeNodeId,[]);
+                }
                 if (!checkedKeys.includes(data.id)) {
-                    this.privaligeInfo[data.id] = [];
+                    this.$set(this.privaligeInfo,data.id,[]);
                     if (this.activeNodeId === data.id) {
                         this.$nextTick(() => {
                             this.$refs.menuTree.setCheckedNodes([]);
@@ -235,6 +239,7 @@
                     }
                 }
                 this.chosedOrgList = checkedKeys;
+                this.getMenuPrivalige(data);
             },
             /**
              * 组织机构选择的对应的菜单权限改变
@@ -584,6 +589,10 @@
                 .title-class {
                     color: $color_blue;
                 }
+            }
+
+            &.opacity-node{
+                opacity: 0.3;
             }
 
             .title-class {

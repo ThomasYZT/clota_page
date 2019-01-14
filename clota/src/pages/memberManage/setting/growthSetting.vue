@@ -55,7 +55,7 @@
             </div>
 
             <!--储值获得成长值比例设置-->
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('storeGetGrowthSetting')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.growthFromCharging.chargingAddGrowth" vertical>
@@ -68,9 +68,9 @@
                     </RadioGroup>
                     <div class="check-group-wrap">{{$t('recharge')}}
                         <span :class="{'ivu-form-item-error': error.moneyToGgowthError}">
-                            <Input v-model.trim="settingData.growthFromCharging.moneyToGgowth"
+                            <Input v-model.trim="settingData.growthFromCharging.moneyToGrowth"
                                    :disabled="settingData.growthFromCharging.chargingAddGrowth !== 'true'"
-                                   @on-blur="checkInputBlurFunc(settingData.growthFromCharging.moneyToGgowth,'moneyToGgowthError')"
+                                   @on-blur="checkInputBlurFunc(settingData.growthFromCharging.moneyToGrowth,'moneyToGgowthError')"
                                    type="text"
                                    class="single-input"
                                    :placeholder="$t('inputField', {field: ''})"/> {{$t('yuanSaved')}}
@@ -84,7 +84,7 @@
             </div>
 
             <!--储值获得成长值生效设置-->
-            <div class="content-item">
+            <div class="content-item" v-if="showMemberRecharge">
                 <div class="title">{{$t('storeGetGrowthSettingValidateTime')}}</div>
                 <div class="main">
                     <RadioGroup v-model="settingData.growthEffModeWhileCharging.storedType" vertical>
@@ -125,6 +125,7 @@
     import common from '@/assets/js/common.js';
     import headerTabs from './components/headerTabs.vue';
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -146,7 +147,7 @@
                     //储值成长值比例设置
                     growthFromCharging : {
                         chargingAddGrowth : '',//Boolean
-                        moneyToGgowth : '',//储值额-积分 Number
+                        moneyToGrowth : '',//储值额-积分 Number
                         growth : 1,//积分
                     },
                     //成长值设置
@@ -305,7 +306,7 @@
                 }
 
                 if (this.settingData.growthFromCharging.chargingAddGrowth === 'true' &&
-                    !this.checkInputBlurFunc(this.settingData.growthFromCharging.moneyToGgowth, 'moneyToGgowthError') ) {
+                    !this.checkInputBlurFunc(this.settingData.growthFromCharging.moneyToGrowth, 'moneyToGgowthError') ) {
                     return false;
                 }
 
@@ -374,6 +375,15 @@
             },
 
         },
+        computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员储值相关信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
+        }
     };
 </script>
 

@@ -16,7 +16,7 @@ export const memberState = {
     //用户是否登录
     isLogin : false,
     //公司id
-    companyCode : '10000059',
+    companyCode : '00000194',
     //错误码
     errCode : '',
     //会员配置信息
@@ -34,10 +34,10 @@ export const memberGetters = {
     },
     //会员卡信息
     cardInfo : state => {
-        let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
-        if (cardInfo && Object.keys(cardInfo).length > 0) {
-            state.cardInfo = cardInfo;
-        }
+        // let cardInfo = localStorage.getItem('cardInfo') && localStorage.getItem('cardInfo') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfo')) : {};
+        // if (cardInfo && Object.keys(cardInfo).length > 0) {
+        //     state.cardInfo = cardInfo;
+        // }
         return state.cardInfo;
     },
     //会员卡列表信息
@@ -57,25 +57,21 @@ export const memberGetters = {
     },
     //公司id
     companyCode : state => {
-        let companyCode = '';
-        if (!state.companyCode) {
-            let url = location.href;
-            if (url.indexOf('?') !== -1) {
-                let query = url.split("?")[1];
-                let queryArr = query.split("&");
-                queryArr.forEach(function (item) {
-                    let key = item.split("=")[0];
-                    let value = item.split("=")[1];
-                    if (key === 'companyCode') {
-                        companyCode = value;
-                    }
-                });
-                return companyCode;
-            } else {
-                return companyCode;
-            }
+        let companyCode = state.companyCode;
+        let url = location.href;
+        if (url.indexOf('?') !== -1) {
+            let query = url.split("?")[1];
+            let queryArr = query.split("&");
+            queryArr.forEach(function (item) {
+                let key = item.split("=")[0];
+                let value = item.split("=")[1];
+                if (key === 'companyCode') {
+                    companyCode = value;
+                }
+            });
+            return companyCode;
         } else {
-            return state.companyCode;
+            return companyCode;
         }
     },
     //是否登录

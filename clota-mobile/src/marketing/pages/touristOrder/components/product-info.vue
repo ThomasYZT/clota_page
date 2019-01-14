@@ -47,17 +47,25 @@
              * 新建订单
              */
             toCreateOrder () {
-                if (this.canCreateOrder) {
-                    this.$router.push({
-                        name : 'marketingCreateOrder',
-                        params : {
-                            productDetail : this.productInfo,
-                            playDate : this.activeDate.format('yyyy-MM-dd')
-                        }
-                    });
-                } else {
-                    this.$emit('create-order-warning');
-                }
+                this.$router.push({
+                    name : 'marketingCreateOrder',
+                    params : {
+                        productDetail : this.productInfo,
+                        playDate : this.activeDate.format('yyyy-MM-dd')
+                    }
+                });
+                //暂时去掉，游客下单的时候不需要获取位置信息
+                // if (this.canCreateOrder) {
+                //     this.$router.push({
+                //         name : 'marketingCreateOrder',
+                //         params : {
+                //             productDetail : this.productInfo,
+                //             playDate : this.activeDate.format('yyyy-MM-dd')
+                //         }
+                //     });
+                // } else {
+                //     this.$emit('create-order-warning');
+                // }
             }
         },
         computed : {

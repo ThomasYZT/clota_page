@@ -77,16 +77,23 @@
                         </Option>
                     </Select>
                 </FormItem>
+                <!--是否启用-->
+                <FormItem :label="$t('isStarted')" prop="address">
+                    <RadioGroup v-model="formData.status">
+                        <Radio label="open">{{$t('yes')}}</Radio>
+                        <Radio label="close">{{$t('no')}}</Radio>
+                    </RadioGroup>
+                </FormItem>
             </Form>
         </div>
         <div slot="footer">
-            <Button type="ghost"
-                class="ivu-btn-90px"
-                @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     :loading="saveIng"
                     class="ivu-btn-90px"
                     @click="save">{{$t('save')}}</Button>
+            <Button type="ghost"
+                class="ivu-btn-90px"
+                @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -154,6 +161,8 @@
                     smsProvider : '',
                     //所属销售渠道分组
                     saleTypeGroup : '',
+                    //开启状态
+                    status : 'open'
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -268,6 +277,7 @@
                     serverUrl : this.formData.serverName,
                     parentManageId : this.chosedNodeDetail.id,
                     parentEconomicId : this.chosedNodeDetail.id,
+                    status : this.formData.status
                 }).then(res => {
                    if (res.success) {
                        this.$emit('fresh-structure-data');
@@ -393,7 +403,6 @@
 
         .target-body {
             width: 100%;
-            height: 250px;
             padding: 37px 0 5px 0;
             overflow: auto;
 

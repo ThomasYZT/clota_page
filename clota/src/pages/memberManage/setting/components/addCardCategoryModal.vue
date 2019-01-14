@@ -339,7 +339,7 @@
                     } else if (newVal === 'growth') {
                         this.formData.attribute = 'growth';
                     } else {
-                        this.formData.attribute = '';
+                        this.formData.attribute = 'growth';
                     }
                 },
                 immediate : true

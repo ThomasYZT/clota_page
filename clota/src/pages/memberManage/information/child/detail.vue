@@ -97,8 +97,10 @@
                                             :charge-info="item">
                             <div class="operate-right">
                                 <span @click="viewDeal(item)">{{$t("transactionDetail")}}</span>
-                                <span class="split-line"></span>
-                                <span @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
+                                <template v-if="item.accountDefineId !== '4'">
+                                    <span class="split-line"></span>
+                                    <span  @click="showAddSaveModal(item)">{{$t("newStorageValue")}}</span>
+                                </template>
                                 <!--会员3期暂时去掉-->
                                 <!--<span class="split-line"></span>-->
                                 <!--<span @click="showRangeModal(item)">{{$t("applicationScope")}}</span>-->
@@ -234,7 +236,9 @@
                     </div>
                     <!--修改储值、积分数值-->
                     <div class="content-info" v-if="setting.allowAdjustRechargeAccount === 'true' || setting.allowAdjustScoreAccount === 'true'">
-                        <div class="title">{{$t("modifyStorageAndIntegral")}}</div>
+                        <div class="title" v-if="showMemberRecharge && showMemberPoint">{{$t("modifyStorageAndIntegral")}}</div>
+                        <div class="title" v-else-if="showMemberRecharge">{{$t("changStoredValue")}}</div>
+                        <div class="title" v-else-if="showMemberPoint">{{$t("changScoreValue")}}</div>
                         <div class="operate">
                             <div><span @click="showAssetModal" v-if="setting.allowAdjustRechargeAccount === 'true' && showMemberRecharge">{{$t("modifyStorageBalance")}}</span></div>
                             <div v-if="choosedCard.cardTypeId !== '1' && setting.allowAdjustScoreAccount === 'true' && showMemberPoint">

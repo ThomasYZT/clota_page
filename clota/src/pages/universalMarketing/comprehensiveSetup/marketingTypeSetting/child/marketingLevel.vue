@@ -6,7 +6,10 @@
     <div class="marketing-level">
         <div class="btn-area" v-if="canOperateMarketType">
             <Button type="primary" class="ivu-btn-108px" @click="add">{{$t('add') + $t('level')}}</Button>
-            <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+            <Button type="error"
+                    class="ivu-btn-108px"
+                    :disabled="chosedColomn.length === 0"
+                    @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
         </div>
 
         <tableCom v-if="Object.keys(marketingTypeItem).length > 1"

@@ -126,6 +126,9 @@
              */
             preChangeLang (lang) {
                 this.langType = lang;
+                this.$router.replace({
+                    name : this.$route.name
+                });
             },
             /**
              * 确认切换语言

@@ -30,13 +30,13 @@
                 </Option>
             </Select>
             <!--会员类型-->
-            <Select v-model="queryParams.vipStatus" @on-change="queryList">
-                <Option v-for="(item,index) in enumData.vipStatusEnum"
-                        :key="index"
-                        :value="item.name">
-                    {{$t(item.desc)}}
-                </Option>
-            </Select>
+            <!--<Select v-model="queryParams.vipStatus" @on-change="queryList">-->
+                <!--<Option v-for="(item,index) in enumData.vipStatusEnum"-->
+                        <!--:key="index"-->
+                        <!--:value="item.name">-->
+                    <!--{{$t(item.desc)}}-->
+                <!--</Option>-->
+            <!--</Select>-->
             <!--会员状态-->
             <Select v-model="queryParams.cardStatus" @on-change="queryList">
                 <Option v-for="(item,index) in enumData.cardStatusEnum"
@@ -104,6 +104,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="false"
                     slot="column5"
                     :label="row.title"
                     :prop="row.field"

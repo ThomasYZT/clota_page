@@ -7,7 +7,7 @@
                 <li><!--交易号-->
                     <span class="field-name">{{$t('tradeNo')}}：</span>{{infoData.outOrderNo | contentFilter}}
                 </li>
-                <li><!--本单预计交易积分-->
+                <li v-if="infoData.score !== null"><!--本单预计交易积分-->
                     <span class="field-name">{{$t('expectTradeIntegral')}}：</span>{{infoData.score | contentFilter}}
                 </li>
                 <li><!--景区-->
@@ -26,7 +26,7 @@
                 <li><!--订单状态-->
                     <span class="field-name">{{$t('orderStatus')}}：</span>{{ $t(orderStatus(infoData.status)) }}
                 </li>
-                <li><!--整单交易金额-->
+                <li v-if="infoData.amount !== null"><!--整单交易金额-->
                     <span class="field-name">{{$t('tradeAmount')}}：</span>{{infoData.amount | contentFilter}}
                 </li>
                 <li><!--店铺-->
@@ -67,7 +67,9 @@
         props : {
             infoData : {
                 type : Object,
-                default : {}
+                default () {
+                    return  {};
+                }
             }
         },
         data () {

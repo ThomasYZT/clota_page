@@ -17,15 +17,21 @@
                         <span v-if="accountList.length > 1" class="iconfont icon-arrow-right"></span>
                     </div>
                     <div class="asset-info">{{item.accountBalance | moneyFilter | contentFilter}}</div>
-                    <div class="asset-tip">{{$t('allAssets')}}{{item.accountDefineId === '1' ? ($t('bracketSetting',{ content : $t('yuan') })) : $t(item.unit)}}</div>
+                    <div class="asset-tip">{{$t('allAssets')}}{{(item.accountDefineId === '1' || item.accountDefineId === '4')
+                        ? ($t('bracketSetting',{ content : $t('yuan') }))
+                        : ($t('bracketSetting',{ content : $t(item.unit) }))}}</div>
                     <div class="account-type" :class="{'auto-width' : item.accountDefineId === '4'}">
                         <div class="account-priciple-left">
                             <div class="money-num">{{item.corpusBalance | moneyFilter | contentFilter}}</div>
-                            <div class="money-label">{{$t('rechargeMoney')}}{{item.accountDefineId === '1' ? ($t('bracketSetting',{ content : $t('yuan') })) : $t(item.unit)}}</div>
+                            <div class="money-label">{{$t('rechargeMoney')}}{{(item.accountDefineId === '1' || item.accountDefineId === '4')
+                                ? ($t('bracketSetting',{ content : $t('yuan') }))
+                                : ($t('bracketSetting',{ content : $t(item.unit) }))}}</div>
                         </div>
                         <div class="account-donate-left" v-show="item.accountDefineId !== '4'">
                             <div class="money-num">{{item.donateBalance | moneyFilter | contentFilter}}</div>
-                            <div class="money-label">{{$t('donateMoney')}}{{item.accountDefineId === '1' ? ($t('bracketSetting',{ content : $t('yuan') })) : $t(item.unit)}}</div>
+                            <div class="money-label">{{$t('donateMoney')}}{{(item.accountDefineId === '1' || item.accountDefineId === '4')
+                                ? ($t('bracketSetting',{ content : $t('yuan') }))
+                                : ($t('bracketSetting',{ content : $t(item.unit) }))}}</div>
                         </div>
                     </div>
                 </div>
@@ -68,7 +74,7 @@
             </div>
         </div>
 
-        <div v-if="accountList.length > 0 && accountList[accountShow].accountDefineId === '1'"
+        <div v-if="accountList.length > 0 && accountList[accountShow].accountDefineId !== '4'"
              class="btn-area"
              :class="{'owner-btn' : isOwnerCard}">
             <x-button @click.native="recharge" :disabled="cardInfo.status === 'frozen'">{{$t('recharge')}}</x-button>

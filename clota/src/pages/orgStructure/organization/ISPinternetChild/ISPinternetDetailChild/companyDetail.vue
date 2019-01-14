@@ -341,6 +341,13 @@
             :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}">
         </opened-service>
+        <!--服务初始化配置-->
+        <service-init-config
+            v-if="showMemberConfig"
+            :default-setting="memberConfigInfo"
+            :search-params="{id : activeNode.id}"
+            :isDefaultPackUp="true">
+        </service-init-config>
         <!--下属公司-->
         <sub-company
             :activeTap="activeTap"
@@ -385,6 +392,7 @@
     import { validator } from 'klwk-ui';
     import selectTree from '@/components/selectTree/index.vue';
     import { mapGetters } from 'vuex';
+    import serviceInitConfig from './components/serviceInitConfig';
 
     export default {
         props : {
@@ -410,7 +418,8 @@
             subDepartment,
             cityPlugin,
             editModal,
-            selectTree
+            selectTree,
+            serviceInitConfig
         },
         data () {
             //校验邮箱
@@ -452,8 +461,8 @@
                 companyDetail : {},
                 ruleValidate : {
                     orgName : [
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('companyBgName'),length : 100 }),trigger : 'blur' },
-                        { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
+                        { max : 100,message : this.$t('errorMaxLength',{ field : '',length : 100 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : '' }),trigger : 'blur' }
                     ],
                     checkinCode : [
                         { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
@@ -463,7 +472,8 @@
                     ],
                     email : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
-                        { validator : validateEmail,trigger : 'blur' }
+                        { validator : validateEmail,trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' },
                     ],
                     linkName : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
@@ -721,7 +731,8 @@
                 }
             },
             ...mapGetters({
-                permissionInfo : 'permissionInfo'
+                permissionInfo : 'permissionInfo',
+                memberConfigInfo : 'memberConfigInfo',
             }),
             //是否可以编辑节点信息
             canModifyNode () {
@@ -730,7 +741,14 @@
             //是否重置管理员密码
             canResetPassword () {
                 return this.permissionInfo && 'resetNodePassword' in this.permissionInfo;
-            }
+            },
+            //是否显示会员初始化配置
+            showMemberConfig () {
+                if (this.memberConfigInfo) {
+                    return this.memberConfigInfo.memberPoint === 'true' || this.memberConfigInfo.memberRecharge === 'true';
+                }
+                return false;
+            },
         },
         watch : {
             //节点更换，重新请求节点数据

@@ -17,7 +17,9 @@
         <!--支付方式子表-->
         <order-info-pay :info-data="order.payModels"></order-info-pay>
         <!--积分率信息-->
-        <order-info-integral :info-data="order.memberOrderModel.scoreRule ? JSON.parse(order.memberOrderModel.scoreRule) : {}"></order-info-integral>
+        <order-info-integral v-if="showMemberPoint"
+                             :info-data="order.memberOrderModel.scoreRule ? JSON.parse(order.memberOrderModel.scoreRule) : {}">
+        </order-info-integral>
 
     </div>
 </template>
@@ -28,6 +30,7 @@
     import orderInfoPay from '../components/orderInfoPay.vue';
     import orderInfoIntegral from '../components/orderInfoIntegral.vue';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -67,6 +70,13 @@
             };
         },
         computed : {
+            ...mapGetters([
+                'memberConfigInfo'
+            ]),
+            //是否可以显示会员积分折扣率信息
+            showMemberPoint () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberPoint'] && this.memberConfigInfo['memberPoint'] === 'true';
+            },
         },
         created () {
             this.getOrderDetail();
