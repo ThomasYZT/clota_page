@@ -264,7 +264,7 @@
             },
             //会员卡包配置是否必填
             wxPackageRequired () {
-                return this.memberConfig.openMembercard;
+                return this.memberConfig.payGiftCard;
             },
             //全民营销基础配置是否必填
             marketBaseConfigRequired () {
