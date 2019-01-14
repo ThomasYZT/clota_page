@@ -16,7 +16,7 @@
                   :rules="ruleValidate"
                   :label-width="140">
                 <i-row>
-                    <i-col span="16" offset="4">
+                    <i-col span="16" offset="2">
                         <!-- 营销等级名称 -->
                         <FormItem :label="$t('colonSetting', { key : $t('marketingLevelName') })"  prop="marketingLevelName">
                             <Input type="text"
@@ -24,6 +24,10 @@
                                    v-model.trim="formData.marketingLevelName"
                                    :placeholder="$t('inputField', { field : $t('marketingLevelName') })"/>
                         </FormItem>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="16" offset="2">
                         <!-- 等级 -->
                         <FormItem :label="$t('colonSetting', { key : $t('level') })"  prop="level">
                             <Select v-if="type === 'add'"
@@ -40,6 +44,13 @@
                             </Select>
                             <span v-else>{{formData.level}}</span>
                         </FormItem>
+                    </i-col>
+                    <i-col span="6">
+                        <span class="tip-info">1级为最低等级</span>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="16" offset="2">
                         <!-- 升级金额 -->
                         <FormItem :label="$t('colonSetting', { key : $t('levelUpMoney') })"  prop="levelUpMoney">
                             <Input type="text"
@@ -54,6 +65,9 @@
                                 <span v-else></span>
                             </div>
                         </FormItem>
+                    </i-col>
+                    <i-col span="6">
+                        <span class="tip-info">升级金额是指从当前级别升入下一级别，需要达到的累计销售金额。</span>
                     </i-col>
                 </i-row>
             </Form>
@@ -396,6 +410,10 @@
 
     /deep/ .ivu-modal-body {
         min-height: 250px;
+    }
+
+    .tip-info {
+        font-size: 12px;
     }
 
 
