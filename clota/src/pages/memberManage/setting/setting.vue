@@ -215,7 +215,8 @@
                                 <Input type="text"
                                        v-model="settingData.wxMpTemplateInfoSet.title"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
-                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10, settingData.wxMpTemplateInfoSet.showStoreValue)"
+                                       @on-blur="checkInputMaxErr(settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10,
+                                       settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.wxPushErr">{{error.wxPushErr}}
@@ -228,7 +229,8 @@
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.chargeTemplateId"
-                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr', settingData.wxMpTemplateInfoSet.showStoreValue)"
+                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr',
+                                       settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.chargeTemplateIdErr">{{error.chargeTemplateIdErr}}
@@ -239,7 +241,8 @@
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.consumeTemplateId"
-                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr', settingData.wxMpTemplateInfoSet.showStoreValue)"
+                                       @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr',
+                                       settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.consumeTemplateIdErr">{{error.consumeTemplateIdErr}}
