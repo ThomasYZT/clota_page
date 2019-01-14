@@ -174,4 +174,11 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .err-message{
+        line-height: 16px;
+        font-size: $font_size_12px;
+        color: $color_err;
+        padding: 5px 10px;
+        text-align: left;
+    }
 </style>
