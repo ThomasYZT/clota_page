@@ -78,6 +78,16 @@
                      @fresh-structure-data="getStructureData"
                      @input="clearDetail">
         </add-cashier>
+        <!--删除节点报错提示模态框-->
+        <notice-modal ref="noticeModal">
+            <ul class="pro-list">
+                <li class="detail">{{`${$t('cannotDelte')} ${currentNode.orgName}`}}</li>
+                <li class="detail partner-list">{{$t('cannotDeleteReason')}}</li>
+                <li class="hint">
+                    <Icon type="information-circled"></Icon>
+                </li>
+            </ul>
+        </notice-modal>
     </div>
 </template>
 
@@ -91,6 +101,7 @@
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip';
     import { mapGetters } from 'vuex';
+    import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
         props : {
@@ -121,7 +132,8 @@
             addScene,
             addCashier,
             noData,
-            editModal
+            editModal,
+            noticeModal
         },
         data () {
             return {
@@ -329,9 +341,14 @@
                         }
                         this.$emit('switch-tap',this.activeTap);
                     } else {
-                        if (res.code === 'S007') {
+                        if (res.code === 'S007') {//当前删除的节点在财务管理是否是其它节点的上级，如果是不可删除
                             this.$refs.delModalTip.show({
                                 title : this.$t('notice'),
+                            });
+                        } else if (res.code === 'O009') { //收付款未结清或会员储值余额未清空
+                            this.$refs.noticeModal.show({
+                                title : this.$t('notice'),
+                                showCancel : false
                             });
                         } else {
                             this.$Message.error(this.$t('failureTip',{ tip : this.$t('del') }));
@@ -540,6 +557,29 @@
             text-overflow: ellipsis;
             max-width : 100%;
             color:#ed3f14;
+        }
+    }
+
+    .pro-list{
+        max-width: 320px;
+        position: relative;
+
+        .detail{
+            line-height: 25px;
+
+            &.partner-list{
+                color: $color_err;
+            }
+        }
+
+        .hint{
+            content : '';
+            @include absolute_pos(absolute,$top : 2px,$left : -20px);
+
+            .ivu-icon-information-circled{
+                font-size: $font_size_16px;
+                color: $color_yellow;
+            }
         }
     }
 </style>
