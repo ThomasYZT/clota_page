@@ -1,4 +1,4 @@
-<!--合作伙伴详情-->
+1<!--合作伙伴详情-->
 
 <template>
     <div class="company-detail">
@@ -62,50 +62,49 @@
                         </span>
                         </div>
                     </i-col>
+                    <!--联系人-->
                     <i-col span="12">
-                        <FormItem :label="$t('companyCode')+'：'"
+                        <FormItem prop="linkName"
+                                  :label="$t('person')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="partnerDetail.nodeCode"
-                                   disabled/>
+                            <Input v-model.trim="formDataCopy.linkName" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">{{$t('companyCode')}}：</span>
-                            <span class="info-val"
-                                  v-w-title="partnerDetail.nodeCode">
-                            {{partnerDetail.nodeCode | contentFilter}}
+                            <span class="info-key">{{$t('person')}}：</span>
+                            <span class="info-val" v-w-title="formDataCopy.linkName">
+                             {{partnerDetail.linkName | contentFilter}}
                         </span>
                         </div>
                     </i-col>
                 </i-row>
                 <i-row>
+                    <!--联系方式-->
                     <i-col span="12">
-                        <FormItem prop="checkinCode"
+                        <FormItem prop="telephone"
+                                  :label="$t('telephone')+'：'"
                                   v-if="type === 'edit'"
-                                  :label="$t('enterpriseCode')+'('+$t('offlineVerify')+')：'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="formDataCopy.checkinCode"  />
+                            <Input v-model.trim="formDataCopy.telephone" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">{{$t('enterpriseCode')+'('+$t('offlineVerify') + ')'}}：</span>
-                            <span class="info-val"
-                                  v-w-title="partnerDetail.checkinCode">
-                            {{partnerDetail.checkinCode | contentFilter}}
+                            <span class="info-key">{{$t('telephone')}}：</span>
+                            <span class="info-val" v-w-title="partnerDetail.telephone">
+                             {{partnerDetail.telephone | contentFilter}}
                         </span>
                         </div>
                     </i-col>
+                    <!--管理账号-->
                     <i-col span="12">
-                        <FormItem :label="$t('distributionCode')+'：'"
+                        <FormItem :label="$t('controlAccount')+'：'"
                                   v-if="type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="partnerDetail.saleCode"
-                                   disabled/>
+                            <Input v-model.trim="formDataCopy.manager" :disabled="true" />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">{{$t('distributionCode')}}：</span>
-                            <span class="info-val"
-                                  v-w-title="partnerDetail.saleCode">
-                            {{partnerDetail.saleCode | contentFilter}}
+                            <span class="info-key">{{$t('controlAccount')}}：</span>
+                            <span class="info-val" v-w-title="partnerDetail.manager">
+                             {{partnerDetail.manager | contentFilter}}
                         </span>
                         </div>
                     </i-col>
@@ -125,38 +124,25 @@
                         </span>
                         </div>
                     </i-col>
+                    <!--所在地-->
                     <i-col span="12">
-                        <FormItem prop="linkName"
-                                  :label="$t('person')+'：'"
-                                  v-if="type === 'edit'"
+                        <FormItem :label="$t('location')+'：'"
+                                  v-if="defaultAddress && type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="formDataCopy.linkName" />
+                            <city-plugin @select="changeCity"
+                                         :defaultValue="defaultAddress">
+                            </city-plugin>
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">{{$t('person')}}：</span>
-                            <span class="info-val" v-w-title="formDataCopy.linkName">
-                             {{partnerDetail.linkName | contentFilter}}
+                            <span class="info-key">{{$t('location')}}：</span>
+                            <span class="info-val" v-w-title="companyPlace">
+                             {{companyPlace | contentFilter}}
                         </span>
                         </div>
                     </i-col>
                 </i-row>
                 <i-row>
-                    <i-col span="12">
-                        <FormItem :label="$t('location')+'：'"
-                                  v-if="type === 'edit'"
-                                  :label-width="type === 'edit' ? 0 : 150">
-                            <span class="info-key">{{$t('location')}}：</span>
-                            <span class="info-val" v-w-title="companyPlace">
-                             {{companyPlace | contentFilter}}
-                            </span>
-                        </FormItem>
-                        <div class="node-info" v-else>
-                            <span class="info-key">{{$t('location')}}：</span>
-                            <span class="info-val" v-w-title="companyPlace">
-                             {{companyPlace | contentFilter}}
-                        </span>
-                        </div>
-                    </i-col>
+                    <!--详细地址-->
                     <i-col span="12">
                         <FormItem prop="address"
                                   :label="$t('detailAddr')+'：'"
@@ -168,36 +154,6 @@
                             <span class="info-key">{{$t('detailAddr')}}：</span>
                             <span class="info-val" v-w-title="partnerDetail.address">
                              {{partnerDetail.address | contentFilter}}
-                        </span>
-                        </div>
-                    </i-col>
-                </i-row>
-                <i-row>
-                    <i-col span="12">
-                        <FormItem prop="telephone"
-                                  :label="$t('telephone')+'：'"
-                                  v-if="type === 'edit'"
-                                  :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="formDataCopy.telephone" />
-                        </FormItem>
-                        <div class="node-info" v-else>
-                            <span class="info-key">{{$t('telephone')}}：</span>
-                            <span class="info-val" v-w-title="partnerDetail.telephone">
-                             {{partnerDetail.telephone | contentFilter}}
-                        </span>
-                        </div>
-                    </i-col>
-                    <i-col span="12">
-                        <FormItem prop="tex"
-                                  :label="$t('fax')+'：'"
-                                  v-if="type === 'edit'"
-                                  :label-width="type === 'edit' ? 0 : 150">
-                            <Input v-model.trim="formDataCopy.tex" />
-                        </FormItem>
-                        <div class="node-info" v-else>
-                            <span class="info-key">{{$t('fax')}}：</span>
-                            <span class="info-val" v-w-title="partnerDetail.tex">
-                             {{partnerDetail.tex | contentFilter}}
                         </span>
                         </div>
                     </i-col>
@@ -215,15 +171,21 @@
                 </i-row>
             </div>
         </Form>
+        <!--合作伙伴-->
+        <partner
+            :isDefaultPackUp="true"
+            :search-params="{id : activeNode.id}">
+        </partner>
         <!--下属部门-->
         <sub-department
+            :isDefaultPackUp="true"
             :activeTap="activeTap"
             :search-params="{id : activeNode.id}"
             @org-change="freshOrg">
         </sub-department>
         <!--员工-->
         <employee-table
-            :isDefaultPackUp="false"
+            :isDefaultPackUp="true"
             :search-params="{id : activeNode.id}">
         </employee-table>
     </div>
@@ -237,6 +199,8 @@
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
+    import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
+    import partner from './components/partner';
 
     export default {
         props : {
@@ -256,7 +220,9 @@
         components : {
             tableCom,
             employeeTable,
-            subDepartment
+            subDepartment,
+            cityPlugin,
+            partner
         },
         data () {
             //校验邮箱
@@ -295,15 +261,10 @@
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('companyBgName'),length : 100 }),trigger : 'blur' },
                         { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
                     ],
-                    checkinCode : [
-                        { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
-                    ],
-                    smsProvider : [
-                        { required : true,message : this.$t('selectField',{ msg : this.$t('smsProvider') }),trigger : 'blur' }
-                    ],
                     email : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
-                        { validator : validateEmail,trigger : 'blur' }
+                        { validator : validateEmail,trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' },
                     ],
                     linkName : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
@@ -316,15 +277,6 @@
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' },
                         { validator : validatePhone ,trigger : 'blur' }
                     ],
-                    tex : [
-                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('fax'),length : 20 }),trigger : 'blur' },
-                    ],
-                    parentManageId : [
-                        { required : true,message : this.$t('selectField',{ msg : this.$t('superior') }),trigger : 'blur' },
-                    ],
-                    parentEconomicId : [
-                        { required : true,message : this.$t('selectField',{ msg : this.$t('fianceSuperior') }),trigger : 'blur' },
-                    ]
                 }
             };
         },
@@ -347,8 +299,6 @@
                             id : this.formDataCopy.id,
                             status : this.formDataCopy.isStart ? 'open' : 'close',
                             orgName : this.formDataCopy.orgName,
-                            checkinCode : this.formDataCopy.checkinCode,
-                            smsProvider : this.formDataCopy.smsProvider,
                             email : this.formDataCopy.email,
                             province : this.formDataCopy.provinceCode,
                             city : this.formDataCopy.cityCode,
@@ -356,9 +306,6 @@
                             linkName : this.formDataCopy.linkName,
                             address : this.formDataCopy.address,
                             telephone : this.formDataCopy.telephone,
-                            tex : this.formDataCopy.tex,
-                            parentManageId : this.formDataCopy.parentManageId,
-                            parentEconomicId : this.formDataCopy.parentEconomicId,
                             managerId : this.formDataCopy.managerId,
                             nodeType : this.formDataCopy.nodeType,
                         }).then(res => {
@@ -366,10 +313,6 @@
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
                                 //修改了节点的名字,修改启用、未启用状态，修改管理上级或财务上级，需要刷新左侧的组织树
                                 if (this.formDataCopy.orgName !== this.partnerDetail.orgName) {
-                                    this.freshOrg();
-                                } else if (this.formDataCopy.parentManageId !== this.partnerDetail.parentManageId) {
-                                    this.freshOrg();
-                                } else if (this.formDataCopy.parentEconomicId !== this.partnerDetail.parentEconomicId) {
                                     this.freshOrg();
                                 } else {
                                     this.getpartnerDetail();
@@ -412,9 +355,36 @@
             freshOrg () {
                 this.$emit('fresh-org',this.activeNode);
             },
+            /**
+             * 改变城市
+             * @param data
+             */
+            changeCity (data) {
+                if (data.province && Object.keys(data.province).length > 0) {
+                    this.formDataCopy.provinceCode = data.province.provinceid;
+                    this.formDataCopy.province = data.province.province;
+                } else {
+                    this.formDataCopy.provinceCode = '000000';
+                    this.formDataCopy.province = '';
+                }
+                if (data.city && Object.keys(data.city).length > 0) {
+                    this.formDataCopy.cityCode = data.city.cityid;
+                    this.formDataCopy.city = data.city.city;
+                } else {
+                    this.formDataCopy.cityCode = '000000';
+                    this.formDataCopy.city = '';
+                }
+                if (data.area && Object.keys(data.area).length > 0) {
+                    this.formDataCopy.districtCode = data.area.areaid;
+                    this.formDataCopy.district = data.area.area;
+                } else {
+                    this.formDataCopy.districtCode = '000000';
+                    this.formDataCopy.district = '';
+                }
+            },
         },
         computed : {
-            //公司详细地址
+            //合作伙伴详细地址
             companyPlace () {
                 let place = '';
                 if (this.partnerDetail && this.partnerDetail.province) {
@@ -435,6 +405,27 @@
             canModifyNode () {
                 return this.permissionInfo && 'modifyNode' in this.permissionInfo;
             },
+            //默认选中的所在地信息
+            defaultAddress () {
+                if (this.partnerDetail && Object.keys(this.partnerDetail).length > 0) {
+                    return {
+                        province : {
+                            provinceid : this.partnerDetail.provinceCode,
+                            province : this.partnerDetail.province
+                        },
+                        city : {
+                            cityid : this.partnerDetail.cityCode,
+                            city : this.partnerDetail.city,
+                        },
+                        area : {
+                            areaid : this.partnerDetail.districtCode,
+                            area : this.partnerDetail.district,
+                        },
+                    };
+                } else {
+                    return false;
+                }
+            }
         },
         watch : {
             //节点更换，重新请求节点数据

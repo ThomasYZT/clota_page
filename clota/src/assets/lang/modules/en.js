@@ -2425,4 +2425,5 @@ export default {
     'haveUnsavedMarketTypeTip' : '您有尚未保存的营销类别',
     'changStoredValue' : '修改储值数值',
     'changScoreValue' : '修改积分数值',
+    'companyBgName' : '公司名称',
 };

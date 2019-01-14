@@ -393,7 +393,8 @@
                     ],
                     email : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
-                        { validator : validateEmail,trigger : 'blur' }
+                        { validator : validateEmail,trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' },
                     ],
                     address : [
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' },

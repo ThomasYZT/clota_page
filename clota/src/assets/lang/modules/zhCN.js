@@ -2432,4 +2432,5 @@ export default {
     'delPartnerFailReason2' : '{orgName}的协议尚未过期',
     'changStoredValue' : '修改储值数值',
     'changScoreValue' : '修改积分数值',
+    'companyBgName' : '公司名称',
 };

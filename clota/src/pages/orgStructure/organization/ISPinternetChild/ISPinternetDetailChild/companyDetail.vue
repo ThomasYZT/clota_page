@@ -461,8 +461,8 @@
                 companyDetail : {},
                 ruleValidate : {
                     orgName : [
-                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('companyBgName'),length : 100 }),trigger : 'blur' },
-                        { required : true,message : this.$t('inputField',{ field : this.$t('companyBgName') }),trigger : 'blur' }
+                        { max : 100,message : this.$t('errorMaxLength',{ field : '',length : 100 }),trigger : 'blur' },
+                        { required : true,message : this.$t('inputField',{ field : '' }),trigger : 'blur' }
                     ],
                     checkinCode : [
                         { min : 2,max : 8,message : this.$t('scopeLimit'),trigger : 'blur' },
@@ -472,7 +472,8 @@
                     ],
                     email : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('email') }),trigger : 'blur' },
-                        { validator : validateEmail,trigger : 'blur' }
+                        { validator : validateEmail,trigger : 'blur' },
+                        { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('email'),length : 100 }),trigger : 'blur' },
                     ],
                     linkName : [
                         { required : true,message : this.$t('inputField',{ field : this.$t('person') }),trigger : 'blur' },
