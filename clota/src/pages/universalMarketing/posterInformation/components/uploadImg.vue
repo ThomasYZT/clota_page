@@ -205,8 +205,25 @@
         },
         mounted () {
             if (this.$refs && this.$refs.imgUpload) {
-                if (this.$refs.imgUpload.fileList.length === this.quantityLimit) {
+                if (this.$refs.imgUpload.fileList.length >= this.quantityLimit) {
                     this.addDisabled = true;
+                } else {
+                    this.addDisabled = false;
+                }
+            }
+        },
+        watch : {
+            defaultList : {
+                handler () {
+                    this.$nextTick(() => {
+                        if (this.$refs && this.$refs.imgUpload) {
+                            if (this.$refs.imgUpload.fileList.length >= this.quantityLimit) {
+                                this.addDisabled = true;
+                            } else {
+                                this.addDisabled = false;
+                            }
+                        }
+                    })
                 }
             }
         }

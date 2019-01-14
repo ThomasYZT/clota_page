@@ -602,6 +602,41 @@
                 if (this.copySetData !== {}) {
                     this.settingData = defaultsDeep({}, this.copySetData);
                 }
+                if (this.WxMpSetInfo !== {}) {
+                    this.wxMpSettingData = defaultsDeep({}, this.WxMpSetInfo);
+                    if (this.WxMpSetInfo.wxCardBackgroundPic) {
+                        this.defaultMemberBgImg = [
+                            {
+                                name : 'logo',
+                                url : this.WxMpSetInfo.wxCardBackgroundPic
+                            }
+                        ];
+                        this.wxMpSettingData.wxCardBackgroundPic = [this.WxMpSetInfo.wxCardBackgroundPic]
+                    }
+                    if (this.WxMpSetInfo.wxCardLogo) {
+                        this.defaultMemberLogoImg = [
+                            {
+                                name : 'logo',
+                                url : this.WxMpSetInfo.wxCardLogo
+                            }
+                        ]
+                        this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo]
+                    }
+                }
+                this.error = {
+                    remindError : '',//会员积分有效期设置
+                    vipValidityError : '',//会员卡有效期设置
+                    vipValidityTimeError : '',//会员卡有效期设置
+                    vipNumberError : '',//会员卡有效期设置
+                    dayError : '',//卡券过期提醒设置
+                    tradeAmountErr : '',//交易金额错误
+                    replaceCardFeeErr : '',//补卡收费金额错误,
+                    wxPushErr : '',//微信端推送交易记录 标题设置错误
+                    chargeTemplateIdErr : '',//微信端充值提醒模版id错误
+                    consumeTemplateIdErr : '',//微信端消费提醒模版id错误
+                    brandNameErr : '',//微信卡包商户名称错误
+                    wxCardTitleErr : '',//微信卡包会员卡标题错误
+                };
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
@@ -937,8 +972,8 @@
             queryMemberWxMpSet () {
                 ajax.post('queryMemberWxMpSet').then(res => {
                     if (res.success) {
-                        this.WxMpSetInfo = res.data ? res.data : {};
-                        this.wxMpSettingData = res.data ? res.data : {};
+                        this.WxMpSetInfo = res.data ? defaultsDeep({}, res.data) : {};
+                        this.wxMpSettingData = res.data ? defaultsDeep({}, res.data) : {};
                         if (this.WxMpSetInfo.wxCardBackgroundPic) {
                             this.defaultMemberBgImg = [
                                 {
