@@ -108,6 +108,10 @@ const apiList = {
     getPayRandomCode : '/external/memberAccount/getPayRandomCode',
     //获取会员配置信息
     getMemberServiceSetting : '/external/extprivilege/getMemberServiceSetting',
+    //检查是否有成长型的卡级
+    checkCardLevelOfGrowth : '/external/memberInfo/checkCardLevelOfGrowth',
+    //查询公司下成长型卡级
+    queryLevelsOfGrowth : '/external/memberInfo/queryLevelsOfGrowth'
 };
 
 export default apiList;

@@ -34,7 +34,7 @@
             <p class="msg">
                 <span @click="activateCard">{{$t('activateMemberCard')}}</span>
             </p>
-            <p class="register-entry">
+            <p class="register-entry" v-if="hasRegister">
                 <!-- 注册入口暂时屏蔽 -->
                 <span @click="toRegister()">{{$t('register')}}</span>
             </p>
@@ -76,6 +76,8 @@
                 wxUserInfo : {},
                 //微信openid
                 openId : '',
+                //是否有注册入口
+                hasRegister : false,
             };
         },
         computed : {
@@ -309,11 +311,27 @@
                         this.$vux.toast.text(this.$t('companyHasNotMemberService'));
                     }
                 });
+            },
+            checkCardLevelOfGrowth () {
+                ajax.post('checkCardLevelOfGrowth', {
+                    companyCode : this.companyCode,
+                }).then((res) => {
+                    if (res.success) {
+                        if (res.data) {
+                            this.hasRegister = true;
+                        } else {
+                            this.hasRegister = false;
+                        }
+                    } else {
+                        this.hasRegister = false;
+                    }
+                })
             }
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
                 vm.getparms(to);
+                vm.checkCardLevelOfGrowth();
             });
         }
     };

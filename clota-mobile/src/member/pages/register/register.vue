@@ -4,6 +4,17 @@
 -->
 <template>
     <div class="register">
+        <!-- 选择会员卡 -->
+        <div>
+            <popup-picker :title="$t('选择会员卡')"
+                          :data="cardLevelList"
+                          show-name
+                          v-model="cardLevel"
+                          class="c-input"
+                          @on-change="cardLevelChange"
+                          :placeholder="$t('pleaseChoose')">
+            </popup-picker>
+        </div>
         <!-- 姓名 -->
         <x-input class="c-input"
                  :title="$t('name')"
@@ -108,6 +119,8 @@
             return {
                 //表单数据
                 formData : {
+                    //会员卡卡级ID
+                    levelId: '',
                     // 会员名称
                     custName: '',
                     // 性别
@@ -144,7 +157,11 @@
                 //微信用户信息
                 wxUserInfo : {},
                 //当前时间
-                endDate: new Date().format('yyyy-MM-dd')
+                endDate: new Date().format('yyyy-MM-dd'),
+                //会员卡卡级列表
+                cardLevelList : [],
+                //选中的卡级
+                cardLevel : [],
             }
         },
         methods: {
@@ -246,6 +263,12 @@
              * 输入验证
              */
             validate () {
+                //卡级不能为空
+                if (validator.isEmpty(this.formData.levelId)) {
+                    this.$vux.toast.text(this.$t('pleaseSelect', { field : this.$t('会员卡') }));
+                    return;
+                }
+
                 //姓名不为空
                 if (!validator.isEmpty(this.formData.custName)) {
                     if (!validator.isInLengthRange(this.formData.custName,0,10)) {
@@ -339,6 +362,13 @@
                 this.formData.gender = data ? data[0] : '';
             },
             /**
+             *  卡级改变
+             *  @param {array} data
+             */
+            cardLevelChange (data) {
+                this.formData.levelId = data ? data[0] : '';
+            },
+            /**
              * 获取路由信息
              */
             getParams () {
@@ -398,7 +428,26 @@
                     });
                 }
                 return obj;
+            },
+            queryLevelsOfGrowth () {
+                ajax.post('queryLevelsOfGrowth', {
+                    companyCode : this.companyCode
+                }).then(res => {
+                    if (res.success) {
+                        this.cardLevelList = res.data ? [res.data.map((item) => {
+                            return {
+                                name : item.levelDesc,
+                                value : item.id,
+                            }
+                        })] : [];
+                    } else {
+                        this.cardLevelList = [];
+                    }
+                });
             }
+        },
+        created () {
+            this.queryLevelsOfGrowth();
         },
         computed :{
             ...mapGetters({
