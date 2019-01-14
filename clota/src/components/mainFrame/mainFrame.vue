@@ -5,7 +5,7 @@
         <frame-header>
         </frame-header>
         <div class="frame-content">
-            <frame-sidebar v-if="hasSidebar">
+            <frame-sidebar :class="{ 'hide-sidebar' : !hasSidebar }">
             </frame-sidebar>
             <div class="router-con" :class="{'pick-up' : menuIsPackUp, 'no-sider-bar' : !hasSidebar}">
                 <!--加载中插件-->
@@ -39,7 +39,8 @@
         data () {
             return {};
         },
-        methods : {},
+        methods : {
+        },
         computed : {
             ...mapGetters({
                 menuIsPackUp : 'menuIsPackUp',
@@ -71,6 +72,11 @@
         .frame-content {
             @include block_outline($height: unquote('calc(100% - 60px)'));
 
+            .hide-sidebar{
+                width: 0;
+                transition: 0.3s width;
+            }
+
             .router-con {
                 position: relative;
                 @include block_outline(unquote('calc(100% - 210px)'));
@@ -86,8 +92,9 @@
                 }
 
                 &.no-sider-bar {
-                    @include block_outline(unquote('calc(100%)'));
-                    transition: all 0.1s;
+                    width: 100%;
+                    display: inline-block;
+                    transition: all 0.3s;
                     overflow: auto;
                 }
             }
