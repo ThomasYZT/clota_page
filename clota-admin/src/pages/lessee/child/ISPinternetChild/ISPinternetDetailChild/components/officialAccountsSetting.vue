@@ -352,7 +352,6 @@
                 //校验会员表单
                 this.$refs.memberSetting.validate((valid) => {
                     if (valid) {
-                        console.log(this.memberConfig)
                         formData = defaultsDeep(formData, this.memberConfig);
                         formData.payGiftCardStartTime = this.memberConfig.time[0].format("yyyy-MM-dd HH:mm:ss");
                         formData.payGiftCardEndTime = this.memberConfig.time[1].format("yyyy-MM-dd HH:mm:ss");
@@ -360,7 +359,6 @@
                         formData.payGiftCard = this.memberConfig.payGiftCard.toString();
                         delete formData.time;
                         this.setWxMpSet(formData);
-                        debugger;
                     }
                 });
             },
