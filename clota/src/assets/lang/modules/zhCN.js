@@ -2442,5 +2442,7 @@ export default {
     'privalige.org-emp-guide' : '导游管理',
     'privalige.org-emp-driver' : '司机管理',
     'cannotDelte' : '无法删除',
-    'cannotDeleteReason' : '原因：收付款尚未结清或会员储值余额未清零'
+    'cannotDeleteReason' : '原因：收付款尚未结清或会员储值余额未清零',
+    'memberOriginChannelName' : '会员来源渠道名称',
+    'memberOriginChannelCode' : '会员来源渠道编码',
 };

@@ -51,6 +51,8 @@
                         <!--<div class="form-item-wrap"><label>{{$t("QQ")}}：</label><span v-w-title="memberBaseDetail.qq">{{memberBaseDetail.qq || '-'}}</span></div>-->
                         <div class="form-item-wrap"><label>{{$t("credentialsType")}}：</label><span v-w-title="memberBaseDetail.certificationTypeName">{{memberBaseDetail.certificationTypeName || '-'}}</span></div>
                         <div class="form-item-wrap"><label>{{$t("identificationNum")}}：</label><span v-w-title="memberBaseDetail.idCardNumber">{{memberBaseDetail.idCardNumber || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("memberOriginChannelName")}}：</label><span v-w-title="memberBaseDetail.sourceName">{{memberBaseDetail.sourceName || '-'}}</span></div>
+                        <div class="form-item-wrap"><label>{{$t("memberOriginChannelCode")}}：</label><span v-w-title="memberBaseDetail.sourceCode">{{memberBaseDetail.sourceCode || '-'}}</span></div>
                         <!--<div class="form-item-wrap"><label>{{$t("personalInterests")}}：</label><span v-w-title="memberBaseDetail.hobby">{{memberBaseDetail.hobby || '-'}}</span></div>-->
                         <!--<div class="form-item-wrap"><label>{{$t("homeAddress")}}：</label><span v-w-title="memberBaseDetail.homeAddr">{{memberBaseDetail.homeAddr || '-'}}</span></div>-->
                     </div>
