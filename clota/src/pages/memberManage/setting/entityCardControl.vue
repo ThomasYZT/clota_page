@@ -6,7 +6,7 @@
             <div class="btn-area">
                 <div class="query-params">
                     <Select v-model="cardStatus"
-                            style="width:170px"
+                            style="width:170px;margin-right: 5px;"
                             @on-change="statusChange">
                         <Option value="all">{{$t('allCardType')}}</Option>
                         <Option value="open">{{$t('cardOpened')}}</Option>
@@ -21,7 +21,7 @@
                         <Option value="password">{{$t('passwordCard')}}</Option>
                     </Select>
                     <Input v-model.trim="keyword"
-                           style="width: 240px;margin-left: 15px;margin-right: 15px;"
+                           style="width: 240px;margin-left: 5px;margin-right: 5px;"
                            :placeholder="$t('pleaseInputNumbers')"/>
                     <Button type="primary"
                             @click="search"

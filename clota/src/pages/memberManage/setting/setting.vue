@@ -1180,7 +1180,7 @@
                 .main {
                     position: relative;
                     div {
-                        margin-bottom: 10px;
+                        margin-bottom: 3px;
                     }
                     &.form-bottom {
                         /deep/ .ivu-radio-group {
@@ -1217,7 +1217,7 @@
             }
             .grey-color {
                 font-size: $font_size_14px;
-                color: $color-3F3F3F;
+                color: $color_999;
                 cursor: pointer;
             }
             .span-bottom {

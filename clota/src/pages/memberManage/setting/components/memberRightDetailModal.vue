@@ -125,13 +125,13 @@
             </template>
         </Form>
         <div slot="footer">
-            <Button type="ghost"
-                    class="ivu-btn-90px"
-                    @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     :loading="saveIng"
                     class="ivu-btn-90px"
                     @click="save">{{$t('save')}}</Button>
+            <Button type="ghost"
+                    class="ivu-btn-90px"
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>

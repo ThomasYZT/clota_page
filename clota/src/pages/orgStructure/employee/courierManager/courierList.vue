@@ -53,7 +53,7 @@
                 <span class="red-bale">
                 <Icon type="help-circled"></Icon>{{$t('isDoing')}}{{$t('courier')}}：
                 <span style="color : #f8a334;">{{currentData.staffName}}</span> <br/>
-                <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>{{$t('sureToDel')}}？</span>
+                <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>{{$t('sureToDel')}}</span>
             </div>
         </delModal>
     </div>

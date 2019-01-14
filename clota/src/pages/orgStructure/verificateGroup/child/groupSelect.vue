@@ -31,7 +31,7 @@
                 <span class="red-bale">
                 <Icon type="help-circled"></Icon>{{$t('isDoing')}}{{$t('delGroup')}}：
                 <span style="color : #f8a334;">{{currentGroup.groupName}}</span>&nbsp;{{$t('moveToNoGroup')}}，<br>
-                <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>，{{$t('sureToDel')}}？
+                <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>，{{$t('sureToDel')}}
                 </span>
             </div>
         </del-modal>

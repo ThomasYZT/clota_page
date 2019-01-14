@@ -13,13 +13,13 @@
         <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
             <FormItem :label="$t('colonSetting', { key : $t('cardNoRange') })">
                 <i-row>
-                    <i-col style="display: inline-block;">
+                    <i-col style="display: inline-block;width: 165px;">
                         <FormItem prop="smallNum">
                             <Input v-model="formData.smallNum"/>
                         </FormItem>
                     </i-col>
                     -
-                    <i-col style="display: inline-block;">
+                    <i-col style="display: inline-block;width: 165px;">
                         <FormItem prop="bigNum">
                             <Input v-model="formData.bigNum" />
                         </FormItem>

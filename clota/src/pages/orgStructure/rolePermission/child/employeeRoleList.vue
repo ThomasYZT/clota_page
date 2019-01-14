@@ -49,7 +49,7 @@
             <div class="del-tips">
                 <Icon type="help-circled"></Icon>
                 <span class="red-bale">{{$t('removeEmp')}}：<span style="color: #F7981C;">{{delEmployees.map(item => item.nickName).join(',')}}</span>{{$t('removeAuthority',{num: delEmployees.length})}}<span style="color:#ed3f14 ;">{{$t('irreversible')}}，</span></span>
-                <span>{{$t('sureToDel')}}？</span>
+                <span>{{$t('sureToDel')}}</span>
             </div>
         </del-modal>
     </div>

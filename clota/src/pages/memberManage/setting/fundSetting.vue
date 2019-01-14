@@ -837,7 +837,7 @@
                 }
                 .grey-color {
                     font-size: $font_size_14px;
-                    color: $color-3F3F3F;
+                    color: $color_999;
                     cursor: pointer;
                 }
                 .span-bottom {
@@ -858,6 +858,7 @@
                     .ivu-form-item{
                         width: 700px;
                         text-align: left;
+                        margin-bottom: 10px;
                     }
 
                     &.short-wrap{
