@@ -209,10 +209,14 @@
 
             const validateDateRange = (rule, value, callback) => {
                 if (value && typeof value === 'object') {
-                    if (value[0] && value[1]) {
-                        callback();
+                    if (this.wxPackageRequired) {
+                        if (value[0] && value[1]) {
+                            callback();
+                        } else {
+                            callback(this.$t('selectField', { msg : this.$t('validatedDate') }));
+                        }
                     } else {
-                        callback(this.$t('selectField', { msg : this.$t('validatedDate') }));
+                        callback();
                     }
                 } else {
                     callback(this.$t('selectField', { msg : this.$t('validatedDate') }));
@@ -372,6 +376,20 @@
              */
             setWxMpSet (formData) {
                 formData.orgId = this.searchParams.id;
+                if (formData.payGiftCard === 'false' && this.wxMpSet.pay_gift_card_rule_id) {
+                    ajax.post('deletePayGiftCardRule').then((res) => {
+                        if (res.success) {
+                            this.setWxMpSetApi(formData);
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
+                        }
+                    });
+                } else {
+                    this.setWxMpSetApi(formData);
+                }
+
+            },
+            setWxMpSetApi (formData) {
                 ajax.post('setWxMpSet', formData).then(res => {
                     if (res.status === 200) {
                         this.isEditing = false;
@@ -381,7 +399,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
                     }
-                })
+                });
             }
         },
         watch : {
