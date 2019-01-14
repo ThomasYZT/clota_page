@@ -122,6 +122,10 @@
                         document.title = res.data ? res.data.orgName : '';
                         this.sceneAddress = res.data ? res.data.orgAddress : '';
                         this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
+                        //如果景区设置了地理位置信息需要获取游客位置信息
+                        if (res.data && res.data.setPosition) {
+                            this.$store.commit('marketUpdateIsGettingLocation',true);
+                        }
                     } else {
                         this.productList = [];
                         this.sceneAddress = '';
@@ -188,7 +192,6 @@
             });
         },
         mounted () {
-            this.$store.commit('marketUpdateIsGettingLocation',true);
         },
     };
 </script>

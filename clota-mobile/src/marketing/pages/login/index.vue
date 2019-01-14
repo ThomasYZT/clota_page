@@ -316,6 +316,7 @@
                             this.$router.push({
                                 name : 'marketingProduct'
                             });
+                            this.$store.dispatch('marketGetLoginData');
                         });
                         sessionStorage.setItem('loginErr',0);
                     } else if (res.code && res.code !== '300') {
