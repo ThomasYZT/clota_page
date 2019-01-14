@@ -271,7 +271,8 @@
             getCardExt () {
                 ajax.post('getBatchCardExt', {
                     openId : this.userInfo.openId,
-                    memberId : this.userInfo.memberId
+                    memberId : this.userInfo.memberId,
+                    companyCode : this.companyCode
                 }).then((res) => {
                     if (res.success) {
                         this.cardExt = res.data ? res.data : [];
@@ -320,7 +321,7 @@
                     }
                 },
                 immediate : true
-            }
+            },
         }
   };
 </script>

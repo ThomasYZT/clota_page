@@ -84,6 +84,7 @@
             ...mapGetters({
                 lang : 'lang',
                 companyCode : 'companyCode',
+                sourceInfo : 'sourceInfo',
             })
         },
         methods : {
@@ -230,7 +231,8 @@
                 ajax.post('getOAuth2UserInfo',{
                     code : code,
                     lang : this.lang,
-                    companyCode : this.companyCode
+                    companyCode : this.companyCode,
+                    source : this.sourceInfo
                 }).then(res => {
                     if (res.success) {
                         this.dataToLogin(res);

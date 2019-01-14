@@ -20,7 +20,9 @@ export const memberState = {
     //错误码
     errCode : '',
     //会员配置信息
-    memberConfigInfo : {}
+    memberConfigInfo : {},
+    //来源信息，区分全民营销和会员系统
+    sourceInfo : ''
 };
 
 export const memberGetters = {
@@ -83,6 +85,25 @@ export const memberGetters = {
     //会员配置信息
     memberConfigInfo : state => {
         return state.memberConfigInfo;
+    },
+    //来源信息
+    sourceInfo : state => {
+        let source = state.sourceInfo;
+        let url = location.href;
+        if (url.indexOf('?') !== -1) {
+            let query = url.split("?")[1];
+            let queryArr = query.split("&");
+            queryArr.forEach(function (item) {
+                let key = item.split("=")[0];
+                let value = item.split("=")[1];
+                if (key === 'source') {
+                    source = value;
+                }
+            });
+            return source;
+        } else {
+            return source;
+        }
     }
 };
 

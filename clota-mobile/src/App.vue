@@ -148,7 +148,9 @@
                 if (this.isWeixin) {
                     this.pageShow = true;
                     ajax.post('getWxConfig',{
-                        url : window.location.origin
+                        url : window.location.origin,
+                        companyCode : this.companyCode,
+                        source : this.sourceInfo,
                     }).then(res => {
                         if (res.success) {
                             this.$wechat.config({
@@ -183,7 +185,9 @@
                 isLoading : 'isLoading',
                 showNetworkError : 'showNetworkError',
                 errCode : 'errCode',
-                isWeixin : 'isWeixin'
+                isWeixin : 'isWeixin',
+                companyCode : 'companyCode',
+                sourceInfo : 'sourceInfo',
             }),
         },
         created () {
