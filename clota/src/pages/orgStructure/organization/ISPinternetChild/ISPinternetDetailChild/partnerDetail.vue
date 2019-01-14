@@ -392,6 +392,7 @@
                             nodeType : this.formDataCopy.nodeType,
                             parentManageId : this.formDataCopy.parentManageId,
                             parentEconomicId : this.formDataCopy.parentEconomicId,
+                            certificateNumber : this.formDataCopy.certificateNumber,
                         }).then(res => {
                             if (res.success) {
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
@@ -429,7 +430,7 @@
                     if (res.success && res.data) {
                         this.partnerDetail = res.data.basicInfo;
                         if (res.data.partnerExtendModel) {
-                            this.partnerDetail.partnerType = res.data.partnerExtendModel.partnerType
+                            this.partnerDetail.partnerType = res.data.partnerExtendModel.partnerType;
                             this.partnerDetail.certificateNumber = res.data.partnerExtendModel.certificateNumber;
                             //如果是个人则需要打码身份证
                             if (res.data.partnerExtendModel.partnerType === 'person') {

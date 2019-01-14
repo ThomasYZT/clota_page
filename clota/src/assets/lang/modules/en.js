@@ -2437,4 +2437,6 @@ export default {
     'cardSaleType' : '售卖型',
     'privalige.org-emp-guide' : '导游管理',
     'privalige.org-emp-driver' : '司机管理',
+    'cannotDelte' : '无法删除',
+    'cannotDeleteReason' : '原因：收付款尚未结清或会员储值余额未清零'
 };
