@@ -18,7 +18,7 @@
             <Col span="8">
             <ul>
                 <li><!--支付金额-->
-                    <span class="field-name">{{$t('payFund')}}：</span>{{pItem.amount | contentFilter}}
+                    <span class="field-name">{{$t('payFund')}}：</span>{{pItem.amount | contentFilter}}{{$t('yuan')}}
                 </li>
                 <li><!--支付方式名称-->
                     <span class="field-name">{{$t('payTypeName')}}：</span>{{pItem.tradeTypeName | contentFilter}}

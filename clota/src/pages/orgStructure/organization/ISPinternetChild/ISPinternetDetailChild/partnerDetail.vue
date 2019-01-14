@@ -127,6 +127,7 @@
                     <!--所在地-->
                     <i-col span="12">
                         <FormItem :label="$t('location')+'：'"
+                                  prop="region"
                                   v-if="defaultAddress && type === 'edit'"
                                   :label-width="type === 'edit' ? 0 : 150">
                             <city-plugin @select="changeCity"
@@ -154,6 +155,35 @@
                             <span class="info-key">{{$t('detailAddr')}}：</span>
                             <span class="info-val" v-w-title="partnerDetail.address">
                              {{partnerDetail.address | contentFilter}}
+                        </span>
+                        </div>
+                    </i-col>
+                    <!--身份证号-->
+                    <i-col span="12" v-if="partnerDetail.partnerType === 'person'">
+                        <FormItem :label="$t('identityNo')+'：'"
+                                  v-if="type === 'edit'"
+                                  :label-width="type === 'edit' ? 0 : 150">
+                            <Input v-model="formDataCopy.certificateNumber" disabled/>
+                        </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">{{$t('identityNo')}}：</span>
+                            <span class="info-val" v-w-title="partnerDetail.certificateNumber">
+                             {{partnerDetail.certificateNumber | contentFilter}}
+                        </span>
+                        </div>
+                    </i-col>
+                    <!--社会信用代码-->
+                    <i-col span="12" v-else-if="partnerDetail.partnerType === 'company'">
+                        <FormItem prop="certificateNumber"
+                                  :label="$t('SocialCreditCode')+'：'"
+                                  v-if="type === 'edit'"
+                                  :label-width="type === 'edit' ? 0 : 150">
+                            <Input v-model="formDataCopy.certificateNumber"/>
+                        </FormItem>
+                        <div class="node-info" v-else>
+                            <span class="info-key">{{$t('SocialCreditCode')}}：</span>
+                            <span class="info-val" v-w-title="partnerDetail.certificateNumber">
+                             {{partnerDetail.certificateNumber | contentFilter}}
                         </span>
                         </div>
                     </i-col>
@@ -249,6 +279,35 @@
                     callback();
                 }
             };
+            /**
+             * 校验社会信用代码
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 校验结果回调函数
+             */
+            const validateCertificateNumber = (rule,value,callback) => {
+                if (value) {
+                    let reg = /[0-9A-Z]{18}/;
+                    if (!reg.test(value)) {
+                        callback(this.$t('errorFormat',{ field : this.$t('SocialCreditCode') }));
+                    } else if (value.length > 100) {
+                        callback(this.$t('errorMaxLength',{ field : this.$t('SocialCreditCode'),length : 100 }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+            };
+
+            //校验所在地
+            const validateLocation = (rule,value,callback) => {
+                if (this.formDataCopy.province) {
+                    callback();
+                } else {
+                    callback(this.$t('selectField',{ msg : this.$t('location') }));
+                }
+            };
             return {
                 //复制的表单数据
                 formDataCopy : {},
@@ -274,9 +333,32 @@
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' },
                     ],
                     telephone : [
+                        {
+                            required : true,
+                            message : this.$t('inputField',{ field : this.$t('phone') }),
+                            trigger : 'blur'
+                        },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('phone'),length : 20 }),trigger : 'blur' },
                         { validator : validatePhone ,trigger : 'blur' }
                     ],
+                    certificateNumber : [
+                        {
+                            required : true,
+                            message : this.$t('inputField',{ field : this.$t('SocialCreditCode') }),
+                            trigger : 'blur'
+                        },
+                        {
+                            validator : validateCertificateNumber,
+                            trigger : 'blur'
+                        }
+                    ],
+                    region : [
+                        {
+                            required : true,
+                            validator : validateLocation,
+                            trigger : 'change'
+                        }
+                    ]
                 }
             };
         },
@@ -344,10 +426,22 @@
                 ajax.post('getOrgInfo',{
                     orgId : this.activeNode.id,
                 }).then(res => {
-                    if (res.success) {
-                        this.partnerDetail = res.data ? res.data.basicInfo : {};
+                    if (res.success && res.data) {
+                        this.partnerDetail = res.data.basicInfo;
+                        if (res.data.partnerExtendModel) {
+                            this.partnerDetail.partnerType = res.data.partnerExtendModel.partnerType
+                            this.partnerDetail.certificateNumber = res.data.partnerExtendModel.certificateNumber;
+                            //如果是个人则需要打码身份证
+                            if (res.data.partnerExtendModel.partnerType === 'person') {
+                                this.partnerDetail.certificateNumber = res.data.partnerExtendModel.certificateNumber.slice(0,4)
+                                    + '***********'
+                                    + res.data.partnerExtendModel.certificateNumber.slice(-4);
+                            }
+                        }
                     } else {
                         this.partnerDetail = {};
+                        this.partnerDetail.partnerType = '';
+                        this.partnerDetail.certificateNumber = '';
                     }
                 });
             },
@@ -383,6 +477,7 @@
                     this.formDataCopy.districtCode = '000000';
                     this.formDataCopy.district = '';
                 }
+                this.$refs.formValidate.validateField('region');
             },
         },
         computed : {

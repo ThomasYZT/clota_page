@@ -30,10 +30,10 @@
                     <span class="field-name">{{$t('specUnit')}}：</span>{{pItem.unit | contentFilter}}
                 </li>
                 <li><!--售价-->
-                    <span class="field-name">{{$t('salesPrice')}}：</span>{{pItem.price | contentFilter}}
+                    <span class="field-name">{{$t('salesPrice')}}：</span>{{pItem.price | moneyFilter | contentFilter}}{{$t('yuan')}}
                 </li>
                 <li><!--会员折扣价-->
-                    <span class="field-name">{{$t('memberDiscount')}}：</span>{{pItem.discountPrice | contentFilter}}
+                    <span class="field-name">{{$t('memberDiscount')}}：</span>{{pItem.discountPrice | moneyFilter | contentFilter}}{{$t('yuan')}}
                 </li>
                 <li><!--产品有效期-->
                     <span class="field-name">{{$t('expirationDate')}}：</span>

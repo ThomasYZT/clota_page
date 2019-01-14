@@ -27,7 +27,7 @@
                     <span class="field-name">{{$t('orderStatus')}}：</span>{{ $t(orderStatus(infoData.status)) }}
                 </li>
                 <li v-if="infoData.amount !== null"><!--整单交易金额-->
-                    <span class="field-name">{{$t('tradeAmount')}}：</span>{{infoData.amount | contentFilter}}
+                    <span class="field-name">{{$t('tradeAmount')}}：</span>{{infoData.amount | contentFilter}}{{$t('yuan')}}
                 </li>
                 <li><!--店铺-->
                     <span class="field-name">{{$t('shop')}}：</span>{{infoData.outDeptName | contentFilter}}

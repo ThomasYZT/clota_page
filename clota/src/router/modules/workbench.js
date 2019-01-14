@@ -18,7 +18,7 @@ export default {
         name : 'workbench',
         component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/workbench/index.vue'),
         meta : {
-            _name : 'workbench', //todo 暂时用数据报表一级菜单权限
+            _name : 'workbench',
             menuName : 'workbench',
             rightPath : topMenuName + '.' + 'workbench',
             isMenu : true,
