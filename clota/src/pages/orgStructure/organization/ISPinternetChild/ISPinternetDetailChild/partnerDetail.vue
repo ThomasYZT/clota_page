@@ -308,6 +308,8 @@
                             telephone : this.formDataCopy.telephone,
                             managerId : this.formDataCopy.managerId,
                             nodeType : this.formDataCopy.nodeType,
+                            parentManageId : this.formDataCopy.parentManageId,
+                            parentEconomicId : this.formDataCopy.parentEconomicId,
                         }).then(res => {
                             if (res.success) {
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));

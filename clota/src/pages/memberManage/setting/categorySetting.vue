@@ -21,7 +21,22 @@
                     :table-data="tableData"
                     :border="true">
                     <el-table-column
-                        slot="column3"
+                        slot="column2"
+                        :label="row.title"
+                        :prop="row.field"
+                        :key="row.index"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        fixed="right"
+                        slot-scope="row">
+                        <template slot-scope="scoped">
+                            <template v-if="scoped.row.cardForm === 'sale'">{{$t('cardSaleType')}}</template>
+                            <template v-else-if="scoped.row.cardForm === 'growth'">{{$t('cardGrowthType')}}</template>
+                            <template v-else>-</template>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column4"
                         :label="row.title"
                         :prop="row.field"
                         :key="row.index"

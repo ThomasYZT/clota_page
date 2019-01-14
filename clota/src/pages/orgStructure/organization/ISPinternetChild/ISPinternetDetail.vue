@@ -84,7 +84,7 @@
                 this.activeNode = {};
                 ajax.post('getOrgTree',{
                     manageType : this.activeTap,
-                    showScene : this.activeTap === 'manage' ? 'manage' : 'privilege',
+                    showScene : 'manage'
                 }).then(res => {
                     if (res.success) {
                         this.structureData = res.data ? res.data : {};
@@ -149,11 +149,12 @@
              * 获取组织树信息
              */
             getTreeData () {
-                if (this.manageOrgs.nodeType === 'partner') {
-                    this.getPartnerTreeData();
-                } else {
-                    this.getCompanyTree();
-                }
+                // if (this.manageOrgs.nodeType === 'partner') {
+                //     this.getPartnerTreeData();
+                // } else {
+                //     this.getCompanyTree();
+                // }
+                this.getCompanyTree();
             }
         },
         computed : {

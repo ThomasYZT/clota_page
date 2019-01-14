@@ -12,6 +12,11 @@ export const columnData = [
         field : 'typeName'
     },
     {
+        title : 'memberCardAttribute', // 会员卡属性
+        minWidth : 140,
+        field : ''
+    },
+    {
         title : 'remark', // 备注
         minWidth : 280,
         field : 'remark'

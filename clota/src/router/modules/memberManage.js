@@ -9,15 +9,15 @@
  * isStaticMenu 表示不需要权限的菜单，如果配置了这个属性，可以不用再配置是_name
  */
 //一级菜单的menuname
-let topMenuName = 'memberHome';
+let topMenuName = 'memberCenter';
 export default {
     memberMange : {
         path : '/memberManage',
         component : () => import(/* webpackChunkName: "memberManageInit" */ '../../pages/memberManage/index.vue'),
         meta : {
             _name : 'members',
-            menuName : 'memberHome',
-            rightPath : topMenuName + '.' + 'memberHome',
+            menuName : 'memberCenter',
+            rightPath : topMenuName + '.' + 'memberCenter',
             isMenu : true
         },
         children : {
@@ -742,7 +742,7 @@ export default {
                         meta : {
                             menuName : 'entityCard', //lang.config.js 里面的语言键值
                             _name : 'storage-setting',
-                            rightPath : topMenuName + '.' + 'memberSetting'
+                            rightPath : topMenuName + '.' + 'fundSetting'
                         },
                     }
                 }

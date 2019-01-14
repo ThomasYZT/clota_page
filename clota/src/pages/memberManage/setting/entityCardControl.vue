@@ -49,7 +49,7 @@
                                      size="medium"
                                      @command="handleCommand"
                                      @click.native.stop="">
-                            <Button type="primary"C
+                            <Button type="primary"
                                     class="ivu-btn-108px">{{$t('batchImport')}}</Button>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item v-for="(item,index) in importTypeList"

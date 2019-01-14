@@ -10,7 +10,7 @@
         <ul class="table-wrap">
             <li class="wrap-li">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('pointBalance') })}}</span>
-                <span class="label-value">{{ accountInfo.accountBalance | contentFilter }}</span>
+                <span class="label-value">{{ parseInt(accountInfo.accountBalance) | contentFilter }}</span>
             </li>
         </ul>
         <div class="operate-taps">
