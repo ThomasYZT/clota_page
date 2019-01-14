@@ -32,7 +32,9 @@ export const marketingState = {
         //营销用户id
         marketUserId : '',
         //公司地址
-        orgAddress : ''
+        orgAddress : '',
+        //是否需要获取位置信息
+        needGetLocation : false
     }
 };
 export const marketingGetters = {
@@ -108,6 +110,10 @@ export const marketingGetters = {
         } else {
             return localStorage.getItem('marketOrgAddress');
         }
+    },
+    //是否需要获取位置信息
+    marketNeedGetLocation : state => {
+        return state.marketing.needGetLocation;
     }
 };
 
@@ -171,6 +177,10 @@ export const marketMutations = {
     marketUpdatOrgAddress (state,address) {
         localStorage.setItem('marketOrgAddress',address);
         state.marketing.orgAddress = address;
+    },
+    //更新是否需要获取位置信息
+    marketUpdateMarketNeedGetLocation (state,needGetLocation) {
+        state.marketing.needGetLocation = needGetLocation;
     }
 };
 
@@ -209,15 +219,18 @@ export const marketActions = {
                     commit('marketUpdateCompanyName',res.data.orgName);
                     commit('marketUpdateCompanyCode',res.data.orgCode);
                     commit('marketUpdateTypeId',res.data.marketTypeId);
+                    commit('marketUpdateMarketNeedGetLocation',res.data.setPosition);
                 } else {
                     commit('marketUpdateCompanyName','');
                     commit('marketUpdateCompanyCode','');
                     commit('marketUpdateTypeId','');
+                    commit('marketUpdateMarketNeedGetLocation','');
                 }
             } else {
                 commit('marketUpdateCompanyName','');
                 commit('marketUpdateCompanyCode','');
                 commit('marketUpdateTypeId','');
+                commit('marketUpdateMarketNeedGetLocation','');
             }
         });
     },

@@ -2,7 +2,7 @@
 
 <template>
     <div class="my-center">
-        <div class="toast-info" v-if="canShowLocationTips">
+        <div class="toast-info" v-if="canShowLocationTips && marketNeedGetLocation">
             <x-icon type="ios-information" size="18"></x-icon>
             您还未允许系统定位手机的权限，请前往设置允许权限
         </div>
@@ -91,7 +91,13 @@
              * 跳转到下单页面
              */
             toCreateOrder () {
-                this.$store.commit('marketUpdateIsGettingLocation',true);
+                if (this.marketNeedGetLocation) {
+                    this.$store.commit('marketUpdateIsGettingLocation',true);
+                } else {
+                    this.$router.push({
+                        name : 'marketingQrCode'
+                    });
+                }
                 let unwatch = this.$watch('marketIsGettingLocation',(newVal) => {
                     if (!newVal) {
                         this.checkMarketForbidden();
@@ -157,6 +163,7 @@
                 marketUserInfo : 'marketUserInfo',
                 marketLongitude : 'marketLongitude',
                 marketLatitude : 'marketLatitude',
+                marketNeedGetLocation : 'marketNeedGetLocation',
                 marketIsGettingLocation : 'marketIsGettingLocation',
             }),
             //是否显示没有获取到定位信息提示
@@ -170,7 +177,9 @@
             });
         },
         mounted () {
-            this.$store.commit('marketUpdateIsGettingLocation',true);
+            if (this.marketNeedGetLocation) {
+                this.$store.commit('marketUpdateIsGettingLocation',true);
+            }
         }
     };
 </script>
