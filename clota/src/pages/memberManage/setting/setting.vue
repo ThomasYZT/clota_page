@@ -637,6 +637,7 @@
                         this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo]
                     }
                 }
+                this.wxPushMemberLevelSetting.id = this.wxPushMemberLevelConfig.id ? this.wxPushMemberLevelConfig.id : 'close';
                 this.error = {
                     remindError : '',//会员积分有效期设置
                     vipValidityError : '',//会员卡有效期设置
@@ -994,7 +995,7 @@
              */
             savePayGiftCardRule () {
                 return new Promise((resolve, reject) => {
-                    if (this.memberLevelsData.id !== 'close') {
+                    if (this.wxPushMemberLevelSetting.id !== 'close') {
                         this.createPayGiftCardRule().then(() => {
                             resolve();
                         }).catch(() => {
