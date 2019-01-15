@@ -214,6 +214,17 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
+                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column5"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
                             <template v-if="scope.row.isDeleted === 'false'">
                                 <span v-if="scope.row.productStatus === 'enabled'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
                                 <span v-else-if="scope.row.productStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
