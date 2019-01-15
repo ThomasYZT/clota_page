@@ -74,6 +74,7 @@
                     slot="column5"
                     slot-scope="row"
                     :label="row.title"
+                    fixed="right"
                     show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">
@@ -194,10 +195,10 @@
                     }
                 }).then(res => {
                    if (res.success) {
-                       this.$Message.success(this.$t('successTip',{ msg : this.$t('move') }));
+                       this.$Message.success(this.$t('successTip',{ tip : this.$t('move') }));
                        this.queryList();
                    } else {
-                       this.$Message.error(this.$t('failureTip',{ msg : this.$t('move') }));
+                       this.$Message.error(this.$t('failureTip',{ tip : this.$t('move') }));
                    }
                 });
             },

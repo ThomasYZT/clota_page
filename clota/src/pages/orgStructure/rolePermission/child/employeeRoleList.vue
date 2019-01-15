@@ -3,7 +3,10 @@
 <template>
     <div class="employee-privalige-set">
         <div class="btn-area">
-            <Button type="primary" @click="addEmployee" style="margin-right: 7px;">{{$t('appendEmployee')}}</Button>
+            <Button type="primary"
+                    icon="android-add"
+                    @click="addEmployee"
+                    style="margin-right: 7px;">{{$t('appendEmployee')}}</Button>
             <Button type="error"
                     @click="del(employeeChosed)"
                     :disabled="employeeChosed.length < 1">{{$t('deleteBatch')}}</Button>

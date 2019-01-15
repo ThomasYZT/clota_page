@@ -25,7 +25,7 @@
                 </Select>
             </FormItem>
             <!--关键词-->
-            <FormItem prop="user" :label="$t('keywords')" :label-width="80">
+            <FormItem prop="user" :label="$t('keywords')" :label-width="70">
                 <!--请输入游客姓名/手机号码/核销串码-->
                 <Input type="text"
                        v-model.trim="formData.keyword"
@@ -33,8 +33,10 @@
                        style="min-width: 250px;max-width: 280px" />
             </FormItem>
             <FormItem prop="user" :label-width="10">
-                <Button type="primary" class="ivu-btn-90px" @click="queryOrderTicketDetail">{{$t('searching')}}</Button>
-                <Button type="ghost" class="ivu-btn-90px" @click="reset">{{$t('reset')}}</Button>
+                <Button type="primary"
+                        style="margin-right: 5px;"
+                        @click="queryOrderTicketDetail">{{$t('searching')}}</Button>
+                <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
             </FormItem>
         </Form>
         <table-com

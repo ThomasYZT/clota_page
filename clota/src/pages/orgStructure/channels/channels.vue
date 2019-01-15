@@ -3,9 +3,10 @@
     <div class="channel">
         <div class="filter-box">
             <Button type="primary"
+                    icon="android-add"
                     style="float: left;margin-right: 10px"
                     v-if="canAddChannel"
-                    @click="newSelfSupportBtn('add')"><span class="add-icon">+ {{$t('addSelfChannel')}}</span>
+                    @click="newSelfSupportBtn('add')"><span class="add-icon">{{$t('addSelfChannel')}}</span>
             </Button>
             <!--<Button style="float: left" type="ghost" size="default">批量操作</Button>
             <div class="search">

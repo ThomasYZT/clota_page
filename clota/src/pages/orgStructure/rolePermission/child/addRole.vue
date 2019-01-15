@@ -7,11 +7,11 @@
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div class="content">
-            <Form :model="formData" ref="formValidate" :rules="ruleValidate">
+            <Form :model="formData" ref="formValidate" label-position="left" :rules="ruleValidate">
                 <i-row>
                     <i-col span="10">
                         <!--公司/景区名称-->
-                        <FormItem :label="$t('companyName')" :label-width="120">
+                        <FormItem :label="$t('companyName')" :label-width="100">
                             <Input :value="manageOrgs.orgName"
                                    disabled
                                    style="width: 280px;"/>
@@ -19,7 +19,7 @@
                     </i-col>
                     <i-col span="10">
                         <!--角色名称-->
-                        <FormItem :label="$t('roleName')" :label-width="120" prop="roleName">
+                        <FormItem :label="$t('roleName')" :label-width="75" prop="roleName">
                             <Input :disabled="!hasSavePermission" v-model="formData.roleName" style="width: 280px;" />
                         </FormItem>
                     </i-col>

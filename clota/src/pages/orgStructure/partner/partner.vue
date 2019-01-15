@@ -4,9 +4,10 @@
         <div class="filter-box">
             <Button type="primary"
                     style="float: left;margin-right: 10px"
+                    icon="android-add"
                     v-if="canAddpartner"
                     @click="newPartnerBtn('add')"
-                    size="default"><span class="add-icon">+ {{$t('addPartner')}}</span>
+                    size="default"><span class="add-icon">{{$t('addPartner')}}</span>
             </Button>
             <el-dropdown trigger="click"
                          v-if="canOperatePartner || canDeletePartner"

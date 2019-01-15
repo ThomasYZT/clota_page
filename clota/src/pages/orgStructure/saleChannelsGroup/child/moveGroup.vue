@@ -14,6 +14,8 @@
                 <FormItem prop="selectOrgId">
                     <Select v-model="formData.selectOrgId" style="width:240px;z-index: 2000!important;" transfer>
                         <Option :value="item.id"
+                                class="overflow-tip-list"
+                                v-w-title="item.groupName"
                                 v-for="item in orgGroupList"
                                 :label="item.groupName"
                                 :key="item.id">
@@ -102,6 +104,7 @@
     }
     .select-group .ivu-poptip-body{
         padding-top: 0;
+        height: 143px;
         padding-bottom: 0;
     }
 
@@ -113,6 +116,9 @@
     }
     .select-group .btn-area{
         text-align: right;
-        margin-top: 20px;
+    }
+
+    .ivu-poptip-body{
+        height: 143px;
     }
 </style>

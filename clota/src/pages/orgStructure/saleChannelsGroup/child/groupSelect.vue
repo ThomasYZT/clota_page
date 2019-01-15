@@ -30,8 +30,8 @@
             <div class="remove-group">
                 <span class="red-bale">
                 <Icon type="help-circled"></Icon>{{$t('isDoing')}}{{$t('delGroup')}}：
-                <span style="color : #f8a334;">{{currentGroup.groupName}}</span>&nbsp;{{$t('moveToNoGroup')}}，<br>
-                <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>，{{$t('sureToDel')}}
+                <span style="color : #f8a334;">{{currentGroup.groupName}}</span>&nbsp;{{$t('moveToNoGroup')}}，
+                <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>{{$t('sureToDel')}}
                 </span>
             </div>
         </del-modal>
@@ -272,7 +272,7 @@
         @at-root .remove-group{
             @include block_outline();
             @include center_center();
-            padding: 0 76px 0 106px;
+            padding: 5px 50px 0 70px;
             color: $color_333;
             font-size: $font_size_14px;
 

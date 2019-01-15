@@ -31,7 +31,7 @@
         </x-input>
         <!-- 注册按钮 -->
         <div class="bottom-info">
-            <p class="msg">
+            <p class="msg" v-if="showActiveCardBtn">
                 <span @click="activateCard">{{$t('activateMemberCard')}}</span>
             </p>
             <p class="register-entry" v-if="hasRegister">
@@ -78,6 +78,8 @@
                 openId : '',
                 //是否有注册入口
                 hasRegister : false,
+                //是否显示
+                showActiveCardBtn : false
             };
         },
         computed : {
@@ -222,6 +224,9 @@
                 if (queryParams && queryParams.openId) {
                     this.openId = queryParams.openId;
                 }
+                if (this.companyCode) {
+                    this.getMemberServiceSettingByCode();
+                }
             },
             /**
              * 获取微信用户信息
@@ -328,6 +333,18 @@
                         this.hasRegister = false;
                     }
                 })
+            },
+            /**
+             * 获取微信配置信息
+             */
+            getMemberServiceSettingByCode () {
+                ajax.post('getMemberServiceSettingByCode',{
+                    nodeCode : this.companyCode,
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.showActiveCardBtn = res.data.memberRecharge === 'true';
+                    }
+                });
             }
         },
         beforeRouteEnter (to,from,next) {
