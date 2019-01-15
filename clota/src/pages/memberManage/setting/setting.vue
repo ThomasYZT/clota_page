@@ -256,7 +256,7 @@
                         <div class="title">{{$t('微信会员卡推送设置')}}</div>
                         <div :class="{'main': true}">
                             <div class="switcher">
-                                <Select v-model="wxPushMemberLevelConfig.id"
+                                <Select v-model="wxPushMemberLevelSetting.id"
                                         style="width:200px"
                                         :placeholder="$t('selectField', { msg : '要推送的会员卡' } )">
                                     <Option v-for="item in levelsOfGrowthList"
@@ -449,7 +449,13 @@
                 //成长型会员卡级别列表
                 levelsOfGrowthList : [],
                 //微信会员卡推送设置
-                wxPushMemberLevelConfig : {},
+                wxPushMemberLevelConfig : {
+                    id : '',
+                },
+                //微信会员卡推送配置参数
+                wxPushMemberLevelSetting : {
+                    id : '',
+                },
                 api : api,
             };
         },
@@ -579,7 +585,8 @@
                                 replacementCardFee : this.settingData.replacementCardFee,
                                 notificationBeforeCouponExpire : JSON.stringify(this.settingData.notificationBeforeCouponExpire),
                                 wxMpTemplateInfoSet : JSON.stringify(this.settingData.wxMpTemplateInfoSet),
-                            })
+                            }),
+                            this.savePayGiftCardRule(),
                         ]).then(() => {
                             this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
                         }).catch(() => {
@@ -972,9 +979,74 @@
                 ajax.post('queryLevelsOfGrowth').then(res => {
                     if (res.success) {
                         this.levelsOfGrowthList = res.data ? res.data : [];
+                        this.levelsOfGrowthList.unshift({
+                            id : 'close',
+                            value : '',
+                            levelDesc : '关闭'
+                        })
                     } else {
                         this.levelsOfGrowthList = [];
                     }
+                });
+            },
+            /**
+             * 保存卡级推送设置
+             */
+            savePayGiftCardRule () {
+                return new Promise((resolve, reject) => {
+                    if (this.memberLevelsData.id !== 'close') {
+                        this.createPayGiftCardRule().then(() => {
+                            resolve();
+                        }).catch(() => {
+                            reject();
+                        });
+                    } else {
+                        this.deletePayGiftCardRule().then(() => {
+                            resolve();
+                        }).catch(() => {
+                            reject();
+                        });
+                    }
+                })
+            },
+            /**
+             *  创建卡级推送设置
+             */
+            createPayGiftCardRule () {
+                return new Promise((resolve, reject) => {
+                    ajax.post('createPayGiftCardRule', {
+                        levelId : this.wxPushMemberLevelSetting.id,
+                    }).then(res => {
+                        if (res.success) {
+                            resolve();
+                        } else {
+                            if (res.code && (res.code === 'M053' ||
+                                res.code === 'M054' ||
+                                res.code === 'M055' ||
+                                res.code === 'M056')) {
+                                this.$Message.error(this.$t(res.code));
+                            }
+                            reject();
+                        }
+                    }).catch(() => {
+                        reject();
+                    })
+                })
+            },
+            /**
+             *  删除卡级推送设置
+             */
+            deletePayGiftCardRule () {
+                return new Promise((resolve, reject) => {
+                    ajax.post('deletePayGiftCardRule').then(res => {
+                        if (res.success) {
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    }).catch(() => {
+                        reject();
+                    })
                 });
             },
             /**
@@ -1018,9 +1090,11 @@
             queryDefaultDrawMemberLevel () {
                 ajax.post('queryDefaultDrawMemberLevel').then(res => {
                     if (res.success && res.data) {
-                        this.wxPushMemberLevelConfig.id = res.data.id ? res.data.id : '';
+                        this.wxPushMemberLevelConfig.id = res.data ? res.data.id : 'close';
+                        this.wxPushMemberLevelSetting.id = res.data ? res.data.id : 'close';
                     } else {
-                        this.wxPushMemberLevelConfig.id = '';
+                        this.wxPushMemberLevelConfig.id = 'close';
+                        this.wxPushMemberLevelSetting.id = 'close';
                     }
                 });
             },

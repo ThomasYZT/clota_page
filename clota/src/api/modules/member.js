@@ -233,6 +233,10 @@ export default {
     'createOrModifyWxMpMemberCard' : '/member/wxCard/createOrModifyWxMpMemberCard',
     //上传图片至微信
     'uploadImage' : '/member/wxCard/uploadImage',
+    //删除微信上的支付即会员规则
+    'deletePayGiftCardRule' : '/member/wxCard/deletePayGiftCardRule',
+    //创建微信上的支付即会员规则
+    'createPayGiftCardRule' : '/member/wxCard/createPayGiftCardRule',
 
     /***********************************会员统计***********************************/
     //获取会员总量

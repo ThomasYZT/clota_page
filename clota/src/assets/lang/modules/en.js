@@ -2441,4 +2441,8 @@ export default {
     'cannotDeleteReason' : '原因：收付款尚未结清或会员储值余额未清零',
     'memberOriginChannelName' : '会员来源渠道名称',
     'memberOriginChannelCode' : '会员来源渠道编码',
+    'M053' : '请先配置微信卡包的商户信息',
+    'M054' : '存在微信卡套',
+    'M055' : '存在支付即会员规则',
+    'M056' : '无推送卡级',
 };
