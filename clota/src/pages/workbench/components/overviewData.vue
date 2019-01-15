@@ -94,7 +94,7 @@
              */
             getRate (val) {
                 if (common.isNotEmpty(val)) {
-                    return (Number(val).toFixed(2)) * 100;
+                    return (parseFloat(val).toFixed(2)) * 100;
                 } else {
                     return '';
                 }
