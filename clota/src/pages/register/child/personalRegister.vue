@@ -151,8 +151,14 @@
                     //确认密码
                     rePassword : ''
                 },
-                //个人注册表单校验规则
-                personalRuleValidate : {
+                //校验第二次输入的密码和第一次是否相同 个人注册
+                isEqNewPwd : isEqNewPwd
+            };
+        },
+        computed : {
+            //个人注册表单校验规则
+            personalRuleValidate () {
+                return {
                     orgName : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('name') }), trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('name'),length : 20 }),trigger : 'blur' }
@@ -195,10 +201,10 @@
                     ],
                     rePassword : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('password') }), trigger : 'blur' },
-                        { validator : isEqNewPwd, trigger : 'blur' },
+                        { validator : this.isEqNewPwd, trigger : 'blur' },
                     ],
-                },
-            };
+                }
+            }
         },
         methods : {
             /**
