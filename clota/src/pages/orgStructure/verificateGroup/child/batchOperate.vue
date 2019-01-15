@@ -169,4 +169,9 @@
         text-align: right;
         margin-top: 20px;
     }
+
+    /deep/ .ivu-btn-ghost {
+        border-color: $color_blue;
+        color: $color_blue;
+    }
 </style>

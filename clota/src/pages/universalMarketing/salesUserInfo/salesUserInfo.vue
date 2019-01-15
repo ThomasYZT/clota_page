@@ -55,7 +55,7 @@
                 //表头配置
                 columnData : salesUserHead,
                 //表格数据
-                tableData : [{}],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //销售用户信息传参

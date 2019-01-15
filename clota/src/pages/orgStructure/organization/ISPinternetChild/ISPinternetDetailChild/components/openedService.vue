@@ -17,6 +17,7 @@
                             :disabled="!canDelService"
                             @click="delService(selectedService)">{{$t('delService')}}</Button>
                     <Button type="primary"
+                            icon="android-add"
                             @click="orgAddService(selectedService)">{{$t('addService')}}</Button>
                 </div>
                 <table-com

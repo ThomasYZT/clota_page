@@ -5,10 +5,10 @@
         <div class="filter-box">
             <Button type="primary"
                     v-if="canAddEmployee"
-                    icon="md-add"
                     style="float: left;margin-right: 10px"
+                    icon="android-add"
                     @click="getNewPartner('add')"
-                    size="default"><span class="add-icon">+ {{$t('newEmployee')}}</span>
+                    size="default"><span class="add-icon">{{$t('newEmployee')}}</span>
             </Button>
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"

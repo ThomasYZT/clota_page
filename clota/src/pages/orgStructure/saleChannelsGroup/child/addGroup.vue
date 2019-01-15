@@ -9,7 +9,7 @@
             popper-class="add-group"
             @on-popper-hide="popperHide">
         <Button type="primary"
-                icon="ios-plus-empty"
+                icon="android-add"
                 class="ivu-btn-108px"
                 @click="addGroup"><!--新增分组-->
             {{$t('addGroup')}}
@@ -95,7 +95,7 @@
 	@import '~@/assets/scss/base';
     .add-group{
         width: 280px;
-        height: 138px;
+        height: 140px;
     }
     .add-group .name{
         padding: 10px 0 10px 0;

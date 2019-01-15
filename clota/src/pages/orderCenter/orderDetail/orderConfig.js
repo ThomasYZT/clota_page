@@ -13,7 +13,7 @@ export const columnData = [
     },
     {
         title : 'playDate',
-        minWidth : 120,
+        minWidth : 130,
         field : 'visitDate'
     },
     {

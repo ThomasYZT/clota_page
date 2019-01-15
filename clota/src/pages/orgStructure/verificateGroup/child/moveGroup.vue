@@ -16,8 +16,10 @@
                 <FormItem prop="selectOrgId">
                     <Select v-model="formData.selectOrgId" style="width:240px" transfer>
                         <Option :value="item.id"
+                                class="overflow-tip-list"
                                 v-for="item in orgGroupList"
                                 :label="item.groupName"
+                                v-w-title="item.groupName"
                                 :key="item.id">
                         </Option>
                     </Select>
@@ -115,6 +117,5 @@
     }
     .select-group .btn-area{
         text-align: right;
-        margin-top: 20px;
     }
 </style>

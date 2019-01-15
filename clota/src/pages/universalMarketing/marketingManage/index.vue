@@ -120,7 +120,7 @@
                 //表头配置
                 columnData : marketingProductHead,
                 //表格数据
-                tableData : [{}],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //当前被修改的行

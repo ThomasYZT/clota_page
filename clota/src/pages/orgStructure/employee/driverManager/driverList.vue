@@ -5,8 +5,11 @@
 <template>
     <div class="container">
         <div class="tool-box">
-            <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="getNewPartner('add')"
-                    size="default"><span class="add-icon">+ {{$t('addDriver')}}</span>
+            <Button type="primary"
+                    icon="android-add"
+                    style="float: left;margin-right: 10px"
+                    @click="getNewPartner('add')"
+                    size="default"><span class="add-icon">{{$t('addDriver')}}</span>
             </Button>
             <Input class="input-field"
                    v-model.trim="queryParams.keyword"

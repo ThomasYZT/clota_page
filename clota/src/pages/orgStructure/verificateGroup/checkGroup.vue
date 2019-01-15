@@ -75,6 +75,7 @@
                     v-if="canMoveSaleGroup || canRemoveSaleGroup"
                     slot="column6"
                     slot-scope="row"
+                    fixed="right"
                     :label="row.title"
                     show-overflow-tooltip
                     :width="row.width"
@@ -195,10 +196,10 @@
                     }
                 }).then(res => {
                    if (res.success) {
-                       this.$Message.success(this.$t('successTip',{ msg : this.$t('move') }));
+                       this.$Message.success(this.$t('successTip',{ tip : this.$t('move') }));
                        this.queryList();
                    } else {
-                       this.$Message.error(this.$t('failureTip',{ msg : this.$t('move') }));
+                       this.$Message.error(this.$t('failureTip',{ tip : this.$t('move') }));
                    }
                 });
             },

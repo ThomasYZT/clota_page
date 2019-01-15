@@ -7,7 +7,7 @@
         <div class="btn-area">
             <template v-if="canEditPosition">
                 <Button type="primary" class="ivu-btn-108px" @click="add">{{$t('add')}}</Button>
-                <Button type="default" :class="{disabled : chosedColomn.length === 0}" class="ivu-btn-108px error" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
+                <Button type="error" class="ivu-btn-108px" :disabled="chosedColomn.length === 0" @click="deleteBatch()">{{$t('deleteBatch')}}</Button>
             </template>
 
             <Input class="input-field"
@@ -200,11 +200,6 @@
 
             .ivu-btn-108px {
                 margin-right: 10px;
-            }
-
-            .disabled {
-                background-color: $color_gray;
-                border-color: $color_gray;
             }
         }
 
