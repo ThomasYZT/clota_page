@@ -2403,7 +2403,7 @@ export default {
     'openCardSpeedly' : '快速开卡',
     'memberCardNotExisit' : '会员卡不存在',
     'wxPushExchangeRecordSetting' : '微信端推送交易记录设置',
-    'whetherPushInfoOnWx' : '是否在微信公众号推送消费交易信息',
+    'whetherPushInfoOnWx' : '是否在微信公众号推送会员储值账户交易信息',
     'cardNoRange' : '卡片编号区间',
     'cardNoStartValue' : '卡片编号起始值',
     'cardNoEndValue' : '卡片编号结束值',
