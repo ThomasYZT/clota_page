@@ -22,9 +22,15 @@ export const memberRouterDeal = (to, from, next) => {
             let token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
             if (token && store.getters.userInfo && Object.keys(store.getters.userInfo).length > 0) {
                 let query = to.query;
-                if (query && Object.keys(query).length > 0 && query.card_id && query.openid && query.root && query.encrypt_code) {
+                if (query && Object.keys(query).length > 0 && query.card_id && query.openid && query.root && query.encrypt_code && query.companyCode && query.source) {
                     //此处为从微信卡包菜单中直接登陆进入会员系统(当且仅当cardId,encrypt_code,root三个参数都存在时)
-                    wxCard.wxCardLogin({ cardId : query.card_id, openId : query.openid, encryptCode : query.encrypt_code }).then((res) => {
+                    wxCard.wxCardLogin({
+                        cardId : query.card_id,
+                        openId : query.openid,
+                        encryptCode : query.encrypt_code,
+                        companyCode : query.companyCode,
+                        source : query.source,
+                    }).then((res) => {
                         store.commit('updateCardInfo',res);
                         next({
                             name : query.root,

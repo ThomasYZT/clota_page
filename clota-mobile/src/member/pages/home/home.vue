@@ -65,9 +65,10 @@
             };
         },
         created () {
-            //暂时注释，方便测试
-            //this.queryUnboundCard();
-            console.log(this.cardInfoList);
+            //判断是否开通了微信卡包
+            if (this.wxMpSet.openMembercard === 'true') {
+                this.queryUnboundCard();
+            }
         },
         computed : {
             ...mapGetters([
@@ -77,6 +78,7 @@
                 'cardInfoList',
                 'companyCode',
                 'memberConfigInfo',
+                'wxMpSet',
             ]),
             //当前卡索引
             cardIndex () {

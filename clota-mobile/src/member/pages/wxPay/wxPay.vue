@@ -86,7 +86,8 @@
                 ajax.post('getOAuth2UserInfo',{
                     code : code,
                     lang : this.lang,
-                    companyCode : this.companyCode
+                    companyCode : this.companyCode,
+                    source : this.sourceInfo
                 }).then(res => {
                     if (res.success) {
                         this.wxUserInfo = res.data ? res.data : {};
@@ -127,7 +128,8 @@
         computed :{
             ...mapGetters({
                 lang : 'lang',
-                companyCode : 'companyCode'
+                companyCode : 'companyCode',
+                sourceInfo : 'sourceInfo'
             })
         }
     }

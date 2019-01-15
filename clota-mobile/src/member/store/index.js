@@ -22,7 +22,9 @@ export const memberState = {
     //会员配置信息
     memberConfigInfo : {},
     //来源信息，区分全民营销和会员系统
-    sourceInfo : ''
+    sourceInfo : '',
+    //微信配置信息
+    wxMpSet : {}
 };
 
 export const memberGetters = {
@@ -104,6 +106,9 @@ export const memberGetters = {
         } else {
             return source;
         }
+    },
+    wxMpSet : state => {
+        return state.wxMpSet;
     }
 };
 
@@ -190,6 +195,14 @@ export const memberMutations = {
      */
     updateMemberConfig (state, memberConfigInfo) {
         state.memberConfigInfo = memberConfigInfo;
+    },
+    /**
+     * 更新微信配置信息
+     * @param state
+     * @param wxMpSet
+     */
+    updateWxMpSet (state, wxMpSet) {
+        state.wxMpSet = wxMpSet;
     }
 };
 
@@ -240,6 +253,24 @@ export const memberActions = {
                         reject();
                     }
                 });
+            }),
+            new Promise((resolve, reject) => {
+                ajax.post('queryMemberWxMpSet', {
+                    source : this.getters.sourceInfo
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data) {
+                            commit('updateWxMpSet', res.data);
+                            resolve();
+                        } else {
+                            reject()
+                        }
+                    } else {
+                        reject();
+                    }
+                }).catch(() => {
+                    reject();
+                })
             })
         ]);
     },
