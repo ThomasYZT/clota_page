@@ -348,13 +348,13 @@
              * 校验表单数据
              */
             validateData () {
-                let formData = {};
                 //校验会员表单
                 this.$refs.memberSetting.validate((valid) => {
                     if (valid) {
+                        let formData = {};
                         formData = defaultsDeep(formData, this.memberConfig);
-                        formData.payGiftCardStartTime = this.memberConfig.time[0].format("yyyy-MM-dd HH:mm:ss");
-                        formData.payGiftCardEndTime = this.memberConfig.time[1].format("yyyy-MM-dd HH:mm:ss");
+                        formData.payGiftCardStartTime = this.memberConfig.time[0] ? this.memberConfig.time[0].format("yyyy-MM-dd HH:mm:ss") : '';
+                        formData.payGiftCardEndTime = this.memberConfig.time[1] ? this.memberConfig.time[1].format("yyyy-MM-dd HH:mm:ss") : '';
                         formData.openMembercard = this.memberConfig.openMembercard.toString();
                         formData.payGiftCard = this.memberConfig.payGiftCard.toString();
                         delete formData.time;
@@ -374,7 +374,7 @@
              */
             setWxMpSet (formData) {
                 formData.orgId = this.searchParams.id;
-                if (formData.payGiftCard === 'false' && this.wxMpSet.payGiftCardRuleId) {
+                if ((formData.payGiftCard === 'false' || formData.openMembercard === 'false') && this.wxMpSet.payGiftCardRuleId) {
                     ajax.post('deletePayGiftCardRule').then((res) => {
                         if (res.success) {
                             this.setWxMpSetApi(formData);
