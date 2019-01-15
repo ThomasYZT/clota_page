@@ -1345,12 +1345,11 @@
                     margin-left: 105px;
                 }
             }
+        }
 
-            .warning-tip {
-                font-size: 12px;
-                margin-left: 10px;
-                color: $color_yellow;
-            }
+        .warning-tip {
+            font-size: 12px;
+            color: $color_yellow;
         }
 
         .width-150px-label {
