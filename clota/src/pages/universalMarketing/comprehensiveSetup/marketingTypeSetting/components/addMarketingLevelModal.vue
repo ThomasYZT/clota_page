@@ -413,6 +413,7 @@
     }
 
     .tip-info {
+        color: $color_yellow;
         font-size: 12px;
     }
 
