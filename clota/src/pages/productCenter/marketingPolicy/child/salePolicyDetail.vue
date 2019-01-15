@@ -561,7 +561,7 @@
             .form-content{
                 border-top: 1px dashed $color_979797_020;
                 width: 85%;
-                margin: 0 auto;
+                margin-left: 20px;
                 padding: 20px 0;
 
                 &:first-child{
