@@ -561,9 +561,12 @@
                     Promise.all([
                         this.checkInputIsMoney(this.settingData.smsSend, 'tradeAmountErr'),
                         this.checkInputIsMoney(this.settingData.replacementCardFee, 'replaceCardFeeErr'),
-                        this.checkInputMaxErr(this.settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10, this.settingData.wxMpTemplateInfoSet.showStoreValue),
-                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr', this.settingData.wxMpTemplateInfoSet.showStoreValue),
-                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr', this.settingData.wxMpTemplateInfoSet.showStoreValue),
+                        this.checkInputMaxErr(this.settingData.wxMpTemplateInfoSet.title,'wxPushErr', 1, 10,
+                            this.settingData.wxMpTemplateInfoSet.showStoreValue),
+                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr',
+                            this.settingData.wxMpTemplateInfoSet.showStoreValue),
+                        this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr',
+                            this.settingData.wxMpTemplateInfoSet.showStoreValue),
                         this.checkWxPackageInfo(this.wxMpSettingData.brandName,'brandNameErr'),
                         this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr')
                     ]).then(() => {
