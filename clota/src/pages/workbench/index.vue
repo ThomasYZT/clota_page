@@ -35,4 +35,8 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .workbench{
+        @include overflow_tip(100%,100%);
+        overflow: auto;
+    }
 </style>

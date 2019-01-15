@@ -2445,4 +2445,5 @@ export default {
     'cannotDeleteReason' : '原因：收付款尚未结清或会员储值余额未清零',
     'memberOriginChannelName' : '会员来源渠道名称',
     'memberOriginChannelCode' : '会员来源渠道编码',
+    'presentAccountTotal' : '赠送账户总额',
 };

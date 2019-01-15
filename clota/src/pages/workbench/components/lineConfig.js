@@ -26,8 +26,11 @@ const pieBaseConfig = {
             let date = param.length > 0 && param[0].data && param[0].data.time ? param[0].data.time : '';
             let week = common.getWeekDay(new Date(date));
             html += `<p>${date} ${i18n.messages[i18n.locale][week]}</p>`;
-            param.forEach(item => {
-                html += `<p><span style='color:${item.color}'>${item.data.name} : </span> <span>${item.data.value}</span></p>`;
+            param.forEach((item,index) => {
+                html += `<p>
+                        <span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:${param[index] ? param[index].color : '#22BB5F'}"></span>
+                        <span style='color:#fff'>${item.data.name} : </span> <span>${item.data.value}</span>
+                        </p>`;
             });
             return html;
         },
