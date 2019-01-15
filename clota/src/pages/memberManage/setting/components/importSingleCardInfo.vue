@@ -21,7 +21,7 @@
                 <FormItem :label="$t('cardType')" prop="entityCardType">
                     <Select v-model="formData.entityCardType" :disabled="disabledChangeCardType">
                         <Option value="common">{{$t('normalCard')}}</Option>
-                        <Option value="password">{{$t('passwordCard')}}</Option>
+                        <Option v-if="showMemberRecharge" value="password">{{$t('passwordCard')}}</Option>
                     </Select>
                 </FormItem>
                 <FormItem :label="$t('cardFaceNum')" prop="faceNum">
@@ -132,12 +132,17 @@
         },
         computed : {
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                memberConfigInfo : 'memberConfigInfo',
             }),
             //是否可以禁用选择卡类型
             disabledChangeCardType () {
                 return this.cardData && Object.keys(this.cardData).length > 0;
-            }
+            },
+            //是否可以显示会员储值相关信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
         },
         methods : {
             /**

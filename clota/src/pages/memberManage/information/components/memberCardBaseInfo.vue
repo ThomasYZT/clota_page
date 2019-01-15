@@ -62,12 +62,12 @@
         <!--会员3期暂时去掉-->
         <!--<div class="form-item-wrap"><label>{{$t("cardIssuer")}}：</label><span v-w-title="memberDetail.orgName">-->
         <!--{{memberDetail.orgName || '-'}}</span></div>-->
-        <div class="form-item-wrap">
-            <label>{{$t("memberType")}}：</label>
-            <span>
-                    {{$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberStatus))}}
-            </span>
-        </div>
+        <!--<div class="form-item-wrap">-->
+            <!--<label>{{$t("memberType")}}：</label>-->
+            <!--<span>-->
+                    <!--{{$t(getEnumFieldShow('vipStatusEnum', memberDetail.memberStatus))}}-->
+            <!--</span>-->
+        <!--</div>-->
         <div class="form-item-wrap" v-if="memberDetail.cardTypeId !== '1'">
             <label>{{$t("levelSetting")}}：</label>
             <span v-w-title="memberDetail.levelDesc">

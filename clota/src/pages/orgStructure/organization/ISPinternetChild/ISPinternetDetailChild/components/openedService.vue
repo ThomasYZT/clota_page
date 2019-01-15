@@ -41,7 +41,7 @@
                         :label="row.title"
                         fixed="left"
                         type="selection"
-                        :width="row.width"
+                        :width="65"
                         :min-width="row.minWidth">
                     </el-table-column>
                     <el-table-column
