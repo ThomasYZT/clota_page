@@ -270,7 +270,7 @@
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.openMembercard === 'true'">
                         <div class="title">{{$t('配置微信卡包的商户信息')}}</div>
                         <div :class="{'main': true}">
-                            <div class="img-wrap">
+                            <div class="img-wrap" :class="{'ivu-form-item-error': error.cardLogoErr}">
                                 <span class="width-150px-label">{{$t('会员卡logo：')}}</span>
                                 <div class="inline-upload">
                                     <imgUpload :quantityLimit="1"
@@ -280,6 +280,9 @@
                                                @upload-success="uploadSuc($event, 'card-logo')"
                                                @remove-img="removeIDimg($event, 'card-logo')"></imgUpload>
                                     <span class="warning-tip">建议像素300*300</span>
+                                    <div class="fixed-error ivu-form-item-error-tip"
+                                         v-if="error.cardLogoErr">{{error.cardLogoErr}}
+                                    </div>
                                 </div>
                             </div>
                             <div class="text" :class="{'ivu-form-item-error': error.brandNameErr}">
@@ -441,6 +444,7 @@
                     consumeTemplateIdErr : '',//微信端消费提醒模版id错误
                     brandNameErr : '',//微信卡包商户名称错误
                     wxCardTitleErr : '',//微信卡包会员卡标题错误
+                    cardLogoErr : '',
                 },
                 //会员类别及会员级别数据
                 memberLevelsData : {
@@ -496,9 +500,8 @@
             //查询证件类型
             this.queryDocument();
             this.getMemberLevelsInType();
-            //查询所有成长型的会员卡级别
             this.queryMemberWxMpSet();
-            this.queryLevelsOfGrowth();
+
         },
         computed : {
             ...mapGetters([
@@ -651,6 +654,7 @@
                     consumeTemplateIdErr : '',//微信端消费提醒模版id错误
                     brandNameErr : '',//微信卡包商户名称错误
                     wxCardTitleErr : '',//微信卡包会员卡标题错误
+                    cardLogoErr : '',
                 };
             },
             //校验选项勾选是输入框是否填写，返回true/false
@@ -673,6 +677,10 @@
 
                 if (this.settingData.notificationBeforeCouponExpire.isSwitch &&
                     !this.checkInputBlurFunc(this.settingData.notificationBeforeCouponExpire.day, 'dayError')) {
+                    return false;
+                }
+
+                if (!this.checkCardLogo()) {
                     return false;
                 }
 
@@ -823,7 +831,18 @@
                     name : 'entityCard'
                 });
             },
-
+            /**
+             *  校验卡包logo
+             */
+            checkCardLogo () {
+                if (this.wxMpSettingData.wxCardLogo.length === 0) {
+                    this.error.cardLogoErr = "请上传微信卡包logo";
+                    return false;
+                } else {
+                    this.error.cardLogoErr = '';
+                    return true;
+                }
+            },
             /**
              * 校验输入的是否符合金钱的格式
              * @param data
@@ -977,18 +996,22 @@
              * 查询所有成长型的会员卡级别
              */
             queryLevelsOfGrowth () {
-                ajax.post('queryLevelsOfGrowth').then(res => {
-                    if (res.success) {
-                        this.levelsOfGrowthList = res.data ? res.data : [];
-                        this.levelsOfGrowthList.unshift({
-                            id : 'close',
-                            value : '',
-                            levelDesc : '关闭'
-                        })
-                    } else {
-                        this.levelsOfGrowthList = [];
-                    }
-                });
+                return new Promise((resolve, reject) => {
+                    ajax.post('queryLevelsOfGrowth').then(res => {
+                        if (res.success) {
+                            this.levelsOfGrowthList = res.data ? res.data : [];
+                            this.levelsOfGrowthList.unshift({
+                                id : 'close',
+                                value : '',
+                                levelDesc : '关闭'
+                            });
+                            resolve();
+                        } else {
+                            this.levelsOfGrowthList = [];
+                            reject();
+                        }
+                    });
+                })
             },
             /**
              * 保存卡级推送设置
@@ -1076,9 +1099,12 @@
                             ]
                             this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo]
                         }
+
                         //仅仅配置了公众号信息，并开通了支付即会员才显示
                         if (Object.keys(this.WxMpSetInfo).length > 0 && this.WxMpSetInfo.payGiftCard === 'true') {
-                            this.queryDefaultDrawMemberLevel();
+                            this.queryLevelsOfGrowth().then(() => {
+                                this.queryDefaultDrawMemberLevel();
+                            });
                         }
                     } else {
                         this.WxMpSetInfo = {};
@@ -1091,8 +1117,15 @@
             queryDefaultDrawMemberLevel () {
                 ajax.post('queryDefaultDrawMemberLevel').then(res => {
                     if (res.success && res.data) {
-                        this.wxPushMemberLevelConfig.id = res.data ? res.data.id : 'close';
-                        this.wxPushMemberLevelSetting.id = res.data ? res.data.id : 'close';
+                        if (this.levelsOfGrowthList.find((item) => {
+                            return item.id === res.data.id;
+                        })) {
+                            this.wxPushMemberLevelConfig.id = res.data.id;
+                            this.wxPushMemberLevelSetting.id = res.data.id;
+                        } else {
+                            this.wxPushMemberLevelConfig.id = 'close';
+                            this.wxPushMemberLevelSetting.id = 'close';
+                        }
                     } else {
                         this.wxPushMemberLevelConfig.id = 'close';
                         this.wxPushMemberLevelSetting.id = 'close';
@@ -1114,6 +1147,7 @@
                             url : url,
                         };
                     });
+                    this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
                         return item.url
@@ -1141,6 +1175,7 @@
                             url : url,
                         };
                     });
+                    this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
                         return item.url
@@ -1368,6 +1403,12 @@
             margin-bottom: 0 !important;
             /deep/ .upload-img {
                 margin-bottom: 0px !important;
+            }
+
+            .fixed-error {
+                &.ivu-form-item-error-tip {
+                    margin-left: 105px;
+                }
             }
         }
 
