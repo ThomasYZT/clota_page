@@ -65,7 +65,7 @@
                             </i-row>
                             <i-row v-show="memberConfig.openMembercard">
                                 <i-col span="20">
-                                    <FormItem label="支付即会员" prop="payGiftCard">
+                                    <FormItem label="支付即会员规则" prop="payGiftCard">
                                         <Checkbox v-model="memberConfig.payGiftCard"
                                                   :disabled="!isEditing">{{''}}</Checkbox>
                                     </FormItem>
@@ -81,7 +81,7 @@
                                         </FormItem>
                                     </i-col>
                                     <i-col span="20">
-                                        <FormItem label="有效期" prop="time">
+                                        <FormItem label="规则有效期" prop="time">
                                             <DatePicker v-model="memberConfig.time"
                                                         type="daterange"
                                                         :editable="false"
@@ -93,7 +93,7 @@
                                         </FormItem>
                                     </i-col>
                                     <i-col span="20">
-                                        <FormItem label="金额范围">
+                                        <FormItem label="支付金额范围">
                                             <i-row>
                                                 <i-col span="6" class="first-input">
                                                     <FormItem prop="payGiftCardMinAmount">
