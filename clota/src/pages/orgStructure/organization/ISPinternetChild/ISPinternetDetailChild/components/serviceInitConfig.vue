@@ -25,12 +25,12 @@
                 <Form ref="formValidate"
                       :model="formData"
                       :rules="ruleValidate"
-                      :label-width="380">
-                    <FormItem :label="$t('该租户已开通会员-储值服务，请设置储值账户类型:')"
+                      :label-width="280">
+                    <FormItem :label="$t('已开通会员-储值服务，储值账户类型:')"
                               v-if="defaultSetting.memberRecharge === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountType"
-                                style="width: 280px;"
+                                style="width: 200px;"
                                 transfer
                                 :disabled="!isEditing">
                             <Option v-for="item in accountTypeList"
@@ -41,11 +41,11 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem :label="$t('该租户已开通会员相关服务，请设置其会员卡相关配置:')"
+                    <FormItem :label="$t('已开通会员相关服务，会员卡相关配置:')"
                               v-if="defaultSetting.memberRecharge === 'true' || defaultSetting.memberPoint === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountAttribute"
-                                style="width: 280px;"
+                                style="width: 200px;"
                                 transfer
                                 :disabled="!isEditing">
                             <Option v-for="item in accountAttrList"
