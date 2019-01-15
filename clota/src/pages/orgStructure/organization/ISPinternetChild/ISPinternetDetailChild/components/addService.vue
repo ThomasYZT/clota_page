@@ -43,7 +43,7 @@
                     fixed="left"
                     :disabled="true"
                     :label="row.title"
-                    :width="row.width"
+                    :width="55"
                     :selectable="checkIsValid"
                     :min-width="row.minWidth">
                 </el-table-column>
