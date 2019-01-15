@@ -17,13 +17,13 @@ export const productColumn = [
         field : 'settlePrice'
     },
     {
-        title : 'stockTypeMod', // 限制库存类型
-        minWidth : 120,
+        title : 'stockType', // 限制库存
+        minWidth : 100,
         field : 'stockType'
     },
     {
-        title : 'stockType', // 限制库存
-        minWidth : 100,
+        title : 'stockTypeMod', // 限制库存类型
+        minWidth : 120,
         field : 'stockType'
     },
     {

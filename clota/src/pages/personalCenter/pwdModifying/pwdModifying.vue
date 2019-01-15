@@ -57,6 +57,7 @@
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
     import MD5 from 'crypto-js/md5';
+    import common from '@/assets/js/common';
     export default {
         components : {},
         props : {},
@@ -124,7 +125,6 @@
                 emptyPwdForm : {},
             };
         },
-        computed : {},
         created () {
             this.emptyPwdForm = JSON.stringify(this.pwdForm);
         },
@@ -155,6 +155,7 @@
                     if ( res.success ) {
                         this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('modify') }));
                         this.$refs.formValidate.resetFields();
+                        common.loginOut();
                     } else if (res.code === 'A011') {
                         this.$Message.error(this.$t('oldPasswordError'));
                     } else {
