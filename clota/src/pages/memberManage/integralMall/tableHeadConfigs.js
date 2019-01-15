@@ -7,7 +7,7 @@ export const integralHead = [
     },
     {
         title : 'overPlusUpQuantity', //剩余可上架数量
-        minWidth : 120,
+        minWidth : 140,
         field : ''
     },
     {
@@ -22,12 +22,12 @@ export const integralHead = [
     },
     {
         title : 'nowUpQuantity', //上架数量
-        minWidth : 120,
+        minWidth : 140,
         field : 'upNum'
     },
     {
         title : 'exchangePointsRequired', //兑换时所需积分
-        minWidth : 120,
+        minWidth : 140,
         field : 'requiredCredits'
     },
     {

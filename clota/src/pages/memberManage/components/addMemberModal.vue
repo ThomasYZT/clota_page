@@ -85,7 +85,7 @@
                                         <span class="time-label blue-label add-label"
                                               v-else
                                               @click.stop="addEffectTime">
-                                            {{ $t(item.label) }}
+                                            <Icon type="android-add"></Icon>&nbsp;&nbsp;{{ $t(item.label) }}
                                         </span>
                                         <span v-if="item.value !== 'add' && item.value !== 'forEver' && item.value !== formData.effTime"
                                               class="operate-label"

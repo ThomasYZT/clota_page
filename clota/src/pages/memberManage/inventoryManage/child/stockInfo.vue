@@ -6,7 +6,6 @@
     <div class="stock-info">
         <breadCrumbHead  :before-router-list="beforeRouterList"
                          :locale-router="'stockDetail'"><!--商品管理-->>
-
         </breadCrumbHead>
 
         <div class="content">
@@ -194,13 +193,16 @@
     import abnormalManageModal from '../components/abnormalManageModal';
     import breadCrumbHead from '../../../../components/breadCrumbHead/index';
     import ImgUploader from '../../../register/components/ImgUploader';
+    import imagePreview from '../../../register/components/imagePreview';
+
     export default {
         mixins : [lifeCycleMixins],
         components : {
             tableCom,
             abnormalManageModal,
             breadCrumbHead,
-            ImgUploader
+            ImgUploader,
+            imagePreview
         },
         data () {
             return {
@@ -236,7 +238,6 @@
                 },
                 //图片上传组件默认显示列表
                 defaultImgList : [],
-
             };
         },
         methods : {
@@ -263,16 +264,19 @@
                 ajax.post('queryGoodsInfo', {
                     goodsId : this.detail.id
                 }).then(res => {
+                    this.defaultImgList = [];
                     if (res.success) {
                         this.goodInfo = res.data ? res.data : {};
-                        this.defaultImgList = [
-                            {
-                                name : 0,
-                                url : this.goodInfo.pics
-                            }
-                        ];
+                        if (this.goodInfo.pics) {
+                            this.defaultImgList = [
+                                {
+                                    name : 0,
+                                    url : this.goodInfo.pics
+                                }
+                            ];
+                        }
                     } else {
-                        this.$Message.error(this.$t('dataGetError'));
+                        this.goodInfo = {};
                     }
                 });
             },
@@ -291,7 +295,7 @@
                        this.tableData = res.data ? res.data.data : [];
                        this.totalCount = res.data.totalRow;
                     } else {
-                        this.$Message.error(this.$t('dataGetError'));
+                        this.tableData = [];
                     }
                 });
             },
@@ -370,6 +374,10 @@
 
         .form-wrapper {
             margin-top: 10px;
+
+            /deep/ .ivu-form-item{
+                margin-bottom: 10px;
+            }
 
             .img-wrapper {
                 width: 100%;

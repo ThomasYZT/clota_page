@@ -14,14 +14,14 @@
             <i-row>
                 <i-col span="18" offset="1">
                     <Form-item :label="$t('takeAwayNum')+':'" prop="stockNum">
-                        <Input v-model.trim="formData.stockNum" :placeholder="$t('inputField', { field : $t('editNum') })" style="width: 200px"></Input>
+                        <Input v-model.trim="formData.stockNum" :placeholder="$t('inputField', { field : $t('editNum') })" style="width: 200px"/>
                     </Form-item>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col span="18" offset="1">
                     <Form-item :label="$t('editReason')" prop="remark">
-                        <Input v-model.trim="formData.remark" :placeholder="$t('inputField', { field : $t('editReason') })" style="width: 200px"></Input>
+                        <Input v-model.trim="formData.remark" :placeholder="$t('inputField', { field : $t('editReason') })" style="width: 200px"/>
                     </Form-item>
                 </i-col>
             </i-row>
@@ -132,4 +132,12 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    /deep/ .ivu-modal-body{
+        height: 200px;
+        display: flex;
+        align-items: center;
+    }
+    /deep/ .ivu-form{
+        width: 100%;
+    }
 </style>

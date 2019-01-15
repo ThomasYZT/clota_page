@@ -23,7 +23,7 @@ export const columnData = [
     },
     {
         title : 'mostDeductionPerOrder',
-        minWidth : 200,
+        minWidth : 230,
         field : 'highProportion'
     },
     {

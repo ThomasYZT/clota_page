@@ -29,26 +29,28 @@
                     @on-change="filterDealList()"><!--请选择结束日期-->
                 </Date-picker>
                 <div class="btn-wrap">
-                    <Button type="primary" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->
-                    <Button type="ghost" @click="resetQueryParams()">{{$t('reset')}}</Button><!--重置-->
-                    <a :href="downloadUrl">
-                        <Button type="ghost">{{$t('exporting')}}</Button><!--导出-->
-                    </a>
+                    <Button type="primary" class="ivu-btn-65px" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->
+                    <Button type="ghost" class="ivu-btn-65px" @click="resetQueryParams()">{{$t('reset')}}</Button><!--重置-->
                 </div>
             </div>
-            <ul class="total-amount">
-                <li class="amount-record">
-                    <span class="key-label">{{$t('colonSetting', { key : $t('hasPayed') })}}</span>
-                    <span class="value-label">{{disbursement | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
-                </li>
-                <li class="amount-record">
-                    <span class="key-label">{{$t('colonSetting', { key : $t('storeTotalValue') })}}</span>
-                    <span class="value-label">{{storeAmount | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
-                </li>
-            </ul>
+            <div class="other-info-line">
+                <a :href="downloadUrl">
+                    <Button type="primary">{{$t('exporting')}}</Button><!--导出-->
+                </a>
+                <ul class="total-amount">
+                    <li class="amount-record">
+                        <span class="key-label">{{$t('colonSetting', { key : $t('hasPayed') })}}</span>
+                        <span class="value-label">{{disbursement | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
+                    </li>
+                    <li class="amount-record">
+                        <span class="key-label">{{$t('colonSetting', { key : $t('storeTotalValue') })}}</span>
+                        <span class="value-label">{{storeAmount | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
+                    </li>
+                </ul>
+            </div>
             <table-com
                 v-if="queryParams.accountTypeIds"
-                :ofsetHeight="190"
+                :ofsetHeight="210"
                 :show-pagination="true"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -355,26 +357,6 @@
 
         .fund-detail-content{
 
-            .total-amount{
-                height: 25px;
-                line-height: 20px;
-                text-align: right;
-                overflow: auto;
-                padding: 0 30px 5px 0;
-
-                .amount-record{
-                    display: inline-block;
-                    margin-left: 20px;
-
-                    .key-label{
-                        color: $color_yellow;
-                    }
-
-                    .value-label{
-                        color: $color_999;
-                    }
-                }
-            }
 
             .filter-wrap{
                 height: 50px;
@@ -392,6 +374,34 @@
 
                 /deep/ .ivu-btn{
                     margin-right: 5px;
+                }
+            }
+
+            .other-info-line{
+                padding: 4px 30px;
+                @include block_outline($height : 50px);
+
+                .total-amount{
+                    display: inline-block;
+                    height: 25px;
+                    line-height: 20px;
+                    text-align: right;
+                    overflow: auto;
+                    padding: 4px 0 5px 0;
+                    float: right;
+
+                    .amount-record{
+                        display: inline-block;
+                        margin-left: 20px;
+
+                        .key-label{
+                            color: $color_yellow;
+                        }
+
+                        .value-label{
+                            color: $color_999;
+                        }
+                    }
                 }
             }
 

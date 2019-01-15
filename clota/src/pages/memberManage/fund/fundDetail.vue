@@ -9,7 +9,7 @@
         </div>
         <div class="fund-account-header">
             <Select v-model="queryParams.accountTypeId"
-                    style="width:180px"
+                    style="width:180px;margin-right: 5px"
                     :placeholder="$t('chooseAccountType')"
                     @on-change="queryList"><!--请选择账户类型-->
                 <Option
@@ -20,7 +20,7 @@
                 </Option>
             </Select>
             <Select v-model="queryParams.tradeType"
-                    style="width:180px"
+                    style="width:180px;margin-right: 5px"
                     :placeholder="$t('selectField', {msg: $t('transactionType')})"
                     @on-change="queryList"><!--请选择交易类型-->
                 <Option
@@ -32,8 +32,10 @@
             </Select>
             <Input v-model.trim="queryParams.keyword"
                    :placeholder="$t('fundPlaceholder')"
-                   :style="{width: lang === 'zh-CN' ? '240px' : '390px'}" /><!--请输入姓名、电话、会员编号-->
-            <Button type="primary" @click="queryList">{{$t('query')}}</Button>
+                   :style="{width: lang === 'zh-CN' ? '240px' : '390px','margin-right' : '5px'}" /><!--请输入姓名、电话、会员编号-->
+            <Button type="primary"
+                    style="margin-right: 5px;"
+                    @click="queryList">{{$t('query')}}</Button>
             <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
         </div>
         <table-com

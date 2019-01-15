@@ -18,7 +18,7 @@
             :border="true"
             :show-pagination="true"
             :total-count="totalCount"
-            :ofset-height="204"
+            :ofset-height="214"
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             @selection-change="handleSelectionChange"

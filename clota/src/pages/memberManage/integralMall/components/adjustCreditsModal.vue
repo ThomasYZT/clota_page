@@ -15,9 +15,11 @@
                   label-position="right"
                   :label-width="140">
                 <i-row>
-                    <i-col span="22" offset="2">
+                    <i-col span="22">
                         <Form-item :label="$t('exchangePointsRequired')" prop="requiredCredits">
-                            <Input v-model.trim="formData.requiredCredits" style="width:160px" :placeholder="$t('inputField', { field : $t('exchangePointsRequired') })"></Input>
+                            <Input v-model.trim="formData.requiredCredits"
+                                   style="width:200px"
+                                   :placeholder="$t('inputField', { field : $t('exchangePointsRequired') })"></Input>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -127,9 +129,16 @@
     @import '~@/assets/scss/base';
     /deep/ .ivu-modal-body {
         min-height: 164px;
+        display: flex;
+        align-items: center;
     }
 
     .content {
         margin-top: 30px;
+        width: 100%;
+    }
+
+    /deep/ .ivu-form{
+        width: 100%;
     }
 </style>

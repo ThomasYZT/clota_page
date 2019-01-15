@@ -366,7 +366,7 @@
                             this.formData.unit = data;
                         }
                     } else {
-                        this.$Message.error(this.$t('dataGetError'));
+                        this.unitList = [];
                     }
                 });
             },
@@ -441,6 +441,12 @@
     .edit-good-warehousing {
         .form-wrapper {
             margin-top: 50px;
+
+            /deep/ .el-icon-check{
+                position: absolute;
+                top: 0;
+                right: 14px;
+            }
 
             .button-wrapper {
                 margin-top: 40px;

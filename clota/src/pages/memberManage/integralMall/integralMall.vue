@@ -4,8 +4,14 @@
 -->
 <template>
     <div class="container">
-        <i-row>
+        <i-row class="search-row">
             <i-col span="8">
+                <Button v-if="canOperateProduct"
+                        class="ivu-btn-90px tool-btn"
+                        type="primary"
+                        @click="getGoods()">{{$t('GetTheGoods')}}</Button>
+            </i-col>
+            <i-col span="8" style="float: right;">
                 <!-- 搜索框 -->
                 <Input class="input-field"
                        v-model.trim="queryParams.keyword"
@@ -16,29 +22,29 @@
             </i-col>
         </i-row>
         <!-- 工具栏 -->
-        <tool-box :toolNum="2">
-            <div slot="tool0" class="button-tool">
-                <!-- 上架 -->
-                <!--<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>-->
-                <!-- 下架 -->
-                <!--<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>-->
-                <!-- 领取商品 -->
-                <Button v-if="canOperateProduct"
-                        class="ivu-btn-90px tool-btn"
-                        type="primary"
-                        @click="getGoods()">{{$t('GetTheGoods')}}</Button>
-            </div>
-            <div slot="tool1">
-                <div class="placeholder"></div>
-            </div>
-        </tool-box>
+        <!--<tool-box :toolNum="2">-->
+            <!--<div slot="tool0" class="button-tool">-->
+                <!--&lt;!&ndash; 上架 &ndash;&gt;-->
+                <!--&lt;!&ndash;<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>&ndash;&gt;-->
+                <!--&lt;!&ndash; 下架 &ndash;&gt;-->
+                <!--&lt;!&ndash;<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>&ndash;&gt;-->
+                <!--&lt;!&ndash; 领取商品 &ndash;&gt;-->
+                <!--<Button v-if="canOperateProduct"-->
+                        <!--class="ivu-btn-90px tool-btn"-->
+                        <!--type="primary"-->
+                        <!--@click="getGoods()">{{$t('GetTheGoods')}}</Button>-->
+            <!--</div>-->
+            <!--<div slot="tool1">-->
+                <!--<div class="placeholder"></div>-->
+            <!--</div>-->
+        <!--</tool-box>-->
 
         <!-- 表格 -->
         <div class="table-wrapper">
             <tableCom :column-data="tableColumn"
                       :table-data="tableData"
                       :border="true"
-                      :ofsetHeight="170"
+                      :ofsetHeight="110"
                       :show-pagination="true"
                       :column-check="true"
                       :total-count="totalCount"
@@ -353,10 +359,14 @@
         background: $color-fff;
         border-radius: 4px;
 
+        .search-row{
+            @include block_outline($height : 50px);
+            padding: 10px 30px;
+        }
+
         /deep/ .input-field {
             width: 350px;
             padding-left: 30px;
-            margin-top: 9px;
         }
 
         .button-tool {
@@ -367,7 +377,6 @@
         }
 
         .table-wrapper {
-            margin-top: 20px;
 
             .status {
                 position: relative;

@@ -4,7 +4,7 @@
     <div class="integer-rule-set">
         <div class="title">
             {{$t('setRulesForMemberPointTransactionDeduction')}}
-            <span class="blue-label" @click="addRule">+ {{$t('addRule')}}</span>
+            <span class="blue-label" @click="addRule"><Icon type="android-add"></Icon>&nbsp;{{$t('addRule')}}</span>
         </div>
         <div class="main">
             <table-com

@@ -6,6 +6,8 @@
     <Modal v-model="isShow"
            width="500"
            class-name="vertical-center-modal"
+           class="get-goods"
+           @on-visible-change="visibleChange"
            :title="$t('GetTheGoods')">
         <Form ref="formInline"
               v-if="!isGetStatus"
@@ -15,8 +17,11 @@
               :label-width="100">
             <i-row>
                 <i-col span="18" offset="3">
-                    <Form-item :label="$t('ticketCode')" prop="exchangeSecurities">
-                        <Input v-model.trim="formData.exchangeSecurities" style="width:200px" :placeholder="$t('inputField', { field : $t('ticketCode') })"></Input>
+                    <Form-item :label="$t('ticketCode')"
+                               prop="exchangeSecurities"
+                               :label-width="70">
+                        <Input v-model.trim="formData.exchangeSecurities" style="width:240px"
+                               :placeholder="$t('inputField', { field : $t('ticketCode') })"/>
                     </Form-item>
                 </i-col>
             </i-row>
@@ -137,6 +142,15 @@
                         this.$Message.error(this.$t(res.code));
                     }
                 });
+            },
+            /**
+             * 模态框状态改变
+             * @param{String} type 当前模态框状态
+             */
+            visibleChange (type) {
+                if (type === false) {
+                    this.$refs.formInline.resetFields();
+                }
             }
         }
     };
@@ -146,9 +160,13 @@
     @import '~@/assets/scss/base';
     /deep/ .ivu-form {
         margin-top: 20px;
+        width: 100%;
     }
 
     /deep/ .ivu-modal-body {
-        min-height: 164px;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

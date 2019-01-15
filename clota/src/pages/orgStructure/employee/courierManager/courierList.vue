@@ -9,7 +9,7 @@
                     icon="android-add"
                     style="float: left;margin-right: 10px"
                     @click="getNewPartner('add')"
-                    size="default"><span class="add-icon">{{$t('addNewCourier')}}</span>
+                    size="default">{{$t('addNewCourier')}}</span>
             </Button>
             <Input class="input-field"
                    v-model.trim="queryParams.keyword"

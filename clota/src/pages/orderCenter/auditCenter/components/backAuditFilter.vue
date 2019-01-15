@@ -7,33 +7,31 @@
         <Form ref="formCustom"
               :model="formData"
               :rules="formRule"
-              :label-width="90" :label-position="'left'">
+              :label-width="75">
             <i-row>
-                <i-col span="11">
+                <i-col span="7">
                     <!--下单时间-->
                     <FormItem :label="$t('orderTime')">
                         <DatePicker v-model="orderTimeRange"
                                     type="daterange"
                                     :editable="false"
-                                    style="width: 370px;"
+                                    style="width: 100%;"
                                     @on-change="changeOrderTime">
                         </DatePicker>
                     </FormItem>
                 </i-col>
-                <i-col span="12">
+                <i-col span="7">
                     <!--游玩时间-->
                     <FormItem :label="$t('visitTime')">
                         <DatePicker v-model="visitDateRange"
                                     type="daterange"
                                     :editable="false"
-                                    style="width: 370px;"
+                                    style="width: 100%;"
                                     @on-change="changeVisitDate">
                         </DatePicker>
                     </FormItem>
                 </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="6">
+                <i-col span="5">
                     <!--支付状态-->
                     <FormItem :label="$t('paymentStatus')" >
                         <Select v-model="formData.paymentStatus"
@@ -47,6 +45,22 @@
                         </Select>
                     </FormItem>
                 </i-col>
+                <i-col span="5">
+                    <!--下单渠道-->
+                    <FormItem :label="$t('orderChannel')">
+                        <Select v-model="formData.orderChannel"
+                                style="width: 100%"
+                                @on-change="searchAuditList">
+                            <Option v-for="item in orderChannelList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label=='all' ? item.label : 'order.' + item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
                 <i-col span="6">
                     <!--下单企业-->
                     <FormItem :label="$t('orderOrg')" >
@@ -62,26 +76,6 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <!--下单渠道-->
-                    <FormItem :label="$t('orderChannel')">
-                        <Select v-model="formData.orderChannel"
-                                style="width: 100%"
-                                @on-change="searchAuditList">
-                            <Option v-for="item in orderChannelList"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label=='all' ? item.label : 'order.' + item.label)}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
-                <i-col span="6" style="float:right;text-align: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
-                </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="6">
                     <!--过期状态-->
                     <FormItem :label="$t('expiresStatus')" >
                         <Select v-model="formData.overdueStatus"
@@ -93,13 +87,20 @@
                         </Select>
                     </FormItem>
                 </i-col>
-                <i-col span="7">
+
+                <i-col style="display:inline-block;width: 36%;">
                     <FormItem :label="$t('keywords')" >
                         <Input v-model.trim="formData.keyword"
-                               style="width: 320px;"
+                               style="width: 100%;"
                                :placeholder="$t('inputField', { field : $t('vistorNameOrPhoneNumOrOrderNo') } )" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
                     </FormItem>
                 </i-col>
+                <i-col style="display:inline-block;float:right;text-align: right">
+                    <Button type="primary" class="ivu-btn-65px" @click="searchAuditList">{{$t('empQuery')}}</Button>
+                    <Button type="ghost" class="ivu-btn-65px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
+                </i-col>
+            </i-row>
+            <i-row>
             </i-row>
         </Form>
     </div>
@@ -245,14 +246,10 @@
         /*border: 1px solid #EEEEEE;*/
         position: relative;
 
-        .ivu-form {
-            max-width: 1170px;
-        }
-
         /deep/ .ivu-form-item{
             margin-bottom: 10px;
             .ivu-form-item-label {
-                padding: 8px 10px 8px 20px;
+                padding: 8px 5px 8px 5px;
             }
             .ivu-form-item-content {
                 line-height: 30px;
@@ -260,7 +257,7 @@
         }
 
         .reset{
-            margin-left: 15px;
+            margin-left: 5px;
             border-color: #0055B8;
             color: #0055B8;
         }

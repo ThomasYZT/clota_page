@@ -1345,6 +1345,7 @@
                 /deep/ .ivu-input-wrapper {
                     margin-bottom: 0 !important;
                     width: 80%;
+                    vertical-align: middle;
                 }
 
                 .title {
@@ -1442,7 +1443,7 @@
         .text {
             position: relative;
             padding: 5px 0;
-            margin-bottom: 15px !important;
+            /*margin-bottom: 15px !important;*/
 
             .fixed-error {
                 &.ivu-form-item-error-tip {

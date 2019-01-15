@@ -162,7 +162,7 @@
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
                     } else {
-                        this.$Message.error(this.$t('dataGetError'));
+                        this.tableData = [];
                     }
                 });
             },

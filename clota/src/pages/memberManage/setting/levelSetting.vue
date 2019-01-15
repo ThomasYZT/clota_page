@@ -12,8 +12,9 @@
             <div class="btn-wrap">
                 <template v-if="cardTypeId !== '1'">
                     <Button type="primary"
+                            icon="android-add"
                             :disabled="tableData.length > 11"
-                            @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
+                            @click="showAddMemberModal">{{$t('addMemberLevel')}}</Button><!--新增会员级别-->
                     <Button type="primary"
                             v-if="cardAttribute === 'growth'"
                             :disabled="tableData.length < 1"

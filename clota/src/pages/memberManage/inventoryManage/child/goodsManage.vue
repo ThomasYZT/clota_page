@@ -5,7 +5,19 @@
 <template>
     <div class="goods-manage">
         <i-row>
+
+        </i-row>
+        <i-row class="search-row">
             <i-col span="8">
+                <Button v-if="canAddGoods"
+                        class="tool-btn left"
+                        icon="android-add"
+                        type="primary"
+                        @click="addGood({type : 'add'})">{{$t('NewGoodsWarehousing')}}</Button>
+                <!-- 导出 -->
+                <a v-if="canExportGoods" class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>
+            </i-col>
+            <i-col span="8" style="float: right;">
                 <!-- 搜索框 -->
                 <Input class="input-field"
                        v-model.trim="queryParams.keyword"
@@ -16,26 +28,27 @@
             </i-col>
         </i-row>
         <!-- 工具栏 -->
-        <tool-box :toolNum="2">
-            <div slot="tool0" class="button-tool">
-                <!-- 新增商品入库 -->
-                <Button v-if="canAddGoods"
-                        class="tool-btn left"
-                        type="primary"
-                        @click="addGood({type : 'add'})">+ {{$t('NewGoodsWarehousing')}}</Button>
-                <!-- 导出 -->
-                <a v-if="canExportGoods" class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>
-            </div>
-            <div slot="tool1">
-                <div class="placeholder"></div>
-            </div>
-        </tool-box>
+        <!--<tool-box :toolNum="2">-->
+            <!--<div slot="tool0" class="button-tool">-->
+                <!--&lt;!&ndash; 新增商品入库 &ndash;&gt;-->
+                <!--<Button v-if="canAddGoods"-->
+                        <!--class="tool-btn left"-->
+                        <!--icon="android-add"-->
+                        <!--type="primary"-->
+                        <!--@click="addGood({type : 'add'})">{{$t('NewGoodsWarehousing')}}</Button>-->
+                <!--&lt;!&ndash; 导出 &ndash;&gt;-->
+                <!--<a v-if="canExportGoods" class="ivu-btn-90px a-btn" :href="downloadUrl">{{$t('exporting')}}</a>-->
+            <!--</div>-->
+            <!--<div slot="tool1">-->
+                <!--<div class="placeholder"></div>-->
+            <!--</div>-->
+        <!--</tool-box>-->
 
         <!-- 表格 -->
         <div class="table-wrapper">
             <tableCom :column-data="tableColumn"
                       :table-data="tableData"
-                      :ofsetHeight="170"
+                      :ofsetHeight="110"
                       :border="true"
                       :show-pagination="true"
                       :total-count="totalCount"
@@ -203,14 +216,21 @@ export default {
             }
         }
 
+        .tool-btn {
+            margin-right: 5px;
+        }
+
+        .search-row{
+            @include block_outline($height : 50px);
+            padding: 10px 30px;
+        }
+
         /deep/ .input-field {
             width: 350px;
             padding-left: 30px;
-            margin-top: 9px;
         }
 
         .table-wrapper {
-            margin-top: 20px;
 
             .status {
                 position: relative;

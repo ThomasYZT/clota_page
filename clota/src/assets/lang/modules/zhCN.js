@@ -1199,7 +1199,7 @@ export default {
     'memberChannelChoose' : '会员卡可用渠道选择',
     'memberAreaChoose' : '会员卡可用景区选择',
     'deletingProductType' : '您正在删除产品类别：',
-    'deleteProductType' : '删除产品类别：',
+    'deleteProductType' : '删除产品类别',
     'cardManagement' : '实体卡管理',
     'paymentSetting' : '支付协议设置',
     'allCardType' : '全部实体卡类型',

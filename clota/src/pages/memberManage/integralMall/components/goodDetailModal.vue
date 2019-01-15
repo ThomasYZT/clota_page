@@ -84,7 +84,7 @@
                     //商品兑换积分
                     requiredCredits : '',
                     //上架数量
-                    upNum : 0,
+                    upNum : '',
                 },
                 //表单验证规则
                 ruleValidate : {

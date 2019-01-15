@@ -8,7 +8,7 @@
                     style="float: left;margin-right: 10px"
                     icon="android-add"
                     @click="getNewPartner('add')"
-                    size="default"><span class="add-icon">{{$t('newEmployee')}}</span>
+                    size="default">{{$t('newEmployee')}}</span>
             </Button>
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"

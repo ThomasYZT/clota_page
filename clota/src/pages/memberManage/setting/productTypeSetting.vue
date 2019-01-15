@@ -8,7 +8,7 @@
         </header-tabs>
         <div class="content">
             <div class="btn-area">
-                <Button type="primary" icon="ios-plus-empty" @click="addProductType">{{$t('addProductType')}}</Button>
+                <Button type="primary" icon="android-add" @click="addProductType">{{$t('addProductType')}}</Button>
             </div>
             <table-com
                 :column-data="columnData"

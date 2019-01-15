@@ -644,6 +644,7 @@
             text-align: center;
             font-size: $font_size_16px;
             color: $color_333;
+            font-weight: bold;
         }
 
         .blue-label{
