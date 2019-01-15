@@ -14,7 +14,17 @@
                     <div class="account-name" v-w-title="item.accountName + (item.unit ? `（${item.unit}）` : '')">
                         {{item.accountName}}{{getUnit(item)}}
                     </div>
-                    <div class="account-money">{{item.amount | moneyFilter}}</div>
+                    <!--<div class="account-money">{{item.amount | moneyFilter}}</div>-->
+                    <div class="account-type-wrap">
+                        <div class="corpus-amount">
+                            <div class="number">{{item.corpusAmount | moneyFilter | contentFilter}}</div>
+                            <div class="account-type-name">{{$t('account.corpus')}}</div>
+                        </div>
+                        <div class="corpus-amount" v-if="item.id !== '4'">
+                            <div class="number">{{item.corpusAmount | moneyFilter | contentFilter}}</div>
+                            <div class="account-type-name">{{$t('presentAccountTotal')}}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul class="account-operate">
@@ -182,7 +192,31 @@
                 .fund-list{
                     width: 100%;
                     float: left;
-                    padding: 21px 10px 26px 10px;
+                    padding: 21px 10px 0 10px;
+
+                    .account-type-wrap{
+                        @include block_outline(100%,80px);
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    .corpus-amount{
+                        display: inline-block;
+                        margin: 0 10px;
+                        text-align: center;
+
+                        .number{
+                            font-size: $font_size_28px;
+                            color: rgba($color_000,0.65);
+                        }
+
+                        .account-type-name{
+                            font-size: $font_size_14px;
+                            color: $color_999;
+                        }
+                    }
 
                     .money-area{
                         @include block_outline($height : 50px);
