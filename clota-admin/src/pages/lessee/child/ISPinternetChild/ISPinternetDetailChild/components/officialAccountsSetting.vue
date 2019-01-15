@@ -70,54 +70,56 @@
                                                   :disabled="!isEditing">{{''}}</Checkbox>
                                     </FormItem>
                                 </i-col>
-                                <i-col span="20">
-                                    <FormItem label="微信支付商户号" prop="mchId">
-                                        <Input v-model.trim="memberConfig.mchId"
-                                               type="text"
-                                               :disabled="!isEditing"
-                                               :placeholder="$t('inputField', { field : '微信支付商户号' })"
-                                               style="width: 200px"></Input>
-                                    </FormItem>
-                                </i-col>
-                                <i-col span="20">
-                                    <FormItem label="有效期" prop="time">
-                                        <DatePicker v-model="memberConfig.time"
-                                                    type="daterange"
-                                                    :editable="false"
-                                                    format="yyyy-MM-dd"
-                                                    transfer
-                                                    placement="bottom-end"
-                                                    :disabled="!isEditing"
-                                                    :placeholder="$t('selectField', { msg : '有效期' })"></DatePicker>
-                                    </FormItem>
-                                </i-col>
-                                <i-col span="20">
-                                    <FormItem label="金额范围">
-                                        <i-row>
-                                            <i-col span="6" class="first-input">
-                                                <FormItem prop="payGiftCardMinAmount">
-                                                    <Input v-model.trim="memberConfig.payGiftCardMinAmount"
-                                                           type="text"
-                                                           :disabled="!isEditing"
-                                                           :placeholder="$t('inputField', { field : '金额' })"
-                                                           style="width: 170px"></Input>
-                                                </FormItem>
-                                            </i-col>
-                                            <i-col span="2" style="text-align: center">
-                                                -
-                                            </i-col>
-                                            <i-col span="6">
-                                                <FormItem prop="payGiftCardMaxAmount">
-                                                    <Input v-model.trim="memberConfig.payGiftCardMaxAmount"
-                                                           type="text"
-                                                           :disabled="!isEditing"
-                                                           :placeholder="$t('inputField', { field : '金额' })"
-                                                           style="width: 170px"></Input>
-                                                </FormItem>
-                                            </i-col>
-                                        </i-row>
-                                    </FormItem>
-                                </i-col>
+                                <template v-if="memberConfig.payGiftCard">
+                                    <i-col span="20">
+                                        <FormItem label="微信支付商户号" prop="mchId">
+                                            <Input v-model.trim="memberConfig.mchId"
+                                                   type="text"
+                                                   :disabled="!isEditing"
+                                                   :placeholder="$t('inputField', { field : '微信支付商户号' })"
+                                                   style="width: 200px"></Input>
+                                        </FormItem>
+                                    </i-col>
+                                    <i-col span="20">
+                                        <FormItem label="有效期" prop="time">
+                                            <DatePicker v-model="memberConfig.time"
+                                                        type="daterange"
+                                                        :editable="false"
+                                                        format="yyyy-MM-dd"
+                                                        transfer
+                                                        placement="bottom-end"
+                                                        :disabled="!isEditing"
+                                                        :placeholder="$t('selectField', { msg : '有效期' })"></DatePicker>
+                                        </FormItem>
+                                    </i-col>
+                                    <i-col span="20">
+                                        <FormItem label="金额范围">
+                                            <i-row>
+                                                <i-col span="6" class="first-input">
+                                                    <FormItem prop="payGiftCardMinAmount">
+                                                        <Input v-model.trim="memberConfig.payGiftCardMinAmount"
+                                                               type="text"
+                                                               :disabled="!isEditing"
+                                                               :placeholder="$t('inputField', { field : '金额' })"
+                                                               style="width: 170px"></Input>
+                                                    </FormItem>
+                                                </i-col>
+                                                <i-col span="2" style="text-align: center">
+                                                    -
+                                                </i-col>
+                                                <i-col span="6">
+                                                    <FormItem prop="payGiftCardMaxAmount">
+                                                        <Input v-model.trim="memberConfig.payGiftCardMaxAmount"
+                                                               type="text"
+                                                               :disabled="!isEditing"
+                                                               :placeholder="$t('inputField', { field : '金额' })"
+                                                               style="width: 170px"></Input>
+                                                    </FormItem>
+                                                </i-col>
+                                            </i-row>
+                                        </FormItem>
+                                    </i-col>
+                                </template>
                             </i-row>
                         </div>
 
