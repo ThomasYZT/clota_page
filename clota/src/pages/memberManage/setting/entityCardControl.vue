@@ -313,7 +313,6 @@
         border-radius: 4px;
 
         .content{
-            @include block_outline($height : unquote('calc(100% - 50px)'));
 
             .btn-area{
                 @include block_outline($height : 93px);
