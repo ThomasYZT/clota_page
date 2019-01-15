@@ -203,6 +203,15 @@ export const memberMutations = {
      */
     updateWxMpSet (state, wxMpSet) {
         state.wxMpSet = wxMpSet;
+    },
+    /**
+     * 更新companyCode
+     * @param state
+     * @param companyCode
+     */
+    updateCompanyCode (state, companyCode) {
+        console.log(companyCode)
+        state.companyCode = companyCode;
     }
 };
 
