@@ -1079,18 +1079,22 @@
              */
             savePayGiftCardRule () {
                 return new Promise((resolve, reject) => {
-                    if (this.wxPushMemberLevelSetting.id !== 'close') {
-                        this.createPayGiftCardRule().then(() => {
-                            resolve();
-                        }).catch(() => {
-                            reject();
-                        });
+                    if (this.WxMpSetInfo.payGiftCard === 'true') {
+                        if (this.wxPushMemberLevelSetting.id !== 'close') {
+                            this.createPayGiftCardRule().then(() => {
+                                resolve();
+                            }).catch(() => {
+                                reject();
+                            });
+                        } else {
+                            this.deletePayGiftCardRule().then(() => {
+                                resolve();
+                            }).catch(() => {
+                                reject();
+                            });
+                        }
                     } else {
-                        this.deletePayGiftCardRule().then(() => {
-                            resolve();
-                        }).catch(() => {
-                            reject();
-                        });
+                        resolve();
                     }
                 })
             },
