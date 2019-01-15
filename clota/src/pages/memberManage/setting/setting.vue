@@ -224,7 +224,7 @@
                             </div>
 
                             <div class="text" :class="{'ivu-form-item-error': error.chargeTemplateIdErr}"
-                                 v-if="memberConfigInfo.memberPoint === 'false'">
+                                 v-if="memberConfigInfo.memberRecharge === 'true'">
                                 <span class="text">{{$t('会员充值通知模版ID：')}}</span>
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
