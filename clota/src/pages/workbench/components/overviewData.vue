@@ -16,8 +16,8 @@
                       :class="{'icon-up' : labelCurve === 'positive', 'icon-down' : !labelCurve || labelCurve === 'negative'}">
                 </span>
                 {{getRate(labelRate) | contentFilter }}%
+                <span class="desc" v-if="showRate">{{$t('thanYestoday')}}</span>
             </span>
-            <span class="desc" v-if="showRate">{{$t('thanYestoday')}}</span>
           </span>
         </div>
     </div>
@@ -94,7 +94,8 @@
              */
             getRate (val) {
                 if (common.isNotEmpty(val)) {
-                    return (Number(val).toFixed(2)) * 100;
+                    let rate = (parseFloat(val).toFixed(2) * 100).toFixed(2);
+                    return rate;
                 } else {
                     return '';
                 }
@@ -148,11 +149,13 @@
                 /*padding: 5px 0 2px 0;*/
                 line-height: 17px;
 
-                .rate,
-                .desc {
+                .rate {
                     float: left;
                     font-size: $font_size_12px;
                     @include block_outline(50%);
+                    .desc {
+                        font-size: $font_size_12px;
+                    }
                 }
 
                 .rate {
