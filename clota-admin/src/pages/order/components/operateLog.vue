@@ -91,6 +91,11 @@
                     contentsObj = {};
                 }
                 switch (itemData.operationStatus) {
+                    //团队系统自动核销（只显示数量）
+                    case 'ORDER_TEAM_OVERDUE_VERIFY' :
+                        return {
+                            content : `${this.$t('overDueVarify')}，${this.$t('amount')}：${contentsObj.num}`
+                        };
                     //订单退票申请
                     case 'ORDER_REFUND_APPLY' :
                         // 申请退票，数量：
