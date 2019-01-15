@@ -265,12 +265,16 @@
                 }).then(res => {
                     if (res.success) {
                         this.goodInfo = res.data ? res.data : {};
-                        this.defaultImgList = [
-                            {
-                                name : 0,
-                                url : this.goodInfo.pics
-                            }
-                        ]
+                        if (this.goodInfo.pics) {
+                            this.defaultImgList = [
+                                {
+                                    name : 0,
+                                    url : this.goodInfo.pics
+                                }
+                            ]
+                        } else {
+                            this.defaultImgList = [];
+                        }
                     } else {
                         this.$Message.error(this.$t('dataGetError'));
                     }
@@ -355,7 +359,13 @@
              * 删除图片
              */
             removeIDimg (data) {
-                this.formData.pics = data;
+                this.defaultImgList = data.map((url, index) => {
+                    return {
+                        name : index,
+                        url : url
+                    };
+                });
+                this.editGoodPic(data);
             },
         }
     };
