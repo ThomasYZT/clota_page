@@ -11,24 +11,8 @@
 
                 <div class="content-item card-valid-time">
                     <div class="title">{{$t('memberCardValidity')}}</div><!--会员卡有效期-->
-                    <template v-if='Object.keys(memberLevelsData).length > 0'>
-                        <el-collapse :value="collapseOpened">
-                            <el-collapse-item v-for="(item,title,index) in memberLevelsData"
-                                              :key="index"
-                                              :title="title"
-                                              :name="title">
-                                <table-com
-                                    :column-data="getColumnData(item)"
-                                    :table-data="getTableData(item)"
-                                    :border="true"
-                                    :auto-height="true"
-                                    :height="95">
-                                </table-com>
-                            </el-collapse-item>
-                        </el-collapse>
-                    </template>
-                    <no-data v-else class="no-data-wrap">
-                    </no-data>
+                    <member-card-validate-info>
+                    </member-card-validate-info>
                 </div>
 
 
@@ -364,16 +348,16 @@
     import headerTabs from './components/headerTabs.vue';
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
-    import noData from '@/components/noDataTip/noData-tip.vue';
     import imgUpload from '../../universalMarketing/posterInformation/components/uploadImg';
     import { mapGetters } from 'vuex';
+    import memberCardValidateInfo from './components/memberCardValidateInfo';
 
     export default {
         components : {
             headerTabs,
             tableCom,
-            noData,
-            imgUpload
+            imgUpload,
+            memberCardValidateInfo
         },
         data () {
             return {
@@ -471,10 +455,6 @@
                     //marketInfoTitleErr : '',//营销标题错误
                     //marketInfoUrlErr : ''//营销链接错误
                 },
-                //会员类别及会员级别数据
-                memberLevelsData : {
-                    id : '',
-                },
                 //成长型会员卡级别列表
                 levelsOfGrowthList : [],
                 //微信会员卡推送设置
@@ -524,7 +504,6 @@
             this.findBasicSet();
             //查询证件类型
             this.queryDocument();
-            this.getMemberLevelsInType();
             this.queryMemberWxMpSet();
 
         },
@@ -533,14 +512,6 @@
                'manageOrgs',
                'memberConfigInfo'
             ]),
-            //默认打开的折叠面板
-            collapseOpened () {
-                let result = [];
-                for (let item in this.memberLevelsData) {
-                    result.push(item);
-                }
-                return result;
-            },
             //是否可以显示会员储值相关信息
             showMemberRecharge () {
                 return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
@@ -1040,48 +1011,6 @@
                 })
             },
             /**
-             * 获取所有会员类别和类别下的所有级别数据
-             */
-            getMemberLevelsInType () {
-                ajax.post('getMemberLevelsInType').then(res => {
-                    if (res.success) {
-                        this.memberLevelsData = res.data ? res.data : {};
-                    } else {
-                        this.memberLevelsData = {};
-                    }
-                });
-            },
-            /**
-             * 获取表头数据
-             * @param data 会员类别数据
-             */
-            getColumnData (data) {
-                let columnData = [];
-                for (let i = 0,j = data.length; i < j; i++) {
-                    columnData.push({
-                        title : data[i]['levelDesc'],
-                        width : 180,
-                        field : data[i]['levelDesc']
-                    });
-                }
-                return columnData;
-            },
-            /**
-             * 获取表格数据
-             * @param data 会员类别数据
-             */
-            getTableData (data) {
-                let tableData = [{}];
-                for (let i = 0,j = data.length; i < j; i++) {
-                    if (data[i]['effTime'] === null || data[i]['effTime'] === '') {
-                        tableData[0][data[i]['levelDesc']] = this.$t('permanentValidity');
-                    } else {
-                        tableData[0][data[i]['levelDesc']] = data[i]['effTime'] + (data[i]['effTimeUnit'] ? this.$t('time.' + data[i]['effTimeUnit']) : '' );
-                    }
-                }
-                return tableData;
-            },
-            /**
              * 查询所有成长型的会员卡级别
              */
             queryLevelsOfGrowth () {
@@ -1341,9 +1270,6 @@
                     position: relative;
                     min-height: 200px;
 
-                    .no-data-wrap{
-                        width:500px;
-                    }
                 }
 
                 /deep/ .ivu-form-item-wrap {
