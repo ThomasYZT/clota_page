@@ -49,8 +49,6 @@ export default {
     'marketing-forbiddenList' : '/market/forbidden/list',
     //查询类别及其级别
     'marketing-queryTypes' : '/market/type/queryTypes',
-    //审核提现记录
-    'marketing-auditWithdrawRecord' : '/market/manage/auditWithdrawRecord',
     //导出提现记录
     'marketing-exportWithdrawRecord' : '/market/manage/exportWithdrawRecord',
     //查询销售用户详情
