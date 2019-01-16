@@ -243,7 +243,7 @@
                 </div>
 
                 <!--全民营销-->
-                <div class="form-content line" v-if="detail.marketSalePriceVos">
+                <div class="form-content line" v-if="detail.marketSalePriceVos && hasMarket === 'true'">
                     <Form-item :label="$t('allPeopleMarket')+'：'"><!--全民营销-->
                         <div>
                             <table-com
@@ -399,6 +399,8 @@
                 remark : '',
                 //分销id
                 allocationId : '',
+                //是否有全名营销模块
+                hasMarket : 'false',
             };
         },
         computed : {
@@ -525,7 +527,19 @@
                             name : 'marketingPolicy'
                         });
                     }
+                    this.checkOrgServiceById();
                 }
+            },
+            checkOrgServiceById () {
+                ajax.post('checkOrgServiceById', {
+                    serviceId : '20'
+                }).then(res => {
+                    if (res.success) {
+                        this.hasMarket = res.data ? res.data : 'false';
+                    } else {
+                        this.hasMarket = 'false';
+                    }
+                })
             },
         },
     };
