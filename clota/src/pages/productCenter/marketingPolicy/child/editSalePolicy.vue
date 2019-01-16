@@ -357,7 +357,7 @@
                     </div>
 
                     <!--全民营销-->
-                    <div class="ivu-form-item-wrap single">
+                    <div class="ivu-form-item-wrap single" v-if="hasMarket === 'true'">
                         <Form-item :label="$t('allPeopleMarket')"><!--全民营销-->
                             <span @click="addMarketLevel" class="blue">+ {{$t('addNewMarketingType')}}</span><!--增加营销等级-->
                             <table-com
@@ -821,6 +821,9 @@
                 //全民营销类别、等级
                 marketingTypeList : [],
                 marketingLevelList : [],
+
+                //是否有全名营销模块
+                hasMarket : 'false'
             };
         },
         created () {
@@ -1116,10 +1119,18 @@
                 }
 
                 //渠道和营销等级至少选填其一
-                if (this.selectedRow && this.selectedRow.length < 1 && this.marketingData && this.marketingData.length < 1) {
-                    this.$Message.warning(this.$t('selectMarketingOrSaleChannel'));
-                    return;
+                if (this.hasMarket === 'true') {
+                    if (this.selectedRow && this.selectedRow.length < 1 && this.marketingData && this.marketingData.length < 1) {
+                        this.$Message.warning(this.$t('selectMarketingOrSaleChannel'));
+                        return;
+                    }
+                } else {
+                    if (this.selectedRow && this.selectedRow.length < 1) {
+                        this.$Message.warning(this.$t('请选择销售渠道'));
+                        return;
+                    }
                 }
+
                 //全民营销验证是否选择了营销等级
                 if (this.marketingData && this.marketingData.length > 0) {
                     for (let i = 0, len = this.marketingData.length; i < len; i++) {
@@ -1265,7 +1276,22 @@
                         //查询销售渠道组
                         this.queryOrgGroupVoList();
                     }
+                    /**
+                     * 查询是否有全民营销模块
+                     */
+                    this.checkOrgServiceById();
                 }
+            },
+            checkOrgServiceById () {
+                ajax.post('checkOrgServiceById', {
+                    serviceId : '20'
+                }).then(res => {
+                    if (res.success) {
+                        this.hasMarket = res.data ? res.data : 'false';
+                    } else {
+                        this.hasMarket = 'false';
+                    }
+                })
             },
             /**
              * 初始化数据
