@@ -6,9 +6,11 @@
             <div class="product-name">{{productInfo.productName | contentFilter}}</div>
             <div class="product-price">{{productInfo.salePrice | moneyFilter(2,'¥') | contentFilter}}</div>
         </div>
-        <ul class="label-input" v-if="cannotReturn || cannotAlter">
+        <ul class="label-input">
             <li class="label-list" v-if="cannotReturn">不可退</li>
+            <li class="label-list" v-else>可退</li>
             <li class="label-list" v-if="cannotAlter">不可改</li>
+            <li class="label-list" v-else>可改</li>
         </ul>
         <div class="ticket-notick" @click="$emit('show-notice',productInfo)">购票须知</div>
         <div class="price-info">
