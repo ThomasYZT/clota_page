@@ -201,6 +201,7 @@
                                        @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr',
                                        settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
+                                <span class="warning-tip">请在微信公众号后台获取ID</span>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.chargeTemplateIdErr"
                                      style="margin-left: 150px">{{error.chargeTemplateIdErr}}
@@ -255,7 +256,7 @@
                     <!--微信会员卡推送设置 (仅仅配置了公众号信息，并开通了支付即会员才显示)-->
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
                     && levelsOfGrowthList.length > 1">
-                        <div class="title">{{$t('微信会员卡推送设置')}}</div>
+                        <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
                         <div :class="{'main': true}">
                             <div class="switcher">
                                 <Select v-model="wxPushMemberLevelSetting.id"
@@ -270,7 +271,7 @@
 
                     <!--配置微信卡包的商户信息 (仅配置了公众号信息，并开通了微信卡包才显示)-->
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.openMembercard === 'true'">
-                        <div class="title">{{$t('配置微信卡包的商户信息')}}</div>
+                        <div class="title">{{$t('微信卡包卡面信息')}}</div>
                         <div :class="{'main': true}">
                             <div class="img-wrap" :class="{'ivu-form-item-error': error.cardLogoErr}">
                                 <span class="width-150px-label">{{$t('会员卡logo：')}}</span>

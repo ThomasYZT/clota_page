@@ -2402,7 +2402,7 @@ export default {
     'thisTimeRefundCardNum' : '本次退卡数量',
     'openCardSpeedly' : '快速开卡',
     'memberCardNotExisit' : '会员卡不存在',
-    'wxPushExchangeRecordSetting' : '微信端推送交易记录设置',
+    'wxPushExchangeRecordSetting' : '微信公众号推送会员储值账户交易信息设置',
     'whetherPushInfoOnWx' : '是否在微信公众号推送会员储值账户交易信息',
     'cardNoRange' : '卡片编号区间',
     'cardNoStartValue' : '卡片编号起始值',
