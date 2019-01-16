@@ -991,7 +991,7 @@
             checkTemplateID (value, errType, required) {
                 return new Promise((resolve, reject) => {
                     if (required) {
-                        this.checkInputMaxErr(value, errType, 1, 20, true).then(() => {
+                        this.checkInputMaxErr(value, errType, 1, 100, true).then(() => {
                             this.checkInputOnlyNumOrLetter (value, errType).then(() => {
                                 resolve();
                             }).catch(() => {
