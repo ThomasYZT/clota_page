@@ -304,7 +304,7 @@
                                 <span class="width-150px-label">{{$t('商户名称：')}}</span>
                                 <Input type="text"
                                        v-model.trim="wxMpSettingData.brandName"
-                                       @on-blur="checkWxPackageInfo(wxMpSettingData.brandName,'brandNameErr')"
+                                       @on-blur="checkWxPackageInfo(wxMpSettingData.brandName,'brandNameErr',true)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <span class="warning-tip">保存后不可随意修改，请谨慎填写。</span>
                                 <div class="fixed-error ivu-form-item-error-tip"
@@ -331,7 +331,7 @@
                                 <span class="width-150px-label">{{$t('会员卡标题：')}}</span>
                                 <Input type="text"
                                        v-model="wxMpSettingData.wxCardTitle"
-                                       @on-blur="checkWxPackageInfo(wxMpSettingData.wxCardTitle,'wxCardTitleErr')"
+                                       @on-blur="checkWxPackageInfo(wxMpSettingData.wxCardTitle,'wxCardTitleErr',true)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="fixed-error ivu-form-item-error-tip"
                                      v-if="error.wxCardTitleErr">{{error.wxCardTitleErr}}
@@ -574,6 +574,10 @@
                                         consumeTemplateId : '',
                                     }
                                 };
+                                params.wxMpTemplateInfoSet.chargeTemplateId = params.wxMpTemplateInfoSet.chargeTemplateId ?
+                                    params.wxMpTemplateInfoSet.chargeTemplateId : '';
+                                params.wxMpTemplateInfoSet.consumeTemplateId = params.wxMpTemplateInfoSet.consumeTemplateId ?
+                                    params.wxMpTemplateInfoSet.consumeTemplateId : '';
                                 params.wxMpTemplateInfoSet.showStoreValue = params.wxMpTemplateInfoSet.showStoreValue ? JSON.parse(params.wxMpTemplateInfoSet.showStoreValue) : false;
                                 //params.wxMpTemplateInfoSet.showMarketInfo = params.wxMpTemplateInfoSet.showMarketInfo ? JSON.parse(params.wxMpTemplateInfoSet.showMarketInfo) : false;
                                 this.settingData = params;
@@ -604,8 +608,10 @@
                         //     this.settingData.wxMpTemplateInfoSet.showMarketInfo),
                         // this.checkMarketInfo(this.settingData.wxMpTemplateInfoSet.url,'marketInfoUrlErr',
                         //     this.settingData.wxMpTemplateInfoSet.showMarketInfo),
-                        this.checkWxPackageInfo(this.wxMpSettingData.brandName,'brandNameErr'),
-                        this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr')
+                        this.checkWxPackageInfo(this.wxMpSettingData.brandName,'brandNameErr',
+                            this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true'),
+                        this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr',
+                            this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true'),
                     ]).then(() => {
                         Promise.all([
                             this.createOrModifyWxMpMemberCard(),
@@ -690,6 +696,8 @@
                     this.settingData.wxMpTemplateInfoSet.showStoreValue);
                 this.checkTemplateID(this.settingData.wxMpTemplateInfoSet.consumeTemplateId,'consumeTemplateIdErr',
                     this.settingData.wxMpTemplateInfoSet.showStoreValue);
+                this.error.chargeTemplateIdErr = '';
+                this.error.consumeTemplateIdErr = '';
             },
             //校验选项勾选是输入框是否填写，返回true/false
             checkInputFunc () {
@@ -872,20 +880,32 @@
              *  校验卡包logo
              */
             checkCardLogo () {
-                if (this.wxMpSettingData.wxCardLogo.length === 0) {
-                    this.error.cardLogoErr = "请上传图片";
-                    return false;
+                if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
+                    if (this.wxMpSettingData.wxCardLogo.length === 0) {
+                        this.error.cardLogoErr = "请上传图片";
+                        return false;
+                    } else {
+                        this.error.cardLogoErr = '';
+                        return true;
+                    }
                 } else {
-                    this.error.cardLogoErr = '';
                     return true;
                 }
+
             },
+            /**
+             *  校验卡包背景
+             */
             checkCardBg () {
-                if (this.wxMpSettingData.wxCardBackgroundPic.length === 0) {
-                    this.error.cardBgErr = "请上传图片";
-                    return false;
+                if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
+                    if (this.wxMpSettingData.wxCardBackgroundPic.length === 0) {
+                        this.error.cardBgErr = "请上传图片";
+                        return false;
+                    } else {
+                        this.error.cardBgErr = '';
+                        return true;
+                    }
                 } else {
-                    this.error.cardBgErr = '';
                     return true;
                 }
             },
@@ -998,17 +1018,22 @@
             //         }
             //     });
             // },
-            checkWxPackageInfo (value, errType) {
+            checkWxPackageInfo (value, errType, required) {
                 return new Promise((resolve, reject) => {
-                    this.checkInputMaxErr(value, errType, 1, 20, true).then(() => {
-                        this.checkInputOnlyCN (value, errType).then(() => {
-                            resolve();
+                    if (required) {
+                        this.checkInputMaxErr(value, errType, 1, 20, true).then(() => {
+                            this.checkInputOnlyCN (value, errType).then(() => {
+                                resolve();
+                            }).catch(() => {
+                                reject();
+                            });
                         }).catch(() => {
                             reject();
-                        });
-                    }).catch(() => {
-                        reject();
-                    })
+                        })
+                    } else {
+                        resolve();
+                    }
+
                 })
             },
             /**
