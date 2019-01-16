@@ -125,6 +125,11 @@
                                         text : this.$t(res.message),
                                         type : 'cancel',
                                     });
+                                } else if (res.code === 'A006') {
+                                    this.$vux.toast.show({
+                                        text : this.$t('errorMsg.A006'),
+                                        type : 'cancel',
+                                    });
                                 } else {
                                     this.$vux.toast.show({
                                         text : this.$t('operateFail',{ msg : this.$t('send') }),
