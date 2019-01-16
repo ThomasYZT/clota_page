@@ -67,7 +67,7 @@ export default function (type,...rest) {
                 },
                 {
                     label : '营业执照',
-                    value : rest[13]
+                    value : rest[13] ? JSON.parse(rest[13]) : []
                 }
             ]
         ];
@@ -133,7 +133,7 @@ export default function (type,...rest) {
                 },
                 {
                     label : '身份证',
-                    value : rest[12]
+                    value : rest[12] ? JSON.parse(rest[12]) : []
                 }
             ]
         ];

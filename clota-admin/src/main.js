@@ -8,6 +8,7 @@ import store from './store';
 import ajax from '@/api/index.js';
 //es6垫片（包含了es5）
 import 'core-js/es6';
+import Viewer from 'v-viewer';
 
 //引入多语言配置文件
 import i18n from './assets/lang/lang.config';
@@ -18,6 +19,7 @@ import './assets/theme/elementTheme/index.scss';
 import './assets/scss/_iconfont.scss';
 import './assets/css/iconfont.css';
 import './assets/scss/_common.scss';
+import 'viewerjs/dist/viewer.css';
 
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
@@ -25,7 +27,11 @@ import plugin from './assets/js/plugin';
 
 Vue.use(plugin);
 Vue.config.productionTip = false;
-
+Vue.use(Viewer, {
+    defaultOptions : {
+        zIndex : 9999
+    }
+});
 router.beforeEach((to, from, next) => {
     //如果是跳转到登录页面，不做任何权限判断
     if (to.name === 'login') {

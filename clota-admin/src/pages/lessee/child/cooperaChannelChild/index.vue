@@ -46,10 +46,12 @@
                         <div class="info-list5">
                             <span class="info-key">{{item[1].label}}：</span>
                             <span class="info-val">
-                                <img v-for="(picture, imgIndex) in JSON.parse(item[1].value ? item[1].value : '[]')"
-                                     :key="imgIndex"
-                                     class="classify-img"
-                                     :src="picture" alt="">
+                                <image-preview :images="item[1].value">
+                                    <img v-for="(picture, imgIndex) in item[1].value"
+                                         :key="imgIndex"
+                                         class="classify-img"
+                                         :src="picture" alt="">
+                                </image-preview>
                             </span>
                         </div>
                     </li>
@@ -140,13 +142,16 @@
     import { channelsGroupList } from '@/assets/js/constVariable';
     import { validator } from 'klwk-ui';
     import onlineReceipt from '../ISPinternetChild/ISPinternetDetailChild/components/onlineReceipt';
+    import imagePreview from '@/components/imagePreview/index.vue';
+
     export default {
         mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
             tableCom,
             editModal,
-            onlineReceipt
+            onlineReceipt,
+            imagePreview
         },
         data () {
             //校验邮箱地址是否正确
@@ -515,6 +520,7 @@
                     .classify-img{
                         @include block_outline(100px,100px);
                         display: block;
+                        cursor: pointer;
                     }
 
                     .info-list1,
