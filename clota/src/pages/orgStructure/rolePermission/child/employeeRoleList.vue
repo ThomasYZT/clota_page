@@ -214,6 +214,7 @@
         }
 
         @at-root .del-tips{
+            height: 42px;
             position: absolute;
             padding: 0 76px 0 106px;
             color: $color_333;

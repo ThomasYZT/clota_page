@@ -193,7 +193,6 @@
     import abnormalManageModal from '../components/abnormalManageModal';
     import breadCrumbHead from '../../../../components/breadCrumbHead/index';
     import ImgUploader from '../../../register/components/ImgUploader';
-    import imagePreview from '../../../register/components/imagePreview';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -201,8 +200,7 @@
             tableCom,
             abnormalManageModal,
             breadCrumbHead,
-            ImgUploader,
-            imagePreview
+            ImgUploader
         },
         data () {
             return {

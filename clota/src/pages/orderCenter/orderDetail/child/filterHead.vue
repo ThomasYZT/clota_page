@@ -198,16 +198,11 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <!--审核状态-->
-                    <FormItem :label="$t('auditStatus')" >
-                        <Select v-model.trim="formData.auditStatus"
-                                :disabled="formData.orderType === 'individual'"
+                    <!--业态类型-->
+                    <FormItem :label="$t('industryType')" >
+                        <Select v-model.trim="formData.productType"
                                 @on-change="searchProductList">
-                            <Option v-for="item  in auditStatusList"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label)}}
-                            </Option>
+                            <Option value="ticket">{{$t('tickets')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
@@ -227,11 +222,16 @@
             </i-row>
             <i-row>
                 <i-col span="6">
-                    <!--业态类型-->
-                    <FormItem :label="$t('industryType')" >
-                        <Select v-model.trim="formData.productType"
+                    <!--审核状态-->
+                    <FormItem :label="$t('teamOrderAudit')" :label-width="115">
+                        <Select v-model.trim="formData.auditStatus"
+                                :disabled="formData.orderType === 'individual'"
                                 @on-change="searchProductList">
-                            <Option value="ticket">{{$t('tickets')}}</Option>
+                            <Option v-for="item  in auditStatusList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
                         </Select>
                     </FormItem>
                 </i-col>

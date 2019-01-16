@@ -1393,7 +1393,7 @@
                 .main {
                     position: relative;
                     div {
-                        margin-bottom: 3px;
+                        margin-bottom: 10px;
                     }
                     &.form-bottom {
                         /deep/ .ivu-radio-group {

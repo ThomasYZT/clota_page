@@ -22,8 +22,9 @@
             <i class="el-icon-plus" ></i>
         </el-upload>
 
-        <!--图片预览模态框-->
-        <image-preview v-model="imageShow" :image-src="dialogImageUrl">
+        <!--图片预览-->
+        <image-preview ref="imagePreview" :images="[dialogImageUrl]">
+            <img :src="dialogImageUrl">
         </image-preview>
     </div>
 </template>
@@ -32,7 +33,7 @@
     import config from '@/config/index';
     import api from '@/api/apiList';
     import ajaxConfig from '@/api/index.js';
-    import imagePreview from './imagePreview';
+    import imagePreview from '@/components/imagePreview/index.vue';
 
     export default {
         props : {
@@ -74,8 +75,6 @@
                 limit : false,
                 //是否显示添加按钮
                 addDisabled : false,
-                //模态框预览是否显示
-                imageShow : false
             };
         },
         computed : {
@@ -143,7 +142,11 @@
              */
             handlePictureCardPreview (file) {
                 this.dialogImageUrl = file.url;
-                this.imageShow = true;
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.$refs.imagePreview.show();
+                    },100);
+                });
             },
             /**
              * 上传失败
