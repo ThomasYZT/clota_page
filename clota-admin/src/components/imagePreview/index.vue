@@ -1,7 +1,9 @@
 <!--预览图片-->
 
 <template>
-    <viewer ref="viewer" :images="images">
+    <viewer ref="viewer"
+            :options="options"
+            :images="images">
         <slot></slot>
     </viewer>
 </template>
@@ -19,6 +21,21 @@
         },
         data () {
             return {
+                options : {
+                    "button" : false,
+                    "navbar" : true,
+                    "title" : false,
+                    "toolbar" : true,
+                    "tooltip" : true,
+                    "movable" : true,
+                    "zoomable" : true,
+                    "rotatable" : true,
+                    "scalable" : true,
+                    "transition" : true,
+                    "fullscreen" : true,
+                    "keyboard" : true,
+                    "url" : "data-source"
+                }
             };
         },
     };
