@@ -29,3 +29,12 @@
 .overflow-tip-list{
     @include overflow_tip();
 }
+
+.ivu-icon-ios-search{
+    font-family: iconfont;
+    font-size: 14px;
+
+    &:before {
+        content: "\e661";
+    }
+}

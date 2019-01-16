@@ -44,7 +44,7 @@
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
                     <Select v-model.trim="formData.smsProvider" style="width:280px">
                         <Option v-for="item in smsProviderList"
-                                :value="item.provider"
+                                :value="item.id"
                                 :key="item.id">
                             {{ item.provider }}
                         </Option>
@@ -407,7 +407,7 @@
                     orgName : this.addedNodeDetail.nodeName,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
-                    smsProvider : this.formData.smsProvider,
+                    smsProviderId : this.formData.smsProvider,
                     linkName : this.formData.person,
                     telephone : this.formData.phone,
                     tex : this.formData.fax,

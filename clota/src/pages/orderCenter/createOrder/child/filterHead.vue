@@ -11,6 +11,7 @@
                     <!--游玩日期-->
                     <FormItem :label="$t('playDate')">
                         <DatePicker v-model="formData.playDate"
+                                    style="width: 100%;"
                                     type="date"
                                     :options="dateOptions"
                                     :editable="false"

@@ -459,6 +459,8 @@
                 fianceSuperiorList : [],
                 //公司详细信息
                 companyDetail : {},
+                //会员配置信息
+                memberConfigInfo : {},
                 ruleValidate : {
                     orgName : [
                         { max : 100,message : this.$t('errorMaxLength',{ field : '',length : 100 }),trigger : 'blur' },
@@ -688,11 +690,28 @@
                     }
                 });
             },
+            /**
+             * 获取当前节点的会员配置信息
+             */
+            getServiceSetting () {
+                ajax.post('getServiceSetting', {
+                    serviceCode : 'member',
+                    orgId : this.activeNode.id,
+                    companyId : this.manageOrgs.manageCompanyId
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.memberConfigInfo = res.data;
+                    } else {
+                        this.memberConfigInfo = {};
+                    }
+                });
+            }
         },
         created () {
             this.querySmsProviderList();
             this.getParentManages();
             this.getParentEconomic();
+            this.getServiceSetting();
         },
         computed : {
             //公司详细地址
@@ -732,7 +751,7 @@
             },
             ...mapGetters({
                 permissionInfo : 'permissionInfo',
-                memberConfigInfo : 'memberConfigInfo',
+                manageOrgs : 'manageOrgs',
             }),
             //是否可以编辑节点信息
             canModifyNode () {
