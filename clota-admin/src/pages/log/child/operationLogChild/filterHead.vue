@@ -129,7 +129,7 @@
                             }
                         } else if (item === 'sysOperationScene') {
                             if (this.formData[item] && this.formData[item] !== 'all') {
-                                returnObj['operationScene'] = this.formData['sysOperationScene'];
+                                returnObj['operationStatus'] = this.formData['sysOperationScene'];
                             }
                         } else if (item === 'sysTargetName') {
                             if (this.formData[item]) {

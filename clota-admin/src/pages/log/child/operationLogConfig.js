@@ -43,7 +43,7 @@ export const saasLogHead = [
     {
         title : '操作类型',
         minWidth : 100,
-        field : 'operationScene'
+        field : 'operationStatus'
     },
     {
         title : '操作对象',
