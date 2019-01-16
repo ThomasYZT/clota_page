@@ -121,5 +121,9 @@
         .no-data-wrap{
             width:500px;
         }
+
+        /deep/ .ivu-btn-group{
+            margin-bottom: 10px;
+        }
     }
 </style>
