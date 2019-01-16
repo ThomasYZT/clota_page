@@ -111,17 +111,24 @@
         <!--审核通过模态框-->
         <edit-modal ref="passModal">
             <Form :model="formData"
+                  class="form-wrap"
                   key="passForm"
                   ref="passForm"
                   :rules="ruleValidate"
                   label-position="right"
                   :label-width="150">
-                <FormItem :label="channelType === 'per' ? $t('cooperaChannelPer') : $t('cooperaChannelOrg') + '：'">
+                <FormItem :label="(channelType === 'per' ? $t('cooperaChannelPer') : $t('cooperaChannelOrg')) + '：'">
                     <span>{{cooperaPerDetail.name}}</span>
                 </FormItem>
-                <FormItem :label="$t('partnerChannelType') + '：'" prop="partnerChannelType">
-                    <RadioGroup v-model="formData.partnerChannelType" style="width: 100px">
-                        <Radio v-for="(item, index) in channelsGroupList" :key="index" :label="item.value">{{$t(item.label)}}</Radio>
+                <FormItem v-if="channelType !== 'per'"
+                          :label="$t('partnerChannelType') + '：'"
+                          prop="partnerChannelType">
+                    <RadioGroup v-model="formData.partnerChannelType">
+                        <Radio v-for="(item, index) in channelsGroupList"
+                               :key="index"
+                               :label="item.value">
+                            {{$t(item.label)}}
+                        </Radio>
                     </RadioGroup>
                 </FormItem>
                 <!--<FormItem label="登录密码将发送至：" prop="email">-->
@@ -238,13 +245,19 @@
                     title : '注册申请审核通过',
                     confirmBtn : '审核通过',
                     confirmCallback : () => {
-                        this.$refs.passForm.validate(valid => {
-                            if (valid) {
-                                this.auditPartner({
-                                    auditStatus : 'success'
-                                });
-                            }
-                        });
+                        if (this.channelType === 'per') {
+                            this.auditPartner({
+                                auditStatus : 'success'
+                            });
+                        } else {
+                            this.$refs.passForm.validate(valid => {
+                                if (valid) {
+                                    this.auditPartner({
+                                        auditStatus : 'success'
+                                    });
+                                }
+                            });
+                        }
                     },
                     cancelCallback : () => {
                         this.$refs.passForm.resetFields();
@@ -269,7 +282,9 @@
                         });
                     },
                     cancelCallback : () => {
-                        this.$refs.rejectForm.resetFields();
+                        this.$nextTick(() => {
+                            this.$refs.rejectForm.resetFields();
+                        });
                     }
                 });
             },
@@ -387,7 +402,7 @@
             auditPartner (params) {
                 ajax.post('auditPartner',Object.assign({
                     id : this.channelId,
-                    partnerChannelType : this.formData.partnerChannelType,
+                    partnerChannelType : this.channelType === 'per' ? '' : this.formData.partnerChannelType,
                     //email : this.formData.email,
                 },params)).then(res => {
                     if (res.status === 200) {
@@ -615,5 +630,8 @@
                 }
             }
         }
+    }
+    /deep/ .form-wrap{
+        width: 300px;
     }
 </style>
