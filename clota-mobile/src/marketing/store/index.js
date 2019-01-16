@@ -9,8 +9,6 @@ export const marketingState = {
     marketing : {
         //公司名称
         companyName : '',
-        //公司编码
-        companyCode : '',
         //组织id
         orgId : '',
         //营销级别id
@@ -41,14 +39,6 @@ export const marketingGetters = {
     //公司名称
     companyName : state => {
         return state.marketing.companyName;
-    },
-    //公司编码
-    marketINgCompanyCode : state => {
-        if (state.marketing.companyCode) {
-            return state.marketing.companyCode;
-        } else {
-            return localStorage.getItem('marketingCompanyCode');
-        }
     },
     //组织id
     marketOrgId : state => {
@@ -147,11 +137,6 @@ export const marketMutations = {
     marketUpdateCompanyName (state,companyName) {
         state.marketing.companyName = companyName;
     },
-    //更新公司code
-    marketUpdateCompanyCode (state,companyCode) {
-        localStorage.setItem('marketingCompanyCode',companyCode);
-        state.marketing.companyCode = companyCode;
-    },
     /**
      * 更新位置信息
      * @param{Object} state
@@ -217,18 +202,18 @@ export const marketActions = {
             if (res.success) {
                 if (res.data && Object.keys(res.data).length > 0) {
                     commit('marketUpdateCompanyName',res.data.orgName);
-                    commit('marketUpdateCompanyCode',res.data.orgCode);
+                    commit('updateCompanyCode',res.data.orgCode);
                     commit('marketUpdateTypeId',res.data.marketTypeId);
                     commit('marketUpdateMarketNeedGetLocation',res.data.setPosition);
                 } else {
                     commit('marketUpdateCompanyName','');
-                    commit('marketUpdateCompanyCode','');
+                    commit('updateCompanyCode','');
                     commit('marketUpdateTypeId','');
                     commit('marketUpdateMarketNeedGetLocation','');
                 }
             } else {
                 commit('marketUpdateCompanyName','');
-                commit('marketUpdateCompanyCode','');
+                commit('updateCompanyCode','');
                 commit('marketUpdateTypeId','');
                 commit('marketUpdateMarketNeedGetLocation','');
             }

@@ -47,7 +47,7 @@
                     <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
                 </div>
                 <x-button class="button"
-                          :disabled="!marketINgCompanyCode || !companyName"
+                          :disabled="!companyCode || !companyName"
                           @click.native="login">{{$t('login')}}</x-button>
                 <div class="to-register">
                     {{$t('没有账号?')}}<span class="login-label" @click="toRegister">去注册</span>
@@ -225,7 +225,7 @@
                         this.$store.commit('marketUpdatOrgAddress','');
                     }
                 }).finally(() => {
-                    this.$store.commit('marketUpdateCompanyCode',orgCode);
+                    this.$store.commit('updateCompanyCode',orgCode);
                 });
             },
             /**
@@ -233,12 +233,12 @@
              * @param{Object} params 路由信息
              */
             getParams (params) {
-                if (params && Object.keys(params).length > 0) {
-                    this.$store.commit('marketUpdateCompanyCode',params.companyCode);
+                if (params && params.companyCode) {
+                    this.$store.commit('updateCompanyCode',params.companyCode);
                     this.queryOrgInfo(params.companyCode);
                     this.createIMGValidCode();
-                } else if (this.marketINgCompanyCode) {
-                    this.queryOrgInfo(this.marketINgCompanyCode);
+                } else if (this.companyCode) {
+                    this.queryOrgInfo(this.companyCode);
                     this.createIMGValidCode();
                 }
             },
@@ -354,7 +354,7 @@
                 companyName : 'companyName',
                 marketOrgId : 'marketOrgId',
                 marketTypeId : 'marketTypeId',
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
             })
         },
         beforeRouteEnter (to,from,next) {

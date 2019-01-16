@@ -145,7 +145,7 @@
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'market_reset_password',
-                            companyCode : this.marketINgCompanyCode
+                            companyCode : this.companyCode
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -351,7 +351,7 @@
                 ajax.post('market_checkVerifyCode',{
                     mobile : this.formData.phoneNum,
                     code : this.formData.code,
-                    companyCode : this.marketINgCompanyCode,
+                    companyCode : this.companyCode,
                     type : 'market_reset_password',
                 }).then((res) => {
                     if (res.success) {
@@ -423,7 +423,7 @@
                         this.$store.commit('marketUpdateOrgId','');
                     }
                 }).finally(() => {
-                    this.$store.commit('marketUpdateCompanyCode',orgCode);
+                    this.$store.commit('updateCompanyCode',orgCode);
                 });
             },
             /**
@@ -462,7 +462,7 @@
                 isWeixin : 'isWeixin',
                 marketOrgId : 'marketOrgId',
                 marketTypeId : 'marketTypeId',
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
             }),
             //所选的类别名称信息
             typeName () {

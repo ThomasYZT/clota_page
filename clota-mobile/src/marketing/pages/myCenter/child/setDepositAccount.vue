@@ -240,7 +240,7 @@
                     ajax.post('market_getPhoneVerificationCode', {
                         phoneNum : this.mobile,
                         type : 'makert_change_account',
-                        companyCode : this.marketINgCompanyCode
+                        companyCode : this.companyCode
                     }).then((res) => {
                         if (!res.success) {
                             this.$vux.toast.show({
@@ -325,7 +325,7 @@
                 ajax.post('market_checkVerifyCode',{
                     mobile : this.mobile,
                     code : this.formData.code,
-                    companyCode : this.marketINgCompanyCode,
+                    companyCode : this.companyCode,
                     type : 'makert_change_account',
                 }).then((res) => {
                     if (res.success) {
@@ -360,7 +360,7 @@
         },
         computed : {
             ...mapGetters({
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
             })
         }
     };

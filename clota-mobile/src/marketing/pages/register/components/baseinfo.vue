@@ -84,7 +84,7 @@
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'maket_register',
-                            companyCode : this.marketINgCompanyCode,
+                            companyCode : this.companyCode,
                             orgId : this.marketOrgId
                         }).then((res) => {
                             if (!res.success) {
@@ -181,7 +181,7 @@
                 this.$router.push({
                     name : 'marketingLogin',
                     query : {
-                        companyCode : this.marketINgCompanyCode
+                        companyCode : this.companyCode
                     }
                 });
             },
@@ -192,7 +192,7 @@
                 ajax.post('market_checkVerifyCode',{
                     mobile : this.formData.phoneNum,
                     code : this.formData.code,
-                    companyCode : this.marketINgCompanyCode,
+                    companyCode : this.companyCode,
                     type : 'maket_register',
                     orgId : this.marketOrgId
                 }).then((res) => {
@@ -216,7 +216,7 @@
             ...mapGetters({
                 companyName : 'companyName',
                 marketTypeName : 'marketTypeName',
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
                 marketOrgId : 'marketOrgId',
             })
         }

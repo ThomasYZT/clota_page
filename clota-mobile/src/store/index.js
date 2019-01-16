@@ -27,10 +27,50 @@ export default new Vuex.Store({
         isWeixin : null,
         //是否可以使用微信jsdk
         weixinIsConfiged : true,
+        //公司id
+        companyCode : '00000194',
+        //来源信息，区分全民营销和会员系统
+        sourceInfo : '',
         ...memberState,
         ...marketingState,
     },
     getters : {
+        //来源信息
+        sourceInfo : state => {
+            let sourceInfo = localStorage.getItem('sourceInfo');
+            if (state.sourceInfo) {
+                return state.sourceInfo;
+            } else {
+                return sourceInfo;
+            }
+        },
+        //公司id
+        companyCode : state => {
+            let companyCodeStored = localStorage.getItem('companyCode');
+            if (state.companyCode) {
+                return state.companyCode;
+            } else {
+                return companyCodeStored;
+            }
+            //
+            // localStorage.setItem('companyCode',companyCode);
+            // let companyCode = state.companyCode;
+            // let url = location.href;
+            // if (url.indexOf('?') !== -1) {
+            //     let query = url.split("?")[1];
+            //     let queryArr = query.split("&");
+            //     queryArr.forEach(function (item) {
+            //         let key = item.split("=")[0];
+            //         let value = item.split("=")[1];
+            //         if (key === 'companyCode') {
+            //             companyCode = value;
+            //         }
+            //     });
+            //     return companyCode;
+            // } else {
+            //     return companyCode;
+            // }
+        },
         //当前语言状态
         lang : state => {
             let lang = localStorage.getItem('lang');
@@ -110,6 +150,24 @@ export default new Vuex.Store({
          */
         updateWeixinConfig ( state,status) {
             state.weixinIsConfiged = status;
+        },
+        /**
+         * 更新companyCode
+         * @param state
+         * @param companyCode
+         */
+        updateCompanyCode (state, companyCode) {
+            state.companyCode = companyCode;
+            localStorage.setItem('companyCode',companyCode);
+        },
+        /**
+         * 更新source信息
+         * @param state
+         * @param sourceInfo
+         */
+        updateSourceInfo (state,sourceInfo) {
+            state.sourceInfo = sourceInfo;
+            localStorage.setItem('sourceInfo',sourceInfo);
         },
         ...memberMutations,
         ...marketMutations

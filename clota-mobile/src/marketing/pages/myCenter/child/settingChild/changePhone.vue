@@ -82,7 +82,7 @@
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'market_change_phone',
-                            companyCode : this.marketINgCompanyCode
+                            companyCode : this.companyCode
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -221,7 +221,7 @@
         },
         computed : {
             ...mapGetters({
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
             })
         }
     };

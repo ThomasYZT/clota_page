@@ -118,14 +118,14 @@
                         this.$store.commit('marketUpdateTypeName',res.data ? res.data.marketTypeName : '');
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
-                        this.$store.commit('marketUpdateCompanyCode',res.data ? res.data.orgCode : '');
+                        this.$store.commit('updateCompanyCode',res.data ? res.data.orgCode : '');
                     } else {
                         this.$store.commit('marketUpdateOrgId','');
                         this.$store.commit('marketUpdateLevelId',marketTypeId);
                         this.$store.commit('marketUpdateTypeId','');
                         this.$store.commit('marketUpdateTypeName','');
                         this.$store.commit('marketUpdateCompanyName','');
-                        this.$store.commit('marketUpdateCompanyCode','');
+                        this.$store.commit('updateCompanyCode','');
                     }
                 });
             },
@@ -137,7 +137,7 @@
                 if (params && Object.keys(params).length > 0) {
                     this.getRegisterParams(params.Ucid,params.Ycode);
                     this.companyCode = params.companyCode;
-                    this.$store.commit('marketUpdateCompanyCode',params.companyCode);
+                    this.$store.commit('updateCompanyCode',params.companyCode);
                 }
             }
         },
