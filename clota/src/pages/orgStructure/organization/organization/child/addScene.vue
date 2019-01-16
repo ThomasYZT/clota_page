@@ -99,7 +99,7 @@
                     <Input v-model="formData.address" style="width: 280px"/>
                 </FormItem>
                 <!--是否启用-->
-                <FormItem :label="$t('isStarted')" prop="address">
+                <FormItem :label="$t('isStarted')" prop="status">
                     <RadioGroup v-model="formData.status">
                         <Radio label="open">{{$t('yes')}}</Radio>
                         <Radio label="close">{{$t('no')}}</Radio>
@@ -282,6 +282,9 @@
                     ],
                     companyCode : [
                         { min : 2,max : 8,message : this.$t('rangeError',{ field : this.$t('companyCode'),min : 2,max : 8 }),trigger : 'blur' }
+                    ],
+                    status : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('isStarted') }) },
                     ]
                 },
                 //财务上级列表
@@ -321,6 +324,7 @@
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
+                    this.formData.status = 'open';
                 } else {
                     this.getParentManages();
                     this.getParentEconomic();
