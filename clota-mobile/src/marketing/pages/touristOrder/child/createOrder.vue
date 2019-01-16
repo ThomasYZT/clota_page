@@ -9,7 +9,9 @@
             </div>
             <ul class="label-input">
                 <li class="label-list" v-if="cannotReturn">不可退</li>
+                <li class="label-list" v-else>可退</li>
                 <li class="label-list" v-if="cannotAlter">不可改</li>
+                <li class="label-list" v-else>可改</li>
             </ul>
         </div>
         <div class="content">
