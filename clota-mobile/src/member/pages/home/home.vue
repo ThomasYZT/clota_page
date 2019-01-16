@@ -66,7 +66,7 @@
         },
         created () {
             //判断是否开通了微信卡包
-            if (this.wxMpSet.openMembercard === 'true') {
+            if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId) {
                 this.queryUnboundCard();
             }
         },
