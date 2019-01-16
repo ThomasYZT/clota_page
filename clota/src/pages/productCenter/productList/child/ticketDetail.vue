@@ -245,7 +245,7 @@
                             <TimelineItem v-for="(item,index) in recordsVos" :key="index" color="#DFDFDF">
                                 <p class="time">{{item.createdTime}}</p>
                                 <p class="content">
-                                    <span class="name">{{item.createName}}/{{item.createAccount}}</span>
+                                    <span class="name">{{item.createUserName}}/{{item.createAccount}}</span>
                                     <span>{{$t(item.operationStatus === 'auditing' ? 'PRODUCT_APPLY' : item.operationStatus)}}</span>
                                     <span v-if="item.contents">{{$t('remark')}}：{{item.contents}}</span>
                                 </p>
