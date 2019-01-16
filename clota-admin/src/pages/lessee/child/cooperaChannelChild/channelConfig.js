@@ -128,7 +128,7 @@ export default function (type,...rest) {
             ],
             [
                 {
-                    label : '个人说明',
+                    label : '备注',
                     value : rest[11]
                 },
                 {
