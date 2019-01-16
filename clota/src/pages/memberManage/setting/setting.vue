@@ -1287,24 +1287,29 @@
              */
             createOrModifyWxMpMemberCard () {
                 return new Promise((resolve, reject) => {
-                    ajax.post('createOrModifyWxMpMemberCard', {
-                        id : this.WxMpSetInfo.id,
-                        wxCardId : this.WxMpSetInfo.wxCardId,
-                        companyId : this.manageOrgs.manageCompanyId,
-                        brandName : this.wxMpSettingData.brandName,
-                        wxCardTitle : this.wxMpSettingData.wxCardTitle,
-                        wxCardBackgroundPic : this.wxMpSettingData.wxCardBackgroundPic[0],
-                        wxCardLogo : this.wxMpSettingData.wxCardLogo[0],
-                    }).then(res => {
-                        if (res.success) {
-                            this.queryMemberWxMpSet();
-                            resolve();
-                        } else {
+                    if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
+                        ajax.post('createOrModifyWxMpMemberCard', {
+                            id : this.WxMpSetInfo.id,
+                            wxCardId : this.WxMpSetInfo.wxCardId,
+                            companyId : this.manageOrgs.manageCompanyId,
+                            brandName : this.wxMpSettingData.brandName,
+                            wxCardTitle : this.wxMpSettingData.wxCardTitle,
+                            wxCardBackgroundPic : this.wxMpSettingData.wxCardBackgroundPic[0],
+                            wxCardLogo : this.wxMpSettingData.wxCardLogo[0],
+                        }).then(res => {
+                            if (res.success) {
+                                this.queryMemberWxMpSet();
+                                resolve();
+                            } else {
+                                reject();
+                            }
+                        }).catch(() => {
                             reject();
-                        }
-                    }).catch(() => {
-                        reject();
-                    })
+                        });
+                    } else {
+                        resolve();
+                    }
+
                 })
             }
         },
