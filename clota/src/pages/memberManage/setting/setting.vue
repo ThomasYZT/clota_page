@@ -210,7 +210,7 @@
                             </div>
                             <div class="text" :class="{'ivu-form-item-error': error.chargeTemplateIdErr}"
                                  v-if="memberConfigInfo.memberRecharge === 'true'">
-                                <span class="text">{{$t('会员充值通知模版ID：')}}</span>
+                                <span class="width-150px-label">{{$t('会员充值通知模版ID：')}}</span>
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.chargeTemplateId"
@@ -218,11 +218,12 @@
                                        settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
-                                     v-if="error.chargeTemplateIdErr">{{error.chargeTemplateIdErr}}
+                                     v-if="error.chargeTemplateIdErr"
+                                     style="margin-left: 150px">{{error.chargeTemplateIdErr}}
                                 </div>
                             </div>
                             <div class="text" :class="{'ivu-form-item-error': error.consumeTemplateIdErr}">
-                                <span class="text">{{$t('消费成功通知模版ID：')}}</span>
+                                <span class="width-150px-label">{{$t('消费成功通知模版ID：')}}</span>
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.consumeTemplateId"
@@ -230,7 +231,8 @@
                                        settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
-                                     v-if="error.consumeTemplateIdErr">{{error.consumeTemplateIdErr}}
+                                     v-if="error.consumeTemplateIdErr"
+                                     style="margin-left: 150px">{{error.consumeTemplateIdErr}}
                                 </div>
                             </div>
                         </div>
@@ -267,7 +269,8 @@
                     </div>
 
                     <!--微信会员卡推送设置 (仅仅配置了公众号信息，并开通了支付即会员才显示)-->
-                    <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'">
+                    <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
+                    && levelsOfGrowthList.length > 1">
                         <div class="title">{{$t('微信会员卡推送设置')}}</div>
                         <div :class="{'main': true}">
                             <div class="switcher">
@@ -612,6 +615,8 @@
                             this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true'),
                         this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr',
                             this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true'),
+                        this.checkCardLogo(),
+                        this.checkCardBg(),
                     ]).then(() => {
                         Promise.all([
                             this.createOrModifyWxMpMemberCard(),
@@ -629,6 +634,8 @@
                         }).catch(() => {
                             this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
                         })
+                    }).catch(() => {
+                        //console.log("校验出错")
                     });
                 }
             },
@@ -719,13 +726,6 @@
 
                 if (this.settingData.notificationBeforeCouponExpire.isSwitch &&
                     !this.checkInputBlurFunc(this.settingData.notificationBeforeCouponExpire.day, 'dayError')) {
-                    return false;
-                }
-
-                if (!this.checkCardLogo()) {
-                    return false;
-                }
-                if (!this.checkCardBg()) {
                     return false;
                 }
 
@@ -880,34 +880,37 @@
              *  校验卡包logo
              */
             checkCardLogo () {
-                if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
-                    if (this.wxMpSettingData.wxCardLogo.length === 0) {
-                        this.error.cardLogoErr = "请上传图片";
-                        return false;
+                return new Promise((resolve, reject) => {
+                    if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
+                        if (this.wxMpSettingData.wxCardLogo.length === 0) {
+                            this.error.cardLogoErr = "请上传图片";
+                            reject();
+                        } else {
+                            this.error.cardLogoErr = '';
+                            resolve();
+                        }
                     } else {
-                        this.error.cardLogoErr = '';
-                        return true;
+                        resolve()
                     }
-                } else {
-                    return true;
-                }
-
+                });
             },
             /**
              *  校验卡包背景
              */
             checkCardBg () {
-                if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
-                    if (this.wxMpSettingData.wxCardBackgroundPic.length === 0) {
-                        this.error.cardBgErr = "请上传图片";
-                        return false;
+                return new Promise((resolve, reject) => {
+                    if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
+                        if (this.wxMpSettingData.wxCardBackgroundPic.length === 0) {
+                            this.error.cardBgErr = "请上传图片";
+                            reject();
+                        } else {
+                            this.error.cardBgErr = '';
+                            resolve();
+                        }
                     } else {
-                        this.error.cardBgErr = '';
-                        return true;
+                        resolve();
                     }
-                } else {
-                    return true;
-                }
+                })
             },
             /**
              * 校验输入的是否符合金钱的格式
@@ -1473,12 +1476,17 @@
         .text {
             position: relative;
             padding: 5px 0;
-            /*margin-bottom: 15px !important;*/
+            margin-top: 10px;
+            margin-bottom: 15px !important;
 
             .fixed-error {
                 &.ivu-form-item-error-tip {
                     margin-left: 105px;
                 }
+            }
+
+            .ivu-form-item-error-tip {
+                padding-top: 0px;
             }
         }
 
@@ -1494,7 +1502,6 @@
 
         .img-wrap {
             position: relative;
-            padding: 5px 0;
             margin-bottom: 15px !important;
         }
         .inline-upload {
