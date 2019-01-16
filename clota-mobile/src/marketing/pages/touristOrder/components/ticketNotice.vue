@@ -1,6 +1,6 @@
 <!--购票须知模态框-->
 <template>
-    <popup :value="value" v-transfer-dom @input="changeStatus">
+    <popup :value="value" :class="$style.wrap" v-transfer-dom @input="changeStatus">
         <div :class="$style.popupBody">
             <div :class="$style.head">
                 <span :class="$style.known" @click="changeStatus(false)">{{$t('知道了')}}</span>
@@ -52,6 +52,9 @@
 </style>
 
 <style module>
+    .wrap{
+        overflow: hidden;
+    }
     .popupBody{
         width: 100%;
         height: 400px;
@@ -86,6 +89,13 @@
         overflow: auto;
         padding: 0 24px;
     }
+    .content::after{
+        content : '';
+        display: block;
+        width: 100%;
+        height: 20px;
+    }
+
     .productNotice{
         height: 30px;
         font-size: 15px;
@@ -97,6 +107,7 @@
         font-size: 12px;
         color: #999999;
         word-break: break-all;
+        white-space: pre-line;
     }
     .footer{
         height: 38px;

@@ -30,7 +30,7 @@
             </scroll-wrap>
         </div>
         <div v-transfer-dom>
-            <popup v-model="showProductNotice">
+            <popup v-model="showProductNotice" :class="$style.wrap">
                 <div :class="$style.popupBody">
                     <div :class="$style.head">
                         <span :class="$style.known" @click="showProductNotice = false">{{$t('知道了')}}</span>
@@ -238,6 +238,12 @@
         overflow: auto;
         padding: 0 24px;
     }
+    .content::after{
+        content : '';
+        display: block;
+        width: 100%;
+        height: 20px;
+    }
     .productTitle{
         text-align: center;
         height: 46px;
@@ -257,6 +263,7 @@
         font-size: 12px;
         color: #999999;
         word-break: break-all;
+        white-space: pre-line;
     }
     .footer{
         height: 38px;
@@ -274,5 +281,8 @@
     }
     .addInfo{
         white-space: nowrap;
+    }
+    .wrap{
+        overflow: hidden;
     }
 </style>

@@ -6,7 +6,7 @@
             <div class="product-name">{{productInfo.productName | contentFilter}}</div>
             <div class="product-price">{{productInfo.salePrice | moneyFilter(2,'¥') | contentFilter}}</div>
         </div>
-        <ul class="label-input">
+        <ul class="label-input" v-if="cannotReturn || cannotAlter">
             <li class="label-list" v-if="cannotReturn">不可退</li>
             <li class="label-list" v-if="cannotAlter">不可改</li>
         </ul>
@@ -98,7 +98,6 @@
     @import '~@/assets/scss/base';
 
     .product-list-info{
-        @include block_outline($height : 128px);
         background: $color_fff;
         margin-bottom: 8px;
         padding: 14px 14px 0;
