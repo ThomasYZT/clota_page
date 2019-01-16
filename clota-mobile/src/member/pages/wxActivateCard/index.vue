@@ -217,7 +217,8 @@
              */
             queryWxMemberInfo () {
                 ajax.post('queryWxMemberInfo', {
-                    openId: this.openId
+                    openId: this.openId,
+                    companyCode : this.companyCode
                 }).then((res) => {
                     if(res.success) {
                         let dataObj = res.data ? res.data : {};
