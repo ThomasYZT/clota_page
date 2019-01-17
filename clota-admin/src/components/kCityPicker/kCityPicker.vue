@@ -187,12 +187,9 @@
              * 图标点击
              */
             onClickSuffix (ev) {
-                if (this.iconClearShow) {
-                    this.select.province = this.select.city = this.select.area = null;
-                    this.callback();
-
-                    ev.stopPropagation();
-                }
+                this.select.province = this.select.city = this.select.area = null;
+                this.callback();
+                ev.stopPropagation();
             },
             /**
              * 点击触发器

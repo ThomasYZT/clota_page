@@ -39,7 +39,7 @@ export default function (type,...rest) {
                 },
                 {
                     label : '账号申请时间',
-                    value : rest[7]
+                    value : rest[7] ? rest[7].slice(0,-2) : ''
                 },
                 {
                     label : '受理客服',
@@ -49,11 +49,11 @@ export default function (type,...rest) {
             [
                 {
                     label : '上次修改时间',
-                    value : rest[9]
+                    value : rest[9] ? rest[9].slice(0,-2) : ''
                 },
                 {
                     label : '注册审核时间',
-                    value : rest[10]
+                    value : rest[10] ? rest[10].slice(0,-2) : ''
                 },
                 {
                     label : '上次修改人',
@@ -108,17 +108,17 @@ export default function (type,...rest) {
                 },
                 {
                     label : '账号申请时间',
-                    value : rest[7]
+                    value : rest[7] ? rest[7].slice(0,-2) : ''
                 },
                 {
                     label : '上次修改时间',
-                    value : rest[8]
+                    value : rest[8] ? rest[8].slice(0,-2) : ''
                 },
             ],
             [
                 {
                     label : '注册审核时间',
-                    value : rest[9]
+                    value : rest[9] ? rest[9].slice(0,-2) : ''
                 },
                 {
                     label : '上次修改人',
