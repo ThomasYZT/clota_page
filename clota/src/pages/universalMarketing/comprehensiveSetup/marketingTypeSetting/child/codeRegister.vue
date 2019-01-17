@@ -57,10 +57,10 @@
                         typeName : newVal.typeName,
                         status : newVal.registerUrl ? 'show' : 'null',
                     };
-                }
-            },
-            immediate : true,
-            deep : true
+                },
+                immediate : true,
+                deep : true
+            }
         }
     };
 </script>

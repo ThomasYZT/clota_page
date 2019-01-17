@@ -83,7 +83,7 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
             ]),
             //是否可以购买短消息
             canBuySms () {

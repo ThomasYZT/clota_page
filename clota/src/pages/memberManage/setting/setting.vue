@@ -268,6 +268,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
+                    && levelsOfGrowthList.length <= 1">
+                        <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
+                        <span>无会员卡级别</span>
+                    </div>
 
                     <!--配置微信卡包的商户信息 (仅配置了公众号信息，并开通了微信卡包才显示)-->
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.openMembercard === 'true'">
@@ -293,8 +298,9 @@
                                 <Input type="text"
                                        v-model.trim="wxMpSettingData.brandName"
                                        @on-blur="checkWxPackageInfo(wxMpSettingData.brandName,'brandNameErr',true)"
+                                       :disabled="WxMpSetInfo.brandName"
                                        style="margin: 0 10px;width: 300px;"></Input>
-                                <span class="warning-tip">保存后不可随意修改，请谨慎填写。</span>
+                                <span class="warning-tip">保存后不可更改，请谨慎填写。</span>
                                 <div class="fixed-error ivu-form-item-error-tip"
                                      v-if="error.brandNameErr">{{error.brandNameErr}}
                                 </div>
@@ -588,7 +594,7 @@
                         this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr',
                             this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true'),
                         this.checkCardLogo(),
-                        this.checkCardBg(),
+                        //this.checkCardBg(),
                     ]).then(() => {
                         Promise.all([
                             this.createOrModifyWxMpMemberCard(),
@@ -1054,7 +1060,7 @@
              */
             savePayGiftCardRule () {
                 return new Promise((resolve, reject) => {
-                    if (this.WxMpSetInfo.payGiftCard === 'true') {
+                    if (this.WxMpSetInfo.payGiftCard === 'true' && this.levelsOfGrowthList.length > 1) {
                         if (this.wxPushMemberLevelSetting.id !== 'close') {
                             this.createPayGiftCardRule().then(() => {
                                 resolve();
@@ -1191,6 +1197,7 @@
                             url : url,
                         };
                     });
+                    this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
                         return item.url
@@ -1202,7 +1209,6 @@
                         };
                     });
                 }
-                this.checkCardLogo();
             },
             /**
              * @param {array} data
@@ -1219,6 +1225,7 @@
                             url : url,
                         };
                     });
+                    this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
                         return item.url
@@ -1230,7 +1237,6 @@
                         };
                     });
                 }
-                this.checkCardLogo();
             },
             /**
              * 创建或修改微信卡包配置信息
@@ -1251,6 +1257,13 @@
                                 this.queryMemberWxMpSet();
                                 resolve();
                             } else {
+                                if (res.code && res.code === 'S014') {
+                                    this.$Message.error(this.$t('运营后台公众号信息配置错误'));
+                                } else if (res.code && res.code === 'S013') {
+                                    this.$Message.error(this.$t('微信服务请求错误'))
+                                } else {
+                                    this.$Message.error(this.$t('保存微信卡包卡面信息失败'))
+                                }
                                 reject();
                             }
                         }).catch(() => {

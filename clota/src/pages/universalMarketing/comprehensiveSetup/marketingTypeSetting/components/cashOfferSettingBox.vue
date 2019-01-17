@@ -157,9 +157,9 @@
             codeInfo : {
                 handler () {
                     this.reset();
-                }
-            },
-            deep : true
+                },
+                deep : true
+            }
         }
     };
 </script>

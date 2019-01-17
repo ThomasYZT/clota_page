@@ -226,9 +226,9 @@
             codeInfo : {
                 handler () {
                     this.resetBox();
-                }
-            },
-            deep : true
+                },
+                deep : true
+            }
         },
     };
 </script>
