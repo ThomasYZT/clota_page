@@ -196,8 +196,12 @@
                         }
                     });
                     [source,companyCode] = urlParams.split('-');
-                    this.$store.commit('updateCompanyCode',companyCode);
-                    this.$store.commit('updateSourceInfo',source);
+                    if (source) {
+                        this.$store.commit('updateSourceInfo',source);
+                    }
+                    if (companyCode) {
+                        this.$store.commit('updateCompanyCode',companyCode);
+                    }
                 }
             }
         },

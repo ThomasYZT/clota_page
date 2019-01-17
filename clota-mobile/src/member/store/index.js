@@ -26,7 +26,12 @@ export const memberState = {
 export const memberGetters = {
     //用户信息
     userInfo : state => {
-        let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+        let userInfo = {};
+        try {
+            userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+        } catch (e) {
+            console.error(e);
+        }
         if (!state.userInfo || Object.keys(state.userInfo).length < 1) {
             state.userInfo = userInfo;
         }
@@ -42,10 +47,10 @@ export const memberGetters = {
     },
     //会员卡列表信息
     cardInfoList : state => {
-        let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
-        if (cardInfoList && Object.keys(cardInfoList).length > 0) {
-            state.cardInfoList = cardInfoList;
-        }
+        // let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
+        // if (cardInfoList && Object.keys(cardInfoList).length > 0) {
+        //     state.cardInfoList = cardInfoList;
+        // }
         return state.cardInfoList;
     },
     hashKey : state => {

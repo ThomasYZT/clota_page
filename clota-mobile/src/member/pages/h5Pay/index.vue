@@ -37,6 +37,16 @@
             <!-- 取消支付按钮 -->
             <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
         </div>
+        <!--未获取地理位置信息下单报错提示框-->
+        <confirm v-model="confirmShow"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false"
+                 @on-confirm="confirmShow = false">
+            <p style="text-align:center;">{{ $t('请关闭无痕模式，然后刷新页面继续付款。') }}</p>
+        </confirm>
 
     </div>
 </template>
@@ -67,6 +77,8 @@
                 },
                 //计时器
                 intervalId : null,
+                //提示模态框是否显示
+                confirmShow : false
             };
         },
         methods : {
@@ -112,11 +124,21 @@
                 //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
                 } else {
                     this.payFormData = querystring.parse(location.href.split('?')[1]);
-                    localStorage.setItem('token', this.payFormData.token);
-                    localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                    this.$nextTick(() => {
-                        this.$refs.payForm.submit();
-                    });
+                    //判断ios是否在隐私模式下
+                    let isPrivate = false;
+                    try {
+                        localStorage.setItem('token', this.payFormData.token);
+                    } catch (_) {
+                        this.confirmShow = true;
+                        isPrivate = true;
+                    }
+                    //在非隐私模式下才可以继续付款
+                    if (!isPrivate) {
+                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                        this.$nextTick(() => {
+                            this.$refs.payForm.submit();
+                        });
+                    }
                 }
 
             },
