@@ -72,7 +72,7 @@ export default {
     'increase_today' : '今日新增',
     'increase_yesterday' : '昨日新增',
     'increase_this_month' : '本月新增',
-    'totalMembers' : '会员总数',
+    'totalMembers' : '会员卡总数',
     'memberDistribute' : '会员分布数据',
     'memberConsumptionOverview' : '会员消费数据概览',
     'totalConsumption_thisWeek' : '本周会员消费总额(万元)', //
