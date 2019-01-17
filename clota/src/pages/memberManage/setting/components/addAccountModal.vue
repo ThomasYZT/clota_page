@@ -2,7 +2,7 @@
     <!--新增账户-->
     <Modal
         v-model="visible"
-        :title="$t('newAccount')"
+        :title="formData.id ? $t('editAccount') : $t('newAccount')"
         class-name="add-account-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -480,7 +480,7 @@
             updateMemberAccountDefine ( params ) {
                 ajax.post('updateMemberAccountDefine', params).then(res => {
                     if ( res.success ) {
-                        if ('id' in params) {
+                        if ('id' in this.formData) {
                             this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('edit') }));
                         } else {
                             this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('add') }));
@@ -490,7 +490,7 @@
                     } else if (res.message && res.message === 'M007') {
                         this.$Message.error(this.$t('accountExists'));
                     } else {
-                        if ('id' in params) {
+                        if ('id' in this.formData) {
                             this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('edit') }));
                         } else {
                             this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('add') }));

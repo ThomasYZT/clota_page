@@ -78,7 +78,7 @@
                     </Select>
                 </FormItem>
                 <!--是否启用-->
-                <FormItem :label="$t('isStarted')" prop="address">
+                <FormItem :label="$t('isStarted')" prop="status">
                     <RadioGroup v-model="formData.status">
                         <Radio label="open">{{$t('yes')}}</Radio>
                         <Radio label="close">{{$t('no')}}</Radio>
@@ -200,6 +200,9 @@
                             message : this.$t('selectField', { msg : this.$t('saleTypeGroup') }),
                             trigger : 'change'
                         },
+                    ],
+                    status : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('isStarted') }) },
                     ]
                 },
                 //款台类型

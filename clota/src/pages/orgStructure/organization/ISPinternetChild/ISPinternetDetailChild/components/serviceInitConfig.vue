@@ -11,7 +11,7 @@
             </span>
         </div>
 
-        <transition name="fade">
+        <transition name="el-zoom-in-top">
             <div class="table-wrap" v-if="isPackUp">
                 <div class="edit-wrap">
                     <!--<span class="edit" v-if="!isEditing" @click="edit">-->
@@ -159,7 +159,7 @@
                 }
                 return [
                     {
-                        label : this.$t('单账户'),
+                        label : this.$t('singleAccount'),
                         value : 'single',
                         disabled : singleDisabled
                     },

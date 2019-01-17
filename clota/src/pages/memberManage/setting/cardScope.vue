@@ -211,10 +211,10 @@
                     cardRanges : JSON.stringify(cardRanges)
                 }).then(res => {
                     if ( res.success ) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('card-range-saved') })); // 保存基础设置成功
                         this.queryCardRangeList();
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('card-range-saved') }));
                     }
                 });
                 // ajax.post('basicSet',{
