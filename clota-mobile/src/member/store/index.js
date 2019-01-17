@@ -165,6 +165,28 @@ export const memberMutations = {
 };
 
 export const memberActions = {
+    //获取会员配置信息
+    getMemberConfigInfo ({ commit, dispatch }) {
+        const ajax = require('../api/index').default;
+        return new Promise((resolve,reject) => {
+            ajax.post('getMemberServiceSetting',{
+                serviceCode : 'member',
+                orgId : this.getters.cardInfo.orgId,
+            }).then(res => {
+                if (res.success && res.data) {
+                    if (res.data.cardType) {
+                        //更新会员配置
+                        commit('updateMemberConfig', res.data);
+                        resolve();
+                    } else {
+                        reject('serviceError');
+                    }
+                } else {
+                    reject();
+                }
+            });
+        });
+    },
     //获取会员卡列表
     getCardListInfo ({ commit, dispatch }) {
         const ajax = require('../api/index').default;
@@ -194,24 +216,7 @@ export const memberActions = {
                     reject();
                 });
             }),
-            new Promise((resolve,reject) => {
-                ajax.post('getMemberServiceSetting',{
-                    serviceCode : 'member',
-                    orgId : this.getters.userInfo.orgId,
-                }).then(res => {
-                    if (res.success && res.data) {
-                        if (res.data.cardType) {
-                            //更新会员配置
-                            commit('updateMemberConfig', res.data);
-                            resolve();
-                        } else {
-                            reject('serviceError');
-                        }
-                    } else {
-                        reject();
-                    }
-                });
-            }),
+            dispatch('getMemberConfigInfo'),
             new Promise((resolve, reject) => {
                 ajax.post('queryMemberWxMpSet', {
                     source : this.getters.sourceInfo
