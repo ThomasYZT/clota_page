@@ -124,6 +124,7 @@
                     this.$emit('upload-success',this.uploadList);
                     this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
                 } else {
+                    this.$refs.imgUpload.uploadFiles.pop();
                     if (res.code === 'S003') {
                         this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
                     } else {

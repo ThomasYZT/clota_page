@@ -912,16 +912,22 @@
             checkInputMaxErr (data, errType, minLen, maxLen, required) {
                 return new Promise((resolve, reject) => {
                     if (required) {
-                        if (String(data).length < minLen) {
-                            this.error[errType] = this.$t('errorMinLength', { field : this.$t(''), length : minLen });
-                            reject();
-                        } else if (String(data).length > maxLen) {
-                            this.error[errType] = this.$t('errorMaxLength', { field : this.$t(''), length : maxLen });
-                            reject();
+                        if (data) {
+                            if (String(data).length < minLen) {
+                                this.error[errType] = this.$t('errorMinLength', { field : this.$t(''), length : minLen });
+                                reject();
+                            } else if (String(data).length > maxLen) {
+                                this.error[errType] = this.$t('errorMaxLength', { field : this.$t(''), length : maxLen });
+                                reject();
+                            } else {
+                                this.error[errType] = '';
+                                resolve();
+                            }
                         } else {
-                            this.error[errType] = '';
-                            resolve();
+                            this.error[errType] = this.$t('请输入');
+                            reject();
                         }
+
                     } else {
                         resolve();
                     }
