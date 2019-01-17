@@ -102,7 +102,7 @@
                                                                type="text"
                                                                :disabled="!isEditing"
                                                                :placeholder="$t('inputField', { field : '金额' })"
-                                                               style="width: 170px"></Input>
+                                                               style="width: 100%"></Input>
                                                     </FormItem>
                                                 </i-col>
                                                 <i-col span="2" style="text-align: center">
@@ -114,7 +114,7 @@
                                                                type="text"
                                                                :disabled="!isEditing"
                                                                :placeholder="$t('inputField', { field : '金额' })"
-                                                               style="width: 170px"></Input>
+                                                               style="width: 100%"></Input>
                                                     </FormItem>
                                                 </i-col>
                                             </i-row>
