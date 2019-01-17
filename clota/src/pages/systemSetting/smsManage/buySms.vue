@@ -42,9 +42,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="onlineAccountList && onlineAccountList.length > 0"
-                          class="operate" @click="handleBuy(scope.row)">{{$t('buy')}}</span>
-                    <span v-else>-</span>
+                    <span class="operate" @click="handleBuy(scope.row)">{{$t('buy')}}</span>
                 </template>
             </el-table-column>
         </table-com>
@@ -86,7 +84,6 @@
         computed : {
             ...mapGetters([
                 'permissionInfo',
-                'onlineAccountList'
             ]),
             //是否可以购买短消息
             canBuySms () {
