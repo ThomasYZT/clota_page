@@ -89,6 +89,7 @@
                                                         transfer
                                                         placement="bottom-end"
                                                         :disabled="!isEditing"
+                                                        :readonly="!isEditing"
                                                         :placeholder="$t('selectField', { msg : '有效期' })"></DatePicker>
                                         </FormItem>
                                     </i-col>
