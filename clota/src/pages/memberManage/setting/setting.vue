@@ -298,8 +298,9 @@
                                 <Input type="text"
                                        v-model.trim="wxMpSettingData.brandName"
                                        @on-blur="checkWxPackageInfo(wxMpSettingData.brandName,'brandNameErr',true)"
+                                       :disabled="WxMpSetInfo.brandName"
                                        style="margin: 0 10px;width: 300px;"></Input>
-                                <span class="warning-tip">保存后不可随意修改，请谨慎填写。</span>
+                                <span class="warning-tip">保存后不可更改，请谨慎填写。</span>
                                 <div class="fixed-error ivu-form-item-error-tip"
                                      v-if="error.brandNameErr">{{error.brandNameErr}}
                                 </div>
