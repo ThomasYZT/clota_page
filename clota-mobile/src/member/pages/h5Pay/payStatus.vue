@@ -52,8 +52,9 @@
                     this.status = params.status;
                     this.payFormData = params.payFormData;
                     if (params.status === 'success') {
-                        //调用内部系统充值接口
-                        this.rechargeAccount();
+                        this.isSuccess = true;
+                        // //调用内部系统充值接口
+                        // this.rechargeAccount();
                     } else {
                         this.$vux.toast.text(this.$t('payFailure'));
                         this.isSuccess = false;
@@ -65,9 +66,9 @@
 
                     if (data && data.RespCode === '00') {
                         this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
-
-                        //调用内部系统充值接口
-                        this.rechargeAccount();
+                        this.isSuccess = true;
+                        // //调用内部系统充值接口
+                        // this.rechargeAccount();
                     } else {
                         this.$vux.toast.text(this.$t('payFailure'));
                         this.isSuccess = false;
