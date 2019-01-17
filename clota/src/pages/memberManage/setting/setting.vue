@@ -1256,6 +1256,13 @@
                                 this.queryMemberWxMpSet();
                                 resolve();
                             } else {
+                                if (res.code && res.code === 'S014') {
+                                    this.$Message.error(this.$t('运营后台公众号信息配置错误'));
+                                } else if (res.code && res.code === 'S013') {
+                                    this.$Message.error(this.$t('微信服务请求错误'))
+                                } else {
+                                    this.$Message.error(this.$t('保存微信卡包卡面信息失败'))
+                                }
                                 reject();
                             }
                         }).catch(() => {
