@@ -67,7 +67,7 @@
                         </FormItem>
                     </i-col>
                     <i-col span="6">
-                        <span class="tip-info">升级金额是指从当前级别升入下一级别，需要达到的累计销售金额。</span>
+                        <span class="tip-info">{{$t('upgradePoint')}}</span>
                     </i-col>
                 </i-row>
             </Form>

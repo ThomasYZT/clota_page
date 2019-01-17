@@ -1,10 +1,7 @@
 /**
- * 生命周期函数
+ * 页面参数保存到session当中，避免刷新页面获取不到参数
  */
 export default {
-    // beforeRouteEnter(to,from,next) {
-    //     next();
-    // },
     beforeRouteEnter (to,from,next) {
         if (to.params && Object.keys(to.params).length > 0) {
             sessionStorage.setItem(to.name,JSON.stringify(to.params));

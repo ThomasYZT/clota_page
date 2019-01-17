@@ -3,7 +3,7 @@
 <template>
     <div class="service-init-config">
         <div class="pick-up-title" >
-            <span class="label">{{$t('服务初始化配置')}}</span>
+            <span class="label">{{$t('serviceInit')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
@@ -26,7 +26,7 @@
                       :model="formData"
                       :rules="ruleValidate"
                       :label-width="280">
-                    <FormItem :label="$t('已开通会员-储值服务，储值账户类型:')"
+                    <FormItem :label="$t('serviceAccountType')"
                               v-if="defaultSetting.memberRecharge === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountType"
@@ -41,7 +41,7 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem :label="$t('已开通会员相关服务，会员卡相关配置:')"
+                    <FormItem :label="$t('serviceCardType')"
                               v-if="defaultSetting.memberRecharge === 'true' || defaultSetting.memberPoint === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountAttribute"
@@ -164,7 +164,7 @@
                         disabled : singleDisabled
                     },
                     {
-                        label : this.$t('多账户'),
+                        label : this.$t('moreAccount'),
                         value : 'multiple',
                         disabled : multipleDisabled
                     }
@@ -190,17 +190,17 @@
                 if (this.defaultSetting.memberPoint === 'true' && this.defaultSetting.memberRecharge === 'false') {
                     return [
                         {
-                            label : this.$t('成长型'),
+                            label : this.$t('cardGrowthType'),
                             value : 'growth',
                             disabled : growthDisabled
                         },
                         {
-                            label : this.$t('售卖型'),
+                            label : this.$t('cardSaleType'),
                             value : 'sale',
                             disabled : true
                         },
                         {
-                            label : this.$t('成长型+售卖型'),
+                            label : this.$t('growthAndSaleCard'),
                             value : 'sale_growth',
                             disabled : true
                         }
@@ -208,17 +208,17 @@
                 } else {
                     return [
                         {
-                            label : this.$t('成长型'),
+                            label : this.$t('cardGrowthType'),
                             value : 'growth',
                             disabled : growthDisabled
                         },
                         {
-                            label : this.$t('售卖型'),
+                            label : this.$t('cardSaleType'),
                             value : 'sale',
                             disabled : saleDisabled
                         },
                         {
-                            label : this.$t('成长型+售卖型'),
+                            label : this.$t('growthAndSaleCard'),
                             value : 'sale_growth',
                             disabled : false
                         }

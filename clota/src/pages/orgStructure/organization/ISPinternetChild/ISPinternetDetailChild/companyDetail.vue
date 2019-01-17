@@ -606,6 +606,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.companyDetail = res.data ? res.data.basicInfo : {};
+                        this.getServiceSetting();
                     } else {
                         this.companyDetail = {};
                     }
@@ -697,7 +698,7 @@
                 ajax.post('getServiceSetting', {
                     serviceCode : 'member',
                     orgId : this.activeNode.id,
-                    companyId : this.manageOrgs.manageCompanyId
+                    companyId : this.companyDetail.manageCompanyId
                 }).then(res => {
                     if (res.success && res.data) {
                         this.memberConfigInfo = res.data;
@@ -711,7 +712,6 @@
             this.querySmsProviderList();
             this.getParentManages();
             this.getParentEconomic();
-            this.getServiceSetting();
         },
         computed : {
             //公司详细地址
