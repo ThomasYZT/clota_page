@@ -1,5 +1,5 @@
 /**
- * 生命周期函数
+ * 页面参数保存到session当中，避免刷新页面获取不到参数
  */
 export default {
     // beforeRouteEnter(to,from,next) {

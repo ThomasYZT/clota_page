@@ -88,7 +88,9 @@
                 <div class="hint">用于与线下系统对接</div>
                 <!--地址-->
                 <FormItem :label="$t('location')">
-                    <city-plugin @select="formData.place = $event" style="width: 280px">
+                    <city-plugin ref="cityPlugin"
+                                 @select="formData.place = $event"
+                                 style="width: 280px">
                     </city-plugin>
                 </FormItem>
                 <!--详细地址-->
@@ -293,6 +295,7 @@
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
+                    this.$refs.cityPlugin.onClickSuffix();
                 } else {
                     this.getSysAccountByToken();
                     this.getParentManages();
