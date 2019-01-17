@@ -128,7 +128,7 @@
                     if (res.code === 'S003') {
                         this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
                     } else {
-                        this.$Message.error( 'analysisFail' );
+                        this.$Message.error( this.$t('analysisFail') );
                     }
                 }
                 this.$store.commit('changePromisings','del');
