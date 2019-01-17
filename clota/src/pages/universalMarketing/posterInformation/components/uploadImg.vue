@@ -125,11 +125,19 @@
                     this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
                 } else {
                     this.$refs.imgUpload.uploadFiles.pop();
-                    if (res.code === 'S003') {
+                    // if (res.code === 'S003') {
+                    //     this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                    // } else {
+                    // }
+                    this.isJSON(res.code).then(code => {
+                        if (code.errcode && code.errcode.toString() === '40013') {
+                            this.$Message.error('请正确配置微信公众号信息');
+                        } else {
+                            this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                        }
+                    }).catch(() => {
                         this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
-                    } else {
-                        this.$Message.error( this.$t('analysisFail') );
-                    }
+                    })
                 }
                 this.$store.commit('changePromisings','del');
             },
@@ -202,6 +210,25 @@
             handlEexceed () {
                 this.$Message.error(this.$t( 'mostUploadPic', { num : this.quantityLimit }));
                 this.limit = true;
+            },
+            /**
+             * 判断字符串是否为JSON格式
+             * @param str
+             * @return {boolean}
+             */
+            isJSON (str) {
+                return new Promise((resolve, reject) => {
+                    if (typeof str == 'string') {
+                        try {
+                            let _json = JSON.parse(str);
+                            resolve(_json);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    } else {
+                        reject()
+                    }
+                });
             }
         },
         mounted () {
