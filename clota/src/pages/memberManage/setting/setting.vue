@@ -1257,6 +1257,21 @@
                 })
             }
         },
+        beforeRouteEnter (to,from,next) {
+            next(() => {
+                let oMeta = document.createElement('meta');
+                oMeta.content = 'never';
+                oMeta.name = 'referrer';
+                oMeta.id = 'content_never'
+                document.getElementsByTagName('head')[0].appendChild(oMeta);
+            });
+        },
+        beforeRouteLeave (to,from,next) {
+            document.getElementsByTagName('head')[0].removeChild(
+                document.getElementById('content_never')
+            );
+            next();
+        }
     };
 </script>
 
