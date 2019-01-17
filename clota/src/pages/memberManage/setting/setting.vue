@@ -268,6 +268,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
+                    && levelsOfGrowthList.length <= 1">
+                        <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
+                        <span>无会员卡级别</span>
+                    </div>
 
                     <!--配置微信卡包的商户信息 (仅配置了公众号信息，并开通了微信卡包才显示)-->
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.openMembercard === 'true'">
@@ -588,7 +593,7 @@
                         this.checkWxPackageInfo(this.wxMpSettingData.wxCardTitle,'wxCardTitleErr',
                             this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true'),
                         this.checkCardLogo(),
-                        this.checkCardBg(),
+                        //this.checkCardBg(),
                     ]).then(() => {
                         Promise.all([
                             this.createOrModifyWxMpMemberCard(),
@@ -1054,7 +1059,7 @@
              */
             savePayGiftCardRule () {
                 return new Promise((resolve, reject) => {
-                    if (this.WxMpSetInfo.payGiftCard === 'true') {
+                    if (this.WxMpSetInfo.payGiftCard === 'true' && this.levelsOfGrowthList.length > 1) {
                         if (this.wxPushMemberLevelSetting.id !== 'close') {
                             this.createPayGiftCardRule().then(() => {
                                 resolve();
@@ -1191,6 +1196,7 @@
                             url : url,
                         };
                     });
+                    this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
                         return item.url
@@ -1202,7 +1208,6 @@
                         };
                     });
                 }
-                this.checkCardLogo();
             },
             /**
              * @param {array} data
@@ -1219,6 +1224,7 @@
                             url : url,
                         };
                     });
+                    this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
                         return item.url
@@ -1230,7 +1236,6 @@
                         };
                     });
                 }
-                this.checkCardLogo();
             },
             /**
              * 创建或修改微信卡包配置信息
