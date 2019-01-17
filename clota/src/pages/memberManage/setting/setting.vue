@@ -958,17 +958,28 @@
               })
             },
             /**
+             *  只能输入中文、字母、数字
+             */
+            checkInputOnlyCNNumLetter (value, errType) {
+                let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+$/gi;
+                return new Promise((resolve, reject) => {
+                    if (reg.test(value)) {
+                        this.error[errType] = '';
+                        resolve();
+                    } else {
+                        this.error[errType] = this.$t('只能输入中文、字母或数字');
+                        reject();
+                    }
+                })
+            },
+            /**
              *  校验推送消息模版id字段 （不能超过20哥字符，只能为字母或数字）
              */
             checkTemplateID (value, errType, required) {
                 return new Promise((resolve, reject) => {
                     if (required) {
                         this.checkInputMaxErr(value, errType, 1, 100, true).then(() => {
-                            this.checkInputOnlyNumOrLetter (value, errType).then(() => {
-                                resolve();
-                            }).catch(() => {
-                                reject();
-                            })
+                            resolve();
                         }).catch(() => {
                             reject();
                         });
@@ -997,7 +1008,7 @@
                 return new Promise((resolve, reject) => {
                     if (required) {
                         this.checkInputMaxErr(value, errType, 1, 20, true).then(() => {
-                            this.checkInputOnlyCN (value, errType).then(() => {
+                            this.checkInputOnlyCNNumLetter (value, errType).then(() => {
                                 resolve();
                             }).catch(() => {
                                 reject();
