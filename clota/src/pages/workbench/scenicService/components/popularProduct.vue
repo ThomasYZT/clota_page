@@ -18,17 +18,27 @@
                         @on-change="getPopularProducts">
             </DatePicker>
         </div>
-        <div class="chart-area">
-            <column :column-data="columnChartData"></column>
-        </div>
+
+        <template v-if="columnChartData.series.length > 0">
+            <div class="chart-area">
+                <column :column-data="columnChartData"></column>
+            </div>
+        </template>
+        <template v-else>
+            <div class="no-data-wrapper">
+                <noDataTip></noDataTip>
+            </div>
+        </template>
     </div>
 </template>
 <script>
     import ajax from '@/api/index.js';
     import column from '../../components/column.vue';
+    import noDataTip from '@/components/noDataTip/noData-tip';
     export default {
         components : {
-            column
+            column,
+            noDataTip
         },
         props : {},
         data () {
@@ -62,16 +72,21 @@
                     date : this.date.format('yyyy-MM'),
                 }).then(res => {
                     if (res.success && res.data) {
-                        this.columnChartData.series.push({
-                            name : this.$t('salesQty'),
-                            data : res.data.map(item => {
-                                return item.value;
-                            }),
-                            type : "bar",
-                        });
-                        this.columnChartData.xAxisData = res.data.map(item => {
-                            return item.name;
-                        });
+                        if (res.data.length > 0) {
+                            this.columnChartData.series.push({
+                                name : this.$t('salesQty'),
+                                data : res.data.map(item => {
+                                    return item.value;
+                                }),
+                                type : "bar",
+                            });
+                            this.columnChartData.xAxisData = res.data.map(item => {
+                                return item.name;
+                            });
+                        } else {
+                            this.columnChartData = { series : [], xAxisData : [] };
+                        }
+
                     } else {
                         this.columnChartData = { series : [], xAxisData : [] };
                     }
@@ -112,6 +127,12 @@
             .chart-area {
                 height: calc(100% - 45px);
             }
+        }
+
+        .no-data-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
     }
 </style>
