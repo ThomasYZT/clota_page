@@ -281,7 +281,7 @@
              * @param{Object} res 返回的用户信息
              */
             dataToLogin (res) {
-                localStorage.clear();
+                // localStorage.clear();
                 //存储token信息
                 localStorage.setItem('token', res.data.token);
                 //存储本地、vuex用户信息
