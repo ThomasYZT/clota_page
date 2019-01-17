@@ -28,7 +28,7 @@ export default new Vuex.Store({
         //是否可以使用微信jsdk
         weixinIsConfiged : true,
         //公司id
-        companyCode : '00000194',
+        companyCode : '',
         //来源信息，区分全民营销和会员系统
         sourceInfo : '',
         ...memberState,

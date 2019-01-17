@@ -65,10 +65,12 @@
             };
         },
         created () {
-            //判断是否开通了微信卡包
-            if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId) {
-                this.queryUnboundCard();
-            }
+            this.getCardListInfo().then(() => {
+                //判断是否开通了微信卡包
+                if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId) {
+                    this.queryUnboundCard();
+                }
+            })
         },
         computed : {
             ...mapGetters([
@@ -260,7 +262,6 @@
                         if (res.data && res.data.length != 0) {
                             this.isShowCard = true;
                             this.getCardExt();
-                            this.getCardListInfo();
                         }
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
