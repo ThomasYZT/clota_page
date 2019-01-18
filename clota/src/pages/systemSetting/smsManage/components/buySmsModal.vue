@@ -110,6 +110,9 @@
             show ( data ) {
                 if ( data ) {
                     this.formData = defaultsDeep({}, data.item, this.formData);
+                    if (this.onlineAccountList.length > 0) {
+                        this.formData.payType = this.onlineAccountList[0].accountType;
+                    }
                 }
                 this.visible = true;
             },
@@ -137,29 +140,25 @@
             // 立即购买
             buyNow ( params ) {
                 let newWindow = window.open();
-                this.$refs.formValidate.validate(valid => {
-                    if (valid) {
-                        ajax.post('orderBuySmsPackage', {
-                            smsPackageId : params.id,
-                            payType : this.formData.payType,
-                        }).then(res => {
-                            if ( res.success ) {
-                                if (res.data) {
-                                    this.payNow({
-                                        bizId : res.data,
-                                        merchantId : this.payInfo.merchantId,
-                                        partnerId : this.payInfo.partnerId,
-                                        payType : this.formData.payType,
-                                        payMoney : this.formData.price,
-                                        newWindow : newWindow,
-                                    });
-                                } else {
-                                    this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
-                                }
-                            } else {
-                                this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
-                            }
-                        });
+                ajax.post('orderBuySmsPackage', {
+                    smsPackageId : params.id,
+                    payType : this.formData.payType,
+                }).then(res => {
+                    if ( res.success ) {
+                        if (res.data) {
+                            this.payNow({
+                                bizId : res.data,
+                                merchantId : this.payInfo.merchantId,
+                                partnerId : this.payInfo.partnerId,
+                                payType : this.formData.payType,
+                                payMoney : this.formData.price,
+                                newWindow : newWindow,
+                            });
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
+                        }
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                     }
                 });
             },
