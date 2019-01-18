@@ -331,4 +331,6 @@ export default {
     'updateMemberLevelRights' : '/member/memberLevel/updateMemberLevelRights',
     //计算会员数据统计信息
     'countCardsByType' : '/member/report/countCardsByType',
+    //查询店铺下的可用渠道
+    'querySelfOwnedChannelByOrgIds' : '/selfChannel/querySelfOwnedChannelByOrgIds',
 };

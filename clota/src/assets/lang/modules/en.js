@@ -2460,5 +2460,10 @@ export default {
     'tradeCancel' : '交易已取消！',
     'unknowResult' : '交易结果未知！',
     'tradeFail' : '交易失败!',
-    'cancelTradeFail' : '交易取消失败'
+    'cancelTradeFail' : '交易取消失败',
+    'singleAccount' : '单账户',
+    'cancleTrade' : '取消交易',
+    'tradeSuccessfly' : '交易成功!',
+    'nodeClosed' : '该机构未启用',
+    'card-range-saved' : '保存会员卡可用范围设置',
 };

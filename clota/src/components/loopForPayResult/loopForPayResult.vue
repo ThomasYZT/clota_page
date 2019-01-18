@@ -18,7 +18,7 @@
                     <img src="../../assets/images/icon-wait-pay.svg" alt="">
                 </div>
                 <div class="cancel-area">
-                    <Button type="ghost" @click="revocation">取消交易</Button>
+                    <Button type="ghost" @click="revocation">{{$t('cancleTrade')}}</Button>
                 </div>
             </template>
             <!--等待扫码-->
@@ -84,7 +84,7 @@
                     <img src="../../assets/images/icon-open-card-success.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
-                    交易成功!
+                    {{$t('tradeSuccessfly')}}
                 </div>
             </template>
         </div>

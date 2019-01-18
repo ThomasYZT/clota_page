@@ -303,7 +303,9 @@
              * 开始编辑
              */
             edit () {
-                this.formDataCopy = defaultsDeep({} , this.cashierDetail);
+                this.formDataCopy = defaultsDeep({
+                    isStart : this.cashierDetail.status === 'open',
+                } , this.cashierDetail);
                 this.type = 'edit';
             },
             /**

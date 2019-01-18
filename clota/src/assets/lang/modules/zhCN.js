@@ -72,7 +72,7 @@ export default {
     'increase_today' : '今日新增',
     'increase_yesterday' : '昨日新增',
     'increase_this_month' : '本月新增',
-    'totalMembers' : '会员总数',
+    'totalMembers' : '会员卡总数',
     'memberDistribute' : '会员分布数据',
     'memberConsumptionOverview' : '会员消费数据概览',
     'totalConsumption_thisWeek' : '本周会员消费总额(万元)', //
@@ -566,7 +566,7 @@ export default {
     'setTheExchangeRate' : '请设置兑换比例',
     'pointsReturnedForRefund' : '退款时积分退回设置',
     'consumeSettingTips' : '当用户退款时积分同步扣除，如账户剩余积分不足以扣除，用户系统发出提示',
-    'saveCreditConsumptionSettings' : '保存积分消费设置',
+    'saveCreditConsumptionSettings' : '保存积分设置',
     'newAccountLevel' : '新增账户级别',
     'accountOwnership' : '账户归属',
     'storedValueRatio' : '储值比率',
@@ -2464,5 +2464,10 @@ export default {
     'tradeCancel' : '交易已取消！',
     'unknowResult' : '交易结果未知！',
     'tradeFail' : '交易失败!',
-    'cancelTradeFail' : '交易取消失败'
+    'cancelTradeFail' : '交易取消失败',
+    'singleAccount' : '单账户',
+    'cancleTrade' : '取消交易',
+    'tradeSuccessfly' : '交易成功!',
+    'nodeClosed' : '该机构未启用',
+    'card-range-saved' : '保存会员卡可用范围设置',
 };
