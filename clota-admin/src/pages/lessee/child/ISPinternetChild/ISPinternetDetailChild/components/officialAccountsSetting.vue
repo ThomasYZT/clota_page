@@ -379,7 +379,6 @@
             setWxMpSet (formData) {
                 formData.orgId = this.searchParams.id;
                 if ((formData.payGiftCard === 'false' || formData.openMembercard === 'false') && this.wxMpSet.payGiftCardRuleId) {
-                    debugger;
                     ajax.post('deletePayGiftCardRule', {
                         orgId : this.searchParams.id
                     }).then((res) => {
