@@ -225,6 +225,27 @@
                     callback(this.$t('selectField', { msg : this.$t('validatedDate') }));
                 }
             }
+
+            const comparator = (rule, value, callback) => {
+                if (rule && rule.params && Object.keys(rule.params).length > 0 &&
+                    value && this.memberConfig[rule.params.target]) {
+                    if (rule.params.type === 'smaller') {
+                        if (Number(value) >= Number(this.memberConfig[rule.params.target])) {
+                            callback(this.$t("必须小于最大支付金额"))
+                        } else {
+                            callback()
+                        }
+                    } else {
+                        if (Number(value) <= Number(this.memberConfig[rule.params.target])) {
+                            callback(this.$t("必须大于最小支付金额"))
+                        } else {
+                            callback()
+                        }
+                    }
+                } else {
+                    callback();
+                }
+            }
             return {
                 //是否收起
                 isPackUp : true,
@@ -258,6 +279,8 @@
                 validateMoney : validateMoney,
                 //校验是否选择有效期
                 validateDateRange : validateDateRange,
+                //比较器
+                comparator : comparator,
             };
         },
         computed : {
@@ -306,13 +329,15 @@
                         { required : this.wxPackageRequired,
                           message : this.$t('inputField', { field : this.$t('金额') }), trigger : 'blur'},
                         { validator : this.validateMoney, trigger : 'blur' },
-                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) }
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) },
+                        { validator : this.comparator, trigger : 'blur', params : { type : 'smaller', target : 'payGiftCardMaxAmount' } }
                     ],
                     payGiftCardMaxAmount : [
                         { required : this.wxPackageRequired,
                           message : this.$t('inputField', { field : this.$t('金额') }), trigger : 'blur'},
                         { validator : this.validateMoney, trigger : 'blur' },
-                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) }
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) },
+                        { validator : this.comparator, trigger : 'blur', params : { type : 'bigger', target : 'payGiftCardMinAmount' } }
                     ],
                     marketWxAppId : [
                         { required : this.marketBaseConfigRequired,
