@@ -35,4 +35,10 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .workbench {
+        @include block_outline();
+        min-width: $content_min_width;
+        overflow: auto;
+        border-radius: 4px;
+    }
 </style>

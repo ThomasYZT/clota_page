@@ -7,17 +7,22 @@
 <template>
     <div class="diff-date-data">
         <div class="header-box">
-            <span class="title">{{$t(cardTitle)}}</span>
-            <DatePicker type="daterange"
-                        v-model.trim="date"
-                        :editable="false"
-                        :clearable="false"
-                        :placeholder="$t('selectField',{msg: ''})"
-                        placement="bottom-end"
-                        class="date-picker"
-                        :transfer="true"
-                        @on-change="queryList">
-            </DatePicker>
+            <div class='title-wrapper'>
+                <span class="title">{{$t(cardTitle)}}</span>
+            </div>
+            <div class="date-wrapper">
+                <DatePicker type="daterange"
+                            v-model.trim="date"
+                            :editable="false"
+                            :clearable="false"
+                            :placeholder="$t('selectField',{msg: ''})"
+                            placement="bottom-end"
+                            class="date-picker"
+                            :transfer="true"
+                            style="width: auto;"
+                            @on-change="queryList">
+                </DatePicker>
+            </div>
         </div>
 
         <div class="table-list-area">
@@ -126,19 +131,26 @@
 
         .header-box {
             @include block_outline($height: 45px);
+            display: flex;
             border-bottom: 1px solid $color_E1E1E1;
             line-height: 45px;
             padding: 0 20px;
 
-            .title {
-                font-size: $font_size_16px;
-                color: $color_353B5E;
+            .title-wrapper {
+                flex: 0 auto;
+                flex-basis: 50%;
+                .title {
+                    font-size: $font_size_16px;
+                    color: $color_353B5E;
+                }
             }
-
-            .date-picker {
-                width: 150px;
-                float: right;
-                margin-top: 7px;
+            .date-wrapper {
+                flex-basis: 50%;
+                .date-picker {
+                    width: 150px;
+                    float: right;
+                    margin-top: 7px;
+                }
             }
 
             .chart-area {

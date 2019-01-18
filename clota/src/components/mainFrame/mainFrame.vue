@@ -88,7 +88,7 @@
                 &.no-sider-bar {
                     @include block_outline(unquote('calc(100%)'));
                     transition: all 0.1s;
-                    overflow: auto;
+                    overflow: hidden;
                 }
             }
 
