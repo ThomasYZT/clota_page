@@ -2,7 +2,7 @@
 export const roleHead = [
     {
         title : '',
-        width : 80,
+        width : 60,
         field : 'check'
     },
     {
@@ -13,6 +13,7 @@ export const roleHead = [
     {
         title : 'empAccount',//员工账号
         minWidth : 150,
+        enWidth : 170,
         field : 'loginName',
     },
     {

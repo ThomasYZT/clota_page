@@ -14,21 +14,25 @@ export const partnerListHead = [
     {
         title : 'saleChannelsGroup', // 销售渠道分组
         minWidth : 155,
+        enWidth : 180,
         field : 'saleGroupName'
     },
     {
         title : 'agreementStartDate', // 合作协议起始日期
         minWidth : 160,
+        enWidth : 270,
         field : 'startDate'
     },
     {
         title : 'agreementEndDate', // 合作协议结束日期
         minWidth : 160,
+        enWidth : 255,
         field : 'endDate'
     },
     {
         title : 'protocolState', // 协议状态
         minWidth : 120,
+        enWidth : 156,
         field : 'status'
     },
     {
@@ -59,11 +63,13 @@ export const saleChannelHead = [
     {
         title : 'saleChannelsGroup', // 销售渠道分组
         minWidth : 140,
+        enMinWidth : 180,
         field : 'saleGroupName'
     },
     {
         title : 'selfSaleChannelType', // 自营渠道类型
         minWidth : 160,
+        enMinWidth : 222,
         field : 'type'
     },
     {

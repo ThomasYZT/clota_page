@@ -23,6 +23,7 @@ export const companies = [
     {
         title : 'adminAccount',//管理员账号
         minWidth : 130,
+        enWidth : 190,
         field : 'manager'
     },
     {

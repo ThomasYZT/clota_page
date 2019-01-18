@@ -9,9 +9,9 @@
         <div class="content">
             <Form :model="formData" ref="formValidate" label-position="left" :rules="ruleValidate">
                 <i-row>
-                    <i-col span="10">
+                    <i-col :span="lang === 'zh-CN' ? 10 : 11">
                         <!--公司/景区名称-->
-                        <FormItem :label="$t('companyName')" :label-width="100">
+                        <FormItem :label="$t('companyName')" :label-width="lang === 'zh-CN' ? 100 : 160">
                             <Input :value="manageOrgs.orgName"
                                    disabled
                                    style="width: 280px;"/>
@@ -19,7 +19,7 @@
                     </i-col>
                     <i-col span="10">
                         <!--角色名称-->
-                        <FormItem :label="$t('roleName')" :label-width="75" prop="roleName">
+                        <FormItem :label="$t('roleName')" :label-width="lang === 'zh-CN' ? 75 : 90" prop="roleName">
                             <Input :disabled="!hasSavePermission" v-model="formData.roleName" style="width: 280px;" />
                         </FormItem>
                     </i-col>
@@ -301,6 +301,7 @@
         computed : {
             ...mapGetters({
                 manageOrgs : 'manageOrgs',
+                lang : 'lang',
                 permissionInfo : 'permissionInfo'
             }),
             //面包屑上当前菜单名

@@ -1,5 +1,5 @@
 <!--
-    会员注册
+    新增/编辑导游
     作者：杨泽涛
 -->
 <template>
@@ -8,33 +8,42 @@
            class-name="add-remark-modal vertical-center-modal"
            width="560"
            :mask-closable="false"
+           @on-visible-change="visibleChange"
            @on-cancel="hide">
         <Form ref="form"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="100"
-              class="form"
-              >
+              :label-width="lang === 'en' ? 120 : 100"
+              class="form">
             <FormItem :label="$t('name')" prop="staffName">
-                <Row>
-                    <Col span="15">
-                        <Input type="text" v-model="formData.staffName" :placeholder="$t('inputField',{field: $t('name')})"></Input>
-                    </Col>
-                </Row>
+                <i-row>
+                    <i-col span="15">
+                        <Input type="text"
+                               style="width: 240px"
+                               v-model.trim="formData.staffName"
+                               :placeholder="$t('inputField',{field: $t('name')})"/>
+                    </i-col>
+                </i-row>
             </FormItem>
             <FormItem :label="$t('identityNo')" prop="documentNo">
-                <Row>
-                    <Col span="15">
-                        <Input type="text" v-model="formData.documentNo" :placeholder="$t('inputField',{field: $t('identityNo')})"></Input>
-                    </Col>
-                </Row>
+                <i-row>
+                    <i-col span="15">
+                        <Input type="text"
+                               style="width: 240px"
+                               v-model.trim="formData.documentNo"
+                               :placeholder="$t('inputField',{field: $t('identityNo')})"/>
+                    </i-col>
+                </i-row>
             </FormItem>
             <FormItem :label="$t('mobilePhone')" prop="phoneNumber">
-                <Row>
-                    <Col span="15">
-                        <Input type="text" v-model="formData.phoneNumber" :placeholder="$t('inputField',{field: $t('mobilePhone')})"></Input>
-                    </Col>
-                </Row>
+                <i-row>
+                    <i-col span="15">
+                        <Input type="text"
+                               style="width: 240px"
+                               v-model.trim="formData.phoneNumber"
+                               :placeholder="$t('inputField',{field: $t('mobilePhone')})"/>
+                    </i-col>
+                </i-row>
             </FormItem>
         </Form>
 
@@ -48,17 +57,18 @@
 <script>
     import { validator } from 'klwk-ui';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {},
         data () {
             const validateMethods = {
                 //身份证校验
                 identificationNum : (rule, value, callback) => {
-                    let reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
-                    if (!reg.test(value)) {
-                        callback(new Error(this.$t('errorFormat', { field : this.$t('identityNo') })));
-                    } else {
+                    if (validator.isIdCard(value)) {
                         callback();
+                    } else {
+                        callback(new Error(this.$t('errorFormat', { field : this.$t('identityNo') })));
                     }
                 },
                 //校验手机号码
@@ -153,7 +163,21 @@
                         this.$emit('refresh');
                     }
                 });
+            },
+            /**
+             * 模态框状态改变
+             * @param{String} status 模态框状态
+             */
+            visibleChange (status) {
+                if (status === false) {
+                    this.$refs.form.resetFields();
+                }
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -178,5 +202,12 @@
                 padding: 5px 30px;
             }
         }
+    }
+
+    /deep/ .ivu-modal-body{
+        padding-top: 40px;
+        display: flex;
+        min-height: 250px;
+        align-items: center;
     }
 </style>

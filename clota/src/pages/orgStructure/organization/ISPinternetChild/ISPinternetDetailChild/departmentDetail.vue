@@ -212,14 +212,14 @@
                 vertical-align: middle;
                 display: inline-block;
                 @include overflow_tip($width: auto, $height: 100%);
-                max-width: calc(100% - 127px);
+                max-width: calc(100% - 137px);
                 float: left;
             }
 
             .started,
             .not-started,
             .edit {
-                @include block_outline(60px);
+                @include block_outline(70px);
                 display: inline-block;
                 vertical-align: middle;
                 line-height: 28px;

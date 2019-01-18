@@ -965,7 +965,8 @@
              */
             queryListAmountRange () {
                 ajax.post('getSubNode',{
-                    orgType : 'scenic'
+                    orgType : 'scenic',
+                    includeMe : this.manageOrgs.nodeType === 'scenic'
                 }).then(res => {
                     if (res.success) {
                         this.listAmountRange = res.data ? res.data : [];
@@ -1182,7 +1183,8 @@
         },
         computed : {
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                manageOrgs : 'manageOrgs'
             })
         }
     };

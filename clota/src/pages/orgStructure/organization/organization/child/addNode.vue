@@ -15,13 +15,14 @@
         <Form ref="formValidate"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="100">
+              :label-width="lang === 'zh-CN' ? 100 : 120">
             <FormItem :label="$t('nodeName')" prop="nodeName">
                 <Input v-model="formData.nodeName" style="width: 280px"/>
             </FormItem>
             <FormItem :label="$t('nodeType')"
                       prop="nodeType" >
                 <Select v-model="formData.nodeType"
+                        :placeholder="$t('selectField',{ msg : '' })"
                         style="width: 280px">
                     <Option :value="item.value"
                             v-for="item in nodeListCanChose"
@@ -50,7 +51,7 @@
 
 <script>
     import { nodeList } from '@/assets/js/constVariable.js';
-
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -177,7 +178,10 @@
                 } else {
                     return [];
                 }
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

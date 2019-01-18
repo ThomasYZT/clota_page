@@ -114,13 +114,13 @@
                      @deletions="handleDeletions"
                      :deleteName="deleteName"
                      :name="name"></delete-list>-->
-        <del-modal ref="delListModal">
+        <del-modal ref="delListModal" class="del-min-width">
             <span class="content-text">
-                <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
+                <i class="iconfont icon-help delete-icon"></i>{{$t('colonSetting',{ key : $t('isDoing')})}}
                 <span class="yellow-label" v-w-title="name">{{name}}</span>
                 <span style="color: #333;" v-if="partnerIds.length>1">{{$t('cooperationTip',{num: partnerIds.length})}}</span>
             </span>
-            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span><!--本操作不可撤销，是否确认删除？-->
+            <span><span class="red-label">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span><!--本操作不可撤销，是否确认删除？-->
         </del-modal>
 
         <!--启用失败提示框-->

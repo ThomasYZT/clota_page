@@ -25,8 +25,9 @@
                 <Form ref="formValidate"
                       :model="formData"
                       :rules="ruleValidate"
-                      :label-width="280">
+                      :label-width="lang === 'zh-CN' ? 280 : 390">
                     <FormItem :label="$t('serviceAccountType')"
+                              :class="{ 'en-label' : lang === 'en' }"
                               v-if="defaultSetting.memberRecharge === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountType"
@@ -42,6 +43,7 @@
                         </Select>
                     </FormItem>
                     <FormItem :label="$t('serviceCardType')"
+                              :class="{ 'en-label' : lang === 'en' }"
                               v-if="defaultSetting.memberRecharge === 'true' || defaultSetting.memberPoint === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountAttribute"
@@ -64,6 +66,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -144,6 +147,9 @@
             }
         },
         computed : {
+            ...mapGetters([
+                'lang'
+            ]),
             //账户类型列表
             accountTypeList () {
                 //单账户是否禁用
@@ -247,6 +253,13 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .service-init-config{
+
+        .en-label{
+            /deep/ .ivu-form-item-label{
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
 
         .pick-up-title{
             @include block_outline($height: 59px);
