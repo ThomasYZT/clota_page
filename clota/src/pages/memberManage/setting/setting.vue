@@ -271,8 +271,8 @@
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
                     && (levelsOfGrowthList.length <= 1 || !this.WxMpSetInfo.wxCardId)">
                         <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
-                        <span v-if="levelsOfGrowthList.length <= 1">无会员卡级别</span>
-                        <span v-else="">请先配置卡包卡面信息</span>
+                        <span v-if="!this.WxMpSetInfo.wxCardId">请先配置卡包卡面信息</span>
+                        <span v-else>无会员卡级别</span>
                     </div>
 
                     <!--配置微信卡包的商户信息 (仅配置了公众号信息，并开通了微信卡包才显示)-->

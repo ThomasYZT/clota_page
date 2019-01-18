@@ -383,7 +383,7 @@
                     ajax.post('deletePayGiftCardRule', {
                         orgId : this.searchParams.id
                     }).then((res) => {
-                        if (res.success) {
+                        if (res.status === 200) {
                             this.setWxMpSetApi(formData);
                         } else {
                             this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));
