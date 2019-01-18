@@ -322,6 +322,8 @@
                 detail : {},
                 //模态框调用来源
                 callFrom : '',
+                //列表项数据
+                listItem : {},
             };
         },
         computed : {
@@ -354,7 +356,7 @@
              */
             getPolicyDetailData () {
                 ajax.post('getPolicyInfo', {
-                    allocationId : this.listItem.allocationId
+                    allocationId : this.listItem.rootAllocationId
                 }).then((res) => {
                     if (res.success) {
                         this.detail = res.data ? res.data : {};

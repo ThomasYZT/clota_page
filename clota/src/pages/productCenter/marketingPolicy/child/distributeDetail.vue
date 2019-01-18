@@ -233,6 +233,7 @@
 
                                 }
                             }
+                            this.listItem.rootAllocationId = res.data ? res.data.rootAllocationId : '';
                             this.myAllocationLists.push(lastRowData);
                         } else {
                             this.myAllocationLists = [];
