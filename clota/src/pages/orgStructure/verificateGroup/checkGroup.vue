@@ -75,7 +75,6 @@
                     v-if="canMoveSaleGroup || canRemoveSaleGroup"
                     slot="column6"
                     slot-scope="row"
-                    fixed="right"
                     :label="row.title"
                     show-overflow-tooltip
                     :width="row.width"
@@ -100,10 +99,9 @@
         </div>
         <!--移除分组-->
         <del-modal ref="delModal">
-            <div class="del-tips">
-                <Icon type="help-circled"></Icon>
-                <span class="red-bale">{{$t('removeVeriGroupNotice')}}</span>
-            </div>
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('removeVeriGroupNotice')}}
+            </span>
         </del-modal>
     </div>
 </template>
@@ -316,22 +314,23 @@
         z-index: 9999;
     }
 
-    .del-tips{
-        @include block_outline();
-        @include center_center();
-        padding: 0 76px 0 106px;
-        color: $color_333;
-        font-size: $font_size_14px;
+    .content-text {
+        width: 210px;
+        position: relative;
 
-        .red-bale{
-            display: inline-block;
-            width: 100%;
+        .delete-icon {
+            position: absolute;
+            left: -27px;
+            margin-right: 12px;
+            color: $color_red;
         }
 
-        .ivu-icon{
-            @include absolute_pos(absolute,$left : 88px,$top : 65px);
-            font-size: 15px;
-            color: #EB6751;
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
         }
     }
 </style>

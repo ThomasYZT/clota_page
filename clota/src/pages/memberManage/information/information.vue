@@ -4,9 +4,13 @@
 
         <div class="filter-wrap">
             <!--会员卡类型-->
-            <Select v-model="queryParams.cardTypeId" @on-change="cardTypeChange">
+            <Select v-model="queryParams.cardTypeId"
+                    :style="{ width : lang === 'en' ? '240px' : '180px' }"
+                    @on-change="cardTypeChange">
                 <Option v-for="item in memberCardTypesList"
                         :key="item.label"
+                        class="overflow-tip-list"
+                        v-w-title="$t(item.label)"
                         :value="item.value">
                     {{$t(item.label)}}
                 </Option>

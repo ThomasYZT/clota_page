@@ -10,11 +10,13 @@
         <div class="integration-detail-content">
             <div class="filter-wrap">
                 <Select v-model="queryParams.operType"
-                        style="width:200px"
+                        :style="{ 'width' : lang === 'zh-CN' ? '180px' : '200px' }"
                         @on-change="filterDealList"
                         :placeholder="$t('selectField', {msg: ''})">
                     <Option v-for="item in type"
                             :value="item.value"
+                            class="overflow-tip-list"
+                            v-w-title="$t(item.name)"
                             :key="item.value">
                         {{ $t(item.name) }}
                     </Option>
@@ -22,6 +24,7 @@
                 <Date-picker
                     type="date"
                     :editable="false"
+                    :style="{ 'width' : lang === 'zh-CN' ? '180px' : '256px' }"
                     v-model="queryParams.startDate"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
@@ -30,6 +33,7 @@
                 <Date-picker
                     type="date"
                     :editable="false"
+                    :style="{ 'width' : lang === 'zh-CN' ? '180px' : '256px' }"
                     v-model="queryParams.endDate"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
@@ -148,6 +152,7 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { integraDetailHead, integraType } from './integDetailConfig';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -278,6 +283,11 @@
                 });
             },
 
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

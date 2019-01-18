@@ -27,7 +27,7 @@
                             <Option v-for="(item,index) in store"
                                     :key="index"
                                     :value="item.id">
-                                {{item.accountName}}
+                                {{$t(item.accountName)}}
                             </Option>
                         </Select>
                     </Form-item>

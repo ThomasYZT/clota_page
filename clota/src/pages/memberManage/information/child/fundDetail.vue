@@ -9,13 +9,21 @@
 
         <div class="fund-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.operType" @on-change="filterDealList" :placeholder="$t('selectField', {msg: ''})">
-                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                <Select v-model="queryParams.operType"
+                        :style="{ 'width' : lang === 'zh-CN' ? '180px' : '200px' }"
+                        @on-change="filterDealList"
+                        :placeholder="$t('selectField', {msg: ''})">
+                    <Option v-for="item in type"
+                            class="overflow-tip-list"
+                            :value="item.value"
+                            v-w-title="$t(item.label)"
+                            :key="item.value">{{ $t(item.label) }}</Option>
                 </Select>
                 <Date-picker
                     type="date"
                     v-model="queryParams.startDate"
                     :editable="false"
+                    :style="{ 'width' : lang === 'zh-CN' ? '180px' : '256px' }"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
                     @on-change="filterDealList()">
@@ -24,6 +32,7 @@
                     type="date"
                     v-model="queryParams.endDate"
                     :editable="false"
+                    :style="{ 'width' : lang === 'zh-CN' ? '180px' : '256px' }"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
                     @on-change="filterDealList()"><!--请选择结束日期-->
@@ -332,6 +341,7 @@
             },
             ...mapGetters({
                 memberConfigInfo : 'memberConfigInfo',
+                lang : 'lang',
             }),
             //是否是售卖型会员卡
             cardIsSaling () {

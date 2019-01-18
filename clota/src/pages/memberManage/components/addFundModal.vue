@@ -29,7 +29,7 @@
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('PrincipalAccBalance') + ':'">
                       <span class="yellow-color">
-                        {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
+                        {{accountInfo.corpusBalance | moneyFilter | contentFilter}}
                     </span>{{$t(accountInfo.unit)}}
                         </Form-item>
                     </div>
@@ -44,12 +44,12 @@
                         <Form-item :label="$t('increaseStorageSum') + '：'" prop="amount">
                             <!--@on-blur="getTotalAmount"-->
                             <Input v-model.trim="formData.amount"
-                                   style="width: 90px;"
+                                   style="width: 100px;"
                                    :placeholder="$t('inputField', {field: ''})"/>
                             <span class="font">{{$t('actualIncrease')}}</span>
                             <Input disabled
                                    :value="formData.totalAmount"
-                                   style="width: 90px;"
+                                   style="width: 100px;"
                                    :placeholder="$t('inputField', {field: ''})"/>
                             <span>{{$t(accountInfo.unit)}}</span>
                         </Form-item>

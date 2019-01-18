@@ -269,7 +269,7 @@
         }
 
         .target-body{
-            padding: 30px 70px 10px 70px;
+            padding: 30px 50px 10px 30px;
         }
     }
 </style>

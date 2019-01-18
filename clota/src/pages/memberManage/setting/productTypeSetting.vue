@@ -45,9 +45,11 @@
             @fresh-data="queryList">
         </add-product-type-modal>
         <!--删除模态框-->
-        <del-modal ref="delModal">
-            <span class="content-text"><i class="iconfont icon-help delete-icon"></i>{{$t('deletingProductType')}}<span class="yellow-label">{{currentData ? currentData.typeName : ''}}</span></span>
-            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        <del-modal ref="delModal" class="del-min-width">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('deletingProductType')}}<span class="yellow-label">{{currentData ? currentData.typeName : ''}}</span>
+                <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
+            </span>
         </del-modal>
     </div>
 </template>

@@ -6,7 +6,7 @@
             <div class="btn-area">
                 <div class="query-params">
                     <Select v-model="cardStatus"
-                            style="width:170px;margin-right: 5px;"
+                            style="width:180px;margin-right: 5px;"
                             @on-change="statusChange">
                         <Option value="all">{{$t('allCardType')}}</Option>
                         <Option value="open">{{$t('cardOpened')}}</Option>
@@ -21,7 +21,8 @@
                         <Option v-if="showMemberRecharge" value="password">{{$t('passwordCard')}}</Option>
                     </Select>
                     <Input v-model.trim="keyword"
-                           style="width: 240px;margin-left: 5px;margin-right: 5px;"
+                           :style="{ width : lang === 'zh-CN' ? '240px' : '400px' }"
+                           style="margin-left: 5px;margin-right: 5px;"
                            :placeholder="$t('pleaseInputNumbers')"/>
                     <Button type="primary"
                             @click="search"
@@ -265,7 +266,8 @@
         computed : {
             ...mapGetters([
                 'permissionInfo',
-                'memberConfigInfo'
+                'memberConfigInfo',
+                'lang',
             ]),
             //是否可以导入实体卡
             canUploadCard () {

@@ -12,7 +12,10 @@
 
             <div class="modal-body">
 
-                <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="145">
+                <Form ref="formValidate"
+                      :model="formData"
+                      :rules="ruleValidate"
+                      :label-width="lang === 'zh-CN' ? 145 : 170">
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('memberCardName') + '：'" prop="levelDesc"><!--等级名称-->
                             <Input v-model.trim="formData.levelDesc"
@@ -130,27 +133,27 @@
 
         </Modal>
         <!--删除有效期确认框-->
-        <del-modal ref="delModal">
+        <del-modal ref="delModal" class="del-min-width">
             <span class="content-text">
                 <i class="iconfont icon-help delete-icon"></i>
-                {{$t('isDoing')}}{{$t('delete')}}{{$t('validityPeriod')}}：
+                {{$t('colonSetting',{ key : $t('isDoing') + $t('validityPeriod') })}}
                 <span class="yellow-label" v-w-title="currentData ? currentData.effValue : ''">
                     {{currentData ? currentData.effValue : ''}}{{$t('time.year')}}
                 </span>
+                <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
             </span>
-            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
         </del-modal>
         <!--新增有效期-->
         <edit-modal ref="editModal">
             <Form ref="effTimeForm"
                   :model="effectFormData"
                   label-position="right"
-                  :label-width="80">
+                  :label-width="lang === 'zh-CN' ? 80 : 125">
                 <!--新增有效期-->
                 <FormItem prop="addEffectTimeValue"
                           :label="$t('validityPeriod')"
                           :rules="[{ required : true, validator : validateEffectTime,trigger : 'blur' }]">
-                    <Input v-model.trim="effectFormData.addEffectTimeValue" style="width: 280px"/>
+                    <Input v-model.trim="effectFormData.addEffectTimeValue" :style="{ width : lang === 'zh-CN' ? '280px' : '200px' }" />
                     {{$t('time.year')}}
                 </FormItem>
             </Form>
@@ -624,6 +627,7 @@
             },
             ...mapGetters({
                 memberConfigInfo : 'memberConfigInfo',
+                lang : 'lang',
             }),
             //是否是售卖型会员卡
             cardIsSaling () {
@@ -673,7 +677,7 @@
         }
 
         .modal-body{
-            padding: 15px 30px 0;
+            padding: 15px 30px 0 10px;
 
             /deep/ .ivu-input-wrapper{
                 width: 280px;

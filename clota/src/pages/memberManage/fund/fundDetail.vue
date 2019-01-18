@@ -74,6 +74,17 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="column5"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row.accountTypeName) | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column6"
                 show-overflow-tooltip
                 slot-scope="row"

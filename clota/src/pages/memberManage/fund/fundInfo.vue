@@ -12,7 +12,7 @@
                 </div>
                 <div class="fund-list">
                     <div class="account-name" v-w-title="item.accountName + (item.unit ? `（${item.unit}）` : '')">
-                        {{item.accountName}}{{getUnit(item)}}
+                        {{$t(item.accountName) | contentFilter}}{{getUnit(item)}}
                     </div>
                     <!--<div class="account-money">{{item.amount | moneyFilter}}</div>-->
                     <div class="account-type-wrap">
@@ -21,7 +21,7 @@
                             <div class="account-type-name">{{$t('account.corpus')}}</div>
                         </div>
                         <div class="corpus-amount" v-if="item.id !== '4'">
-                            <div class="number">{{item.corpusAmount | moneyFilter | contentFilter}}</div>
+                            <div class="number">{{item.donateAmount | moneyFilter | contentFilter}}</div>
                             <div class="account-type-name">{{$t('presentAccountTotal')}}</div>
                         </div>
                     </div>

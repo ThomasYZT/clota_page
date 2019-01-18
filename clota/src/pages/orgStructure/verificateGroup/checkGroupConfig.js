@@ -13,6 +13,7 @@ export const saleGroup = [
     {
         title : 'WriteOffSalesAndDeskName',
         minWidth : 200,
+        enMinWidth : 222,
         field : 'channelName',
     },
     {
@@ -33,6 +34,7 @@ export const saleGroup = [
     {
         title : 'operate',
         width : 210,
+        enWidth : 353,
         field : 'operate'
     }
 ];

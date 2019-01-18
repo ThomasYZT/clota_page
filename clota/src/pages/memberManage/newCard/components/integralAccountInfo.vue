@@ -6,7 +6,7 @@
 
 <template>
     <div class="charge-account-info">
-        <div class="title">{{accountInfo.accountName | contentFilter}}</div>
+        <div class="title">{{$t(accountInfo.accountName) | contentFilter}}</div>
         <ul class="table-wrap">
             <li class="wrap-li">
                 <span class="label-key">{{$t('colonSetting' , { key : $t('pointBalance') })}}</span>

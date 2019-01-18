@@ -5,7 +5,7 @@
         :title="$t('setTradePass')"
         :mask-closable="false"
         :value="value"
-        :width="500"
+        :width="lang === 'zh-CN' ? 500 : 560"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="set-pay-password"
@@ -13,7 +13,7 @@
         <Form ref="formValidate"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="130">
+              :label-width="lang === 'zh-CN' ? 130 : 260">
             <FormItem :label="$t('payPass')" prop="password">
                 <Input v-model.trim="formData.password"
                        style="width: 240px;"
@@ -26,18 +26,20 @@
             </FormItem>
         </Form>
         <div slot="footer">
-            <Button type="ghost"
-                    class="ivu-btn-90px"
-                    @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     class="ivu-btn-90px"
                     @click="save">{{$t('save')}}</Button>
+            <Button type="ghost"
+                    class="ivu-btn-90px"
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
 
 <script>
     import MD5 from 'crypto-js/md5';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //模态框是否显示
@@ -138,6 +140,11 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -147,7 +154,6 @@
     .set-pay-password{
 
         /deep/ .ivu-form{
-            width: 400px;
             margin: 0 auto;
         }
 

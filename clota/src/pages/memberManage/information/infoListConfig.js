@@ -62,29 +62,31 @@ export const orderListHead = [
     {
         title : 'tradeNo', // 交易号
         minWidth : 150,
+        enMinWidth : 196,
         field : 'outOrderNo'
     },
     {
         title : 'scenic', // 景区
         minWidth : 160,
-        enMinWidth : 100,
+        enMinWidth : 117,
         field : 'outOrgName'
     },
     {
         title : 'memberTradeNo', // 会员方交易流水号
         minWidth : 160,
-        enMinWidth : 180,
+        enMinWidth : 200,
         field : 'orderNo'
     },
     {
         title : 'tradeAmount', // 整单交易金额
         minWidth : 150,
+        enMinWidth : 222,
         field : 'amount'
     },
     {
         title : 'orderStatusTags', // 订单状态(支付、退款)
         minWidth : 180,
-        enMinWidth : 200,
+        enMinWidth : 240,
         field : 'status'
     },
     {
@@ -95,6 +97,7 @@ export const orderListHead = [
     {
         title : 'vipsTradeTime', // 会员系统交易时间
         minWidth : 200,
+        enMinWidth : 216,
         field : 'createdTime'
     },
     {

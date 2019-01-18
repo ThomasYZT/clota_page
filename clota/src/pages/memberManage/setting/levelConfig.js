@@ -19,6 +19,7 @@ export const levelListHead = [
     {
         title : 'memberCardName', // 会员卡名称
         minWidth : 140,
+        enMinWidth : 190,
         field : 'levelDesc'
     },
     //会员4期暂时去掉
@@ -35,12 +36,14 @@ export const levelListHead = [
     {
         title : 'cardSaleMoneyWithUnit', // 售卡金额（元）
         minWidth : 150,
+        enMinWidth : 210,
         field : 'salePrice',
         type : 'money'
     },
     {
         title : 'cardBalanceWithUnit', // 卡内余额（元）
         minWidth : 150,
+        enMinWidth : 210,
         field : 'amountInCard',
         type : 'money'
     },

@@ -74,7 +74,6 @@
                     slot="column5"
                     slot-scope="row"
                     :label="row.title"
-                    fixed="right"
                     show-overflow-tooltip
                     :width="row.width"
                     :min-width="row.minWidth">

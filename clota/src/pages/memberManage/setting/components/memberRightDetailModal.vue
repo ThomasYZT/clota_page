@@ -5,7 +5,7 @@
         :title="$t('memberCardRight')"
         :mask-closable="false"
         :value="value"
-        :width="550"
+        :width="lang === 'zh-CN' ? 550 : 660"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="member-rights-modal"
@@ -24,6 +24,7 @@
                         <FormItem :prop="'birthdayNum' + index"
                                   :rules="{ required : true,validator : validateNum,trigger : 'blur',data : item.rule.num,isEnable : item.isEnable }">
                             <i-input type="text"
+                                     :placeholder="$t('inputPlaceholder')"
                                      v-model.trim="item.rule.num"
                                      style="width: 70px;">
                             </i-input>
@@ -36,6 +37,7 @@
                         <FormItem :prop="'birthdayDiscount' + index"
                                   :rules="{ required : true,validator : validateDecimail,trigger : 'blur',data : item.rule.discount,isEnable : item.isEnable }">
                             <i-input type="text"
+                                     :placeholder="$t('inputPlaceholder')"
                                      v-model.trim="item.rule.discount"
                                      style="width: 70px;">
                             </i-input>
@@ -59,6 +61,7 @@
                         <FormItem :prop="'ticketNum' + index"
                                   :rules="{ required : true,validator : validateNum,trigger : 'blur',data : item.rule.num,isEnable : item.isEnable  }">
                             <i-input type="text"
+                                     :placeholder="$t('inputPlaceholder')"
                                      v-model.trim="item.rule.num"
                                      style="width: 70px;">
                             </i-input>
@@ -73,9 +76,10 @@
                             :rules="{ validator : validateScenic,trigger : 'change',index : index,isEnable : item.isEnable }">
                             <Select v-model="item.rule.scenicId"
                                     transfer
+                                    :placeholder="$t('selectField',{ msg : '' })"
                                     :label-in-value="true"
                                     @on-change="selectChange($event, item)"
-                                    style="width: 100px;">
+                                    :style="lang === 'zh-CN' ? '100px' : '130px'">
                                 <Option :value="item.id"
                                         class="overflow-tip-list"
                                         v-for="(item,index) in scenicList"
@@ -90,6 +94,7 @@
                         <FormItem :prop="'ticketDiscount' + index"
                                   :rules="{ validator : validateMoney,trigger : 'blur',data : item.rule.discount,isEnable : item.isEnable }">
                             <i-input type="text"
+                                     :placeholder="$t('inputPlaceholder')"
                                      v-model.trim="item.rule.discount"
                                      style="width: 70px;">
                             </i-input>
@@ -112,6 +117,7 @@
                         <FormItem :prop="'descContent' + index"
                                   :rules="{ required : true, validator : validateContent,trigger : 'blur',data : item.content,isEnable : item.isEnable}">
                             <i-input type="textarea"
+                                     :placeholder="$t('inputPlaceholder')"
                                      v-model="item.content"
                                      style="width: 342px;">
                             </i-input>
@@ -139,6 +145,7 @@
 <script>
     import common from '@/assets/js/common';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -498,6 +505,9 @@
             }
         },
         computed : {
+            ...mapGetters([
+                'lang'
+            ])
         },
         created () {
             this.getTicketList();

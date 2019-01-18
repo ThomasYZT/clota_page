@@ -5,7 +5,7 @@
         title="Title"
         :mask-closable="false"
         :value="value"
-        :width="500"
+        :width="lang === 'zh-CN' ? 500 : 550"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="add-card-category"
@@ -13,7 +13,7 @@
         <div slot="header" class="target-class">
             <span class="title" >{{$t('memberTypeSetting')}}</span>
         </div>
-        <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="150">
+        <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="lang === 'zh-CN' ? 150 : 210">
             <FormItem :label="$t('memberCardTypeName')" prop="memberCategoryName">
                 <Input v-model.trim="formData.memberCategoryName"
                        style="width: 280px"
@@ -282,6 +282,7 @@
             },
             ...mapGetters({
                 memberConfigInfo : 'memberConfigInfo',
+                lang : 'lang',
             }),
             //是否是售卖型会员卡
             cardIsSaling () {

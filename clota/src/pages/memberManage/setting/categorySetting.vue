@@ -28,7 +28,6 @@
                         :key="row.index"
                         :width="row.width"
                         :min-width="row.minWidth"
-                        fixed="right"
                         slot-scope="row">
                         <template slot-scope="scoped">
                             <template v-if="scoped.row.cardForm === 'sale'">{{$t('cardSaleType')}}</template>

@@ -1,16 +1,18 @@
-1<!--快速开卡，开卡范围输入-->
+<!--快速开卡，开卡范围输入-->
 
 <template>
     <Modal
         :title="$t('openCardSpeedly')"
         :mask-closable="false"
         :value="value"
-        :width="520"
+        :width="lang === 'zh-CN' ? 520 : 580"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="card-number-scope"
         class-name="vertical-center-modal">
-        <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
+        <Form ref="formValidate"
+              :model="formData" :rules="ruleValidate"
+              :label-width="lang === 'zh-CN' ? 120 : 163">
             <FormItem :label="$t('colonSetting', { key : $t('cardNoRange') })">
                 <i-row>
                     <i-col style="display: inline-block;width: 165px;">
@@ -28,12 +30,12 @@
             </FormItem>
         </Form>
         <div slot="footer">
-            <Button type="ghost"
-                    class="ivu-btn-90px"
-                    @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     class="ivu-btn-90px"
                     @click="save">{{$t('confirm')}}</Button>
+            <Button type="ghost"
+                    class="ivu-btn-90px"
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -42,6 +44,7 @@
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
 
 	export default {
         props : {
@@ -197,12 +200,21 @@
                 }
                 return obj;
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
 	};
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .card-number-scope{
+
+        /deep/ .ivu-form{
+            width: 100%;
+        }
 
         /deep/ .ivu-modal-body{
             padding: 16px;

@@ -6,7 +6,7 @@
 
 <template>
     <div class="charge-account-info">
-        <div class="title">{{chargeInfo.accountName | contentFilter}}</div>
+        <div class="title">{{$t(chargeInfo.accountName) | contentFilter}}</div>
         <ul class="table-wrap">
             <!--默认账户显示账户合计-->
             <li class="wrap-li" v-if="chargeInfo.accountDefineId !== '4'">
