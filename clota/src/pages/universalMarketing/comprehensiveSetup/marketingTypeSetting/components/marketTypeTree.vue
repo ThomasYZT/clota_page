@@ -368,15 +368,20 @@
             cursor: pointer;
         }
 
+        /deep/ .el-tree-node__content {
+            height: 40px;
+        }
+
         .node {
             width: 100%;
-            height: 30px;
+            height: 40px;
             display: flex;
+
             .label {
                 flex: 1 0;
                 flex-basis: 70%;
-                height: 30px;
-                line-height: 30px;
+                height: 40px;
+                line-height: 40px;
                 span {
                     display: inline-block;
                     width: 130px;
@@ -400,7 +405,7 @@
                 flex-basis: 30%;
                 text-align: right;
                 font-size: 12px;
-                line-height: 30px;
+                line-height: 40px;
 
                 .iconfont, .save, .cancel {
                     &:hover {

@@ -170,4 +170,8 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+
+    /deep/ .ivu-form-item {
+        margin-bottom: 8px;
+    }
 </style>

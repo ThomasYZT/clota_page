@@ -382,7 +382,7 @@
             margin-top: 10px;
 
             /deep/ .ivu-form-item{
-                margin-bottom: 10px;
+                margin-bottom: 5px;
             }
 
             .img-wrapper {

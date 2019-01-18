@@ -410,6 +410,10 @@
 
     /deep/ .ivu-modal-body {
         min-height: 250px;
+
+        .ivu-form-item {
+            margin-bottom: 15px;
+        }
     }
 
     .tip-info {
