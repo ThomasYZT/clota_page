@@ -10,15 +10,22 @@
               :label-width="180">
             <toolBox :toolNum="3">
                 <div slot="tool0">
-                    <Form-item :label="$t('changeType')+':'">
-                        <Select v-model="filterData.changeType" @on-change="getListData()" style="width:250px">
-                            <Option v-for="(item, index) in changeTypeList" :value="item.value" :key="index">{{ $t(item.label) }}</Option>
+                    <Form-item>
+                        <Select v-model="filterData.changeType"
+                                @on-change="getListData()"
+                                style="width:250px">
+                            <Option v-for="(item, index) in changeTypeList"
+                                    :value="item.value"
+                                    :key="index">
+                                {{ $t(item.label) }}
+                            </Option>
                         </Select>
                     </Form-item>
                 </div>
                 <div slot="tool1">
-                    <Form-item :label="$t('startEndDate')+':'">
-                        <DatePicker type="daterange" split-panels
+                    <Form-item >
+                        <DatePicker type="daterange"
+                                    split-panels
                                     v-model="dateRange"
                                     @on-change="dateChange"
                                     :editable="false"

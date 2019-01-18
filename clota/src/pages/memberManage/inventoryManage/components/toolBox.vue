@@ -8,7 +8,9 @@
             <template>
                 <i-row v-for="(row,index) in Math.ceil(toolNum/4)"
                        :key="index">
-                    <i-col span="8" v-for="i in generateArray(row)"  :key="i">
+                    <i-col style="display: inline-block;margin-right: 10px;float : left;"
+                           v-for="i in generateArray(row)"
+                           :key="i">
                         <slot :name="'tool'+i">
 
                         </slot>

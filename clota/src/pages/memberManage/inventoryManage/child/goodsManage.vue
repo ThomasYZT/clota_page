@@ -8,7 +8,7 @@
 
         </i-row>
         <i-row class="search-row">
-            <i-col span="8">
+            <i-col style="display: inline-block;width : auto;">
                 <Button v-if="canAddGoods"
                         class="tool-btn left"
                         icon="android-add"

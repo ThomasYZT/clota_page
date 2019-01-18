@@ -127,7 +127,7 @@
                             <div class="table-wrapper">
                                 <tableCom :column-data="inBoundHead"
                                           :auto-height="true"
-                                          :table-com-min-height="200"
+                                          :table-com-min-height="250"
                                           :table-data="tableData"
                                           :border="true"
                                           :show-pagination="true"
@@ -141,7 +141,7 @@
                             <div class="table-wrapper">
                                 <tableCom :column-data="outBoundHead"
                                           :auto-height="true"
-                                          :table-com-min-height="200"
+                                          :table-com-min-height="250"
                                           :table-data="tableData"
                                           :border="true"
                                           :show-pagination="true"
@@ -167,7 +167,7 @@
                             <div class="table-wrapper">
                                 <tableCom :column-data="abnormalHead"
                                           :auto-height="true"
-                                          :table-com-min-height="200"
+                                          :table-com-min-height="250"
                                           :table-data="tableData"
                                           :border="true"
                                           :show-pagination="true"
@@ -375,7 +375,7 @@
     @import '~@/assets/scss/base';
     .stock-info {
         .content {
-            padding: 30px 52px;
+            padding: 30px 52px 0;
         }
 
         .form-wrapper {
@@ -429,13 +429,13 @@
 
         /deep/ .ivu-tabs-tabpane {
             padding: 20px 0;
-            min-height: 300px;
+            /*min-height: 300px;*/
         }
 
         .col-wrapper {
             .table-wrapper {
-                min-height: 200px;
-                margin-bottom: 30px;
+                /*min-height: 200px;*/
+                margin-bottom: 10px;
             }
         }
 

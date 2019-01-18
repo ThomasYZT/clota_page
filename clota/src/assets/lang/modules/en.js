@@ -1557,7 +1557,7 @@ export default {
     'addUnit' : 'Add unit',
     'addMeasurementUnit' : 'Add a new unit of measure',
     'addGoodsNum' : 'Add new item quantity',
-    'nowHaveStockNum' : 'existing inventory',
+    'nowHaveStockNum' : 'left ',
     'stockDetail' : 'Stock details',
     'goodInfo' : 'Product information',
     'measurementUnit' : 'Unit of measure',
