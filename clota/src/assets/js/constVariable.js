@@ -651,23 +651,23 @@ export const tradeTypeList = [
         value : 'all'
     },
     {
-        label : '补卡记录',
+        label : 'reissueCardRecord',
         value : 'reissue_card'
     },
     {
-        label : '开卡记录',
+        label : 'openCardRecord',
         value : 'open_card'
     },
     {
-        label : '退卡记录',
+        label : 'refundCardRecord',
         value : 'return_card'
     },
     {
-        label : '储值',
+        label : 'recharge',
         value : 'recharge'
     },
     {
-        label : '批量开卡记录',
+        label : 'batchOpenCardRecord',
         value : 'batch_open_card'
     },
 ];

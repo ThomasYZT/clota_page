@@ -3,6 +3,7 @@ export const openedServiceHead = [
     {
         title : 'index',//序号
         width : 90,
+        enWidth : 150,
         field : 'index'
     },
     {
@@ -23,6 +24,7 @@ export const openedServiceHead = [
     {
         title : 'serviceStatus',//服务状态
         minWidth : 100,
+        enWidth : 130,
         field : 'runStatus'
     },
 ];

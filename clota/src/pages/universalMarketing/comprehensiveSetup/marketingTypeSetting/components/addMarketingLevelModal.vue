@@ -46,7 +46,7 @@
                         </FormItem>
                     </i-col>
                     <i-col span="6">
-                        <span class="tip-info">1级为最低等级</span>
+                        <span class="tip-info">{{$t('oneLevelGrade')}}</span>
                     </i-col>
                 </i-row>
                 <i-row>

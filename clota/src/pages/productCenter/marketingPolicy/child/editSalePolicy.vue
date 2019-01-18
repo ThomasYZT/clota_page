@@ -1126,7 +1126,7 @@
                     }
                 } else {
                     if (this.selectedRow && this.selectedRow.length < 1) {
-                        this.$Message.warning(this.$t('请选择销售渠道'));
+                        this.$Message.warning(this.$t('selectField',{ msg : this.$t('saleChannels') }));
                         return;
                     }
                 }

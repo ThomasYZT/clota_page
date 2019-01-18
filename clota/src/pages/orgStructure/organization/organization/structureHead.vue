@@ -321,6 +321,8 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                         this.getStructureData();
+                    } else if (res.code === '0006') {
+                        this.$Message.error(this.$t('0006'));
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }

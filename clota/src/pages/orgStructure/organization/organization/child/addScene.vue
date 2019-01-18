@@ -74,7 +74,7 @@
                     <Input v-model.trim="formData.fax" style="width: 280px"/>
                 </FormItem>
                 <!--公司编码-->
-                <FormItem prop="companyCode">
+                <FormItem prop="companyCode" :class="{ 'en-label-wrap' : lang === 'en' }">
                     <template slot="label">
                         <Tooltip placement="top" transfer>
                             <div slot="content" class="tips-content">
@@ -124,6 +124,7 @@
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
     import selectTree from '@/components/selectTree/index.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -494,7 +495,10 @@
                         areaid : '',
                     };
                 }
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

@@ -66,7 +66,7 @@
                     {{$t('unknowResult')}}
                 </div>
                 <div class="to-for-detail">
-                可前往<span class="trade-record" @click="toTradeRecrod"> {{resultLocation ? $t(resultLocation) : '在线交易记录'}}  </span>继续查询支付结果
+                {{$t('canGo')}}<span class="trade-record" @click="toTradeRecrod"> {{resultLocation ? $t(resultLocation) : $t('onlineTradeRecord')}}  </span>{{$t('goForResult')}}
                 </div>
             </template>
             <!--支付成功-->

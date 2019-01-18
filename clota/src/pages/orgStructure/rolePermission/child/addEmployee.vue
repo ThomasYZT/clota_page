@@ -14,7 +14,7 @@
             <span class="title">{{$t('newEmployee')}}</span>
         </div>
         <div class="selection">
-            {{$t('selected')}}：{{employeeSelected.length}}{{$t('people')}}
+            {{$t('selected')}}：{{employeeSelected.length}} {{$t('people')}}
         </div>
         <table-com
             v-if="value"

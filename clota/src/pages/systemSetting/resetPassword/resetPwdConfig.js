@@ -64,13 +64,13 @@ export const employeeInfoHead = [
     {
         title : 'sceneName',//企业/景区名称
         minWidth : 190,
-        enMinWidth : 160,
+        enMinWidth : 200,
         field : 'orgName'
     },
     {
         title : 'departName',//部门名称
         minWidth : 190,
-        enMinWidth : 150,
+        enMinWidth : 160,
         field : 'deptName'
     },
     //按需求暂时不要
@@ -87,7 +87,7 @@ export const employeeInfoHead = [
     {
         title : 'operate',
         width : 80,
-        enWidth : 110,
+        enWidth : 190,
         field : ''
     },
 ];

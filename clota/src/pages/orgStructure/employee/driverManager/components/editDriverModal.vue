@@ -12,22 +12,28 @@
         <Form ref="form"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="100"
+              :label-width="lang === 'en' ? 120 : 100"
               class="form"
               >
             <FormItem :label="$t('name')" prop="staffName">
-                <Row>
-                    <Col span="15">
-                        <Input type="text" v-model="formData.staffName" :placeholder="$t('inputField',{field: $t('name')})"></Input>
-                    </Col>
-                </Row>
+                <i-row>
+                    <i-col span="15">
+                        <Input type="text"
+                               style="width: 240px"
+                               v-model.trim="formData.staffName"
+                               :placeholder="$t('inputField',{field: $t('name')})"/>
+                    </i-col>
+                </i-row>
             </FormItem>
             <FormItem :label="$t('licence')" prop="documentNo">
-                <Row>
-                    <Col span="15">
-                        <Input type="text" v-model="formData.documentNo" :placeholder="$t('inputField',{field: $t('licence')})"></Input>
-                    </Col>
-                </Row>
+                <i-row>
+                    <i-col span="15">
+                        <Input type="text"
+                               style="width: 240px"
+                               v-model.trim="formData.documentNo"
+                               :placeholder="$t('inputField',{field: $t('licence')})"/>
+                    </i-col>
+                </i-row>
             </FormItem>
         </Form>
 
@@ -41,6 +47,7 @@
 <script>
     import { validator } from 'klwk-ui';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
     export default {
         components : {},
         data () {
@@ -133,6 +140,11 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -157,5 +169,11 @@
                 padding: 5px 30px;
             }
         }
+    }
+    /deep/ .ivu-modal-body{
+        padding-top: 40px;
+        display: flex;
+        min-height: 250px;
+        align-items: center;
     }
 </style>

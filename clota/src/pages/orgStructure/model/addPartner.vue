@@ -4,20 +4,21 @@
         class="addPartner"
         class-name="vertical-center-modal"
         :mask-closable="false"
-        :width="560"
+        :width="lang === 'zh-CN' ? 560 : 700"
         @on-cancel="hide">
         <!--自定义页头-->
         <div slot="header" class="ivu-modal-header-inner">
             <span>{{type=='add' ? $t('addPartner') : $t('editPartner')}}</span>
         </div>
         <!--内容区域-->
-        <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="120">
+        <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="lang === 'zh-CN' ? 120 : 230">
             <Form-item :label="$t('partnerName')" prop="partnerId">
                 <Select v-model="addPartner.partnerId"
                         filterable
+                        :placeholder="$t('selectField',{ msg : '' })"
                         :disabled="type=='modify'"
                         @on-change="handlePartnerChanged">
-                    <Option v-for="item in partners"
+                    <Option v-for="item in partners"s
                             :value="item.id"
                             :key="item.id"
                             v-w-title="item.orgName"
@@ -37,7 +38,8 @@
             </Form-item>
 
             <Form-item :label="$t('saleChannelsGroup')" prop="saleGroupId">
-                <Select v-model="addPartner.saleGroupId">
+                <Select v-model="addPartner.saleGroupId"
+                        :placeholder="$t('selectField',{ msg : '' })">
                     <Option v-for="item in saleChannels"
                             :value="item.id"
                             :key="item.id"
@@ -74,6 +76,7 @@
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
     import pick from 'lodash/pick';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {},
@@ -127,7 +130,10 @@
                     }
                 }
                 return false;
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         },
         created () {
             this.getSaleGroup();

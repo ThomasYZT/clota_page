@@ -9,6 +9,7 @@ export const partMentHead = [
     {
         title : 'departName',//部门名称
         minWidth : 150,
+        enWidth : 170,
         field : 'orgName',
     },
     {
@@ -19,6 +20,7 @@ export const partMentHead = [
     {
         title : 'departmentEmpNum',//部门人数
         minWidth : 130,
+        enWidth : 140,
         field : 'empNum'
     }
 ];

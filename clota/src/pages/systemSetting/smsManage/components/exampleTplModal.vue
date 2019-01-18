@@ -64,17 +64,17 @@
 
                 tableData : [
                     {
-                        'type' : '票类1',
+                        'type' : this.$t('ticket1'),
                         'content' : '$name1',
-                        'describe' : '游客姓名1',
+                        'describe' : this.$t('tourist1'),
                     },{
-                        'type' : '票类2',
+                        'type' : this.$t('ticket2'),
                         'content' : '$name2',
-                        'describe' : '游客姓名2',
+                        'describe' : this.$t('tourist2'),
                     },{
-                        'type' : '票类3',
+                        'type' : this.$t('ticket3'),
                         'content' : '$name3',
-                        'describe' : '游客姓名3',
+                        'describe' : this.$t('tourist3'),
                     },
                 ]
             };

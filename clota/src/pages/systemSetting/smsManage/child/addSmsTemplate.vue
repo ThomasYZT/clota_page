@@ -48,7 +48,7 @@
                                    :rows="5"
                                    :placeholder="$t('inputField', {feild: $t('templateContent')})"/>
                         </Form-item>
-                        <p class="edit-tip" @click="$refs.exampleTplModal.show()">{{ $t('howToEditSmsTemplateContent') }}?</p>
+                        <p class="edit-tip" @click="$refs.exampleTplModal.show()">{{ $t('howToEditSmsTemplateContent') }}</p>
                     </div>
                 </Form>
             </div>

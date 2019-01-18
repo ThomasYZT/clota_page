@@ -54,7 +54,7 @@
         <delModal ref="delModal">
             <div class="remove-group">
                 <span class="red-bale">
-                <Icon type="help-circled"></Icon>{{$t('isDoing')}}{{$t('driverRole')}}：
+                <Icon type="help-circled"></Icon>{{$t('colonSetting',{ key : $t('isDoing') + $t('driverRole')})}}
                 <span style="color : #f8a334;">{{currentData.staffName}}</span> <br/>
                 <span style="color:#EB6751;">{{$t('operationIrrevocable')}}</span>{{$t('sureToDel')}}</span>
             </div>
@@ -108,9 +108,11 @@
              */
             queryList () {
                 ajax.post('queryPagedOrgStaff',this.queryParams).then(res => {
-                    if (res.success) {
+                    if (res.success && res.data) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
                     }
                 });
             },
@@ -138,6 +140,8 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
                         this.queryList();
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('delete') }));
                     }
                 });
             }

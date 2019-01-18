@@ -131,7 +131,7 @@
                     // }
                     this.isJSON(res.code).then(code => {
                         if (code.errcode && code.errcode.toString() === '40013') {
-                            this.$Message.error('请正确配置微信公众号信息');
+                            this.$Message.error(this.$t('pleaseConfigWxCorrectly'));
                         } else {
                             this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
                         }
