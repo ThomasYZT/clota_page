@@ -255,7 +255,7 @@
 
                     <!--微信会员卡推送设置 (仅仅配置了公众号信息，并开通了支付即会员才显示)-->
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
-                    && levelsOfGrowthList.length > 1">
+                    && levelsOfGrowthList.length > 1  && this.WxMpSetInfo.wxCardId">
                         <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
                         <div :class="{'main': true}">
                             <div class="switcher">
@@ -269,9 +269,10 @@
                         </div>
                     </div>
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
-                    && levelsOfGrowthList.length <= 1">
+                    && (levelsOfGrowthList.length <= 1 || !this.WxMpSetInfo.wxCardId)">
                         <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
-                        <span>无会员卡级别</span>
+                        <span v-if="levelsOfGrowthList.length <= 1">无会员卡级别</span>
+                        <span v-else="">请先配置卡包卡面信息</span>
                     </div>
 
                     <!--配置微信卡包的商户信息 (仅配置了公众号信息，并开通了微信卡包才显示)-->
@@ -1060,7 +1061,9 @@
              */
             savePayGiftCardRule () {
                 return new Promise((resolve, reject) => {
-                    if (this.WxMpSetInfo.payGiftCard === 'true' && this.levelsOfGrowthList.length > 1) {
+                    if (this.WxMpSetInfo.payGiftCard === 'true' &&
+                        this.levelsOfGrowthList.length > 1 &&
+                        this.WxMpSetInfo.wxCardId) {
                         if (this.wxPushMemberLevelSetting.id !== 'close') {
                             this.createPayGiftCardRule().then(() => {
                                 resolve();
