@@ -145,8 +145,14 @@
                     //确认密码
                     rePassword : ''
                 },
-                //企业注册表单校验
-                companyRuleValidate : {
+                //校验第二次输入的密码和第一次是否相同 企业注册
+                isEqNewPwd2 : isEqNewPwd2
+            };
+        },
+        computed : {
+            //企业注册表单校验
+            companyRuleValidate () {
+                return {
                     //企业编号
                     enterpriseNumber : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('companyNo') }), trigger : 'blur' },
@@ -199,11 +205,11 @@
                     ],
                     rePassword : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('password') }), trigger : 'blur' },
-                        { validator : isEqNewPwd2, trigger : 'blur' },
+                        { validator : this.isEqNewPwd2, trigger : 'blur' },
 
                     ],
                 }
-            };
+            }
         },
         methods : {
 
@@ -270,9 +276,9 @@
                 this.$refs['companyForm'].resetFields();
                 this.$refs.imgUpload.reset();
                 this.$refs.citySelect.reset();
-                this.formData.province = '';
-                this.formData.city = '';
-                this.formData.district = '';
+                this.formDataCompany.province = '';
+                this.formDataCompany.city = '';
+                this.formDataCompany.district = '';
             },
         }
     };
