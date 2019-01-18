@@ -7,17 +7,17 @@
 <template>
     <div class="overview-tpl">
         <span :class="['iconfont', 'label-img', icon]" :style="{'color': iconColor}"></span>
-        <div class="detail-info">
+        <div class="detail-info"  :class="{ 'only-num' : !showRate }">
             <span class="label-name">{{labelName}}</span>
             <span class="number">{{labelNum}}</span>
-            <span class="circle-rate">
-            <span class="rate" v-if="showRate">
-                <span class="iconfont"
-                      :class="{'icon-up' : labelCurve === 'positive', 'icon-down' : !labelCurve || labelCurve === 'negative'}">
+            <span class="circle-rate" v-if="showRate">
+                <span class="rate">
+                    <span class="iconfont"
+                          :class="{'icon-up' : labelCurve === 'positive', 'icon-down' : !labelCurve || labelCurve === 'negative'}">
+                    </span>
+                    {{getRate(labelRate) | contentFilter }}%
                 </span>
-                {{getRate(labelRate) | contentFilter }}%
-            </span>
-            <span class="desc" v-if="showRate">{{$t('thanYestoday')}}</span>
+                <span class="desc">{{$t('thanYestoday')}}</span>
           </span>
         </div>
     </div>
@@ -129,6 +129,10 @@
         .detail-info {
             @include block_outline(unquote('calc(100% - 82px)'));
             float: right;
+
+            &.only-num {
+                margin-top: 8px;
+            }
 
             .label-name {
                 @include block_outline($height: 24px, $is_block: false);
