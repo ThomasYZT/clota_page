@@ -788,7 +788,7 @@ export default {
     'times' : '次',
     'dayToEffect' : '天有效，一共可入园/观影',
     'dayToPlay' : '预定时指定游玩日期。入园后，门票',
-    'timesToPolicy' : '在销售政策适用游玩期限内',
+    'timesToPolicy' : '在销售政策适用游玩期限内，可入园/观影',
     'ticket' : '票类',
     'repast' : '餐饮',
     'hotel' : '酒店',

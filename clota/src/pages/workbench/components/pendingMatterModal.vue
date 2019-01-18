@@ -16,7 +16,7 @@
         <!--内容区域-->
         <table-com
             :ofsetHeight="200"
-            :height="370"
+            :height="450"
             :show-pagination="false"
             :column-data="columnData"
             :table-data="tableData"

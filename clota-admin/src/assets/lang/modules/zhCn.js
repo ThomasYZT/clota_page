@@ -31,7 +31,7 @@ export default {
     serverCount : '服务器数量',
     circleName : '同比昨天',
     ISPinternet : '服务提供商',
-    cooperaChannelOrg : '合作渠道(机构)',
+    cooperaChannelOrg : '合作渠道（机构）',
     cooperaChannelPer : '合作渠道（个人）',
     readyDeal : '待处理',
     auditTrue : '审核通过',

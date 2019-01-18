@@ -283,9 +283,7 @@
                                     </template>
                                </el-table-column>
                             </table-com>
-                            <p class="remark">{{$t('productCenter.refundTip1')}}</p>
-                            <p class="remark">{{$t('productCenter.refundTip2')}}</p>
-                            <p class="remark">{{$t('productCenter.refundTip3')}}</p>
+                            <p class="remark">{{$t('默认退票手续费率为0')}}</p>
                         </div>
                     </Form-item>
                 </div>
@@ -585,7 +583,7 @@
             .form-content{
                 border-top: 1px dashed $color_979797_020;
                 width: 85%;
-                margin: 0 auto;
+                margin-left: 20px;
                 padding: 20px 0;
 
                 &:first-child{

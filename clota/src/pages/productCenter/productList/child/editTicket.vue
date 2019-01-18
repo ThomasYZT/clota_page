@@ -198,7 +198,7 @@
                 <!--产品有效性-->
                 <title-temp title="productEffect"></title-temp>
                 <div class="form-content">
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap hasIcon">
                         <Form-item :label="$t('productEffSet')" prop="productEffSet"><!--产品有效性设置-->
                             <Select v-model="formData.productEffSet"
                                     :disabled="!productEffSetEnable"
@@ -209,6 +209,16 @@
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
+                            <div style="position: absolute;right: -20px;top: 0px;">
+                                <Tooltip transfer>
+                                    <div slot="content" style="width: 200px;">
+                                        游玩日期之日起M天有效：是指产品必须在下单时指定的游玩日期核销，
+                                        在首次核销之后的M天可多次入园游玩。同销售政策适用游玩期限：
+                                        在销售政策指定游玩期限内，任意一天均可核销。不适用于团队产品，不可限定每日库存
+                                    </div>
+                                    <i class="iconfont icon-note"></i>
+                                </Tooltip>
+                            </div>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
@@ -921,6 +931,9 @@
                     }
                 }
 
+                .icon-note {
+                    color: $color_gray;
+                }
             }
 
             .red{

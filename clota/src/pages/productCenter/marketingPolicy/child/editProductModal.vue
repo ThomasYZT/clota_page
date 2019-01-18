@@ -581,4 +581,10 @@
         color: $color_yellow !important;
     }
 
+    /deep/ .el-table {
+        th {
+            padding: 7px 0;
+        }
+    }
+
 </style>

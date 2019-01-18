@@ -272,6 +272,8 @@
                                     url : this.goodInfo.pics
                                 }
                             ];
+                        } else {
+                            this.defaultImgList = [];
                         }
                     } else {
                         this.goodInfo = {};
@@ -357,7 +359,13 @@
              * 删除图片
              */
             removeIDimg (data) {
-                this.formData.pics = data;
+                this.defaultImgList = data.map((url, index) => {
+                    return {
+                        name : index,
+                        url : url
+                    };
+                });
+                this.editGoodPic(data);
             },
         }
     };

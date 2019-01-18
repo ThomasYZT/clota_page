@@ -39,8 +39,7 @@
         data () {
             return {};
         },
-        methods : {
-        },
+        methods : {},
         computed : {
             ...mapGetters({
                 menuIsPackUp : 'menuIsPackUp',
@@ -92,10 +91,9 @@
                 }
 
                 &.no-sider-bar {
-                    width: 100%;
-                    display: inline-block;
-                    transition: all 0.3s;
-                    overflow: auto;
+                    @include block_outline(unquote('calc(100%)'));
+                    transition: all 0.1s;
+                    overflow: hidden;
                 }
             }
 
