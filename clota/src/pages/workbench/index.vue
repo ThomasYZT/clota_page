@@ -2,7 +2,7 @@
 
 <template>
     <div class="workbench">
-        <template v-if="manageOrgs.nodeType === 'scenic'">
+        <template v-if="manageOrgs.nodeType === 'scenic' || manageOrgs.nodeType === 'company'">
             <scenicService></scenicService>
         </template>
 
