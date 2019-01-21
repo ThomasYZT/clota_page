@@ -11,8 +11,7 @@
         :mask-closable="false"
         @on-cancel="toggle">
         <Form ref="form"
-              label-position="left"
-              :label-width="150">
+              :label-width="lang === 'zh-CN' ? 150 : 200">
             <Form-item :label="$t('smsPackageName')">
                 <span>{{listItem.packageName | contentFilter}}</span>
             </Form-item>
@@ -43,7 +42,10 @@
 
 
         <delModal ref="delModal">
-            <span>{{$t('sureToaddSmsAmount')}}</span>{{listItem.smsCount | contentFilter}}{{$t('item')}}?
+               <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>
+                <span>{{$t('sureToaddSmsAmount')}}{{listItem.smsCount | contentFilter}}{{$t('item')}}?</span>
+            </span>
         </delModal>
 
     </Modal>
@@ -52,6 +54,8 @@
 <script>
     import delModal from '../../../../components/delModal/index';
     import ajax from '../../../../api/index';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {
             delModal
@@ -82,7 +86,7 @@
             confirm () {
                 this.visible = false;
                 this.$refs.delModal.show({
-                    title : '',
+                    title : this.$t('notice'),
                     confirmCallback : () => {
                         this.adjust();
                     },
@@ -106,10 +110,39 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    /deep/ .ivu-form{
+        width: 425px;
+        margin: 0 auto;
+    }
+
+    .content-text {
+        width: 210px;
+        position: relative;
+
+        .delete-icon {
+            position: absolute;
+            left: -20px;
+            margin-right: 12px;
+            color: $color_red;
+        }
+
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
+        }
+    }
 </style>

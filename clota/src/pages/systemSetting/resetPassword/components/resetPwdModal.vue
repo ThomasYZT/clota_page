@@ -11,7 +11,10 @@
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 130 : 210">
                 <!--姓名-->
                 <Form-item :label="$t('name')" prop="">
                     <span>{{formData.nickName | contentFilter}}</span>
@@ -46,6 +49,7 @@
     import common from '@/assets/js/common.js';
     import MD5 from 'crypto-js/md5';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : ['row-data'],
@@ -165,6 +169,11 @@
             }
 
         },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        }
     };
 </script>
 

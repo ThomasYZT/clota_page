@@ -9,7 +9,7 @@
             <span class="value">{{totalSym + $t('item')}}</span>
         </div>
         <tableCom
-            :ofset-height="130"
+            :ofset-height="120"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -154,9 +154,9 @@
 
         .head-info {
             padding: 10px 20px;
-            height: 70px;
+            height: 60px;
             width: 100%;
-            line-height: 50px;
+            line-height: 40px;
 
             .label {
                 margin-right: 5px;

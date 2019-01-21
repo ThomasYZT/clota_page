@@ -14,6 +14,7 @@ export const smsTplHead = [
     {
         title : 'templateType',
         minWidth : 100,
+        enMinWidth : 140,
         field : 'templetType'
     },
     {
@@ -24,6 +25,7 @@ export const smsTplHead = [
     {
         title : 'isBuiltIn',
         minWidth : 90,
+        enMinWidth : 155,
         field : 'isBuiltIn'
     },
     {
@@ -34,6 +36,7 @@ export const smsTplHead = [
     {
         title : 'operate',
         width : 80,
+        enWidth : 105,
         field : ''
     },
 ];

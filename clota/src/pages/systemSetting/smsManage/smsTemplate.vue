@@ -42,6 +42,7 @@
                 slot="column6"
                 slot-scope="row"
                 :label="row.title"
+                fixed="right"
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
@@ -105,7 +106,6 @@
                         }
                     }
                 });
-                this.totalCount = this.tableData.length;
             },
 
             // 搜索短信套餐

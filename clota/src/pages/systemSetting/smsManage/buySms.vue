@@ -108,7 +108,6 @@
                         }
                     }
                 });
-                this.totalCount = this.tableData.length;
             },
 
             // 搜索短信套餐
