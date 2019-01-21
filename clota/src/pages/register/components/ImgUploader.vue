@@ -19,7 +19,7 @@
             :on-remove="handleRemove"
             :on-exceed="handlEexceed"
             :on-success="uploadSuc">
-            <i class="el-icon-plus" ></i>
+            <i class="el-icon-plus" ></i>{{message}}
         </el-upload>
 
         <!--图片预览-->
@@ -59,6 +59,13 @@
                 type : Array,
                 default () {
                     return [];
+                }
+            },
+            //文案
+            message : {
+                type : String,
+                default () {
+                    return '';
                 }
             }
         },

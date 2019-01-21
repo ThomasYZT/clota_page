@@ -8,7 +8,8 @@
            :title="$t('uploadPoster')"
            class-name="vertical-center-modal"
            width="540"
-           :mask-closable="false">
+           :mask-closable="false"
+           @on-cancel="hide()">
         <div class="form-wrapper">
             <Form ref="form"
                   :model="formData"
@@ -51,6 +52,7 @@
                             <uploadImg v-if="visible"
                                        :quantityLimit="1"
                                        :size="20"
+                                       :message="$t('uploadPicture')"
                                        :format="['jpeg','png','bmp']"
                                        @remove-img="removeImg"
                                        @upload-success="uploadSuccess"></uploadImg>
@@ -75,7 +77,7 @@
 
 <script>
     import ajax from '@/api/index';
-    import uploadImg from './uploadImg';
+    import uploadImg from '../../../register/components/ImgUploader';
     export default {
         components : {
             uploadImg
@@ -125,6 +127,10 @@
                     this.reset();
                 }
                 this.visible = !this.visible;
+            },
+            hide () {
+                this.visible = false;
+                this.reset();
             },
             /**
              * 上传
@@ -216,5 +222,26 @@
     .format-info {
         font-size: 12px;
         color: #F7981C;
+    }
+
+    /deep/ .el-upload {
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        font-size: 12px;
+        background-color: #FAFAFA;
+        color: #999999;
+        i.el-icon-plus {
+            color: #999999;
+            font-size: 12px;
+        }
+    }
+    /deep/ .el-upload-list__item {
+        width: 80px;
+        height: 80px;
+    }
+
+    /deep/ .picture-preview.ivu-modal-wrap {
+        z-index: 9999;
     }
 </style>
