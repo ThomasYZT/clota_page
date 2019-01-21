@@ -34,7 +34,7 @@
                 </i-col>
                 <i-col span="5">
                     <!--订单类型-->
-                    <FormItem :label="$t('orderType')" >
+                    <FormItem :label="$t('orderType')" :label-width="lang === 'zh-CN' ? 80 :85 ">
                         <Select v-model.trim="formData.orderType"
                                 @on-change="orderTypeChange">
                             <Option v-for="item in orderType"
@@ -47,7 +47,7 @@
                 </i-col>
                 <i-col span="5">
                     <!--是否分销-->
-                    <FormItem :label="$t('whetherVerify')" >
+                    <FormItem :label="$t('whetherVerify')" :label-width="lang === 'zh-CN' ? 80 : 165 ">
                         <Select v-model.trim="formData.allocationStatus"
                                 @on-change="allocationStatusChange">
                             <Option v-for="item in tOfSelectList"
@@ -62,7 +62,7 @@
             <i-row>
                 <i-col span="6">
                     <!--取票状态-->
-                    <FormItem :label="$t('takeTicketStatus')">
+                    <FormItem :label="$t('takeTicketStatus')" :label-width="lang === 'zh-CN' ? 80 : 95 ">
                         <Select v-model.trim="formData.pickStatus"
                                 @on-change="searchProductList">
                             <Option v-for="item  in takeTicketStatusList"
@@ -75,7 +75,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--退票状态-->
-                    <FormItem :label="$t('refundStatus')">
+                    <FormItem :label="$t('refundStatus')"  :label-width="lang === 'zh-CN' ? 80 : 105 ">
                         <Select v-model.trim="formData.refundStatus"
                                 @on-change="searchProductList">
                             <Option v-for="item  in refundStatusList"
@@ -88,7 +88,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--所属景区-->
-                    <FormItem :label="$t('scenePlace')">
+                    <FormItem :label="$t('scenePlace')" :label-width="lang === 'zh-CN' ? 80 : 90 ">
                         <Select v-model.trim="formData.scenicId"
                                 @on-change="sceneChange">
                             <Option v-for="item  in belongScene"
@@ -101,7 +101,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--下单企业-->
-                    <FormItem :label="$t('orderOrg')" >
+                    <FormItem :label="$t('orderOrg')" :label-width="lang === 'zh-CN' ? 80 : 120 ">
                         <Select v-model.trim="formData.orderOrgId"
                                 :disabled="orderTaskDisabled"
                                 @on-change="searchProductList">
@@ -117,7 +117,7 @@
             <i-row>
                 <i-col span="6">
                     <!--下单渠道-->
-                    <FormItem :label="$t('orderChannel')" >
+                    <FormItem :label="$t('orderChannel')" :label-width="lang === 'zh-CN' ? 80 : 105 ">
                         <Select v-model.trim="formData.orderChannel"
                                 @on-change="searchProductList">
                             <Option v-for="item  in orderChannelList"
@@ -130,7 +130,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--核销状态-->
-                    <FormItem :label="$t('verifyStatus')" >
+                    <FormItem :label="$t('verifyStatus')" :label-width="lang === 'zh-CN' ? 80 : 120 ">
                         <Select v-model.trim="formData.verifyStatus"
                                 @on-change="searchProductList">
                             <Option v-for="item  in verifyStatusList"
@@ -143,7 +143,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--是否同步-->
-                    <FormItem :label="$t('whetherSync')" >
+                    <FormItem :label="$t('whetherSync')"  :label-width="lang === 'zh-CN' ? 80 : 90 ">
                         <Select v-model.trim="formData.syncStatus"
                                 @on-change="searchProductList">
                             <Option v-for="item  in synchronizationList"
@@ -156,7 +156,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--改签状态-->
-                    <FormItem :label="$t('rescheduleStatus')" >
+                    <FormItem :label="$t('rescheduleStatus')"  :label-width="lang === 'zh-CN' ? 80 : 110 ">
                         <Select v-model.trim="formData.rescheduleStatus"
                                 @on-change="searchProductList">
                             <Option v-for="item  in rescheduleStatus"
@@ -171,7 +171,7 @@
             <i-row>
                 <i-col span="6">
                     <!--营销类别-->
-                    <FormItem :label="$t('marketType')" >
+                    <FormItem :label="$t('marketType')"  :label-width="lang === 'zh-CN' ? 80 : 140 ">
                         <Select v-model.trim="formData.marketTypeId"
                                 :disabled="formData.orderChannel !== 'market'"
                                 @on-change="marketTypeChange">
@@ -185,7 +185,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--营销级别-->
-                    <FormItem :label="$t('marketLevel')" >
+                    <FormItem :label="$t('marketLevel')"  :label-width="lang === 'zh-CN' ? 80 : 115 ">
                         <Select v-model.trim="formData.marketLevelId"
                                 :disabled="formData.orderChannel !== 'market'"
                                 @on-change="searchProductList">
@@ -199,7 +199,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--业态类型-->
-                    <FormItem :label="$t('industryType')" >
+                    <FormItem :label="$t('industryType')" :label-width="lang === 'zh-CN' ? 80 : 125 ">
                         <Select v-model.trim="formData.productType"
                                 @on-change="searchProductList">
                             <Option value="ticket">{{$t('tickets')}}</Option>
@@ -208,7 +208,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--支付状态-->
-                    <FormItem :label="$t('paymentStatus')" >
+                    <FormItem :label="$t('paymentStatus')" :label-width="lang === 'zh-CN' ? 80 : 120 ">
                         <Select v-model.trim="formData.paymentStatus"
                                 @on-change="searchProductList">
                             <Option v-for="item  in payStatusList"
@@ -223,7 +223,7 @@
             <i-row>
                 <i-col span="6">
                     <!--审核状态-->
-                    <FormItem :label="$t('teamOrderAudit')" :label-width="115">
+                    <FormItem :label="$t('teamOrderAudit')"  :label-width="lang === 'zh-CN' ? 115 : 136">
                         <Select v-model.trim="formData.auditStatus"
                                 :disabled="formData.orderType === 'individual'"
                                 @on-change="searchProductList">
@@ -524,7 +524,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                lang : 'lang',
             }),
             //下单企业名字
             orderOrgName () {
@@ -670,6 +671,11 @@
             /deep/ .ivu-form-item{
                 margin-bottom: 0;
             }
+        }
+
+        /deep/ .ivu-form-item-label{
+            padding-left: 5px;
+            padding-right: 5px;
         }
     }
 </style>
