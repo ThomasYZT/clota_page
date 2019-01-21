@@ -56,6 +56,17 @@
                       :page-no-d.sync="filterData.pageNo"
                       :page-size-d.sync="filterData.pageSize"
                       @query-data="getListData">
+                <!-- 出入库数量 -->
+                <el-table-column
+                    slot="column1"
+                    slot-scope="row"
+                    :label="filterData.changeType === 'in' ? $t('stockInNum') : $t('outBoundNum')"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.total | contentFilter}}</span>
+                    </template>
+                </el-table-column>
                 <!-- 库存数量 -->
                 <el-table-column
                     slot="column2"
