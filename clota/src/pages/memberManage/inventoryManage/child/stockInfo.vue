@@ -173,7 +173,20 @@
                                           :show-pagination="true"
                                           :total-count="totalCount"
                                           :page-no-d.sync="queryParams.pageNo"
-                                          :page-size-d.sync="queryParams.pageSize"></tableCom>
+                                          :page-size-d.sync="queryParams.pageSize">
+                                    <!-- 操作人 -->
+                                    <el-table-column
+                                        slot="column4"
+                                        slot-scope="row"
+                                        :label="row.title"
+                                        :width="row.width"
+                                        :min-width="row.minWidth">
+                                        <template slot-scope="scope">
+                                            {{ scope.row.operatorOrg | contentFilter}} /
+                                            {{ scope.row.operator | contentFilter}}
+                                        </template>
+                                    </el-table-column>
+                                </tableCom>
                             </div>
                         </TabPane>
                     </Tabs>
