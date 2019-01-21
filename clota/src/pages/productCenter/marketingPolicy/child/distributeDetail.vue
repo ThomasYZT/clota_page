@@ -66,6 +66,17 @@
                           :table-data="parentDistributeData"
                           :border="false">
                     <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="column0"
                         slot-scope="row"
                         :label="row.title"
@@ -74,17 +85,6 @@
                         show-overflow-tooltip>
                         <template slot-scope="scope">
                             <span class="item-click" @click="checkProductDetail(scope.row)">{{scope.row.productName | contentFilter}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column2"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
                         </template>
                     </el-table-column>
                     <el-table-column
