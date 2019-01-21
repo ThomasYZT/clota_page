@@ -406,7 +406,6 @@
 
         .content{
             padding: 30px 60px;
-            height: calc(100% - 144px);
             overflow: auto;
 
             .content-item{

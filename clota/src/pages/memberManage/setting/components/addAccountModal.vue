@@ -21,7 +21,10 @@
 
             <!--step 1-->
             <template v-if="step === 0">
-                <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+                <Form ref="formValidate"
+                      :model="formData"
+                      :rules="ruleValidate"
+                      :label-width="lang === 'zh-CN' ? 130 : 170">
                     <div class="ivu-form-item-wrap">
                         <!--账户归属-->
                         <Form-item :label="$t('accountOwnership')" prop="accountBelonging">
@@ -156,6 +159,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import selectTree from '@/components/selectTree/index.vue';
+    import { mapGetters } from  'vuex';
 
     export default {
         props : ['length','table-data','send-data'],
@@ -515,6 +519,11 @@
             },
 
         },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        }
     };
 </script>
 
@@ -524,7 +533,6 @@
 
         .modal-body{
             padding: 0 14px;
-            height: 230px;
 
             .steps-wrap{
                 padding-top: 5px;
@@ -564,5 +572,9 @@
             }
         }
 
+    }
+
+    /deep/ .ivu-modal-body{
+        padding-top: 35px;
     }
 </style>

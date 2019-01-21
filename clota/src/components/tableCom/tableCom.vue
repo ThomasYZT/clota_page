@@ -21,6 +21,7 @@
                    <el-table-column
                         v-if="columnCheck"
                         type="selection"
+                        fixed="left"
                         :selectable="selectable"
                         :width="selectionWidth">
                    </el-table-column>

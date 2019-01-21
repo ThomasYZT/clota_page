@@ -26,6 +26,7 @@ export const columnData = [
     {
         title : 'memberCardType', // 会员卡类型
         minWidth : 150,
+        enMinWidth : 165,
         field : 'cardTypeName'
     },
     {

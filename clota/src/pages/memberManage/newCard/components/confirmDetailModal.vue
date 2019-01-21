@@ -14,13 +14,13 @@
 
         </slot>
         <div slot="footer">
+            <Button type="primary"
+                    class="ivu-btn-90px"
+                    @click="save">{{$t('confirm')}}</Button>
             <Button type="ghost"
                     v-if="showCancel"
                     class="ivu-btn-90px"
                     @click="cancel">{{$t('cancel')}}</Button>
-            <Button type="primary"
-                    class="ivu-btn-90px"
-                    @click="save">{{$t('confirm')}}</Button>
         </div>
     </Modal>
 </template>

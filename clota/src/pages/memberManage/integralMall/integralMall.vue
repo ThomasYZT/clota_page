@@ -5,9 +5,10 @@
 <template>
     <div class="container">
         <i-row class="search-row">
-            <i-col span="8">
+            <i-col span="10">
                 <Button v-if="canOperateProduct"
-                        class="ivu-btn-90px tool-btn"
+                        class=" tool-btn"
+                        :class="{ 'ivu-btn-90px' :  lang === 'zh-CN'}"
                         type="primary"
                         @click="getGoods()">{{$t('GetTheGoods')}}</Button>
             </i-col>
@@ -111,7 +112,7 @@
         <!--下架商品模态框-->
         <del-modal ref="delModal">
             <div class="content-text"><i class="iconfont icon-warn"></i>
-                <span v-if="delModalType === 'down'">{{$t('isSureDownGoods')}}？</span><span v-else>{{$t('isSureUpGoods')}}</span>
+                <span v-if="delModalType === 'down'">{{$t('isSureDownGoods')}}</span><span v-else>{{$t('isSureUpGoods')}}</span>
                 <span class="warn">{{$t('operationIrrevocable')}}</span><span>{{$t('WhetherToContinue')}}</span>
             </div>
         </del-modal>
@@ -339,7 +340,8 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
+                'lang',
             ]),
             //是否可以进行操作
             canOperateProduct () {

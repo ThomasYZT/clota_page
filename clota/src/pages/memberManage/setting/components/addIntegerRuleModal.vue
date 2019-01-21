@@ -50,11 +50,12 @@
 				</i-row>
 				<i-row>
 					<i-col >
-						<Form-item :label-width="235"
+						<Form-item :label-width="270"
+                                   class="en-label-wrap"
                                    :label="$t('discountRateMostIs')"
                                    prop="highProportion">
 							<i-input v-model.trim="formData.highProportion"
-                                     style="width : 223px;"
+                                     style="width : 210px;"
                                      :placeholder="$t('inputPlaceholder')">
 								<span slot="append">%</span>
 							</i-input>

@@ -372,6 +372,7 @@
             display: flex;
             align-items: center;
             min-height: 220px;
+            padding-top: 30px;
         }
     }
 </style>

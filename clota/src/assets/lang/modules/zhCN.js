@@ -2488,4 +2488,6 @@ export default {
     '默认储值账户' : '默认储值账户',
     '积分账户' : '积分账户',
     '开卡账户' : '开卡账户',
+    'analysisFileSuccess' : '解析文件成功',
+    'analysisFileFail' : '解析文件失败',
 };

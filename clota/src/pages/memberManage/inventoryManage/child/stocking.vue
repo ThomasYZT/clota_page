@@ -84,6 +84,7 @@
                 </el-table-column>
                 <!-- 操作 -->
                 <el-table-column
+                    v-if="canShowInvenTory"
                     slot="column7"
                     slot-scope="row"
                     fixed="right"
@@ -108,6 +109,8 @@
     import ajax from '@/api/index';
     import ajaxConfig from '@/config/index.js';
     import apiList from '@/api/apiList.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {
             tableCom,
@@ -153,6 +156,13 @@
                     '&endDate=' + this.filterData.endDate +
                     '&changeType=' + this.filterData.changeType;
             },
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以显示库存详情操作列
+            canShowInvenTory () {
+                return this.permissionInfo && this.permissionInfo['member-productList'] === 'allow';
+            }
         },
         methods : {
             /**
@@ -184,6 +194,7 @@
              * @param {object} data
              */
             stockDetail (data) {
+                if (!this.canShowInvenTory) return;
                 this.$router.push({
                     name : 'stockInfo',
                     params : {
@@ -209,6 +220,8 @@
     .stocking {
         .btn-wrapper {
             display: inline-block;
+            margin-left: 5px;
+
             a {
                 display: inline-block;
                 padding: 4px 15px;

@@ -4,7 +4,7 @@
 -->
 <template>
     <Modal v-model="visible"
-           width="400"
+           :width="lang === 'zh-CN' ? 400 : 500"
            class-name="vertical-center-modal adjust-credits-modal"
            :title="$t('exchangePointsRequiredSetting')">
 
@@ -13,12 +13,11 @@
                   :model="formData"
                   :rules="ruleValidate"
                   label-position="right"
-                  :label-width="140">
+                  :label-width="lang === 'zh-CN' ? 140 : 240">
                 <i-row>
                     <i-col span="22">
                         <Form-item :label="$t('exchangePointsRequired')" prop="requiredCredits">
                             <Input v-model.trim="formData.requiredCredits"
-                                   style="width:200px"
                                    :placeholder="$t('inputField', { field : $t('exchangePointsRequired') })"></Input>
                         </Form-item>
                     </i-col>
@@ -36,6 +35,8 @@
 <script>
     import common from '@/assets/js/common';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {},
         data () {
@@ -121,6 +122,11 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
