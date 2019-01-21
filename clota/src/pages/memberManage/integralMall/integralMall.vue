@@ -60,7 +60,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{scope.row.stockNum - scope.row.upNum}}</span>
+                        <span>{{(scope.row.stockNum - scope.row.upNum - scope.row.undrawNum) > 0 ? (scope.row.stockNum - scope.row.upNum - scope.row.undrawNum) : 0}}</span>
                     </template>
                 </el-table-column>
                 <!-- 商品状态 -->

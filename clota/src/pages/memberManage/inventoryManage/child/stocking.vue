@@ -61,7 +61,13 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{ scope.row.stockNum + scope.row.undrawNum | contentFilter}}
+                        <span v-if="Number(scope.row.stockNum) <  Number(scope.row.undrawNum)"
+                              class="warn-value">
+                            {{ scope.row.stockNum | contentFilter}} {{$t('bracketSetting', { content : $t('缺货') })}}
+                        </span>
+                        <span v-else>
+                            {{ scope.row.stockNum | contentFilter}}
+                        </span>
                     </template>
                 </el-table-column>
                 <!-- 商品状态 -->
@@ -235,6 +241,10 @@
         }
         .sleep:after {
             background: $color_gray;
+        }
+
+        .warn-value {
+            color: $color_red;
         }
     }
 </style>

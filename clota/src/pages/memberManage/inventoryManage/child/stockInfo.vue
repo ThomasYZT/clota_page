@@ -26,7 +26,7 @@
                         <i-col span="6" :offset="2">
                             <!-- 入库数量 -->
                             <Form-item :label="$t('stockNum')+':'">
-                                {{goodInfo.stockNum + goodInfo.undrawNum}}
+                                {{goodInfo.stockNum}}
                             </Form-item>
                         </i-col>
                     </i-row>

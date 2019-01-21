@@ -333,7 +333,7 @@
                         }
                     }
                     this.formData.pics = this.formData.pics ? this.formData.pics.split(',') : [];
-                    this.nowHaveStockNum = this.formData.stockNum + this.detail.undrawNum;
+                    this.nowHaveStockNum = this.formData.stockNum;
                     this.formData.stockNum = '';
                     this.defaultImgList = this.formData.pics.map((url,index) => {
                         return {

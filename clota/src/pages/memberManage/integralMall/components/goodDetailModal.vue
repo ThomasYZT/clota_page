@@ -22,7 +22,7 @@
 
                     <!--剩余可上架数量 = 库存数量 - 上架数量 - 已兑换未领取，此处后台已处理已兑换未领取数量-->
                     <Form-item :label="$t('colonSetting', { key : $t('overPlusUpQuantity') })">
-                        <span>{{detail.stockNum - detail.upNum}}</span>
+                        <span>{{detail.stockNum - detail.upNum - detail.undrawNum}}</span>
                     </Form-item>
 
                     <!--可兑换积分-->
@@ -38,7 +38,7 @@
                                      v-model="formData.upNum"
                                      :precision="0"
                                      :min="1"
-                                     :max="detail.stockNum - detail.upNum"></InputNumber>
+                                     :max="detail.stockNum - detail.upNum - detail.undrawNum"></InputNumber>
                     </Form-item>
                 </i-col>
             </i-row>
