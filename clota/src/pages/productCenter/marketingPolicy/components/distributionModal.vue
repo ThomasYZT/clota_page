@@ -226,7 +226,7 @@
                         { validator : validateMethod.productPrice, trigger : 'blur' }, // 不能为空
                     ],
                     groupIds : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleChannels') }), trigger : 'blur' }, // 不能为空
+                        { required : true, message : this.$t('selectField', { msg : this.$t('saleChannels') }), trigger : 'blur' }, // 不能为空
                     ]
                 },
                 //是否显示分销提示

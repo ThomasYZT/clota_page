@@ -264,9 +264,7 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <p class="remark">{{$t('productCenter.refundTip1')}}</p>
-                <p class="remark">{{$t('productCenter.refundTip2')}}</p>
-                <p class="remark">{{$t('productCenter.refundTip3')}}</p>
+                <p class="remark">{{$t('默认退票手续费率为0')}}</p>
 
                 <!--改签规则-->
                 <br/>
@@ -640,6 +638,7 @@
 
     .remark {
         margin-top: 5px;
+        margin-left: 12px;
         color: $color_yellow;
         &:last-child {
             margin-bottom: 20px;
