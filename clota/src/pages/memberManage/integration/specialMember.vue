@@ -5,7 +5,7 @@
         <div class="content-item">
             <div class="title-wrap">{{$t('specialMember')}}</div>
             <div class="btn-wrap">
-                <Button type="primary" @click="showAddTypeModal">+ {{$t('addSpecialMemType')}}</Button>
+                <Button icon="android-add" type="primary" @click="showAddTypeModal">{{$t('addSpecialMemType')}}</Button>
                 <Button type="ghost" @click="linkToMember">{{$t('linkSpecialMemType')}}</Button>
             </div>
             <div class="table-wrap short-table">

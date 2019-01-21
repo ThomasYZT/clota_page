@@ -57,7 +57,7 @@
                     <template slot-scope="scope">
                         {{$t(scope.row.checkerType === 'check'
                         ? 'verifyCashierType' :  scope.row.checkerType === 'sale'
-                        ? 'verifySaleType' : 'verifySaleAndCashierType')}}
+                            ? 'verifySaleType' : 'verifySaleAndCashierType')}}
                     </template>
                 </el-table-column>
                 <el-table-column

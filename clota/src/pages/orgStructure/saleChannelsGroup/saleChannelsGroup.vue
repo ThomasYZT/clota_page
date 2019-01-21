@@ -55,7 +55,18 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{$t(scope.row.type === 'partner' ? 'partner' : 'channels')}}
+                        <template v-if="scope.row.type === 'partner'">
+                            {{$t('partner')}}
+                        </template>
+                        <template v-else-if="scope.row.type === 'scenic'">
+                            {{$t('partner')}}
+                        </template>
+                        <template v-else-if="scope.row.type === 'channel'">
+                            {{$t('channels')}}
+                        </template>
+                        <template v-else-if="scope.row.type === 'table'">
+                            {{$t('channels')}}
+                        </template>
                     </template>
                 </el-table-column>
                 <el-table-column

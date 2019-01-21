@@ -327,6 +327,7 @@
                     .member-count{
                         float: right;
                         line-height: 32px;
+                        margin-top: 10px;
 
                         li{
                             float: left;

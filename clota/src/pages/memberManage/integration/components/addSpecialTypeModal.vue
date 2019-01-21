@@ -10,9 +10,10 @@
 
         <div class="modal-body">
             <Form ref="formValidate"
+                  :label-position="lang === 'zh-CN' ? 'right' : 'top'"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="lang === 'zh-Cn' ? 150 : 180">
+                  :label-width="lang === 'zh-CN' ? 150 : 0">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('memberTypeName')" prop="name">
                         <Input v-model.trim="formData.name" :placeholder="$t('inputField', {field: ''})"/>
@@ -132,10 +133,11 @@
 
     .add-special-type-modal{
 
-        .ivu-modal-body{
+        /deep/ .ivu-modal-body{
             display: flex;
             align-items: center;
             min-height: 270px;
+            justify-content: center;
         }
 
         .modal-body{

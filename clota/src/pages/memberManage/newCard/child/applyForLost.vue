@@ -29,7 +29,7 @@
             </div>
         </div>
         <!--挂失确认模态框-->
-        <confirm-modal ref="confirmModal">
+        <confirm-modal ref="confirmModal" class="del-min-width">
             <div class="confirm-label">
                 <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
                 {{$t('sureToLossMemInfo')}}

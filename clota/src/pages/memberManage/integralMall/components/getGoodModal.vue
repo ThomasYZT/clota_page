@@ -13,14 +13,13 @@
               v-if="!isGetStatus"
               :model="formData"
               :rules="ruleValidate"
-              label-position="right"
-              :label-width="100">
+              label-position="right">
             <i-row>
                 <i-col span="18" offset="3">
                     <Form-item :label="$t('ticketCode')"
                                prop="exchangeSecurities"
-                               :label-width="70">
-                        <Input v-model.trim="formData.exchangeSecurities" style="width:240px"
+                               :label-width="lang === 'zh-CN' ? 70 : 135">
+                        <Input v-model.trim="formData.exchangeSecurities"
                                :placeholder="$t('inputField', { field : $t('ticketCode') })"/>
                     </Form-item>
                 </i-col>
@@ -56,6 +55,8 @@
 
 <script>
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {},
         data () {
@@ -152,6 +153,11 @@
                     this.$refs.formInline.resetFields();
                 }
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

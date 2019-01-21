@@ -68,7 +68,7 @@
 	@import '~@/assets/scss/base';
     .delete-card-modal{
         .modal-body{
-            padding: 45px 60px;
+            padding: 30px 60px;
             text-align: left;
             @include clearfix();
             .left{

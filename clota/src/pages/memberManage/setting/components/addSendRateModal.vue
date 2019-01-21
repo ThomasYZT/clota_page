@@ -40,7 +40,7 @@
                                 </FormItem>
                             </i-col>
                             <i-col style="display: inline-block;width : auto;">
-                                {{$t('sendGift')}}
+                                <span class="label">{{$t('sendGift')}}</span>
                             </i-col>
                             <i-col style="display: inline-block;width : auto;">
                                 <FormItem prop="gift">
@@ -330,10 +330,15 @@
     .add-account-modal{
 
         .modal-body{
-            padding: 0 20px;
+            padding: 0 10px;
             height: 450px;
             overflow-y: auto;
             overflow-x: hidden;
+
+            .label {
+                font-size: 14px;
+                color: #333333;
+            }
 
             /deep/ .ivu-form-item-wrap{
                 position: relative;

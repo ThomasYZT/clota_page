@@ -10,21 +10,13 @@
               :model="formData"
               :rules="ruleValidate"
               label-position="right"
-              :label-width="180">
-            <i-row>
-                <i-col span="18" offset="1">
-                    <Form-item :label="$t('takeAwayNum')+':'" prop="stockNum">
-                        <Input v-model.trim="formData.stockNum" :placeholder="$t('inputField', { field : $t('editNum') })" style="width: 200px"/>
-                    </Form-item>
-                </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="18" offset="1">
-                    <Form-item :label="$t('editReason')" prop="remark">
-                        <Input v-model.trim="formData.remark" :placeholder="$t('inputField', { field : $t('editReason') })" style="width: 200px"/>
-                    </Form-item>
-                </i-col>
-            </i-row>
+              :label-width="lang === 'zh-CN' ? 180 : 220">
+            <Form-item :label="$t('takeAwayNum')+':'" prop="stockNum">
+                <Input v-model.trim="formData.stockNum" :placeholder="$t('inputField', { field : $t('editNum') })"/>
+            </Form-item>
+            <Form-item :label="$t('editReason')" prop="remark">
+                <Input v-model.trim="formData.remark" :placeholder="$t('inputField', { field : $t('editReason') })"/>
+            </Form-item>
         </Form>
 
         <div slot="footer">
@@ -37,6 +29,8 @@
 <script>
     import ajax from '../../../../api/index';
     import common from '@/assets/js/common.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {},
         data () {
@@ -126,6 +120,11 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -138,6 +137,6 @@
         align-items: center;
     }
     /deep/ .ivu-form{
-        width: 100%;
+        width: 450px;
     }
 </style>
