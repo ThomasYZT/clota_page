@@ -245,7 +245,7 @@
                             if (res.success) {
                                 scopeRow.salePrice = this.modifyModel.modifiedSalePrice;
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
-                                this.cancelModifyPrice();
+                                this.queryList();
                             } else {
                                 this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
                             }
