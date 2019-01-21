@@ -199,7 +199,7 @@
                         this.myDistributeConfig = Array.from(myDistributeConfig);
                         //上级分销单价表格数据
                         this.parentDistributeData = res.data ? res.data.parentAllocationProductList : {};
-
+                        this.listItem.rootAllocationId = res.data ? res.data.rootAllocationId : '';
                         if (res.data.myAllocationLists.length !== 0) {
                             this.myAllocationLists = Array.from(this.parentDistributeData);
 
@@ -233,7 +233,6 @@
 
                                 }
                             }
-                            this.listItem.rootAllocationId = res.data ? res.data.rootAllocationId : '';
                             this.myAllocationLists.push(lastRowData);
                         } else {
                             this.myAllocationLists = [];

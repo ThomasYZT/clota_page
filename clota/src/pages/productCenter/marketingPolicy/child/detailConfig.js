@@ -8,7 +8,7 @@ export const productColumn = [
     },
     {
         title : 'standardPrice', // 景区成本价
-        minWidth : 100,
+        minWidth : 110,
         field : 'standardPrice'
     },
     {
@@ -23,7 +23,7 @@ export const productColumn = [
     },
     {
         title : 'stockTypeMod', // 限制库存类型
-        minWidth : 120,
+        minWidth : 130,
         field : 'stockType'
     },
     {

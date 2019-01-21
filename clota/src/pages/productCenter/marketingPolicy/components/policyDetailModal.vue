@@ -180,8 +180,8 @@
                         :width="row.width"
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
-                        <template v-if="manageOrgs.nodeType !== 'partner'" slot-scope="scope">
-                            <span>{{scope.row.standardPrice | moneyFilter | contentFilter}}</span>
+                        <template slot-scope="scope">
+                            <span></span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -332,22 +332,34 @@
             ]),
             //产品列表表头
             productColumn () {
-                if (this.manageOrgs.nodeType === 'partner') {
-                    return productColumn.map((item) => {
-                        if (item.field !== 'standardPrice') {
-                            return item;
-                        } else {
-                            return {
-                                title : '', // 景区成本价
-                                minWidth : 20,
-                                field : '',
-                                isShow : 'false'
-                            };
-                        }
-                    });
-                } else {
-                    return productColumn;
-                }
+                return productColumn.map((item) => {
+                    if (item.field !== 'standardPrice') {
+                        return item;
+                    } else {
+                        return {
+                            title : '', // 景区成本价
+                            minWidth : 1,
+                            field : '',
+                            isShow : 'false'
+                        };
+                    }
+                });
+                // if (this.manageOrgs.nodeType === 'partner') {
+                //     return productColumn.map((item) => {
+                //         if (item.field !== 'standardPrice') {
+                //             return item;
+                //         } else {
+                //             return {
+                //                 title : '', // 景区成本价
+                //                 minWidth : 20,
+                //                 field : '',
+                //                 isShow : 'false'
+                //             };
+                //         }
+                //     });
+                // } else {
+                //     return productColumn;
+                // }
             },
         },
         methods : {
