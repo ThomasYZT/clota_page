@@ -696,6 +696,7 @@ export default {
     'limitByMobileDay' : 'mobile phone purchase limit',
     'stockType' : 'restricted inventory',
     'stockTypeMod' : 'Limit inventory type',
+    'limitStockNum' : '限制库存数量',
     'stockNum' : 'inventory quantity',
     'playPark' : 'park that can be played',
     'addPark' : 'add a new Park',

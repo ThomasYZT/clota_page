@@ -22,8 +22,8 @@ export const productColumn = [
         field : 'stockType'
     },
     {
-        title : 'stockType', // 限制库存
-        minWidth : 100,
+        title : 'limitStockNum', // 限制库存数量
+        minWidth : 130,
         field : 'stockType'
     },
     {
@@ -70,7 +70,8 @@ export const detailParentDistributePriceConfig = [
         field : 'stockType'
     },
     {
-        title : 'stock', // 库存
+        title : 'limitStockNum', // 限制库存数量
+        width : 150,
         minWidth : 200,
         field : 'stockNum'
     },

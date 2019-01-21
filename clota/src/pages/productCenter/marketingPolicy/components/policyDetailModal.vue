@@ -203,7 +203,7 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.stockNum | contentFilter}}
+                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -214,7 +214,7 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                            {{scope.row.stockNum | contentFilter}}
                         </template>
                     </el-table-column>
                     <el-table-column

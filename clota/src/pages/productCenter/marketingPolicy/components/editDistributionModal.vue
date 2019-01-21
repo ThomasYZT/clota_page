@@ -57,15 +57,26 @@
                             slot="column1"
                             slot-scope="row"
                             :label="row.title"
-                            :width="120"
-                            :min-width="120"
+                            :width="row.width"
+                            :min-width="row.minWidth"
+                            show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            slot="column2"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="130"
+                            :min-width="130"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
                                 {{scope.row.stockNum | contentFilter}}
                             </template>
                         </el-table-column>
                         <el-table-column
-                            slot="column2"
+                            slot="column3"
                             slot-scope="row"
                             :label="row.title"
                             :width="120"
@@ -76,7 +87,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            slot="column3"
+                            slot="column4"
                             slot-scope="row"
                             :label="row.title"
                             :width="130"
@@ -87,7 +98,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            slot="column4"
+                            slot="column5"
                             slot-scope="row"
                             :label="$t('mySalePrice')"
                             :width="140"
