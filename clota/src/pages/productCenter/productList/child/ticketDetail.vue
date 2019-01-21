@@ -344,8 +344,6 @@
                 productPlayRuleVo : [],
                 //产品日志数据
                 recordsVos : [],
-                //可游玩园区表头
-                columnData : parkColumn,
                 //可游玩园区列表数据
                 parkList : [],
                 //备注
@@ -377,6 +375,16 @@
             canApplyAuditProduct () {
                 return this.permissionInfo && 'addProduct' in this.permissionInfo;
             },
+            //可游玩园区表头
+            columnData () {
+                if (this.manageOrgs.nodeType === 'partner') {
+                    return parkColumn.filter((item) => {
+                        return item.title !== 'operate';
+                    })
+                } else {
+                    return parkColumn;
+                }
+            }
         },
         methods : {
 
