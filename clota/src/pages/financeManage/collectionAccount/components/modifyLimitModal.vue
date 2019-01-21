@@ -10,7 +10,10 @@
 
         <div class="modal-body">
 
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="160">
                 <!--合作伙伴-->
                 <Form-item :label="$t('partner') + ':'" prop="">
                     <span>{{formData.orgName}}</span>

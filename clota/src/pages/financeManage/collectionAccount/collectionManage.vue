@@ -36,39 +36,9 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column3"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.availableBalance | moneyFilter}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column4"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.accountBalance | moneyFilter}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column5"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.creditBalance | moneyFilter}}
-                </template>
-            </el-table-column>
-
-            <el-table-column
                 v-if="canModifyAccount"
                 slot="column6"
+                fixed="right"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -83,7 +53,8 @@
 
         <!--撤回充值申请 - 弹窗-->
         <modify-limit-modal ref="modifyLimitModal"
-                            @updata-list="queryList"></modify-limit-modal>
+                            @updata-list="queryList">
+        </modify-limit-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">

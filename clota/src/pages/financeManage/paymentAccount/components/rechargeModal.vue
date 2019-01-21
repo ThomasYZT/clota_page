@@ -6,12 +6,16 @@
             :title="$t(title)"
             class-name="add-account-modal vertical-center-modal"
             width="500"
+            @on-visible-change="visibleChange"
             :mask-closable="false"
             @on-cancel="hide">
 
             <template v-if="showContent">
                 <div class="modal-body">
-                    <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+                    <Form ref="formValidate"
+                          :model="formData"
+                          :rules="ruleValidate"
+                          :label-width="lang === 'zh-CN' ? 130 : 150">
                         <!--合作伙伴-->
                         <Form-item :label="$t('partner') + ':'" prop="">
                             <span>{{formData.orgName}}</span>
@@ -109,7 +113,7 @@
                 //表单数据
                 formData : {
                     partner : '',
-                    rechargeAmount : 0,
+                    rechargeAmount : '',
                     payType : '',
                     remark : '',
                 },
@@ -155,12 +159,6 @@
              */
             hide () {
                 this.visible = false;
-                this.formData = {
-                    partner : '',
-                    rechargeAmount : 0,
-                    payType : '',
-                    remark : '',
-                };
                 this.payInfo = {};
             },
             /**
@@ -264,11 +262,21 @@
                 this.payInfo = this.onlineAccountList.find((account) => {
                     return account.accountType === payType;
                 });
+            },
+            /**
+             * 模态框状态改变
+             * @param{Boolean} status 模态框状态
+             */
+            visibleChange (status) {
+                if (status === false) {
+                    this.$refs.formValidate.resetFields();
+                }
             }
         },
         computed : {
             ...mapGetters([
-                'onlineAccountList'
+                'onlineAccountList',
+                'lang',
             ])
         }
     };
