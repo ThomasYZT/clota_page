@@ -28,7 +28,7 @@
                         </div>
                         <div class="payment-item">
                             <span>{{$t('colonSetting', { key : $t('collectionAccountType') })}}</span>
-                            <div>
+                            <div class="operate-wrap">
                                 {{$t('payType.' + item.accountType) | contentFilter}}
                                 <span v-if="canOperateAccount"
                                       class="using-btn"
@@ -39,11 +39,11 @@
                         </div>
                         <div class="payment-item">
                             <span>{{$t('colonSetting', { key : 'MerchantID' })}}</span>
-                            <div>{{item.merchantId | contentFilter}}</div>
+                            <span>{{item.merchantId | contentFilter}}</span>
                         </div>
                         <div class="payment-item">
                             <span>{{$t('colonSetting', { key : 'partnerID' })}}</span>
-                            <div>{{item.partnerId | contentFilter}}</div>
+                            <span>{{item.partnerId | contentFilter}}</span>
                         </div>
                         <div class="payment-item using-status">
                             <span class="start" v-if="item.useStatus === 'enabled'">{{$t('startingUse')}}</span>
@@ -244,7 +244,7 @@
 
         .account-info{
             float: left;
-            @include block_outline(32%,200px);
+            height : 200px;
             background: $color_fff;
             border: 1px solid $color_E9E9E9;
             border-radius: 2px;
@@ -267,8 +267,7 @@
 
                 .payment-list{
                     float: left;
-                    @include block_outline(unquote('calc(100% - 78px)'));
-                    padding: 21px 0 26px 0 ;
+                    padding: 21px 10px 26px;
 
                     .payment-name{
                         @include block_outline($height : 42px);
@@ -280,11 +279,17 @@
                     }
 
                     .payment-item{
+                        overflow: auto;
                         line-height: 22px;
                         color: $color_666;
                         > span {
                             float: left;
                             color: $color_333;
+                        }
+
+                        .operate-wrap{
+                            white-space: nowrap;
+                            float: left;
                         }
 
                         .using-btn {

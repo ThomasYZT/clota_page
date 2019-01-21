@@ -11,7 +11,10 @@
 
             <div class="modal-body">
                 <template v-if="onlineAccountList.length > 0">
-                    <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
+                    <Form ref="formValidate"
+                          :model="formData"
+                          :rules="ruleValidate"
+                          :label-width="lang === 'zh-CN' ? 130 : 220">
                         <!--短信套餐名称-->
                         <Form-item :label="$t('smsPackageName') + '：'" prop="">
                             <span>{{formData.packageName}}</span>
@@ -211,7 +214,8 @@
         },
         computed : {
             ...mapGetters([
-                'onlineAccountList'
+                'onlineAccountList',
+                'lang'
             ])
         }
     };
