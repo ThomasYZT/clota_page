@@ -67,6 +67,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { pendingMattersHead } from '../workbenchConfig';
     import pendingMatterModal from '../components/pendingMatterModal.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -87,6 +88,11 @@
                 tableData : [],
             };
         },
+        computed : {
+            ...mapGetters([
+                'routerInfo'
+            ])
+        },
         methods : {
             /**
              * 查询各类别待处理事项量
@@ -95,6 +101,7 @@
                 ajax.post('workbench-getWorkBackByClassify').then(res => {
                     if (res.success) {
                         this.tableData = res.data || [];
+                        this.permissionFilter();
                     } else {
                         this.tableData = [];
                     }
@@ -111,6 +118,34 @@
              */
             updateWorkBackNum () {
                 this.$emit("updateWorkBackNum");
+            },
+            /**
+             * 权限过滤
+             */
+            permissionFilter () {
+                let filterRoute = [];
+                this.tableData = this.tableData.filter((item) => {
+                    for (let i = 0, len = this.routerInfo.length; i < len; i++) {
+                        if (this.routerInfo[i] && this.routerInfo[i].meta) {
+                            if (this.routerInfo[i].meta._name === 'order' && item.name === 'order') {
+                                filterRoute.push('order');
+                            } else if (this.routerInfo[i].meta._name === 'finance-manage' && item.name === 'fund') {
+                                filterRoute.push('fund');
+                            } else if (this.routerInfo[i].meta._name === 'product' && item.name === 'product') {
+                                filterRoute.push('product');
+                            } else {
+                                continue;
+                            }
+                        } else {
+                            continue;
+                        }
+                    }
+                    if (filterRoute.includes(item.name)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
             }
         }
     };
