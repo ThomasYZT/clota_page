@@ -33,6 +33,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                class-name="modifiedSalePrice"
                 slot="column4"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -278,7 +279,7 @@
             margin: 0;
         }
 
-        /deep/ .el-table_1_column_5 {
+        /deep/ .modifiedSalePrice {
             .ivu-form-item-content {
                 line-height: 22px;
             }
