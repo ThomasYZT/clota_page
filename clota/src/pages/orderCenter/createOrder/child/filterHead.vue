@@ -21,7 +21,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--订单类型-->
-                    <FormItem :label="$t('orderType')" >
+                    <FormItem :label="$t('orderType')" :label-width="lang === 'zh-CN' ? 80 : 85">
                         <Select v-model="formData.orderType"
                                 @on-change="orderTypeChange">
                             <Option v-for="item in orderType"
@@ -34,7 +34,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--所属景区-->
-                    <FormItem :label="$t('scenePlace')">
+                    <FormItem :label="$t('scenePlace')" :label-width="lang === 'zh-CN' ? 80 : 85">
                         <Select v-model="formData.scenicOrgId"
                                 @on-change="sceneChange">
                             <Option v-for="item  in belongScene"
@@ -46,7 +46,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <FormItem :label="$t('sellingOrg')" >
+                    <FormItem :label="$t('sellingOrg')"  :label-width="lang === 'zh-CN' ? 80 : 95">
                         <Select v-model="formData.saleOrgId"
                                 :disabled="saleDisabled"
                                 @on-change="searchProductList">
@@ -61,7 +61,7 @@
             </i-row>
             <i-row>
                 <i-col span="6">
-                    <FormItem :label="$t('orderOrg')" >
+                    <FormItem :label="$t('orderOrg')" :label-width="lang === 'zh-CN' ? 80 : 120">
                         <Select v-model="formData.orderOrgId"
                                 :disabled="orderTaskDisabled"
                                 @on-change="searchProductList">
@@ -74,7 +74,7 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <FormItem :label="$t('industryType')" >
+                    <FormItem :label="$t('industryType')" :label-width="lang === 'zh-CN' ? 80 : 120">
                         <Select v-model="formData.type"
                                 @on-change="searchProductList">
                             <Option value="ticket">{{$t('ticketType')}}</Option>
@@ -244,7 +244,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                lang : 'lang',
             }),
             //发售机构名字
             saleOrgName () {
@@ -306,6 +307,11 @@
 
         /deep/ .ivu-form-item{
             margin-bottom: 7px;
+        }
+
+        /deep/ .ivu-form-item-label{
+            padding-left: 5px;
+            padding-right: 5px;
         }
 
         .reset{

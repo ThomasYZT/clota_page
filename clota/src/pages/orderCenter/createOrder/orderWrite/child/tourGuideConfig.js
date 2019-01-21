@@ -20,5 +20,6 @@ export const columnData = [
     {
         title : 'operate',
         width : 130,
+        enWidth : 160
     },
 ];

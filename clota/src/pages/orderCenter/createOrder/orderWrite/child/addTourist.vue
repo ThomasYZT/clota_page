@@ -24,7 +24,10 @@
                         </FormItem>
                     </i-col>
                     <i-col span="11">
-                        <FormItem prop="phone" :label="`${$t('phoneNum')}:`" :label-width="100" :rules="rules.phone">
+                        <FormItem prop="phone"
+                                  :label="`${$t('phoneNum')}:`"
+                                  :label-width="lang === 'zh-CN' ? 100 : 130"
+                                  :rules="rules.phone">
                             <Input type="text" v-model.trim="formData.phone" style="width: 280px"/>
                         </FormItem>
                     </i-col>
@@ -183,6 +186,7 @@
     import ajax from '@/api/index.js';
     import { idType } from '@/assets/js/constVariable.js';
     import addTouristErrModal from './addTouristErrModal';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -760,7 +764,10 @@
                         };
                     });
                 }
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

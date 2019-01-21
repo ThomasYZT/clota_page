@@ -320,7 +320,7 @@
 
         .delete-icon {
             position: absolute;
-            left: -27px;
+            left: -20px;
             margin-right: 12px;
             color: $color_red;
         }

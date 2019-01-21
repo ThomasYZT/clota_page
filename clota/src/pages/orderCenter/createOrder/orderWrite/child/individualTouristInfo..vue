@@ -59,7 +59,7 @@
         </add-tourist>
 
         <!--删除员工确认模态框-->
-        <confirm-modal ref="confirmModal">
+        <confirm-modal ref="confirmModal" class="del-min-width">
             <div class="confirm-label">
                 <i class="iconfont icon-warn" style="color : #F7981C;font-size: 17px;"></i>
                 {{$t('sureToDeleteVisitorInfo')}}
@@ -107,6 +107,7 @@
                     {
                         title : 'ticketGetterCredentials', // 取票证件
                         width : 130,
+                        enWidth : 150,
                         field : 'idType'
                     },
                 ],

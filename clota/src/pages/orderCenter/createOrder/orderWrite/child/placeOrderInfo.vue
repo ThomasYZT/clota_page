@@ -4,7 +4,10 @@
     <div class="place-order-info">
         <!--下单人信息-->
         <div class="title">{{$t('orderMakerInfo')}}</div>
-        <Form ref="formInline" :model="formData" label-position="right" :label-width="110">
+        <Form ref="formInline"
+              :model="formData"
+              label-position="right"
+              :label-width="lang === 'zh-CN' ? 110 : 230">
             <i-row>
                 <i-col span="11">
                     <FormItem :label="$t('selectField', {msg: $t('orderPlacer')})"><!--请选择下单人-->
@@ -48,6 +51,8 @@
 
 <script>
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //下单人
@@ -186,7 +191,10 @@
                     phone : '',
                     idTableData : []
                 }];
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         },
         watch : {
             payPersonListFilter : {

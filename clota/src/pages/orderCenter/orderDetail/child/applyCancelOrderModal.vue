@@ -11,12 +11,14 @@
            @on-cancel="toggle()">
 
         <div class="tip">
-            <span>{{$t('cancelOrderNotice')}}</span>
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('cancelOrderNotice')}}
+            </span>
         </div>
 
         <div slot="footer">
-            <Button class="ivu-btn-90px" type="primary" @click="confirm">{{$t('confirm')}}</Button>
-            <Button class="ivu-btn-90px" type="default" @click="toggle()">{{$t('cancel')}}</Button>
+            <Button class="ivu-btn-90px" type="error" @click="confirm">{{$t('confirm')}}</Button>
+            <Button class="ivu-btn-90px" type="default" @click="toggle">{{$t('cancel')}}</Button>
         </div>
 
     </Modal>
@@ -93,5 +95,24 @@
 
     /deep/ .ivu-modal-body {
         min-height: 164px;
+    }
+    /deep/ .content-text {
+        width: 210px;
+        position: relative;
+
+        .delete-icon {
+            position: absolute;
+            left: -20px;
+            margin-right: 12px;
+            color: $color_red;
+        }
+
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
+        }
     }
 </style>

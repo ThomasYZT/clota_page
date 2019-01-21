@@ -2418,7 +2418,7 @@ export default {
     'accountExists' : 'Account already exists',
     'getLocationInfo' : 'Get location information',
     'A012' : 'reset password too often, please try again later.',
-    'returnRuleNotAllowMsg' : 'tip: the products you apply for change include products that are not allowed to refund according to the product rules. do you want to continue your application?',
+    'returnRuleNotAllowMsg' : 'tip: the products you apply for refund include products that are not allowed to refund according to the product rules. do you want to continue your application?',
     'categoryExist' : 'membership card category already exists',
     'partnerCannotOpen' : 'cannot be enabled outside the agreement period',
     'validPartnerError' : 'the following partners fail to start up because they fail to do so within the validity period of the cooperation agreement:',

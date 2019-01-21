@@ -15,16 +15,19 @@ export const productDetailInfo = [
     {
         title : 'takeTicketStatus',
         minWidth : 100,
+        enMinWidth : 130,
         field : 'pickStatus'
     },
     {
         title : 'verifyStatus',
         minWidth : 100,
+        enMinWidth : 150,
         field : 'verifyStatus'
     },
     {
         title : 'refundStatus',
         minWidth : 150,
+        enMinWidth : 160,
         field : 'refundStatus'
     },
     {
@@ -39,7 +42,7 @@ export const productDetailInfo = [
     },
     {
         title : 'operate',
-        minWidth : 120,
+        width : 120,
         field : ''
     }
 ];
@@ -48,7 +51,8 @@ export const productDetailInfo = [
 export const refundAlterListHead = [
     {
         title : 'ApplyForRefundNum',
-        width : 215,
+        minWidth : 215,
+        enMinWidth : 265,
         field : 'reqNum'
     },
     {
