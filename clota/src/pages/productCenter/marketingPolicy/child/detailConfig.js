@@ -70,6 +70,11 @@ export const detailParentDistributePriceConfig = [
         field : 'stockNum'
     },
     {
+        title : 'stockTypeMod', // 限制库存类型
+        minWidth : 130,
+        field : 'stockType'
+    },
+    {
         title : 'printPrice', // 票面价格
         minWidth : 200,
         field : 'printPrice'

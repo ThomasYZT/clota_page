@@ -77,6 +77,17 @@
                         </template>
                     </el-table-column>
                     <el-table-column
+                        slot="column2"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="column3"
                         slot-scope="row"
                         :label="row.title"
