@@ -1096,7 +1096,8 @@
                             if (res.code && (res.code === 'M053' ||
                                 res.code === 'M054' ||
                                 res.code === 'M055' ||
-                                res.code === 'M056')) {
+                                res.code === 'M056' ||
+                                res.code === 'S014')) {
                                 this.$Message.error(this.$t(res.code));
                             }
                             reject();

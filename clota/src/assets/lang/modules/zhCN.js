@@ -2491,4 +2491,5 @@ export default {
     '开卡账户' : '开卡账户',
     'analysisFileSuccess' : '解析文件成功',
     'analysisFileFail' : '解析文件失败',
+    'S014' : '微信公众号配置错误',
 };

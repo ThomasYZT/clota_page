@@ -2489,4 +2489,5 @@ export default {
     '开卡账户' : 'card opening account',
     'analysisFileSuccess' : 'file parsing successful',
     'analysisFileFail' : 'file parsing failed',
+    'S014' : '微信公众号配置错误',
 };
