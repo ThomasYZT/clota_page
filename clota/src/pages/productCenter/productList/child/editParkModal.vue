@@ -102,9 +102,10 @@
                         </Form-item>
                     </i-col>
                 </i-row>
+                <!--选择设备分组-->
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId"><!--设备分组-->
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId">
                             <Select v-model="formData.gardenGroupId"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
@@ -118,6 +119,7 @@
                         </FormItem>
                     </i-col>
                 </i-row>
+                <!-- 入园检票处 列表数据 -->
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('enterCheckPlace')"><!--入园检票处-->

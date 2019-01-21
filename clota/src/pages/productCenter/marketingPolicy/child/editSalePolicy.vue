@@ -480,7 +480,6 @@
                                                 <InputNumber :max="9999999999"
                                                              :min="scope.row.befPlayStart ? Number(scope.row.befPlayStart) : 0"
                                                              class="short-input"
-                                                             :editable="false"
                                                              v-model.trim="scope.row.befPlayEnd"
                                                              :placeholder="$t('inputField', {field: ''})" @on-blur="changeNextStart(scope.row.befPlayEnd, scope.$index)">
                                                 </InputNumber>
