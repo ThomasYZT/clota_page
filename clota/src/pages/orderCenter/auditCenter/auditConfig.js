@@ -42,13 +42,13 @@ export const groupOrderHead = [
     {
         title : 'orderOrgAmount', // 下单企业订单金额
         width : 160,
-        enWidth : 180,
+        enWidth : 240,
         field : 'orderAmount'
     },
     {
         title : 'paymentStatus', // 支付状态
         width : 110,
-        enWidth : 130,
+        enWidth : 150,
         field : 'paymentStatus'
     },
     {
@@ -63,22 +63,25 @@ export const orderProductHead = [
     {
         title : 'productName', // 产品名称
         minWidth : 150,
-        enWidth : 180,
+        enMinWidth : 180,
         field : 'productName'
     },
     {
         title : 'reserveNum', // 预订数量
-        width : 100,
+        minWidth : 100,
+        enMinWidth : 190,
         field : 'quantity'
     },
     {
         title : 'settlePrice', // 产品单价
-        width : 100,
+        minWidth : 100,
+        enMinWidth : 180,
         field : 'price'
     },
     {
         title : 'productActPrice', // 产品小计
-        width : 100,
+        minWidth : 100,
+        enMinWidth : 150,
         field : 'actAmount'
     },
 ];
@@ -147,6 +150,7 @@ export const bulkRefundHead = [
     {
         title : 'thirdOrderNo', // 第三方订单号
         width : 200,
+        enWidth : 230,
         field : 'thirdOrderNo'
     },
     {
@@ -157,7 +161,7 @@ export const bulkRefundHead = [
     {
         title : 'unitPriceAndSubtotal', // 产品单价|小计金额
         width : 230,
-        enWidth : 200,
+        enWidth : 310,
         field : 'price|amount'
     },
     {
@@ -168,12 +172,13 @@ export const bulkRefundHead = [
     {
         title : 'requestNum', // 申请数量
         width : 100,
-        enWidth : 130,
+        enWidth : 200,
         field : 'reqNum'
     },
     {
         title : 'visitDateAfterAlter', // 申请改签后游玩日期
         minWidth : 200,
+        enMinWidth : 380,
         field : 'afterAlterDate',
         type : 'date'
     },
@@ -185,7 +190,7 @@ export const bulkRefundHead = [
     {
         title : 'syncStatus', // 同步状态
         width : 100,
-        enWidth : 130,
+        enWidth : 196,
         field : 'syncStatus'
     },
     {
@@ -217,12 +222,13 @@ export const bulkBatchAuditHead = [
     {
         title : 'requestNum', // 申请数量
         width : 100,
-        enWidth : 130,
+        enWidth : 220,
         field : 'reqNum'
     },
     {
         title : 'visitDateAfterAlter', // 申请改签后游玩日期
         minWidth : 200,
+        enMinWidth : 450,
         field : 'afterAlterDate',
         type : 'date'
     },
@@ -255,13 +261,13 @@ export const productListHead = [
     {
         title : 'verifyStatus', // 核销状态
         minWidth : 120,
-        enWidth : 130,
+        enWidth : 150,
         field : 'verifyStatus'
     },
     {
         title : 'refundStatus', // 退票状态
         minWidth : 120,
-        enWidth : 130,
+        enWidth : 240,
         field : 'refundStatus'
     },
     {
@@ -284,7 +290,7 @@ export const productListHead = [
     {
         title : 'syncStatus',
         minWidth : 100,
-        enWidth : 130,
+        enWidth : 190,
         field : 'syncStatus'
     },
     {
@@ -299,7 +305,7 @@ export const refundAlterLogHead = [
     {
         title : 'ApplyForRefundNum', // 申请退票数量
         width : 150,
-        enWidth : 180,
+        enWidth : 255,
         field : 'reqNum'
     },
     {
@@ -321,7 +327,7 @@ export const refundAlterLogHead = [
     {
         title : 'productDetailNo', // 产品明细编号
         minWidth : 150,
-        enWidth : 180,
+        enWidth : 190,
         field : 'passOrderTicketIds'
     },
 ];
@@ -331,7 +337,7 @@ export const verifyLogHead = [
     {
         title : 'verificationNum', // 核销数量
         minWidth : 150,
-        enWidth : 180,
+        enWidth : 255,
         field : 'verifyNum'
     },
     {
@@ -342,7 +348,7 @@ export const verifyLogHead = [
     {
         title : 'productDetailNo',
         minWidth : 150,
-        enWidth : 180,
+        enWidth : 200,
         field : 'ticketIds'
     },
 ];
@@ -418,19 +424,19 @@ export const teamOrderChargeBack = [
     {
         title : 'orderOrgAmount', // 下单企业订单金额
         width : 160,
-        enWidth : 180,
+        enWidth : 250,
         field : 'orderAmount'
     },
     {
         title : 'paymentStatus', // 支付状态
         width : 110,
-        enWidth : 130,
+        enWidth : 150,
         field : 'paymentStatus'
     },
     {
         title : 'expiresStatus', // 过期状态
         width : 110,
-        enWidth : 130,
+        enWidth : 150,
         field : 'overdueStatus'
     },
     {

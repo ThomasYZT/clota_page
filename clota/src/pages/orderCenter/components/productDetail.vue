@@ -20,7 +20,7 @@
                         @click="showAuditModal('pass')">{{$t('passed')}}
                 </Button>
                 <Button type="error"
-                        style="width: 88px;"
+                        class="ivu-btn-90px"
                         :disabled="!moduleInfo || reqOrderTickets.length<1 || chosenRowData.length < 1"
                         @click="showAuditModal('reject')">{{$t('rejectAll')}}
                 </Button><!--全部驳回-->
@@ -46,6 +46,7 @@
                 :selectable="handleSelectable">
             </el-table-column>
             <el-table-column
+                show-overflow-tooltip
                 slot="column3"
                 slot-scope="row"
                 :label="row.title"
@@ -57,6 +58,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                show-overflow-tooltip
                 slot="column4"
                 slot-scope="row"
                 :label="row.title"
@@ -69,6 +71,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                show-overflow-tooltip
                 slot="column5"
                 slot-scope="row"
                 :label="row.title"
@@ -81,6 +84,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                show-overflow-tooltip
                 slot="column6"
                 slot-scope="row"
                 :label="row.title"
@@ -97,6 +101,7 @@
             </el-table-column>
             <template v-if="isAlter">
                 <el-table-column
+                    show-overflow-tooltip
                     slot="column7"
                     slot-scope="row"
                     :label="row.title"
@@ -109,6 +114,7 @@
                 </el-table-column>
             </template>
             <el-table-column
+                show-overflow-tooltip
                 :slot="isAlter ? 'column9' : 'column8'"
                 slot-scope="row"
                 :label="row.title"

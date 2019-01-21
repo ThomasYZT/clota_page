@@ -11,7 +11,7 @@
             <i-row>
                 <i-col span="7">
                     <!--下单时间-->
-                    <FormItem :label="$t('orderTime')">
+                    <FormItem :label="$t('orderTime')" :label-width="lang === 'zh-CN' ? 75 : 80">
                         <DatePicker v-model="orderTimeRange"
                                     type="daterange"
                                     :editable="false"
@@ -33,7 +33,7 @@
                 </i-col>
                 <i-col span="5">
                     <!--支付状态-->
-                    <FormItem :label="$t('paymentStatus')" >
+                    <FormItem :label="$t('paymentStatus')" :label-width="lang === 'zh-CN' ? 75 : 115">
                         <Select v-model="formData.paymentStatus"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
@@ -47,7 +47,7 @@
                 </i-col>
                 <i-col span="5">
                     <!--下单渠道-->
-                    <FormItem :label="$t('orderChannel')">
+                    <FormItem :label="$t('orderChannel')" :label-width="lang === 'zh-CN' ? 75 : 110">
                         <Select v-model="formData.orderChannel"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
@@ -63,7 +63,7 @@
             <i-row>
                 <i-col span="6">
                     <!--下单企业-->
-                    <FormItem :label="$t('orderOrg')" >
+                    <FormItem :label="$t('orderOrg')" :label-width="lang === 'zh-CN' ? 75 : 120">
                         <Select v-model="formData.channelId"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
@@ -77,7 +77,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--过期状态-->
-                    <FormItem :label="$t('expiresStatus')" >
+                    <FormItem :label="$t('expiresStatus')" :label-width="lang === 'zh-CN' ? 75 : 110">
                         <Select v-model="formData.overdueStatus"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
@@ -89,7 +89,7 @@
                 </i-col>
 
                 <i-col style="display:inline-block;width: 36%;">
-                    <FormItem :label="$t('keywords')" >
+                    <FormItem :label="$t('keywords')" :label-width="lang === 'zh-CN' ? 75 : 85">
                         <Input v-model.trim="formData.keyword"
                                style="width: 100%;"
                                :placeholder="$t('inputField', { field : $t('vistorNameOrPhoneNumOrOrderNo') } )" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
@@ -161,7 +161,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                lang : 'lang',
             })
         },
         methods : {
@@ -242,7 +243,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .back-audit-filter {
-        padding: 15px 30px 0 10px;
+        padding: 15px 10px 0 10px;
         /*border: 1px solid #EEEEEE;*/
         position: relative;
 

@@ -4,7 +4,7 @@
         v-model="visible"
         :title="$t(title)"
         class-name="add-account-modal vertical-center-modal"
-        width="500"
+        :width="lang === 'zh-CN' ? 500 : 600"
         :mask-closable="false"
         @on-cancel="hide">
 
