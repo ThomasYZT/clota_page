@@ -20,6 +20,7 @@ export const columnData = [
     {
         title : 'settlePrice',
         width : 100,
+        enWidth : 165,
         field : 'settlePrice'
     },
     {

@@ -28,6 +28,7 @@ export const ticketColumnData = [
     },{
         title : 'settlePrice',
         width : 130,
+        enWidth : 160,
         field : 'settlePrice'
     },{
         title : 'ticketGetterCredentials', // 取票证件

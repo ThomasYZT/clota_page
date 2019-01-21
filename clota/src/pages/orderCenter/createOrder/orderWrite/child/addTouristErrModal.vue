@@ -17,8 +17,8 @@
             <ul class="pro-list">
                 <li v-for="item in touristErrList"
                     :key="item.productId"
-                    :v-w-title="`${item.visitorName}` + $t('MostBuy') + `${item.maxCount}{{$t('ge')}}${item.productName}。`"
-                    class="detail">{{item.visitorName}}{{$t('MostBuy')}}{{item.maxCount}}{{$t('ge')}}{{item.productName}}。</li>
+                    :v-w-title="`${item.visitorName}` + $t('MostBuy') + `${item.maxCount}{{$t('ge')}}${item.productName}`"
+                    class="detail">{{item.visitorName}}{{$t('MostBuy')}}{{item.maxCount}}{{$t('ge')}}{{item.productName}}</li>
                 <li class="hint">
                     <Icon type="information-circled"></Icon>
                 </li>

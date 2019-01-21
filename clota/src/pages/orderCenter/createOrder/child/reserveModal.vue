@@ -41,6 +41,7 @@
                         show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
+                        fixed="right"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
