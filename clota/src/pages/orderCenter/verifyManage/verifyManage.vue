@@ -422,12 +422,24 @@
              **/
             showModal (data, isBatch, type) {
                 if (!this.canOrderChecker) return;
-                if (data.verifyRule == 'true') {
-                    this.$refs['verifyModal'].show({
-                        list : isBatch ? data : [data],
-                        isBatch : isBatch,
-                        type : type
-                    });
+                if (isBatch) {
+                    //批量核销需要校验每个产品是否可以核销
+                    if (data.every(item => item.verifyRule === 'true')) {
+                        this.$refs['verifyModal'].show({
+                            list : data,
+                            isBatch : true,
+                            type : type
+                        });
+                    }
+                } else {
+                    //校验产品是否可以核销
+                    if (data.verifyRule === 'true') {
+                        this.$refs['verifyModal'].show({
+                            list : [data],
+                            isBatch : false,
+                            type : type
+                        });
+                    }
                 }
             },
             handleCommand (type) {
@@ -477,7 +489,7 @@
         padding: 15px 30px 15px;
         overflow: hidden;
         .input-field {
-            width: 400px;
+            width: 430px;
             margin-right: 20px;
         }
     }

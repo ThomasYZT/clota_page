@@ -3,6 +3,7 @@ export const columnData = [
     {
         title : 'tourGuideName',
         minWidth : 115,
+        enMinWidth : 140,
         field : 'visitorName'
     },
     {

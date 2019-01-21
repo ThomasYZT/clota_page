@@ -3,8 +3,15 @@
 <template>
     <div class="order-particular">
         <div class="title">{{$t('orderDetailInformation')}}</div>
-        <Form ref="formInline" :model="formData" :rules="ruleInline" inline>
-            <FormItem prop="user" :label="$t('productName')" :label-width="80">
+        <Form ref="formInline"
+              :label-position="lang === 'zh-CN' ? 'right' : 'top'"
+              :model="formData"
+              :label-width="lang === 'zh-CN' ? 80 : 0"
+              :rules="ruleInline"
+              inline>
+            <FormItem prop="user"
+                      :label="$t('productName')"
+                      :label-width="lang === 'zh-CN' ? 80 : 0">
                 <Select v-model="formData.productId"
                         style="width: 180px"
                         @on-change="queryOrderTicketDetail">
@@ -16,7 +23,8 @@
                 </Select>
             </FormItem>
             <!--是否取票-->
-            <FormItem prop="user" :label="$t('whetherPickTicket')" :label-width="80">
+            <FormItem prop="user"
+                      :label="$t('whetherPickTicket')">
                 <Select v-model="formData.pickStatus"
                         style="width: 180px"
                         @on-change="queryOrderTicketDetail">
@@ -25,14 +33,20 @@
                 </Select>
             </FormItem>
             <!--关键词-->
-            <FormItem prop="user" :label="$t('keywords')" :label-width="70">
+            <FormItem prop="user"
+                      :label="$t('keywords')"
+                      :label-width="lang === 'zh-CN' ? 70 : 0">
                 <!--请输入游客姓名/手机号码/核销串码-->
                 <Input type="text"
                        v-model.trim="formData.keyword"
                        :placeholder="$t('queryByVerifySN')"
-                       style="min-width: 250px;max-width: 280px" />
+                       :style="{ 'min-width' : lang === 'zh-CN' ? '250px' : '470px' }"
+                       style="max-width: 280px" />
             </FormItem>
-            <FormItem prop="user" :label-width="10">
+            <FormItem prop="user"
+                      class="visible-set"
+                      :label="'searching'"
+                      :label-width="0">
                 <Button type="primary"
                         style="margin-right: 5px;"
                         @click="queryOrderTicketDetail">{{$t('searching')}}</Button>
@@ -67,6 +81,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './orderParticularsConfig';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -159,7 +174,10 @@
                     label : 'all',
                     value : 'all'
                 }]);
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -193,6 +211,12 @@
 
         .yellow-label{
             color: $color_yellow;
+        }
+
+        .visible-set{
+            /deep/ .ivu-form-item-label{
+                visibility: hidden;
+            }
         }
     }
 </style>
