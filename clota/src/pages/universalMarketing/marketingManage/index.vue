@@ -65,8 +65,8 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <template v-if="currRowIndex==scope.$index">
-                            <li @click="cancelModifyPrice()">{{$t('cancel')}}</li>
                             <li @click="modifySalePrice(scope.row)">{{$t('save')}}</li>
+                            <li style="color: #999;" @click="cancelModifyPrice()">{{$t('cancel')}}</li>
                         </template>
                         <template v-else>
                             <li @click="modifyPrice(scope)" v-if="canModifyMarketPrice">{{$t('modify')}}</li>
@@ -182,7 +182,12 @@
                     ...params
                 }).then(res => {
                     if (res.success && res.data) {
-                        this.tableData = res.data.data || [];
+                        this.tableData = res.data.data.map((item) => {
+                            return {
+                                ...item,
+                                rootAllocationId : item.allocationId
+                            };
+                        }) || [];
                         this.totalCount = res.data.totalRow;
                     } else {
                         this.tableData = [];
@@ -271,6 +276,15 @@
         border-radius: 4px;
         /deep/ .ivu-form-item {
             margin: 0;
+        }
+
+        /deep/ .el-table_1_column_5 {
+            .ivu-form-item-content {
+                line-height: 22px;
+            }
+            input {
+                height: 22px;
+            }
         }
     }
 </style>

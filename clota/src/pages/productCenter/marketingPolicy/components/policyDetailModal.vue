@@ -410,6 +410,10 @@
             overflow: auto;
         }
     }
+    /deep/ .ivu-form-item {
+        margin-bottom: 10px;
+    }
+
     .content {
         padding: 0 50px;
         margin: 0 auto;

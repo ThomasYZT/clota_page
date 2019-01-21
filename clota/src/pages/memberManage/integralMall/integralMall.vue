@@ -17,6 +17,7 @@
                        v-model.trim="queryParams.keyword"
                        icon="ios-search"
                        :placeholder="$t('inputSpecificForSearch', { field : $t('goodsName') })"
+                       style="float: right;"
                        @on-click="getListData"
                        @on-enter="getListData"/>
             </i-col>

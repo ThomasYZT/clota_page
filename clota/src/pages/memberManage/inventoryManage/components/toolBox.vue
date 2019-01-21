@@ -55,4 +55,8 @@
         margin-top: 14px;
         padding: 0 30px
     }
+
+    /deep/ .ivu-form-item {
+        margin-bottom: 10px;
+    }
 </style>

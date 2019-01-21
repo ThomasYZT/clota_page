@@ -26,26 +26,29 @@
                     <Form-item >
                         <DatePicker type="daterange"
                                     split-panels
-                                    v-model="dateRange"
+                                    v-model="filterData.dateRange"
+                                    format="yyyy-MM-dd"
                                     @on-change="dateChange"
                                     :editable="false"
                                     :clearable="false"
                                     :placeholder="$t('selectField', { msg : $t('startEndDate') })"
-                                    style="width: 250px"></DatePicker>
+                                    style="width: 250px;margin-left: 10px;"></DatePicker>
                     </Form-item>
                 </div>
                 <div slot="tool2">
-                    <Button class="ivu-btn-90px" type="primary" @click="getListData">{{$t('orgStructQuery')}}</Button>
-                    <!-- 导出 -->
-                    <div class="btn-wrapper">
-                        <a class="ivu-btn-90px" :href="downloadUrl">{{$t('exporting')}}</a>
-                    </div>
+                    <Button class="ivu-btn-65px" type="primary" @click="getListData" style="margin-left: 10px;">{{$t('orgStructQuery')}}</Button>
+                    <Button class="ivu-btn-65px" @click="resetFilter" style="margin-left: 10px;">{{$t('reset')}}</Button>
                 </div>
             </toolBox>
+            <!-- 导出 -->
+            <div class="btn-wrapper">
+                <a class="ivu-btn-90px" :href="downloadUrl">{{$t('exporting')}}</a>
+            </div>
         </Form>
 
         <div class="table-wrapper">
             <tableCom :column-data="stockingHead"
+                      :ofsetHeight="140"
                       :table-data="tableData"
                       :border="true"
                       :show-pagination="true"
@@ -108,21 +111,26 @@
     import ajax from '@/api/index';
     import ajaxConfig from '@/config/index.js';
     import apiList from '@/api/apiList.js';
+    import omit from 'lodash/omit';
     export default {
         components : {
             tableCom,
             toolBox
         },
         data () {
+            let _today = new Date();
+            let firstDay = new Date(_today.getFullYear(), _today.getMonth(), 1).format('yyyy-MM-dd');
+            let lastDay = new Date(_today.getFullYear(), _today.getMonth() + 1, 0).format('yyyy-MM-dd');
             return {
                 //过滤信息
                 filterData : {
-                    startDate : '',
-                    endDate : '',
                     changeType : 'in',
                     pageNo : 1,
                     pageSize : 10,
-                    dateRange : []
+                    dateRange : [
+                        firstDay,
+                        lastDay
+                    ]
                 },
                 //变动类型列表
                 changeTypeList : [
@@ -141,16 +149,14 @@
                 tableData : [],
                 //表格数据总条数
                 totalCount : 0,
-                //日期范围
-                dateRange : []
             };
         },
         computed : {
             //下载模板路径
             downloadUrl () {
                 return ajaxConfig['HOST'] + apiList['exportGoodsStock'] + '?token=' + ajax.getToken() +
-                    '&startDate=' + this.filterData.startDate +
-                    '&endDate=' + this.filterData.endDate +
+                    '&startDate=' + new Date(this.filterData.dateRange[0]).format('yyyy-MM-dd') +
+                    '&endDate=' + new Date(this.filterData.dateRange[1]).format('yyyy-MM-dd') +
                     '&changeType=' + this.filterData.changeType;
             },
         },
@@ -160,17 +166,21 @@
              * @param {object} data
              */
             dateChange (data) {
-                this.filterData.startDate = data[0];
-                this.filterData.endDate = data[1];
+                this.filterData.dateRange = data;
                 this.getListData();
             },
             /**
              * 获取库存盘点列表数据
              */
             getListData () {
-                this.filterData.startDate = this.dateRange[0] ? this.dateRange[0].format('yyyy-MM-dd') : '';
-                this.filterData.endDate = this.dateRange[1] ? this.dateRange[1].format('yyyy-MM-dd') : '';
-                ajax.post('queryGoodsStock', this.filterData).then(res => {
+                // console.log(this.filterData.dateRange)
+                // this.filterData.startDate = this.filterData.dateRange[0] ? this.filterData.dateRange[0] : '';
+                // this.filterData.endDate = this.filterData.dateRange[1] ? this.filterData.dateRange[1] : '';
+                ajax.post('queryGoodsStock', {
+                    ...omit(this.filterData, ['dateRange']),
+                    startDate : this.filterData.dateRange[0] ? new Date(this.filterData.dateRange[0]).format('yyyy-MM-dd') : '',
+                    endDate : this.filterData.dateRange[1] ? new Date(this.filterData.dateRange[1]).format('yyyy-MM-dd') : '',
+                }).then(res => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
@@ -191,15 +201,25 @@
                     }
                 });
             },
+            /**
+             * 重置搜索条件
+             */
+            resetFilter () {
+                let _today = new Date();
+                let firstDay = new Date(_today.getFullYear(), _today.getMonth(), 1).format('yyyy-MM-dd');
+                let lastDay = new Date(_today.getFullYear(), _today.getMonth() + 1, 0).format('yyyy-MM-dd');
+                this.filterData = {
+                    changeType : 'in',
+                    pageNo : 1,
+                    pageSize : 10,
+                    dateRange : [
+                        firstDay,
+                        lastDay
+                    ]
+                };
+                this.getListData ();
+            }
         },
-        created () {
-            let date = new Date();
-            let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-            let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            this.dateRange[0] = firstDay;
-            this.dateRange[1] = lastDay;
-
-        }
     };
 </script>
 
@@ -208,7 +228,8 @@
 
     .stocking {
         .btn-wrapper {
-            display: inline-block;
+            margin-left: 30px;
+            margin-bottom: 10px;
             a {
                 display: inline-block;
                 padding: 4px 15px;
@@ -246,5 +267,9 @@
         .warn-value {
             color: $color_red;
         }
+    }
+
+    .ivu-btn-65px {
+        width: 65px;
     }
 </style>
