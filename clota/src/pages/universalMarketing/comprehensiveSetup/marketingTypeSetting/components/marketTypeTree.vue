@@ -348,12 +348,16 @@
             }
 
             .is-current {
-                background-color: #f5f7fa;
+                background-color: #EAF0FB;
+                .label {
+                    color: $color_blue;
+                }
             }
 
             .el-tree-node__content {
                 &:hover {
-                    background-color: #f5f7fa;
+                    color: $color_blue;
+                    background-color: #EAF0FB;
                 }
             }
         }
@@ -381,7 +385,6 @@
                     display: inline-block;
                     width: 130px;
                     font-size: 16px;
-                    color: #333;
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
