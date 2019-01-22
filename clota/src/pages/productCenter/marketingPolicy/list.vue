@@ -127,7 +127,9 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li class="normal" @click="check(scope.row)">{{$t('check')}}</li><!--查看-->
-                        <li v-if="canAddAllocation" class="normal" @click="distribute(scope.row)">{{$t('distribution')}}</li><!--分销-->
+                        <li v-if="canAddAllocation && scope.row.canDistribution && scope.row.canDistribution === 'true'"
+                            class="normal"
+                            @click="distribute(scope.row)">{{$t('distribution')}}</li><!--分销-->
                     </ul>
                 </template>
             </el-table-column>
