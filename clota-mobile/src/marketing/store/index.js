@@ -38,7 +38,11 @@ export const marketingState = {
 export const marketingGetters = {
     //公司名称
     companyName : state => {
-        return state.marketing.companyName;
+        if (state.marketing.companyName) {
+            return state.marketing.companyName;
+        } else {
+            return localStorage.getItem('companyName');
+        }
     },
     //组织id
     marketOrgId : state => {
@@ -135,6 +139,7 @@ export const marketMutations = {
     },
     //更新公司名称
     marketUpdateCompanyName (state,companyName) {
+        localStorage.setItem('companyName',companyName)
         state.marketing.companyName = companyName;
     },
     /**
