@@ -125,7 +125,10 @@
                     <Row>
                         <i-col span="10">
                             <FormItem :label="$t('verifyStatus')+'：'">
-                                {{listItem.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed') | contentFilter}}
+                                <span v-if="listItem.verifyStatus === 'true'">{{$t('consumed')}}</span>
+                                <span v-else-if="listItem.verifyStatus === 'false'">{{$t('noConsumed')}}</span>
+                                <span v-else-if="listItem.verifyStatus === 'overdue'">{{$t('expiredVerify')}}</span>
+                                <span v-else>-</span>
                             </FormItem>
                         </i-col>
                         <i-col span="10">

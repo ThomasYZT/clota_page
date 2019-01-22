@@ -60,7 +60,10 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed')}}
+                        <span v-if="scope.row.verifyStatus === 'true'">{{$t('consumed')}}</span>
+                        <span v-else-if="scope.row.verifyStatus === 'false'">{{$t('noConsumed')}}</span>
+                        <span v-else-if="scope.row.verifyStatus === 'overdue'">{{$t('expiredVerify')}}</span>
+                        <span v-else>-</span>
                     </template>
                 </el-table-column>
                 <el-table-column
