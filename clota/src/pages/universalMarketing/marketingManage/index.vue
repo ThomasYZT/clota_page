@@ -127,9 +127,9 @@
                 currRowIndex : null,
                 //提现记录传参
                 queryParams : {
-                    marketTypeId : 'all',
-                    marketLevelId : 'all',
-                    policyId : '',
+                    marketTypeId : '',
+                    marketLevelId : '',
+                    policyId : 'all',
                     pageNo : 1,
                     pageSize : 10,
                 },
@@ -173,6 +173,7 @@
              */
             queryList () {
                 let params = Object.assign({}, this.queryParams);
+                params.policyId = params.policyId === 'all' ? '' : params.policyId;
                 // ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
                 //     if (params[key].includes('all')) {
                 //         params[key] = '';

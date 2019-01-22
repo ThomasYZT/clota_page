@@ -34,8 +34,8 @@
                     <Option v-for="item in salesPolicy"
                             :key="item.id"
                             :value="item.id"
-                            :label="item.name">
-                        <div class="policy-name" v-w-title="item.name">{{item.name}}</div>
+                            :label="$t(item.name)">
+                        <div class="policy-name" v-w-title="$t(item.name)">{{$t(item.name)}}</div>
                     </Option>
                 </Select>
             </li>
@@ -60,20 +60,20 @@
         data () {
             return {
                 filterParams : {
-                    marketTypeId : 'all',
-                    marketLevelId : 'all',
+                    marketTypeId : '',
+                    marketLevelId : '',
                     policyId : '',
                 },
                 // 重置使用的初始筛选条件
                 resetFilter : {},
                 // 营销类别列表
-                marketingTypes : [{ id : 'all', typeName : 'all' }],
+                marketingTypes : [{ id : '', typeName : 'all' }],
                 // 营销等级列表
                 marketingLevels : [],
                 // 全部营销等级
-                allMarketLevel : [{ id : 'all', levelName : 'all' }],
+                allMarketLevel : [{ id : '', levelName : 'all' }],
                 // 销售政策列表
-                salesPolicy : [],
+                salesPolicy : [{ id : 'all', name : 'all' }],
             };
         },
         computed : {
@@ -148,11 +148,11 @@
                     levelId : this.filterParams.marketLevelId
                 }).then(res => {
                     if (res.success) {
-                        this.salesPolicy = res.data ? res.data : [];
+                        this.salesPolicy = res.data ? [{ id : 'all', name : 'all' }, ...res.data] : [{ id : 'all', name : 'all' }];
                         //默认选中第一个政策
-                        this.filterParams.policyId = this.salesPolicy.length > 0 ? this.salesPolicy[0].id : '';
+                        this.filterParams.policyId = this.salesPolicy.length > 0 ? this.salesPolicy[0].id : 'all';
                     } else {
-                        this.salesPolicy = [];
+                        this.salesPolicy = [{ id : 'all', name : 'all' }];
                     }
                 });
             },
