@@ -22,19 +22,10 @@
             <i class="el-icon-plus"></i>
             <span>{{$t('uploadPicture')}}</span>
         </el-upload>
-        <Modal :title="$t('picturePreview')"
-               :transfer="false"
-               :mask-closable="false"
-               :closable="false"
-               class-name="picture-preview"
-               v-model="dialogVisible">
-            <img :src="dialogImageUrl" style="width: 100%">
-            <div slot="footer" class="modal-footer">
-                <Button class="ivu-btn-90px"
-                        type="ghost"
-                        @click="hide" >{{$t("cancel")}}</Button>
-            </div>
-        </Modal>
+        <!--图片预览-->
+        <image-preview ref="imagePreview" :images="[dialogImageUrl]">
+            <img :src="dialogImageUrl">
+        </image-preview>
     </div>
 </template>
 
@@ -42,6 +33,7 @@
     import config from '@/config/index';
     import api from '@/api/apiList';
     import ajaxConfig from '@/api/index.js';
+    import imagePreview from '@/components/imagePreview/index.vue';
     export default {
         props : {
             //上传图片数量限制
@@ -74,7 +66,9 @@
                 default : api.imgUpload
             }
         },
-        components : {},
+        components : {
+            imagePreview
+        },
         data () {
             return {
                 //已上传文件列表
@@ -136,7 +130,11 @@
                             this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
                         }
                     }).catch(() => {
-                        this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                        if (res.code === 'S014') {
+                            this.$Message.error(this.$t('pleaseConfigWxCorrectly'));
+                        } else {
+                            this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                        }
                     })
                 }
                 this.$store.commit('changePromisings','del');
@@ -165,7 +163,11 @@
              */
             handlePictureCardPreview (file) {
                 this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.$refs.imagePreview.show();
+                    },100);
+                });
             },
             /**
              * 上传失败
