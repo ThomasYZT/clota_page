@@ -2491,4 +2491,5 @@ export default {
     'analysisFileFail' : 'file parsing failed',
     'S014' : '微信公众号配置错误',
     'purchaseAmount' : '进货金额',
+    'comma' : ','
 };
