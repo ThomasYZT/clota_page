@@ -16,6 +16,7 @@
                 <!--placeholder-align="right">-->
             <!--</x-input>-->
             <popup-radio v-show="stage === 1"
+                         class="account-type"
                          :title="$t('收款账户类型')"
                          :options="accountTypeList"
                          v-model="formData.accountType">
@@ -371,6 +372,12 @@
     .set-deposit-account{
         @include block_outline();
         background: #f2f3f4;
+
+        .account-type{
+            /deep/ .vux-label {
+                color: #172434;
+            }
+        }
 
         .hr{
             @include block_outline($height:8px);
