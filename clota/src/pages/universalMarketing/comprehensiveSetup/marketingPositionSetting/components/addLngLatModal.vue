@@ -1,4 +1,4 @@
-<!--
+1<!--
     新增经纬度模态框
     作者：杨泽涛
 -->
@@ -16,7 +16,7 @@
                       :rules="ruleValidate"
                       :label-width="180">
                     <i-row>
-                        <i-col span="18" offset="3">
+                        <i-col span="18" offset="2">
                             <!-- 所属景区 -->
                             <FormItem :label="$t('colonSetting', { key : $t('scenePlace') })" prop="orgId">
                                 <span>{{manageOrgs.orgName | contentFilter}}</span>
@@ -29,33 +29,34 @@
                                        :placeholder="$t('inputField', { field : $t('positionName') })"/>
                             </FormItem>
                             <!-- 获取经纬度坐标值 -->
-                            <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })">
+                            <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })"
+                                      :label-width="lang === 'zh-CN' ? 180 : 320">
                                 <span class="click-btn" @click="getPosition">{{$t('clickHereGetValue')}}</span>
                             </FormItem>
                             <!-- 经度 -->
                             <FormItem :label="$t('colonSetting', { key : $t('longitude') })"  prop="longitude">
                                 <Input type="text"
-                                       style="width:200px;"
+                                       style="width:240px;"
                                        v-model.trim="formData.longitude"
                                        :placeholder="$t('inputField', { field : $t('longitude') })"/>
                             </FormItem>
                             <!-- 纬度 -->
                             <FormItem :label="$t('colonSetting', { key : $t('latitude') })"  prop="latitude">
                                 <Input type="text"
-                                       style="width:200px;"
+                                       style="width:240px;"
                                        v-model.trim="formData.latitude"
                                        :placeholder="$t('inputField', { field : $t('latitude') })"/>
                             </FormItem>
                             <!-- 半径 -->
                             <FormItem :label="$t('colonSetting', { key : $t('radiusWithUnit') })"  prop="radius">
                                 <Input type="text"
-                                       style="width:200px;"
+                                       style="width:240px;"
                                        v-model.trim="formData.radius"
                                        :placeholder="$t('inputField', { field : $t('radiusWithoutUnit') })"/>
                             </FormItem>
                             <!-- 备注 -->
                             <FormItem :label="$t('colonSetting', { key : $t('remark') })"  prop="remark">
-                                <Input style="width:200px;"
+                                <Input style="width:240px;"
                                        type="textarea"
                                        v-model.trim="formData.remark"
                                        :placeholder="$t('inputField', { field : $t('remark') })"/>
@@ -172,7 +173,8 @@
         },
         computed : {
             ...mapGetters([
-                'manageOrgs'
+                'manageOrgs',
+                'lang'
             ])
         },
         methods : {

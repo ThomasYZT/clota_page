@@ -77,7 +77,6 @@
             </el-table-column>
         </table-com>
 
-
         <!--查看销售政策详情弹窗-->
         <policy-detail-modal ref="detailView"></policy-detail-modal>
     </div>
@@ -90,6 +89,7 @@
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
     import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
+    import debounce from 'lodash/debounce';
     export default {
         components : {
             marketingProductFilter,
@@ -171,7 +171,7 @@
             /**
              * 查询营销产品列表数据
              */
-            queryList () {
+            queryList : debounce(function () {
                 let params = Object.assign({}, this.queryParams);
                 params.policyId = params.policyId === 'all' ? '' : params.policyId;
                 // ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
@@ -196,7 +196,9 @@
                     }
                 });
                 this.cancelModifyPrice();
-            },
+            },200),
+            // queryList () {
+            // },
             /**
              * 搜索提现记录
              * @param params  Object

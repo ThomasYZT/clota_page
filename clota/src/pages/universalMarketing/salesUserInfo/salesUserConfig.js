@@ -19,6 +19,7 @@ export const salesUserHead = [
     {
         title : 'userInviteCode', // 用户邀请码
         minWidth : 130,
+        enMinWidth : 175,
         field : 'inviteCode'
     },
     /*{
@@ -30,17 +31,20 @@ export const salesUserHead = [
     {
         title : 'totalMoney', // 累计销售额
         width : 130,
+        enWidth : 150,
         type : 'money',
         field : 'saleAmount'
     },
     {
         title : 'marketType', // 营销类别
         minWidth : 130,
+        enMinWidth : 170,
         field : 'typeName'
     },
     {
         title : 'marketingLevelName', // 营销等级名称
         minWidth : 130,
+        enMinWidth : 190,
         field : 'levelName'
     },
     {
@@ -51,5 +55,6 @@ export const salesUserHead = [
     {
         title : 'operate',
         width : 80,
+        enWidth : 125
     }
 ];

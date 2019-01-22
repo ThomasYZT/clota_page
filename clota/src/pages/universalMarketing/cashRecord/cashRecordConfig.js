@@ -7,17 +7,19 @@ export const cashRecordHead = [
     },
     {
         title : 'userCode', // 用户编码
-        minWidth : 130,
+        minWidth : 195,
         field : 'userId'
     },
     {
         title : 'saleUserName', // 销售用户姓名
         minWidth : 130,
+        enMinWidth : 150,
         field : 'userName'
     },
     {
         title : 'saleUserPhoneNumber', // 用户手机号
-        width : 160,
+        minWidth : 160,
+        enMinWidth : 200,
         field : 'mobile'
     },
     /*{
@@ -33,32 +35,34 @@ export const cashRecordHead = [
     {
         title : 'terminalSalePrice', // 终端售价
         width : 160,
-        enWidth : 180,
+        enWidth : 250,
         type : 'money',
         field : 'itemSalePrice'
     },
     {
         title : 'salePolicyProductUnitPrice', // 销售政策产品单价
         width : 160,
-        enWidth : 180,
+        enWidth : 240,
         type : 'money',
         field : 'settlePrice'
     },
     {
         title : 'varyfiedNum', // 已核销数量
         width : 130,
+        enWidth : 160,
         field : 'withdrawQuantity'
     },
     {
         title : 'orderVaryfiedMoney', // 订单核销金额
         width : 130,
-        enWidth : 150,
+        enWidth : 200,
         type : 'money',
         field : 'checkAmount'
     },
     {
         title : 'totalCommission', // 佣金
         width : 110,
+        enWidth : 165,
         type : 'money',
         field : 'orderSalary'
     },
@@ -75,7 +79,7 @@ export const cashRecordHead = [
     {
         title : 'operate',
         width : 130,
-        enWidth : 160,
+        enWidth : 190,
     }
 ];
 

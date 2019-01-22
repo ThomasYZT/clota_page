@@ -17,7 +17,10 @@
                  slot-scope="{ node, data }">
                 <div class="label">
                     <span v-w-title="node.label" v-if="data.type !== 'edit' && data.type !== 'add'">{{node.label}}</span>
-                    <Input v-else v-model.trim="data.label" :placeholder="$t('inputField', { field : $t('marketType') })" style="width: 130px;"></Input>
+                    <Input v-else
+                           v-model.trim="data.label"
+                           :placeholder="$t('inputField', { field : $t('marketType') })"
+                           :style="{ width : lang === 'zh-CN' ? '130px' : '170px' }"/>
                 </div>
                 <div class="tool-box" v-if="canOperateMarketType">
                     <template v-if="data.type === 'edit' || data.type === 'add'">
@@ -37,7 +40,7 @@
                 <i class="iconfont icon-help"></i>
                 {{$t('colonSetting', { key : $t('delMarketingTypeName') })}} <span class="type-name">{{delData.label}}</span>
                 <span class="result">{{$t('delMarketingTypeResult')}}</span>
-                <span class="warn-tip">{{$t('operationIrrevocable')}}，{{$t('sureToDel')}}</span>
+                <span class="warn-tip">{{$t('operationIrrevocable')}}{{$t('sureToDel')}}</span>
             </div>
         </delModal>
     </div>
@@ -144,6 +147,7 @@
              */
             del (data) {
                 this.$refs.delModal.show({
+                    title : this.$t('notice'),
                     confirmCallback : () => {
                         //确认删除
                         this.confirmDel(data);
@@ -330,6 +334,7 @@
         computed : {
             ...mapGetters([
                 'permissionInfo',
+                'lang',
             ]),
             //是否可以编辑营销类别
             canOperateMarketType () {
@@ -345,6 +350,10 @@
         /deep/ .el-tree {
             span.el-tree-node__label {
                 font-size: 16px;
+            }
+
+            .el-tree-node__expand-icon{
+                padding: 0;
             }
 
             .is-current {
@@ -382,8 +391,6 @@
             display: flex;
 
             .label {
-                flex: 1 0;
-                flex-basis: 70%;
                 height: 40px;
                 line-height: 40px;
                 span {

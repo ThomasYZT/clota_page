@@ -190,7 +190,7 @@
                     //下单企业
                     channelId : this.otherInfo.orderOrgId,
                     //订单金额
-                    orderAmount : this.accountInfo.totalPrice,
+                    orderAmount : Number(this.accountInfo.totalPrice).toFixed(2),
                     //发售机构id
                     orgSaleId : this.otherInfo.saleOrgId,
                     //所属景区

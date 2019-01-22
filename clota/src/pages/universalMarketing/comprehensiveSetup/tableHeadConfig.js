@@ -13,6 +13,7 @@ export const marketingPositionHead = [
     {
         title : 'positionName',
         minWidth : 100,
+        enMinWidth : 140,
         field : 'address'
     },
     {
@@ -28,11 +29,12 @@ export const marketingPositionHead = [
     {
         title : 'radiusWithUnit',
         minWidth : 100,
+        enMinWidth : 150,
         field : 'radius'
     },
     {
         title : 'operate',
-        minWidth : 90,
+        width : 150,
         field : ''
     }
 ];
@@ -46,6 +48,7 @@ export const marketingLevelHead = [
     {
         title : 'marketingLevelName',
         minWidth : 150,
+        enMinWidth : 180,
         field : 'levelName'
     },
     {
@@ -56,6 +59,7 @@ export const marketingLevelHead = [
     {
         title : 'levelUpMoney',
         minWidth : 100,
+        enMinWidth : 150,
         field : 'levelAmount',
         type : 'money'
     },
@@ -67,7 +71,8 @@ export const marketingLevelHead = [
     },
     {
         title : 'operate',
-        minWidth : 120,
+        width : 120,
+        enWidth : 150,
         field : ''
     }
 ];
