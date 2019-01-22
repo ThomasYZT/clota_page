@@ -623,4 +623,5 @@ export default {
     'validatedDate' : '有效期',
     'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
     'alterProductTip' : '提示：您申请改签的产品中包含按产品规则不允许改签的产品，是否继续申请？',
+    'expiredVerify' : '过期核销',
 };

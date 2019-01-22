@@ -38,6 +38,17 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="columndueService"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="invalid-services">{{scope.row.dueService}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="columnstatus"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -233,7 +244,10 @@
         }
 
         /deep/ .light-row{
-            color: $color_err;
+
+            .invalid-services{
+                color: $color_err;
+            }
         }
 
         /deep/ .el-table::before {
