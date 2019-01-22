@@ -5,6 +5,7 @@
         <div class="pick-up-title" >
             <span class="label">{{$t('subDepartment')}}</span>
             <span class="back-up"
+                  v-if="!isPartner"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
                 <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
@@ -12,7 +13,7 @@
         </div>
         <transition name="fade">
             <div class="table-wrap" v-if="isPackUp">
-                <div class="employee-account">
+                <div class="employee-account" v-if="!isPartner">
                     <Button type="error"
                             :disabled="selectedDepartment.length < 1"
                             @click="delDepartment">删除</Button>
@@ -31,6 +32,7 @@
                     @query-data="queryList"
                     @selection-change="handleSelectionChange">
                     <el-table-column
+                        v-if="!isPartner"
                         slot="columncheck"
                         slot-scope="row"
                         :label="row.title"
@@ -52,6 +54,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
+                        v-if="!isPartner"
                         slot="columnoperate"
                         slot-scope="row"
                         :label="row.title"
@@ -101,7 +104,17 @@
                 default () {
                     return {};
                 }
-            }
+            },
+            //是否是合作伙伴
+            'is-partner' : {
+                type : Boolean,
+                default : false
+            },
+            //是否默认展开
+            'isDefaultPackUp' : {
+                type : Boolean,
+                default : false
+            },
         },
         components : {
             tableCom,
@@ -254,6 +267,15 @@
             //表格是否显示
             tableShow () {
                 return this.searchParams && this.searchParams.id;
+            }
+        },
+        watch : {
+            //默认展开的初始值
+            isDefaultPackUp : {
+                handler (newVal) {
+                    this.isPackUp = (newVal === true);
+                },
+                immediate : true
             }
         }
     };
