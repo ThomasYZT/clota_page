@@ -100,6 +100,18 @@
                             <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
                         </template>
                     </template>
+                    <!-- 下单失败 -->
+                    <template v-else-if="scope.row.type.includes('failure')">
+                        <span>{{$t('colonSetting', { key : $t('reason') })}}{{'付款账户可用额度不足'}}</span>
+                        <span>{{$t('bracketSetting', {
+                                    content : $t('colonSetting', { key : $t('superiorDistribution') }) +
+                                              scope.row.content.peerOrg ? scope.row.content.peerOrg : '-' +
+                                              $t('colonSetting', { key : $t('availableCredit') }) +
+                                              scope.row.content.accountBalance ? scope.row.content.accountBalance : '-' +
+                                              $t('colonSetting', { key : $t('purchaseAmount') }) +
+                                              scope.row.content.orderAmount ? scope.row.content.orderAmount : '-'
+                               })}}</span>
+                    </template>
                 </template>
             </el-table-column>
             <el-table-column
@@ -122,7 +134,7 @@
                 fixed="right">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="jumpToPages(scope)">{{$t('check')}}</li><!--查看-->
+                        <li v-if="!scope.row.type.includes('failure')" @click="jumpToPages(scope)">{{$t('check')}}</li><!--查看-->
                         <li @click="handleMatters(scope)">{{$t('ignore')}}</li><!--忽略-->
                     </ul>
                 </template>

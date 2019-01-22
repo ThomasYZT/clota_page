@@ -91,6 +91,12 @@ export const routerPackage = (rowData, routerInfo) => {
             break;
         //下单失败
         case 'order_failure' :
+            routerObj = {
+                name : 'teamOrderDetail',
+                params : {
+                    orderId : rowData.extData.id ? rowData.extData.id : '',
+                }
+            };
             break;
         default :
     }
