@@ -607,6 +607,10 @@
                     white-space: nowrap;
                 }
 
+                /deep/ .ivu-form-item-content {
+                    line-height: 22px;
+                }
+
                 /deep/ .ivu-checkbox-wrapper{
                     margin-right: 24px;
                     &:last-child{

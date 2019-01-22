@@ -1070,10 +1070,12 @@
             overflow: auto;
 
             /deep/ .ivu-form {
-
                 @include block_outline();
                 margin: 0 auto;
+            }
 
+            /deep/ .ivu-form-item-content {
+                line-height: 22px;
             }
 
             /deep/ .ivu-input-wrapper{

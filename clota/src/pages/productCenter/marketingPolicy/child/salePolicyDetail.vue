@@ -652,6 +652,7 @@
                 }
 
                 /deep/ .ivu-form-item-content {
+                    line-height: 22px;
                     div {
                         word-break: break-all;
                     }

@@ -493,6 +493,10 @@
                     cursor: pointer;
                     color: $color_blue;
                 }
+
+                /deep/ .ivu-form-item-content {
+                    line-height: 22px;
+                }
             }
 
             .table-wrapper2 {
@@ -533,6 +537,10 @@
                             }
                         }
                     }
+                }
+
+                /deep/ .ivu-form-item-content {
+                    line-height: 22px;
                 }
 
                 .no-data {

@@ -923,6 +923,10 @@
                         .label{
                             margin-right: 10px;
                         }
+
+                        /deep/ .ivu-form-item-content {
+                            line-height: 22px;
+                        }
                     }
 
                     &.single{

@@ -445,6 +445,7 @@
                     @include overflow_tip();
                 }
             }
+
         }
         /**
             分割线样式
@@ -502,6 +503,10 @@
         }
         .disable {
             color: $color_red;
+        }
+
+        /deep/ .ivu-form-item-content {
+            line-height: 22px;
         }
     }
 
