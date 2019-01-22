@@ -268,6 +268,17 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column
+                                    slot="column2"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        {{scope.row.itemCheckTimes ? scope.row.itemCheckTimes : '-'}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
                                     slot="column3"
                                     slot-scope="row"
                                     :label="row.title"
