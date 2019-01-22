@@ -125,8 +125,8 @@
                         </Select>
                     </FormItem>
                 </i-col>
-                <i-col span="6" style="float:right;text-align: right">
-                    <FormItem >
+                <i-col span="9" style="float:right;text-align: right">
+                    <FormItem :label-width="0">
                         <Button type="primary"
                                 class="ivu-btn-90px"
                                 @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->

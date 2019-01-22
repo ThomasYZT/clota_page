@@ -24,7 +24,6 @@
                     @query-data="queryList">
                     <el-table-column
                         slot="column0"
-                        show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"

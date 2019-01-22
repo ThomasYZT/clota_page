@@ -33,7 +33,9 @@
              * 返回
              */
             back () {
-                this.$router.back();
+                this.$router.push({
+                    name : 'marketingOrder'
+                });
             }
         },
         beforeRouteEnter (to,from,next){

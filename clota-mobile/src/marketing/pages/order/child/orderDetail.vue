@@ -95,19 +95,33 @@
             <div v-else
                  class="apply-deposit" :class="{ 'disabled' : true }">{{$t('申请提现')}}</div>
         </div>
+        <!--未设置账户提示框-->
+        <confirm v-model="confirmShow"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('立即设置')"
+                 @on-cancel="onCancel"
+                 @on-confirm="onConfirm">
+            <p style="text-align:center;">{{ $t('您还未设置佣金收款账户。') }}</p>
+        </confirm>
     </div>
 </template>
 
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/marketing/api/index';
+    import { validator } from 'klwk-ui';
 
     export default {
         mixins : [lifeCycleMixins],
         data () {
             return {
                 //订单详情
-                orderDetail : {}
+                orderDetail : {},
+                //提现提醒模态框是否显示
+                confirmShow : false,
+                //账户详情
+                accountDetail : {}
             };
         },
         methods : {
@@ -115,7 +129,7 @@
              * 跳转到提现申请结果
              */
             deposit () {
-                this.applyDeposit();
+                this.queryUserInfo();
             },
             /**
              * 获取路由信息
@@ -157,7 +171,45 @@
                         });
                     }
                 });
-            }
+            },
+            /**
+             * 查询用户信息
+             */
+            queryUserInfo () {
+                ajax.post('market_getMarketUserMyInfo').then(res => {
+                    if (res.success && res.data) {
+                        this.accountDetail = res.data;
+                        //判断是否设置了收款账户，如果没有设置不可提现
+                        if (validator.isEmpty(res.data.accountType) || validator.isEmpty(res.data.accountInfo)) {
+                            this.confirmShow = true;
+                        } else {
+                            this.applyDeposit();
+                        }
+                    }
+                });
+            },
+            /**
+             * 取消提现
+             */
+            onCancel () {
+                this.confirmShow = false;
+            },
+            /**
+             * 立即设置收款账户
+             */
+            onConfirm () {
+                this.$router.push({
+                    name : 'marketingSetAccount',
+                    params : {
+                        accountInfo : {
+                            account : this.accountDetail.accountInfo,
+                            accountType : this.accountDetail.accountType,
+                            name : this.accountDetail.name,
+                            mobile : this.accountDetail.mobile
+                        }
+                    }
+                });
+            },
         },
         computed : {
             //是否可以申请提现

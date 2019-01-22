@@ -48,13 +48,13 @@
             <x-input  v-show="stage === 2"
                       :title="$t('validCode')"
                      v-model="formData.code"
-                     class="c-input"
                      text-align="right"
                      label-width="150px"
                      :placeholder="$t('enterCode')">
             </x-input>
             <cell v-show="stage === 3"
                   :title="$t('所属类别')"
+                  class="c-input type-collect-info"
                   is-link
                   @click.native="typeChooseModalShow = true"
                   :value="typeName">
@@ -182,7 +182,7 @@
                     });
                 } else if (this.stage === 2) {
                     this.queryUserTypeList().then(() => {
-                        return this.validatePhone()
+                        return this.validatePhone();
                     }).then(() => {
                         return this.validateCode();
                     }).then(() => {
@@ -569,6 +569,15 @@
 
             &:before{
                 top : 50px;
+            }
+        }
+
+        .type-collect-info  {
+            /deep/ .weui-cell__ft{
+                max-width : calc(100% - 104px);
+                white-space : nowrap;
+                overflow : hidden;
+                text-overflow : ellipsis;
             }
         }
     }

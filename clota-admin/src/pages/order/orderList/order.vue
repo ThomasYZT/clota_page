@@ -147,9 +147,13 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <!--已核销-->
-                    <span class="token-ticket">{{$t('consumed')}}：{{scope.row.quantityVerified ? scope.row.quantityVerified : 0}}</span>
-                    <!--未核销-->
-                    <span class="not-token-ticket">{{$t('noConsumed')}}：{{scope.row.quantity - scope.row.quantityVerified}}</span>
+                    <span class="token-ticket">{{$t('consumed')}}：{{(scope.row.quantityVerified ? scope.row.quantityVerified : 0) +
+                        (scope.row.quantityOverdue ? scope.row.quantityOverdue : 0)}}</span>
+                    <!--未核销 (为核销数量 = 订单产品总数 - 已退票 - 已核销 - 已过期核销)-->
+                    <span class="not-token-ticket">{{$t('noConsumed')}}：{{(scope.row.quantity ? scope.row.quantity : 0) -
+                        (scope.row.quantityRefunded ? scope.row.quantityRefunded : 0) -
+                        (scope.row.quantityVerified ? scope.row.quantityVerified : 0) -
+                        (scope.row.quantityOverdue ? scope.row.quantityOverdue : 0) }}</span>
                 </template>
             </el-table-column>
             <el-table-column

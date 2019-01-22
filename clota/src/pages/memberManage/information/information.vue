@@ -109,7 +109,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="false"
-                    slot="column5"
+                    slot="column6"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -123,7 +123,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="showMemberPoint"
-                    slot="column6"
+                    slot="column7"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -137,7 +137,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="showMemberRecharge"
-                    slot="column7"
+                    slot="column8"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -150,7 +150,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column8"
+                    slot="column9"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -164,7 +164,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="canModifyMemberInfo"
-                    slot="column9"
+                    slot="column10"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
