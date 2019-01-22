@@ -498,10 +498,10 @@
             },
             //最大选择的产品数量
             maxChoosed () {
-                if (this.productPolicy && this.productPolicy.maxNum) {
+                if (this.productPolicy && this.productPolicy.maxNum !== null && this.productPolicy.maxNum !== '' ) {
                     return Number(this.productPolicy.maxNum);
                 } else {
-                    return 1;
+                    return 9999;
                 }
             },
             //最小选择的产品数量
