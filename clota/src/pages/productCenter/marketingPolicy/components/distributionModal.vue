@@ -350,17 +350,16 @@
              */
             colomnSelect (data) {
                 this.isTipShow = false;
-                this.formData.groupIds = '';
-                data.forEach((item) => {
-                    this.formData.groupIds += item.id + ',';
-                    //政策不能在分销给上级分销商,后台会做过滤处理，此处给出提示
-                    item.channelModels.forEach(channel => {
-                        if (channel.channelName === this.detail.parentDistributor) {
-                            this.isTipShow = true;
-                        }
-                    });
-                });
-
+                this.formData.groupIds = data.map((item) => {
+                    if (!this.isTipShow) {
+                        item.channelModels.forEach(channel => {
+                            if (channel.channelName === this.detail.parentDistributor) {
+                                this.isTipShow = true;
+                            }
+                        });
+                    }
+                    return item.id;
+                }).join(',');
             },
             /**
              * 保存分销设置
