@@ -2486,11 +2486,7 @@ export default {
     'ticket3' : '票类3',
     'tourist3' : '游客姓名3',
     '0006' : '机构已存在',
-    '默认储值账户' : '默认储值账户',
-    '积分账户' : '积分账户',
-    '开卡账户' : '开卡账户',
     'analysisFileSuccess' : '解析文件成功',
     'analysisFileFail' : '解析文件失败',
     'S014' : '微信公众号配置错误',
-    'purchaseAmount' : '进货金额',
 };
