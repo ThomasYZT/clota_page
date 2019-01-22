@@ -67,6 +67,8 @@
                     (this.orderDetail.withdrawStatus === 'reject' ||
                     this.orderDetail.withdrawStatus === 'unaudit')) {
                     this.checkCanWithdrawApply();
+                } else if (!this.showRadio) {
+                    this.toDetail();
                 }
             },
             /**

@@ -2,7 +2,7 @@
 
 <template>
     <div class="order-detail">
-        <div class="content">
+        <div class="content" :class="{ 'full-height' : orderDetail.withdrawStatus === 'success' }">
             <div class="order-info">
                 <div class="order-base-info">
                     <span class="order-name">{{orderDetail.scenicName | contentFilter}}</span>
@@ -40,7 +40,7 @@
             </div>
             <!--核销信息-->
             <div class="preorder-info">
-                <div class="title">{{$t('核销信息')}}</div>
+                <div class="title">{{$t('核销-退票信息')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('已核销数量') })}}</span>
@@ -53,6 +53,9 @@
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('过期已核销数量') })}}</span>
                         <span class="value">{{orderDetail.overdueNum | contentFilter}}</span>
+                    </div>
+                    <div class="detail-list">
+                        <span class="key">{{$t('colonSetting',{ key : $t('说明') })}}{{$t('本订单产品全部核销或退票后才能申请提现')}}</span>
                     </div>
                 </div>
             </div>
@@ -183,12 +186,22 @@
             @include padding_place(100%,8px);
             overflow: auto;
 
+            &.full-height{
+                height: 100%;
+            }
+
             .preorder-info{
                 background: $color_fff;
                 margin-bottom: 8px;
 
                 &:nth-last-of-type(1){
                     margin-bottom: 0;
+                }
+
+                .note{
+                    font-size: $font_size_10px;
+                    color: $color_999;
+                    padding: 0 10px;
                 }
 
                 .title{
