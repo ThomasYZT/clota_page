@@ -227,9 +227,10 @@
                     clearTimeout(this.timer);
                     this.timer = '';
                 }
-                this.$router.push({
-                    name : 'marketingOwnerCenter'
-                });
+                this.$router.back();
+                // this.$router.push({
+                //     name : 'marketingOwnerCenter'
+                // });
             },
 
             /**
