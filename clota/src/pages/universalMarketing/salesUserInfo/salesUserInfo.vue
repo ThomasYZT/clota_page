@@ -26,7 +26,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="showModal(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li @click="showModal(scope.row)">{{$t('details')}}</li><!--查看-->
                     </ul>
                 </template>
             </el-table-column>
