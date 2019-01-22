@@ -214,7 +214,8 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.stockNum | contentFilter}}
+                            <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
+                            <span v-else>{{scope.row.stockNum | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column

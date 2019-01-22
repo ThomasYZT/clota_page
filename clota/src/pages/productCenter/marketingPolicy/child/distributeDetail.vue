@@ -66,6 +66,17 @@
                           :table-data="parentDistributeData"
                           :border="false">
                     <el-table-column
+                        slot="column0"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span class="item-click" @click="checkProductDetail(scope.row)">{{scope.row.productName | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="column1"
                         slot-scope="row"
                         :label="row.title"
@@ -77,14 +88,15 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column0"
+                        slot="column2"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <span class="item-click" @click="checkProductDetail(scope.row)">{{scope.row.productName | contentFilter}}</span>
+                            <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
+                            <span v-else>{{scope.row.stockNum | contentFilter}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
