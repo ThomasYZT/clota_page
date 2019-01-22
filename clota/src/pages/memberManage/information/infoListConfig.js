@@ -23,6 +23,12 @@ export const infoListHead = [
         field : 'gender'
     },
     {
+        title : 'memberTypes',
+        minWidth : 80,
+        enMinWidth : 100,
+        field : 'typeName'
+    },
+    {
         title : 'levelSetting',
         minWidth : 100,
         enMinWidth : 150,
