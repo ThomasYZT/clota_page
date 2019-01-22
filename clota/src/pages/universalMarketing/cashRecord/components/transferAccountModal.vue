@@ -179,6 +179,9 @@
             show (data) {
                 this.getRecentlyPayTypes(3);
                 this.withdrawInfo = data;
+                this.transferParams.payAccount = data.accountInfo ? data.accountInfo : ''; //付款账号/卡号
+                this.transferParams.payName = data.payName ? data.payName : ''; //付款方姓名
+                this.transferParams.remark = data.transferRemark ? data.transferRemark : ''; //备注
                 this.transferParams.marketOrderId = data.id;
                 this.transferParams.salaryPayment = this.isProxyBank ? this.$t('marketing.cashRecord.' + data.accountType) : data.accountType;
 
