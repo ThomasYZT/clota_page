@@ -18,7 +18,7 @@
                     <Button type="primary" @click="auditPass">审核通过</Button>
                     <Button type="error" class="ivu-btn-90px" @click="reject">驳回</Button>
                 </div>
-                <div class="audit-area" v-if="showModifyBtn">
+                <div class="audit-area" v-if="isAudiitSuccess">
                     <Button type="primary" class="ivu-btn-90px" @click="modify">{{$t('修改')}}</Button>
                 </div>
             </div>
@@ -35,7 +35,12 @@
                         </div>
                         <div class="info-list3" v-if="item[2].label">
                             <span class="info-key">{{item[2].label}}：</span>
-                            <span class="info-val" v-w-title="item[2].value">{{item[2].value | contentFilter}}</span>
+                            <span class="info-val" v-w-title="item[2].value">
+                                {{item[2].value | contentFilter}}
+                                <span class="reset-pass"
+                                      v-if="item[2].type === 'controlAccount' && isAudiitSuccess"
+                                      @click="resetPass(item[2])">{{$t('重置密码')}}</span>
+                            </span>
                         </div>
                     </li>
                     <li class="list" v-if="item.length === 2" :key="index">
@@ -59,13 +64,13 @@
             </ul>
 
             <!--在线收款账户-->
-            <online-receipt v-if="auditStatus === 'success'"
+            <online-receipt v-if="isAudiitSuccess"
                             :show-pick-up="false"
                             :receipt-account-info="lessDetail"
                             @fresh-org-data="getLesseeDetail">
             </online-receipt>
 
-            <div class="partner-area">
+            <div class="partner-area" v-if="isAudiitSuccess">
                 <div class="partner-name">合作伙伴</div>
                 <div class="count">合作伙伴数：{{totalCount}}</div>
                 <table-com
@@ -89,6 +94,21 @@
                     </el-table-column>
                 </table-com>
             </div>
+
+            <!--下属部门-->
+            <sub-department
+                v-if="isAudiitSuccess"
+                :isDefaultPackUp="true"
+                :is-partner="true"
+                :search-params="{id : channelId}">
+            </sub-department>
+            <!--员工-->
+            <employee-table
+                v-if="isAudiitSuccess"
+                :is-partner="true"
+                :isDefaultPackUp="true"
+                :search-params="{id : channelId}">
+            </employee-table>
         </div>
         <!--驳回注册申请模态框-->
         <edit-modal ref="rejectModal">
@@ -136,6 +156,14 @@
                 <!--</FormItem>-->
             </Form>
         </edit-modal>
+
+        <!--重置密码模态框-->
+        <edit-modal ref="resetModal">
+            <div class="edit-modal-tip-word">
+                您正在重置管理员{{currentData.accountName}}的登录密码，
+                我们将以邮件形式将新密码发送到以下邮箱，请注意查收：{{currentData.email}}
+            </div>
+        </edit-modal>
     </div>
 </template>
 
@@ -149,6 +177,8 @@
     import { channelsGroupList } from '@/assets/js/constVariable';
     import { validator } from 'klwk-ui';
     import onlineReceipt from '../ISPinternetChild/ISPinternetDetailChild/components/onlineReceipt';
+    import subDepartment from '../ISPinternetChild/ISPinternetDetailChild/components/subDepartment';
+    import employeeTable from '../ISPinternetChild/ISPinternetDetailChild/components/employeeTable';
     import imagePreview from '@/components/imagePreview/index.vue';
 
     export default {
@@ -158,21 +188,23 @@
             tableCom,
             editModal,
             onlineReceipt,
-            imagePreview
+            imagePreview,
+            subDepartment,
+            employeeTable
         },
         data () {
             //校验邮箱地址是否正确
-            const validateEmail = (rule,value,callback) => {
-                if (value) {
-                    if (validator.isEmail(value)) {
-                        callback();
-                    } else {
-                        callback(this.$t('formalError',{ field : this.$t('email') }));
-                    }
-                } else {
-                    callback(this.$t('inputField',{ field : this.$t('email') }));
-                }
-            };
+            // const validateEmail = (rule,value,callback) => {
+            //     if (value) {
+            //         if (validator.isEmail(value)) {
+            //             callback();
+            //         } else {
+            //             callback(this.$t('formalError',{ field : this.$t('email') }));
+            //         }
+            //     } else {
+            //         callback(this.$t('inputField',{ field : this.$t('email') }));
+            //     }
+            // };
             return {
                 //上级路由列表
                 beforeRouterList : [],
@@ -233,7 +265,9 @@
                 //合作伙伴渠道列表
                 channelsGroupList : channelsGroupList,
                 //租户详情信息
-                lessDetail : {}
+                lessDetail : {},
+                //当前操作的数据
+                currentData : {},
             };
         },
         methods : {
@@ -443,14 +477,46 @@
                     }
                 });
             },
+            /**
+             * 重置合作伙伴密码
+             * @param partnerDetail
+             */
+            resetPass (partnerDetail) {
+                this.currentData = {
+                    accountName : partnerDetail.value,
+                    email : partnerDetail.extraData.email,
+                };
+                this.$refs.resetModal.show({
+                    title : this.$t('resetPass'),
+                    confirmCallback : () => {
+                        this.confimChangePass();
+                    }
+                });
+            },
+            /**
+             * 确认重置密码
+             */
+            confimChangePass () {
+                ajax.post('resetPwd',{
+                    id : this.channelDetailInfo ? this.channelDetailInfo.managerAccountId : ''
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$Message.success('重置成功');
+                    } else {
+                        this.$Message.error(res.message || '重置失败');
+                    }
+                }).finally(() => {
+                    this.$refs.resetModal.hide();
+                });
+            },
         },
         computed : {
             //是否显示通过和驳回的按钮
             showAuditBtn () {
                 return this.auditStatus === 'audit';
             },
-            //是否显示修改按钮
-            showModifyBtn () {
+            //是否审核通过
+            isAudiitSuccess () {
                 return this.auditStatus === 'success';
             }
         }
@@ -633,5 +699,10 @@
     }
     /deep/ .form-wrap{
         width: 300px;
+    }
+    .edit-modal-tip-word{
+        @include block_outline(100%,auto);
+        padding: 20px;
+        word-break: break-all;
     }
 </style>

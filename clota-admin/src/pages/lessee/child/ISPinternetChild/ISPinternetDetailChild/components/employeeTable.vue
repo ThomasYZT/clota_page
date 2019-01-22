@@ -5,6 +5,7 @@
         <div class="pick-up-title" >
             <span class="label">员工账号</span>
             <span class="back-up"
+                  v-if="!isPartner"
                   @click="isPackUp = !isPackUp">
             {{$t(isPackUp ? 'backUp' : 'upLoad')}}
                 <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
@@ -14,13 +15,15 @@
             <div class="table-wrap" v-if="isPackUp">
                 <div class="employee-account">
                     员工账号数：{{totalCount | contentFilter}}
-                    <Button type="primary"
-                            :disabled="selectedEmployee.length < 1"
-                            @click="resetPassSelectEmployee">重置密码</Button>
-                    <Button type="error"
-                            class="ivu-btn-90px"
-                            :disabled="selectedEmployee.length < 1"
-                            @click="deleteSelectEmployee">删除</Button>
+                    <template v-if="!isPartner">
+                        <Button type="primary"
+                                :disabled="selectedEmployee.length < 1"
+                                @click="resetPassSelectEmployee">重置密码</Button>
+                        <Button type="error"
+                                class="ivu-btn-90px"
+                                :disabled="selectedEmployee.length < 1"
+                                @click="deleteSelectEmployee">删除</Button>
+                    </template>
                 </div>
                 <table-com
                     v-if="tableShow"
@@ -46,6 +49,7 @@
                         :min-width="row.minWidth">
                     </el-table-column>
                     <el-table-column
+                        v-if="!isPartner"
                         slot="columnoperate"
                         slot-scope="row"
                         :label="row.title"
@@ -94,6 +98,11 @@
             },
             //是否默认展开
             'isDefaultPackUp' : {
+                type : Boolean,
+                default : false
+            },
+            //是否是合作伙伴
+            'is-partner' : {
                 type : Boolean,
                 default : false
             }

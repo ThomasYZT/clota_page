@@ -15,7 +15,11 @@ export default function (type,...rest) {
                 },
                 {
                     label : '管理账号',
-                    value : rest[2]
+                    value : rest[2],
+                    type : 'controlAccount',
+                    extraData : {
+                        email : rest[6]
+                    }
                 }
             ],
             [
@@ -84,7 +88,11 @@ export default function (type,...rest) {
                 },
                 {
                     label : '管理账号',
-                    value : rest[2]
+                    value : rest[2],
+                    type : 'controlAccount',
+                    extraData : {
+                        email : rest[3]
+                    }
                 }
             ],
             [

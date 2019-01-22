@@ -423,7 +423,7 @@
                         if (data) {
                             ajax.post('addArea', {
                                 cityId : this.operateData.cityid,
-                                id : data.id,
+                                areaId : data.id,
                                 remarks : data.remarks,
                                 name : data.name
                             }).then(res => {

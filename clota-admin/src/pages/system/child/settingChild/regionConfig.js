@@ -5,7 +5,7 @@ export const regionHead = [
     {
         title : 'areaNo',
         minWidth : 150,
-        field : 'id'
+        field : 'areaid'
     },
     {
         title : 'areaName',
