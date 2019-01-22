@@ -310,4 +310,15 @@
     /deep/ .ivu-form-item-label {
         text-indent: -4px;
     }
+
+    /deep/ .el-upload {
+        font-size: 12px;
+        .el-icon-plus {
+            font-size: 18px;
+        }
+    }
+
+    /deep/ .el-upload--picture-card {
+        background-color: #FAFAFA;
+    }
 </style>

@@ -57,7 +57,7 @@
                                        @remove-img="removeImg"
                                        @upload-success="uploadSuccess"></uploadImg>
 
-                            <span class="format-info">{{$t('colonSetting', { key : $t('imgFormat') })}} PNG/JPG/BMP   {{$t('colonSetting', { key : $t('imgSize') })}}< 20Mb </span>
+                            <div class="format-info">{{$t('colonSetting', { key : $t('imgFormat') })}} PNG/JPG/BMP   {{$t('colonSetting', { key : $t('imgSize') })}}< 20Mb </div>
                         </FormItem>
                     </i-col>
                 </i-row>

@@ -317,6 +317,7 @@
              * 删除图片
              */
             removeIDimg (data) {
+                this.defaultImgList = [];
                 this.formData.pics = data;
             },
             /**

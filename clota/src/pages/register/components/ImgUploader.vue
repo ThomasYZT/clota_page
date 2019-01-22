@@ -3,7 +3,7 @@
     作者：杨泽涛
 -->
 <template>
-    <div>
+    <div class="img-uploader">
         <el-upload
             ref="imgUpload"
             :class="{ 'add-hidden' : addDisabled || uploadList.length >= quantityLimit || defaultList.length >= quantityLimit }"
@@ -21,6 +21,8 @@
             :on-success="uploadSuc">
             <i class="el-icon-plus" ></i>{{message}}
         </el-upload>
+
+        <div class="extra-info" v-if="imgInfo">{{imgInfo}}</div>
 
         <!--图片预览-->
         <image-preview ref="imagePreview" :images="[dialogImageUrl]">
@@ -63,6 +65,12 @@
             },
             //文案
             message : {
+                type : String,
+                default () {
+                    return '';
+                }
+            },
+            imgInfo : {
                 type : String,
                 default () {
                     return '';
@@ -111,8 +119,8 @@
                 if (res.success) {
                     this.uploadList.push(res.data);
                     //若已上传文件到达上传数量限制，则不显示上传按钮
-                    if (this.uploadList.length === this.quantityLimit) {
-                        this.addDisabled = true;
+                    if (this.uploadList.length < this.quantityLimit) {
+                        this.addDisabled = false;
                     }
                     this.$emit('upload-success',this.uploadList);
                     this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
@@ -139,7 +147,9 @@
                     this.$emit('remove-img', this.uploadList);
                     //删除图片--显示出添加上传的按钮
                     if (this.uploadList.length < this.quantityLimit) {
-                        this.addDisabled = false;
+                        setTimeout(() => {
+                            this.addDisabled = false;
+                        }, 500);
                     }
                 }
             },
@@ -171,6 +181,7 @@
              * @returns {boolean}
              */
             beforeUpload (file) {
+                this.addDisabled = true;
                 //文件格式校验
                 let isRightFormat = this.format.findIndex((item) => {
                     return file.type.split('/')[1] === item;
@@ -225,9 +236,18 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
+    .img-uploader {
+        display: inline-block;
+    }
+
     /deep/ .add-hidden {
         .el-upload {
             display: none;
         }
+    }
+
+    .extra-info {
+        width: 148px;
+        text-align: center;
     }
 </style>

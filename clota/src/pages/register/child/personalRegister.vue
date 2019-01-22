@@ -35,12 +35,29 @@
                         <Input v-model="formData.certificateNumber" :placeholder="$t('inputField', { field : $t('IDNumber') })"></Input>
                     </FormItem>
                     <!-- 身份证照片 -->
-                    <FormItem :label="$t('identiImg')" prop="attach">
-                        <img-uploader ref="imgUpload"
-                                      @upload-success="uploadSuc"
-                                      @remove-img="removeIDimg"
-                                      :format="['png','jpeg']"
-                                      :quantity-limit="2"></img-uploader>
+                    <FormItem :label="$t('identiImg')">
+                        <div class="img-upload-wrapper">
+                            <FormItem prop="posImg">
+                                <img-uploader ref="imgUpload1"
+                                              @upload-success="uploadSuc($event, 'pos')"
+                                              @remove-img="removeIDimg($event, 'pos')"
+                                              :message="$t('上传图片')"
+                                              :imgInfo="$t('正面')"
+                                              :format="['png','jpeg']"
+                                              :quantity-limit="1"></img-uploader>
+                            </FormItem>
+                        </div>
+                        <div class="img-upload-wrapper">
+                            <FormItem  prop="negImg">
+                                <img-uploader ref="imgUpload2"
+                                              @upload-success="uploadSuc($event, 'neg')"
+                                              @remove-img="removeIDimg($event, 'neg')"
+                                              :message="$t('上传图片')"
+                                              :imgInfo="$t('反面')"
+                                              :format="['png','jpeg']"
+                                              :quantity-limit="1"></img-uploader>
+                            </FormItem>
+                        </div>
                     </FormItem>
                     <!-- 邮箱地址 -->
                     <FormItem :label="$t('mail')" prop="email">
@@ -129,7 +146,11 @@
                     //身份证号码
                     certificateNumber : '',
                     //身份证照片
-                    attach : [],
+                    //attach : [],
+                    //正面照片
+                    posImg : [],
+                    //反面照片
+                    negImg : [],
                     //邮箱
                     email : '',
                     //地址
@@ -149,7 +170,7 @@
                     //密码
                     password : '',
                     //确认密码
-                    rePassword : ''
+                    rePassword : '',
                 },
                 //校验第二次输入的密码和第一次是否相同 个人注册
                 isEqNewPwd : isEqNewPwd
@@ -174,8 +195,14 @@
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('identityNo') }), trigger : 'blur' },
                         { validator : validateMethods.identificationNum, trigger : 'blur' }
                     ],
-                    attach : [
-                        { required : true, type : 'array', min : 2, message : this.$t('pleaseUpload', { field : this.$t('posAndNagIDImg') }), trigger : 'blur' }
+                    // attach : [
+                    //     { required : true, type : 'array', min : 2, message : this.$t('pleaseUpload', { field : this.$t('posAndNagIDImg') }), trigger : 'blur' }
+                    // ],
+                    posImg : [
+                        { required : true, type : 'array', min : 1, message : this.$t('pleaseUpload', { field : this.$t('正面照') }), trigger : 'blur' }
+                    ],
+                    negImg : [
+                        { required : true, type : 'array', min : 1, message : this.$t('pleaseUpload', { field : this.$t('反面照') }), trigger : 'blur' }
                     ],
                     email : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('email') }), trigger : 'blur' },
@@ -225,7 +252,7 @@
                 // this.formData.attach = JSON.stringify(this.formData.attach);
                 let formData = defaultsDeep({
                     password : MD5(this.formData.password).toString(),
-                    attach : JSON.stringify(this.formData.attach),
+                    attach : JSON.stringify(this.formData.posImg.concat(this.formData.negImg)),
                 }, this.formData);
                 ajax.post('register', formData).then(res => {
                     if (res.success) {
@@ -241,7 +268,8 @@
              */
             reset () {
                 this.$refs['personalForm'].resetFields();
-                this.$refs.imgUpload.reset();
+                this.$refs.imgUpload1.reset();
+                this.$refs.imgUpload2.reset();
                 this.$refs.citySelect.reset();
                 this.formData.province = '';
                 this.formData.city = '';
@@ -249,17 +277,31 @@
             },
             /**
              * 上传图片成功 个人注册
+             * @param {array} data
+             * @param {string} source
              */
-            uploadSuc (data) {
-                this.formData.attach = data;
-                this.$refs.personalForm.validateField('attach');
+            uploadSuc (data, source) {
+                if (source === 'pos') {
+                    this.formData.posImg = data;
+                    this.$refs.personalForm.validateField('posImg');
+                } else {
+                    this.formData.negImg = data;
+                    this.$refs.personalForm.validateField('negImg');
+                }
             },
             /**
              * 删除身份证照片 个人注册
+             * @param {array} data
+             * @param {string} source
              */
-            removeIDimg (data) {
-                this.formData.attach = data;
-                this.$refs.personalForm.validateField('attach');
+            removeIDimg (data, source) {
+                if (source === 'pos') {
+                    this.formData.posImg = data;
+                    this.$refs.personalForm.validateField('posImg');
+                } else {
+                    this.formData.negImg = data;
+                    this.$refs.personalForm.validateField('negImg');
+                }
             },
             /**
              * 省市县选择 个人注册
@@ -295,8 +337,29 @@
             font-size: 12px;
             color: $color_yellow;
         }
+
+        .img-upload-wrapper {
+            margin-right: 10px;
+            display: inline-block;
+        }
     }
     /deep/ .ivu-form-item-label {
         text-indent: -4px;
+    }
+
+    /deep/ .el-upload {
+        font-size: 12px;
+        .el-icon-plus {
+            font-size: 12px;
+        }
+    }
+
+    /deep/ .el-upload-list--picture-card {
+        display: inline-block;
+        height: 148px;
+    }
+
+    /deep/ .el-upload--picture-card {
+        background-color: #FAFAFA;
     }
 </style>
