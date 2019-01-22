@@ -9,12 +9,12 @@
                     icon="android-add"
                     style="float: left;margin-right: 10px"
                     @click="getNewPartner('add')"
-                    size="default">{{$t('addDriver')}}</span>
+                    size="default">{{$t('addDriver')}}
             </Button>
             <Input class="input-field"
                    v-model.trim="queryParams.keyword"
                    icon="ios-search"
-                   :placeholder="$t('inputAnywordForSearch')"
+                   :placeholder="$t('inputField', { field : $t('tourGuideName') + '/' + $t('licence') })"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>

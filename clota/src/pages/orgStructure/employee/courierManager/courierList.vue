@@ -14,7 +14,7 @@
             <Input class="input-field"
                    v-model.trim="queryParams.keyword"
                    icon="ios-search"
-                   :placeholder="$t('inputAnywordForSearch')"
+                   :placeholder="$t('inputField', { field : $t('tourGuideName') + '/' + $t('IDNumber') })"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
