@@ -68,7 +68,10 @@
                             <div class="node-info">
                                 <!--收款账户类型-->
                                 <span class="info-key">{{$t('colonSetting', { key: $t('collectionAccountType') })}}</span>
-                                <span class="info-val">{{salesUserInfo.accountType | contentFilter}}</span>
+                                <span class="info-val" v-if="salesUserInfo.accountType === 'aliPay' || salesUserInfo.accountType === 'wxPay'">
+                                    {{$t('marketing.cashRecord.' + salesUserInfo.accountType)}}
+                                </span>
+                                <span class="info-val" v-else>{{salesUserInfo.accountType | contentFilter}}</span>
                             </div>
                         </i-col>
                         <i-col span="8">
