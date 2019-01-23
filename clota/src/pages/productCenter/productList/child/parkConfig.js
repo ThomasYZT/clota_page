@@ -8,12 +8,13 @@ export const parkColumn = [
     },
     {
         title : 'verificationType', // 核销方式
-        minWidth : 150,
+        minWidth : 170,
         field : 'saleType'
     },
     {
         title : 'playTotalNum', // 项目游玩总次数
         minWidth : 130,
+        enMinWidth : 220,
         field : 'itemCheckTimes'
     },
     {
@@ -28,6 +29,7 @@ export const distributeColumnHead = [
     {
         title : 'index', // 序号
         width : 120,
+        enWidth : 150,
         field : 'id'
     },
     {
@@ -43,6 +45,7 @@ export const distributeColumnHead = [
     {
         title : 'operate', // 操作
         width : 100,
+        enWidth : 130,
         field : ''
     },
 ];

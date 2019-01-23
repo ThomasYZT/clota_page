@@ -49,8 +49,8 @@
         </div>
 
         <div slot="footer" class="modal-footer">
-            <Button @click="toggle({})" >{{$t('cancel')}}</Button>
             <Button type="error" @click="forbidden" >{{$t('disabled')}}</Button>
+            <Button @click="toggle({})" >{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>

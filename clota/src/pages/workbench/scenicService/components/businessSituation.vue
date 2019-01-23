@@ -28,7 +28,7 @@
         <div class="table-list-area">
             <table-com
                 :ofsetHeight="200"
-                :height="263"
+                :height="370"
                 :show-pagination="false"
                 :column-data="columnData"
                 :table-data="tableData"

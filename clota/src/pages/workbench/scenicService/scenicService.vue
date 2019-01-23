@@ -156,7 +156,7 @@
         }
         .quota-info-bottom {
             padding-bottom: 15px;
-            height: 340px;
+            min-height: 450px;
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
         }

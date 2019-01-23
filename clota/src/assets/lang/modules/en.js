@@ -109,7 +109,7 @@ export default {
     'moneyBalance' : 'account balance',
     'moneyBalanceAdjust' : 'principal account balance adjustment',
     'signTime' : 'registration time',
-    'operate' : 'operation',
+    'operate' : 'operation ',
     'modify' : 'modify',
     'del' : 'delete ',
     // 会员信息 - 详情

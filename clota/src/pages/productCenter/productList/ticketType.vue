@@ -8,8 +8,9 @@
     <div class="ticket-type">
         <div class="operation-box" v-if="role === 'scenic'">
             <Button type="primary"
+                    icon="android-add"
                     v-if="canAddProduct"
-                    @click="$router.push({name: 'addTicket', params: { type: 'add'}})">+ {{$t('add')}}</Button>
+                    @click="$router.push({name: 'addTicket', params: { type: 'add'}})">{{$t('add')}}</Button>
             <Button type="error"
                     v-if="cacnDelProduct"
                     :disabled="selectedRow.length > 0 ? false : true"
@@ -98,9 +99,12 @@
         </table-com>
 
         <!--删除模态框-->
-        <del-modal ref="delModal">
-            <span class="content-text">{{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{delUnits}}</span></span>
-            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        <del-modal ref="delModal" class="del-min-width">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('colonSetting',{ key : $t('isDoing') })}}
+               <span class="yellow-label">{{delUnits}}</span>
+                <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
+            </span>
         </del-modal>
 
     </div>
@@ -305,8 +309,6 @@
 
     .yellow-label{
         display: inline-block;
-        width: 200px;
-        vertical-align: top;
         color: $color_yellow;
     }
 

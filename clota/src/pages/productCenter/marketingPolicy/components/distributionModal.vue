@@ -5,6 +5,7 @@
 <template>
     <Modal v-model="show"
            width="760"
+           class-name="vertical-center-modal"
            :mask-closable="false"
            :title="$t('distribution')">
         <div class="content">
@@ -53,6 +54,7 @@
 
                 <Form-item prop="productPrices">
                     <table-com
+                        class="td-special"
                         v-if="info && info.parentAllocationProductList"
                         :table-com-min-height="260"
                         :column-data="detailParentDistributePriceConfig"
@@ -62,8 +64,8 @@
                             slot="column0"
                             slot-scope="row"
                             :label="row.title"
-                            :width="120"
-                            :min-width="120"
+                            :width="row.width"
+                            :min-width="row.minWidth"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
                                 {{scope.row.productName | contentFilter}}
@@ -84,8 +86,8 @@
                             slot="column2"
                             slot-scope="row"
                             :label="row.title"
-                            :width="130"
-                            :min-width="120"
+                            :width="row.width"
+                            :min-width="row.minWidth"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
@@ -118,10 +120,9 @@
                             slot="column5"
                             slot-scope="row"
                             :label="$t('mySalePrice')"
-                            :width="140"
-                            :min-width="120">
+                            :width="240">
                             <template slot-scope="scope">
-                                <Input v-model.trim="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
+                                <Input v-model.trim="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"/>
                             </template>
                         </el-table-column>
                     </table-com>
@@ -146,7 +147,7 @@
                             slot-scope="row"
                             :label="row.title"
                             show-overflow-tooltip
-                            :min-width="120">
+                            :min-width="row.minWidth">
                             <template slot-scope="scope">
                                 <span v-for="(item, index) in scope.row.channelModels"
                                       class="channel"
@@ -423,7 +424,6 @@
                 text-align: left;
                 width: 100%;
                 float: left;
-                height: 30px;
                 line-height: 30px;
                 font-size: $font_size_14px;
                 display: flex;
@@ -504,15 +504,15 @@
         .disable {
             color: $color_red;
         }
-
-        /deep/ .ivu-form-item-content {
-            line-height: 22px;
-        }
     }
 
     .modal-footer{
         /deep/ .ivu-btn{
             padding: 5px 30px;
         }
+    }
+
+    .td-special /deep/ .el-table td {
+        padding: 8px 0;
     }
 </style>

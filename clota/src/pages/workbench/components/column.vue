@@ -41,6 +41,6 @@
     @import '~@/assets/scss/base';
 
     .echarts {
-        @include block_outline(408px, 260px);
+        @include block_outline(408px, 372px);
     }
 </style>
