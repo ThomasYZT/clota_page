@@ -12,7 +12,7 @@
         </div>
         <div class="person-center">
             <span class="center-name" @click="toPersonCenter">
-                个人中心 <span class="iconfont icon-arrow-right"></span>
+                {{$t('personalCenter')}} <span class="iconfont icon-arrow-right"></span>
             </span>
         </div>
         <div class="helper-center-entry">
@@ -28,14 +28,14 @@
             <div class="lang-list">
                 <div class="chinese"
                      :class="{active : lang === 'zh-CN'}"
-                     @click="changeLang('zh-CN')">中文</div>
+                     @click="changeLang('zh-CN')">{{$t('chinese')}}</div>
                 <!--<div class="chinese disabled"-->
                      <!--:class="{active : lang === 'zh-CN'}">中文</div>-->
                 <!--<div class="english disabled"-->
                      <!--:class="{active : lang === 'en'}">English</div>-->
                 <div class="english"
                      :class="{active : lang === 'en'}"
-                     @click="changeLang('en')">English</div>
+                     @click="changeLang('en')">{{$t('english')}}</div>
                 <div class="label"
                      :style="{left : lang === 'zh-CN' ? '0px' : '100px'}"></div>
             </div>

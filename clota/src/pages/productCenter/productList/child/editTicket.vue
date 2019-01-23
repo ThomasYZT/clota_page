@@ -275,7 +275,8 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        {{scope.row.itemCheckTimes ? scope.row.itemCheckTimes : '-'}}
+                                        <span v-if="scope.row.saleType === 'one_ticket'">-</span>
+                                        <span v-else>{{scope.row.itemCheckTimes}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
