@@ -18,7 +18,7 @@
                             :clearable="false"
                             :placeholder="$t('selectField',{msg: ''})"
                             placement="bottom-end"
-                            style="width: auto;"
+                            style="width: 220px;"
                             transfer
                             class="date-picker"
                             @on-change="queryList">

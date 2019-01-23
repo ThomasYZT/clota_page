@@ -123,9 +123,12 @@
         height: 100%;
 
         .filter {
+            width: 100%;
             position: absolute;
             padding: 17px 20px 0;
             z-index: 99;
+            text-align: right;
+
             >span{
                 display: inline-block;
                 height: 30px;

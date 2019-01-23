@@ -5,10 +5,10 @@
 -->
 
 <template>
-    <div class="diff-date-data">
+    <div class="diff-date-data" :class="{ 'en-modal' : lang === 'en' }">
         <div class="header-box">
-            <div class='title-wrapper'>
-                <span class="title">{{$t(cardTitle)}}</span>
+            <div class='title-wrapper' v-w-title="$t(cardTitle)">
+                {{$t(cardTitle)}}
             </div>
             <div class="date-wrapper">
                 <DatePicker type="daterange"
@@ -19,7 +19,7 @@
                             placement="bottom-end"
                             class="date-picker"
                             :transfer="true"
-                            style="width: auto;"
+                            style="width: 215px;"
                             @on-change="queryList">
                 </DatePicker>
             </div>
@@ -28,7 +28,7 @@
         <div class="table-list-area">
             <table-com
                 :ofsetHeight="200"
-                :height="263"
+                :height="lang === 'zh-CN' ? 365 : 375"
                 :show-pagination="false"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -73,6 +73,7 @@
 </template>
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : { tableCom },
@@ -101,13 +102,14 @@
                 date : [new Date().addMonths(-1), new Date()],
             };
         },
-        computed : {},
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        },
         created () {
             this.queryList();
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询数据
@@ -129,27 +131,34 @@
         border: 1px solid $color_DFE2E5;
         border-radius: 4px;
 
+        .en-modal{
+
+        }
+
         .header-box {
-            @include block_outline($height: 45px);
-            display: flex;
             border-bottom: 1px solid $color_E1E1E1;
-            line-height: 45px;
-            padding: 0 20px;
+            padding: 6px 10px;
+            overflow: auto;
 
             .title-wrapper {
-                flex: 0 auto;
-                flex-basis: 50%;
-                .title {
-                    font-size: $font_size_16px;
-                    color: $color_353B5E;
-                }
+                display: inline-block;
+                vertical-align: middle;
+                line-height: 32px;
+                max-width: calc(100% - 215px);
+                @include overflow_tip();
+                padding-right: 5px;
+                font-size: $font_size_16px;
+                color: $color_353B5E;
             }
             .date-wrapper {
-                flex-basis: 50%;
+                display: inline-block;
+                vertical-align: middle;
+                float: right;
+                margin-top: 2px;
+
                 .date-picker {
                     width: 150px;
                     float: right;
-                    margin-top: 7px;
                 }
             }
 

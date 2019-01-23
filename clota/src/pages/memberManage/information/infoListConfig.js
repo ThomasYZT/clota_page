@@ -35,7 +35,7 @@ export const infoListHead = [
         field : 'levelDesc'
     },
     {
-        title : 'memberType',
+        title : 'memberCardType',
         minWidth : 170,
         field : 'status'
     },

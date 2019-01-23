@@ -5,10 +5,10 @@
 -->
 
 <template>
-    <div class="overview-tpl">
+    <div class="overview-tpl" :class="{ 'en-status' : lang === 'en' }">
         <span :class="['iconfont', 'label-img', icon]" :style="{'color': iconColor}"></span>
-        <div class="detail-info"  :class="{ 'only-num' : !showRate }">
-            <span class="label-name">{{labelName}}</span>
+        <div class="detail-info"  :class="{ 'only-num' : !showRate}">
+            <span class="label-name" v-w-title="labelName">{{labelName}}</span>
             <span class="number">{{labelNum}}</span>
             <span class="circle-rate" v-if="showRate">
                 <span class="rate">
@@ -24,6 +24,7 @@
 </template>
 <script>
     import common from '@/assets/js/common.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {},
@@ -69,6 +70,9 @@
             return {};
         },
         computed : {
+            ...mapGetters([
+                'lang'
+            ])
             //同比上周，当前指标是上升，还是下降
             /*labelCurve () {
                 if (this.labelRate === '-') {
@@ -84,9 +88,6 @@
                 }
             }*/
         },
-        created () {
-        },
-        watch : {},
         methods : {
             /**
              * 获取同比增长率
@@ -116,6 +117,19 @@
         border: 1px solid $color_DFE2E5;
         border-radius: 4px;
 
+        &.en-status{
+            padding: 25px 10px;
+
+            .detail-info {
+                @include block_outline(unquote('calc(100% - 60px)'));
+            }
+
+            .label-name{
+                display: inline-block;
+                @include overflow_tip();
+            }
+        }
+
         &:nth-last-of-type(1) {
             margin-right: 0;
         }
@@ -130,6 +144,10 @@
         .detail-info {
             @include block_outline(unquote('calc(100% - 82px)'));
             float: right;
+
+            &.en-status{
+                @include block_outline(unquote('calc(100% - 60px)'));
+            }
 
             &.only-num {
                 margin-top: 8px;

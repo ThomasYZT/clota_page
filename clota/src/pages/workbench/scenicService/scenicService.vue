@@ -67,6 +67,7 @@
     import tradeProportion from './components/tradeProportion.vue';
     import ticketPerformance from './components/ticketPerformance.vue';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -93,13 +94,14 @@
                 }
             };
         },
-        computed : {},
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        },
         created () {
             this.getScenicQuota();
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             getScenicQuota () {
                 ajax.post('workbench-queryScenicWorkbenchOptions',{

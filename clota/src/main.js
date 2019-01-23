@@ -98,12 +98,12 @@ new Vue({
         langCode (val) {
             if (val === 'en') {
                 eleLocale.use(eleEnLang);
-                locale(iviewEn);
                 Vue.config.lang = 'en-US';
+                locale(iviewEn);
             } else if (val === 'zh-CN') {
                 eleLocale.use(eleZhCnLang);
-                locale(iviewZh);
                 Vue.config.lang = 'zh-CN';
+                locale(iviewZh);
             }
         }
     },
