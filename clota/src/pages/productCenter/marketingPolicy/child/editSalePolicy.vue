@@ -1297,7 +1297,6 @@
              * @param data
              */
             initData (data) {
-                console.log(data);
                 let formData = pick(data.productPolicy, ['id','productType', 'name','policyDesc','saleStartTime','saleEndTime','todaySaleStartTime','todaySaleEndTime',
                 'buyTicketNotes']);
                 formData.saleTime = [data.productPolicy.saleStartTime, data.productPolicy.saleEndTime];
