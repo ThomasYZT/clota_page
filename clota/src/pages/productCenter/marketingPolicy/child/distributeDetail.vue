@@ -107,7 +107,7 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.settlePrice | moneyFilter}}
+                            {{scope.row.printPrice | moneyFilter}}
                         </template>
                     </el-table-column>
                 </tableCom>
@@ -221,7 +221,7 @@
                         //初始化我的分销表头配置
                         this.myDistributeConfig = Array.from(myDistributeConfig);
                         //上级分销单价表格数据
-                        this.parentDistributeData = res.data ? res.data.parentAllocationProductList : {};
+                        this.parentDistributeData = res.data ? res.data.parentAllocationProductList : [];
                         this.listItem.rootAllocationId = res.data ? res.data.rootAllocationId : '';
                         if (res.data.myAllocationLists.length !== 0) {
                             this.myAllocationLists = Array.from(this.parentDistributeData);
