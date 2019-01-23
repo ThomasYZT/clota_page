@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="skin">
-            <div class="skin-title">主题皮肤</div>
+            <div class="skin-title">{{$t('themeSkin')}}</div>
             <div class="blue-theame" @click="chagneSkin('blue-theame')">
                 <transition name="fade">
                     <img v-if="skinType === 'blue-theame'"
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="log-out">
-            <span @click="logOut">退出系统</span>
+            <span @click="logOut">{{$t('logout')}}</span>
         </div>
     </div>
 </template>

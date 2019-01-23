@@ -2490,5 +2490,6 @@ export default {
     'analysisFileFail' : '解析文件失败',
     'S014' : '微信公众号配置错误',
     'purchaseAmount' : '进货金额',
-    'comma' : '，'
+    'comma' : '，',
+    'themeSkin' : '主题皮肤'
 };

@@ -2488,5 +2488,6 @@ export default {
     'analysisFileFail' : 'file parsing failed',
     'S014' : 'wechat public account configuration error',
     'purchaseAmount' : '进货金额',
-    'comma' : ','
+    'comma' : ',',
+    'themeSkin' : 'theme skin'
 };
