@@ -118,7 +118,7 @@
                 <span>{{$t('myDistribute')}}</span>
             </div>
 
-            <div class="button-wrapper" v-if="canAddAllocation">
+            <div class="button-wrapper" v-if="canAddAllocation && canDistribution">
                 <span @click="distribute" class="btn">+ {{ $t('add') + $t('distribution')}}</span>
             </div>
 
@@ -392,6 +392,10 @@
             canAddAllocation () {
                 return this.permissionInfo && 'addAllocation' in this.permissionInfo;
             },
+            //是否可进行在此分销
+            canDistribution () {
+                return this.listItem.canDistribution === 'true';
+            }
         }
     };
 </script>
