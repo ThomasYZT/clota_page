@@ -186,7 +186,7 @@
                     //校验非空必填以及提示低于上级分销单价
                     if (value.length) {
                         value.forEach((item) => {
-                            if (item.price === '') {
+                            if (!item.price) {
                                 callback(new Error(this.$t('errorEmpty', { msg : this.$t('mySalePrice') })));
                             } else {
                                 if (validator.isNumber(item.price)) {
@@ -194,6 +194,7 @@
                                         this.isLossTipShow = true;
                                         callback();
                                     } else {
+                                        this.isLossTipShow = false;
                                         callback();
                                     }
                                 } else {
