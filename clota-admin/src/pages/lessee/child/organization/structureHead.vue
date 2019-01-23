@@ -73,6 +73,16 @@
                      :added-node-detail="addNodeDetail"
                      @fresh-structure-data="getStructureData">
         </add-cashier>
+        <!--删除节点报错提示模态框-->
+        <notice-modal ref="noticeModal">
+            <ul class="pro-list">
+                <li class="detail">{{`${$t('cannotDelte')} ${currentNode.name}`}}</li>
+                <li class="detail partner-list">{{$t('cannotDeleteReason')}}</li>
+                <li class="hint">
+                    <Icon type="information-circled"></Icon>
+                </li>
+            </ul>
+        </notice-modal>
     </div>
 </template>
 
@@ -84,6 +94,7 @@
     import addCashier from './child/addCashier';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip';
+    import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
         props : {
@@ -113,7 +124,8 @@
             addCompany,
             addScene,
             addCashier,
-            noData
+            noData,
+            noticeModal
         },
         data () {
             return {
@@ -303,6 +315,11 @@
                     } else {
                         if (res.message && res.message === '需要删除的节点中包含了其他节点的财务上级') {
                             this.confirmModalShow = true;
+                        } else if (res.message && res.message === '需要删除的节点中包含收付款未结清或仍有储值记录的节点') {
+                            this.$refs.noticeModal.show({
+                                title : this.$t('hint'),
+                                showCancel : false
+                            });
                         } else {
                             this.$Message.error('删除失败');
                         }
@@ -486,6 +503,29 @@
             text-overflow: ellipsis;
             max-width : 100%;
             color:#ed3f14;
+        }
+    }
+
+    .pro-list{
+        max-width: 320px;
+        position: relative;
+
+        .detail{
+            line-height: 25px;
+
+            &.partner-list{
+                color: $color_err;
+            }
+        }
+
+        .hint{
+            content : '';
+            @include absolute_pos(absolute,$top : 2px,$left : -20px);
+
+            .ivu-icon-information-circled{
+                font-size: $font_size_17px;
+                color: $color_err;
+            }
         }
     }
 </style>
