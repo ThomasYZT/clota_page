@@ -2509,4 +2509,5 @@ export default {
     'clota-adminSettingError' : 'operational background WeChat public account configuration error',
     'wechatError' : 'weChat service request error',
     'saveWxCardInfoFailure' : 'failed to save the WeChat card card face information',
+    'outOfStock' : 'out of stock',
 };

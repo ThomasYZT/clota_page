@@ -607,7 +607,7 @@
                     white-space: nowrap;
                 }
 
-                /deep/ .ivu-form-item-content {
+                /deep/ .table-com {
                     line-height: 22px;
                 }
 

@@ -66,7 +66,7 @@
                     <template slot-scope="scope">
                         <span v-if="Number(scope.row.stockNum) <  Number(scope.row.undrawNum)"
                               class="warn-value">
-                            {{ scope.row.stockNum | contentFilter}} {{$t('bracketSetting', { content : $t('缺货') })}}
+                            {{ scope.row.stockNum | contentFilter}} {{$t('bracketSetting', { content : $t('outOfStock') })}}
                         </span>
                         <span v-else>
                             {{ scope.row.stockNum | contentFilter}}

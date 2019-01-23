@@ -32,7 +32,7 @@ export const integralHead = [
     {
         title : 'exchangePointsRequired', //兑换时所需积分
         minWidth : 140,
-        enMinWidth : 240,
+        enMinWidth : 250,
         field : 'requiredCredits'
     },
     {
@@ -45,7 +45,7 @@ export const integralHead = [
     {
         title : 'more', //更多
         minWidth : 120,
-        enMinWidth : 155,
+        enMinWidth : 175,
         field : ''
     },
 ];

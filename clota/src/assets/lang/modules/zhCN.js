@@ -2511,4 +2511,5 @@ export default {
     'clota-adminSettingError' : '运营后台公众号信息配置错误',
     'wechatError' : '微信服务请求错误',
     'saveWxCardInfoFailure' : '保存微信卡包卡面信息失败',
+    'outOfStock' : '缺货',
 };
