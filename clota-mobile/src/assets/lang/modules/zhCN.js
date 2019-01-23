@@ -279,6 +279,8 @@ export default {
     'errorMsg.S002' : '接口错误',
     'errorMsg.OD003' : '产品库存不足',
     'errorMsg.A006' : '公司不存在',
+    'errorMsg.A004' : '验证码错误',
+    'errorMsg.MK021' : '未设置收款账户，不可提现',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'Complete information',
     'getActivate' : 'Immediately active',
