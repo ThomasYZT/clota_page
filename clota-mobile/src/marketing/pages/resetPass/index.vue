@@ -577,7 +577,6 @@
                 max-width : calc(100% - 104px);
                 white-space : nowrap;
                 overflow : hidden;
-                text-overflow : ellipsis;
             }
         }
     }

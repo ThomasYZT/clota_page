@@ -61,12 +61,13 @@ export const parentDistributePriceConfig = [
 export const detailParentDistributePriceConfig = [
     {
         title : 'productName', // 产品名称
-        width : 350,
+        width : 200,
         field : 'productName'
     },
     {
         title : 'stockTypeMod', // 限制库存类型
         minWidth : 130,
+        enMinWidth : 200,
         field : 'stockType'
     },
     {
@@ -83,7 +84,8 @@ export const detailParentDistributePriceConfig = [
     {
         title : 'parentDistributePrice', // 上级分销单价
         width : 200,
-        field : 'settlePrice'
+        field : 'settlePrice',
+        type : 'money'
     }
 ];
 

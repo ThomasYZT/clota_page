@@ -143,5 +143,25 @@
                 color: $color_err;
             }
         }
+
+        /deep/ .content-text {
+            width: 210px;
+            position: relative;
+
+            .delete-icon {
+                position: absolute;
+                left: -20px;
+                margin-right: 12px;
+                color: $color_red;
+            }
+
+            .yellow-label{
+                display: inline-block;
+                max-width: 100%;
+                color: $color_yellow;
+                vertical-align: middle;
+                @include overflow_tip();
+            }
+        }
     }
 </style>

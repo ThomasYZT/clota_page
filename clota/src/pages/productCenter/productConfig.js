@@ -4,11 +4,12 @@ export const ticketTypeHead = [
     {
         title : 'ID', // ID
         minWidth : 140,
+        enMinWidth : 210,
         field : 'id'
     },
     {
         title : 'productCode', // 产品编码
-        minWidth : 150,
+        minWidth : 200,
         field : 'code'
     },
     {
@@ -23,7 +24,7 @@ export const ticketTypeHead = [
     },
     {
         title : 'printPrice', // 票面价格
-        minWidth : 120,
+        minWidth : 200,
         field : 'printPrice'
     },
     {
@@ -57,7 +58,7 @@ export const disableHeadConfig = [
     },
     {
         title : 'status', // 状态
-        width : 110,
+        width : 140,
         field : 'auditStatus'
     },
 ];

@@ -278,6 +278,8 @@ export default {
     'errorMsg.S002' : 'interface error',
     'errorMsg.OD003' : 'insufficient product inventory',
     'errorMsg.A006' : 'the company does not exist',
+    'errorMsg.A004' : 'verification code error',
+    'errorMsg.MK021' : 'no withdrawal is allowed without a collection account',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'complete information',
     'getActivate' : 'immediately active',

@@ -42,7 +42,7 @@ export default {
                         meta : {
                             menuName : 'ticketType', //lang.config.js 里面的语言键值
                             _name : 'ticket',
-                            rightPath : topMenuName + '.' + 'productList',
+                            rightPath : topMenuName + '.' + 'ticketType',
                             isMenu : true
                         },
                     },
@@ -54,7 +54,7 @@ export default {
                         meta : {
                             menuName : 'ticketType', //lang.config.js 里面的语言键值
                             _name : 'ticket',
-                            rightPath : topMenuName + '.' + 'productList',
+                            rightPath : topMenuName + '.' + 'ticketType',
                         },
                     },
                     ticketDetail : {
@@ -65,7 +65,7 @@ export default {
                         meta : {
                             menuName : 'ticketType', //lang.config.js 里面的语言键值
                             _name : 'ticket',
-                            rightPath : topMenuName + '.' + 'productList',
+                            rightPath : topMenuName + '.' + 'ticketType',
                         },
                     },
                 }

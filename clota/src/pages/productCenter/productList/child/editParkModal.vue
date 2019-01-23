@@ -1066,7 +1066,6 @@
             color: $color_333;
             padding: 25px 40px;
             text-align: left;
-            max-height: 600px;
             overflow: auto;
 
             /deep/ .ivu-form {
@@ -1082,6 +1081,7 @@
                 width: 280px;
                 &.short-input{
                     width: 90px;
+                    vertical-align: middle;
                 }
             }
 

@@ -2,7 +2,7 @@
     <!--新增备注弹窗-->
     <Modal
         v-model="visible"
-        :title="$t('add')+$t('remark')"
+        :title="$t('add')+ ' ' +$t('remark')"
         class-name="add-remark-modal vertical-center-modal"
         width="560"
         :mask-closable="false"
@@ -16,7 +16,9 @@
                   :label-width="110">
                 <div class="ivu-form-item-wrap">
                     <Form-item :label="$t('remark') + '：'" prop="remark"><!--备注-->
-                        <Input v-model.trim="formData.remark" type="textarea" :placeholder="$t('inputField', {field: $t('remark')})"/>
+                        <Input v-model.trim="formData.remark"
+                               type="textarea"
+                               :placeholder="$t('inputField', {field: $t('remark')})"/>
                     </Form-item>
                 </div>
             </Form>
@@ -120,10 +122,14 @@
     .add-remark-modal{
 
         .modal-body{
-            padding: 50px 40px;
+            padding: 40px 40px 20px;
 
             /deep/ .ivu-input-wrapper{
                 width: 280px;
+            }
+
+            /deep/ textarea.ivu-input{
+                height: 100px;
             }
         }
 

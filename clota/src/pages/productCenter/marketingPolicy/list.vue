@@ -20,7 +20,10 @@
 
         <!--按钮栏 仅非合作伙伴可见-->
         <div class="btn-wrap" v-if="tabsName === 'created' && role !== 'partner'">
-            <Button v-if="canAddSalePolicy" type="primary" @click="addPolicy">+ {{$t('addSalePolicy')}}</Button>
+            <Button v-if="canAddSalePolicy"
+                    icon="android-add"
+                    type="primary"
+                    @click="addPolicy">{{$t('addSalePolicy')}}</Button>
             <template v-if="dropdownList.length > 0">
                 <Button type="error"
                         v-if="isDisabled || dropdownList.filter(item => item.show).length < 1"
@@ -136,9 +139,12 @@
         </table-com>
 
         <!--删除模态框-->
-        <del-modal ref="delModal">
-            <span class="content-text">{{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{delUnits}}</span></span>
-            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
+        <del-modal ref="delModal" class="del-min-width">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('colonSetting',{ key : $t('isDoing') })}}
+                <span class="yellow-label">{{delUnits}}</span>
+            </span>
+            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
         </del-modal>
 
         <!--新建销售政策-->
@@ -694,7 +700,6 @@
     }
 
     .yellow-label{
-        margin: 0 15px;
         word-break:break-all;
         color: $color_yellow;
     }

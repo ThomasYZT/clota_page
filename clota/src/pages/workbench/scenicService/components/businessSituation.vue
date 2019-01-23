@@ -18,7 +18,7 @@
                             :clearable="false"
                             :placeholder="$t('selectField',{msg: ''})"
                             placement="bottom-end"
-                            style="width: auto;"
+                            style="width: 220px;"
                             transfer
                             class="date-picker"
                             @on-change="queryList">
@@ -28,7 +28,7 @@
         <div class="table-list-area">
             <table-com
                 :ofsetHeight="200"
-                :height="263"
+                :height="370"
                 :show-pagination="false"
                 :column-data="columnData"
                 :table-data="tableData"

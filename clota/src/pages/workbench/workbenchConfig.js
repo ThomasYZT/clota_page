@@ -3,6 +3,7 @@ export const businessHead = [
     {
         title : 'ranking', // 排名
         minWidth : 80,
+        enMinWidth : 100,
         field : ''
     },
     {
@@ -13,6 +14,7 @@ export const businessHead = [
     {
         title : 'tradeVolume', // 交易量
         minWidth : 100,
+        enMinWidth : 150,
         field : 'value'
     },
     {
@@ -27,16 +29,18 @@ export const pendingMattersHead = [
     {
         title : 'index', // 序号
         minWidth : 100,
+        enMinWidth : 150,
         field : ''
     },
     {
         title : 'mattersType', // 事项类别
-        width : 110,
+        width : 160,
         field : 'name'
     },
     {
         title : 'quantity', // 数量
         minWidth : 70,
+        enWidth : 110,
         field : 'value'
     },
 ];
@@ -46,6 +50,7 @@ export const allPendingMattersHead = [
     {
         title : 'index', // 序号
         minWidth : 70,
+        enMinWidth : 150,
         field : ''
     },
     {
@@ -56,11 +61,13 @@ export const allPendingMattersHead = [
     {
         title : 'mattersType', // 事项类别
         minWidth : 100,
+        enMinWidth : 130,
         field : 'classify'
     },
     {
         title : 'operate',
         width : 130,
+        enWidth : 150,
         field : ''
     }
 ];
@@ -75,6 +82,7 @@ export const productTypeOperateHead = [
     {
         title : 'industryType', // 业态类型
         width : 110,
+        enWidth : 150,
         field : 'name'
     },
     {

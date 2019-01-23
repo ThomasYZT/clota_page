@@ -38,6 +38,7 @@ export const distributePolicyHead = [
     {
         title : 'salePolicyName', // 销售政策名称
         width : 160,
+        enWidth : 180,
         field : 'name'
     },
     {
@@ -48,6 +49,7 @@ export const distributePolicyHead = [
     {
         title : 'industryType', // 业态类型
         minWidth : 100,
+        enMinWidth : 150,
         field : 'productTypeDesc'
     },
     {
@@ -58,11 +60,13 @@ export const distributePolicyHead = [
     {
         title : 'superiorDistribution', // 上级分销商
         minWidth : 100,
+        enMinWidth : 180,
         field : 'parentDistributor'
     },
     {
         title : 'operate', // 操作
         minWidth : 110,
+        enMinWidth : 170,
         field : ''
     },
 ];
