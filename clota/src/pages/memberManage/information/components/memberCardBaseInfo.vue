@@ -196,10 +196,10 @@
                     id : this.memberDetail.id
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success('successTip', { tip : this.$t('modifyPayPassword') });
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modifyPayPassword') }));
                         this.$emit('fresh-data');
                     } else {
-                        this.$Message.error('failureTip', { tip : this.$t('modifyPayPassword') });
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modifyPayPassword') }));
                     }
                 });
             },

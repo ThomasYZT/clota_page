@@ -158,7 +158,7 @@
             'base-info' : {
                 type : Object,
                 default () {
-
+                    return {};
                 }
             },
             //当前显示的视图信息
@@ -247,9 +247,8 @@
             //重发短信按钮是否可以使用
             resendBtnCanUsed () {
                 //可重发次数大于0，审核通过，有未取票的可以点击重发短信按钮
-                return this.reSendTimes >= 0 && this.reSendTimes <= 5 &&
-                    this.baseInfo.auditStatus === 'success' &&
-                    this.productInfoList.some(item => item.quantityPicked + item.quantityRefunded === 0);
+                return this.reSendTimes >= 0 && this.reSendTimes < 5 &&
+                    this.baseInfo.auditStatus === 'success';
             }
 
         }

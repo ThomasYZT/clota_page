@@ -22,6 +22,7 @@
             <FormItem :label="$t('nodeType')"
                       prop="nodeType" >
                 <Select v-model="formData.nodeType"
+                        transfer
                         :placeholder="$t('selectField',{ msg : '' })"
                         style="width: 280px">
                     <Option :value="item.value"
