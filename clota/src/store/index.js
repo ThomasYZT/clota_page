@@ -229,10 +229,11 @@ export default new Vuex.Store({
         setLang (state, lang) {
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
-            i18n.locale = state.lang = lang;
-            setTimeout(() => {
-                this.commit('changeOperateLine',false);
-            },600);
+            // i18n.locale = state.lang = lang;
+            location.reload();
+            // setTimeout(() => {
+            //     this.commit('changeOperateLine',false);
+            // },600);
         },
         //改变操作栏状态
         changeOperateLine (state,status) {

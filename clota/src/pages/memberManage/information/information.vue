@@ -8,7 +8,7 @@
                     :style="{ width : lang === 'en' ? '240px' : '180px' }"
                     @on-change="cardTypeChange">
                 <Option v-for="item in memberCardTypesList"
-                        :key="item.label"
+                        :key="item.id"
                         class="overflow-tip-list"
                         v-w-title="$t(item.label)"
                         :value="item.value">

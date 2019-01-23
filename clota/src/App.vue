@@ -37,9 +37,9 @@
                 // this.$nextTick(() => {
                 //     this.isRouterActive = true;
                 // });
-                this.$router.replace({
-                    name : this.$route.name
-                })
+                // this.$router.replace({
+                //     name : this.$route.name
+                // })
             },
         },
         computed : {
