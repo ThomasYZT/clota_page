@@ -95,28 +95,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            slot="column3"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="120"
-                            :min-width="120"
-                            show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                {{scope.row.printPrice | contentFilter}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column4"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="140"
-                            :min-width="120"
-                            show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                {{scope.row.settlePrice | moneyFilter}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column
                             slot="column5"
                             slot-scope="row"
                             :label="$t('mySalePrice')"

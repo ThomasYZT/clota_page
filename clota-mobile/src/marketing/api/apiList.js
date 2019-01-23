@@ -71,4 +71,8 @@ export default {
     'market_singleOrderSalaryWithdrawApply' : '/market/marketUser/singleOrderSalaryWithdrawApply',
     //下载图片
     'market_downloadImage' : '/downloadImage',
+    //获取机构下的所有景区信息
+    'market_getAllScenicInCompany' : '/external/organize/getAllScenicInCompany',
+    //获取景区下的所属类别
+    'market_queryMarketTypes' : '/market/marketUser/queryMarketTypes',
 };

@@ -15,6 +15,7 @@
             </x-input>
             <!--手机号-->
             <x-input :title="$t('新的手机号')"
+                     keyboard="number"
                      v-model.trim="formData.phoneNum"
                      text-align="right"
                      :placeholder="$t('pleaseInputMsg')" >
@@ -35,6 +36,7 @@
             <x-input
                 :title="$t('验证码')"
                 text-align="right"
+                keyboard="number"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
                 v-model.trim="formData.code"

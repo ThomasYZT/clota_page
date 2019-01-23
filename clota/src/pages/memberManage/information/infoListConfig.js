@@ -24,13 +24,13 @@ export const infoListHead = [
     },
     {
         title : 'memberTypes',
-        minWidth : 80,
+        minWidth : 110,
         enMinWidth : 190,
         field : 'typeName'
     },
     {
         title : 'levelSetting',
-        minWidth : 100,
+        minWidth : 110,
         enMinWidth : 150,
         field : 'levelDesc'
     },
