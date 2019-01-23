@@ -18,6 +18,9 @@ import './assets/css/iconfont.css';
 import '@/assets/scss/_common.scss';
 import 'viewerjs/dist/viewer.css';
 import Viewer from 'v-viewer';
+import { locale } from 'iview';
+import iviewEn from '@/assets/lang/modules/iview-en-US.js';
+import iviewZh from 'iview/dist/locale/zh-CN';
 
 import eleLocale from 'element-ui/lib/locale';
 import eleEnLang from 'element-ui/lib/locale/lang/en';
@@ -95,17 +98,22 @@ new Vue({
         langCode (val) {
             if (val === 'en') {
                 eleLocale.use(eleEnLang);
+                locale(iviewEn);
+                Vue.config.lang = 'en-US';
             } else if (val === 'zh-CN') {
                 eleLocale.use(eleZhCnLang);
+                locale(iviewZh);
+                Vue.config.lang = 'zh-CN';
             }
-            Vue.config.lang = val;
         }
     },
     mounted () {
         if (this.langCode === 'en') {
             eleLocale.use(eleEnLang);
+            locale(iviewEn);
         } else if (this.langCode === 'zh-CN') {
             eleLocale.use(eleZhCnLang);
+            locale(iviewZh);
         }
     }
 });

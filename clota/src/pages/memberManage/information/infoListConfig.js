@@ -25,7 +25,7 @@ export const infoListHead = [
     {
         title : 'memberTypes',
         minWidth : 80,
-        enMinWidth : 100,
+        enMinWidth : 190,
         field : 'typeName'
     },
     {

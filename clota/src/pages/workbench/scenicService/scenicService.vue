@@ -120,8 +120,22 @@
     .workbench-main {
         @include block_outline();
         @include padding_place();
-        width: 80%;
         margin: 0 auto;
+
+        @media screen and (max-width: 1500px) {
+            @at-root {
+                .workbench-main{
+                    width: calc(100% - 60px);
+                }
+            }
+        }
+        @media screen and (min-width: 1500px) {
+            @at-root {
+                .workbench-main{
+                    width: 85%;
+                }
+            }
+        }
 
         &:after {
             background: transparent;
