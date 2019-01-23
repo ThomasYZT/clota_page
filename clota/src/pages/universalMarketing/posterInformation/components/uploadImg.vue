@@ -20,7 +20,7 @@
             :on-exceed="handlEexceed"
             :on-success="uploadSuc">
             <i class="el-icon-plus"></i>
-            <span>{{$t('uploadPicture')}}</span>
+            <span>{{$t('upload')}}</span>
         </el-upload>
         <!--图片预览-->
         <image-preview ref="imagePreview" :images="[dialogImageUrl]">

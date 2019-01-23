@@ -194,21 +194,21 @@
                             </div>
                             <div class="text" :class="{'ivu-form-item-error': error.chargeTemplateIdErr}"
                                  v-if="memberConfigInfo.memberRecharge === 'true'">
-                                <span class="width-150px-label">{{$t('会员充值通知模版ID：')}}</span>
+                                <span class="width-150px-label">{{$t('colonSetting', { key : $t('memberRechargeNotificationTemplateID') })}}</span>
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.chargeTemplateId"
                                        @on-blur="checkTemplateID(settingData.wxMpTemplateInfoSet.chargeTemplateId,'chargeTemplateIdErr',
                                        settingData.wxMpTemplateInfoSet.showStoreValue)"
                                        style="margin: 0 10px;width: 300px;"></Input>
-                                <span class="warning-tip">请在微信公众号后台获取ID</span>
+                                <span class="warning-tip">{{$t('getIDFromWechat')}}</span>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.chargeTemplateIdErr"
-                                     style="margin-left: 150px">{{error.chargeTemplateIdErr}}
+                                     :style="{ marginLeft: lang === 'en' ? '290px' : '150px' }">{{error.chargeTemplateIdErr}}
                                 </div>
                             </div>
                             <div class="text" :class="{'ivu-form-item-error': error.consumeTemplateIdErr}">
-                                <span class="width-150px-label">{{$t('消费成功通知模版ID：')}}</span>
+                                <span class="width-150px-label">{{$t('colonSetting', { key : $t('consumptionSuccessNotificationTemplateID') })}}</span>
                                 <Input type="text"
                                        :disabled="!settingData.wxMpTemplateInfoSet.showStoreValue"
                                        v-model="settingData.wxMpTemplateInfoSet.consumeTemplateId"
@@ -217,7 +217,7 @@
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="ivu-form-item-error-tip"
                                      v-if="error.consumeTemplateIdErr"
-                                     style="margin-left: 150px">{{error.consumeTemplateIdErr}}
+                                     :style="{ marginLeft: lang === 'en' ? '315px' : '150px' }">{{error.consumeTemplateIdErr}}
                                 </div>
                             </div>
                         </div>
@@ -256,31 +256,31 @@
                     <!--微信会员卡推送设置 (仅仅配置了公众号信息，并开通了支付即会员才显示)-->
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
                     && levelsOfGrowthList.length > 1  && this.WxMpSetInfo.wxCardId">
-                        <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
+                        <div class="title">{{$t('payGiftCardSetting')}}</div>
                         <div :class="{'main': true}">
                             <div class="switcher">
                                 <Select v-model="wxPushMemberLevelSetting.id"
                                         style="width:200px"
-                                        :placeholder="$t('selectField', { msg : '要推送的会员卡' } )">
+                                        :placeholder="$t('selectField', { msg : $t('membershipCardToBePushed') } )">
                                     <Option v-for="item in levelsOfGrowthList"
-                                            :value="item.id" :key="item.value">{{ item.levelDesc }}</Option>
+                                            :value="item.id" :key="item.value">{{ $t(item.levelDesc) }}</Option>
                                 </Select>
                             </div>
                         </div>
                     </div>
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.payGiftCard === 'true'
                     && (levelsOfGrowthList.length <= 1 || !this.WxMpSetInfo.wxCardId)">
-                        <div class="title">{{$t('支付即会员默认推送会员卡设置')}}</div>
-                        <span v-if="!this.WxMpSetInfo.wxCardId">请先配置卡包卡面信息</span>
-                        <span v-else>无会员卡级别</span>
+                        <div class="title">{{$t('payGiftCardSetting')}}</div>
+                        <span v-if="!this.WxMpSetInfo.wxCardId">{{$t('pleaseConfigureCardInformation')}}</span>
+                        <span v-else>{{$t('noCardLevel')}}</span>
                     </div>
 
                     <!--配置微信卡包的商户信息 (仅配置了公众号信息，并开通了微信卡包才显示)-->
                     <div class="content-item" v-if="Object.keys(WxMpSetInfo).length > 0 && WxMpSetInfo.openMembercard === 'true'">
-                        <div class="title">{{$t('微信卡包卡面信息')}}</div>
+                        <div class="title">{{$t('wxCardInfo')}}</div>
                         <div :class="{'main': true}">
                             <div class="img-wrap" :class="{'ivu-form-item-error': error.cardLogoErr}">
-                                <span class="width-150px-label">{{$t('会员卡logo：')}}</span>
+                                <span class="width-150px-label">{{$t('colonSetting', { key : $t('cardLogo') })}}</span>
                                 <div class="inline-upload">
                                     <imgUpload :quantityLimit="1"
                                                :size="2"
@@ -288,26 +288,28 @@
                                                :defaultList="defaultMemberLogoImg"
                                                @upload-success="uploadSuc($event, 'card-logo')"
                                                @remove-img="removeIDimg($event, 'card-logo')"></imgUpload>
-                                    <span class="warning-tip">建议像素300*300</span>
+                                    <span class="warning-tip">{{$t('uploadSuggest')}}</span>
                                     <div class="fixed-error ivu-form-item-error-tip"
+                                         :style="{ marginLeft : lang === 'en' ? '160px' : '105px' }"
                                          v-if="error.cardLogoErr">{{error.cardLogoErr}}
                                     </div>
                                 </div>
                             </div>
                             <div class="text" :class="{'ivu-form-item-error': error.brandNameErr}">
-                                <span class="width-150px-label">{{$t('商户名称：')}}</span>
+                                <span class="width-150px-label">{{$t('colonSetting', { key : $t('businessName') })}}</span>
                                 <Input type="text"
                                        v-model.trim="wxMpSettingData.brandName"
                                        @on-blur="checkWxPackageInfo(wxMpSettingData.brandName,'brandNameErr',true)"
                                        :disabled="WxMpSetInfo.brandName"
                                        style="margin: 0 10px;width: 300px;"></Input>
-                                <span class="warning-tip">保存后不可更改，请谨慎填写。</span>
+                                <span class="warning-tip">{{$t('businessNameSetTip')}}</span>
                                 <div class="fixed-error ivu-form-item-error-tip"
+                                     :style="{ marginLeft : lang === 'en' ? '110px' : '105px' }"
                                      v-if="error.brandNameErr">{{error.brandNameErr}}
                                 </div>
                             </div>
                             <div class="img-wrap" :class="{'ivu-form-item-error': error.cardBgErr}">
-                                <span class="width-150px-label">{{$t('卡劵封面图片：')}}</span>
+                                <span class="width-150px-label">{{$t('colonSetting', { key : $t('cardCoverImg') })}}</span>
                                 <div class="inline-upload">
                                     <imgUpload :quantityLimit="1"
                                                :size="2"
@@ -316,19 +318,20 @@
                                                :imgUpload="api.uploadImage"
                                                @upload-success="uploadSuc($event, 'card-bg')"
                                                @remove-img="removeIDimg($event, 'card-bg')"></imgUpload>
-                                    <span class="warning-tip">图片限制：1000*600像素、大小小于1M，仅支持jpg/png/jpeg格式</span>
+                                    <span class="warning-tip">{{$t('picUploadLimit')}}</span>
                                     <div class="fixed-error ivu-form-item-error-tip"
                                          v-if="error.cardBgErr">{{error.cardBgErr}}
                                     </div>
                                 </div>
                             </div>
                             <div class="text" :class="{'ivu-form-item-error': error.wxCardTitleErr}">
-                                <span class="width-150px-label">{{$t('会员卡标题：')}}</span>
+                                <span class="width-150px-label">{{$t('colonSetting', { key : $t('cardTitle') })}}</span>
                                 <Input type="text"
                                        v-model="wxMpSettingData.wxCardTitle"
                                        @on-blur="checkWxPackageInfo(wxMpSettingData.wxCardTitle,'wxCardTitleErr',true)"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <div class="fixed-error ivu-form-item-error-tip"
+                                     :style="{ marginLeft : lang === 'en' ? '160px' : '105px' }"
                                      v-if="error.wxCardTitleErr">{{error.wxCardTitleErr}}
                                 </div>
                             </div>
@@ -518,7 +521,8 @@
         computed : {
             ...mapGetters([
                'manageOrgs',
-               'memberConfigInfo'
+               'memberConfigInfo',
+               'lang',
             ]),
             //是否可以显示会员储值相关信息
             showMemberRecharge () {
@@ -862,7 +866,7 @@
                 return new Promise((resolve, reject) => {
                     if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
                         if (this.wxMpSettingData.wxCardLogo.length === 0) {
-                            this.error.cardLogoErr = "请上传图片";
+                            this.error.cardLogoErr = this.$t('pleaseUpload', { field : this.$t('picture') });
                             reject();
                         } else {
                             this.error.cardLogoErr = '';
@@ -880,7 +884,7 @@
                 return new Promise((resolve, reject) => {
                     if (this.WxMpSetInfo && this.WxMpSetInfo.openMembercard === 'true') {
                         if (this.wxMpSettingData.wxCardBackgroundPic.length === 0) {
-                            this.error.cardBgErr = "请上传图片";
+                            this.error.cardBgErr = this.$t('pleaseUpload', { field : this.$t('picture') });
                             reject();
                         } else {
                             this.error.cardBgErr = '';
@@ -931,7 +935,7 @@
                                 resolve();
                             }
                         } else {
-                            this.error[errType] = this.$t('请输入');
+                            this.error[errType] = this.$t('inputPlaceholder');
                             reject();
                         }
 
@@ -980,7 +984,7 @@
                         this.error[errType] = '';
                         resolve();
                     } else {
-                        this.error[errType] = this.$t('只能输入中文、字母或数字');
+                        this.error[errType] = this.$t('onlyInputChineseLetterNum');
                         reject();
                     }
                 })
@@ -1046,7 +1050,7 @@
                             this.levelsOfGrowthList.unshift({
                                 id : 'close',
                                 value : '',
-                                levelDesc : '关闭'
+                                levelDesc : 'close'
                             });
                             resolve();
                         } else {
@@ -1262,11 +1266,11 @@
                                 resolve();
                             } else {
                                 if (res.code && res.code === 'S014') {
-                                    this.$Message.error(this.$t('运营后台公众号信息配置错误'));
+                                    this.$Message.error(this.$t('clota-adminSettingError'));
                                 } else if (res.code && res.code === 'S013') {
-                                    this.$Message.error(this.$t('微信服务请求错误'))
+                                    this.$Message.error(this.$t('wechatError'))
                                 } else {
-                                    this.$Message.error(this.$t('保存微信卡包卡面信息失败'))
+                                    this.$Message.error(this.$t('saveWxCardInfoFailure'))
                                 }
                                 reject();
                             }
