@@ -974,7 +974,7 @@
                             }
                             if (this.check) {
                                 //处理修改数据联动赋值
-                                this.getOriginDate();
+                                //this.getOriginDate();
                             }
                         }
                     } else {

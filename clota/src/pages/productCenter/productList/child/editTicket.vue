@@ -556,12 +556,14 @@
                     //     { validator : validateNumber, trigger : 'blur' }
                     // ],
                     limitByIdDay : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('limitByIdDay') }), trigger : 'blur' },
                         { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('limitByIdDay'), length : 10 }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' },
                         { validator : validateIdBuyTicket, trigger : 'blur' }
                     ],
                     limitByMobileDay : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('limitByMobileDay') }), trigger : 'blur' },
                         { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('limitByMobileDay'), length : 10 }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' },
