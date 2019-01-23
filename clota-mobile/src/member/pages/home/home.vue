@@ -353,6 +353,7 @@
             background: #FFFFFF;
             border-radius: 14px;
             .txt {
+                padding: 15px;
                 font-size: 15px;
                 color: #888888;
                 .title {

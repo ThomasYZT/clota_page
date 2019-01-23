@@ -15,7 +15,7 @@
                          class="valid-class"
                          v-model.trim="formData.validCode"
                          text-align="right"
-                         :placeholder="$t('pleaseInputValidCode')" >
+                         :placeholder="$t('pleaseInputMsg')" >
                     <div slot="right-full-height"
                          class="validate"
                          :class="{active: isGetCode}"

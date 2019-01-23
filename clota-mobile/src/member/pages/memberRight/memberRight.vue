@@ -379,6 +379,7 @@
             background: $color_fff;
 
             .right-list {
+                word-break: break-all;
                 li {
                     margin: 10px 25px;
                     text-align: left;

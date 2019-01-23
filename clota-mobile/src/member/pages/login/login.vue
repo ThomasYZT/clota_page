@@ -9,7 +9,7 @@
                  :title="$t('mobile')"
                  keyboard="number"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('mobile') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model.trim="loginInfo.phoneNum"
                  label-width="150px">
         </x-input>
@@ -17,7 +17,7 @@
         <x-input class="c-input verify-input"
                  :title="$t('validCode')"
                  v-model.trim="loginInfo.vcode"
-                 :placeholder="$t('enterCode')"
+                 :placeholder="$t('pleaseInputMsg')"
                  :show-clear="false"
                  text-align="right"
                  keyboard="number"
@@ -377,18 +377,24 @@
             .msg {
                 flex: 1 0;
                 padding: 10px 12.5px;
+                height: 30.5px;
+                line-height: 30.5px;
                 color: #046FDB;
                 font-size: 12.5px;
             }
 
             .register-entry {
                 flex: 1 0;
-                padding-right: 16.5px;
+                padding: 10px 16.5px 10px 12.5px;
                 color: #046FDB;
-                height: 50.5px;
-                line-height: 50.5px;
+                height: 30.5px;
+                line-height: 30.5px;
                 font-size: 12.5px;
                 text-align: right;
+            }
+
+            span {
+                white-space: nowrap;
             }
         }
 

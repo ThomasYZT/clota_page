@@ -8,7 +8,7 @@
         <x-input class="c-input"
                  :title="$t('memberCardCode')"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('memberCardCode') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model.trim="activateInfo.faceNum"
                  label-width="150px">
         </x-input>
@@ -16,7 +16,7 @@
         <x-input class="c-input"
                  :title="$t('coatingpPassword')"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('coatingpPassword') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model.trim="activateInfo.password"
                  label-width="150px">
         </x-input>
@@ -88,7 +88,11 @@
                         });
                     } else {
                         if (res.code === 'M024' || res.code === 'M025' || res.code === 'M026' || res.code === 'M027' || res.code === 'M015') {
-                            this.$vux.toast.text(this.$t(res.code));
+                            this.$vux.toast.show({
+                                type : 'text',
+                                text : `<div style="width: 9rem">${this.$t(res.code)}</div>`,
+                                width : '2rem'
+                            });
                         } else {
                             this.$vux.toast.text(this.$t('getCardInfoFailure'));
                         }

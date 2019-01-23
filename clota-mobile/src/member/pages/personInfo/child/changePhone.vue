@@ -23,7 +23,7 @@
                      class="valid-class"
                      v-model.trim="formData.validCode"
                      text-align="right"
-                     :placeholder="$t('pleaseInputValidCode')" >
+                     :placeholder="$t('pleaseInputMsg')" >
                 <div slot="right-full-height"
                      class="validate"
                      :class="{'time-counting' : isTiming}"
@@ -127,9 +127,8 @@
                         reject();
                     } else if (this.formData.mobile === this.orginalMobile) {
                         this.$vux.toast.show({
-                            text : this.$t('twPhoneError'),
                             type : 'text',
-                            width : '8rem'
+                            text : `<div style="width: 9rem">${this.$t('twPhoneError')}</div>`,
                         });
                         reject();
                     } else {
@@ -157,8 +156,8 @@
                     } else {
                         if (res.code === 'M014') {
                             this.$vux.toast.show({
-                                text : this.$t('phoneExitErr'),
                                 type : 'text',
+                                text : `<div style="width: 9rem">${this.$t('phoneExitErr')}</div>`,
                                 width : '9rem'
                             });
                         } else {
@@ -178,16 +177,15 @@
                 return new Promise((resolve,reject) => {
                     if (this.formData && !this.formData.validCode) {
                         this.$vux.toast.show({
-                            text : this.$t('pleaseInput',{ field : this.$t('validCode') }),
+                            text : `<div style="width: 9rem">${this.$t('pleaseInput',{ field : this.$t('validCode') })}</div>`,
                             type : 'text',
                             width : '5rem'
                         });
                         reject();
                     } else if (this.formData.mobile === this.orginalMobile) {
                         this.$vux.toast.show({
-                            text : this.$t('twPhoneError'),
                             type : 'text',
-                            width : '8rem'
+                            text : `<div style="width: 1rem">${this.$t('twPhoneError')}</div>`,
                         });
                         reject();
                     } else {
