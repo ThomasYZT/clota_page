@@ -5,7 +5,11 @@
 
         <!--注册基本信息-->
         <base-info v-show="stage === '1'"
-                   @get-formData="getFormData">
+                   :need-validate-scene="showChooseSceneAndType"
+                   :scene-list="sceneList"
+                   :type-list="typesList"
+                   @get-formData="getFormData"
+                   @fresh-type="queryMarketTypes">
         </base-info>
         <!--注册其它信息-->
         <other-info v-show="stage === '2'"
@@ -45,8 +49,12 @@
                 },
                 //当前注册的阶段
                 stage : '1',
-                //公司code
-                companyCode : ''
+                //是否显示选择景区和所属类别的框
+                showChooseSceneLabel : false,
+                //景区列表
+                sceneList : [],
+                //所属类别列表
+                typesList : []
             };
         },
         methods : {
@@ -134,11 +142,63 @@
              * @param{Object} params 路由信息
              */
             getParms (params) {
-                if (params && Object.keys(params).length > 0) {
+                let marketUcid = localStorage.getItem('marketUcid');
+                let marketYcode = localStorage.getItem('marketYcode');
+                this.showChooseSceneLabel = false;
+                if (params && params.Ucid && params.Ycode) {
+                    localStorage.setItem('marketUcid',params.Ucid);
+                    localStorage.setItem('marketYcode',params.Ycode);
                     this.getRegisterParams(params.Ucid,params.Ycode);
-                    this.companyCode = params.companyCode;
+                } else if (marketUcid && marketYcode) {
+                    this.getRegisterParams(marketUcid,marketYcode);
                     this.$store.commit('updateCompanyCode',params.companyCode);
+                } else if (params.companyCode) {
+                    this.$store.commit('updateCompanyCode',params.companyCode);
+                    this.showChooseSceneLabel = true;
+                    this.getAllScenicInCompany();
+                } else if (this.companyCode) {
+                    this.showChooseSceneLabel = true;
+                    this.getAllScenicInCompany();
                 }
+            },
+            /**
+             * 获取公司下的所有景区信息
+             */
+            getAllScenicInCompany () {
+                ajax.post('market_getAllScenicInCompany',{
+                    companyCode : this.companyCode
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.sceneList = res.data.map(item => {
+                            return {
+                                value : item.orgName,
+                                key : item.id
+                            };
+                        });
+                    } else {
+                        this.sceneList = [];
+                    }
+                });
+            },
+            /**
+             * 获取景区下的所属类别信息
+             * @param{String} orgId 景区id
+             */
+            queryMarketTypes (orgId) {
+                ajax.post('market_queryMarketTypes',{
+                    orgId
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.typesList = res.data.map(item => {
+                            return {
+                                value : item.typeName,
+                                key : item.id
+                            };
+                        });
+                    } else {
+                        this.typesList = [];
+                    }
+                });
             }
         },
         computed : {
@@ -146,7 +206,12 @@
                 marketOrgId : 'marketOrgId',
                 marketTypeId : 'marketTypeId',
                 marketTypeName : 'marketTypeName',
-            })
+                companyCode : 'companyCode',
+            }),
+            //是否显示选择景区和所属类别
+            showChooseSceneAndType () {
+                return this.showChooseSceneLabel === true && !!this.companyCode;
+            }
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
