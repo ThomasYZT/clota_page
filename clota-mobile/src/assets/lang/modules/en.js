@@ -125,7 +125,7 @@ export default {
     operateFail : '{msg} failure',
     send : 'Send',
     pleaseInput : 'please enter {field}',
-    inputField : '请输入{field}',
+    inputField : 'please enter {field}',
     freshComplete : 'refresh complete',
     inputPassAgain : 'please enter your password again',
     modify : 'modify',
