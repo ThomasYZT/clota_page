@@ -7,6 +7,7 @@
            width="900"
            class="modal"
            :mask-closable="false"
+           class-name="vertical-center-modal"
            v-model="show">
         <div class="content">
             <Form ref="formValidate"

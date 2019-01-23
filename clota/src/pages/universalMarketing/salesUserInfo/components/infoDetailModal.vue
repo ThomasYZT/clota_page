@@ -177,7 +177,7 @@
 
         <div slot="footer" class="modal-footer">
             <Button type="ghost" style="width: 88px;"
-                    @click="hide" >{{$t("cancel")}}</Button>
+                    @click="hide" >{{$t("close")}}</Button>
         </div>
 
     </Modal>

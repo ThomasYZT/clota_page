@@ -31,17 +31,6 @@
                   @selection-change="selectionChange"
                   @query-data="getData">
             <el-table-column
-                slot="column1"
-                slot-scope="row"
-                show-overflow-tooltip
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    <span>{{manageOrgs.orgName | contentFilter}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
                 v-if="canEditPosition"
                 slot="column6"
                 slot-scope="row"
@@ -61,7 +50,7 @@
 
         <addLngLatModal ref="addLngLatModal" @addSuccess="getData"></addLngLatModal>
 
-        <delModal ref="delModal">
+        <delModal ref="delModal" class="del-min-width">
             <div class="del-modal">
                 <i class="iconfont icon-help"></i>
                 <span class="result">{{$t('sureToDelmarketingPosition')}}</span>
@@ -136,6 +125,7 @@
              */
             deleteBatch (id) {
                 this.$refs.delModal.show({
+                    title : this.$t('notice'),
                     confirmCallback : () => {
                         let ids;
                         if (id) {

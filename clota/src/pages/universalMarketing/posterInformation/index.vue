@@ -73,13 +73,13 @@
 
         <uploadPosterModal ref="uploadPosterModal" @addSuccess="getData"></uploadPosterModal>
 
-        <delModal ref="delModal">
+        <del-modal ref="delModal" class="del-min-width">
             <div class="del-modal">
                 <i class="iconfont icon-help"></i>
                 <span class="result">{{$t('sureToDelPoster')}}</span>
                 <span class="warn-tip">{{$t('operationIrrevocable')}}{{$t('sureToDel')}}</span>
             </div>
-        </delModal>
+        </del-modal>
     </div>
 </template>
 
@@ -88,7 +88,7 @@
     import tableCom from '../../../components/tableCom/tableCom';
     import { posterInfoHead } from './tableHeadConfig';
     import uploadPosterModal from './components/uploadPosterModal';
-    import delModal from '../../../components/delModal/index';
+    import delModal from '@/components/delModal/index';
     import ajaxConfig from '@/config/index.js';
     import apiList from '@/api/apiList.js';
     import { mapGetters } from 'vuex';
@@ -123,7 +123,8 @@
                     '&name=' + 'image.' + this.imgUrl.substring(this.imgUrl.lastIndexOf(".") + 1, this.imgUrl.length);
             },
             ...mapGetters({
-                permissionInfo : 'permissionInfo'
+                permissionInfo : 'permissionInfo',
+                lang : 'lang',
             }),
             //是否可以上传和删除海报
             canddAndDelPoster () {
@@ -159,6 +160,7 @@
              */
             deleteBatch (id) {
                 this.$refs.delModal.show({
+                    title : this.$t('notice'),
                     confirmCallback : () => {
                         let posterIds;
                         if (id) {
@@ -261,7 +263,7 @@
     }
 
     .del-modal {
-        width: 80%;
+
         .icon-help {
             color: #EB6751;
         }

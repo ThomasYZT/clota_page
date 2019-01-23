@@ -67,12 +67,6 @@
                 },
             };
         },
-        computed : {},
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询销售用户信息列表数据

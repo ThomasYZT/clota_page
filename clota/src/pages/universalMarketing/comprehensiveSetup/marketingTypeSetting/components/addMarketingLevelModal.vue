@@ -6,7 +6,7 @@
     <Modal v-model="visible"
            :title="$t(type) + $t('marketingLevel')"
            class-name="vertical-center-modal add-marketing-level"
-           width="560"
+           :width="lang === 'zh-CN' ? 560 : 630"
            :mask-closable="false"
            @on-cancel=toggle({})>
 
@@ -14,9 +14,9 @@
             <Form ref="form"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="140">
+                  :label-width="lang === 'zh-CN' ? 140 : 180">
                 <i-row>
-                    <i-col span="16" offset="2">
+                    <i-col span="16">
                         <!-- 营销等级名称 -->
                         <FormItem :label="$t('colonSetting', { key : $t('marketingLevelName') })"  prop="marketingLevelName">
                             <Input type="text"
@@ -27,7 +27,7 @@
                     </i-col>
                 </i-row>
                 <i-row>
-                    <i-col span="16" offset="2">
+                    <i-col span="16">
                         <!-- 等级 -->
                         <FormItem :label="$t('colonSetting', { key : $t('level') })"  prop="level">
                             <Select v-if="type === 'add'"
@@ -50,7 +50,7 @@
                     </i-col>
                 </i-row>
                 <i-row>
-                    <i-col span="16" offset="2">
+                    <i-col span="16">
                         <!-- 升级金额 -->
                         <FormItem :label="$t('colonSetting', { key : $t('levelUpMoney') })"  prop="levelUpMoney">
                             <Input type="text"
@@ -87,6 +87,8 @@
 <script>
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {},
         data () {
@@ -199,6 +201,9 @@
             };
         },
         computed : {
+            ...mapGetters([
+               'lang'
+            ]),
             //等级下拉列表
             levelList () {
                 let lvList = [
@@ -419,6 +424,8 @@
     .tip-info {
         color: $color_yellow;
         font-size: 12px;
+        padding: 8px 0;
+        line-height: 16px;
     }
 
 

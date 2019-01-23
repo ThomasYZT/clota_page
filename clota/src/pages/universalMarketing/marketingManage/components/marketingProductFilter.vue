@@ -53,6 +53,7 @@
 </template>
 <script>
     import ajax from '@/api/index';
+    import debounce from 'lodash/debounce';
 
     export default {
         components : {},
@@ -129,6 +130,7 @@
              * @param typeId
              **/
             getMarketingLevels (typeId) {
+                if (!(typeId || this.filterParams.marketTypeId)) return;
                 ajax.post('marketing-listLevel', {
                     pageNo : 1,
                     pageSize : 9999,
@@ -143,7 +145,8 @@
                     }
                 });
             },
-            getPolicyByMarketTypeAndLevel () {
+            getPolicyByMarketTypeAndLevel : debounce(function () {
+                if (!this.filterParams.marketLevelId) return;
                 ajax.post('getPolicyByMarketTypeAndLevel', {
                     levelId : this.filterParams.marketLevelId
                 }).then(res => {
@@ -154,20 +157,18 @@
                     } else {
                         this.salesPolicy = [{ id : 'all', name : 'all' }];
                     }
-                });
-            },
-            // getSalesPolicy () {
-            //     ajax.post('queryPolicy', {
-            //         pageNo : 1,
-            //         pageSize : 9999,
-            //         selectType : 'from'
+                },100);
+            }),
+            // getPolicyByMarketTypeAndLevel () {
+            //     ajax.post('getPolicyByMarketTypeAndLevel', {
+            //         levelId : this.filterParams.marketLevelId
             //     }).then(res => {
             //         if (res.success) {
-            //             this.salesPolicy = res.data ? res.data.data : [];
+            //             this.salesPolicy = res.data ? [{ id : 'all', name : 'all' }, ...res.data] : [{ id : 'all', name : 'all' }];
             //             //默认选中第一个政策
-            //             this.filterParams.policyId = this.salesPolicy.length > 0 ? this.salesPolicy[0].id : '';
+            //             this.filterParams.policyId = this.salesPolicy.length > 0 ? this.salesPolicy[0].id : 'all';
             //         } else {
-            //             this.salesPolicy = [];
+            //             this.salesPolicy = [{ id : 'all', name : 'all' }];
             //         }
             //     });
             // },

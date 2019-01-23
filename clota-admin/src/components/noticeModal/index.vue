@@ -1,4 +1,4 @@
-<!--删除模态框-->
+<!--提示信息框-->
 
 <template>
     <Modal
@@ -6,7 +6,7 @@
         v-model="modalShow"
         :mask-closable="false"
         @on-visible-change="visibleChange"
-        class="del-node"
+        class="notice-modal"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
             <span class="title" >
@@ -15,24 +15,19 @@
         </div>
         <div class="warn-info">
             <slot>
-                {{msg}}
             </slot>
         </div>
         <div slot="footer">
-            <Button type="error" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
-            <Button class="ivu-btn-90px" @click="cancel">{{$t('cancel')}}</Button>
+            <Button type="primary" class="ivu-btn-90px" @click="confirm">{{confirmBtn}}</Button>
+            <Button v-if="showCancel" class="ivu-btn-90px" @click="cancel">{{cancelBtn}}</Button>
         </div>
     </Modal>
 </template>
 
 <script>
     export default {
-        props : {
-        },
         data () {
             return {
-                //要显示的信息
-                msg : '',
                 //标题信息
                 title : '',
                 //是否显示模态框
@@ -41,6 +36,12 @@
                 confirmCallback : null,
                 //取消执行的回调函数
                 cancelCallback : null,
+                //确认文本
+                confirmBtn : '',
+                //取消文本
+                cancelBtn : '',
+                //是否显示取消按钮
+                showCancel : true
             };
         },
         methods : {
@@ -49,42 +50,54 @@
              * @param type
              */
             visibleChange (type) {
-
+                if (type === false) {
+                    if (this.cancelCallback) {
+                        this.cancelCallback();
+                    }
+                }
             },
             /**
              * 取消删除
              */
             cancel () {
-                this.modalShow = false;
-                if (this.cancelCallback) {
-                    this.cancelCallback();
-                }
+                this.hide();
             },
             /**
              * 确认删除
              */
             confirm () {
-                this.modalShow = false;
                 if (this.confirmCallback) {
                     this.confirmCallback();
+                } else {
+                    this.cancel();
                 }
             },
             /**
              * 显示 模态框
              * @param msg
-             * @param title
              * @param confirmCallback
              * @param cancelCallback
              */
-            show ({ msg,title,confirmCallback = null,cancelCallback }) {
+            show ({ title,confirmCallback = null,cancelCallback,confirmBtn = this.$t('confirm'),cancelBtn = this.$t('cancel'),showCancel = true }) {
                 this.modalShow = true;
-                this.msg = msg;
                 this.title = title;
-                if (confirmCallback && typeof confirmCallback == 'function') {
+                this.showCancel = showCancel;
+                this.confirmBtn = confirmBtn;
+                this.cancelBtn = cancelBtn;
+                if (confirmCallback && typeof confirmCallback === 'function') {
                     this.confirmCallback = confirmCallback;
                 }
-                if (cancelCallback && typeof cancelCallback == 'function') {
+                if (cancelCallback && typeof cancelCallback === 'function') {
                     this.cancelCallback = cancelCallback;
+                }
+            },
+            /**
+             * 隐藏模态框
+             */
+            hide () {
+                this.modalShow = false;
+                if (this.cancelCallback) {
+                    this.cancelCallback();
                 }
             }
         }
@@ -94,9 +107,9 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    .del-node {
+    .notice-modal {
         & /deep/ .ivu-modal {
-            width: 400px !important;
+            width: 420px !important;
             height: 280px;
         }
 
@@ -124,9 +137,13 @@
         }
 
         & /deep/ .ivu-modal-body {
-            padding: 0;
+            padding: 10px 0;
             position: relative;
-            @include block_outline($height: 164px);
+            width: 100%;
+            min-height: 164px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /deep/ .ivu-modal-footer {
@@ -134,13 +151,16 @@
         }
 
         .warn-info {
-            @include center_center();
             font-size: $font_size_14px;
             color: $color_333;
             text-align: left;
 
             .red-label {
                 color: $color_err;
+            }
+
+            /deep/ .ivu-form-item{
+                margin-bottom: 0!important;
             }
         }
     }

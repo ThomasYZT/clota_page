@@ -26,6 +26,7 @@
 
 <script>
     import { mapActions } from 'vuex';
+    import qqMap from 'qqMap';
     export default {
         components : {},
         data () {
@@ -65,9 +66,9 @@
                 let map, marker;
                 this.getLocation().then((info) => {
                     //获取当前地理位置
-                    this.position = new qq.maps.LatLng(info.lat, info.lng);
+                    this.position = new qqMap.maps.LatLng(info.lat, info.lng);
                     //初始化map
-                    map = new qq.maps.Map(document.getElementById("map-container"), {
+                    map = new qqMap.maps.Map(document.getElementById("map-container"), {
                         zoom : 13,
                         //启用缩放控件
                         zoomControl : true,
@@ -81,15 +82,15 @@
                         panControl : false,
                     });
                     //该地图类型显示普通的街道地图
-                    map.setMapTypeId(qq.maps.MapTypeId.ROADMAP);
+                    map.setMapTypeId(qqMap.maps.MapTypeId.ROADMAP);
                     //创建marker
-                    marker = new qq.maps.Marker({
+                    marker = new qqMap.maps.Marker({
                         position : this.position,
                         map : map,
-                        animation : qq.maps.MarkerAnimation.BOUNCE
+                        animation : qqMap.maps.MarkerAnimation.BOUNCE
                     });
                     //监听中心坐标点移动
-                    qq.maps.event.addListener(map, 'center_changed', () => {
+                    qqMap.maps.event.addListener(map, 'center_changed', () => {
                         this.position.lat = map.getCenter().lat.toString().substring(0, 8);
                         this.position.lng = map.getCenter().lng.toString().substring(0, 8);
                         marker.setPosition(map.getCenter());
