@@ -2512,4 +2512,5 @@ export default {
     'wechatError' : '微信服务请求错误',
     'saveWxCardInfoFailure' : '保存微信卡包卡面信息失败',
     'outOfStock' : '缺货',
+    'defaultRefundFee' : '默认退票手续费率为0',
 };

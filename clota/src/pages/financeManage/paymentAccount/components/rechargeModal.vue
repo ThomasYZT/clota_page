@@ -17,7 +17,7 @@
                           :rules="ruleValidate"
                           :label-width="lang === 'zh-CN' ? 130 : 150">
                         <!--合作伙伴-->
-                        <Form-item :label="$t('partner') + ':'" prop="">
+                        <Form-item :label="$tc('partner',1) + ':'" prop="">
                             <span>{{formData.orgName}}</span>
                         </Form-item>
                         <!--充值金额-->

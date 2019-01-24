@@ -234,10 +234,8 @@
             }
 
             .title-class {
-                @include overflow_tip(unquote('calc(100% - 40px)'), 36px);
+                @include overflow_tip(unquote('calc(100% - 40px)'), auto);
                 display: inline-block;
-                padding: 7px 0;
-                line-height: 22px;
                 font-size: 16px;
                 color: #333333;
                 vertical-align: middle;

@@ -23,7 +23,8 @@
                               v-else
                               :key="item.name"
                               @click.native="changeMenuItem">
-                        <Tooltip :content="$t(`${item.meta.menuName}`)"
+                        <Tooltip :content="$tc(`${item.meta.menuName}`,item.meta.tcIndex = 1,item.meta.tcData = {})"
+                                 :key="index + 'toolTip'"
                                  :disabled="!menuIsPackUp"
                                  placement="right"
                                  transfer>
@@ -32,8 +33,9 @@
                                   :class="[item.meta.iconClass]"></span>
                         </Tooltip>
                         <span class="menu-name"
-                              v-w-title="$t(`${item.meta.menuName}`)">
-                                {{$t(`${item.meta.menuName}`)}}
+                              :key="index + 'span'"
+                              v-w-title="$tc(`${item.meta.menuName}`,item.meta.tcIndex = 1,item.meta.tcData = {})">
+                                {{$tc(`${item.meta.menuName}`,item.meta.tcIndex = 1,item.meta.tcData = {})}}
                             </span>
                     </MenuItem>
                 </template>

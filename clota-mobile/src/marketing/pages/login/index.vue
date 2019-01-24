@@ -260,7 +260,7 @@
                         this.userTypeList = res.data ? res.data.map(item => {
                             return {
                                 key : item.id,
-                                value : item.typeName
+                                value : item.typeName,
                             };
                         }) : [];
                         if (this.userTypeList.length > 0 ) {
