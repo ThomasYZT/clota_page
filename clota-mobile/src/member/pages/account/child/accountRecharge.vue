@@ -14,7 +14,7 @@
             <div class="actual-money">
                 <span class="label">{{$t('actualToAccount')}}</span>
                 <span class="account">{{actualMoney | moneyFilter | contentFilter}}{{accountDefineId !== '1' ? $t(unit) : $t('yuan')}}</span>
-                <span class="other-data">{{$t('bracketSetting',{ content : $t('includeDonate',{num : donateMoney}) + (accountDefineId !== '1' ? $t(unit) : $t('yuan')) })}}</span>
+                <span class="other-data">{{$t('includeDonate',{num : donateMoney + ' ' + (accountDefineId !== '1' ? $t(unit) : $t('yuan'))})}}</span>
             </div>
         </div>
         <div class="pay-type-chose">
@@ -441,16 +441,19 @@
                 .label{
                     font-size: $font_size_13px;
                     color: #353B48;
+                    white-space: nowrap;
                 }
 
                 .account{
                     font-size: $font_size_13px;
                     color: #F7981C;
+                    margin: 0 5px;
                 }
 
                 .other-data{
                     font-size: $font_size_11px;
                     color: $color_999;
+                    white-space: nowrap;
                 }
             }
         }

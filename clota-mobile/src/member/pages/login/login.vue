@@ -26,7 +26,7 @@
                  class="validate"
                  :class="{active: isGetCode}"
                  @click="getCode">
-                <p>{{$t('getValidCode')}}{{countDown ? '(' + countDown/1000 + ')': ''}}</p>
+                <p class="btn-text">{{$t('getValidCode')}}{{countDown ? '(' + countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
         <!-- 注册按钮 -->
@@ -441,6 +441,10 @@
 
         /deep/ .weui-input{
             font-size: $font_size_15px;
+        }
+
+        /deep/ .btn-text {
+            white-space: nowrap;
         }
     }
 </style>

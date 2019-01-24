@@ -170,19 +170,18 @@
 
             .tab {
                 display: flex;
+                justify-content: center;
                 height: 44px;
                 background-color: $color_fff;
 
                 .tab-label {
+                    display: inline-block;
                     position: relative;
-                    width: 50%;
-                    flex: 1 0;
-                    text-align: center;
                     color: #666;
+                    white-space: nowrap;
                     p {
                         position: relative;
                         display: inline-block;
-                        width: 20%;
                         line-height: 44px;
 
                         &:after {
@@ -221,6 +220,7 @@
                     .desc-title {
                         flex: 1 0;
                         flex-basis: 20%;
+                        white-space: nowrap;
                     }
 
                     .desc-content {

@@ -88,6 +88,10 @@
         /deep/ .weui-cell{
             height: 50px;
             line-height: 50px;
+
+            .vux-label {
+                white-space: nowrap;
+            }
         }
 
         .icon{

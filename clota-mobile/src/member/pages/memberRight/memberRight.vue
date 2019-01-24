@@ -406,6 +406,7 @@
                 text-align: center;
                 font-size: 15px;
                 color: #C29F6B;
+                white-space: nowrap;
                 background: url("../../../assets/images/memberRightBg.svg") no-repeat center;
                 background-size: 100% 100%;
             }
