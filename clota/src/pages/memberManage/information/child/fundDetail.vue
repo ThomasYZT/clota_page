@@ -49,11 +49,11 @@
                 <ul class="total-amount">
                     <li class="amount-record">
                         <span class="key-label">{{$t('colonSetting', { key : $t('hasPayed') })}}</span>
-                        <span class="value-label">{{disbursement | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
+                        <span class="value-label">{{disbursement | moneyFilter | contentFilter}} {{$t(accountUnit)}}</span>
                     </li>
                     <li class="amount-record">
                         <span class="key-label">{{$t('colonSetting', { key : $t('storeTotalValue') })}}</span>
-                        <span class="value-label">{{storeAmount | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
+                        <span class="value-label">{{storeAmount | moneyFilter | contentFilter}} {{$t(accountUnit)}}</span>
                     </li>
                 </ul>
             </div>
@@ -185,7 +185,9 @@
                 //已储值
                 storeAmount : '',
                 //账户类型id
-                accountTypeId : ''
+                accountTypeId : '',
+                //账户单位
+                accountUnit : ''
             };
         },
         methods : {
@@ -275,10 +277,12 @@
                 }).then(res => {
                     if (res.success) {
                         this.storeAmount = res.data ? res.data.add : '';
+                        this.accountUnit = res.data ? res.data.unit : '';
                         this.disbursement = res.data ? res.data.reduce * -1 : '';
                     } else {
                         this.storeAmount = '';
                         this.disbursement = '';
+                        this.accountUnit = '';
                     }
                 });
             }
