@@ -261,6 +261,7 @@
                             return {
                                 key : item.id,
                                 value : item.typeName,
+                                orgId : item.orgId
                             };
                         }) : [];
                         if (this.userTypeList.length > 0 ) {
@@ -297,8 +298,10 @@
              * @param{String} typeId 营销类别id
              */
             toLogin (typeId) {
+                let orgInfo = this.userTypeList.filter(item => item.id === typeId);
                 this.$store.commit('marketUpdateTypeId',typeId);
-                this.$store.commit('marketUpdateTypeName',this.userTypeList.filter(item => item.id === typeId)['typeName']);
+                this.$store.commit('marketUpdateTypeName',orgInfo['typeName']);
+                this.$store.commit('marketUpdateOrgId',orgInfo['orgId']);
                 this.loginWithType();
             },
             /**
