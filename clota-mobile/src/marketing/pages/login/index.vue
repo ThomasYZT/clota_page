@@ -211,10 +211,12 @@
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.companyName : '');
                         this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
                         this.$store.commit('marketUpdatOrgAddress',res.data ? res.data.orgAddress : '');
+                        this.$store.commit('marketUpdateMarketCompanyId',res.data ? res.data.companyId : '');
                     } else if (res.code && res.code !== '300') {
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');
                         this.$store.commit('marketUpdatOrgAddress','');
+                        this.$store.commit('marketUpdateMarketCompanyId','');
                         this.$vux.toast.show({
                             text : this.$t('errorMsg.' + res.code),
                             type : 'cancel'
@@ -223,6 +225,7 @@
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');
                         this.$store.commit('marketUpdatOrgAddress','');
+                        this.$store.commit('marketUpdateMarketCompanyId','');
                     }
                 }).finally(() => {
                     this.$store.commit('updateCompanyCode',orgCode);
@@ -249,7 +252,7 @@
                 ajax.post('market_queryUserType',{
                     phone : this.formData.phoneNum,
                     password : MD5(this.formData.password).toString(),
-                    orgId : this.marketOrgId,
+                    orgId : this.marketCompanyId,
                     imgkey : this.imgCodeImfo.key,
                     imgCode : this.imgCodeImfo.code
                 }).then(res => {
@@ -355,6 +358,7 @@
                 marketOrgId : 'marketOrgId',
                 marketTypeId : 'marketTypeId',
                 companyCode : 'companyCode',
+                marketCompanyId : 'marketCompanyId',
             })
         },
         beforeRouteEnter (to,from,next) {

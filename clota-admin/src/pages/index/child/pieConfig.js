@@ -8,14 +8,23 @@ const pieBaseConfig = {
     },
     legend : {
         bottom : 10,
+        top : 40,
         left : 'center',
         data : []
+    },
+    grid : {
+        top : 20,
+        bottom : 20,
+        left : 20,
+        right : 40,
+        containLabel : true
     },
     series : [
         {
             type : 'pie',
+            silent : true,//图形是否不响应和触发鼠标事件
             radius : '73',
-            center : ['50%', '50%'],
+            center : ['50%', '60%'],
             selectedMode : 'single',
             color : [
                 '#8B8DFD',
