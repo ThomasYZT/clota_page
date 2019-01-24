@@ -32,7 +32,9 @@ export const marketingState = {
         //公司地址
         orgAddress : '',
         //是否需要获取位置信息
-        needGetLocation : false
+        needGetLocation : false,
+        //公司id
+        companyId : ''
     }
 };
 export const marketingGetters = {
@@ -108,6 +110,15 @@ export const marketingGetters = {
     //是否需要获取位置信息
     marketNeedGetLocation : state => {
         return state.marketing.needGetLocation;
+    },
+    //公司id
+    marketCompanyId : state => {
+        if (state.marketing.companyId) {
+            return state.marketing.companyId;
+        } else {
+            let companyId = localStorage.getItem('marketingCompanyId');
+            return companyId;
+        }
     }
 };
 
@@ -171,6 +182,11 @@ export const marketMutations = {
     //更新是否需要获取位置信息
     marketUpdateMarketNeedGetLocation (state,needGetLocation) {
         state.marketing.needGetLocation = needGetLocation;
+    },
+    //更新公司id
+    marketUpdateMarketCompanyId (state,companyId) {
+        localStorage.setItem('marketingCompanyId',companyId);
+        state.marketing.companyId = companyId;
     }
 };
 

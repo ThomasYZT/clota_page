@@ -125,7 +125,6 @@
                         this.$store.commit('marketUpdateTypeId',res.data ? res.data.marketTypeId : '');
                         this.$store.commit('marketUpdateTypeName',res.data ? res.data.marketTypeName : '');
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
-                        this.$store.commit('marketUpdateCompanyName',res.data ? res.data.orgName : '');
                         this.$store.commit('updateCompanyCode',res.data ? res.data.orgCode : '');
                     } else {
                         this.$store.commit('marketUpdateOrgId','');
