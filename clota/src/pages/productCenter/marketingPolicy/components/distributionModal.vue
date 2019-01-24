@@ -7,6 +7,7 @@
            width="760"
            class-name="vertical-center-modal"
            :mask-closable="false"
+           @on-cancel="hide"
            :title="$t('distribution')">
         <div class="content">
             <Form ref="policyform"
@@ -193,6 +194,8 @@
                 info : {},
                 //销售渠道列表数据
                 saleGroupList : [],
+                //已选择的销售渠道组
+                haveSaleGroups : [],
                 //产品列表表头
                 detailParentDistributePriceConfig : Array.from(detailParentDistributePriceConfig),
                 //销售渠道表头
@@ -247,9 +250,10 @@
                         productPrices : [],
                         groupIds : ''
                     };
+                    this.saleGroupList = [];
                     this.detail = {};
                     this.info = {};
-                    this.show = !this.show;
+                    this.show = false;
                 }
 
             },
@@ -273,7 +277,7 @@
                             this.formData.productPrices.push(_obj);
                         });
                         //关闭模态框
-                        this.show = !this.show;
+                        this.show = true;
                     }
                 });
 
@@ -370,6 +374,7 @@
              * 关闭模态框
              */
             hide () {
+                console.log("111")
                 this.toggle();
             },
         },
