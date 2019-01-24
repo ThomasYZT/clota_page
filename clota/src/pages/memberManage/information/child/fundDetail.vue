@@ -125,7 +125,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span>{{ scope.row.endingBalance | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}</span>
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(scope.row.unit)}}</span>
                     </template>
                 </el-table-column>
             </table-com>
