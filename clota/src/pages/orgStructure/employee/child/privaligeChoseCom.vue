@@ -284,6 +284,7 @@
                 font-size: $font_size_14px;
                 color: $color_333;
                 float: left;
+                @include overflow_tip();
             }
         }
     }

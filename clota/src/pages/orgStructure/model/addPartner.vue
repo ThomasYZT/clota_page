@@ -18,7 +18,7 @@
                         :placeholder="$t('selectField',{ msg : '' })"
                         :disabled="type=='modify'"
                         @on-change="handlePartnerChanged">
-                    <Option v-for="item in partners"s
+                    <Option v-for="item in partners"
                             :value="item.id"
                             :key="item.id"
                             v-w-title="item.orgName"
