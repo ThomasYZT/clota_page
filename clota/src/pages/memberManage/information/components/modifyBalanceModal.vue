@@ -36,7 +36,7 @@
                 <div class="ivu-form-item-wrap bottom-5px">
                     <Form-item :label="$t('PrincipalAccBalance') + '：'"><!--本金账户余额-->
                         <span class="yellow-color">{{accountInfo.corpusBalance | moneyFilter | contentFilter}}</span>
-                        {{accountInfo.accountDefineId === '1' ? $t('yuan') : $t(accountInfo.unit)}}
+                        {{(accountInfo.accountDefineId === '1' || accountInfo.accountDefineId === '4') ? $t('yuan') : $t(accountInfo.unit)}}
                     </Form-item>
                 </div>
 
@@ -60,7 +60,7 @@
                                 <template v-else>
                                     <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
-                                {{accountInfo.accountDefineId === '1' ? $t('yuan') : $t(accountInfo.unit)}}
+                                {{(accountInfo.accountDefineId === '1' || accountInfo.accountDefineId === '4') ? $t('yuan') : $t(accountInfo.unit)}}
                             </Radio>
                             <Radio label="sub">
                                 <span  class="adjust-type" :style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
@@ -91,7 +91,7 @@
                             <template v-else>
                                 <Input v-model.trim="formData.donateAmount" :placeholder="$t('inputField', {field: ''})"/>
                             </template>
-                                {{accountInfo.accountDefineId === '1' ? $t('yuan') : $t(accountInfo.unit)}}
+                                {{(accountInfo.accountDefineId === '1' || accountInfo.accountDefineId === '4') ? $t('yuan') : $t(accountInfo.unit)}}
                             </Radio>
                             <Radio label="sub">
                                 <span  class="adjust-type" :style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">

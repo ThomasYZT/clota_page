@@ -346,7 +346,7 @@
              * @param rowData
              */
             getUnit (rowData) {
-                if (rowData.accountTypeId === '1') {
+                if (rowData.accountTypeId === '1' || rowData.accountTypeId === '4') {
                     return this.$t('yuan');
                 } else if (rowData.unit) {
                     return this.$t(rowData.unit);
