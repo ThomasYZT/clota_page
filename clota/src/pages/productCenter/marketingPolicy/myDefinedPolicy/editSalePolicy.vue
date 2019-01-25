@@ -605,7 +605,7 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import editProductModal from './editProductModal.vue';
+    import editProductModal from './components/editProductModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import pick from 'lodash/pick';
     import defaultsDeep from 'lodash/defaultsDeep';

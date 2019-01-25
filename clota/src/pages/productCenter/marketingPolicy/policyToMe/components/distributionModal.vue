@@ -154,7 +154,7 @@
     import ajax from '@/api/index';
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
-    import { detailParentDistributePriceConfig, setSaleChannelColumn } from '../child/detailConfig';
+    import { detailParentDistributePriceConfig, setSaleChannelColumn } from '../../myDefinedPolicy/detailConfig';
     export default {
         components : {
             tableCom

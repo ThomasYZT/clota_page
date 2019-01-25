@@ -161,9 +161,9 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import titlePark from '../../components/titlePark.vue';
+    import titlePark from '../../../components/titlePark.vue';
     import { limitStore } from '@/assets/js/constVariable';
-    import { subAccountColumn } from './editPolicyConfig';
+    import { subAccountColumn } from '../editPolicyConfig';
     import common from '@/assets/js/common.js';
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index';

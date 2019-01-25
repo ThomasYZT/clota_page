@@ -359,7 +359,7 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { productColumn, saleChannelColumn, marketingColumn, refundColumn } from './detailConfig';
     import ajax from '@/api/index';
-    import auditConfirmModal from '../components/auditConfirmModal';
+    import auditConfirmModal from './components/auditConfirmModal';
     import { mapGetters } from 'vuex';
 
     export default {

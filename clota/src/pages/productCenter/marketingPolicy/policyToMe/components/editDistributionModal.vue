@@ -194,8 +194,8 @@
     import ajax from '@/api/index';
     import { validator } from 'klwk-ui';
     import tableCom from '@/components/tableCom/tableCom';
-    import tipModal from '../../components/tipModal';
-    import { saleChannelColumn, detailParentDistributePriceConfig } from '../child/detailConfig';
+    import tipModal from '../../../components/tipModal';
+    import { saleChannelColumn, detailParentDistributePriceConfig } from '../../myDefinedPolicy/detailConfig';
     import { mapGetters } from 'vuex';
     export default {
         components : {

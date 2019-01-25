@@ -169,11 +169,11 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import policyDetail from '../components/policyDetailModal.vue';
-    import distributionModal from '../components/distributionModal';
-    import { detailParentDistributePriceConfig, myDistributeConfig } from './detailConfig';
+    import policyDetail from './components/policyDetailModal.vue';
+    import distributionModal from './components/distributionModal';
+    import { detailParentDistributePriceConfig, myDistributeConfig } from '../myDefinedPolicy/detailConfig';
     import ajax from '@/api/index';
-    import editDistributeModal from '../components/editDistributionModal';
+    import editDistributeModal from './components/editDistributionModal';
     import { mapGetters } from 'vuex';
 
     export default {

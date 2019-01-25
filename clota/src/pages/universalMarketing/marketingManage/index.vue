@@ -88,7 +88,7 @@
     import { marketingProductHead } from './marketingManageConfig';
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
-    import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
+    import policyDetailModal from '../../productCenter/marketingPolicy/policyToMe/components/policyDetailModal';
     import debounce from 'lodash/debounce';
     export default {
         components : {

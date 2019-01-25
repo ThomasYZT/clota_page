@@ -58,7 +58,7 @@
 
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom';
-    import { auditConfirmHeadConfig } from './myPolicyConfig';
+    import { auditConfirmHeadConfig } from '../../policyToMe/myPolicyConfig';
     export default {
         components : {
             tableCom

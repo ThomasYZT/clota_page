@@ -89,7 +89,7 @@ export default {
                 //产品中心--销售政策--新建/修改政策
                 path : '/productCenter/editSalePolicy',
                 name : 'editSalePolicy',
-                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/editSalePolicy.vue'),
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/myDefinedPolicy/editSalePolicy.vue'),
                 meta : {
                     menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
                     _name : 'addAndModifyPolicy',
@@ -100,7 +100,7 @@ export default {
                 //产品中心--销售政策--政策详情
                 path : '/productCenter/salePolicyDetail',
                 name : 'salePolicyDetail',
-                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/salePolicyDetail.vue'),
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/myDefinedPolicy/salePolicyDetail.vue'),
                 meta : {
                     menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
                     _name : 'product-policy',
@@ -111,7 +111,7 @@ export default {
                 //产品中心--销售政策--分销详情
                 path : '/productCenter/distributeDetail',
                 name : 'distributeDetail',
-                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/child/distributeDetail.vue'),
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/policyToMe/distributeDetail.vue'),
                 meta : {
                     menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
                     _name : 'product-policy',
