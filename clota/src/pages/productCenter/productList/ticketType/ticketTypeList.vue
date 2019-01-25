@@ -114,7 +114,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
     import { configVariable } from '@/assets/js/constVariable';
-    import { ticketTypeHead } from '../productConfig';
+    import { ticketTypeHead } from '../../productConfig';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 

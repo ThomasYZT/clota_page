@@ -309,11 +309,11 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import titleTemp from '../../components/titleTemp.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import editParkModal from './editParkModal.vue';
+    import editParkModal from './components/editParkModal.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
-    import disableModal from '../components/disableModal';
+    import disableModal from './components/disableModal';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import { parkColumn } from './parkConfig';
+    import { parkColumn } from './child/parkConfig';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 

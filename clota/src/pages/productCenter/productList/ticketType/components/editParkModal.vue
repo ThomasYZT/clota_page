@@ -513,9 +513,9 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import titlePark from '../../components/titlePark.vue';
+    import titlePark from '../../../components/titlePark.vue';
     import { saleType, authenticationType } from '@/assets/js/constVariable';
-    import { distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead } from './parkConfig';
+    import { distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead } from '../child/parkConfig';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index';

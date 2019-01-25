@@ -58,7 +58,7 @@
 <script>
     import ajax from '@/api/index';
     import tableCom from '@/components/tableCom/tableCom';
-    import { disableHeadConfig } from '../../productConfig';
+    import { disableHeadConfig } from '../../../productConfig';
     export default {
         components : {
             tableCom
