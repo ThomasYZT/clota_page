@@ -322,7 +322,7 @@
                     mobile : this.formData.phoneNum,
                     newPassword : MD5(this.formData.password).toString(),
                     typeIds : this.typeChoosed.join(','),
-                    orgId : this.marketOrgId,
+                    // orgId : this.marketOrgId,
                 }).then(res => {
                     if (res.success) {
                         this.$router.push({
@@ -377,13 +377,14 @@
                     ajax.post('market_queryUserTypeForReset',{
                         phone : this.formData.phoneNum,
                         idno : this.formData.idNum,
-                        orgId : this.marketOrgId
+                        orgId : this.marketCompanyId
                     }).then(res => {
                         if (!res.success && res.code === 'MK013') {
                             this.typeList = res.data ? res.data.map(item => {
                                 return {
                                     key : item.id,
-                                    value : item.typeName
+                                    value : item.typeName,
+                                    orgId : item.orgId
                                 };
                             }) : [];
                             resolve();
@@ -391,7 +392,8 @@
                             this.typeList = res.data ? res.data.map(item => {
                                 return {
                                     key : item.id,
-                                    value : item.typeName
+                                    value : item.typeName,
+                                    orgId : item.orgId
                                 };
                             }) : [];
                             this.$set(this.typeChoosed,0,this.typeList.length > 0 ? this.typeList[0]['key'] : '');
@@ -460,9 +462,10 @@
             ...mapGetters({
                 companyName : 'companyName',
                 isWeixin : 'isWeixin',
-                marketOrgId : 'marketOrgId',
+                marketCompanyId : 'marketCompanyId',
                 marketTypeId : 'marketTypeId',
                 companyCode : 'companyCode',
+                marketOrgId : 'marketOrgId',
             }),
             //所选的类别名称信息
             typeName () {
