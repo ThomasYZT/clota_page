@@ -1,6 +1,6 @@
 
 // 中文配置
-export default {
+module.exports = {
     yearCard : '年卡',
     timeCard : '次卡',
     yearCardInfo : '年卡信息',
