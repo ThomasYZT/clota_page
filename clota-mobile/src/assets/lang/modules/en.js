@@ -49,7 +49,7 @@ export default {
     mobile : 'phone',
     validCode : 'code',
     getValidCode : 'get code',
-    pleaseInputMsg : 'enter...',
+    pleaseInputMsg : 'enter',
     pleaseInputValidCode : 'please enter verification code',
     nextStep : 'next',
     setTradePass : 'set transaction password',

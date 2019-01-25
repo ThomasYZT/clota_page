@@ -185,7 +185,7 @@
                 //已储值
                 storeAmount : '',
                 //账户类型id
-                accountTypeId : ''
+                accountTypeId : '',
             };
         },
         methods : {
