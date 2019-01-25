@@ -12,13 +12,16 @@
             <div class="form-item-wrap">
                 <label v-if="type === 'fund'">{{$t('ModifyAmountThisTime')}}：</label><!--本次修改金额-->
                 <label v-else-if="type === 'integration'">{{$t('ModifyIntegerThisTime')}}：</label><!--本次修改积分-->
-                <span class="green" v-if="manualData.amount > -1">+{{manualData.amount}}</span>
+                <span class="green" v-if="manualData.amount > -1">
+                    +{{manualData.amount | moneyFilter | contentFilter}}
+                    {{(manualData.accountTypeId === '1' || manualData.accountTypeId === '4') ? $t('yuan') : $t(manualData.unit)}}
+                </span>
                 <span class="red" v-if="manualData.amount < 0">{{manualData.amount}}</span>
             </div>
             <div class="form-item-wrap">
                 <template v-if="type === 'fund'">
                     <label>{{$t('accBalanceAfterModification')}}：</label><!--修改后账户余额为-->
-                    <span>{{manualData.endingBalance | contentFilter}}</span>{{$t('yuan')}}
+                    <span>{{manualData.endingBalance | moneyFilter | contentFilter}}</span> {{(manualData.accountTypeId === '1' || manualData.accountTypeId === '4') ? $t('yuan') : $t(manualData.unit)}}
                 </template>
                 <template v-else-if="type === 'integration'">
                     <label>{{$t('IntegerAfterModification')}}：</label><!--修改后积分余额-->
