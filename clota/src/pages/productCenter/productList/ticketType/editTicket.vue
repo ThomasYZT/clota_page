@@ -157,7 +157,7 @@
                     rule.push(obj);
                 });
                 //启用状态票修改完进入审核中状态
-                if (this.type === 'modify' && this.formData.auditStatus === 'enabled') {
+                if (this.type === 'modify') {
                     this.formData.auditStatus = 'auditing';
                 }
                 let params = {
@@ -261,10 +261,10 @@
             initEditData (data) {
                 //基本信息表单初始化
                 let baseInfoForm = pick(data, ['productName', 'standardPrice', 'thirdCode', 'productDes']);
-                baseInfoForm.printPrice = String(data.printPrice);
                 baseInfoForm.standardPrice = String(data.standardPrice);
                 //票面信息表单初始化
                 let ticketInfoForm = pick(data, ['printName', 'printPrice', 'ticketRemark', 'printRemark']);
+                ticketInfoForm.printPrice = String(data.printPrice);
                 //购买限制表单初始化
                 let buyLimitForm = pick(data, ['isGroup', 'inNum', 'minNum', 'maxNum', 'needId', 'acceptIdType',
                     'limitByIdDay', 'limitByIdNum', 'limitByMobileDay', 'limitByMobileNum']);
