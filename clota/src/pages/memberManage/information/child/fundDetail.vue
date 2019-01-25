@@ -76,7 +76,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span class="green-color" v-if="scope.row.amount > -1">
-                            +{{ scope.row.amount | moneyFilter | contentFilter }}{{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(fundDetail.unit)}}
+                            +{{ scope.row.amount | moneyFilter | contentFilter }} {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                         <span class="red-color" v-if="scope.row.amount < 0">
                             {{ scope.row.amount }} {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
