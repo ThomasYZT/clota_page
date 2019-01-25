@@ -148,13 +148,13 @@
                     localStorage.setItem('marketUcid',params.Ucid);
                     localStorage.setItem('marketYcode',params.Ycode);
                     this.getRegisterParams(params.Ucid,params.Ycode);
-                } else if (marketUcid && marketYcode) {
-                    this.getRegisterParams(marketUcid,marketYcode);
-                    this.$store.commit('updateCompanyCode',params.companyCode);
                 } else if (params.companyCode) {
                     this.$store.commit('updateCompanyCode',params.companyCode);
                     this.showChooseSceneLabel = true;
                     this.getAllScenicInCompany();
+                } else if (marketUcid && marketYcode) {
+                    this.getRegisterParams(marketUcid,marketYcode);
+                    this.$store.commit('updateCompanyCode',params.companyCode);
                 } else if (this.companyCode) {
                     this.showChooseSceneLabel = true;
                     this.getAllScenicInCompany();

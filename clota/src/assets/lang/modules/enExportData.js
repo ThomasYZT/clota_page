@@ -1,6 +1,6 @@
 
 //英文配置
-export default {
+module.exports = {
     'project-title' : 'Galasys Clota Cloud Platform',
     'userName' : 'username',
     'password' : 'password',

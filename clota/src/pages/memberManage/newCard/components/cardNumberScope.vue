@@ -5,23 +5,24 @@
         :title="$t('openCardSpeedly')"
         :mask-closable="false"
         :value="value"
-        :width="lang === 'zh-CN' ? 520 : 580"
+        :width="520"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="card-number-scope"
         class-name="vertical-center-modal">
         <Form ref="formValidate"
               :model="formData" :rules="ruleValidate"
-              :label-width="lang === 'zh-CN' ? 120 : 163">
+              :label-position="lang === 'zh-CN' ? 'left' : 'top'"
+              :label-width="lang === 'zh-CN' ? 120 : 0">
             <FormItem :label="$t('colonSetting', { key : $t('cardNoRange') })">
                 <i-row>
-                    <i-col style="display: inline-block;width: 165px;">
+                    <i-col style="display: inline-block;width : 165px">
                         <FormItem prop="smallNum">
                             <Input v-model="formData.smallNum"/>
                         </FormItem>
                     </i-col>
                     -
-                    <i-col style="display: inline-block;width: 165px;">
+                    <i-col style="display: inline-block;width : 165px">
                         <FormItem prop="bigNum">
                             <Input v-model="formData.bigNum" />
                         </FormItem>
@@ -212,17 +213,22 @@
     @import '~@/assets/scss/base';
     .card-number-scope{
 
-        /deep/ .ivu-form{
-            width: 100%;
-        }
+        /*/deep/ .ivu-form{*/
+            /*width: 100%;*/
+        /*}*/
 
         /deep/ .ivu-modal-body{
             padding: 16px;
             font-size: 12px;
             line-height: 1.5;
-            min-height: 163px;
+            min-height: 200px;
             display: flex;
             align-items: center;
+            justify-content: center;
+        }
+
+        /deep/ .ivu-form-item{
+            margin-bottom: 0;
         }
     }
 </style>
