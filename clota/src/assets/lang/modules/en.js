@@ -2511,4 +2511,5 @@ export default {
     'saveWxCardInfoFailure' : 'failed to save the wechat card card face information',
     'outOfStock' : 'out of stock',
     'defaultRefundFee' : 'default refund procedure rate is 0',
+    'myAssignedPolicy' : 'my assigned sales policy',
 };

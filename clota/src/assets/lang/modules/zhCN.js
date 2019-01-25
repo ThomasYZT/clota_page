@@ -2513,4 +2513,5 @@ export default {
     'saveWxCardInfoFailure' : '保存微信卡包卡面信息失败',
     'outOfStock' : '缺货',
     'defaultRefundFee' : '默认退票手续费率为0',
+    'myAssignedPolicy' : '我分配的销售政策',
 };

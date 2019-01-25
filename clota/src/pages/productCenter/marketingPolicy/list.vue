@@ -6,7 +6,6 @@
 
 <template>
     <div class="marketing-policy">
-
         <!--tab栏 仅非合作伙伴可见-->
         <div class="tabs-wrap" v-if="role !== 'partner'">
             <Tabs :animated="false" v-model="tabsName">
@@ -21,6 +20,13 @@
                     <policyToMeList v-if="tabsName === 'cancellation'"
                                     :scenicList="enumData.scene"></policyToMeList>
                 </TabPane>
+                <!--我分配的销售政策（仅公司不可见）-->
+                <TabPane :label="$t('myAssignedPolicy')"
+                         name="myAllocations"
+                         v-if="role !== 'company' && hasToMyPolicy">
+                    <myDistributePolicy v-if="tabsName === 'myAllocations'"
+                                        :allocatedChannels="enumData.allocatedChannels"></myDistributePolicy>
+                </TabPane>
             </Tabs>
         </div>
     </div>
@@ -28,13 +34,15 @@
 <script type="text/ecmascript-6">
     import myDefinedPolicyList from './child/myDefinedPolicyList';
     import policyToMeList from './child/policyToMeList';
+    import myDistributePolicy from './child/myDistributePolicy';
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
 
     export default {
         components : {
             myDefinedPolicyList,
-            policyToMeList
+            policyToMeList,
+            myDistributePolicy
         },
         data () {
             return {
@@ -44,7 +52,10 @@
                 tabsName : 'created',
                 //枚举数据
                 enumData : {
+                    //政策列表对应的所属景区列表
                     scene : [],
+                    //分配过销售政策的销售渠道列表
+                    allocatedChannels : [],
                 },
             };
         },
@@ -73,20 +84,38 @@
             }
             //获取所属景区列表
             this.queryPolicyFromScenic();
+            //获取分配过销售政策的销售渠道
+            this.getAllocatedChannels();
         },
         methods : {
-            //获取所属景区列表
+            /**
+             * 获取政策列表对应的所属景区列表
+             */
             queryPolicyFromScenic () {
-                ajax.post('queryPolicyFromScenic',{
+                ajax.post('queryPolicyFromScenic', {
                     selectType : 'to',
                     pageNo : 1,
                     pageSize : 999
                 }).then(res => {
                     if (res.success) {
-                        this.enumData.scene = res.data;
+                        this.enumData.scene = res.data ? res.data : [];
+                    } else {
+                        this.enumData.scene = [];
                     }
                 });
             },
+            /**
+             * 获取分配过销售政策的销售渠道
+             */
+            getAllocatedChannels () {
+                ajax.post('getAllocatedChannels').then(res => {
+                    if (res.success) {
+                        this.enumData.allocatedChannels = res.data ? res.data : [];
+                    } else {
+                        this.enumData.allocatedChannels = [];
+                    }
+                })
+            }
         }
     };
 </script>
@@ -102,44 +131,5 @@
                 font-size: $font_size_16px;
             }
         }
-
-        .status-recharge {
-            position: relative;
-            padding-left: 14px;
-            &:after {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-                width: 6px;
-                height: 6px;
-                border-radius: 50px;
-            }
-        }
-        .pass:after {
-            background: $color_green;
-        }
-        .pending:after {
-            background: $color_BBC5D5;
-        }
-        .reject:after {
-            background: $color_red;
-        }
-
-    }
-
-    .content-text {
-        margin: 0 15px;
-    }
-
-    .yellow-label{
-        word-break:break-all;
-        color: $color_yellow;
-    }
-
-    .red-label {
-        color: $color_red;
     }
 </style>

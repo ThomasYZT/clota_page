@@ -1,5 +1,5 @@
 <!--
-    会员注册
+    分销给我的销售政策列表模版元素
     作者：杨泽涛
 -->
 <template>
@@ -64,6 +64,7 @@
     import { mapGetters } from 'vuex';
     export default {
         props : {
+            //政策列表对应的所属景区列表
             scenicList : {
                 type : Array,
                 default () {
@@ -117,8 +118,13 @@
                     keyword : this.keywords,
                     chooseOrgId : this.chooseOrgId
                 }).then((res) => {
-                    this.dTotal = res.data.totalRow || 0;
-                    this.distPolicyData = res.data ? res.data.data : [];
+                    if (res.success) {
+                        this.dTotal = res.data ? res.data.totalRow : 0;
+                        this.distPolicyData = res.data ? res.data.data : [];
+                    } else {
+                        this.dTotal = 0;
+                        this.distPolicyData = [];
+                    }
                 });
             },
             /**

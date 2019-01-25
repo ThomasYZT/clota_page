@@ -70,3 +70,36 @@ export const distributePolicyHead = [
         field : ''
     },
 ];
+
+//我分配的销售政策列表
+export const myAllocatedPolicyHead = [
+    {
+        title : 'salePolicyName', // 销售政策名称
+        width : 200,
+        enWidth : 200,
+        field : 'policyName'
+    },
+    {
+        title : 'scenePlace', // 所属景区
+        minWidth : 150,
+        field : 'scenicName'
+    },
+    {
+        title : 'desc', // 描述
+        minWidth : 220,
+        field : 'policyDesc'
+    },
+    {
+        title : 'productName', // 产品名称
+        minWidth : 180,
+        enMinWidth : 180,
+        field : 'productName'
+    },
+    {
+        title : 'settlePrice', // 产品单价
+        minWidth : 100,
+        enMinWidth : 180,
+        type : 'money',
+        field : 'settlePrice'
+    },
+];

@@ -1,5 +1,5 @@
 <!--
-    会员注册
+    我定义的销售政策列表模版元素
     作者：杨泽涛
 -->
 <template>
@@ -88,7 +88,6 @@
 </template>
 
 <script>
-
     import { myPolicyHead } from '../../policyConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { configVariable } from '@/assets/js/constVariable';
@@ -317,6 +316,7 @@
             },
             /**
              * 判断当前选中的销售政策列表能否进行批量操作
+             * @param data
              */
             canBatchOperate (data) {
                 this.disenable = false;
@@ -414,6 +414,41 @@
                 color: $color_yellow;
             }
 
+        }
+
+        .status-recharge {
+            position: relative;
+            padding-left: 14px;
+            &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                width: 6px;
+                height: 6px;
+                border-radius: 50px;
+            }
+        }
+
+        .pass:after {
+            background: $color_green;
+        }
+        .pending:after {
+            background: $color_BBC5D5;
+        }
+        .reject:after {
+            background: $color_red;
+        }
+
+        .content-text {
+            margin: 0 15px;
+        }
+
+        .yellow-label{
+            word-break:break-all;
+            color: $color_yellow;
         }
     }
 </style>

@@ -55,7 +55,11 @@ export default {
     //获取分销已选择销售组列表
     'queryHaveAllocationSaleGroups' : '/salePolicy/queryHaveAllocationSaleGroups',
     //获取政策列表对应的所属景区列表
-    'queryPolicyFromScenic' : '/salePolicy/queryPolicyFromScenic'
+    'queryPolicyFromScenic' : '/salePolicy/queryPolicyFromScenic',
+    //分配过销售政策的销售渠道
+    'getAllocatedChannels' : '/salePolicy/getAllocatedChannels',
+
+    'queryAllocatedPolicy' : '/salePolicy/queryAllocatedPolicy'
 
 
 };
