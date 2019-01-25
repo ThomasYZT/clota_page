@@ -2487,7 +2487,7 @@ module.exports = {
     'analysisFileSuccess' : 'file parsing successful',
     'analysisFileFail' : 'file parsing failed',
     'S014' : 'wechat public account configuration error',
-    'purchaseAmount' : '进货金额',
+    'purchaseAmount' : 'purchase amount',
     'comma' : ',',
     'themeSkin' : 'theme skin',
     'memberRechargeNotificationTemplateID' : 'member recharge notification template ID',
