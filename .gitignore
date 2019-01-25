@@ -10,6 +10,7 @@ selenium-debug.log
 .cache
 /clota/dist/
 /clota-mobile/dist/
+/excel-tool/dist/
 /clota/.eslintignore
 
 # Editor directories and files
