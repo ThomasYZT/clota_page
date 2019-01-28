@@ -188,8 +188,11 @@
 
                 <!--游玩规则-->
                 <title-temp title="playRule"></title-temp>
-                <div class="form-content" :style="{height: productPlayRuleVo.length > 0 ? (productPlayRuleVo.length + 1) * 50 + 20+'px' : '240px'}">
+                <div class="form-content">
                     <br/>
+                    <Form-item :label="$t('colonSetting', { key : $t('admissionTimes') })">
+                        <span>{{detail.admissionTimes | contentFilter}}</span>
+                    </Form-item>
                     <Form-item :label="$t('playPark')+'：'"><!--可游玩园区-->
                         <div>
                             <table-com

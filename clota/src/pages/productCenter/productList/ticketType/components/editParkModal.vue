@@ -105,9 +105,11 @@
                 <!--选择设备分组-->
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId">
-                            <Select v-model="formData.gardenGroupId"
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupIds">
+                            <Select v-model="formData.gardenGroupIds"
                                     :disabled="type === 'check'"
+                                    :multiple="true"
+                                    :clearable="true"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="changeEquipmentGroup">
                                 <Option v-for="(item,index) in enumData.group"
@@ -130,6 +132,19 @@
                                 :column-data="viewDistributeColumnHead"
                                 :table-data="checkPoint"
                                 :border="false">
+                                <el-table-column
+                                    slot="column0"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        {{ scope.$index+1 }}
+                                    </template>
+                                </el-table-column>
                             </table-com>
                             <table-com
                                 v-else
@@ -276,9 +291,11 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId"><!--设备分组-->
-                            <Select v-model="formData.gardenGroupId"
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupIds"><!--设备分组-->
+                            <Select v-model="formData.gardenGroupIds"
                                     :disabled="type === 'check'"
+                                    :multiple="true"
+                                    :clearable="true"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="changeEquipmentGroup">
                                 <Option v-for="(item,index) in enumData.group"
@@ -301,6 +318,19 @@
                                 :column-data="viewDistributeColumnHead"
                                 :table-data="checkPoint"
                                 :border="false">
+                                <el-table-column
+                                    slot="column0"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        {{ scope.$index+1 }}
+                                    </template>
+                                </el-table-column>
                             </table-com>
                             <table-com
                                 v-else
@@ -621,7 +651,7 @@
                     //入园核销
                     effDay : '1',
                     effTimes : '1',
-                    gardenGroupId : '',//核销设备分组ID
+                    gardenGroupIds : '',//核销设备分组ID
                     fingerCheck : false,//其他设置
                     //游玩项目
                     itemCheckTimes : 0,//项目游玩总次数itemCheckTimes
@@ -634,7 +664,7 @@
                     saleType : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleType') }), trigger : 'change' },
                     ],
-                    // gardenGroupId : [
+                    // gardenGroupIds : [
                     //     { validator : validateGardenGroup, trigger : 'change' }
                     // ],
                     equipmentGroupIds : [
@@ -705,10 +735,21 @@
 
             //设备分组改变
             changeEquipmentGroup ( val ) {
-                let obj = this.enumData.group.find( item => val === item.id );
-                if (obj) {
+                // let obj = this.enumData.group.find( item => val === item.id );
+                // if (obj) {
+                //     this.checkPoint = [];
+                //     this.getCheckItems(obj);
+                // }
+                if (val && val.length > 0) {
                     this.checkPoint = [];
-                    this.getCheckItems(obj);
+                    val.forEach( value => {
+                        let obj = this.enumData.group.find( item => value === item.id );
+                        if (obj) {
+                            this.getCheckItems(obj);
+                        }
+                    });
+                } else {
+                    this.checkPoint = [];
                 }
             },
 
@@ -784,6 +825,7 @@
                             this.loading = true;
                             if (this.confirmCallback) {
                                 let formData = defaultsDeep({},this.formData);
+                                formData.gardenGroupIds = this.formData.gardenGroupIds.join(',');
                                 formData.equipmentGroupIds = this.formData.equipmentGroupIds.join(',');
                                 formData.checkPoint = defaultsDeep([],this.checkPoint);
                                 formData.playPoint = defaultsDeep([],this.playPoint);
@@ -850,6 +892,7 @@
                     } else {
                         this.formData.fingerCheck = false;
                     }
+                    this.formData.gardenGroupIds = data.gardenGroupIds ? data.gardenGroupIds.split(',') : [];
                     this.formData.equipmentGroupIds = data.equipmentGroupIds ? data.equipmentGroupIds.split(',') : [];
                     //查看/详情后的修改
                     if (data.checkPoint && data.checkPoint.length > 0) {
@@ -919,7 +962,7 @@
             //查询核销设备组
             getOrgGroupList ( data ) {
                 this.enumData.group = [];
-                this.formData.gardenGroupId = '';
+                this.formData.gardenGroupIds = [];
                 this.checkPoint = [];
                 this.formData.itemCheckTimes = 0;
                 this.formData.equipmentGroupIds = [];
@@ -994,7 +1037,7 @@
                     //入园核销
                     effDay : '1',
                     effTimes : '1',
-                    gardenGroupId : '',
+                    gardenGroupIds : [],
                     fingerCheck : true,
                     //游玩项目
                     itemCheckTimes : 0,

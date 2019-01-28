@@ -123,6 +123,7 @@
                     this.$refs.productEffect.formValidate(),
                     //校验游玩规则-产品园区列表数据
                     this.$refs.playRule.formValidate(),
+                    this.$refs.playRule.parkValidate(),
                 ]).then((formData) => {
                     formData.forEach((item) => {
                         if (Array.isArray(item)) {
@@ -134,7 +135,6 @@
                     //处理表单数据
                     this.formDataProcessing();
                 }).catch((err) => {
-                    console.log(err);
                     if (err === 'playParkNull') {
                         //可游玩园区数组为空
                         this.$Message.warning(this.$t('selectField',{ msg : this.$t('playPark') }));
@@ -179,6 +179,7 @@
                         thirdCode : this.formData.thirdCode || '',
                         ticketRemark : this.formData.ticketRemark || '',
                         productEffSet : this.formData.productEffSet || '',
+                        admissionTimes : this.formData.admissionTimes || '',
                     }),
                     //销售
                     saleRuleJson : JSON.stringify({
@@ -276,15 +277,18 @@
                 buyLimitForm.acceptIdType = data.acceptIdType ? data.acceptIdType.split(',') : [];
                 //产品有效性表单初始化
                 let effectForm = pick(data, ['productEffSet']);
+                //游玩规则表单初始化
+                let playRuleForm = pick(data, ['admissionTimes']);
 
                 let commonData = {};
                 commonData.id = String(data.id);
                 commonData.saleId = String(data.saleId);
-                this.formData = defaultsDeep({}, commonData, baseInfoForm, ticketInfoForm, effectForm);
+                this.formData = defaultsDeep({}, commonData, baseInfoForm, ticketInfoForm, effectForm, playRuleForm);
                 this.$refs.baseInfo.initData(baseInfoForm);
                 this.$refs.ticketInfo.initData(ticketInfoForm);
                 this.$refs.buyLimit.initData(buyLimitForm);
                 this.$refs.productEffect.initData(effectForm);
+                this.$refs.playRule.initData(playRuleForm);
             },
             /**
              * 查询权限下的园区

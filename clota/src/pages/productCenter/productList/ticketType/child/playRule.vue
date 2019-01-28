@@ -4,15 +4,34 @@
 -->
 <template>
     <div class="play-rule">
-        <Form label-position="top">
+        <Form ref="buyLimitForm"
+              label-position="top"
+              :model="playRule"
+              :rules="ruleValidate">
             <!--游玩规则-->
             <title-temp title="playRule"></title-temp>
             <div class="form-content">
                 <div class="ivu-form-item-wrap single">
-                    <Form-item :label="$t('playPark')"><!--可游玩园区-->
-                        <span class="blue"
-                              v-if="productPlayRuleVo.length < parkListCount"
-                              @click="addPark" >+ {{$t('addPark')}}</span>
+                    <FormItem :label="$t('playPark')"><!--可游玩园区-->
+                        <div class="setting-wrapper">
+                            <div class="inline-btn-wrapper">
+                                <span class="blue"
+                                      v-if="productPlayRuleVo.length < parkListCount"
+                                      @click="addPark" >+ {{$t('addPark')}}</span>
+                            </div>
+                            <FormItem class="inner-form-item"
+                                      :label="$t('colonSetting', { key : $t('admissionTimes') })"
+                                      prop="admissionTimes">
+                                <Input v-model.trim="playRule.admissionTimes"
+                                       :placeholder="$t('inputPlaceholder')"/>
+                                <!--<InputNumber :placeholder="$t('inputPlaceholder')"-->
+                                             <!--:step="1"-->
+                                             <!--:max="999999"-->
+                                             <!--:min="1" v-model="playRule.admissionTimes"-->
+                                             <!--:precision="0"-->
+                                             <!--style="width: 150px;"></InputNumber>-->
+                            </FormItem>
+                        </div>
                         <table-com
                             :table-com-min-height="260"
                             :column-data="columnData"
@@ -69,7 +88,7 @@
                                 </template>
                             </el-table-column>
                         </table-com>
-                    </Form-item>
+                    </FormItem>
                 </div>
             </div>
         </Form>
@@ -86,6 +105,7 @@
     import { parkColumn } from './parkConfig';
     import editParkModal from '../components/editParkModal';
     import forEach from 'lodash/forEach';
+    import { validateNumber } from '../../../validateMethods';
     export default {
         props : {
             //新建票类所有表单数据
@@ -119,10 +139,27 @@
                 productPlayRuleVo : [],
                 //可游玩园区表头
                 columnData : parkColumn,
+                playRule : {
+                    //入园游玩总次数
+                    admissionTimes : '',
+                },
             };
         },
+        computed : {
+            //表单校验
+            ruleValidate () {
+                return {
+                    admissionTimes : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('inNum') }), trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' }
+                    ]
+                };
+            }
+        },
         methods : {
-            //新增可游玩园区
+            /**
+             *  新增可游玩园区
+             */
             addPark () {
                 this.$refs.editPark.show({
                     title : this.$t('add') + this.$t('one_ticket'),
@@ -131,11 +168,14 @@
                     list : this.productPlayRuleVo,
                     confirmCallback : ( data ) => {
                         this.productPlayRuleVo.push(data);
-                        //this.dealParkList(data.parkId);
                     }
                 });
             },
-            //修改可游玩园区
+            /**
+             *  修改可游玩园区
+             *  @param data
+             *  @param index
+             */
             modify ( data, index ) {
                 this.$refs.editPark.show({
                     index : index,
@@ -149,7 +189,11 @@
                     }
                 });
             },
-            //删除可游玩园区
+            /**
+             *  删除可游玩园区
+             *  @param data
+             *  @param index
+             */
             del ( data, index ) {
                 this.productPlayRuleVo.splice(index,1);
 
@@ -161,13 +205,28 @@
             rowClassName (row) {
                 if (!row.row.check) {
                     return '';
-                    /* return 'error-tr';*/
                 }
             },
             /**
              * 基本信息表单校验
              */
             formValidate () {
+                return new Promise((resolve, reject) => {
+                    this.$refs.buyLimitForm.validate((valid) => {
+                        if (valid) {
+                            //校验可游玩园区数量
+                            resolve(this.playRule);
+                        } else {
+                            reject('admissionTimes');
+                        }
+                    })
+
+                })
+            },
+            /**
+             * 基本信息表单校验
+             */
+            parkValidate () {
                 return new Promise((resolve, reject) => {
                     //校验可游玩园区数量
                     if (this.productPlayRuleVo.length > 0) {
@@ -189,7 +248,11 @@
              * 编辑时初始化表单数据
              */
             initData (data) {
-                this.productPlayRuleVo = data;
+                if (data && Array.isArray(data)) {
+                    this.productPlayRuleVo = data;
+                } else {
+                    this.playRule = data;
+                }
             }
         }
     };
@@ -287,6 +350,41 @@
 
             .icon-note {
                 color: $color_gray;
+            }
+        }
+
+        .setting-wrapper {
+            display: flex;
+            margin: 10px 0 15px 0;
+
+            .inline-btn-wrapper {
+                flex: 1 0;
+                flex-basis: 50%;
+                line-height: 32px !important;
+                .blue {
+                    vertical-align: top;
+                }
+            }
+
+            .inner-form-item {
+                flex: 1 0;
+                flex-basis: 50%;
+                margin-bottom: 0px !important;
+                text-align: right !important;
+                /deep/ .ivu-form-item-label {
+                    padding: 0;
+                    vertical-align: baseline;
+
+                }
+
+                /deep/ .ivu-form-item-content {
+                    display: inline-block;
+                    line-height: 32px !important;
+
+                    .ivu-form-item-error-tip {
+                        padding-top: 1px;
+                    }
+                }
             }
         }
     }

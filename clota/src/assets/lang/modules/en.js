@@ -2512,4 +2512,5 @@ export default {
     'outOfStock' : 'out of stock',
     'defaultRefundFee' : 'default refund procedure rate is 0',
     'myAssignedPolicy' : 'my assigned sales policy',
+    'admissionTimes' : 'total number of admissions',
 };
