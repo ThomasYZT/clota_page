@@ -1,6 +1,6 @@
 
 //中文配置
-export default {
+module.exports = {
     'project-title' : '银科环企Clota云平台',
     'userName' : '用户姓名',
     'password' : '密码',

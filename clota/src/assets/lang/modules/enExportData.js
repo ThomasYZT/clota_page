@@ -1,6 +1,6 @@
 
 //英文配置
-export default {
+module.exports = {
     'project-title' : 'Galasys Clota Cloud Platform',
     'userName' : 'username',
     'password' : 'password',
@@ -2487,12 +2487,12 @@ export default {
     'analysisFileSuccess' : 'file parsing successful',
     'analysisFileFail' : 'file parsing failed',
     'S014' : 'wechat public account configuration error',
-    'purchaseAmount' : '进货金额',
+    'purchaseAmount' : 'purchase amount',
     'comma' : ',',
     'themeSkin' : 'theme skin',
-    'memberRechargeNotificationTemplateID' : 'member recharge notification template id',
-    'consumptionSuccessNotificationTemplateID' : 'consumption success notification template id',
-    'getIDFromWechat' : 'please get the id from wechat public account.',
+    'memberRechargeNotificationTemplateID' : 'member recharge notification template ID',
+    'consumptionSuccessNotificationTemplateID' : 'consumption success notification template ID',
+    'getIDFromWechat' : 'please get the ID from WeChat public account.',
     'payGiftCardSetting' : 'payment is the member\'s default push membership card settings',
     'membershipCardToBePushed' : 'membership card to be pushed',
     'pleaseConfigureCardInformation' : 'please configure the card card face information first.',
@@ -2506,9 +2506,9 @@ export default {
     'picUploadLimit' : 'image limit: 1000*600 pixels, size less than 1M, only supports jpg/png/jpeg format',
     'cardTitle' : 'membership card title',
     'onlyInputChineseLetterNum' : 'can only enter chinese, letters or numbers',
-    'clota-adminSettingError' : 'operational background wechat public account configuration error',
-    'wechatError' : 'wechat service request error',
-    'saveWxCardInfoFailure' : 'failed to save the wechat card card face information',
+    'clota-adminSettingError' : 'operational background WeChat public account configuration error',
+    'wechatError' : 'weChat service request error',
+    'saveWxCardInfoFailure' : 'failed to save the WeChat card card face information',
     'outOfStock' : 'out of stock',
     'defaultRefundFee' : 'default refund procedure rate is 0',
 };

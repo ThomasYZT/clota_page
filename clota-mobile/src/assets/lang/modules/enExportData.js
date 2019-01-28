@@ -1,6 +1,6 @@
 
 // 英文配置
-export default {
+module.exports = {
     yearCard : 'year card',
     timeCard : 'times card',
     yearCardInfo : 'tear card information',
@@ -49,7 +49,7 @@ export default {
     mobile : 'phone',
     validCode : 'code',
     getValidCode : 'get code',
-    pleaseInputMsg : 'enter',
+    pleaseInputMsg : 'enter...',
     pleaseInputValidCode : 'please enter verification code',
     nextStep : 'next',
     setTradePass : 'set transaction password',

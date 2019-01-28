@@ -24,6 +24,7 @@
                 <cell :title="$t('购买数量')">
                     <inline-x-number style="display:block;"
                                      v-model="buyNum"
+                                     fillable
                                      :max="maxChoosed"
                                      :min="minChoosed" >
                     </inline-x-number>

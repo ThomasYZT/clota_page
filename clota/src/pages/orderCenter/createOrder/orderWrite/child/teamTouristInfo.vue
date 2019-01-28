@@ -53,7 +53,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    v-if="acceptCertificateType.all.length > 0"
+                    v-if="acceptCertificateType.length > 0"
                     slot="column2"
                     show-overflow-tooltip
                     slot-scope="row"
@@ -64,7 +64,7 @@
                         <template v-if="scope.row.editType === 'edit'">
                             <FormItem :prop="'idTypeIn' + scope.$index" :rules="rules.idTypeIn(scope.row)">
                                 <Select v-model.trim="scope.row.type" transfer>
-                                    <Option v-for="item in acceptCertificateType.all"
+                                    <Option v-for="item in acceptCertificateType"
                                             :key="item.value"
                                             :value="item.value">
                                         {{$t(item.label)}}
@@ -80,7 +80,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    v-if="acceptCertificateType.all.length > 0"
+                    v-if="acceptCertificateType.length > 0"
                     slot="column3"
                     show-overflow-tooltip
                     slot-scope="row"
@@ -90,7 +90,7 @@
                     <template slot-scope="scope">
                         <template v-if="scope.row.editType === 'edit'">
                             <FormItem :prop="'idCard' + scope.$index" :rules="rules.idCard(scope.row)">
-                                <Input type="text" v-model.trim="scope.row.idNum" />
+                                <Input type="text" :disabled="!scope.row.type" v-model.trim="scope.row.idNum" />
                             </FormItem>
                         </template>
                         <template v-else>
@@ -200,26 +200,35 @@
         data () {
             //校验是否选择了证件
             const validateidTypeIn = (rule,value,callback) => {
-                if (rule.rowData.type) {
-                    callback();
-                } else {
-                    callback(this.$t('selectField', { msg : this.$t('credentialsType') })); // 请选择证件类型
-                }
+                callback();
+                // if (rule.rowData.type) {
+                //     callback();
+                // } else {
+                //     callback(this.$t('selectField', { msg : this.$t('credentialsType') })); // 请选择证件类型
+                // }
             };
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
                 if (rule.rowData.idNum) {
-                    if (rule.rowData.idNum.length > 100) {
-                        callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 100 }));
-                    } else {
-                        this.validateIdCardNumIsExist(rule.rowData).then(() => {
+                    if (rule.rowData.type === "identity") {
+                        if (validator.isIdCard(rule.rowData.idNum)) {
                             callback();
-                        }).catch(() => {
-                            callback(this.$t('existID')); // 证件已存在
-                        });
+                        } else {
+                            callback(this.$t('errorFormat', { field : this.$t('identificationNum') }));
+                        }
+                    } else {
+                        if (rule.rowData.idNum.length > 40) {
+                            callback(this.$t('errorMaxLength', { field : this.$t('identificationNum'), length : 40 }));
+                        } else {
+                            this.validateIdCardNumIsExist(rule.rowData).then(() => {
+                                callback();
+                            }).catch(() => {
+                                callback(this.$t('existID')); // 证件已存在
+                            });
+                        }
                     }
                 } else {
-                    callback(this.$t('inputField', { field : this.$t('IdentificationNumber') })); // 请输入证件号
+                    callback();
                 }
             };
             //校验游客姓名
@@ -378,7 +387,7 @@
                         }
                     });
                 }),new Promise((resolve,reject) => {//校验证件类型
-                    if (this.acceptCertificateType.all.length > 0) {
+                    if (this.acceptCertificateType.length > 0) {
                         this.$refs.formInline.validateField('idCard' + index,valid => {
                             if (valid) {
                                 reject();
@@ -390,7 +399,7 @@
                         resolve();
                     }
                 }),new Promise((resolve,reject) => {//校验证件号码
-                    if (this.acceptCertificateType.all.length > 0) {
+                    if (this.acceptCertificateType.length > 0) {
                         this.$refs.formInline.validateField('idTypeIn' + index,valid => {
                             if (valid) {
                                 reject();
@@ -469,7 +478,7 @@
                         result.push({
                             documentInfo : this.tableData[i].idNum !== '' ? JSON.stringify({
                                 data : this.tableData[i].idNum,
-                                type : 'identity'
+                                type : this.tableData[i].type
                             }) : '',
                             phoneNumber : this.tableData[i].phone,
                             visitorName : this.tableData[i].name,
@@ -486,34 +495,40 @@
         computed : {
             //产品接受的证件类型
             acceptCertificateType () {
-                let result = [];
-                let arrTmp = [];
-                let accpet = [];
-                let productIdsList = {};
-                for (let item in this.productPolicy) {
-                    arrTmp = this.productPolicy[item].acceptIdType ? this.productPolicy[item].acceptIdType.split(',') : [];
-                    for (let i = 0,j = arrTmp.length; i < j; i++) {
-                        if (!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired') {
-                            result.push(arrTmp[i]);
-                        }
-                    }
-                    productIdsList[item] = [];
-                    for (let i = 0,j = idType.length; i < j; i++) {
-                        if (arrTmp.includes(idType[i]['value'])) {
-                            productIdsList[item].push(idType[i]);
-                        }
-                    }
-                }
-                for (let i = 0,j = idType.length; i < j; i++) {
-                    if (result.includes(idType[i]['value'])) {
-                        accpet.push(idType[i]);
-                    }
-                }
-                return {
-                    all : accpet,
-                    acceptArr : result,
-                    ...productIdsList
-                };
+                return idType;
+                // let result = [];
+                // let arrTmp = [];
+                // let accpet = [];
+                // let productIdsList = {};
+                // for (let item in this.productPolicy) {
+                //     arrTmp = this.productPolicy[item].acceptIdType ? this.productPolicy[item].acceptIdType.split(',') : [];
+                //     for (let i = 0,j = arrTmp.length; i < j; i++) {
+                //         if (!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired') {
+                //             result.push(arrTmp[i]);
+                //         }
+                //     }
+                //     productIdsList[item] = [];
+                //     for (let i = 0,j = idType.length; i < j; i++) {
+                //         if (arrTmp.includes(idType[i]['value'])) {
+                //             productIdsList[item].push(idType[i]);
+                //         }
+                //     }
+                // }
+                // for (let i = 0,j = idType.length; i < j; i++) {
+                //     if (result.includes(idType[i]['value'])) {
+                //         accpet.push(idType[i]);
+                //     }
+                // }
+                // return {
+                //     all : [
+                //         {
+                //             value : 1,
+                //             label : 1
+                //         }
+                //     ],
+                //     acceptArr : result,
+                //     ...productIdsList
+                // };
             },
             //将要删除的游客信息
             delingTouristInfo () {

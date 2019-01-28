@@ -105,7 +105,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.accountTypeId === '1'">
+                    <span v-if="scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4'">
                        {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t('yuan')}}
                     </span>
                     <span v-else>
@@ -267,7 +267,7 @@
                 let label = rowData.amount > 0 ? '+' : '';
                 if (rowData.unit) {
                     unit = this.$t(rowData.unit);
-                } else if (rowData.accountTypeId === '1') {
+                } else if (rowData.accountTypeId === '1' || rowData.accountTypeId === '4') {
                     unit = this.$t('yuan'); // '元'
                 }
                 if (rowData.accountSubType === 'corpus') {

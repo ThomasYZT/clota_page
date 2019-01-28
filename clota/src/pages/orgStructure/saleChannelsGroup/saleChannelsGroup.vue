@@ -1,4 +1,4 @@
-1<template>
+<template>
     <!-- 销售渠道分组 -->
     <div class="saleChannelsGroup">
         <div class="orgHeader">
@@ -56,10 +56,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <template v-if="scope.row.type === 'partner'">
-                            {{$t('partner')}}
+                            {{$tc('partner',1)}}
                         </template>
                         <template v-else-if="scope.row.type === 'scenic'">
-                            {{$t('partner')}}
+                            {{$tc('partner',1)}}
                         </template>
                         <template v-else-if="scope.row.type === 'channel'">
                             {{$t('channels')}}

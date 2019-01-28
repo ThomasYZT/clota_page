@@ -266,7 +266,7 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <p class="remark">{{$t('默认退票手续费率为0')}}</p>
+                <p class="remark">{{$t('defaultRefundFee')}}</p>
 
                 <!--改签规则-->
                 <br/>

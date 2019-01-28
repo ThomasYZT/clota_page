@@ -49,11 +49,11 @@
                 <ul class="total-amount">
                     <li class="amount-record">
                         <span class="key-label">{{$t('colonSetting', { key : $t('hasPayed') })}}</span>
-                        <span class="value-label">{{disbursement | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
+                        <span class="value-label">{{disbursement | moneyFilter | contentFilter}} {{$t(accountUnit)}}</span>
                     </li>
                     <li class="amount-record">
                         <span class="key-label">{{$t('colonSetting', { key : $t('storeTotalValue') })}}</span>
-                        <span class="value-label">{{storeAmount | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
+                        <span class="value-label">{{storeAmount | moneyFilter | contentFilter}} {{$t(accountUnit)}}</span>
                     </li>
                 </ul>
             </div>
@@ -76,10 +76,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span class="green-color" v-if="scope.row.amount > -1">
-                            +{{ scope.row.amount | moneyFilter | contentFilter }}{{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            +{{ scope.row.amount | moneyFilter | contentFilter }} {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                         <span class="red-color" v-if="scope.row.amount < 0">
-                            {{ scope.row.amount }}{{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            {{ scope.row.amount }} {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                     </template>
                 </el-table-column>
@@ -107,14 +107,14 @@
                     <template slot-scope="scope">
                         <span v-if="scope.row.accountSubType === 'corpus'"><!--本金-->
                             {{$t('principal')}}：{{ scope.row.amount | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                         <span v-else-if="scope.row.accountSubType === 'donate'"><!--赠送-->
                             {{$t('sendGift')}}：{{ scope.row.amount  | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                         <span v-else>{{ scope.row.amount  | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}</span>
+                            {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -125,7 +125,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span>{{ scope.row.endingBalance | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}</span>
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(scope.row.unit)}}</span>
                     </template>
                 </el-table-column>
             </table-com>
@@ -185,7 +185,9 @@
                 //已储值
                 storeAmount : '',
                 //账户类型id
-                accountTypeId : ''
+                accountTypeId : '',
+                //账户单位
+                accountUnit : ''
             };
         },
         methods : {
@@ -275,10 +277,12 @@
                 }).then(res => {
                     if (res.success) {
                         this.storeAmount = res.data ? res.data.add : '';
+                        this.accountUnit = res.data ? res.data.unit : '';
                         this.disbursement = res.data ? res.data.reduce * -1 : '';
                     } else {
                         this.storeAmount = '';
                         this.disbursement = '';
+                        this.accountUnit = '';
                     }
                 });
             }

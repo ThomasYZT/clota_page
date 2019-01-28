@@ -32,11 +32,11 @@
                           :min-width="getColumnMinWidth(item)"
                           :index="index"
                           :field="item.field"
-                          :title="$t(item.title)">
+                          :title="$tc(item.title,item.tcIndex = 1,item.tcData = {})">
                     <!--ableClick表示点击某一列进入详情-->
                     <el-table-column
                         v-if="item.ableClick"
-                        :label="$t(item.title)"
+                        :label="$tc(item.title,item.tcIndex = 1,item.tcData = {})"
                         show-overflow-tooltip
                         :prop="item.field"
                         :key="item.field"
@@ -53,7 +53,7 @@
                         <!--货比格式化列-->
                     <el-table-column
                         v-if="item.type === 'money'"
-                        :label="$t(item.title)"
+                        :label="$tc(item.title,item.tcIndex = 1,item.tcData = {})"
                         show-overflow-tooltip
                         :prop="item.field"
                         :key="index"
@@ -70,7 +70,7 @@
                     <!--日期格式化列-->
                     <el-table-column
                         v-else-if="item.type === 'date'"
-                        :label="$t(item.title)"
+                        :label="$tc(item.title,item.tcIndex = 1,item.tcData = {})"
                         show-overflow-tooltip
                         :prop="item.field"
                         :key="index"
@@ -87,7 +87,7 @@
                     <!--时间格式化列-->
                     <el-table-column
                         v-else-if="item.type === 'time'"
-                        :label="$t(item.title)"
+                        :label="$tc(item.title,item.tcIndex = 1,item.tcData = {})"
                         show-overflow-tooltip
                         :prop="item.field"
                         :key="index"
@@ -104,7 +104,7 @@
                     <!--普通列-->
                     <el-table-column
                         v-else
-                        :label="$t(item.title)"
+                        :label="$tc(item.title,item.tcIndex = 1,item.tcData = {})"
                         :prop="item.field"
                         show-overflow-tooltip
                         :key="index"
