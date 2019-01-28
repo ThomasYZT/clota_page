@@ -6,11 +6,6 @@ export const marketingPositionHead = [
         field : 'id'
     },
     {
-        title : 'scenePlace',
-        minWidth : 100,
-        field : 'orgName'
-    },
-    {
         title : 'positionName',
         minWidth : 100,
         enMinWidth : 140,

@@ -32,7 +32,7 @@
                   @query-data="getData">
             <el-table-column
                 v-if="canEditPosition"
-                slot="column6"
+                slot="column5"
                 slot-scope="row"
                 show-overflow-tooltip
                 fixed="right"

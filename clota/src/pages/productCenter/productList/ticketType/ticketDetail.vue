@@ -264,6 +264,8 @@
         <div class="footer" v-if="role !== 'other_org'">
             <!--已驳回-->
             <template v-if="(detail.auditStatus === 'rejected' || detail.auditStatus === 'not_enabled') && canApplyAuditProduct">
+                <Button type="error"
+                        @click="deleteConfirm">{{$t('delete')}}</Button>
                 <Button type="primary"
                         @click="auditProduct('PRODUCT_APPLY')">{{$t('commitCheck')}}</Button><!--提交审核-->
                 <Button type="ghost"
@@ -304,6 +306,13 @@
         <!-- 禁用提示模态框 -->
         <disableModal ref="disableModal"></disableModal>
 
+        <!--删除模态框-->
+        <del-modal ref="delModal" class="del-min-width">
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>
+                <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
+            </span>
+        </del-modal>
     </div>
 </template>
 
@@ -314,6 +323,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import editParkModal from './components/editParkModal.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
+    import delModal from '@/components/delModal/index.vue';
     import disableModal from './components/disableModal';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { parkColumn } from './child/parkConfig';
@@ -328,7 +338,8 @@
             tableCom,
             editParkModal,
             addRemarkModal,
-            disableModal
+            disableModal,
+            delModal
         },
         data () {
             return {
@@ -496,6 +507,34 @@
             //返回
             goBack () {
                 this.$router.back();
+            },
+            /**
+             *  删除产品二次确认
+             */
+            deleteConfirm () {
+                this.$refs.delModal.show({
+                    title : this.$t('delete'),
+                    confirmCallback : () => {
+                        this.deleteTicket(this.detail.id);
+                    }
+                });
+            },
+            /**
+             *  删除产品
+             */
+            deleteTicket (data) {
+                ajax.post('deleteProduct',{
+                    productIds : data
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.$router.push({
+                            name : 'ticketType'
+                        });
+                    } else {
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
             },
 
             /**
@@ -683,5 +722,9 @@
                 cursor: pointer;
             }
         }
+    }
+
+    /deep/ .content-text {
+        @include center_center()
     }
 </style>

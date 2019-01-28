@@ -71,6 +71,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li class="normal" @click="viewDetail(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li class="red-label" @click="batchDel(scope.row)">{{$t('delete')}}</li><!--删除-->
                     </ul>
                 </template>
             </el-table-column>
@@ -288,15 +289,26 @@
             /**
              *  批量删除
              */
-            batchDel () {
-                let ids = this.selectedRow.map(item => item.id).join(',');
-                this.delUnits = this.selectedRow.map(item => item.name).join(',');
-                this.$refs.delModal.show({
-                    title : this.$t('deleteBatch'),
-                    confirmCallback : () => {
-                        this.deletePolicy(ids);
-                    }
-                });
+            batchDel (data) {
+                if (data) {
+                    let ids = data.id;
+                    this.delUnits = data.name;
+                    this.$refs.delModal.show({
+                        title : this.$t('delete'),
+                        confirmCallback : () => {
+                            this.deletePolicy(ids);
+                        }
+                    });
+                } else {
+                    let ids = this.selectedRow.map(item => item.id).join(',');
+                    this.delUnits = this.selectedRow.map(item => item.name).join(',');
+                    this.$refs.delModal.show({
+                        title : this.$t('deleteBatch'),
+                        confirmCallback : () => {
+                            this.deletePolicy(ids);
+                        }
+                    });
+                }
             },
             /**
              * 删除销售政策

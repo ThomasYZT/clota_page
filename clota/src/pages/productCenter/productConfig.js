@@ -44,7 +44,8 @@ export const ticketTypeHead = [
     },
     {
         title : 'operate', // 操作
-        width : 110,
+        width : 130,
+        enWidth : 150,
         field : ''
     },
 ];

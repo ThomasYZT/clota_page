@@ -93,6 +93,7 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li class="operate" @click="checkProductDetail(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li class="red-label" @click="batchDel(scope.row)">{{$t('delete')}}</li><!--删除-->
                     </ul>
                 </template>
             </el-table-column>
@@ -200,16 +201,27 @@
                 this.selectedRow = selection;
             },
             // 批量删除
-            batchDel () {
+            batchDel (data) {
                 if ( !this.cacnDelProduct ) return;
-                let ids = this.selectedRow.map(item => item.id).join(',');
-                this.delUnits = this.selectedRow.map(item => item.productName).join(',');
-                this.$refs.delModal.show({
-                    title : this.$t('deleteBatch'),
-                    confirmCallback : () => {
-                        this.deleteTicket(ids);
-                    }
-                });
+                if (data) {
+                    let ids = data.id;
+                    this.delUnits = data.productName;
+                    this.$refs.delModal.show({
+                        title : this.$t('delete'),
+                        confirmCallback : () => {
+                            this.deleteTicket(ids);
+                        }
+                    });
+                } else {
+                    let ids = this.selectedRow.map(item => item.id).join(',');
+                    this.delUnits = this.selectedRow.map(item => item.productName).join(',');
+                    this.$refs.delModal.show({
+                        title : this.$t('deleteBatch'),
+                        confirmCallback : () => {
+                            this.deleteTicket(ids);
+                        }
+                    });
+                }
             },
             /**
              * 删除票类
