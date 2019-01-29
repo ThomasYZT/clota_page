@@ -336,7 +336,8 @@
                     params : {
                         fundDetail : {
                             id : data.accountId,
-                            accountDefineId : data.accountTypeId
+                            accountDefineId : data.accountTypeId,
+                            cardId : data.cardId,
                         }
                     }
                 });
