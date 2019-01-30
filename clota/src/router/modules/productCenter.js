@@ -51,7 +51,7 @@ export default {
                         //产品中心--产品列表--新建/修改票类
                         path : '/productCenter/pList/addTicket',
                         name : 'addTicket',
-                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType/editTicket.vue'),
+                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType/editTicket/editTicket.vue'),
                         meta : {
                             menuName : 'ticketType', //lang.config.js 里面的语言键值
                             _name : 'ticket',

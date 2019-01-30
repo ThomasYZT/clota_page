@@ -53,9 +53,10 @@
                         </FormItem>
                     </i-col>
                 </i-row>
+                <!--售票方式-->
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('saleType')" prop="saleType"><!--售票方式-->
+                        <FormItem :label="$t('saleType')" prop="saleType">
                             <Select v-model="formData.saleType"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
@@ -545,7 +546,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import titlePark from '../../../components/titlePark.vue';
     import { saleType, authenticationType } from '@/assets/js/constVariable';
-    import { distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead } from '../child/parkConfig';
+    import { distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead } from '../editTicket/child/parkConfig';
     import defaultsDeep from 'lodash/defaultsDeep';
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index';

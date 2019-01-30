@@ -172,7 +172,12 @@
                             point.id = '';
                             point.createdTime = '';
                             point.updatedTime = '';
-                        })
+                        });
+                        item.playPoint.forEach((point) => {
+                            point.id = '';
+                            point.createdTime = '';
+                            point.updatedTime = '';
+                        });
                     });
                 }
                 let params = {

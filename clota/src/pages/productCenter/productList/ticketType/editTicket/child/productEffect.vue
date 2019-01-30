@@ -46,9 +46,9 @@
 </template>
 
 <script>
-    import { validateProductEffSet } from '../../../validateMethods';
+    import { validateProductEffSet } from '../../../../validateMethods';
     import { productEffectSet } from '@/assets/js/constVariable';
-    import titleTemp from '../../../components/titleTemp';
+    import titleTemp from '../../../../components/titleTemp';
     export default {
         props : {
             //产品有效性是否可设置

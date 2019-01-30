@@ -49,8 +49,8 @@
 </template>
 
 <script>
-    import { validateMoney, emoji, validatePrintPrice } from '../../../validateMethods';
-    import titleTemp from '../../../components/titleTemp';
+    import { validateMoney, emoji, validatePrintPrice } from '../../../../validateMethods';
+    import titleTemp from '../../../../components/titleTemp';
     export default {
         props : {
             //景区成本价

@@ -95,11 +95,11 @@
 <script>
 
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import titleTemp from '../../../components/titleTemp';
+    import titleTemp from '../../../../components/titleTemp';
     import { parkColumn } from './parkConfig';
-    import editParkModal from '../components/editParkModal';
+    import editParkModal from '../../components/editParkModal';
     import forEach from 'lodash/forEach';
-    import { validateNumber } from '../../../validateMethods';
+    import { validateNumber } from '../../../../validateMethods';
     export default {
         props : {
             //新建票类所有表单数据

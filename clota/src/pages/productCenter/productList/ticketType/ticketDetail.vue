@@ -335,7 +335,7 @@
     import delModal from '@/components/delModal/index.vue';
     import disableModal from './components/disableModal';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import { parkColumn } from './child/parkConfig';
+    import { parkColumn } from './editTicket/child/parkConfig';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 

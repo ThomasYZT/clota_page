@@ -121,8 +121,8 @@
 </template>
 
 <script>
-    import { validateNumber, emoji, validateIdBuyTicket, validateMobileBuyTicket } from '../../../validateMethods';
-    import titleTemp from '../../../components/titleTemp';
+    import { validateNumber, emoji, validateIdBuyTicket, validateMobileBuyTicket } from '../../../../validateMethods';
+    import titleTemp from '../../../../components/titleTemp';
     import { isTeamProduct, orderInfo, idType } from '@/assets/js/constVariable';
     export default {
         props : {
