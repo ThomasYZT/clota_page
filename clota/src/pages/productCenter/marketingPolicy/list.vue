@@ -7,11 +7,11 @@
 <template>
     <div class="marketing-policy">
         <!--tab栏 仅非合作伙伴可见-->
-        <div class="tabs-wrap" v-if="role !== 'partner'">
+        <div class="tabs-wrap">
             <Tabs :animated="false" v-model="tabsName">
                 <!--我定义的销售政策-->
                 <TabPane v-if="hasMyPolicy" :label="$t('mySalePolicy')" name="created">
-                    <myDefinedPolicyList v-if="tabsName === 'created'"></myDefinedPolicyList>
+                    <myDefinedPolicyList  v-if="tabsName === 'created' && role !== 'partner'"></myDefinedPolicyList>
                 </TabPane>
                 <!--分销给我的销售政策（仅公司不可见）-->
                 <TabPane :label="$t('distributeSalePolicy')"
