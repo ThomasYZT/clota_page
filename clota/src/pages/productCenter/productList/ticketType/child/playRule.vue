@@ -144,7 +144,7 @@
             ruleValidate () {
                 return {
                     admissionTimes : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('inNum') }), trigger : 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('admissionTimes') }), trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' }
                     ]
                 };
