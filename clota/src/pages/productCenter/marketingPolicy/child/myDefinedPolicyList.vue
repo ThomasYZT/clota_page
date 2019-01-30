@@ -71,7 +71,9 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li class="normal" @click="viewDetail(scope.row)">{{$t('check')}}</li><!--查看-->
-                        <li class="red-label" @click="batchDel(scope.row)">{{$t('delete')}}</li><!--删除-->
+                        <li class="red-label"
+                            v-if="scope.row.auditStatus === 'rejected' || scope.row.auditStatus === 'not_enabled'"
+                            @click="batchDel(scope.row)">{{$t('delete')}}</li><!--删除-->
                     </ul>
                 </template>
             </el-table-column>
