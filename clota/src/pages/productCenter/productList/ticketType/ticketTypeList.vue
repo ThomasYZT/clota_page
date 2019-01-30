@@ -136,9 +136,12 @@
             //是否可以删除票类信息
             cacnDelProduct () {
                 return this.permissionInfo && 'deleteProduct' in this.permissionInfo;
+            },
+            //设置角色权限
+            role () {
+                return this.manageOrgs.nodeType;
             }
         },
-        props : {},
         data () {
             return {
                 // 获取数据的请求参数
@@ -188,7 +191,8 @@
                 this.$router.push({
                     name : 'ticketDetail',
                     params : {
-                        info : data
+                        info : data,
+                        role : this.role === 'partner' ? 'other_org' : '',
                     }
                 });
             },
@@ -272,10 +276,6 @@
             },
 
         },
-        created () {
-            //设置角色权限
-            this.role = this.manageOrgs.nodeType;
-        }
     };
 </script>
 
