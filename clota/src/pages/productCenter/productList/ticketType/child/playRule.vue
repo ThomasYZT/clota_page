@@ -24,12 +24,6 @@
                                       prop="admissionTimes">
                                 <Input v-model.trim="playRule.admissionTimes"
                                        :placeholder="$t('inputPlaceholder')"/>
-                                <!--<InputNumber :placeholder="$t('inputPlaceholder')"-->
-                                             <!--:step="1"-->
-                                             <!--:max="999999"-->
-                                             <!--:min="1" v-model="playRule.admissionTimes"-->
-                                             <!--:precision="0"-->
-                                             <!--style="width: 150px;"></InputNumber>-->
                             </FormItem>
                         </div>
                         <table-com

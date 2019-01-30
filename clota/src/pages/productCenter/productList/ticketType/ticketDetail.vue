@@ -18,7 +18,16 @@
                 <span class="green-span" v-if="detail.auditStatus === 'enabled'">{{$t('startingUse')}}</span><!--已启用-->
                 <span class="yellow-span" v-else-if="detail.auditStatus === 'auditing'">{{$t('waitChecking')}}</span><!--待审核-->
                 <span class="red-span" v-else-if="detail.auditStatus === 'rejected'">{{$t('rejected')}}</span><!--已驳回-->
-                <span v-if="detail.auditStatus !== 'auditing' && detail.auditStatus !== 'enabled' && role !== 'other_org'" class="blue-span" @click="modify"><i class="iconfont icon-edit"></i>{{$t('modify')}}</span>
+                <div class="right-button">
+                    <span v-if="detail.auditStatus !== 'auditing' && detail.auditStatus !== 'enabled' && role !== 'other_org'"
+                          class="blue-span" @click="modify">
+                        <i class="iconfont icon-edit"></i>{{$t('modify')}}
+                    </span>
+                    <span v-if="role !== 'other_org'"
+                          class="blue-span" @click="copyProduct">
+                        <i class="iconfont icon-trade-channel"></i>{{$t('copy')}}
+                    </span>
+                </div>
             </div>
 
             <!--表单信息-->
@@ -425,6 +434,18 @@
                     }
                 });
             },
+            //复制产品
+            copyProduct () {
+                if (!this.canApplyAuditProduct) return;
+                this.$router.push({
+                    name : 'addTicket',
+                    params : {
+                        type : 'copy',
+                        info : this.detail,
+                        productPlayRuleVo : this.productPlayRuleVo,
+                    }
+                });
+            },
 
             // 根据产品Id查明细
             findProductById ( data ) {
@@ -581,14 +602,18 @@
                 padding: 25px 35px 0px;
                 color: $color_000_085;
 
-                .blue-span{
+                .right-button {
                     float: right;
-                    font-size: $font_size_14px;
-                    color: $color_blue;
-                    cursor: pointer;
-                    .iconfont{
-                        margin-right: 5px;
+
+                    .blue-span{
+                        margin-right: 10px;
                         font-size: $font_size_14px;
+                        color: $color_blue;
+                        cursor: pointer;
+                        .iconfont{
+                            margin-right: 5px;
+                            font-size: $font_size_14px;
+                        }
                     }
                 }
 

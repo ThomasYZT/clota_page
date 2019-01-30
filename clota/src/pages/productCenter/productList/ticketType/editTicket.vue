@@ -32,7 +32,7 @@
             <!--底部操作-->
             <div class="footer">
                 <!--新增按钮-->
-                <template v-if="type === 'add' && canApplyAuditProduct">
+                <template v-if="type === 'add' || type === 'copy' && canApplyAuditProduct">
                     <Button type="primary"
                             :loading="loading"
                             @click="formValidateFunc"> <!--提交审核-->
@@ -129,7 +129,7 @@
                         if (Array.isArray(item)) {
                             this.productPlayRuleVo = item;
                         } else {
-                            this.formData = defaultsDeep(this.formData, item);
+                            Object.assign(this.formData, item);
                         }
                     });
                     //处理表单数据
@@ -159,6 +159,21 @@
                 //启用状态票修改完进入审核中状态
                 if (this.type === 'modify') {
                     this.formData.auditStatus = 'auditing';
+                }
+                //复制产品过滤各规则id属性
+                if (this.type === 'copy') {
+                    this.formData.id = '';
+                    this.formData.saleId = '';
+                    rule.forEach((item) => {
+                        item.id = '';
+                        item.createdTime = '';
+                        item.updatedTime = '';
+                        item.checkPoint.forEach((point) => {
+                            point.id = '';
+                            point.createdTime = '';
+                            point.updatedTime = '';
+                        })
+                    });
                 }
                 let params = {
                     //产品
@@ -198,14 +213,12 @@
                         needAllId : '',
                         needId : this.formData.needId || '',
                         productId : this.formData.productId || '',
-                        //stockNum : this.formData.stockNum || '',
-                        //stockType : this.formData.stockType || '',
                     }),
                     //游玩
                     playRuleJson : JSON.stringify(rule),
                 };
                 //区分新增与修改
-                if ( this.type === 'add' ) {
+                if ( this.type === 'add' || this.type === 'copy' ) {
                     this.saveAndEditTicket( 'addProduct', params);
                 }
                 if ( this.type === 'modify' ) {
@@ -220,7 +233,13 @@
                     if (res.success) {
                         //区分新增与修改
                         this.$Message.success(this.$t('successTip',{ tip : this.$t(this.type) }));
-                        this.goBack();
+                        if (this.type === 'copy') {
+                            this.$router.push({
+                                name : 'ticketType'
+                            });
+                        } else {
+                            this.goBack();
+                        }
                     } else {
                         //区分新增与修改
                         this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t(this.type) }));
@@ -244,10 +263,13 @@
              */
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
+                    //设置新增、编辑、复制状态
                     this.type = params.type;
+                    //设置产品详情数据
                     if (params.info) {
                         this.initEditData(params.info);
                     }
+                    //设置产品园区列表数据
                     if (params.productPlayRuleVo) {
                         this.productPlayRuleVo = defaultsDeep([], params.productPlayRuleVo);
                         this.$refs.playRule.initData(this.productPlayRuleVo);
@@ -262,10 +284,10 @@
             initEditData (data) {
                 //基本信息表单初始化
                 let baseInfoForm = pick(data, ['productName', 'standardPrice', 'thirdCode', 'productDes']);
-                baseInfoForm.standardPrice = String(data.standardPrice);
+                baseInfoForm.standardPrice = data.standardPrice ? String(data.standardPrice) : '';
                 //票面信息表单初始化
                 let ticketInfoForm = pick(data, ['printName', 'printPrice', 'ticketRemark', 'printRemark']);
-                ticketInfoForm.printPrice = String(data.printPrice);
+                ticketInfoForm.printPrice = data.printPrice ? String(data.printPrice) : '';
                 //购买限制表单初始化
                 let buyLimitForm = pick(data, ['isGroup', 'inNum', 'minNum', 'maxNum', 'needId', 'acceptIdType',
                     'limitByIdDay', 'limitByIdNum', 'limitByMobileDay', 'limitByMobileNum']);
@@ -279,6 +301,7 @@
                 let effectForm = pick(data, ['productEffSet']);
                 //游玩规则表单初始化
                 let playRuleForm = pick(data, ['admissionTimes']);
+                playRuleForm.admissionTimes = data.admissionTimes ? String(data.admissionTimes) : '';
 
                 let commonData = {};
                 commonData.id = String(data.id);
