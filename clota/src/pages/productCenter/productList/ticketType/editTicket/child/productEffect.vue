@@ -12,7 +12,8 @@
             <title-temp title="productEffect"></title-temp>
             <div class="form-content">
                 <div class="ivu-form-item-wrap hasIcon">
-                    <Form-item :label="$t('productEffSet')" prop="productEffSet"><!--产品有效性设置-->
+                    <!--产品有效性设置-->
+                    <Form-item :label="$t('productEffSet')" prop="productEffSet">
                         <Select v-model="formData.productEffSet"
                                 :disabled="!productEffSetEnable"
                                 :placeholder="$t('selectField', {msg: ''})">
@@ -105,10 +106,19 @@
             }
         },
         watch : {
+            //产品有效性是否可设置变更时，初始化产品有效性设置的值
             productEffSetEnable : {
                 handler () {
                     this.formData.productEffSet = 'since_the_play';
                 },
+                immediate : true,
+            },
+            //监听表单数据变化，向编辑页面传递模版表单数据
+            formData : {
+                handler (formData) {
+                    this.$emit('updateFormData', formData);
+                },
+                deep : true,
                 immediate : true,
             }
         }

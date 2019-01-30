@@ -126,6 +126,7 @@
     import { isTeamProduct, orderInfo, idType } from '@/assets/js/constVariable';
     export default {
         props : {
+            //产品有效性是否可设置
             productEffSetEnable : {
                 type : Boolean,
                 default : false,
@@ -138,18 +139,26 @@
             return {
                 //表单数据 -- 购买限制
                 formData : {
-                    isGroup : 'true',//是否团队产品
-                    inNum : '',//可入园人数
-                    minNum : '',//每订单最小起订数
-                    maxNum : '',//每订单最大限订数
-                    needId : 'noRequired',//预定时提交游客身份信息
-                    acceptIdType : ['identity','passport'],//可接受证件类型
-                    limitByIdDay : '',//身份证件购票限制
-                    limitByIdNum : '',//身份证件购票限制
-                    limitByMobileDay : '',//手机号购票限制
-                    limitByMobileNum : '',//手机号购票限制
-                    //stockType : '',//限制库存
-                    //stockNum : '',//库存数量
+                    //是否团队产品
+                    isGroup : 'true',
+                    //可入园人数
+                    inNum : '',
+                    //每订单最小起订数
+                    minNum : '',
+                    //每订单最大限订数
+                    maxNum : '',
+                    //预定时提交游客身份信息
+                    needId : 'noRequired',
+                    //可接受证件类型
+                    acceptIdType : ['identity','passport'],
+                    //身份证件购票限制
+                    limitByIdDay : '',
+                    //身份证件购票限制
+                    limitByIdNum : '',
+                    //手机号购票限制
+                    limitByMobileDay : '',
+                    //手机号购票限制
+                    limitByMobileNum : '',
                 },
                 //枚举数据
                 enumData : {
@@ -159,8 +168,6 @@
                     orderInfo : orderInfo,
                     //证件类型
                     idType : idType,
-                    //限制库存
-                    //stockType : limitStore,
                 },
             };
         },
@@ -247,12 +254,21 @@
             }
         },
         watch : {
+            //是否团队产品设置变更时初始化可入园人数
             'formData.isGroup' : {
                 handler () {
                     if (this.formData.isGroup === 'true') {
                        this.formData.inNum = '1';
                     }
                 },
+                immediate : true,
+            },
+            //监听表单数据变化，向编辑页面传递模版表单数据
+            formData : {
+                handler (formData) {
+                    this.$emit('updateFormData', formData);
+                },
+                deep : true,
                 immediate : true,
             }
         }

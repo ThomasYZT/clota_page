@@ -129,7 +129,7 @@
         },
         data () {
             return {
-                //游玩规则-产品园区列表数据
+                //游玩规则-产品可游玩园区列表数据
                 productPlayRuleVo : [],
                 //可游玩园区表头
                 columnData : parkColumn,
@@ -247,6 +247,24 @@
                 } else {
                     this.playRule = data;
                 }
+            }
+        },
+        watch : {
+            //监听产品可游玩园区列表数据变化，向编辑页面传递模版列表数据
+            productPlayRuleVo : {
+                handler (list) {
+                    this.$emit('updateProductPlayRuleVo', list);
+                },
+                deep : true,
+                immediate : true,
+            },
+            //监听表单数据变化，向编辑页面传递模版表单数据
+            playRule : {
+                handler (formData) {
+                    this.$emit('updateFormData', formData);
+                },
+                deep : true,
+                immediate : true,
             }
         }
     };

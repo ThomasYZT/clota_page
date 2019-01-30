@@ -136,6 +136,16 @@
                 this.formData = formData;
                 this.$emit('update:standardPrice', this.formData.standardPrice);
             }
+        },
+        watch : {
+            //监听表单数据变化，向编辑页面传递模版表单数据
+            formData : {
+                handler (formData) {
+                    this.$emit('updateFormData', formData);
+                },
+                deep : true,
+                immediate : true,
+            }
         }
     };
 </script>

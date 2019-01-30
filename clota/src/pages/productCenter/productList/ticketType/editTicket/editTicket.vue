@@ -14,21 +14,27 @@
         <div class="container">
             <!-- 基本信息表单 -->
             <baseInfo ref="baseInfo"
-                      :standardPrice.sync="standardPrice"></baseInfo>
+                      :standardPrice.sync="standardPrice"
+                      @updateFormData="updateFormData"></baseInfo>
             <!-- 票面信息表单 -->
             <ticketInfo ref="ticketInfo"
-                        :standardPrice="standardPrice"></ticketInfo>
+                        :standardPrice="standardPrice"
+                        @updateFormData="updateFormData"></ticketInfo>
             <!-- 购买限制表单 -->
             <buyLimit ref="buyLimit"
-                      :productEffSetEnable.sync="productEffSetEnable"></buyLimit>
+                      :productEffSetEnable.sync="productEffSetEnable"
+                      @updateFormData="updateFormData"></buyLimit>
             <!-- 产品有效性表单 -->
             <productEffect ref="productEffect"
-                           :productEffSetEnable="productEffSetEnable"></productEffect>
+                           :productEffSetEnable="productEffSetEnable"
+                           @updateFormData="updateFormData"></productEffect>
             <!-- 游玩规则 -->
             <playRule ref="playRule"
                       :formData="formData"
                       :parkList="parkList"
-                      :parkListCount="parkListCount"></playRule>
+                      :parkListCount="parkListCount"
+                      @updateFormData="updateFormData"
+                      @updateProductPlayRuleVo="updateProductPlayRuleVo"></playRule>
             <!--底部操作-->
             <div class="footer">
                 <!--新增按钮-->
@@ -105,9 +111,18 @@
                 parkList : [],
                 //可游玩园区列表总数
                 parkListCount : 0,
-                //表单数据
-                formData : {},
-                //可游玩景区数据
+                //默认表单表单数据
+                formData : {
+                    //是否团队产品
+                    isGroup : 'true',
+                    //预定时提交游客身份信息
+                    needId : 'noRequired',
+                    //可接受证件类型
+                    acceptIdType : ['identity','passport'],
+                    //产品有效性设置
+                    productEffSet : 'since_the_play',
+                },
+                //可游玩景区列表数据
                 productPlayRuleVo : [],
             };
         },
@@ -335,6 +350,20 @@
                     }
                 });
             },
+            /**
+             * 实时更新表单数据
+             * @param formData
+             */
+            updateFormData (formData) {
+                Object.assign(this.formData, formData);
+            },
+            /**
+             * 实施更新
+             * @param list
+             */
+            updateProductPlayRuleVo (list) {
+                this.productPlayRuleVo = list;
+            }
         },
         computed : {
             ...mapGetters([
