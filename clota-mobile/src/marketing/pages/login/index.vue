@@ -298,7 +298,7 @@
              * @param{String} typeId 营销类别id
              */
             toLogin (typeId) {
-                let orgInfo = this.userTypeList.find(item => item.id === typeId);
+                let orgInfo = this.userTypeList.find(item => item.key === typeId);
                 this.$store.commit('marketUpdateTypeId',typeId);
                 this.$store.commit('marketUpdateTypeName',orgInfo['typeName']);
                 this.$store.commit('marketUpdateOrgId',orgInfo['orgId']);
