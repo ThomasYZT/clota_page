@@ -2513,4 +2513,5 @@ export default {
     'defaultRefundFee' : 'default refund procedure rate is 0',
     'myAssignedPolicy' : 'my assigned sales policy',
     'admissionTimes' : 'total number of admissions',
+    'S017' : '该名称已被占用',
 };

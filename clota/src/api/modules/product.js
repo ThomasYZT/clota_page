@@ -58,8 +58,14 @@ export default {
     'queryPolicyFromScenic' : '/salePolicy/queryPolicyFromScenic',
     //分配过销售政策的销售渠道
     'getAllocatedChannels' : '/salePolicy/getAllocatedChannels',
-
-    'queryAllocatedPolicy' : '/salePolicy/queryAllocatedPolicy'
-
-
+    //查询我分配的销售政策
+    'queryAllocatedPolicy' : '/salePolicy/queryAllocatedPolicy',
+    //添加日期方案
+    'addDatePlan' : '/salePolicy/addDatePlan',
+    //删除日期方案
+    'deletedDatePlan' : '/salePolicy/deletedDatePlan',
+    //更新日期方案
+    'updateDatePlan' : '/salePolicy/updateDatePlan',
+    //获取自定义日期方案
+    'queryDatePlanList' : '/salePolicy/queryDatePlanList',
 };

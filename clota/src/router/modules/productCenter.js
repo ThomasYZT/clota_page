@@ -89,7 +89,7 @@ export default {
                 //产品中心--销售政策--新建/修改政策
                 path : '/productCenter/editSalePolicy',
                 name : 'editSalePolicy',
-                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/myDefinedPolicy/editSalePolicy.vue'),
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/myDefinedPolicy/editSalePolicy/editSalePolicy.vue'),
                 meta : {
                     menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
                     _name : 'addAndModifyPolicy',
