@@ -155,6 +155,7 @@
     import { playDeadline } from '@/assets/js/constVariable';
     import { dateListColumn } from '../editPolicyConfig';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import forEach from 'lodash/forEach';
     import ajax from '@/api/index';
     export default {
         props : {
@@ -463,6 +464,19 @@
              */
             initData (formData) {
                 Object.assign(this.formData, formData);
+                forEach(this.formData.playRule, (value, key) => {
+                    if (!["type", "beforeDay", "afterDay", "time", "dateType",
+                        "startTime", "endTime", "weekSold", "specifiedTime"].includes(key)) {
+                        delete this.formData.playRule[key];
+                    }
+                });
+                //初始化日期清单列表数据
+                if (this.formData.playRule.specifiedTime && this.formData.playRule.specifiedTime.length > 0) {
+                    let datelist = this.formData.playRule.specifiedTime.map((item) => {
+                        return item.format('YYYY-MM-DD');
+                    }).join(',');
+                    this.getDateList(datelist, 'playDate');
+                }
             },
         },
         created () {

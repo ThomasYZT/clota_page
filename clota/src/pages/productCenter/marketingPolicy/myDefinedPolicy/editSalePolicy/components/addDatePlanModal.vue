@@ -33,7 +33,6 @@
 <script>
     import ajax from '@/api/index';
     export default {
-        components : {},
         data () {
             const validateMethods = {
                 emoji : (rule, value, callback) => {
@@ -109,6 +108,7 @@
                             if (res.success) {
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('save') }));
                                 this.visible = false;
+                                this.$refs.modalForm.resetFields();
                                 this.$emit('updateDateList');
                             } else {
                                 if (res.code && res.code === 'S017') {

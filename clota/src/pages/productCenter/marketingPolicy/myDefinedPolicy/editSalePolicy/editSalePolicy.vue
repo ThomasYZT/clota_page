@@ -235,6 +235,7 @@
                                 befPlayStart : item.befPlayStart,
                                 befPlayEnd : item.befPlayEnd,
                                 procedureRates : item.procedureRates,
+                                returnRuleType : item.returnRuleType,
                             });
                         }
                     });
@@ -363,7 +364,9 @@
                     data.productPolicy.saleRuleModel.weekSold.split(',') : ['1','2','3','4','5'];
                 saleRuleForm.saleRule.dateType = 'custom';
                 saleRuleForm.saleRule.specifiedTime = data.productPolicy.saleRuleModel.specifiedTime ?
-                    data.productPolicy.saleRuleModel.specifiedTime.split(',') : [];
+                    data.productPolicy.saleRuleModel.specifiedTime.split(',').map((item) => {
+                        return new Date(new Date(item).setHours(0, 0, 0, 0));
+                    }) : [];
                 this.$refs.saleRule.initData(saleRuleForm);
 
                 //游玩规则表单初始化
@@ -376,7 +379,9 @@
                     data.productPolicy.playRuleModel.weekSold.split(',') : ['1','2','3','4','5'];
                 playRuleForm.playRule.dateType = 'custom';
                 playRuleForm.playRule.specifiedTime = data.productPolicy.playRuleModel.specifiedTime ?
-                    data.productPolicy.playRuleModel.specifiedTime.split(',') : [];
+                    data.productPolicy.playRuleModel.specifiedTime.split(',').map((item) => {
+                        return new Date(new Date(item).setHours(0, 0, 0, 0));
+                    }) : [];
                 if (data.productPolicy.checkinTime.indexOf('~')) {
                     playRuleForm.checkinTime = data.productPolicy.checkinTime.split('~');
                 } else {

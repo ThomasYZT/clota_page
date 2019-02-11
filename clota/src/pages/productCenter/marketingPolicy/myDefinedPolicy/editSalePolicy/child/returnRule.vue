@@ -13,6 +13,7 @@
                     <Form-item :label="$t('returnRule')" prop="returnRule"><!--退票规则-->
                         <div style="position: relative;">
                             <Select v-model="formData.returnRule.type"
+                                    @on-change="returnRuleTypeChange"
                                     :placeholder="$t('selectField', {msg: ''})">
                                 <Option v-for="(item,index) in enumData.returnRule"
                                         :key="index"
@@ -40,23 +41,28 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        <span>{{$t('playDate')}} {{scope.row.befPlayStart == '0' ? $t('when') : $t('before')}}</span>
-                                        <span v-if="scope.row.befPlayStart != '0'">{{scope.row.befPlayStart}}</span>
-                                        <span>{{$t('day')}}</span>
-                                        <span> ~ </span>
-                                        <span>{{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')}}</span>
-                                        <template v-if="scope.row.active">
-                                            <InputNumber :max="9999999999"
-                                                         :min="scope.row.befPlayStart ? Number(scope.row.befPlayStart) : 0"
-                                                         class="short-input"
-                                                         v-model.trim="scope.row.befPlayEnd"
-                                                         :placeholder="$t('inputField', {field: ''})" @on-blur="changeNextStart(scope.row.befPlayEnd, scope.$index)">
-                                            </InputNumber>
+                                        <template v-if="scope.row.returnRuleType === 'normal'">
+                                            <span>{{$t('playDate')}} {{scope.row.befPlayStart == '0' ? $t('when') : $t('before')}}</span>
+                                            <span v-if="scope.row.befPlayStart != '0'">{{scope.row.befPlayStart}}</span>
+                                            <span>{{$t('day')}}</span>
+                                            <span> ~ </span>
+                                            <span>{{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')}}</span>
+                                            <template v-if="scope.row.active">
+                                                <InputNumber :max="9999999999"
+                                                             :min="scope.row.befPlayStart ? Number(scope.row.befPlayStart) : 0"
+                                                             class="short-input"
+                                                             v-model.trim="scope.row.befPlayEnd"
+                                                             :placeholder="$t('inputField', {field: ''})" @on-blur="changeNextStart(scope.row.befPlayEnd, scope.$index)">
+                                                </InputNumber>
+                                            </template>
+                                            <template v-else>
+                                                {{scope.row.befPlayEnd | contentFilter}}
+                                            </template>
+                                            <span>{{$t('day')}}</span>
                                         </template>
                                         <template v-else>
-                                            {{scope.row.befPlayEnd | contentFilter}}
+                                            <span>过期自动核销</span>
                                         </template>
-                                        <span>{{$t('day')}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -169,7 +175,15 @@
                     returnRule : {
                         "type" : "notAllow",//退票类型（不允许-notAllow,需要审核-needAudit,不审核-noAudit ）
                         //{"befPlayStart": "",//游玩日期前起始天（0代表当天）"befPlayEnd": "",//游玩日期前截止天（0代表当天）"procedureRates": ""//手续费率}
-                        "rules" : []
+                        "rules" : [
+                            {
+                                befPlayStart : -1,
+                                befPlayEnd : 0,
+                                procedureRates : 0,
+                                active : false,
+                                returnRuleType : 'overdue',
+                            }
+                        ]
                     },
                     //改签规则
                     alterRule : {
@@ -235,6 +249,7 @@
                     befPlayEnd : 1,
                     procedureRates : 0,
                     active : true,
+                    returnRuleType : 'normal',
                 };
                 if (this.formData.returnRule.rules.length > 0) {
                     param.befPlayStart = this.formData.returnRule.rules[this.formData.returnRule.rules.length - 1].befPlayEnd + 1;
@@ -322,6 +337,23 @@
                         }
                     });
                 });
+            },
+            /**
+             *  退票规则改变
+             *  @param {string} type
+             */
+            returnRuleTypeChange (type) {
+                if (type !== 'notAllow') {
+                    this.formData.returnRule.rules = [
+                        {
+                            befPlayStart : -1,
+                            befPlayEnd : 0,
+                            procedureRates : 0,
+                            active : false,
+                            returnRuleType : 'overdue',
+                        }
+                    ];
+                }
             },
             /**
              * 编辑时初始化表单数据

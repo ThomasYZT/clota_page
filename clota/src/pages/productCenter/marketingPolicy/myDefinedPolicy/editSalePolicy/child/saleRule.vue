@@ -177,6 +177,7 @@
     import { validateSaleData } from '../validateMethods';
     import { dateListColumn } from '../editPolicyConfig';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import forEach from 'lodash/forEach';
     import ajax from '@/api/index';
 
     export default {
@@ -504,12 +505,24 @@
                 this.$emit('queryDatePlanList');
             },
             /**
-             * 编辑时初始化表单数据
+             * 编辑时 -- 初始化表单数据
              * @param formData
              */
             initData (formData) {
                 Object.assign(this.formData, formData);
-                this.$emit('update:standardPrice', this.formData.standardPrice);
+                forEach(this.formData.saleRule, (value, key) => {
+                    if (!["type", "beforeDay", "afterDay", "time", "dateType",
+                        "startTime", "endTime", "weekSold", "specifiedTime"].includes(key)) {
+                        delete this.formData.saleRule[key];
+                    }
+                });
+                //初始化日期清单列表数据
+                if (this.formData.saleRule.specifiedTime && this.formData.saleRule.specifiedTime.length > 0) {
+                    let datelist = this.formData.saleRule.specifiedTime.map((item) => {
+                        return item.format('YYYY-MM-DD');
+                    }).join(',');
+                    this.getDateList(datelist, 'saleDate');
+                }
             }
         },
         created () {
