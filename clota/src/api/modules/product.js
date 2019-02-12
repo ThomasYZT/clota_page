@@ -68,4 +68,22 @@ export default {
     'updateDatePlan' : '/salePolicy/updateDatePlan',
     //获取自定义日期方案
     'queryDatePlanList' : '/salePolicy/queryDatePlanList',
+    //查询类别、标签列表
+    'queryTagDefines' : '/tag/queryTagDefines',
+    //新增类别、标签
+    'addTagDefine' : '/tag/addTagDefine',
+    //修改类别、标签
+    'updateTagDefine' : '/tag/updateTagDefine',
+    //强制删除标签
+    'forceDeleteTagDefines' : '/tag/forceDeleteTagDefines',
+    //删除标签(使用中会返回错误码)
+    'deleteTagDefines' : '/tag/deleteTagDefines',
+    //新增标签关系
+    'addTagRelation' : '/tag/addTagRelation',
+    //删除关联
+    'deleteTagRelations' : '/tag/deleteTagRelations',
+    //删除产品标签，做使用校验
+    'deleteProductTags' : '/product/deleteProductTags',
+    //删除产品类别，做使用校验
+    'deletedProductTagType' : '/product/deletedProductTagType'
 };

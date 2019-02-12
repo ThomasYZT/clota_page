@@ -36,7 +36,8 @@ Vue.config.productionTip = true;
 Vue.use(Viewer, {
     defaultOptions : {
         zIndex : 9999
-    }
+    },
+    name : 'viewer'
 });
 
 router.beforeEach((to, from, next) => {

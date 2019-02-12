@@ -163,7 +163,8 @@
              *  表单数据处理
              */
             formDataProcessing () {
-                let rule = [];
+                let rule = [],
+                    tags = [];
                 this.productPlayRuleVo.forEach((item) => {
                     let obj = defaultsDeep({},item);
                     if (item.saleType === 'one_ticket') {
@@ -195,11 +196,24 @@
                         });
                     });
                 }
+                if (this.type === 'copy' || this.type === 'add') {
+                    tags = this.formData.tags.map(item => {
+                        return {
+                            tagId : item.id
+                        };
+                    });
+                } else {
+                    tags = this.formData.tags.map(item => {
+                        return {
+                            id : item.uid,
+                            tagId : item.id
+                        };
+                    });
+                }
                 let params = {
                     //产品
                     productJson : JSON.stringify({
                         auditStatus : this.formData.auditStatus || '',
-                        code : this.formData.code || '',
                         productDes : this.formData.productDes || '',
                         id : this.formData.id || '',
                         inNum : this.formData.inNum || '',
@@ -215,6 +229,8 @@
                         ticketRemark : this.formData.ticketRemark || '',
                         productEffSet : this.formData.productEffSet || '',
                         admissionTimes : this.formData.admissionTimes || '',
+                        typeId : this.formData.typeId || '',
+                        pictureUrl : this.formData.pictureUrl || '',
                     }),
                     //销售
                     saleRuleJson : JSON.stringify({
@@ -236,6 +252,8 @@
                     }),
                     //游玩
                     playRuleJson : JSON.stringify(rule),
+                    //产品关联的标签
+                    tags : JSON.stringify(tags),
                 };
                 //区分新增与修改
                 if ( this.type === 'add' || this.type === 'copy' ) {
@@ -303,8 +321,10 @@
              */
             initEditData (data) {
                 //基本信息表单初始化
-                let baseInfoForm = pick(data, ['productName', 'standardPrice', 'thirdCode', 'productDes']);
+                let baseInfoForm = pick(data, ['productName', 'standardPrice', 'thirdCode', 'productDes',
+                    'typeId','pictureUrl', 'tags']);
                 baseInfoForm.standardPrice = data.standardPrice ? String(data.standardPrice) : '';
+                baseInfoForm.tags = data.tags ? data.tags : [];
                 //票面信息表单初始化
                 let ticketInfoForm = pick(data, ['printName', 'printPrice', 'ticketRemark', 'printRemark']);
                 ticketInfoForm.printPrice = data.printPrice ? String(data.printPrice) : '';

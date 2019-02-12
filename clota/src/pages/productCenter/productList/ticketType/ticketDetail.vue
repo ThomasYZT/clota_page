@@ -53,9 +53,35 @@
                         </i-col>
                     </i-row>
                     <i-row>
-                        <i-col span="24">
+                        <i-col span="12">
                             <Form-item :label="$t('thirdCode')+'：'"><!--第三方产品编码-->
                                 <div class="form-item-content" v-w-title="detail.thirdCode">{{detail.thirdCode | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('产品类别')+'：'"><!--产品类别-->
+                                <div class="form-item-content" v-w-title="detail.typeName">{{detail.typeName | contentFilter}}</div>
+                            </Form-item>
+                        </i-col>
+                    </i-row>
+                    <i-row>
+                        <i-col span="12">
+                            <Form-item :label="$t('产品标签')+'：'"><!--产品标签-->
+                                <div class="form-item-content">
+                                    <productTag v-for="item in detail.tags"
+                                                :checkable="false"
+                                                :closable="false"
+                                                :key="item.id"
+                                                :name="item.name"
+                                                :chosed="true"></productTag>
+                                </div>
+                            </Form-item>
+                        </i-col>
+                        <i-col span="12">
+                            <Form-item :label="$t('产品封面')+'：'"><!--产品封面-->
+                                <div class="form-item-content" v-viewer>
+                                    <img style="cursor: pointer;" class="image-thumb" :src="detail.pictureUrl">
+                                </div>
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -333,6 +359,7 @@
     import editParkModal from './components/editParkModal.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
     import delModal from '@/components/delModal/index.vue';
+    import productTag from './components/productTag';
     import disableModal from './components/disableModal';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { parkColumn } from './editTicket/child/parkConfig';
@@ -348,7 +375,8 @@
             editParkModal,
             addRemarkModal,
             disableModal,
-            delModal
+            delModal,
+            productTag
         },
         data () {
             return {
@@ -454,6 +482,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.detail = res.data.productSaleVo || {};
+                        this.detail.tags = res.data.tagVos || {};
                         this.productPlayRuleVo = res.data.productPlayRuleVo || [];
                         this.recordsVos = res.data.recordsVos || [];
                         this.remark = '';
@@ -667,6 +696,12 @@
                     width: 100%;
                     line-height: 30px;
                     font-size: $font_size_14px;
+
+                    .image-thumb {
+                        height: 100px;
+                        border: 1px dashed $color_gray;
+                        border-radius: 5px;
+                    }
                 }
 
                 /deep/ .ivu-form-item-label{

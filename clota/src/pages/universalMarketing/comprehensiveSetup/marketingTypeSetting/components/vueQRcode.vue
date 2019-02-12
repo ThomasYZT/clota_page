@@ -3,8 +3,14 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="qr-code">
-        <img v-if="show" :src="src" alt="">
+    <div>
+        <div v-if="previewable" v-viewer class="qr-code">
+            <img class="can-preview" v-if="show" :src="src" alt="">
+        </div>
+        <div v-else class="qr-code">
+            <img v-if="show" :src="src" alt="">
+        </div>
+        <p class="download-btn" @click="download">下载</p>
     </div>
 </template>
 
@@ -21,7 +27,12 @@
             width : {
                 type : Number,
                 default : 100
-            }
+            },
+            //是否有图片预览功能
+            previewable : {
+                type : Boolean,
+                default : false
+            },
         },
         data () {
             return {
@@ -43,6 +54,12 @@
                     this.src = res;
                     this.show = true;
                 });
+            },
+            download () {
+                let a = document.createElement('a');
+                a.href = this.src;
+                a.setAttribute('download', 'code');
+                a.click();
             }
         },
         watch : {
@@ -58,4 +75,15 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+
+    .can-preview {
+        cursor: pointer;
+    }
+
+    .download-btn {
+        margin-bottom: 5px;
+        color: $color_blue;
+        font-size: 12px;
+        cursor: pointer;
+    }
 </style>

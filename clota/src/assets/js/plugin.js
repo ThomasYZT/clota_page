@@ -32,7 +32,8 @@ import {
     Steps,
     Poptip,
     AutoComplete,
-    Notice
+    Notice,
+    Tag,
 } from 'iview';
 //按需引入element-ui组件
 import Table from 'element-ui/lib/table';
@@ -136,6 +137,7 @@ plugin.install = function (Vue, options) {
     Vue.component('Step',Steps.Step);
     Vue.component('Poptip',Poptip);
     Vue.component('AutoComplete',AutoComplete);
+    Vue.component('Tag', Tag);
     Vue.prototype.$Message = Message;
     Vue.prototype.$QRcode = QRcode;
     Vue.prototype.$Notice = Notice;

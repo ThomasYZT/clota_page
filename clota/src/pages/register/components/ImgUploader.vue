@@ -6,7 +6,7 @@
     <div class="img-uploader">
         <el-upload
             ref="imgUpload"
-            :class="{ 'add-hidden' : addDisabled || uploadList.length >= quantityLimit || defaultList.length >= quantityLimit }"
+            :class="{ 'add-hidden' : addDisabled || uploadList.length >= quantityLimit }"
             :action="action"
             list-type="picture-card"
             :limit="quantityLimit"
@@ -119,7 +119,7 @@
                 if (res.success) {
                     this.uploadList.push(res.data);
                     //若已上传文件到达上传数量限制，则不显示上传按钮
-                    if (this.uploadList.length < this.quantityLimit) {
+                    if (this.$refs.imgUpload.uploadFiles.length < this.quantityLimit) {
                         this.addDisabled = false;
                     }
                     this.$emit('upload-success',this.uploadList);
@@ -228,6 +228,30 @@
                 this.limit = false;
                 //是否显示添加按钮
                 this.addDisabled = false;
+            }
+        },
+        mounted () {
+            if (this.$refs && this.$refs.imgUpload) {
+                if (this.$refs.imgUpload.fileList.length >= this.quantityLimit) {
+                    this.addDisabled = true;
+                } else {
+                    this.addDisabled = false;
+                }
+            }
+        },
+        watch : {
+            defaultList : {
+                handler () {
+                    this.$nextTick(() => {
+                        if (this.$refs && this.$refs.imgUpload) {
+                            if (this.$refs.imgUpload.fileList.length >= this.quantityLimit) {
+                                this.addDisabled = true;
+                            } else {
+                                this.addDisabled = false;
+                            }
+                        }
+                    })
+                }
             }
         }
     };

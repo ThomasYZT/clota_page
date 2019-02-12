@@ -236,6 +236,7 @@
 
     /deep/ .el-upload {
         min-width: 80px;
+        width: 80px;
         height: 80px;
         font-size: 12px;
         background-color: #FAFAFA;
