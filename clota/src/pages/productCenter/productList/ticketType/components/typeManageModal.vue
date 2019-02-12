@@ -13,8 +13,7 @@
                :mask-closable="false">
             <div class="manager-wrapper">
                 <Form ref="typeForm"
-                      :model="formData"
-                      label-position="top">
+                      :model="formData">
                     <i-row>
                         <i-col span="12"
                                v-for="(item, index) in formData.typeList"
@@ -44,6 +43,19 @@
                         </i-col>
                     </i-row>
                 </Form>
+
+                <div class="form-wrapper">
+                    <Form ref="addTypeForm"
+                          :model="addFormData"
+                          :rules="ruleValidate"
+                          label-position="left">
+                        <FormItem :label="$t('colonSetting', { key : $t('类别名称') })" prop="name">
+                            <Input v-model="addFormData.name"
+                                   :placeholder="$t('inputPlaceholder')" style="width: 200px" />
+                            <span class="btn-inline" @click="validateType">新增类别</span>
+                        </FormItem>
+                    </Form>
+                </div>
             </div>
 
             <div slot="footer">
@@ -81,6 +93,15 @@
                         }
                     ]
                 },
+                //新增类别表单数据
+                addFormData : {
+                    //类别id
+                    id : '',
+                    //类别名称、标签名称
+                    name : '',
+                    //使用场景 product_tag -- 标签 product_type -- 类别
+                    scene : '',
+                },
                 //表单校验方法
                 validateMethods : validateMethods,
                 //类别列表数据
@@ -95,6 +116,17 @@
                     { max : 10, message : this.$t('errorMaxLength', { field : this.$t('类别名称'), length : 10 }), trigger : 'blur' },
                     { validator : this.validateMethods.emoji, trigger : 'blur' },
                 ]
+            },
+            //新增类别表单校验规则
+            ruleValidate () {
+                return {
+                    //类别名称
+                    name : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('类别名称') }), trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('类别名称'), length : 10 }), trigger : 'blur' },
+                        { validator : this.validateMethods.emoji, trigger : 'blur' },
+                    ]
+                }
             }
         },
         methods : {
@@ -108,6 +140,7 @@
              * 关闭模态框
              */
             hide () {
+                this.$refs.addTypeForm.resetFields();
                 this.typeList = [];
                 this.formData = { typeList : [] };
                 this.visible = false;
@@ -206,7 +239,35 @@
                 }).name;
                 this.$refs.typeForm.validateField('typeList.' + index + '.name');
                 typeItem.editing = false;
-            }
+            },
+            /**
+             *  校验类别
+             */
+            validateType () {
+                this.$refs.addTypeForm.validate((valid) => {
+                    if (valid) {
+                        this.addType();
+                    }
+                });
+            },
+            /**
+             * 新增类别
+             */
+            addType () {
+                ajax.post('addTagDefine', {
+                    name : this.addFormData.name,
+                    scene : 'product_type',
+                }).then((res) => {
+                    if (res.success) {
+                        this.$refs.addTypeForm.resetFields();
+                        this.queryTagDefines();
+                        this.$emit('updateTypeList');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                    }
+                });
+            },
         },
     };
 </script>
@@ -215,6 +276,22 @@
     @import '~@/assets/scss/base';
     /deep/ .ivu-modal-body {
         min-height: 200px;
+
+        .form-wrapper {
+            width: 100%;
+            height: 50px;
+            position: relative;
+            /deep/ .ivu-form-item {
+                margin-top: 18px;
+                text-align: center;
+                .ivu-form-item-content {
+                    display: inline-block;
+                }
+                .ivu-form-item-label {
+                    float: none;
+                }
+            }
+        }
     }
 
     /deep/ .ivu-form-item-content {
@@ -222,6 +299,12 @@
 
         .btn-wrapper {
             display: inline-block;
+        }
+
+        .btn-inline {
+            font-size: 12px;
+            color: $color_blue;
+            cursor: pointer;
         }
     }
 

@@ -95,7 +95,7 @@
                 this.$refs.modalForm.resetFields();
             },
             /**
-             * 保存日期方案
+             * 保存类别
              */
             save () {
                 if (this.type === 'modify') {

@@ -123,7 +123,7 @@
             </span>
         </del-modal>
 
-        <typeManageModal ref="typeManageModal"></typeManageModal>
+        <typeManageModal ref="typeManageModal" @updateTypeList="queryTagDefines"></typeManageModal>
     </div>
 </template>
 <script type="text/ecmascript-6">
