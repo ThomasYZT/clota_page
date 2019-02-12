@@ -16,6 +16,19 @@
                     :disabled="selectedRow.length > 0 ? false : true"
                     @click="batchDel">{{$t('del')}}</Button>
         </div>
+        <!-- 筛选产品类别 -->
+        <div class="filter-wrapper">
+            <Select v-model="queryParams.typeId"
+                    @on-change="queryList"
+                    style="width:250px">
+                <Option v-for="item in typeList"
+                        :value="item.id"
+                        :key="item.id">
+                    {{ $t(item.name) }}
+                </Option>
+            </Select>
+            <span class="inline-btn" @click="manageType">管理</span>
+        </div>
 
         <table-com
             :ofsetHeight="120"
@@ -45,7 +58,7 @@
                 </template>
             </el-table-column>
             <el-table-column v-if="role === 'partner'"
-                             slot="column4"
+                             slot="column5"
                              slot-scope="row"
                              :label="row.title"
                              :width="row.width"
@@ -56,7 +69,7 @@
             </el-table-column>
             <el-table-column
                 v-if="role !== 'partner'"
-                slot="column6"
+                slot="column7"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -72,7 +85,7 @@
             </el-table-column>
             <el-table-column
                 v-if="role !== 'partner'"
-                slot="column7"
+                slot="column8"
                 slot-scope="row"
                 :label="row.title"
                 :width="row.width"
@@ -84,7 +97,7 @@
             </el-table-column>
             <el-table-column
                 v-if="role === 'scenic' || role === 'partner'"
-                slot="column8"
+                slot="column9"
                 slot-scope="row"
                 fixed="right"
                 :label="row.title"
@@ -110,12 +123,14 @@
             </span>
         </del-modal>
 
+        <typeManageModal ref="typeManageModal"></typeManageModal>
     </div>
 </template>
 <script type="text/ecmascript-6">
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import delModal from '@/components/delModal/index.vue';
+    import typeManageModal from './components/typeManageModal';
     import { configVariable } from '@/assets/js/constVariable';
     import { ticketTypeHead } from '../../productConfig';
     import ajax from '@/api/index';
@@ -125,6 +140,7 @@
         components : {
             tableCom,
             delModal,
+            typeManageModal,
         },
         computed : {
             ...mapGetters([
@@ -148,6 +164,7 @@
             return {
                 // 获取数据的请求参数
                 queryParams : {
+                    typeId : 'all',
                     pageNo : 1, // 当前页码数
                     pageSize : configVariable.pageDefaultSize, // 每页显示数量
                     auditStatus : '', //审核状态；（未启用-not_enabled，已驳回-rejected，审核中-auditing，已启用-enabled）
@@ -155,11 +172,6 @@
                 filterParam : {
                     orderBy : [{ name : 'p.updated_time', val : 'desc' }],//[{name:xxx,val:asc|desc}]
                 },
-                // 筛选列表
-                /*filterList: [
-                    { text: '已启用', value: '已启用' },
-                    { text: '未启用', value: '未启用' },
-                ],*/
                 // 表格表头字段名
                 columnData : ticketTypeHead,
                 // 列表数据
@@ -170,13 +182,25 @@
                 selectedRow : [],
                 // 删除数据显示
                 delUnits : '',
+                //类别列表数据
+                typeList : [{
+                    id : 'all',
+                    name : 'allType',
+                }],
             };
         },
         methods : {
-
-            // 查询票类产品列表
+            /**
+             *  查询票类产品列表
+             */
             queryList () {
-                ajax.post('queryProductPage',this.queryParams).then(res => {
+                ajax.post('queryProductPage',{
+                    pageNo : this.queryParams.pageNo,
+                    pageSize : this.queryParams.pageSize,
+                    auditStatus : this.queryParams.auditStatus,
+                    typeId : this.queryParams.typeId === 'all' ? '' : this.queryParams.typeId,
+                    orderBy : this.queryParams.orderBy,
+                }).then(res => {
                     if (res.success) {
                         this.tableData = res.data.data || [];
                         this.total = res.data.totalRow || 0;
@@ -187,8 +211,9 @@
                     }
                 });
             },
-
-            //查看详情
+            /**
+             *  查看详情
+             */
             checkProductDetail ( data ) {
                 this.$router.push({
                     name : 'ticketDetail',
@@ -198,7 +223,6 @@
                     }
                 });
             },
-
             /**
              * 批量勾选结果改变时的处理
              * @param selection - 被勾选的数据  Array
@@ -206,7 +230,9 @@
             changeSelection (selection) {
                 this.selectedRow = selection;
             },
-            // 批量删除
+            /**
+             * 批量删除
+             */
             batchDel (data) {
                 if ( !this.cacnDelProduct ) return;
                 if (data) {
@@ -276,8 +302,40 @@
             filterHandler (value, row) {
                 return row.status === value;
             },
-
+            /**
+             * 获取类别列表数据
+             */
+            queryTagDefines () {
+                ajax.post('queryTagDefines', {
+                    scene : 'product_type',
+                }).then(res => {
+                    if (res.success) {
+                        this.typeList = res.data ? [{
+                            id : 'all',
+                            name : 'allType',
+                        }].concat(res.data) : [{
+                            id : 'all',
+                            name : 'allType',
+                        }];
+                    } else {
+                        this.typeList = [{
+                            id : 'all',
+                            name : 'allType',
+                        }];
+                    }
+                })
+            },
+            /**
+             * 管理标签
+             */
+            manageType () {
+                this.$refs.typeManageModal.show();
+            }
         },
+        created () {
+            //查询产品类别列表数据
+            this.queryTagDefines();
+        }
     };
 </script>
 
@@ -291,6 +349,17 @@
             /deep/ .ivu-btn {
                 min-width: 88px;
                 margin-right: 7px;
+            }
+        }
+
+        .filter-wrapper {
+            padding: 0 30px 15px;
+
+            .inline-btn {
+                margin-right: 10px;
+                font-size: 12px;
+                color: $color_blue;
+                cursor: pointer;
             }
         }
 

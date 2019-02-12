@@ -23,6 +23,11 @@ export const ticketTypeHead = [
         field : 'standardPrice'
     },
     {
+        title : '类别', // 景区成本价
+        minWidth : 120,
+        field : 'typeName'
+    },
+    {
         title : 'printPrice', // 票面价格
         minWidth : 200,
         field : 'printPrice'

@@ -1,0 +1,228 @@
+<!--
+    类别管理模态框
+    作者：杨泽涛
+-->
+<template>
+    <div class="type-manage-modal">
+        <Modal v-model="visible"
+               class-name="vertical-center-modal type-manage"
+               transfer
+               width="500"
+               :title="$t('产品类别管理：')"
+               @on-cancel="hide"
+               :mask-closable="false">
+            <div class="manager-wrapper">
+                <Form ref="typeForm"
+                      :model="formData"
+                      label-position="top">
+                    <i-row>
+                        <i-col span="12"
+                               v-for="(item, index) in formData.typeList"
+                               :key="item.id">
+                            <FormItem
+                                :prop="'typeList.' + index + '.name'"
+                                :rules="rules">
+                                    <Input type="text"
+                                           :disabled="!item.editing"
+                                           v-model="item.name"
+                                           style="width: 50%;"
+                                           placeholder=""></Input>
+                                    <div class="btn-wrapper">
+                                        <ul class="operate-list">
+                                            <template v-if="item.editing">
+                                                <li @click="save(item)">{{$t('save')}}</li>
+                                                <li @click="cancel(item, index)" class="red-label" >{{$t('cancel')}}</li>
+                                            </template>
+                                            <template v-else>
+                                                <li @click="edit(item)">{{$t('edit')}}</li>
+                                                <li @click="del(item)" class="red-label" >{{$t('del')}}</li>
+                                            </template>
+
+                                        </ul>
+                                    </div>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+                </Form>
+            </div>
+
+            <div slot="footer">
+                <Button class="ivu-btn-90px" type="primary" @click="confirm">{{$t('confirm')}}</Button>
+                <Button class="ivu-btn-90px" type="default" @click="hide">{{$t('cancel')}}</Button>
+            </div>
+        </Modal>
+    </div>
+</template>
+
+<script>
+
+    import ajax from '@/api/index';
+    export default {
+        components : {},
+        data () {
+            const validateMethods = {
+                emoji : (rule, value, callback) => {
+                    if (value && value.isUtf16()) {
+                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
+                    } else {
+                        callback();
+                    }
+                },
+            };
+            return {
+                //模态框是否显示
+                visible : false,
+                formData : {
+                    typeList : [
+                        {
+                            name : '',
+                            index : 1,
+                            status : 1
+                        }
+                    ]
+                },
+                //表单校验方法
+                validateMethods : validateMethods,
+                //类别列表数据
+                typeList : [],
+            };
+        },
+        computed : {
+            //表单校验规则
+            rules () {
+                return [
+                    { required : true, message : this.$t('errorEmpty', { msg : this.$t('类别名称') }), trigger : 'blur' },
+                    { max : 10, message : this.$t('errorMaxLength', { field : this.$t('类别名称'), length : 10 }), trigger : 'blur' },
+                    { validator : this.validateMethods.emoji, trigger : 'blur' },
+                ]
+            }
+        },
+        methods : {
+            /**
+             * 显示模态框
+             */
+            show () {
+                this.queryTagDefines();
+            },
+            /**
+             * 关闭模态框
+             */
+            hide () {
+                this.typeList = [];
+                this.formData = { typeList : [] };
+                this.visible = false;
+            },
+            /**
+             * 确认
+             */
+            confirm () {
+                this.hide()
+            },
+            /**
+             * 获取类别列表数据
+             */
+            queryTagDefines () {
+                ajax.post('queryTagDefines', {
+                    scene : 'product_type',
+                }).then(res => {
+                    if (res.success) {
+                        this.typeList = res.data ? res.data : [];
+                        this.formData.typeList = this.typeList.map((item) => {
+                            return {
+                                id : item.id,
+                                name : item.name,
+                                //是否处于编辑状态
+                                editing : false,
+                            }
+                        });
+                    } else {
+                        this.typeList = [];
+                        this.formData.typeList = [];
+                    }
+                    this.visible = true;
+                });
+            },
+            /**
+             * 编辑类别
+             * @param typeItem
+             */
+            edit (typeItem) {
+                typeItem.editing = true;
+            },
+            /**
+             * 删除类别
+             * @param typeItem
+             */
+            del (typeItem) {
+                this.deletaValidate(typeItem);
+            },
+            /**
+             *  删除类别校验
+             */
+            deletaValidate (typeItem) {
+                ajax.post('deletedProductTagType', {
+                    id : typeItem.id,
+                }).then(res => {
+                    if (res.success) {
+                        this.queryTagDefines();
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('delete') }));
+                    } else {
+                        this.$Message.error(this.$t('该类别正在使用，不能删除'));
+                    }
+                })
+            },
+            /**
+             * 保存类别
+             * @param typeItem
+             */
+            save (typeItem) {
+                this.updateTagDefine(typeItem);
+            },
+            /**
+             *  更新类别名称
+             *  @param typeItem
+             */
+            updateTagDefine (typeItem) {
+                ajax.post('updateTagDefine', {
+                    id : typeItem.id,
+                    name : typeItem.name,
+                }).then(res => {
+                    if (res.success) {
+                        this.queryTagDefines();
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
+                    }
+                });
+            },
+            /**
+             * 取消操作
+             * @param typeItem
+             * @param index
+             */
+            cancel (typeItem, index) {
+                typeItem.name = this.typeList.find((item) => {
+                    return item.id === typeItem.id;
+                }).name;
+                this.$refs.typeForm.validateField('typeList.' + index + '.name');
+                typeItem.editing = false;
+            }
+        },
+    };
+</script>
+
+<style lang="scss" scoped>
+    @import '~@/assets/scss/base';
+    /deep/ .ivu-modal-body {
+        min-height: 200px;
+    }
+
+    /deep/ .ivu-form-item-content {
+        height: 32px;
+
+        .btn-wrapper {
+            display: inline-block;
+        }
+    }
+
+</style>

@@ -2514,4 +2514,5 @@ export default {
     'myAssignedPolicy' : 'my assigned sales policy',
     'admissionTimes' : 'total number of admissions',
     'S017' : '该名称已被占用',
+    'allType' : '全部类别',
 };

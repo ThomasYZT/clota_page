@@ -2516,4 +2516,5 @@ export default {
     'myAssignedPolicy' : '我分配的销售政策',
     'admissionTimes' : '入园总次数',
     'S017' : '该名称已被占用',
+    'allType' : '全部类别',
 };
