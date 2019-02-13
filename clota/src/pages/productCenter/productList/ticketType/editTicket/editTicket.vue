@@ -260,6 +260,7 @@
                     this.saveAndEditTicket( 'addProduct', params);
                 }
                 if ( this.type === 'modify' ) {
+                    delete params.code;
                     this.saveAndEditTicket( 'updateProduct', params);
                 }
             },
