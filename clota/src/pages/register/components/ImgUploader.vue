@@ -124,8 +124,8 @@
                 if (res.success) {
                     this.uploadList.push(res.data);
                     //若已上传文件到达上传数量限制，则不显示上传按钮
-                    if (this.$refs.imgUpload.uploadFiles.length < this.quantityLimit) {
-                        this.addDisabled = false;
+                    if (this.$refs.imgUpload.uploadFiles.length >= this.quantityLimit) {
+                        this.addDisabled = true;
                     }
                     this.$emit('upload-success',this.uploadList);
                     if (!this.tipStop) {
