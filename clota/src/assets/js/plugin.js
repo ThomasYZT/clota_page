@@ -55,7 +55,8 @@ import Loading from 'element-ui/lib/loading';
 
 //引入qr-code工具
 import QRcode from 'qrcode';
-
+//引入富文本编辑
+import VueQuillEditor from 'vue-quill-editor';
 // 引入公用样式，指令及方法等
 import klwkUi from 'klwk-ui';
 
@@ -144,6 +145,9 @@ plugin.install = function (Vue, options) {
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
+
+    //引入富文本编辑器组件
+    Vue.use(VueQuillEditor)
 
     // 注入全局变量
     Vue.mixin({

@@ -39,6 +39,12 @@ export const marketingProductHead = [
         field : 'commission'
     },
     {
+        title : '线下支付', // 线下支付
+        width : 130,
+        enWidth : 150,
+        field : 'supportCollect'
+    },
+    {
         title : 'operate',
         width : 200,
         enWidth : 230,

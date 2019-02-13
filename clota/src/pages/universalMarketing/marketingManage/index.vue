@@ -55,8 +55,32 @@
                 </template>
             </el-table-column>
             <el-table-column
-                v-if="canModifyMarketPrice || canQueryMarketPolicy"
+                class-name="modifiedSalePrice"
                 slot="column6"
+                slot-scope="row"
+                show-overflow-tooltip
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <Form ref="form"
+                          v-if="currRowIndex == scope.$index"
+                          :model="supportCollectModal">
+                        <FormItem prop="modifiedSalePrice">
+                            <Select v-model="supportCollectModal.supportCollect"
+                                    transfer
+                                    size="small">
+                                <Option :value="'true'">{{ $t('支持') }}</Option>
+                                <Option :value="'false'">{{ $t('禁止') }}</Option>
+                            </Select>
+                        </FormItem>
+                    </Form>
+                    <span v-else>{{scope.row.supportCollect && scope.row.supportCollect === 'true' ? '支持' : '禁止' | contentFilter}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                v-if="canModifyMarketPrice || canQueryMarketPolicy"
+                slot="column7"
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
@@ -146,6 +170,9 @@
                     modifiedSalePrice : '',
                     //销售政策产品单价
                     settlePrice : '',
+                },
+                supportCollectModal : {
+                    supportCollect : ''
                 }
             };
         },
@@ -223,6 +250,8 @@
                 this.currRowIndex = scopeData.$index;
                 this.modifyModel.modifiedSalePrice = scopeData.row.salePrice.toString();
                 this.modifyModel.settlePrice = scopeData.row.settlePrice;
+                this.supportCollectModal.supportCollect = scopeData.row.supportCollect &&
+                    scopeData.row.supportCollect === 'true' ? 'true' : 'false';
             },
             /**
              * 取消修改终端售价
@@ -242,7 +271,8 @@
                     if (valid) {
                         ajax.post('marketing-updateSalePrice', {
                             id : scopeRow.id,
-                            salePrice : this.modifyModel.modifiedSalePrice
+                            salePrice : this.modifyModel.modifiedSalePrice,
+                            supportCollect : this.supportCollectModal.supportCollect,
                         }).then(res => {
                             if (res.success) {
                                 scopeRow.salePrice = this.modifyModel.modifiedSalePrice;

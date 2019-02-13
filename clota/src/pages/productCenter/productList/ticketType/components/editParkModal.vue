@@ -202,6 +202,14 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
+                        <!-- 入园须知 -->
+                        <Form-item :label="$t('入园须知')" prop="admissionInstructions">
+                            <editor :value.sync="formData.admissionInstructions"></editor>
+                        </Form-item>
+                    </i-col>
+                </i-row>
+                <i-row>
+                    <i-col span="24">
                         <Form-item :label="$t('otherSet')"><!--其他设置-->
                             <Checkbox v-model="formData.fingerCheck"
                                       :disabled="type === 'check'">{{$t('fingerprint')}}</Checkbox>
@@ -545,6 +553,7 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import titlePark from '../../../components/titlePark.vue';
+    import editor from '@/components/editor/editor';
     import { saleType, authenticationType } from '@/assets/js/constVariable';
     import { distributeColumnHead, proGroupColumnHead, viewDistributeColumnHead } from '../editTicket/child/parkConfig';
     import defaultsDeep from 'lodash/defaultsDeep';
@@ -556,6 +565,7 @@
         components : {
             tableCom,
             titlePark,
+            editor,
         },
         data () {
             let validateMethod = {
@@ -657,6 +667,7 @@
                     //游玩项目
                     itemCheckTimes : 0,//项目游玩总次数itemCheckTimes
                     equipmentGroupIds : [],//游玩项目分组ID-多个逗号分隔
+                    admissionInstructions : '',
                 },
                 ruleValidate : {
                     parkId : [
@@ -665,9 +676,6 @@
                     saleType : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleType') }), trigger : 'change' },
                     ],
-                    // gardenGroupIds : [
-                    //     { validator : validateGardenGroup, trigger : 'change' }
-                    // ],
                     equipmentGroupIds : [
                         { validator : validateEquipmentGroup, trigger : 'change' }
                     ],
@@ -684,7 +692,8 @@
                     ],
                     timesCheck : [
                         { validator : timesCheck, trigger : 'blur' },
-                    ]
+                    ],
+                    admissionInstructions : []
                 },
                 //枚举数据
                 enumData : {
@@ -1119,6 +1128,22 @@
 
             /deep/ .ivu-form-item-content {
                 line-height: 22px;
+
+                /deep/ .quill-editor {
+                    height: 300px;
+
+                    .ql-container {
+                        height: calc(100% - 70px);
+                    }
+                }
+            }
+
+            .edit-form-item {
+                width: 100%;
+                /deep/ .ivu-form-item-content {
+                    height: 570px;
+                    margin-left: 0 !important;
+                }
             }
 
             /deep/ .ivu-input-wrapper{
