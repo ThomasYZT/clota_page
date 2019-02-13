@@ -201,7 +201,11 @@
                         this.queryTagDefines(this.chosedTags);
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                        if (res.code && res.code === 'S015') {
+                            this.$Message.error(this.$t(res.code));
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                        }
                     }
                 });
             },

@@ -2516,4 +2516,5 @@ export default {
     'S017' : '该名称已被占用',
     'allType' : '全部类别',
     'printPriceWithInfo' : '票面价格（原价）',
+    'S015' : '名称重复',
 };

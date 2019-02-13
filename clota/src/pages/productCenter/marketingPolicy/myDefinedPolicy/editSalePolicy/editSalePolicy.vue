@@ -124,6 +124,7 @@
              *  获取自定义日期方案
              */
             queryDatePlanList () {
+                this.specialHoliday = this.enumData.specialHoliday;
                 ajax.post('queryDatePlanList').then(res => {
                     if (res.success) {
                         this.specialHoliday = res.data ? this.enumData.specialHoliday.concat(res.data.map((item) => {
