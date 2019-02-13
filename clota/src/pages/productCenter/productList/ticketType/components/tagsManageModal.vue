@@ -198,7 +198,19 @@
                 }).then((res) => {
                     if (res.success) {
                         this.$refs.tagForm.resetFields();
-                        this.queryTagDefines(this.chosedTags);
+                        this.queryTagDefines(this.chosedTags).then(() => {
+                            this.chosedTags.push(this.tagsList[this.tagsList.length - 1]);
+                            this.tagsList.forEach(item => {
+                                if (this.chosedTags.find(tag => {
+                                    return tag.id === item.id;
+                                })) {
+                                    item.chosed = true;
+                                } else {
+                                    item.chosed = false;
+                                }
+                            });
+                            this.limitControl();
+                        });
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                     } else {
                         if (res.code && res.code === 'S015') {
@@ -234,27 +246,31 @@
              * @param tags 已选择的标签
              */
             queryTagDefines (tags) {
-                ajax.post('queryTagDefines', {
-                    scene : 'product_tag'
-                }).then(res => {
-                    if (res.success) {
-                        this.tagsList = res.data ? res.data : [];
-                        this.tagsList.forEach(item => {
-                            if (tags.find(tag => {
-                                return tag.id === item.id;
-                            })) {
-                                item.chosed = true;
-                            } else {
-                                item.chosed = false;
-                            }
-                        });
-                        this.limitControl();
-                        this.visible = true;
-                    } else {
-                        this.tagsList = [];
-                        this.visible = false;
-                    }
-                });
+                return new Promise((resolve, reject) => {
+                    ajax.post('queryTagDefines', {
+                        scene : 'product_tag'
+                    }).then(res => {
+                        if (res.success) {
+                            this.tagsList = res.data ? res.data : [];
+                            this.tagsList.forEach(item => {
+                                if (tags.find(tag => {
+                                    return tag.id === item.id;
+                                })) {
+                                    item.chosed = true;
+                                } else {
+                                    item.chosed = false;
+                                }
+                            });
+                            this.limitControl();
+                            this.visible = true;
+                            resolve();
+                        } else {
+                            this.tagsList = [];
+                            this.visible = false;
+                            reject();
+                        }
+                    });
+                })
             },
             /**
              * 删除标签

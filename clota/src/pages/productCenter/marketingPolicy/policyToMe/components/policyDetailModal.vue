@@ -260,9 +260,14 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{$t('playDate')}}{{scope.row.befPlayStart == '0' ? $t('when') : $t('before')+scope.row.befPlayStart}}{{$t('day')}}
-                            <span> ~ </span>
-                            {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
+                            <template v-if="scope.row.returnRuleType === 'normal'">
+                                {{$t('playDate')}}{{scope.row.befPlayStart == '0' ? $t('when') : $t('before')+scope.row.befPlayStart}}{{$t('day')}}
+                                <span> ~ </span>
+                                {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
+                            </template>
+                            <template>
+                                <span>过期自动核销</span>
+                            </template>
                         </template>
                     </el-table-column>
                 </table-com>
