@@ -252,17 +252,6 @@
                                     slot-scope="row"
                                     :label="row.title"
                                     :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip>
-                                    <template slot-scope="scope">
-                                        {{$t(!scope.row.itemCheckTimes || scope.row.itemCheckTimes === '0' ? '-' : scope.row.itemCheckTimes) | contentFilter}}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    slot="column3"
-                                    slot-scope="row"
-                                    :label="row.title"
-                                    :width="row.width"
                                     :min-width="row.minWidth">
                                     <template slot-scope="scope">
                                         <ul class="operate-list">

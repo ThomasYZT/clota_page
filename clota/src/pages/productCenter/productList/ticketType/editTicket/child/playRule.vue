@@ -61,18 +61,6 @@
                                 slot-scope="row"
                                 :label="row.title"
                                 :width="row.width"
-                                :min-width="row.minWidth"
-                                show-overflow-tooltip>
-                                <template slot-scope="scope">
-                                    <span v-if="scope.row.saleType === 'one_ticket'">-</span>
-                                    <span v-else>{{scope.row.itemCheckTimes}}</span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                slot="column3"
-                                slot-scope="row"
-                                :label="row.title"
-                                :width="row.width"
                                 :min-width="row.minWidth">
                                 <template slot-scope="scope">
                                     <ul class="operate-list">
@@ -144,7 +132,6 @@
             ruleValidate () {
                 return {
                     admissionTimes : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('admissionTimes') }), trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' }
                     ]
                 };
