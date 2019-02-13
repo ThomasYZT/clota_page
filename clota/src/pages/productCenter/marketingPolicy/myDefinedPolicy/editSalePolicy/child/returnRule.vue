@@ -68,7 +68,7 @@
                                 <el-table-column
                                     slot="column1"
                                     slot-scope="row"
-                                    :label="row.title"
+                                    :label="$t(row.title) + '(0.00 ~ 1.00)'"
                                     :width="row.width"
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
@@ -81,7 +81,6 @@
                                                          v-model.trim="scope.row.procedureRates"
                                                          :placeholder="$t('inputField', {field: ''})">
                                             </InputNumber>
-                                            (0.00 ~ 1.00)
                                         </template>
                                         <template v-else>
                                             {{scope.row.procedureRates | contentFilter}}
