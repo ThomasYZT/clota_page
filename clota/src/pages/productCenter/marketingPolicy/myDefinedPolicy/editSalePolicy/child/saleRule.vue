@@ -157,9 +157,9 @@
 
         <!--删除日期方案模态框-->
         <del-modal ref="delModal">
-            <div class="del-tips">
-                <Icon type="help-circled"></Icon>
-                <span class="red-bale">{{$t('youAreDeleting')}}：
+            <div :class="$style['del-tips']">
+                <Icon type="help-circled" :class="$style.icon"></Icon>
+                <span :class="$style['red-bale']">{{$t('youAreDeleting')}}
                     <span style="color: #F7981C;">{{selectedHolidayPlan.holidayName}}</span>
                     <span style="color:#ed3f14 ;">{{$t('irreversible')}}，</span>
                 </span>
@@ -535,5 +535,30 @@
     @import '~@/assets/scss/base';
     .sale-rule {
 
+    }
+</style>
+<style module lang="scss">
+    .del-tips{
+        position: absolute;
+        padding: 0 76px 0 106px;
+        color: #333333;
+        font-size: 14px;
+    }
+
+    .icon{
+        position: absolute;
+        left: 88px;
+        top : 2px;
+        font-size: 15px;
+        color: #EB6751;
+    }
+
+    .red-bale {
+        color: #ED3F14;
+    }
+
+    .blue-txt {
+        color: #2F70DF;
+        margin-right: 5px;
     }
 </style>
