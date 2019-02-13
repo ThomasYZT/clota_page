@@ -281,7 +281,7 @@
 
     /deep/ .add-hidden {
         .el-upload {
-            display: none;
+            display: none !important;
         }
     }
 
