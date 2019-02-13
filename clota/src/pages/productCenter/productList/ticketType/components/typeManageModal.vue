@@ -197,6 +197,7 @@
                     id : typeItem.id,
                 }).then(res => {
                     if (res.success) {
+                        this.$emit('updateTypeList');
                         this.queryTagDefines();
                         this.$Message.success(this.$t('successTip', { tip : this.$t('delete') }));
                     } else {
@@ -221,6 +222,7 @@
                     name : typeItem.name,
                 }).then(res => {
                     if (res.success) {
+                        this.$emit('updateTypeList');
                         this.queryTagDefines();
                         this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
                     } else {
