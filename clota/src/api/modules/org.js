@@ -120,5 +120,9 @@ export default {
     'getWholeOrgTree' : '/organize/getWholeOrgTree',
     //校验该机构是否拥有该服务包
     'checkOrgServiceById' : '/privilege/checkOrgServiceById',
+    //新增机构图片资源
+    'addOrgImage' : '/organize/addOrgImage',
+    //修改(删除)机构图片资源
+    'updateOrgImage' : '/organize/updateOrgImage'
 
 };

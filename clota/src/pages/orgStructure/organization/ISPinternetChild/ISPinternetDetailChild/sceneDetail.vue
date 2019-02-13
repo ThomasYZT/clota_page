@@ -264,6 +264,16 @@
                         </div>
                     </i-col>
                 </i-row>
+                <i-row>
+                    <i-col span="24">
+                        <FormItem :label="$t('景区资源')+'：'"
+                                  :label-width="0">
+                            <pictureManager :orgImages="orgImages"
+                                            :activeNode="activeNode"
+                                            @freshOrgInfo="getSceneDetail"></pictureManager>
+                        </FormItem>
+                    </i-col>
+                </i-row>
                 <i-row v-if="type === 'edit'" style="margin-top: 10px;">
                     <i-col span="24" style="text-align: center">
                         <Button type="primary"
@@ -320,6 +330,7 @@
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
     import selectTree from '@/components/selectTree/index.vue';
+    import pictureManager from './components/pictureManager';
     import { mapGetters } from 'vuex';
 
     export default {
@@ -345,7 +356,8 @@
             partner,
             cityPlugin,
             editModal,
-            selectTree
+            selectTree,
+            pictureManager
         },
         data () {
             //校验邮箱
@@ -382,6 +394,8 @@
                 type : 'watch',
                 //景区详情
                 sceneDetail : {},
+                //景区资源--轮播图片
+                orgImages : [],
                 //校验规则
                 ruleValidate : {
                     orgName : [
@@ -524,6 +538,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.sceneDetail = res.data ? res.data.basicInfo : {};
+                        this.orgImages = res.data ? res.data.orgImages : [];
                     } else {
                         this.sceneDetail = {};
                     }

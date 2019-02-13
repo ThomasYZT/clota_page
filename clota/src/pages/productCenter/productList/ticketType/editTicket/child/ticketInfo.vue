@@ -20,7 +20,7 @@
                 </div>
                 <!--票面价格-->
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('printPrice')" prop="printPrice">
+                    <Form-item :label="$t('printPriceWithInfo')" prop="printPrice">
                         <Input v-model.trim="formData.printPrice"
                                :placeholder="$t('inputField', {field: ''})"/>
                     </Form-item>

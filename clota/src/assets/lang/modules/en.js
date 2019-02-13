@@ -2515,4 +2515,5 @@ export default {
     'admissionTimes' : 'total number of admissions',
     'S017' : '该名称已被占用',
     'allType' : '全部类别',
+    'printPriceWithInfo' : '票面价格（原价）',
 };

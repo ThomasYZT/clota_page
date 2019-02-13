@@ -75,6 +75,11 @@
                 default () {
                     return '';
                 }
+            },
+            //是否关闭提示上传成功、失败提示
+            tipStop : {
+                type : Boolean,
+                default : false,
             }
         },
         components : {
@@ -123,13 +128,20 @@
                         this.addDisabled = false;
                     }
                     this.$emit('upload-success',this.uploadList);
-                    this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
+                    if (!this.tipStop) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
+                    }
                 } else {
                     if (res.code === 'S003') {
-                        this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                        if (!this.tipStop) {
+                            this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                        }
                     } else {
-                        this.$Message.error( 'analysisFail' );
+                        if (!this.tipStop) {
+                            this.$Message.error( 'analysisFail' );
+                        }
                     }
+                    this.$emit("upload-failure");
                 }
                 this.$store.commit('changePromisings','del');
             },
@@ -172,7 +184,10 @@
              * @param fileList
              */
             uploadFail (err, file, fileList) {
-                this.$message.error('failureTip', { tip : this.$t('upload') });
+                if (!this.tipStop) {
+                    this.$Message.error('failureTip', { tip : this.$t('upload') });
+                }
+                this.$emit("upload-failure");
                 this.$store.commit('changePromisings','del');
             },
             /**
