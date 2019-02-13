@@ -324,6 +324,9 @@
                 //基本信息表单初始化
                 let baseInfoForm = pick(data, ['productName', 'standardPrice', 'thirdCode', 'productDes',
                     'typeId','pictureUrl', 'tags']);
+                if (this.type === 'copy') {
+                    baseInfoForm.productName += '（副本）'
+                }
                 baseInfoForm.standardPrice = data.standardPrice ? String(data.standardPrice) : '';
                 baseInfoForm.tags = data.tags ? data.tags : [];
                 //票面信息表单初始化
