@@ -199,17 +199,17 @@
                     if (res.success) {
                         this.$refs.tagForm.resetFields();
                         this.queryTagDefines(this.chosedTags).then(() => {
-                            this.chosedTags.push(this.tagsList[this.tagsList.length - 1]);
-                            this.tagsList.forEach(item => {
-                                if (this.chosedTags.find(tag => {
-                                    return tag.id === item.id;
-                                })) {
-                                    item.chosed = true;
-                                } else {
-                                    item.chosed = false;
-                                }
-                            });
-                            this.limitControl();
+                            // this.chosedTags.push(this.tagsList[this.tagsList.length - 1]);
+                            // this.tagsList.forEach(item => {
+                            //     if (this.chosedTags.find(tag => {
+                            //         return tag.id === item.id;
+                            //     })) {
+                            //         item.chosed = true;
+                            //     } else {
+                            //         item.chosed = false;
+                            //     }
+                            // });
+                            // this.limitControl();
                         });
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                     } else {
