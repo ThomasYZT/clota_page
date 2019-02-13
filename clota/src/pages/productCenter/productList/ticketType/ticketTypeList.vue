@@ -13,8 +13,8 @@
                     @click="$router.push({name: 'addTicket', params: { type: 'add'}})">{{$t('add')}}</Button>
             <Button type="error"
                     v-if="cacnDelProduct"
-                    :disabled="selectedRow.length > 0 ? false : true"
-                    @click="batchDel">{{$t('del')}}</Button>
+                    :disabled="canDelete"
+                    @click="batchDel()">{{$t('del')}}</Button>
         </div>
         <!-- 筛选产品类别 -->
         <div class="filter-wrapper">
@@ -158,6 +158,16 @@
             //设置角色权限
             role () {
                 return this.manageOrgs.nodeType;
+            },
+            //是否可进行批量删除
+            canDelete () {
+                if (this.selectedRow.length > 0 && this.selectedRow.filter((item) => {
+                    return item.auditStatus === 'enabled' || item.auditStatus === 'auditing';
+                }).length === 0) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         },
         data () {
@@ -235,20 +245,22 @@
              */
             batchDel (data) {
                 if ( !this.cacnDelProduct ) return;
-                if (data) {
-                    let ids = data.id;
-                    this.delUnits = data.productName;
+                if (!data) {
+                    let ids = this.selectedRow.map(item => item.id).join(',');
+                    this.delUnits = this.selectedRow.map(item => {
+                        return item.productName;
+                    }).join(',');
                     this.$refs.delModal.show({
-                        title : this.$t('delete'),
+                        title : this.$t('deleteBatch'),
                         confirmCallback : () => {
                             this.deleteTicket(ids);
                         }
                     });
                 } else {
-                    let ids = this.selectedRow.map(item => item.id).join(',');
-                    this.delUnits = this.selectedRow.map(item => item.productName).join(',');
+                    let ids = data.id;
+                    this.delUnits = data.productName;
                     this.$refs.delModal.show({
-                        title : this.$t('deleteBatch'),
+                        title : this.$t('delete'),
                         confirmCallback : () => {
                             this.deleteTicket(ids);
                         }
