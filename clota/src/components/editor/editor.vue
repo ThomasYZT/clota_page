@@ -131,6 +131,14 @@
         },
         created () {
             this.content = this.value;
+        },
+        watch : {
+            value : {
+                handler () {
+                    this.content = this.value;
+                },
+                immediate : true
+            }
         }
     };
 </script>

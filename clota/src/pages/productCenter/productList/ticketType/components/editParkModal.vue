@@ -208,7 +208,7 @@
                                 <div style="word-break:break-all;" v-html="formData.admissionInstructions"></div>
                             </template>
                             <template v-else>
-                                <editor ref="editor" v-if="visible" :value.sync="formData.admissionInstructions"></editor>
+                                <editor ref="editor" :value.sync="formData.admissionInstructions"></editor>
                             </template>
                         </Form-item>
                     </i-col>
@@ -540,7 +540,7 @@
                                 <div style="word-break:break-all;" v-html="formData.admissionInstructions"></div>
                             </template>
                             <template v-else>
-                                <editor ref="editor" v-if="visible" :value.sync="formData.admissionInstructions"></editor>
+                                <editor ref="editor" :value.sync="formData.admissionInstructions"></editor>
                             </template>
                         </Form-item>
                     </i-col>

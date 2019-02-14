@@ -142,11 +142,13 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap single">
-                    <Form-item :label="$t('buyTicketNotes')" prop="buyTicketNotes"><!--购票须知-->
-                        <Input v-model.trim="formData.buyTicketNotes"
-                               type="textarea"
-                               :rows="3"
-                               :placeholder="$t('inputField', {field: $t('buyTicketNotes')})+'，'+$t('noMax',{length: 1000})"/>
+                    <Form-item :label="$t('预定须知')" prop="buyTicketNotes"><!--预定须知-->
+                        <!--<Input v-model.trim="formData.buyTicketNotes"-->
+                               <!--type="textarea"-->
+                               <!--:rows="3"-->
+                               <!--:placeholder="$t('inputField', {field: $t('buyTicketNotes')})+'，'+$t('noMax',{length: 1000})"/>-->
+
+                        <editor ref="editor" :value.sync="formData.buyTicketNotes"></editor>
                     </Form-item>
                 </div>
             </div>
@@ -156,6 +158,7 @@
 
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import editor from '@/components/editor/editor';
     import defaultsDeep from 'lodash/defaultsDeep';
     import { returnRule, alterRule } from '@/assets/js/constVariable';
     import { emoji, validateAlterRule, validateReturnRule } from '../validateMethods';
@@ -163,7 +166,8 @@
 
     export default {
         components : {
-            tableCom
+            tableCom,
+            editor
         },
         data () {
             return {
@@ -373,6 +377,12 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .return-rule {
+        /deep/ .quill-editor {
+            height: 300px !important;
 
+            .ql-container {
+                height: calc(100% - 70px);
+            }
+        }
     }
 </style>
