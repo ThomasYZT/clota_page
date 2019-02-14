@@ -276,6 +276,7 @@
 
                     &:hover {
                         filter: blur(2px);
+                        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=2, MakeShadow=false); /* IE6~IE9 */
                     }
                 }
 

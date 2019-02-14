@@ -321,7 +321,10 @@
              * @param val
              */
             changePlaySelectTime ( val ) {
-                let datelist = val.map((item) => {
+                this.formData.playRule.specifiedTime = val.sort((a, b) =>{
+                    return a > b ? 1 : -1;
+                });
+                let datelist = this.formData.playRule.specifiedTime.map((item) => {
                     return item.format('YYYY-MM-DD');
                 }).join(',');
                 this.getDateList(datelist,'playDate');

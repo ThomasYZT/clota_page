@@ -397,7 +397,10 @@
              * @param val
              */
             changeSaleSelectTime ( val ) {
-                let datelist = val.map((item) => {
+                this.formData.saleRule.specifiedTime = val.sort((a, b) =>{
+                    return a > b ? 1 : -1;
+                });
+                let datelist = this.formData.saleRule.specifiedTime.map((item) => {
                     return item.format('YYYY-MM-DD');
                 }).join(',');
                 this.getDateList(datelist, 'saleDate');
