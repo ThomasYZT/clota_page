@@ -467,6 +467,7 @@
                                     <template v-else>
                                         <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
                                                      :min="0"
+                                                     :precision="0"
                                                      v-model.trim="scope.row.sumTimes"
                                                      :placeholder="$t('inputField', {field: ''})"
                                                      @on-blur="checkTimes(scope.row.sumTimes)">
@@ -490,6 +491,7 @@
                                     <template v-else>
                                             <InputNumber :max="formData.itemCheckTimes ? Number(formData.itemCheckTimes) : 0"
                                                          :min="0"
+                                                         :precision="0"
                                                          v-model.trim="scope.row.dayTimes"
                                                          :placeholder="$t('inputField', {field: ''})"
                                                          @on-blur="checkTimes(scope.row.dayTimes)">
