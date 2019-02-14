@@ -55,7 +55,12 @@
                     //政策列表对应的所属景区列表
                     scene : [],
                     //分配过销售政策的销售渠道列表
-                    allocatedChannels : [],
+                    allocatedChannels : [
+                        {
+                            id : 'all',
+                            orgName : 'all'
+                        }
+                    ],
                 },
             };
         },
@@ -110,9 +115,18 @@
             getAllocatedChannels () {
                 ajax.post('getAllocatedChannels').then(res => {
                     if (res.success) {
-                        this.enumData.allocatedChannels = res.data ? res.data : [];
+                        this.enumData.allocatedChannels = res.data ? [{
+                            id : 'all',
+                            orgName : 'all'
+                        }].concat(res.data) : [{
+                            id : 'all',
+                            orgName : 'all'
+                        }];
                     } else {
-                        this.enumData.allocatedChannels = [];
+                        this.enumData.allocatedChannels = [{
+                            id : 'all',
+                            orgName : 'all'
+                        }];
                     }
                 })
             }

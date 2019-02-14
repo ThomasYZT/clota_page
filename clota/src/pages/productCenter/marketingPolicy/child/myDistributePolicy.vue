@@ -85,7 +85,7 @@
             queryAllocatedPolicy () {
                 ajax.post('queryAllocatedPolicy', {
                     ...this.filterParam,
-                    channelId : this.channelId,
+                    channelId : this.channelId === 'all' ? '' : this.channelId,
                 }).then(res => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
