@@ -18,6 +18,7 @@
         </div>
         <!-- 筛选产品类别 -->
         <div class="filter-wrapper">
+            <span>{{$t('colonSetting', { key : $t('选择产品类别') })}}</span>
             <Select v-model="queryParams.typeId"
                     @on-change="queryList"
                     style="width:250px">
@@ -369,7 +370,6 @@
 
             .inline-btn {
                 margin-right: 10px;
-                font-size: 12px;
                 color: $color_blue;
                 cursor: pointer;
             }
