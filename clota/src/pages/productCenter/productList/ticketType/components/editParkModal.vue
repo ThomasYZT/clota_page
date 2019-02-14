@@ -204,7 +204,12 @@
                     <i-col span="24">
                         <!-- 入园须知 -->
                         <Form-item :label="$t('入园须知')" prop="admissionInstructions">
-                            <editor :value.sync="formData.admissionInstructions"></editor>
+                            <template v-if="type === 'check'">
+                                <div style="word-break:break-all;" v-html="formData.admissionInstructions"></div>
+                            </template>
+                            <template v-else>
+                                <editor ref="editor" v-if="visible" :value.sync="formData.admissionInstructions"></editor>
+                            </template>
                         </Form-item>
                     </i-col>
                 </i-row>
@@ -527,6 +532,19 @@
 
                     </Form-item>
                 </div>
+                <i-row>
+                    <i-col span="24">
+                        <!-- 入园须知 -->
+                        <Form-item :label="$t('入园须知')" prop="admissionInstructions">
+                            <template v-if="type === 'check'">
+                                <div style="word-break:break-all;" v-html="formData.admissionInstructions"></div>
+                            </template>
+                            <template v-else>
+                                <editor ref="editor" v-if="visible" :value.sync="formData.admissionInstructions"></editor>
+                            </template>
+                        </Form-item>
+                    </i-col>
+                </i-row>
                 <i-row>
                     <i-col span="24">
                         <Form-item :label="$t('otherSet')"><!--其他设置-->

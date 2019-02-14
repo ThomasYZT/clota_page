@@ -124,6 +124,9 @@
             uploadError () {
                 this.$store.commit('changePromisings','del');
                 this.$Message.error(this.$t('failureTip', { tip : this.$t('insertImg') }));
+            },
+            disableEditor () {
+                this.editor.enable(false);
             }
         },
         created () {
