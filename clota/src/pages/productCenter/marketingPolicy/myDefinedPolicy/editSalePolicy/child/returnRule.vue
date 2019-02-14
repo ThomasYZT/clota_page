@@ -244,15 +244,16 @@
              */
             addReturnRateRule () {
                 let param = {
+                    type : 'add',
                     befPlayStart : 0,
                     befPlayEnd : 1,
                     procedureRates : 0,
                     active : true,
                     returnRuleType : 'normal',
                 };
-                if (this.formData.returnRule.rules.length > 0) {
-                    param.befPlayStart = this.formData.returnRule.rules[this.formData.returnRule.rules.length - 1].befPlayEnd + 1;
-                    param.befPlayEnd = param.befPlayStart + 1;
+                if (this.formData.returnRule.rules.length > 1) {
+                    param.befPlayStart = this.formData.returnRule.rules[this.formData.returnRule.rules.length - 1].befPlayStart + 1;
+                    param.befPlayEnd = param.befPlayEnd + 1;
                 }
                 this.formData.returnRule.rules.push(param);
             },
@@ -262,6 +263,7 @@
              * @param index
              */
             saveReturnItem (item, index) {
+                item.type = '';
                 this.$set(this.formData.returnRule.rules[index], 'active', false);
             },
             /**
@@ -284,7 +286,11 @@
              * @param index
              */
             cancelReturnItem (item, index) {
-                this.$set(this.formData.returnRule.rules, index, this.returnItem);
+                if (item.type !== 'add') {
+                    this.$set(this.formData.returnRule.rules, index, this.returnItem);
+                } else {
+                    this.formData.returnRule.rules.pop();
+                }
             },
             /**
              * 取消/删除退票手续费率档位
