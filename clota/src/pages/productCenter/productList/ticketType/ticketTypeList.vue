@@ -117,7 +117,7 @@
         <!--删除模态框-->
         <del-modal ref="delModal" class="del-min-width">
             <span class="content-text">
-                <i class="iconfont icon-help delete-icon"></i>{{$t('colonSetting',{ key : $t('isDoing') })}}
+                <i class="iconfont icon-help delete-icon"></i>{{$t('youAreDeleting')}}
                <span class="yellow-label">{{delUnits}}</span>
                 <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
             </span>
