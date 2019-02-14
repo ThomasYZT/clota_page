@@ -267,6 +267,7 @@
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('景区资源')+'：'"
+                                  class="img-upload-item"
                                   :label-width="0">
                             <pictureManager :orgImages="orgImages"
                                             :activeNode="activeNode"
@@ -840,6 +841,14 @@
             padding-bottom: 10px;
             font-size: $font_size_14px;
             color: $color_606266;
+        }
+
+        /deep/ .img-upload-item {
+            .ivu-form-item-label {
+                float: none;
+                display: inline-block;
+            }
+
         }
     }
 </style>

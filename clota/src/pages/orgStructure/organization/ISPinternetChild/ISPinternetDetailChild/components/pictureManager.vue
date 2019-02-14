@@ -6,9 +6,30 @@
     <div class="picture-manager">
         <div class="img-package"
              v-for="(item, index) in orgImages"
+             @mouseenter="enter(item, index)"
+             @mouseleave="leave(item, index)"
+             v-viewer
              :key="index">
             <div class="img-wrapper">
-                <img src="" alt="">
+                <img :src="item.sourceUrl" alt="">
+                <div class="tags-wrapper">
+                    <span class="cover" v-if="item.isCover === 'true'">封面</span>
+                    <span class="rotation" v-if="item.isRotation === 'true'">轮播</span>
+                </div>
+                <p v-if="item.isCover === 'false'"
+                   class="img-btn"
+                   @click="inCover(item)">设为封面</p>
+                <p v-else class="img-btn"
+                   @click="outCover(item)">取消封面</p>
+                <p v-if="item.isRotation === 'false'"
+                   class="img-btn"
+                   @click="inRotation(item)">加入轮播</p>
+                <p v-else class="img-btn"
+                   @click="outRotation(item)">取消轮播</p>
+                <p @click="del(item)" class="img-btn del-btn">删除</p>
+            </div>
+            <div class="layer">
+                <span class="preview" @click="preview(item)">+</span>
             </div>
         </div>
         <img-uploader  ref="imgUpload"
@@ -19,10 +40,24 @@
                        @upload-failure="uploadFail"
                        @upload-success="uploadSuc">
         </img-uploader>
+        <delModal ref="delModal">
+            <div :class="$style.delTips">
+                <Icon :class="$style.icon" type="help-circled"></Icon>
+                <span :class="$style.redBale">是否确认删除图片</span>
+            </div>
+        </delModal>
+        <!--<image-preview ref="imagePreview" :images="orgImages.map(item => { return item.sourceUrl })">-->
+            <!--<img v-for="src in orgImages.map(item => { return item.sourceUrl })" :src="src" :key="src">-->
+        <!--</image-preview>-->
+        <image-preview ref="imagePreview" :images="[previewItem.sourceUrl]">
+            <img :src="previewItem.sourceUrl" >
+        </image-preview>
     </div>
 </template>
 
 <script>
+    import imagePreview from '@/components/imagePreview/index.vue';
+    import delModal from '@/components/delModal/index';
     import ImgUploader from '../../../../../register/components/ImgUploader';
     import ajax from '@/api/index.js';
     export default {
@@ -43,18 +78,28 @@
             }
         },
         components : {
-            ImgUploader
+            ImgUploader,
+            delModal,
+            imagePreview
         },
         data () {
-            return {};
+            return {
+                //当前悬浮的图片
+                nowIndex : '',
+                //当前悬浮的图片对象
+                nowItem : {},
+                //当前预览图片对象
+                previewItem : {},
+            };
         },
         methods : {
             /**
              * 上传图片成功
+             * @param data
              */
-            uploadSuc () {
+            uploadSuc (data) {
                 //新增机构图片资源
-                this.addOrgImage();
+                this.addOrgImage(data);
                 this.$refs.imgUpload.reset();
             },
             uploadFail () {
@@ -63,11 +108,11 @@
             /**
              * 新增机构图片资源
              */
-            addOrgImage () {
+            addOrgImage (data) {
                 ajax.post('addOrgImage', {
                     orgId : this.activeNode.id,
                     type : 'pic',
-                    sourceUrl : '',
+                    sourceUrl : data[0] ? data[0] : '',
                     isCover : 'false',
                     isRotation : 'false',
                     redirectUrlPc : '',
@@ -75,11 +120,115 @@
                 }).then(res => {
                     if (res.success) {
                         this.$emit('freshOrgInfo');
-                        this.$Message.error('景区资源上传成功');
+                        this.$Message.success('景区资源上传成功');
                     } else {
                         this.$Message.error('景区资源上传失败');
                     }
                 })
+            },
+            /**
+             * 鼠标悬浮时
+             * @param item
+             * @param index
+             */
+            enter (item, index) {
+                this.nowItem = item;
+                this.nowIndex = index;
+            },
+            /**
+             * 鼠标离开时
+             * @param item
+             * @param index
+             */
+            leave (item, index) {
+                this.nowItem = {};
+                this.nowIndex = '';
+            },
+            /**
+             * 删除图片
+             * @param item
+             */
+            del (item) {
+                let params = {
+                    id : item.id,
+                    isDeleted : 'true',
+                };
+                this.$refs.delModal.show({
+                    title : this.$t('删除资源'),
+                    confirmCallback : () => {
+                        this.updateOrgImage(params, 'del');
+                    }
+                })
+            },
+            /**
+             * 删除图片接口
+             * @param params
+             */
+            updateOrgImage (params, type) {
+                ajax.post('updateOrgImage', params).then(res => {
+                    if (res.success) {
+                        this.$emit('freshOrgInfo');
+                        this.$Message.success(this.$t('successTip', { tip : this.$t(type) }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t(type) }));
+                    }
+                })
+            },
+            /**
+             * 设为封面
+             * @param item
+             */
+            inCover (item) {
+                let params = {
+                    id : item.id,
+                    isCover : 'true',
+                }
+                this.updateOrgImage(params, '设为封面');
+            },
+            /**
+             * 取消封面
+             * @param item
+             */
+            outCover (item) {
+                let params = {
+                    id : item.id,
+                    isCover : 'false',
+                }
+                this.updateOrgImage(params, '取消封面');
+            },
+            /**
+             * 加入轮播
+             * @param item
+             */
+            inRotation (item) {
+                let params = {
+                    id : item.id,
+                    isRotation : 'true',
+                }
+                this.updateOrgImage(params, '加入轮播');
+            },
+            /**
+             * 取消轮播
+             * @param item
+             */
+            outRotation (item) {
+                let params = {
+                    id : item.id,
+                    isRotation : 'false',
+                }
+                this.updateOrgImage(params, '取消轮播');
+            },
+            /**
+             * 预览图片
+             * @param
+             */
+            preview (item) {
+                this.previewItem = item;
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.$refs.imagePreview.show();
+                    },100);
+                });
             }
         }
     };
@@ -88,11 +237,99 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .picture-manager {
+        width: 100%;
         .img-package {
+            position: relative;
+            margin: 0 5px;
             width: 80px;
-            height: 80px;
+            height: 160px;
+            display: inline-block;
+            vertical-align: top;
+            box-sizing: border-box;
             .img-wrapper {
+                position: relative;
+                height: 80px;
+                width: 100%;
 
+                .img-btn {
+                    margin: 5px 0;
+                    font-size: 12px;
+                    color: $color_blue;
+                    line-height: 100%;
+                    cursor: pointer;
+
+                    &:hover {
+                        font-weight: bold;
+                    }
+                }
+
+                .del-btn {
+                    color: $color_red;
+                }
+
+                img {
+                    display: inline-block;
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    &:hover {
+                        filter: blur(2px);
+                    }
+                }
+
+                .tags-wrapper {
+                    width: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    line-height: 100%;
+                    .cover, .rotation {
+                        padding: 2px 5px;
+                        display: block;
+                        float: left;
+                        font-size: 12px;
+                        color: $color_fff;
+                        border-radius: 5px;
+                        line-height: 100%;
+                    }
+                    .cover {
+                        background-color: $color_red;
+                    }
+                    .rotation {
+                        background-color: $color_blue;
+                    }
+                }
+            }
+            .layer {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 80px;
+                border-radius: 5px;
+                background-color: gray;
+                opacity: 0.4;
+                text-align: center;
+
+                .preview {
+                    font-size: 20px;
+                    line-height: 80px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .hover {
+            .img-wrapper {
+                img {
+                    filter: blur(2px);
+                }
+            }
+            .layer {
+                display: block;
             }
         }
     }
@@ -120,5 +357,30 @@
 
     /deep/ .picture-preview.ivu-modal-wrap {
         z-index: 9999;
+    }
+</style>
+<style module lang="scss">
+    .delTips{
+        position: absolute;
+        padding: 0 76px 0 106px;
+        color: #333333;
+        font-size: 14px;
+    }
+
+    .icon{
+        position: absolute;
+        left: 88px;
+        top : 2px;
+        font-size: 15px;
+        color: #EB6751;
+    }
+
+    .redBale {
+        color: #ED3F14;
+    }
+
+    .blue-txt {
+        color: #2F70DF;
+        margin-right: 5px;
     }
 </style>
