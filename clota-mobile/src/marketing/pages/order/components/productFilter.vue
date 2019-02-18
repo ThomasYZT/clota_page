@@ -11,11 +11,11 @@
             <div :class="$style.head">{{$t('筛选')}}</div>
             <div :class="$style.content">
                 <div :class="$style.productList"
-                     v-for="(item,index) in data"
+                     v-for="(item,index) in productData"
                      :key="index"
                      @click="chooseProduct(item)">
                     <span class="iconfont icon-checked"
-                          :class="[choosedProductList.includes(item) ? $style.checked : '',$style.icon]"></span>{{item.productName | contentFilter}}
+                          :class="[choosedProductList.find(list => list.productId === item.productId) ? $style.checked : '',$style.icon]"></span>{{item.productName | contentFilter}}
                 </div>
             </div>
             <ul :class="$style.btnWrap">
@@ -81,7 +81,10 @@
              * 重置选择
              */
             reset () {
-                this.choosedProductList = [];
+                this.choosedProductList = [{
+                    productName : this.$t('全部'),
+                    productId : 'all'
+                }];
                 this.completeChoose();
             },
             /**
@@ -89,6 +92,15 @@
              */
             initData () {
                 this.choosedProductList = this.defaultChoosedData;
+            }
+        },
+        computed : {
+            //产品信息列表
+            productData () {
+                return [{
+                    productName : this.$t('全部'),
+                    productId : 'all'
+                }].concat(this.data);
             }
         }
     };
