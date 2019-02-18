@@ -358,7 +358,8 @@
     .ticket-type {
 
         .operation-box {
-            padding: 15px 30px;
+            padding: 0 30px;
+            margin: 15px 0;
             /deep/ .ivu-btn {
                 min-width: 88px;
                 margin-right: 7px;
@@ -366,6 +367,7 @@
         }
 
         .filter-wrapper {
+            margin: 15px 0 0 0;
             padding: 0 30px 15px;
 
             .inline-btn {
