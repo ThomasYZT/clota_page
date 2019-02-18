@@ -1,7 +1,7 @@
 <!--产品列表信息-->
 
 <template>
-    <div class="product-list-info">
+    <div class="product-list-info" >
         <div class="product-title">
             <div class="product-name">{{productInfo.productName | contentFilter}}</div>
             <div class="product-price">{{productInfo.salePrice | moneyFilter(2,'¥') | contentFilter}}</div>
@@ -33,7 +33,9 @@
         data () {
             return {};
         },
-        methods : {},
+        methods : {
+
+        },
         computed : {
             //产品不可退
             cannotReturn () {

@@ -374,11 +374,18 @@
                     latitude : this.marketLatitude,
                     longitude : this.marketLongitude,
                 }));
+                let routeName = '';
+                if (this.$route.name === 'salesManCreateOrder') {
+                    routeName = 'salesManCreateOrderToPay';
+                } else {
+                    routeName = 'marketingCreateOrderToPay';
+                }
                 this.$router.replace({
-                    name : 'marketingCreateOrderToPay',
+                    name : routeName,
                     params : {
                         productName : this.productDetail.productName,
                         totalAmount : this.totalAmount,
+                        supportCollect : this.productDetail.supportCollect
                     }
                 });
                  // ajax.post('market_addVisitorOrder',{

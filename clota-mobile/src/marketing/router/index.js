@@ -49,7 +49,6 @@ export const marketRouterDeal = (to, from, next) => {
 export const marketingRoutes = [
     {
         path : '/marketing',
-        // name : 'marketing',
         component : () => import(/* webpackChunkName: "marketing" */ '../pages/index.vue'),
         beforeEnter : marketRouterDeal,
         redirect : {
@@ -119,6 +118,39 @@ export const marketingRoutes = [
                 meta : {
                     title : '我的产品',
                     menuBar : 'product'
+                }
+            },
+            //销售用户下单
+            {
+                path : 'product/createOrder',
+                name : 'salesManCreateOrder',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/createOrder.vue'),
+                meta : {
+                    title : '填写订单',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
+            },
+            //销售用户支付
+            {
+                path : 'product/createOrder/pay',
+                name : 'salesManCreateOrderToPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/payOrder.vue'),
+                meta : {
+                    title : '支付方式',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
+            },
+            //销售用户支付结果
+            {
+                path : 'product/createOrder/payResult',
+                name : 'salesManCreateOrderPayResult',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/payStatus.vue'),
+                meta : {
+                    title : '支付结果',
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             },
             //我的订单

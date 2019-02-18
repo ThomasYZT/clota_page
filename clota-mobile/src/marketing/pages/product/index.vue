@@ -24,7 +24,8 @@
                 <template v-for="(item,index) in productListData">
                     <product-list :key="index"
                                   :product-info="item"
-                                  @show-notice="showProductNoticeMethod(item)">
+                                  @show-notice="showProductNoticeMethod(item)"
+                                  @click.native="toOrderTicket(item)">
                     </product-list>
                 </template>
             </scroll-wrap>
@@ -149,6 +150,20 @@
              */
             getLocation () {
                 this.$store.commit('marketUpdateIsGettingLocation',true);
+            },
+            /**
+             *
+             * 下订单
+             * @param{Object} productInfo 产品信息
+             */
+            toOrderTicket (productInfo) {
+                this.$router.push({
+                    name : 'salesManCreateOrder',
+                    params : {
+                        productDetail : productInfo,
+                        playDate : this.productDate
+                    }
+                });
             }
         },
         computed : {

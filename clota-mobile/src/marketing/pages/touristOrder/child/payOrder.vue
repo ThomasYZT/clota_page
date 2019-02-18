@@ -16,7 +16,7 @@
                     <radio
                         v-model="payType"
                         title=""
-                        :options="payTypeList"
+                        :options="payTypeListDeal"
                         @on-change="rechageTypechange">
                     </radio>
                 </group>
@@ -47,17 +47,34 @@
                 productName : '',
                 //应付总额
                 totalAmount : '',
-                payFormData : {}
+                payFormData : {},
+                //产品是否支持到付
+                supportCollect : ''
             };
         },
         methods : {
             /**
-             * 充值
+             * 支付
              */
             recharge () {
                 if (this.isWeixin && this.payType === 'wx') {
                     //在微信中调用微信支付
                     this.getPayPageForOfficialAccount();
+                } else if (this.payType === 'collect') {//到付直接下单
+                    this.payFormData.paymentTypeId = this.payType;
+                    //根据路由名称判断下单角色
+                    if (this.$route.name === 'salesManCreateOrderToPay') {
+                        this.payFormData.from = 'marketer';
+                    } else {
+                        this.payFormData.from = 'visitor';
+                    }
+                    localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                    this.$router.replace({
+                        name : 'salesManCreateOrderPayResult',
+                        params : {
+                            payType : 'collect'
+                        }
+                    });
                 } else {
                     this.getPayPageForMobile();
                 }
@@ -111,6 +128,7 @@
                 if (params && Object.keys(params).length > 0) {
                     this.productName = params.productName;
                     this.totalAmount = params.totalAmount;
+                    this.supportCollect = params.supportCollect;
                 } else {
                     this.$router.replace({
                         name : 'marketingTourist'
@@ -133,7 +151,6 @@
                 }).then(res => {
                     if (res.success) {
                         //设置支付表单信息
-                        this.payFormData.orderId = res.data ? res.data.bizId : '';
                         this.payFormData = res.data ? res.data : {};
                         this.payFormData.paymentTypeId = this.payType;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
@@ -202,7 +219,20 @@
             ...mapGetters({
                 marketOrgId : 'marketOrgId',
                 isWeixin : 'isWeixin',
-            })
+            }),
+            //根据从哪个页面过来的请求，分别获取支付方式
+            payTypeListDeal () {
+                if (this.$route.name === 'salesManCreateOrderToPay' && this.supportCollect === 'true') {
+                    return [].concat(this.payTypeList,[{
+                        icon : require('../../../../assets/images/icon-wx-pay.svg'),
+                        key : 'collect',
+                        value : this.$t('线下支付'),
+                        param : {}
+                    }]);
+                } else {
+                    return this.payTypeList;
+                }
+            }
         }
     };
 </script>

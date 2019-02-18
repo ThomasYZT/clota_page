@@ -49,39 +49,52 @@
              * @param params
              */
             getParams (params) {
-                //微信内支付宝支付结果
-                if (params && params.status && params.payFormData) {
-                    this.status = params.status;
+                //到付
+                if (params && params.payType === 'collect') {
                     this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
-                    if (params.status === 'success') {
-                        this.isSuccess = true;
-                        if (this.payFormData.paymentTypeId === 'wx') {
+                    //下单
+                    this.createOrder();
+                } else {
+                    //微信内支付宝支付结果
+                    if (params && params.status && params.payFormData) {
+                        this.status = params.status;
+                        this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
+                        if (params.status === 'success') {
+                            this.isSuccess = true;
+                            if (this.payFormData.paymentTypeId === 'wx') {
+                                //下单
+                                this.createOrder();
+                            }
+                        } else {
+                            this.isSuccess = false;
+                        }
+
+                        //微信内公众号支付、非微信的微信支付、支付宝支付结果
+                    } else {
+                        let data = querystring.parse(location.href.split('?')[1]);
+                        if (data && data.RespCode === '00') {
+                            this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
                             //下单
                             this.createOrder();
+                        } else {
+                            this.isSuccess = false;
                         }
-                    } else {
-                        this.isSuccess = false;
-                    }
-
-                //微信内公众号支付、非微信的微信支付、支付宝支付结果
-                } else {
-                    let data = querystring.parse(location.href.split('?')[1]);
-                    if (data && data.RespCode === '00') {
-                        this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
-                        //下单
-                        this.createOrder();
-                    } else {
-                        this.isSuccess = false;
                     }
                 }
             },
             /**
-             * 若已登录前往我的账户页面，否则为切换浏览器的情况，提示返回微信
+             * 若已登录前往我的产品页面，否则为切换浏览器的情况，提示返回微信
              */
             toAccount () {
-                this.$router.push({
-                    name : 'marketingTourist'
-                });
+                if (this.$route.name === 'salesManCreateOrderPayResult') {
+                    this.$router.replace({
+                        name : 'marketingProduct'
+                    });
+                } else {
+                    this.$router.replace({
+                        name : 'marketingTourist'
+                    });
+                }
             },
             /**
              * 监听物理键返回
@@ -95,10 +108,25 @@
              * 新建订单
              */
             createOrder () {
-                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
+                let createOrderParams = {};
+                try {
+                    createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
+                } catch (e) {
+                    createOrderParams = {};
+                }
+                if (this.payFormData.paymentTypeId === 'collect') {
+                    Object.assign(createOrderParams,{
+                        paymentType : 'collect'
+                    });
+                } else {
+                    Object.assign(createOrderParams,{
+                        paymentType : 'deposit'
+                    });
+                }
                 ajax.post('market_addVisitorOrder',Object.assign({
                     transctionId : this.payFormData.transactionId,
-                    orderId : this.payFormData.bizId
+                    orderId : this.payFormData.bizId,
+                    from : this.payFormData.from
                 },createOrderParams)).then(res => {
                     if (res.success) {
                         this.isSuccess = true;
@@ -107,7 +135,6 @@
                         this.$vux.toast.text(this.$t('errorMsg.' + res.code));
                     } else {
                         this.isSuccess = false;
-                        // this.$vux.toast.text(this.$t('下单失败'));
                     }
                 });
             }
