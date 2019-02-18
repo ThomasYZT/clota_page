@@ -174,8 +174,8 @@
                 // aLink.download = 'test.png';
                 // aLink.click();
 
-                // this.choosePosterHide();
-                // this.editPosterHide();
+                this.choosePosterHide();
+                this.editPosterHide();
             },
             /**
              *  查询海报列表
