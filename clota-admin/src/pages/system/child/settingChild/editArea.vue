@@ -34,8 +34,8 @@
                         </FormItem>
                     </i-col>
                     <i-col span="22">
-                        <FormItem :label="$t('areaNo')" prop="id">
-                            <Input v-model.trim="formData.id"
+                        <FormItem :label="$t('areaNo')" prop="areaid">
+                            <Input v-model.trim="formData.areaid"
                                    :placeholder="$t('inputPlaceholder')"/>
                         </FormItem>
                     </i-col>
@@ -93,7 +93,7 @@
                 //表单数据
                 formData : {
                     name : '',
-                    id : '',
+                    areaid : '',
                     remarks : '',
                 },
                 // 表单校验
@@ -103,7 +103,7 @@
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('areaName'), length : 10 }), trigger : 'blur' },
                     ],
-                    id : [
+                    areaid : [
                         { required : true, message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('areaNo') }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' },
