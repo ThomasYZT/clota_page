@@ -66,7 +66,7 @@
     import ImgUploader from '../../../../register/components/ImgUploader';
     import posterSelection from './posterSelection';
     import ajax from '@/api/index';
-    import Canvas2Image from 'canvas2image';
+    // import Canvas2Image from 'canvas2image';
     require('../../../../../utils/html2canvas');
     export default {
         components : {
