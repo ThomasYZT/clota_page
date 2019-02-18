@@ -3,14 +3,14 @@
     作者：杨泽涛
 -->
 <template>
-    <div>
+    <div class="vue-qrcode">
         <div v-if="previewable" v-viewer class="qr-code">
             <img class="can-preview" v-if="show" :src="src" alt="">
         </div>
         <div v-else class="qr-code">
             <img v-if="show" :src="src" alt="">
         </div>
-        <p class="download-btn" @click="download">下载</p>
+        <p v-if="downloadable" class="download-btn" @click="download">下载</p>
     </div>
 </template>
 
@@ -33,6 +33,11 @@
                 type : Boolean,
                 default : false
             },
+            //是否支持下载
+            downloadable : {
+                type : Boolean,
+                default : true,
+            }
         },
         data () {
             return {
@@ -75,15 +80,28 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .vue-qrcode {
+        width: 100%;
+        height: 100%;
+        .qr-code {
+            width: 100%;
+            height: 100%;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
 
-    .can-preview {
-        cursor: pointer;
+        .can-preview {
+            cursor: pointer;
+        }
+
+        .download-btn {
+            margin-bottom: 5px;
+            color: $color_blue;
+            font-size: 12px;
+            cursor: pointer;
+        }
     }
 
-    .download-btn {
-        margin-bottom: 5px;
-        color: $color_blue;
-        font-size: 12px;
-        cursor: pointer;
-    }
 </style>

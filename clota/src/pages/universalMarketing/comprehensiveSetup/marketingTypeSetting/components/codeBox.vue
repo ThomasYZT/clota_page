@@ -72,8 +72,9 @@
         <transition name="fade">
             <div class="box-footer" v-if="boxStatus !== 'null' && canOperateMarketType">
                 <template v-if="boxStatus === 'show'">
-                    <div class="btn"><i class="iconfont icon-edit"></i><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
-                    <div class="btn"><i class="iconfont icon-delete"></i><span class="warn-btn" @click="del">{{$t('del')}}</span></div>
+                    <div class="btn"><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
+                    <div class="btn"><span class="blue-btn" @click="makePoster">{{$t('制作海报')}}</span></div>
+                    <div class="btn"><span class="warn-btn" @click="del">{{$t('del')}}</span></div>
                 </template>
                 <template v-if="boxStatus === 'add' || boxStatus === 'edit'">
                     <div class="btn"><span class="blue-btn" @click="save">{{$t('save')}}</span></div>
@@ -89,11 +90,14 @@
                 <span class="warn-tip">{{$t('operationIrrevocable')}}{{$t('sureToDel')}}</span>
             </div>
         </delModal>
+
+        <makePosterModal ref="makePosterModal"></makePosterModal>
     </div>
 </template>
 
 <script>
     import vueQRcode from './vueQRcode';
+    import makePosterModal from './makePosterModal';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
     import delModal from '@/components/delModal/index';
@@ -108,7 +112,8 @@
         },
         components : {
             vueQRcode,
-            delModal
+            delModal,
+            makePosterModal
         },
         data () {
             return {
@@ -225,6 +230,14 @@
                     }
                 });
             },
+            /**
+             * 制作海报
+             */
+            makePoster () {
+                this.$refs.makePosterModal.show({
+                    codeUrl : this.codeInfo.registerUrl
+                });
+            }
         },
         watch : {
             codeInfo : {
@@ -280,8 +293,17 @@
             word-break: break-all;
 
             .code-wrapper {
+                height: 140px;
                 margin-top: 20px;
                 text-align: center;
+
+                /deep/ .vue-qrcode {
+                    height: 120px;
+                    img {
+                        width: 120px;
+                        height: 100%;
+                    }
+                }
             }
             .show-form {
                 /deep/ .ivu-form-item-content {
@@ -335,7 +357,7 @@
                     color: $color_red;
                 }
 
-                &:first-child:after {
+                &:not(:last-child):after {
                     position: absolute;
                     margin-top: -8px;
                     top: 50%;

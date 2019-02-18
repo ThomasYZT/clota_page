@@ -55,7 +55,7 @@
                                @remove-img="removeImg"
                                @upload-success="uploadSuccess"></uploadImg>
 
-                    <span class="format-info">{{$t('colonSetting', { key : $t('imgFormat') })}} PNG/JPG/BMP   {{$t('colonSetting', { key : $t('imgSize') })}}< 20Mb </span>
+                    <p class="format-info">{{$t('colonSetting', { key : $t('imgFormat') })}} PNG/JPG/BMP   {{$t('colonSetting', { key : $t('imgSize') })}}< 20Mb </p>
                 </FormItem>
             </Form>
         </div>
@@ -160,12 +160,12 @@
              *  添加海报
              */
             addPoster () {
-                this.formData.posterUrl = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0]['url'] : '';
-                this.formData.posterSize = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0]['size'] : '';
+                this.formData.posterUrl = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0] : '';
+                //this.formData.posterSize = this.formData.img && this.formData.img.length > 0 ? this.formData.img[0]['size'] : '';
                 ajax.post('marketing-addPoster', {
                     posterName : this.formData.posterName,
                     posterUrl : this.formData.posterUrl,
-                    posterSize : this.formData.posterSize,
+                    //posterSize : this.formData.posterSize,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));

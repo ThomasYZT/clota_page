@@ -102,6 +102,9 @@
                 this.addOrgImage(data);
                 this.$refs.imgUpload.reset();
             },
+            /**
+             *  上传图片失败
+             */
             uploadFail () {
                 this.$Message.error('景区资源上传失败');
             },

@@ -48,6 +48,11 @@ const apiList = {
     'getSmsProviderList' : '/sms/getSmsProviderList',
     //获取会员配置信息
     'getServiceSetting' : '/privilege/getMemberServiceSetting',
+    //支付宝直连接口
+    'alipayTradeWebPay' : '/alipay/alipayTradeWebPay',
+    'alipayTradeWapPay' : '/alipay/alipayTradeWapPay',
+    //将图片转成base64
+    'img2base64' : '/img2base64',
     //首页接口
     ...index,
     //会员信息接口

@@ -53,6 +53,8 @@ import elCollapse from 'element-ui/lib/collapse';
 import elCollapseItem from 'element-ui/lib/collapse-item';
 import Loading from 'element-ui/lib/loading';
 
+//引入拖拽缩放插件
+import VueDraggableResizable from 'vue-draggable-resizable-gorkys';
 //引入qr-code工具
 import QRcode from 'qrcode';
 //引入富文本编辑
@@ -142,6 +144,7 @@ plugin.install = function (Vue, options) {
     Vue.prototype.$Message = Message;
     Vue.prototype.$QRcode = QRcode;
     Vue.prototype.$Notice = Notice;
+    Vue.component('VueDraggableResizable', VueDraggableResizable)
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
