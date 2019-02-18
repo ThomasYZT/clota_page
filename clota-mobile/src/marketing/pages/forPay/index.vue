@@ -37,6 +37,15 @@
             <!-- 取消支付按钮 -->
             <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
         </div>
+        <confirm v-model="confirmShow"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false"
+                 @on-confirm="confirmShow = false">
+            <p style="text-align:center;">{{ $t('errorMsg.OD009') }}</p>
+        </confirm>
 
     </div>
 </template>
@@ -67,6 +76,8 @@
                 },
                 //计时器
                 intervalId : null,
+                //确认模态框是否显示
+                confirmShow : false
             };
         },
         methods : {
@@ -127,7 +138,6 @@
                 }).then(res => {
                     if (res.success && (res.data !== 'doing' && res.data !== 'unknown') ) {
                         clearInterval(this.intervalId);
-                        //alert("查询支付状态")
                         this.$router.push({
                             name : 'marketingCreateOrderPayResult',
                             params : {
@@ -135,6 +145,9 @@
                                 payFormData : this.payFormData
                             }
                         });
+                    } else if (res.success === false && res.code === 'OD009') {
+                        clearInterval(this.intervalId);
+                        this.confirmShow = true;
                     }
                 });
             },
@@ -182,6 +195,7 @@
         },
         beforeDestroy () {
             window.removeEventListener("popstate", this.physicalBack);
+            clearInterval(this.intervalId);
         }
     };
 </script>

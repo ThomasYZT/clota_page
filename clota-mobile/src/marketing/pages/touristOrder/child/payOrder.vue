@@ -83,7 +83,7 @@
              * 获取所有支付方式
              */
             queryAllPayType () {
-                ajax.post('market_queryExtOnlineAccount',{
+                ajax.postWithoutToken('market_queryExtOnlineAccount',{
                     isPlatformAcc : false,
                     orgId : this.marketOrgId
                 }).then(res => {
@@ -140,7 +140,7 @@
              */
             getPayPageForOfficialAccount () {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
-                ajax.post('market_getPayPageForOfficialAccount', {
+                ajax.postWithoutToken('market_getPayPageForOfficialAccount', {
                     bizScene : 'order',
                     bizType : 'pay_order',
                     channelType : 'weixin',
@@ -175,7 +175,7 @@
              */
             getPayPageForMobile () {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
-                ajax.post('market_getPayPageForMobileNoLogin', {
+                ajax.postWithoutToken('market_getPayPageForMobileNoLogin', {
                     bizScene : 'order',
                     bizType : 'pay_order',
                     channelType : this.payType === 'wx' ? 'weixin' : 'alipay',

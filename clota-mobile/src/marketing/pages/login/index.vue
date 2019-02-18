@@ -308,7 +308,7 @@
              * 开始登录
              */
             loginWithType () {
-                ajax.post('market_login',{
+                ajax.postWithoutToken('market_login',{
                     mobile : this.formData.phoneNum,
                     password : MD5(this.formData.password).toString(),
                     typeId : this.marketTypeId,
@@ -344,7 +344,7 @@
              * 获取图形验证码
              */
             createIMGValidCode () {
-                ajax.post('market_createIMGValidCode').then(res => {
+                ajax.postWithoutToken('market_createIMGValidCode').then(res => {
                     if (res.success) {
                         this.imgCodeImfo.code = res.data ? 'data:img/jpg;base64,' + res.data.code : '';
                         this.imgCodeImfo.key = res.data ? res.data.key : '';

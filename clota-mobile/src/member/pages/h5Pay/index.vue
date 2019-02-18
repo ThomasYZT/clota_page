@@ -193,6 +193,7 @@
         },
         beforeDestroy () {
             window.removeEventListener("popstate", this.clearIntervalInfo);
+            clearInterval(this.intervalId);
         }
     };
 </script>

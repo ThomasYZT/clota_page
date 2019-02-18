@@ -111,7 +111,7 @@
              * 查询游客订单信息
              */
             queryProductList () {
-                return ajax.post('market_queryMarketProductsForVisitor',{
+                return ajax.postWithoutToken('market_queryMarketProductsForVisitor',{
                     playDate : this.activeDate.format('yyyy-MM-dd'),
                     marketUserId : this.marketUserId,
                     pageNo : this.pageNo,

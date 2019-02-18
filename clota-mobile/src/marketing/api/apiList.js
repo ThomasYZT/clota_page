@@ -75,4 +75,6 @@ export default {
     'market_getAllScenicInCompany' : '/external/organize/getAllScenicInCompany',
     //获取景区下的所属类别
     'market_queryMarketTypes' : '/market/marketUser/queryMarketTypes',
+    //撤销交易
+    'revocation' : '/external/pay/revocation',
 };

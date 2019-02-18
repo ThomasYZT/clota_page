@@ -142,7 +142,7 @@
              * 查询产品销售规则
              */
             queryProductPolicy () {
-                ajax.post('market_findProductSaleRules',{
+                ajax.postWithoutToken('market_findProductSaleRules',{
                     productIds : this.productDetail.productId
                 }).then(res => {
                     if (res.success) {
@@ -266,7 +266,7 @@
              * 校验是否能下单
              */
             validateOrderIsRight () {
-                ajax.post('market_checkOrderBeforePay',{
+                ajax.postWithoutToken('market_checkOrderBeforePay',{
                     productInfos : JSON.stringify([{
                         productId : this.productDetail.productId,
                         policyId : this.productDetail.policyId,
@@ -426,7 +426,7 @@
              * 校验订单是否符合订票规则
              */
             checkExtProductSaleRule () {
-                ajax.post('market_checkExtProductSaleRule',{
+                ajax.postWithoutToken('market_checkExtProductSaleRule',{
                     productSaleVo : JSON.stringify(this.formData.map(item => {
                         if (this.acceptIdType.length > 0) {
                             return {
