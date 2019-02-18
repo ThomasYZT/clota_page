@@ -55,7 +55,7 @@
                              :width="row.width"
                              :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.standardPrice}}
+                    {{scope.row.standardPrice | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column v-if="role === 'partner'"
@@ -65,7 +65,7 @@
                              :width="row.width"
                              :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.printPrice}}
+                    {{scope.row.printPrice | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -93,7 +93,7 @@
                 :min-width="row.minWidth"
                 :prop="row.field">
                 <template slot-scope="scope">
-                    {{scope.row.updatedTime}}
+                    {{scope.row.updatedTime | contentFilter}}
                 </template>
             </el-table-column>
             <el-table-column
