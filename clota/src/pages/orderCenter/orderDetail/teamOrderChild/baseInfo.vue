@@ -179,7 +179,7 @@
                 default : ''
             },
             //可重发短信次数
-            'reSend-times' : {
+            'resend-times' : {
                 type : [String,Number],
                 default : 0
             }
@@ -247,7 +247,7 @@
             //重发短信按钮是否可以使用
             resendBtnCanUsed () {
                 //可重发次数大于0，审核通过，有未取票的可以点击重发短信按钮
-                return this.reSendTimes >= 0 && this.reSendTimes < 5 &&
+                return this.resendTimes >= 0 && this.resendTimes < 5 &&
                     this.baseInfo.auditStatus === 'success';
             }
 

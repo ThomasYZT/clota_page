@@ -51,7 +51,7 @@
                                      ref="salePriceInput"></i-input>
                         </FormItem>
                     </Form>
-                    <span v-else>{{scope.row.salePrice | contentFilter}}</span>
+                    <span v-else>{{scope.row.salePrice | moneyFilter | contentFilter}}</span>
                 </template>
             </el-table-column>
             <el-table-column
