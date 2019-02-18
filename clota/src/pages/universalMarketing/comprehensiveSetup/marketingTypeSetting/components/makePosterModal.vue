@@ -67,7 +67,7 @@
     import posterSelection from './posterSelection';
     import ajax from '@/api/index';
     // import Canvas2Image from 'canvas2image';
-    require('../../../../../utils/html2canvas');
+    import html2canvas from 'html2canvas';
     export default {
         components : {
             posterSelection,
