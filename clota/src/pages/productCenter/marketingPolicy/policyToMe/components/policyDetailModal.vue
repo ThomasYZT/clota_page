@@ -291,8 +291,11 @@
                        </i-row>
                        <i-row>
                            <i-col span="24">
-                               <Form-item :label="$t('buyTicketNotes')+':'"><!--购票须知-->
-                                   <div v-w-title="detail.productPolicy.buyTicketNotes">{{detail.productPolicy.buyTicketNotes | contentFilter}}</div>
+                               <Form-item :label="$t('预定须知')+':'"><!--预定须知-->
+                                   <div style="word-break: break-all;"
+                                        v-html="detail.productPolicy.buyTicketNotes"
+                                        v-if="detail.productPolicy.buyTicketNotes"></div>
+                                   <span v-else>-</span>
                                </Form-item>
                            </i-col>
                        </i-row>
