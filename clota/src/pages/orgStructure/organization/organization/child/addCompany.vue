@@ -44,7 +44,7 @@
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
                     <Select v-model.trim="formData.smsProvider" style="width:280px">
                         <Option v-for="item in smsProviderList"
-                                :value="item.provider"
+                                :value="item.id"
                                 :key="item.id">
                             {{ item.provider }}
                         </Option>
@@ -91,7 +91,7 @@
                     <Input v-model.trim="formData.address" style="width: 280px"/>
                 </FormItem>
                 <!--是否启用-->
-                <FormItem :label="$t('isStarted')" prop="address">
+                <FormItem :label="$t('isStarted')" prop="status">
                     <RadioGroup v-model="formData.status">
                         <Radio label="open">{{$t('yes')}}</Radio>
                         <Radio label="close">{{$t('no')}}</Radio>
@@ -274,6 +274,9 @@
                     ],
                     address : [
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
+                    ],
+                    status : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('isStarted') }) },
                     ]
                 },
                 //短信供应商列表
@@ -313,6 +316,7 @@
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
+                    this.formData.status = 'open';
                 } else {
                     this.getParentManages();
                     this.getParentEconomic();
@@ -407,7 +411,7 @@
                     orgName : this.addedNodeDetail.nodeName,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
-                    smsProvider : this.formData.smsProvider,
+                    smsProviderId : this.formData.smsProvider,
                     linkName : this.formData.person,
                     telephone : this.formData.phone,
                     tex : this.formData.fax,

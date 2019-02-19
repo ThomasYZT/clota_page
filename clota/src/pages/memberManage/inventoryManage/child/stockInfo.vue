@@ -6,7 +6,6 @@
     <div class="stock-info">
         <breadCrumbHead  :before-router-list="beforeRouterList"
                          :locale-router="'stockDetail'"><!--商品管理-->>
-
         </breadCrumbHead>
 
         <div class="content">
@@ -27,7 +26,7 @@
                         <i-col span="6" :offset="2">
                             <!-- 入库数量 -->
                             <Form-item :label="$t('stockNum')+':'">
-                                {{goodInfo.stockNum + goodInfo.undrawNum}}
+                                {{goodInfo.stockNum}}
                             </Form-item>
                         </i-col>
                     </i-row>
@@ -128,7 +127,7 @@
                             <div class="table-wrapper">
                                 <tableCom :column-data="inBoundHead"
                                           :auto-height="true"
-                                          :table-com-min-height="200"
+                                          :table-com-min-height="250"
                                           :table-data="tableData"
                                           :border="true"
                                           :show-pagination="true"
@@ -142,7 +141,7 @@
                             <div class="table-wrapper">
                                 <tableCom :column-data="outBoundHead"
                                           :auto-height="true"
-                                          :table-com-min-height="200"
+                                          :table-com-min-height="250"
                                           :table-data="tableData"
                                           :border="true"
                                           :show-pagination="true"
@@ -168,13 +167,26 @@
                             <div class="table-wrapper">
                                 <tableCom :column-data="abnormalHead"
                                           :auto-height="true"
-                                          :table-com-min-height="200"
+                                          :table-com-min-height="250"
                                           :table-data="tableData"
                                           :border="true"
                                           :show-pagination="true"
                                           :total-count="totalCount"
                                           :page-no-d.sync="queryParams.pageNo"
-                                          :page-size-d.sync="queryParams.pageSize"></tableCom>
+                                          :page-size-d.sync="queryParams.pageSize">
+                                    <!-- 操作人 -->
+                                    <el-table-column
+                                        slot="column4"
+                                        slot-scope="row"
+                                        :label="row.title"
+                                        :width="row.width"
+                                        :min-width="row.minWidth">
+                                        <template slot-scope="scope">
+                                            {{ scope.row.operatorOrg | contentFilter}} /
+                                            {{ scope.row.operator | contentFilter}}
+                                        </template>
+                                    </el-table-column>
+                                </tableCom>
                             </div>
                         </TabPane>
                     </Tabs>
@@ -194,6 +206,7 @@
     import abnormalManageModal from '../components/abnormalManageModal';
     import breadCrumbHead from '../../../../components/breadCrumbHead/index';
     import ImgUploader from '../../../register/components/ImgUploader';
+
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -236,7 +249,6 @@
                 },
                 //图片上传组件默认显示列表
                 defaultImgList : [],
-
             };
         },
         methods : {
@@ -263,16 +275,21 @@
                 ajax.post('queryGoodsInfo', {
                     goodsId : this.detail.id
                 }).then(res => {
+                    this.defaultImgList = [];
                     if (res.success) {
                         this.goodInfo = res.data ? res.data : {};
-                        this.defaultImgList = [
-                            {
-                                name : 0,
-                                url : this.goodInfo.pics
-                            }
-                        ];
+                        if (this.goodInfo.pics) {
+                            this.defaultImgList = [
+                                {
+                                    name : 0,
+                                    url : this.goodInfo.pics
+                                }
+                            ];
+                        } else {
+                            this.defaultImgList = [];
+                        }
                     } else {
-                        this.$Message.error(this.$t('dataGetError'));
+                        this.goodInfo = {};
                     }
                 });
             },
@@ -291,7 +308,7 @@
                        this.tableData = res.data ? res.data.data : [];
                        this.totalCount = res.data.totalRow;
                     } else {
-                        this.$Message.error(this.$t('dataGetError'));
+                        this.tableData = [];
                     }
                 });
             },
@@ -355,7 +372,13 @@
              * 删除图片
              */
             removeIDimg (data) {
-                this.formData.pics = data;
+                this.defaultImgList = data.map((url, index) => {
+                    return {
+                        name : index,
+                        url : url
+                    };
+                });
+                this.editGoodPic(data);
             },
         }
     };
@@ -365,11 +388,15 @@
     @import '~@/assets/scss/base';
     .stock-info {
         .content {
-            padding: 30px 52px;
+            padding: 30px 52px 0;
         }
 
         .form-wrapper {
             margin-top: 10px;
+
+            /deep/ .ivu-form-item{
+                margin-bottom: 5px;
+            }
 
             .img-wrapper {
                 width: 100%;
@@ -415,13 +442,13 @@
 
         /deep/ .ivu-tabs-tabpane {
             padding: 20px 0;
-            min-height: 300px;
+            /*min-height: 300px;*/
         }
 
         .col-wrapper {
             .table-wrapper {
-                min-height: 200px;
-                margin-bottom: 30px;
+                /*min-height: 200px;*/
+                margin-bottom: 10px;
             }
         }
 

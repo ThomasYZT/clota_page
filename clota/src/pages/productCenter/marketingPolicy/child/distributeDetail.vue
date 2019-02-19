@@ -77,6 +77,29 @@
                         </template>
                     </el-table-column>
                     <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column2"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
+                            <span v-else>{{scope.row.stockNum | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                         slot="column3"
                         slot-scope="row"
                         :label="row.title"
@@ -84,7 +107,7 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.settlePrice | moneyFilter}}
+                            {{scope.row.printPrice | moneyFilter}}
                         </template>
                     </el-table-column>
                 </tableCom>
@@ -95,7 +118,7 @@
                 <span>{{$t('myDistribute')}}</span>
             </div>
 
-            <div class="button-wrapper" v-if="canAddAllocation">
+            <div class="button-wrapper" v-if="canAddAllocation && canDistribution">
                 <span @click="distribute" class="btn">+ {{ $t('add') + $t('distribution')}}</span>
             </div>
 
@@ -198,8 +221,8 @@
                         //初始化我的分销表头配置
                         this.myDistributeConfig = Array.from(myDistributeConfig);
                         //上级分销单价表格数据
-                        this.parentDistributeData = res.data ? res.data.parentAllocationProductList : {};
-
+                        this.parentDistributeData = res.data ? res.data.parentAllocationProductList : [];
+                        this.listItem.rootAllocationId = res.data ? res.data.rootAllocationId : '';
                         if (res.data.myAllocationLists.length !== 0) {
                             this.myAllocationLists = Array.from(this.parentDistributeData);
 
@@ -212,7 +235,8 @@
                                 for (let j = 0,jlen = res.data.myAllocationLists.length; j < jlen; j++) {
                                     this.myAllocationLists[i]['allocationName' + j] = res.data.myAllocationLists[j].allocationName;
                                     this.myAllocationLists[i]['allocationId' + j] = res.data.myAllocationLists[j].allocationId;
-                                    this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i].settlePrice;
+                                    this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i] ?
+                                        res.data.myAllocationLists[j].itemVos[i].settlePrice : this.myAllocationLists[i].settlePrice;
                                     this.myAllocationLists[i]['itemVos' + j] = Array.from(res.data.myAllocationLists[j].itemVos);
                                     this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos);
                                     if (i === 0) {
@@ -301,10 +325,12 @@
                     haveSaleGroups : this.myAllocationLists[0]['haveSaleGroups' + _index],
                     groupIds : this.myAllocationLists[this.myAllocationLists.length - 1]['groupIds' + _index]
                 };
-                this.myAllocationLists.forEach((item, index) => {
-                    if (index !== this.myAllocationLists.length - 1) {
-                        columnData.productList = item['itemVos' + _index];
-                    }
+                columnData.productList = this.myAllocationLists.map((item, index) => {
+                    let _obj = {
+                        ...item
+                    };
+                    _obj.settlePrice = item['price' + _index] ? item['price' + _index] : item.settlePrice;
+                    return _obj;
                 });
                 return columnData;
             },
@@ -369,6 +395,10 @@
             canAddAllocation () {
                 return this.permissionInfo && 'addAllocation' in this.permissionInfo;
             },
+            //是否可进行在此分销
+            canDistribution () {
+                return this.listItem.canDistribution === 'true';
+            }
         }
     };
 </script>
@@ -482,6 +512,10 @@
                     cursor: pointer;
                     color: $color_blue;
                 }
+
+                /deep/ .ivu-form-item-content {
+                    line-height: 22px;
+                }
             }
 
             .table-wrapper2 {
@@ -522,6 +556,10 @@
                             }
                         }
                     }
+                }
+
+                /deep/ .ivu-form-item-content {
+                    line-height: 22px;
                 }
 
                 .no-data {

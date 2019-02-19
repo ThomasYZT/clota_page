@@ -4,6 +4,7 @@ import i18n from '../../../assets/lang/lang.config';
 const pieBaseConfig = {
     color : ['#2498b8', '#00B6C2', '#F8AAC4', '#FBC826', '#FB7A89', '#64BFFA', '#71CF7F', '#8B8DFD', 'F8DB8E'],
     legend : {
+        type : 'scroll',
         orient : 'horizontal',
         bottom : 5,
         pageButtonGap : 10,
@@ -15,6 +16,7 @@ const pieBaseConfig = {
     },
     tooltip : {
         trigger : "axis",
+        confine : true,
         axisPointer : { // 坐标轴指示器，坐标轴触发有效
             type : 'line', // 默认为直线，可选为：'line' | 'shadow'
             lineStyle : {

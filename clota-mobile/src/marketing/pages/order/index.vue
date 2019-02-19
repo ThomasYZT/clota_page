@@ -14,8 +14,8 @@
             </span>
             <div class="bar"></div>
             <span class="product-filter" @click="productFilterShow = true">
-                <span :class="{ 'text-filter' : choosedProductInfo.length > 0 }">产品</span>
-                <img v-if="choosedProductInfo.length > 0" class="filter" src="../../../assets/images/icon-filter-activated.svg" alt="">
+                <span :class="{ 'text-filter' : choosedProductInfo.filter(item => item.productId !== 'all').length > 0 }">产品</span>
+                <img v-if="choosedProductInfo.filter(item => item.productId !== 'all').length > 0" class="filter" src="../../../assets/images/icon-filter-activated.svg" alt="">
                 <img v-else class="filter" src="../../../assets/images/icon-filter.svg" alt="">
             </span>
         </div>
@@ -113,7 +113,12 @@
                 //产品筛选条件是否显示
                 productFilterShow : false,
                 //选择的产品筛选数据
-                choosedProductInfo : [],
+                choosedProductInfo : [
+                    {
+                        productName : this.$t('全部'),
+                        productId : 'all'
+                    }
+                ],
                 //可筛选的产品列表
                 productList : []
             };
@@ -187,7 +192,7 @@
                     pageNo : this.pageNo,
                     withdrawStatus : withdrawStatus,
                     pageSize : this.pageSize,
-                    productId : this.choosedProductInfo.map(item => item.productId)
+                    productId : this.choosedProductInfo.filter(item => item.productId !== 'all').map(item => item.productId)
                 }).then(res => {
                     if (res.success) {
                         //全部

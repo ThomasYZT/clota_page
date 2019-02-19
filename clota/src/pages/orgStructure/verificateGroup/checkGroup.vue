@@ -57,7 +57,7 @@
                     <template slot-scope="scope">
                         {{$t(scope.row.checkerType === 'check'
                         ? 'verifyCashierType' :  scope.row.checkerType === 'sale'
-                        ? 'verifySaleType' : 'verifySaleAndCashierType')}}
+                            ? 'verifySaleType' : 'verifySaleAndCashierType')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -99,10 +99,9 @@
         </div>
         <!--移除分组-->
         <del-modal ref="delModal">
-            <div class="del-tips">
-                <Icon type="help-circled"></Icon>
-                <span class="red-bale">{{$t('removeVeriGroupNotice')}}</span>
-            </div>
+            <span class="content-text">
+                <i class="iconfont icon-help delete-icon"></i>{{$t('removeVeriGroupNotice')}}
+            </span>
         </del-modal>
     </div>
 </template>
@@ -195,10 +194,10 @@
                     }
                 }).then(res => {
                    if (res.success) {
-                       this.$Message.success(this.$t('successTip',{ msg : this.$t('move') }));
+                       this.$Message.success(this.$t('successTip',{ tip : this.$t('move') }));
                        this.queryList();
                    } else {
-                       this.$Message.error(this.$t('failureTip',{ msg : this.$t('move') }));
+                       this.$Message.error(this.$t('failureTip',{ tip : this.$t('move') }));
                    }
                 });
             },
@@ -315,22 +314,23 @@
         z-index: 9999;
     }
 
-    .del-tips{
-        @include block_outline();
-        @include center_center();
-        padding: 0 76px 0 106px;
-        color: $color_333;
-        font-size: $font_size_14px;
+    .content-text {
+        width: 210px;
+        position: relative;
 
-        .red-bale{
-            display: inline-block;
-            width: 100%;
+        .delete-icon {
+            position: absolute;
+            left: -20px;
+            margin-right: 12px;
+            color: $color_red;
         }
 
-        .ivu-icon{
-            @include absolute_pos(absolute,$left : 88px,$top : 65px);
-            font-size: 15px;
-            color: #EB6751;
+        .yellow-label{
+            display: inline-block;
+            max-width: 100%;
+            color: $color_yellow;
+            vertical-align: middle;
+            @include overflow_tip();
         }
     }
 </style>

@@ -317,6 +317,7 @@
              * 删除图片
              */
             removeIDimg (data) {
+                this.defaultImgList = [];
                 this.formData.pics = data;
             },
             /**
@@ -333,7 +334,7 @@
                         }
                     }
                     this.formData.pics = this.formData.pics ? this.formData.pics.split(',') : [];
-                    this.nowHaveStockNum = this.formData.stockNum + this.detail.undrawNum;
+                    this.nowHaveStockNum = this.formData.stockNum;
                     this.formData.stockNum = '';
                     this.defaultImgList = this.formData.pics.map((url,index) => {
                         return {
@@ -366,7 +367,7 @@
                             this.formData.unit = data;
                         }
                     } else {
-                        this.$Message.error(this.$t('dataGetError'));
+                        this.unitList = [];
                     }
                 });
             },
@@ -441,6 +442,12 @@
     .edit-good-warehousing {
         .form-wrapper {
             margin-top: 50px;
+
+            /deep/ .el-icon-check{
+                position: absolute;
+                top: 0;
+                right: 14px;
+            }
 
             .button-wrapper {
                 margin-top: 40px;

@@ -16,7 +16,7 @@
         <!--内容区域-->
         <table-com
             :ofsetHeight="200"
-            :height="370"
+            :height="450"
             :show-pagination="false"
             :column-data="columnData"
             :table-data="tableData"
@@ -64,13 +64,13 @@
                     <template v-else-if="scope.row.type.includes('refund')">
                         <!-- 退票申请 -->
                         <template v-if="scope.row.type.includes('apply')">
-                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}，</span>
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}} {{$t('comma')}}</span>
                             <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
                         </template>
                         <!-- 退票结果 -->
                         <template v-else>
-                            <span>{{$t('colonSetting', { key : $t('reject') })}}{{scope.row.content.rejectNum | contentFilter}}，</span>
-                            <span>{{$t('colonSetting', { key : $t('passed') })}}{{scope.row.content.passNum | contentFilter}}，</span>
+                            <span>{{$t('colonSetting', { key : $t('reject') })}}{{scope.row.content.rejectNum | contentFilter}} {{$t('comma')}}</span>
+                            <span>{{$t('colonSetting', { key : $t('passed') })}}{{scope.row.content.passNum | contentFilter}} {{$t('comma')}}</span>
                             <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
                         </template>
                     </template>
@@ -78,13 +78,13 @@
                     <template v-else-if="scope.row.type.includes('alter')">
                         <!-- 改签申请 -->
                         <template v-if="scope.row.type.includes('apply')">
-                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}，</span>
+                            <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}} {{$t('comma')}}</span>
                             <span>{{scope.row.content.org | contentFilter}}/{{scope.row.content.account | contentFilter}}</span>
                         </template>
                         <!-- 改签结果 -->
                         <template v-else>
-                            <span>{{$t('colonSetting', { key : $t('reject') })}}{{scope.row.content.rejectNum | contentFilter}}，</span>
-                            <span>{{$t('colonSetting', { key : $t('passed') })}}{{scope.row.content.passNum | contentFilter}}，</span>
+                            <span>{{$t('colonSetting', { key : $t('reject') })}}{{scope.row.content.rejectNum | contentFilter}} {{$t('comma')}}</span>
+                            <span>{{$t('colonSetting', { key : $t('passed') })}}{{scope.row.content.passNum | contentFilter}} {{$t('comma')}}</span>
                             <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
                         </template>
                     </template>
@@ -99,6 +99,13 @@
                             <span v-else>{{$t('reject')}}</span>
                             <span>{{$t('colonSetting', { key : $t('orderId') })}}{{scope.row.content.orderNo | contentFilter}}</span>
                         </template>
+                    </template>
+                    <!-- 下单失败 -->
+                    <template v-else-if="scope.row.type.includes('failure')">
+                        <span>{{$t('colonSetting', { key : $t('reason') })}}{{'付款账户可用额度不足'}} {{$t('comma')}}</span>
+                        <span>{{$t('colonSetting', { key : $t('superiorDistribution') })}} {{scope.row.content.peerOrg | contentFilter}} {{$t('comma')}}</span>
+                        <span>{{$t('colonSetting', { key : $t('availableCredit') })}} {{scope.row.content.accountBalance | contentFilter}}{{$t('yuan')}} {{$t('comma')}}</span>
+                        <span>{{$t('colonSetting', { key : $t('purchaseAmount') })}} {{scope.row.content.orderAmount | contentFilter}}{{$t('yuan')}} {{$t('comma')}}</span>
                     </template>
                 </template>
             </el-table-column>
@@ -122,7 +129,7 @@
                 fixed="right">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="jumpToPages(scope)">{{$t('check')}}</li><!--查看-->
+                        <li v-if="!scope.row.type.includes('failure')" @click="jumpToPages(scope)">{{$t('check')}}</li><!--查看-->
                         <li @click="handleMatters(scope)">{{$t('ignore')}}</li><!--忽略-->
                     </ul>
                 </template>

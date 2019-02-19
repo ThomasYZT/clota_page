@@ -3,10 +3,10 @@
     作者：杨泽涛
 -->
 <template>
-    <div>
+    <div class="img-uploader">
         <el-upload
             ref="imgUpload"
-            :class="{ 'add-hidden' : addDisabled }"
+            :class="{ 'add-hidden' : addDisabled || uploadList.length >= quantityLimit || defaultList.length >= quantityLimit }"
             :action="action"
             list-type="picture-card"
             :limit="quantityLimit"
@@ -19,11 +19,15 @@
             :on-remove="handleRemove"
             :on-exceed="handlEexceed"
             :on-success="uploadSuc">
-            <i class="el-icon-plus" ></i>
+            <i class="el-icon-plus" ></i>{{message}}
         </el-upload>
-        <Modal :title="$t('picturePreview')" v-model="dialogVisible">
-            <img :src="dialogImageUrl" style="width: 100%">
-        </Modal>
+
+        <div class="extra-info" v-if="imgInfo">{{imgInfo}}</div>
+
+        <!--图片预览-->
+        <image-preview ref="imagePreview" :images="[dialogImageUrl]">
+            <img :src="dialogImageUrl">
+        </image-preview>
     </div>
 </template>
 
@@ -31,6 +35,7 @@
     import config from '@/config/index';
     import api from '@/api/apiList';
     import ajaxConfig from '@/api/index.js';
+    import imagePreview from '@/components/imagePreview/index.vue';
 
     export default {
         props : {
@@ -57,21 +62,34 @@
                 default () {
                     return [];
                 }
+            },
+            //文案
+            message : {
+                type : String,
+                default () {
+                    return '';
+                }
+            },
+            imgInfo : {
+                type : String,
+                default () {
+                    return '';
+                }
             }
         },
-        components : {},
+        components : {
+            imagePreview
+        },
         data () {
             return {
                 //已上传文件列表
                 uploadList : [],
                 //预览图片url
                 dialogImageUrl : '',
-                //是否显示预览图片
-                dialogVisible : false,
                 //是否到达文件数量限制
                 limit : false,
                 //是否显示添加按钮
-                addDisabled : false
+                addDisabled : false,
             };
         },
         computed : {
@@ -101,8 +119,8 @@
                 if (res.success) {
                     this.uploadList.push(res.data);
                     //若已上传文件到达上传数量限制，则不显示上传按钮
-                    if (this.uploadList.length === this.quantityLimit) {
-                        this.addDisabled = true;
+                    if (this.uploadList.length < this.quantityLimit) {
+                        this.addDisabled = false;
                     }
                     this.$emit('upload-success',this.uploadList);
                     this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
@@ -129,7 +147,9 @@
                     this.$emit('remove-img', this.uploadList);
                     //删除图片--显示出添加上传的按钮
                     if (this.uploadList.length < this.quantityLimit) {
-                        this.addDisabled = false;
+                        setTimeout(() => {
+                            this.addDisabled = false;
+                        }, 500);
                     }
                 }
             },
@@ -139,7 +159,11 @@
              */
             handlePictureCardPreview (file) {
                 this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.$refs.imagePreview.show();
+                    },100);
+                });
             },
             /**
              * 上传失败
@@ -157,6 +181,7 @@
              * @returns {boolean}
              */
             beforeUpload (file) {
+                this.addDisabled = true;
                 //文件格式校验
                 let isRightFormat = this.format.findIndex((item) => {
                     return file.type.split('/')[1] === item;
@@ -179,7 +204,7 @@
              * 隐藏预览
              */
             hide () {
-                this.dialogVisible = false;
+                this.imageShow = false;
             },
             /**
              * 文件超出指定数量时
@@ -198,7 +223,7 @@
                 //预览图片url
                 this.dialogImageUrl = '';
                 //是否显示预览图片
-                this.dialogVisible = false;
+                this.imageShow = false;
                 //是否到达文件数量限制
                 this.limit = false;
                 //是否显示添加按钮
@@ -211,9 +236,18 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
+    .img-uploader {
+        display: inline-block;
+    }
+
     /deep/ .add-hidden {
         .el-upload {
             display: none;
         }
+    }
+
+    .extra-info {
+        width: 148px;
+        text-align: center;
     }
 </style>

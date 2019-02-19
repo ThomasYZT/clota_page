@@ -9,8 +9,8 @@ export const marketRouterDeal = (to, from, next) => {
         //vuex中如果用户信息为空，则需要重新获取用户信息，获取用户信息失败，则需要跳转到登录页面重新登录
         if (store.getters.marketUserInfo &&
             Object.keys(store.getters.marketUserInfo).length > 0 &&
-            store.getters.marketINgCompanyCode &&
-            Object.keys(store.getters.marketINgCompanyCode).length > 0 &&
+            store.getters.companyCode &&
+            Object.keys(store.getters.companyCode).length > 0 &&
             store.getters.marketTypeId &&
             Object.keys(store.getters.marketTypeId).length > 0) {
             next();

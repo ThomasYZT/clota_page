@@ -27,7 +27,6 @@
                 slot="column3"
                 slot-scope="row"
                 show-overflow-tooltip
-                fixed="right"
                 :label="row.title"
                 :width="row.width"
                 :min-width="row.minWidth">
@@ -57,7 +56,7 @@
         <addMarketingLevelModal ref="addMarketingLevelModal"
                                 @do-success="updateSuccess"></addMarketingLevelModal>
 
-        <delModal ref="delModal">
+        <delModal ref="delModal" class="del-min-width">
             <div class="del-modal">
                 <i class="iconfont icon-help"></i>
                 <span class="result">{{$t('sureToDelMarketingLevel')}}</span>
@@ -158,6 +157,7 @@
              */
             deleteBatch (id) {
                 this.$refs.delModal.show({
+                    title : this.$t('notice'),
                     confirmCallback : () => {
                         let levelIds;
                         if (id) {

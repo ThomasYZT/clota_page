@@ -9,7 +9,9 @@
             </div>
             <ul class="label-input">
                 <li class="label-list" v-if="cannotReturn">不可退</li>
+                <li class="label-list" v-else>可退</li>
                 <li class="label-list" v-if="cannotAlter">不可改</li>
+                <li class="label-list" v-else>可改</li>
             </ul>
         </div>
         <div class="content">
@@ -19,13 +21,12 @@
                     class="padding-right"
                     :value="playDate">
                 </cell>
-                <cell :title="$t('购买数量')">
-                    <inline-x-number style="display:block;"
-                                     v-model="buyNum"
-                                     :max="maxChoosed"
-                                     :min="minChoosed" >
-                    </inline-x-number>
-                </cell>
+                <x-number :title="$t('购买数量')"
+                          :fillable="true"
+                          v-model="buyNum"
+                          :max="maxChoosed"
+                          :min="minChoosed">
+                </x-number>
             </group>
             <group class="group-wrap" v-for="(item,index) in formData" :key="index">
                 <popup-radio :title="$t('证件类型')"
@@ -496,10 +497,10 @@
             },
             //最大选择的产品数量
             maxChoosed () {
-                if (this.productPolicy && this.productPolicy.maxNum) {
+                if (this.productPolicy && this.productPolicy.maxNum !== null && this.productPolicy.maxNum !== '' ) {
                     return Number(this.productPolicy.maxNum);
                 } else {
-                    return 1;
+                    return 9999;
                 }
             },
             //最小选择的产品数量

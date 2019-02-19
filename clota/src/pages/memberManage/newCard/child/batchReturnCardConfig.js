@@ -3,6 +3,7 @@ export const batchRefundColumnData = [
     {
         title : 'index', // 序号
         width : 100,
+        enWidth : 158,
         field : 'index'
     },
     {
@@ -18,6 +19,7 @@ export const batchRefundColumnData = [
     {
         title : 'operate', // 操作
         width : 100,
+        enWidth : 115,
         field : 'operate'
     },
 ];

@@ -15,14 +15,10 @@ export const memberState = {
     showKeyBoard : false,
     //用户是否登录
     isLogin : false,
-    //公司id
-    companyCode : '00000194',
     //错误码
     errCode : '',
     //会员配置信息
     memberConfigInfo : {},
-    //来源信息，区分全民营销和会员系统
-    sourceInfo : '',
     //微信配置信息
     wxMpSet : {}
 };
@@ -30,7 +26,12 @@ export const memberState = {
 export const memberGetters = {
     //用户信息
     userInfo : state => {
-        let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+        let userInfo = {};
+        try {
+            userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
+        } catch (e) {
+            console.error(e);
+        }
         if (!state.userInfo || Object.keys(state.userInfo).length < 1) {
             state.userInfo = userInfo;
         }
@@ -59,25 +60,6 @@ export const memberGetters = {
     showKeyBoard : state => {
         return state.showKeyBoard;
     },
-    //公司id
-    companyCode : state => {
-        let companyCode = state.companyCode;
-        let url = location.href;
-        if (url.indexOf('?') !== -1) {
-            let query = url.split("?")[1];
-            let queryArr = query.split("&");
-            queryArr.forEach(function (item) {
-                let key = item.split("=")[0];
-                let value = item.split("=")[1];
-                if (key === 'companyCode') {
-                    companyCode = value;
-                }
-            });
-            return companyCode;
-        } else {
-            return companyCode;
-        }
-    },
     //是否登录
     isLogin : state => {
         let userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
@@ -87,25 +69,6 @@ export const memberGetters = {
     //会员配置信息
     memberConfigInfo : state => {
         return state.memberConfigInfo;
-    },
-    //来源信息
-    sourceInfo : state => {
-        let source = state.sourceInfo;
-        let url = location.href;
-        if (url.indexOf('?') !== -1) {
-            let query = url.split("?")[1];
-            let queryArr = query.split("&");
-            queryArr.forEach(function (item) {
-                let key = item.split("=")[0];
-                let value = item.split("=")[1];
-                if (key === 'source') {
-                    source = value;
-                }
-            });
-            return source;
-        } else {
-            return source;
-        }
     },
     wxMpSet : state => {
         return state.wxMpSet;
@@ -207,6 +170,28 @@ export const memberMutations = {
 };
 
 export const memberActions = {
+    //获取会员配置信息
+    getMemberConfigInfo ({ commit, dispatch }) {
+        const ajax = require('../api/index').default;
+        return new Promise((resolve,reject) => {
+            ajax.post('getMemberServiceSetting',{
+                serviceCode : 'member',
+                orgId : this.getters.cardInfo.orgId,
+            }).then(res => {
+                if (res.success && res.data) {
+                    if (res.data.cardType) {
+                        //更新会员配置
+                        commit('updateMemberConfig', res.data);
+                        resolve();
+                    } else {
+                        reject('serviceError');
+                    }
+                } else {
+                    reject();
+                }
+            });
+        });
+    },
     //获取会员卡列表
     getCardListInfo ({ commit, dispatch }) {
         const ajax = require('../api/index').default;
@@ -236,24 +221,7 @@ export const memberActions = {
                     reject();
                 });
             }),
-            new Promise((resolve,reject) => {
-                ajax.post('getMemberServiceSetting',{
-                    serviceCode : 'member',
-                    orgId : this.getters.userInfo.orgId,
-                }).then(res => {
-                    if (res.success && res.data) {
-                        if (res.data.cardType) {
-                            //更新会员配置
-                            commit('updateMemberConfig', res.data);
-                            resolve();
-                        } else {
-                            reject('serviceError');
-                        }
-                    } else {
-                        reject();
-                    }
-                });
-            }),
+            dispatch('getMemberConfigInfo'),
             new Promise((resolve, reject) => {
                 ajax.post('queryMemberWxMpSet', {
                     source : this.getters.sourceInfo
@@ -263,7 +231,7 @@ export const memberActions = {
                             commit('updateWxMpSet', res.data);
                             resolve();
                         } else {
-                            reject()
+                            reject();
                         }
                     } else {
                         reject();

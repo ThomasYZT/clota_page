@@ -16,6 +16,7 @@
                 <!--placeholder-align="right">-->
             <!--</x-input>-->
             <popup-radio v-show="stage === 1"
+                         class="account-type"
                          :title="$t('收款账户类型')"
                          :options="accountTypeList"
                          v-model="formData.accountType">
@@ -227,9 +228,10 @@
                     clearTimeout(this.timer);
                     this.timer = '';
                 }
-                this.$router.push({
-                    name : 'marketingOwnerCenter'
-                });
+                this.$router.back();
+                // this.$router.push({
+                //     name : 'marketingOwnerCenter'
+                // });
             },
 
             /**
@@ -240,7 +242,7 @@
                     ajax.post('market_getPhoneVerificationCode', {
                         phoneNum : this.mobile,
                         type : 'makert_change_account',
-                        companyCode : this.marketINgCompanyCode
+                        companyCode : this.companyCode
                     }).then((res) => {
                         if (!res.success) {
                             this.$vux.toast.show({
@@ -325,7 +327,7 @@
                 ajax.post('market_checkVerifyCode',{
                     mobile : this.mobile,
                     code : this.formData.code,
-                    companyCode : this.marketINgCompanyCode,
+                    companyCode : this.companyCode,
                     type : 'makert_change_account',
                 }).then((res) => {
                     if (res.success) {
@@ -360,7 +362,7 @@
         },
         computed : {
             ...mapGetters({
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
             })
         }
     };
@@ -370,6 +372,12 @@
     .set-deposit-account{
         @include block_outline();
         background: #f2f3f4;
+
+        .account-type{
+            /deep/ .vux-label {
+                color: #172434;
+            }
+        }
 
         .hr{
             @include block_outline($height:8px);

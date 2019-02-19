@@ -2,7 +2,7 @@
 
 <template>
     <div class="workbench">
-        <template v-if="manageOrgs.nodeType === 'scenic'">
+        <template v-if="manageOrgs.nodeType === 'scenic' || manageOrgs.nodeType === 'company'">
             <scenicService></scenicService>
         </template>
 
@@ -35,8 +35,11 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .workbench{
+    .workbench {
+        @include block_outline();
         @include overflow_tip(100%,100%);
+        min-width: $content_min_width;
         overflow: auto;
+        border-radius: 4px;
     }
 </style>

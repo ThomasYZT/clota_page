@@ -3,6 +3,7 @@ export const paratner = [
     {
         title : 'index',//序号
         minWidth : 90,
+        enWidth : 155,
         field : 'index',
     },
     {
@@ -18,6 +19,7 @@ export const paratner = [
     {
         title : 'validProtocolEndDate',//协议有效期结束日期
         minWidth : 190,
+        enWidth : 215,
         field : 'endDate'
     },
     {

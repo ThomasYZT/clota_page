@@ -9,35 +9,35 @@
         <Form ref="formCustom"
               :model="formData"
               :rules="formRule"
-              :label-width="90" :label-position="'left'">
+              :label-width="75"
+              :label-position="'right'">
             <i-row>
-                <i-col span="11">
+                <i-col span="7">
                     <!--下单时间-->
-                    <FormItem :label="$t('orderTime')">
+                    <FormItem :label="$t('orderTime')"
+                              :label-width="lang === 'zh-CN' ? 75 : 80">
                         <DatePicker v-model="orderTimeRange"
                                     type="daterange"
+                                    style="width: 100%"
                                     :editable="false"
-                                    style="width: 370px;"
                                     @on-change="changeOrderTime">
                         </DatePicker>
                     </FormItem>
                 </i-col>
-                <i-col span="12">
+                <i-col span="7">
                     <!--游玩时间-->
                     <FormItem :label="$t('visitTime')">
                         <DatePicker v-model="visitDateRange"
+                                    style="width: 100%"
                                     type="daterange"
                                     :editable="false"
-                                    style="width: 370px;"
                                     @on-change="changeVisitDate">
                         </DatePicker>
                     </FormItem>
                 </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="6" v-if="auditName=='group'">
+                <i-col span="5" v-if="auditName=='group'">
                     <!--支付状态-->
-                    <FormItem :label="$t('paymentStatus')" >
+                    <FormItem :label="$t('paymentStatus')" :label-width="lang === 'zh-CN' ? 75 : 120">
                         <Select v-model="formData.paymentStatus"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
@@ -49,9 +49,22 @@
                         </Select>
                     </FormItem>
                 </i-col>
+                <i-col span="5">
+                    <!--业态类型-->
+                    <FormItem :label="$t('industryType')" :label-width="lang === 'zh-CN' ? 75 : 120">
+                        <Select v-model="formData.productType"
+                                style="width: 100%"
+                                @on-change="searchAuditList">
+                            <Option value="all">{{$t('all')}}</Option>
+                            <Option value="ticket">{{$t('tickets')}}</Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
                 <i-col span="6">
                     <!--下单企业-->
-                    <FormItem :label="$t('orderOrg')" >
+                    <FormItem :label="$t('orderOrg')" :label-width="lang === 'zh-CN' ? 75 : 120">
                         <Select v-model="formData.channelId"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
@@ -65,7 +78,7 @@
                 </i-col>
                 <i-col span="6">
                     <!--下单渠道-->
-                    <FormItem :label="$t('orderChannel')">
+                    <FormItem :label="$t('orderChannel')" :label-width="lang === 'zh-CN' ? 75 : 105">
                         <Select v-model="formData.orderChannel"
                                 style="width: 100%"
                                 @on-change="searchAuditList">
@@ -77,29 +90,16 @@
                         </Select>
                     </FormItem>
                 </i-col>
-                <i-col span="6" style="float:right;text-align: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchAuditList">{{$t('searching')}}</Button><!--搜索-->
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
-                </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="6">
-                    <!--业态类型-->
-                    <FormItem :label="$t('industryType')" >
-                        <Select v-model="formData.productType"
-                                style="width: 100%"
-                                @on-change="searchAuditList">
-                            <Option value="all">{{$t('all')}}</Option>
-                            <Option value="ticket">{{$t('tickets')}}</Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
-                <i-col span="7">
-                    <FormItem :label="$t('keywords')" >
+                <i-col style="display:inline-block;width: 36%;">
+                    <FormItem :label="$t('keywords')" :label-width="lang === 'zh-CN' ? 75 : 80">
                         <Input v-model.trim="formData.keyword"
-                               style="width: 320px;"
+                               style="width: 100%;"
                                :placeholder="$t('inputField', { field : $t('vistorNameOrPhoneNumOrOrderNo') })" /><!--请输入游客姓名/手机号/订单号/订单明细编号-->
                     </FormItem>
+                </i-col>
+                <i-col style="display:inline-block;float:right;text-align: right">
+                    <Button type="primary" class="ivu-btn-65px" @click="searchAuditList">{{$t('empQuery')}}</Button><!--搜索-->
+                    <Button type="ghost" class="ivu-btn-65px reset" @click="reset">{{$t('reset')}}</Button><!--重置-->
                 </i-col>
             </i-row>
             <!--<i-row>
@@ -174,7 +174,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                lang : 'lang',
             })
         },
         created () {
@@ -258,18 +259,14 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .audit-filter {
-        padding: 15px 30px 0 10px;
+        padding: 15px 10px 0 10px;
         /*border: 1px solid #EEEEEE;*/
         position: relative;
-
-        .ivu-form {
-            max-width: 1170px;
-        }
 
         /deep/ .ivu-form-item{
             margin-bottom: 10px;
             .ivu-form-item-label {
-                padding: 8px 10px 8px 20px;
+                padding: 8px 5px 8px 5px;
             }
             .ivu-form-item-content {
                 line-height: 30px;
@@ -277,7 +274,7 @@
         }
 
         .reset{
-            margin-left: 15px;
+            margin-left: 5px;
             border-color: #0055B8;
             color: #0055B8;
         }

@@ -229,10 +229,11 @@ export default new Vuex.Store({
         setLang (state, lang) {
             //保存当前的语言状态
             localStorage.setItem('lang', lang);
-            i18n.locale = state.lang = lang;
-            setTimeout(() => {
-                this.commit('changeOperateLine',false);
-            },600);
+            // i18n.locale = state.lang = lang;
+            location.reload();
+            // setTimeout(() => {
+            //     this.commit('changeOperateLine',false);
+            // },600);
         },
         //改变操作栏状态
         changeOperateLine (state,status) {
@@ -443,8 +444,6 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            // store.commit('updateCardReadEnabled',true);
-            // return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
             if (window.rd ) {
                 try {
@@ -465,8 +464,6 @@ export default new Vuex.Store({
          */
         getCardReadData (store) {
             return new Promise((resolve,reject) => {
-                // store.commit('updateCardReadEnabled',true);
-                // resolve('111');
                 let st;
                 //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
                 if (window.rd) {

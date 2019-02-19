@@ -28,7 +28,7 @@
         </div>
         <!--审核列表-->
         <table-com
-            :ofsetHeight="235"
+            :ofsetHeight="200"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -101,11 +101,11 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span><!--通过-->
-                    <span class="divide-line"></span>
-                    <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
-                    <span class="divide-line"></span>
-                    <span class="operate-btn blue" @click="goTeamOrderDetail(scope.row)">{{$t('details')}}</span>
+                    <ul class="operate-list">
+                        <li @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</li>
+                        <li class="red-label" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</li>
+                        <li v-if="canShowDetail" @click="goTeamOrderDetail(scope.row)">{{$t('details')}}</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -124,6 +124,7 @@
     import { configVariable, notDistributorChannelList, payStatusList } from '@/assets/js/constVariable';
     import auditPassModal from './components/groupAuditPassModal.vue';
     import auditRejectModal from './components/groupAuditRejectModal.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -159,8 +160,14 @@
                 batchAudit : batchAudit
             };
         },
-        computed : {},
-        created () {
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以查看订单详情
+            canShowDetail () {
+                return this.permissionInfo && this.permissionInfo['order-list'] === 'allow';
+            }
         },
         methods : {
             /**

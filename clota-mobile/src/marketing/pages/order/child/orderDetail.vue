@@ -2,7 +2,7 @@
 
 <template>
     <div class="order-detail">
-        <div class="content">
+        <div class="content" :class="{ 'full-height' : orderDetail.withdrawStatus === 'success' }">
             <div class="order-info">
                 <div class="order-base-info">
                     <span class="order-name">{{orderDetail.scenicName | contentFilter}}</span>
@@ -40,7 +40,7 @@
             </div>
             <!--核销信息-->
             <div class="preorder-info">
-                <div class="title">{{$t('核销信息')}}</div>
+                <div class="title">{{$t('核销-退票信息')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('已核销数量') })}}</span>
@@ -53,6 +53,9 @@
                     <div class="detail-list">
                         <span class="key">{{$t('colonSetting',{ key : $t('过期已核销数量') })}}</span>
                         <span class="value">{{orderDetail.overdueNum | contentFilter}}</span>
+                    </div>
+                    <div class="detail-list">
+                        <span class="key">{{$t('colonSetting',{ key : $t('说明') })}}{{$t('本订单产品全部核销或退票后才能申请提现')}}</span>
                     </div>
                 </div>
             </div>
@@ -92,19 +95,33 @@
             <div v-else
                  class="apply-deposit" :class="{ 'disabled' : true }">{{$t('申请提现')}}</div>
         </div>
+        <!--未设置账户提示框-->
+        <confirm v-model="confirmShow"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('立即设置')"
+                 @on-cancel="onCancel"
+                 @on-confirm="onConfirm">
+            <p style="text-align:center;">{{ $t('您还未设置佣金收款账户。') }}</p>
+        </confirm>
     </div>
 </template>
 
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import ajax from '@/marketing/api/index';
+    import { validator } from 'klwk-ui';
 
     export default {
         mixins : [lifeCycleMixins],
         data () {
             return {
                 //订单详情
-                orderDetail : {}
+                orderDetail : {},
+                //提现提醒模态框是否显示
+                confirmShow : false,
+                //账户详情
+                accountDetail : {}
             };
         },
         methods : {
@@ -112,7 +129,7 @@
              * 跳转到提现申请结果
              */
             deposit () {
-                this.applyDeposit();
+                this.queryUserInfo();
             },
             /**
              * 获取路由信息
@@ -154,7 +171,45 @@
                         });
                     }
                 });
-            }
+            },
+            /**
+             * 查询用户信息
+             */
+            queryUserInfo () {
+                ajax.post('market_getMarketUserMyInfo').then(res => {
+                    if (res.success && res.data) {
+                        this.accountDetail = res.data;
+                        //判断是否设置了收款账户，如果没有设置不可提现
+                        if (validator.isEmpty(res.data.accountType) || validator.isEmpty(res.data.accountInfo)) {
+                            this.confirmShow = true;
+                        } else {
+                            this.applyDeposit();
+                        }
+                    }
+                });
+            },
+            /**
+             * 取消提现
+             */
+            onCancel () {
+                this.confirmShow = false;
+            },
+            /**
+             * 立即设置收款账户
+             */
+            onConfirm () {
+                this.$router.push({
+                    name : 'marketingSetAccount',
+                    params : {
+                        accountInfo : {
+                            account : this.accountDetail.accountInfo,
+                            accountType : this.accountDetail.accountType,
+                            name : this.accountDetail.name,
+                            mobile : this.accountDetail.mobile
+                        }
+                    }
+                });
+            },
         },
         computed : {
             //是否可以申请提现
@@ -183,12 +238,22 @@
             @include padding_place(100%,8px);
             overflow: auto;
 
+            &.full-height{
+                height: 100%;
+            }
+
             .preorder-info{
                 background: $color_fff;
                 margin-bottom: 8px;
 
                 &:nth-last-of-type(1){
                     margin-bottom: 0;
+                }
+
+                .note{
+                    font-size: $font_size_10px;
+                    color: $color_999;
+                    padding: 0 10px;
                 }
 
                 .title{

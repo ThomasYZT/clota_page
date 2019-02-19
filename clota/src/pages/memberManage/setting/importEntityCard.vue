@@ -414,7 +414,7 @@
                 .fail-tip{
                     position: absolute;
                     top: 15px;
-                    right: -26px;
+                    right: -50px;
                     font-size: $font_size_14px;
                     color: #C5C5C5;
                 }

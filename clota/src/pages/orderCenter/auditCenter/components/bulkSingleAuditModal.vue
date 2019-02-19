@@ -14,7 +14,10 @@
         @on-cancel="hide">
 
         <div class="modal-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="180">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 180 : 200">
                 <!--订单明细编号-->
                 <Form-item :label="$t('orderDetailNo') + '：'" prop="">
                     <span>{{formData.orderDetailNo}}</span>
@@ -71,6 +74,7 @@
 </template>
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {},
@@ -108,13 +112,11 @@
                 } else if (this.$route.name == 'auditBulkChange') {
                     return 'alter';
                 }
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         },
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             show ( data ) {
                 if (data) {

@@ -25,7 +25,7 @@
                 this.$router.push({
                     name : 'marketingLogin',
                     query : {
-                        companyCode : this.marketINgCompanyCode
+                        companyCode : this.companyCode
                     }
                 });
             },
@@ -48,7 +48,7 @@
         },
         computed : {
             ...mapGetters({
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
             })
         }
     };

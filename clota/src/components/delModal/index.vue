@@ -7,7 +7,6 @@
         :mask-closable="false"
         @on-visible-change="visibleChange"
         class="del-node"
-        :closable="false"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
             <span class="title" >
@@ -142,6 +141,26 @@
 
             .red-label {
                 color: $color_err;
+            }
+        }
+
+        /deep/ .content-text {
+            width: 210px;
+            position: relative;
+
+            .delete-icon {
+                position: absolute;
+                left: -20px;
+                margin-right: 12px;
+                color: $color_red;
+            }
+
+            .yellow-label{
+                display: inline-block;
+                max-width: 100%;
+                color: $color_yellow;
+                vertical-align: middle;
+                @include overflow_tip();
             }
         }
     }

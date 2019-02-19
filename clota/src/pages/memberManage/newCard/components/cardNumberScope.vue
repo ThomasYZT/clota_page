@@ -1,4 +1,4 @@
-1<!--快速开卡，开卡范围输入-->
+<!--快速开卡，开卡范围输入-->
 
 <template>
     <Modal
@@ -10,16 +10,19 @@
         @on-visible-change="visibleChange"
         class="card-number-scope"
         class-name="vertical-center-modal">
-        <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="120">
+        <Form ref="formValidate"
+              :model="formData" :rules="ruleValidate"
+              :label-position="lang === 'zh-CN' ? 'left' : 'top'"
+              :label-width="lang === 'zh-CN' ? 120 : 0">
             <FormItem :label="$t('colonSetting', { key : $t('cardNoRange') })">
                 <i-row>
-                    <i-col style="display: inline-block;width: 165px;">
+                    <i-col style="display: inline-block;width : 165px">
                         <FormItem prop="smallNum">
                             <Input v-model="formData.smallNum"/>
                         </FormItem>
                     </i-col>
                     -
-                    <i-col style="display: inline-block;width: 165px;">
+                    <i-col style="display: inline-block;width : 165px">
                         <FormItem prop="bigNum">
                             <Input v-model="formData.bigNum" />
                         </FormItem>
@@ -28,12 +31,12 @@
             </FormItem>
         </Form>
         <div slot="footer">
-            <Button type="ghost"
-                    class="ivu-btn-90px"
-                    @click="cancel">{{$t('cancel')}}</Button>
             <Button type="primary"
                     class="ivu-btn-90px"
                     @click="save">{{$t('confirm')}}</Button>
+            <Button type="ghost"
+                    class="ivu-btn-90px"
+                    @click="cancel">{{$t('cancel')}}</Button>
         </div>
     </Modal>
 </template>
@@ -42,6 +45,7 @@
     import common from '@/assets/js/common.js';
     import ajax from '@/api/index.js';
     import { validator } from 'klwk-ui';
+    import { mapGetters } from 'vuex';
 
 	export default {
         props : {
@@ -197,6 +201,11 @@
                 }
                 return obj;
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
 	};
 </script>
@@ -204,13 +213,22 @@
     @import '~@/assets/scss/base';
     .card-number-scope{
 
+        /*/deep/ .ivu-form{*/
+            /*width: 100%;*/
+        /*}*/
+
         /deep/ .ivu-modal-body{
             padding: 16px;
             font-size: 12px;
             line-height: 1.5;
-            min-height: 163px;
+            min-height: 200px;
             display: flex;
             align-items: center;
+            justify-content: center;
+        }
+
+        /deep/ .ivu-form-item{
+            margin-bottom: 0;
         }
     }
 </style>

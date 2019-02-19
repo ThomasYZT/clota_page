@@ -20,21 +20,12 @@
             :on-exceed="handlEexceed"
             :on-success="uploadSuc">
             <i class="el-icon-plus"></i>
-            <span>{{$t('uploadPicture')}}</span>
+            <span>{{$t('upload')}}</span>
         </el-upload>
-        <Modal :title="$t('picturePreview')"
-               :transfer="false"
-               :mask-closable="false"
-               :closable="false"
-               class-name="picture-preview"
-               v-model="dialogVisible">
-            <img :src="dialogImageUrl" style="width: 100%">
-            <div slot="footer" class="modal-footer">
-                <Button class="ivu-btn-90px"
-                        type="ghost"
-                        @click="hide" >{{$t("cancel")}}</Button>
-            </div>
-        </Modal>
+        <!--图片预览-->
+        <image-preview ref="imagePreview" :images="[dialogImageUrl]">
+            <img :src="dialogImageUrl">
+        </image-preview>
     </div>
 </template>
 
@@ -42,6 +33,7 @@
     import config from '@/config/index';
     import api from '@/api/apiList';
     import ajaxConfig from '@/api/index.js';
+    import imagePreview from '@/components/imagePreview/index.vue';
     export default {
         props : {
             //上传图片数量限制
@@ -74,7 +66,9 @@
                 default : api.imgUpload
             }
         },
-        components : {},
+        components : {
+            imagePreview
+        },
         data () {
             return {
                 //已上传文件列表
@@ -124,11 +118,24 @@
                     this.$emit('upload-success',this.uploadList);
                     this.$Message.success(this.$t('successTip', { tip : this.$t('upload') }));
                 } else {
-                    if (res.code === 'S003') {
-                        this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
-                    } else {
-                        this.$Message.error( 'analysisFail' );
-                    }
+                    this.$refs.imgUpload.uploadFiles.pop();
+                    // if (res.code === 'S003') {
+                    //     this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                    // } else {
+                    // }
+                    this.isJSON(res.code).then(code => {
+                        if (code.errcode && code.errcode.toString() === '40013') {
+                            this.$Message.error(this.$t('pleaseConfigWxCorrectly'));
+                        } else {
+                            this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                        }
+                    }).catch(() => {
+                        if (res.code === 'S014') {
+                            this.$Message.error(this.$t('pleaseConfigWxCorrectly'));
+                        } else {
+                            this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
+                        }
+                    })
                 }
                 this.$store.commit('changePromisings','del');
             },
@@ -156,7 +163,11 @@
              */
             handlePictureCardPreview (file) {
                 this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.$refs.imagePreview.show();
+                    },100);
+                });
             },
             /**
              * 上传失败
@@ -201,6 +212,25 @@
             handlEexceed () {
                 this.$Message.error(this.$t( 'mostUploadPic', { num : this.quantityLimit }));
                 this.limit = true;
+            },
+            /**
+             * 判断字符串是否为JSON格式
+             * @param str
+             * @return {boolean}
+             */
+            isJSON (str) {
+                return new Promise((resolve, reject) => {
+                    if (typeof str == 'string') {
+                        try {
+                            let _json = JSON.parse(str);
+                            resolve(_json);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    } else {
+                        reject()
+                    }
+                });
             }
         },
         mounted () {

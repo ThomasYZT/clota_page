@@ -9,7 +9,7 @@
         </div>
         <div class="fund-account-header">
             <Select v-model="queryParams.accountTypeId"
-                    style="width:180px"
+                    style="width:180px;margin-right: 5px"
                     :placeholder="$t('chooseAccountType')"
                     @on-change="queryList"><!--请选择账户类型-->
                 <Option
@@ -20,7 +20,7 @@
                 </Option>
             </Select>
             <Select v-model="queryParams.tradeType"
-                    style="width:180px"
+                    style="width:180px;margin-right: 5px"
                     :placeholder="$t('selectField', {msg: $t('transactionType')})"
                     @on-change="queryList"><!--请选择交易类型-->
                 <Option
@@ -32,8 +32,10 @@
             </Select>
             <Input v-model.trim="queryParams.keyword"
                    :placeholder="$t('fundPlaceholder')"
-                   :style="{width: lang === 'zh-CN' ? '240px' : '390px'}" /><!--请输入姓名、电话、会员编号-->
-            <Button type="primary" @click="queryList">{{$t('query')}}</Button>
+                   :style="{width: lang === 'zh-CN' ? '240px' : '390px','margin-right' : '5px'}" /><!--请输入姓名、电话、会员编号-->
+            <Button type="primary"
+                    style="margin-right: 5px;"
+                    @click="queryList">{{$t('query')}}</Button>
             <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
         </div>
         <table-com
@@ -72,6 +74,17 @@
                 </template>
             </el-table-column>
             <el-table-column
+                slot="column5"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{$t(scope.row.accountTypeName) | contentFilter}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 slot="column6"
                 show-overflow-tooltip
                 slot-scope="row"
@@ -92,7 +105,7 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.accountTypeId === '1'">
+                    <span v-if="scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4'">
                        {{scope.row.endingBalance | moneyFilter | contentFilter}}{{$t('yuan')}}
                     </span>
                     <span v-else>
@@ -254,7 +267,7 @@
                 let label = rowData.amount > 0 ? '+' : '';
                 if (rowData.unit) {
                     unit = this.$t(rowData.unit);
-                } else if (rowData.accountTypeId === '1') {
+                } else if (rowData.accountTypeId === '1' || rowData.accountTypeId === '4') {
                     unit = this.$t('yuan'); // '元'
                 }
                 if (rowData.accountSubType === 'corpus') {

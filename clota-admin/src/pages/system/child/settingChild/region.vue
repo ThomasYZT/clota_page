@@ -107,7 +107,7 @@
         <!--编辑城市模态框-->
         <edit-city ref="addCityModal" :operate-data="operateData"></edit-city>
 
-        <!--编辑城市模态框-->
+        <!--编辑区/县模态框-->
         <edit-area ref="addAreaModal" :operate-data="operateData"></edit-area>
 
     </div>
@@ -260,11 +260,11 @@
                                 name : data.name
                             }).then(res => {
                                 if (res.status === 200) {
-                                    this.$Message.success(this.$t('success') + this.$t('add'));
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                                     //查询省份列表
                                     this.queryProvinceList();
                                 } else {
-                                    this.$Message.error(res.message || this.$t('fail'));
+                                    this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('add') }));
                                 }
                             });
                         }
@@ -289,11 +289,11 @@
                                 name : params.name
                             }).then(res => {
                                 if (res.status === 200) {
-                                    this.$Message.success(this.$t('success') + this.$t('edit'));
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
                                     //查询省份列表
                                     this.queryProvinceList();
                                 } else {
-                                    this.$Message.error(res.message || this.$t('fail'));
+                                    this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('edit') }));
                                 }
                             });
                         }
@@ -320,11 +320,11 @@
                     provinceId : data.provinceid
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
                         //查询省份列表
                         this.queryProvinceList();
                     } else {
-                        this.$Message.error(res.message || this.$t('fail'));
+                        this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('delete') }));
                     }
                 });
             },
@@ -344,10 +344,10 @@
                                 name : data.name
                             }).then(res => {
                                 if (res.status === 200) {
-                                    this.$Message.success(this.$t('success') + this.$t('add'));
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                                     this.queryCityList(this.operateData, true);
                                 } else {
-                                    this.$Message.error(res.message || this.$t('fail'));
+                                    this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('add') }));
                                 }
                             });
                         }
@@ -373,10 +373,10 @@
                                 name : params.name
                             }).then(res => {
                                 if (res.status === 200) {
-                                    this.$Message.success(this.$t('success') + this.$t('edit'));
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
                                     this.queryCityList(this.operateData, true);
                                 } else {
-                                    this.$Message.error(res.message || this.$t('fail'));
+                                    this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('edit') }));
                                 }
                             });
                         }
@@ -403,10 +403,10 @@
                     cityId : data.cityid
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
                         this.queryCityList(this.operateData, true);
                     } else {
-                        this.$Message.error(res.message || this.$t('fail'));
+                        this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('delete') }));
                     }
                 });
             },
@@ -423,15 +423,15 @@
                         if (data) {
                             ajax.post('addArea', {
                                 cityId : this.operateData.cityid,
-                                id : data.id,
+                                areaId : data.id,
                                 remarks : data.remarks,
                                 name : data.name
                             }).then(res => {
                                 if (res.status === 200) {
-                                    this.$Message.success(this.$t('success') + this.$t('add'));
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                                     this.queryList();
                                 } else {
-                                    this.$Message.error(res.message || this.$t('fail'));
+                                    this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('add') }));
                                 }
                             });
                         }
@@ -458,10 +458,10 @@
                                 name : params.name
                             }).then(res => {
                                 if (res.status === 200) {
-                                    this.$Message.success(this.$t('success') + this.$t('edit'));
+                                    this.$Message.success(this.$t('successTip',{ tip : this.$t('edit') }));
                                     this.queryList();
                                 } else {
-                                    this.$Message.error(res.message || this.$t('fail'));
+                                    this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('edit') }));
                                 }
                             });
                         }
@@ -487,10 +487,10 @@
                     areaId : data.areaid,
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$Message.success(this.$t('success') + this.$t('delete'));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
                         this.queryList();
                     } else {
-                        this.$Message.error(res.message || this.$t('fail'));
+                        this.$Message.error(res.data || this.$t('failureTip',{ tip : this.$t('delete') }));
                     }
                 });
             },

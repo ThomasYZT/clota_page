@@ -115,9 +115,19 @@
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
                             <!--已核销-->
-                            <span class="blue" style="margin-right: 20px;">{{$t('consumed')}}：{{Number(scope.row.quantityVerified) | contentFilter}}</span>
+                            <!--<span class="blue" style="margin-right: 20px;">{{$t('consumed')}}：{{Number(scope.row.quantityVerified) | contentFilter}}</span>-->
                             <!--未核销-->
-                            <span class="gray">{{$t('noConsumed')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>
+                            <!--<span class="gray">{{$t('noConsumed')}}：{{Number(scope.row.quantity) - Number(scope.row.quantityVerified)}}</span>-->
+                            <!--已核销-->
+                            <span class="token-ticket">{{$t('consumed')}}：{{(scope.row.quantityVerified ? scope.row.quantityVerified : 0) +
+                                (scope.row.quantityOverdue ? scope.row.quantityOverdue : 0)}}</span>
+                            <!--过期核销-->
+                            <!--<span class="token-ticket">{{$t('expiredVerify')}}：{{scope.row.quantityOverdue ? scope.row.quantityOverdue : 0}}</span>-->
+                            <!--未核销 (为核销数量 = 订单产品总数 - 已退票 - 已核销 - 已过期核销)-->
+                            <span class="not-token-ticket">{{$t('noConsumed')}}：{{(scope.row.quantity ? scope.row.quantity : 0) -
+                                (scope.row.quantityRefunded ? scope.row.quantityRefunded : 0) -
+                                (scope.row.quantityVerified ? scope.row.quantityVerified : 0) -
+                                (scope.row.quantityOverdue ? scope.row.quantityOverdue : 0) }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -422,12 +432,24 @@
              **/
             showModal (data, isBatch, type) {
                 if (!this.canOrderChecker) return;
-                if (data.verifyRule == 'true') {
-                    this.$refs['verifyModal'].show({
-                        list : isBatch ? data : [data],
-                        isBatch : isBatch,
-                        type : type
-                    });
+                if (isBatch) {
+                    //批量核销需要校验每个产品是否可以核销
+                    if (data.every(item => item.verifyRule === 'true')) {
+                        this.$refs['verifyModal'].show({
+                            list : data,
+                            isBatch : true,
+                            type : type
+                        });
+                    }
+                } else {
+                    //校验产品是否可以核销
+                    if (data.verifyRule === 'true') {
+                        this.$refs['verifyModal'].show({
+                            list : [data],
+                            isBatch : false,
+                            type : type
+                        });
+                    }
                 }
             },
             handleCommand (type) {
@@ -477,7 +499,7 @@
         padding: 15px 30px 15px;
         overflow: hidden;
         .input-field {
-            width: 400px;
+            width: 430px;
             margin-right: 20px;
         }
     }

@@ -3,7 +3,7 @@
 <template>
     <div class="org-tree-wrap" @click.stop="">
         <Input v-model.trim="filterValue"
-               placeholder="搜索"
+               :placeholder="$t('searching')"
                style="width: 270px;margin-bottom:5px;margin-left: 15px;"
                @input="filter($event)"/>
         <div class="tree-list">
@@ -90,7 +90,7 @@
                         'tooltip',
                         {
                             props : {
-                                content : '该机构未启用',
+                                content : this.$t('nodeClosed'),
                                 transfer : true,
                                 placement : 'left-start'
                             }
@@ -234,10 +234,8 @@
             }
 
             .title-class {
-                @include overflow_tip(unquote('calc(100% - 40px)'), 36px);
+                @include overflow_tip(unquote('calc(100% - 40px)'), auto);
                 display: inline-block;
-                padding: 7px 0;
-                line-height: 22px;
                 font-size: 16px;
                 color: #333333;
                 vertical-align: middle;

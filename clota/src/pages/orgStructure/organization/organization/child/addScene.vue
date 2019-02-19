@@ -74,7 +74,7 @@
                     <Input v-model.trim="formData.fax" style="width: 280px"/>
                 </FormItem>
                 <!--公司编码-->
-                <FormItem prop="companyCode">
+                <FormItem prop="companyCode" :class="{ 'en-label-wrap' : lang === 'en' }">
                     <template slot="label">
                         <Tooltip placement="top" transfer>
                             <div slot="content" class="tips-content">
@@ -99,7 +99,7 @@
                     <Input v-model="formData.address" style="width: 280px"/>
                 </FormItem>
                 <!--是否启用-->
-                <FormItem :label="$t('isStarted')" prop="address">
+                <FormItem :label="$t('isStarted')" prop="status">
                     <RadioGroup v-model="formData.status">
                         <Radio label="open">{{$t('yes')}}</Radio>
                         <Radio label="close">{{$t('no')}}</Radio>
@@ -124,6 +124,7 @@
     import cityPlugin from '@/components/kCityPicker/kCityPicker.vue';
     import ajax from '@/api/index.js';
     import selectTree from '@/components/selectTree/index.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -282,6 +283,9 @@
                     ],
                     companyCode : [
                         { min : 2,max : 8,message : this.$t('rangeError',{ field : this.$t('companyCode'),min : 2,max : 8 }),trigger : 'blur' }
+                    ],
+                    status : [
+                        { required : true,message : this.$t('selectField',{ msg : this.$t('isStarted') }) },
                     ]
                 },
                 //财务上级列表
@@ -321,6 +325,7 @@
                 if (type === false) {
                     this.resetFormData();
                     this.$refs.formValidate.resetFields();
+                    this.formData.status = 'open';
                 } else {
                     this.getParentManages();
                     this.getParentEconomic();
@@ -490,7 +495,10 @@
                         areaid : '',
                     };
                 }
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

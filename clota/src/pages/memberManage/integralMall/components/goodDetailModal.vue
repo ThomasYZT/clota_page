@@ -11,37 +11,32 @@
               :model="formData"
               :rules="ruleValidate"
               label-position="right"
-              :label-width="150">
+              :label-width="lang === 'zh-CN' ? 140 : 200">
 
-            <i-row>
-                <i-col span="16" offset="4">
-                    <!--商品名称-->
-                    <Form-item :label="$t('colonSetting', { key : $t('goodsName') })">
-                        <span>{{detail.name}}</span>
-                    </Form-item>
+            <!--商品名称-->
+            <Form-item :label="$t('colonSetting', { key : $t('goodsName') })">
+                <span>{{detail.name}}</span>
+            </Form-item>
 
-                    <!--剩余可上架数量 = 库存数量 - 上架数量 - 已兑换未领取，此处后台已处理已兑换未领取数量-->
-                    <Form-item :label="$t('colonSetting', { key : $t('overPlusUpQuantity') })">
-                        <span>{{detail.stockNum - detail.upNum}}</span>
-                    </Form-item>
+            <!--剩余可上架数量 = 库存数量 - 上架数量 - 已兑换未领取，此处后台已处理已兑换未领取数量-->
+            <Form-item :label="$t('colonSetting', { key : $t('overPlusUpQuantity') })">
+                <span>{{detail.stockNum - detail.upNum - detail.undrawNum}}</span>
+            </Form-item>
 
-                    <!--可兑换积分-->
-                    <Form-item :label="$t('colonSetting', { key : $t('convertibilityIntegral') })" prop="requiredCredits">
-                        <Input v-model.trim="formData.requiredCredits"
-                               style="width:150px"
-                               :placeholder="$t('inputField', { field : $t('convertibilityIntegral') })"></Input>
-                    </Form-item>
+            <!--可兑换积分-->
+            <Form-item :label="$t('colonSetting', { key : $t('convertibilityIntegral') })" prop="requiredCredits">
+                <Input v-model.trim="formData.requiredCredits"
+                       :placeholder="$t('inputField', { field : $t('convertibilityIntegral') })"/>
+            </Form-item>
 
-                    <!--上架数量-->
-                    <Form-item :label="$t('colonSetting', { key : $t('upNum') })" prop="upNum">
-                        <InputNumber style="width:150px"
-                                     v-model="formData.upNum"
-                                     :precision="0"
-                                     :min="1"
-                                     :max="detail.stockNum - detail.upNum"></InputNumber>
-                    </Form-item>
-                </i-col>
-            </i-row>
+            <!--上架数量-->
+            <Form-item :label="$t('colonSetting', { key : $t('upNum') })" prop="upNum">
+                <InputNumber style="width: 100%;"
+                             v-model="formData.upNum"
+                             :precision="0"
+                             :min="1"
+                             :max="detail.stockNum - detail.upNum - detail.undrawNum"></InputNumber>
+            </Form-item>
 
         </Form>
 
@@ -55,6 +50,8 @@
 <script>
     import ajax from '@/api/index';
     import common from '@/assets/js/common.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {},
         data () {
@@ -84,7 +81,7 @@
                     //商品兑换积分
                     requiredCredits : '',
                     //上架数量
-                    upNum : 0,
+                    upNum : '',
                 },
                 //表单验证规则
                 ruleValidate : {
@@ -164,10 +161,27 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+
+    /deep/ .ivu-form-item {
+        margin-bottom: 8px;
+    }
+
+    /deep/ .ivu-modal-body{
+        display: flex;
+        justify-content: center;
+    }
+    /deep/ .ivu-form{
+        width: 400px;
+    }
 </style>

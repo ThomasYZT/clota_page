@@ -5,7 +5,9 @@
 <template>
     <Modal v-model="show"
            width="760"
+           class-name="vertical-center-modal"
            :mask-closable="false"
+           @on-cancel="hide"
            :title="$t('distribution')">
         <div class="content">
             <Form ref="policyform"
@@ -53,6 +55,7 @@
 
                 <Form-item prop="productPrices">
                     <table-com
+                        class="td-special"
                         v-if="info && info.parentAllocationProductList"
                         :table-com-min-height="260"
                         :column-data="detailParentDistributePriceConfig"
@@ -62,8 +65,8 @@
                             slot="column0"
                             slot-scope="row"
                             :label="row.title"
-                            :width="120"
-                            :min-width="120"
+                            :width="row.width"
+                            :min-width="row.minWidth"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
                                 {{scope.row.productName | contentFilter}}
@@ -73,43 +76,32 @@
                             slot="column1"
                             slot-scope="row"
                             :label="row.title"
-                            :width="130"
-                            :min-width="120"
+                            :width="row.width"
+                            :min-width="row.minWidth"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{scope.row.stockNum | contentFilter}}
+                                {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
                             </template>
                         </el-table-column>
                         <el-table-column
                             slot="column2"
                             slot-scope="row"
                             :label="row.title"
-                            :width="120"
-                            :min-width="120"
+                            :width="row.width"
+                            :min-width="row.minWidth"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{scope.row.printPrice | contentFilter}}
+                                <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
+                                <span v-else>{{scope.row.stockNum | contentFilter}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column
-                            slot="column3"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="140"
-                            :min-width="120"
-                            show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                {{scope.row.settlePrice | moneyFilter}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column4"
+                            slot="column5"
                             slot-scope="row"
                             :label="$t('mySalePrice')"
-                            :width="140"
-                            :min-width="120">
+                            :width="240">
                             <template slot-scope="scope">
-                                <Input v-model.trim="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"></Input>
+                                <Input v-model.trim="formData.productPrices[scope.$index].price" :placeholder="$t('distributePrice')"/>
                             </template>
                         </el-table-column>
                     </table-com>
@@ -134,7 +126,7 @@
                             slot-scope="row"
                             :label="row.title"
                             show-overflow-tooltip
-                            :min-width="120">
+                            :min-width="row.minWidth">
                             <template slot-scope="scope">
                                 <span v-for="(item, index) in scope.row.channelModels"
                                       class="channel"
@@ -173,7 +165,7 @@
                     //校验非空必填以及提示低于上级分销单价
                     if (value.length) {
                         value.forEach((item) => {
-                            if (item.price === '') {
+                            if (!item.price) {
                                 callback(new Error(this.$t('errorEmpty', { msg : this.$t('mySalePrice') })));
                             } else {
                                 if (validator.isNumber(item.price)) {
@@ -181,6 +173,7 @@
                                         this.isLossTipShow = true;
                                         callback();
                                     } else {
+                                        this.isLossTipShow = false;
                                         callback();
                                     }
                                 } else {
@@ -201,6 +194,8 @@
                 info : {},
                 //销售渠道列表数据
                 saleGroupList : [],
+                //已选择的销售渠道组
+                haveSaleGroups : [],
                 //产品列表表头
                 detailParentDistributePriceConfig : Array.from(detailParentDistributePriceConfig),
                 //销售渠道表头
@@ -226,7 +221,7 @@
                         { validator : validateMethod.productPrice, trigger : 'blur' }, // 不能为空
                     ],
                     groupIds : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleChannels') }), trigger : 'blur' }, // 不能为空
+                        { required : true, message : this.$t('selectField', { msg : this.$t('saleChannels') }), trigger : 'blur' }, // 不能为空
                     ]
                 },
                 //是否显示分销提示
@@ -255,9 +250,10 @@
                         productPrices : [],
                         groupIds : ''
                     };
+                    this.saleGroupList = [];
                     this.detail = {};
                     this.info = {};
-                    this.show = !this.show;
+                    this.show = false;
                 }
 
             },
@@ -281,7 +277,7 @@
                             this.formData.productPrices.push(_obj);
                         });
                         //关闭模态框
-                        this.show = !this.show;
+                        this.show = true;
                     }
                 });
 
@@ -339,17 +335,16 @@
              */
             colomnSelect (data) {
                 this.isTipShow = false;
-                this.formData.groupIds = '';
-                data.forEach((item) => {
-                    this.formData.groupIds += item.id + ',';
-                    //政策不能在分销给上级分销商,后台会做过滤处理，此处给出提示
-                    item.channelModels.forEach(channel => {
-                        if (channel.channelName === this.detail.parentDistributor) {
-                            this.isTipShow = true;
-                        }
-                    });
-                });
-
+                this.formData.groupIds = data.map((item) => {
+                    if (!this.isTipShow) {
+                        item.channelModels.forEach(channel => {
+                            if (channel.channelName === this.detail.parentDistributor) {
+                                this.isTipShow = true;
+                            }
+                        });
+                    }
+                    return item.id;
+                }).join(',');
             },
             /**
              * 保存分销设置
@@ -379,6 +374,7 @@
              * 关闭模态框
              */
             hide () {
+                console.log("111")
                 this.toggle();
             },
         },
@@ -412,7 +408,6 @@
                 text-align: left;
                 width: 100%;
                 float: left;
-                height: 30px;
                 line-height: 30px;
                 font-size: $font_size_14px;
                 display: flex;
@@ -434,6 +429,7 @@
                     @include overflow_tip();
                 }
             }
+
         }
         /**
             分割线样式
@@ -498,5 +494,9 @@
         /deep/ .ivu-btn{
             padding: 5px 30px;
         }
+    }
+
+    .td-special /deep/ .el-table td {
+        padding: 8px 0;
     }
 </style>

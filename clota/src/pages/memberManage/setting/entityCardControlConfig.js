@@ -9,6 +9,7 @@ export const cardHead = [
     {
         title : 'cardStatus',
         minWidth : 110,
+        enMinWidth : 120,
         field : 'cardStatus'
     },
     {

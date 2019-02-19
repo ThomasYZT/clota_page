@@ -13,17 +13,17 @@
         <div class="target-body">
             <!--等待查询交易状态-->
             <template v-if="stage === 'search'">
-                <div class="trading-title">交易正在进行中…</div>
+                <div class="trading-title">{{$t('trading')}}</div>
                 <div class="scan-img">
                     <img src="../../assets/images/icon-wait-pay.svg" alt="">
                 </div>
                 <div class="cancel-area">
-                    <Button type="ghost" @click="revocation">取消交易</Button>
+                    <Button type="ghost" @click="revocation">{{$t('cancleTrade')}}</Button>
                 </div>
             </template>
             <!--等待扫码-->
             <template v-else-if="stage === 'scan'">
-                <div class="wait-scan">等待扫码中…</div>
+                <div class="wait-scan">{{$t('waitScan')}}</div>
                 <div class="scan-img">
                     <img src="../../assets/images/icon-scan.svg" alt="">
                 </div>
@@ -37,7 +37,7 @@
                                    v-model.trim="formData.code"
                                    autofocus
                                    style="width: 280px"
-                                   placeholder="扫码前，请获取焦点"
+                                   :placeholder="$t('getFocus')"
                                    @on-focus="setValidateStatus"
                                    @on-enter="startPay"/>
                         </FormItem>
@@ -51,7 +51,7 @@
                     <img src="../../assets/images/icon-open-card-fail.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
-                    交易已取消！
+                    {{$t('tradeCancel')}}
                 </div>
                 <!--<div class="to-for-detail">-->
                     <!--可前往<span class="trade-record" @click="toTradeRecrod"> 在线交易记录 </span>继续查询支付结果-->
@@ -63,10 +63,10 @@
                     <img src="../../assets/images/icon-open-card-fail.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
-                    交易结果未知！
+                    {{$t('unknowResult')}}
                 </div>
                 <div class="to-for-detail">
-                可前往<span class="trade-record" @click="toTradeRecrod"> {{resultLocation ? $t(resultLocation) : '在线交易记录'}}  </span>继续查询支付结果
+                {{$t('canGo')}}<span class="trade-record" @click="toTradeRecrod"> {{resultLocation ? $t(resultLocation) : $t('onlineTradeRecord')}}  </span>{{$t('goForResult')}}
                 </div>
             </template>
             <!--支付成功-->
@@ -75,7 +75,7 @@
                     <img src="../../assets/images/icon-open-card-fail.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
-                    交易失败!
+                    {{$t('tradeFail')}}
                 </div>
             </template>
             <!--支付成功-->
@@ -84,7 +84,7 @@
                     <img src="../../assets/images/icon-open-card-success.svg" alt="">
                 </div>
                 <div class="open-card-suc-label">
-                    交易成功!
+                    {{$t('tradeSuccessfly')}}
                 </div>
             </template>
         </div>
@@ -127,7 +127,7 @@
                     code : [
                         {
                             required : true,
-                            message : '请重新获取输入焦点',
+                            message : this.$t('getFocus'),
                             trigger : 'blur'
                         }
                     ]
@@ -249,7 +249,7 @@
                     transactionId : this.transactionId
                 }).then(res => {
                     if (!res.success) {
-                        this.$Message.error('交易取消失败');
+                        this.$Message.error(this.$t('cancelTradeFail'));
                     } else {
                         this.stage = 'cancel';
                     }

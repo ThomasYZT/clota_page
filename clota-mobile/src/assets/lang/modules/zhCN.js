@@ -253,7 +253,6 @@ export default {
     'expire_score' : '积分失效',
     'activityMemberRightInfo' : '特定活动积分折扣权益说明',
     'thisCardIsFrozen' : '该卡已冻结，暂无权限',
-
     'errorMsg.MK001' : '账号或密码错误',
     'errorMsg.MK002' : '用户不存在',
     'errorMsg.MK003' : '身份证号错误',
@@ -279,6 +278,8 @@ export default {
     'errorMsg.S002' : '接口错误',
     'errorMsg.OD003' : '产品库存不足',
     'errorMsg.A006' : '公司不存在',
+    'errorMsg.A004' : '验证码错误',
+    'errorMsg.MK021' : '未设置收款账户，不可提现',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'Complete information',
     'getActivate' : 'Immediately active',
@@ -286,7 +287,7 @@ export default {
     'passport' : '护照',
     'addMemberCard' : '添加会员卡',
     'addMemberCardTxtOne' : '有',
-    'addMemberCardTxtTwo' : '张会员卡, 是否加入微信卡包',
+    'addMemberCardTxtTwo' : ' 张会员卡, 是否加入微信卡包',
     'getCardBtn' : '确定',
     'getCardBtnNo' : '取消',
     'getCardSuccess' : '领取成功',
@@ -315,4 +316,7 @@ export default {
     'A013' : '验证码已失效',
     'goldCoin' : '金币',
     'gameCoin' : '游戏币',
+    'chooseCard' : '选择会员卡',
+    'pleaseSelectEtc' : '请选择...',
+    'colon' : '：',
 };

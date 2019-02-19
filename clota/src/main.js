@@ -16,6 +16,11 @@ import 'klwk-ui/src/lib/css/index.scss';
 import './assets/theme/elementTheme/index.scss';
 import './assets/css/iconfont.css';
 import '@/assets/scss/_common.scss';
+import 'viewerjs/dist/viewer.css';
+import Viewer from 'v-viewer';
+import { locale } from 'iview';
+import iviewEn from '@/assets/lang/modules/iview-en-US.js';
+import iviewZh from 'iview/dist/locale/zh-CN';
 
 import eleLocale from 'element-ui/lib/locale';
 import eleEnLang from 'element-ui/lib/locale/lang/en';
@@ -26,9 +31,13 @@ import plugin from './assets/js/plugin';
 // eleLocale.use(eleEnLang);
 import common from './assets/js/common';
 
-
 Vue.use(plugin);
 Vue.config.productionTip = true;
+Vue.use(Viewer, {
+    defaultOptions : {
+        zIndex : 9999
+    }
+});
 
 router.beforeEach((to, from, next) => {
     //如果是跳转到登录页面，不做任何权限判断
@@ -89,17 +98,22 @@ new Vue({
         langCode (val) {
             if (val === 'en') {
                 eleLocale.use(eleEnLang);
+                Vue.config.lang = 'en-US';
+                locale(iviewEn);
             } else if (val === 'zh-CN') {
                 eleLocale.use(eleZhCnLang);
+                Vue.config.lang = 'zh-CN';
+                locale(iviewZh);
             }
-            Vue.config.lang = val;
         }
     },
     mounted () {
         if (this.langCode === 'en') {
             eleLocale.use(eleEnLang);
+            locale(iviewEn);
         } else if (this.langCode === 'zh-CN') {
             eleLocale.use(eleZhCnLang);
+            locale(iviewZh);
         }
     }
 });

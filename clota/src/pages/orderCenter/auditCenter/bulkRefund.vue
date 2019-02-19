@@ -118,11 +118,11 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate-btn blue" @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</span>
-                    <span class="divide-line"></span>
-                    <span class="operate-btn red" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</span>
-                    <span class="divide-line"></span>
-                    <span class="operate-btn blue" @click="goBulkDetail(scope.row)">{{$t('details')}}</span>
+                    <ul class="operate-list">
+                        <li @click="showAuditModal(scope.row, false, 'pass')">{{$t('passed')}}</li>
+                        <li class="red-label" @click="showAuditModal(scope.row, false, 'reject')">{{$t('reject')}}</li>
+                        <li @click="goBulkDetail(scope.row)">{{$t('details')}}</li>
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -161,8 +161,6 @@
                 tableData : [],
                 //总条数
                 totalCount : 0,
-                //表格是否显示
-//                tableShow : false,
                 // 获取数据的请求参数
                 queryParams : {
                     reqType : 'refund',

@@ -8,7 +8,7 @@ export const productColumn = [
     },
     {
         title : 'standardPrice', // 景区成本价
-        minWidth : 100,
+        minWidth : 110,
         field : 'standardPrice'
     },
     {
@@ -18,12 +18,12 @@ export const productColumn = [
     },
     {
         title : 'stockTypeMod', // 限制库存类型
-        minWidth : 120,
+        minWidth : 130,
         field : 'stockType'
     },
     {
-        title : 'stockType', // 限制库存
-        minWidth : 100,
+        title : 'limitStockNum', // 限制库存数量
+        minWidth : 130,
         field : 'stockType'
     },
     {
@@ -61,11 +61,18 @@ export const parentDistributePriceConfig = [
 export const detailParentDistributePriceConfig = [
     {
         title : 'productName', // 产品名称
-        width : 350,
+        width : 200,
         field : 'productName'
     },
     {
-        title : 'stock', // 库存
+        title : 'stockTypeMod', // 限制库存类型
+        minWidth : 130,
+        enMinWidth : 200,
+        field : 'stockType'
+    },
+    {
+        title : 'limitStockNum', // 限制库存数量
+        width : 150,
         minWidth : 200,
         field : 'stockNum'
     },
@@ -77,7 +84,8 @@ export const detailParentDistributePriceConfig = [
     {
         title : 'parentDistributePrice', // 上级分销单价
         width : 200,
-        field : 'settlePrice'
+        field : 'settlePrice',
+        type : 'money'
     }
 ];
 

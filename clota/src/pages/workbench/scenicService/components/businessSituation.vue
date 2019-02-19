@@ -8,23 +8,27 @@
     <div class="business-situation">
         <!--营业状况-->
         <div class="header-box">
-            <span class="title">{{$t('businessState')}}</span>
-            <DatePicker type="daterange"
-                        v-model.trim="date"
-                        :editable="false"
-                        :clearable="false"
-                        :placeholder="$t('selectField',{msg: ''})"
-                        placement="bottom-end"
-                        style="width: auto;"
-                        transfer
-                        class="date-picker"
-                        @on-change="queryList">
-            </DatePicker>
+            <div class="title-wrapper">
+                <span class="title">{{$t('businessState')}}</span>
+            </div>
+            <div class="date-wrapper">
+                <DatePicker type="daterange"
+                            v-model.trim="date"
+                            :editable="false"
+                            :clearable="false"
+                            :placeholder="$t('selectField',{msg: ''})"
+                            placement="bottom-end"
+                            style="width: 220px;"
+                            transfer
+                            class="date-picker"
+                            @on-change="queryList">
+                </DatePicker>
+            </div>
         </div>
         <div class="table-list-area">
             <table-com
                 :ofsetHeight="200"
-                :height="263"
+                :height="370"
                 :show-pagination="false"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -133,18 +137,26 @@
 
         .header-box {
             @include block_outline($height: 45px);
+            display: flex;
             border-bottom: 1px solid $color_E1E1E1;
             line-height: 45px;
             padding: 0 20px;
 
-            .title {
-                font-size: $font_size_18px;
-                color: $color_353B5E;
+            .title-wrapper {
+                flex: 0 auto;
+                flex-basis: 50%;
+                .title {
+                    font-size: $font_size_16px;
+                    color: $color_353B5E;
+                }
             }
-            .date-picker {
-                width: 220px;
-                float: right;
-                margin-top: 7px;
+            .date-wrapper {
+                flex-basis: 50%;
+                .date-picker {
+                    width: 150px;
+                    float: right;
+                    margin-top: 7px;
+                }
             }
         }
 

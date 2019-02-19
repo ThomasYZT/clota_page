@@ -176,6 +176,33 @@
                 } else {
                     this.pageShow = false;
                 }
+            },
+            /**
+             * 获取companycode和source参数
+             */
+            getCompanyCodeAndSource () {
+                let urlParams = '';
+                let companyCode = '';
+                let source = '';
+                let url = location.href;
+                if (url.indexOf('?') !== -1) {
+                    let query = url.split("?")[1];
+                    let queryArr = query.split("&");
+                    queryArr.forEach(function (item) {
+                        let key = item.split("=")[0];
+                        let value = item.split("=")[1];
+                        if (key === 'data') {
+                            urlParams = value;
+                        }
+                    });
+                    [source,companyCode] = urlParams.split('-');
+                    if (source) {
+                        this.$store.commit('updateSourceInfo',source);
+                    }
+                    if (companyCode) {
+                        this.$store.commit('updateCompanyCode',companyCode);
+                    }
+                }
             }
         },
         computed : {
@@ -191,7 +218,9 @@
             }),
         },
         created () {
+            this.getCompanyCodeAndSource();
              this.getWxConfig();
+            // console.log(location.href)
         },
         watch : {
             '$route' : {

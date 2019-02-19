@@ -31,7 +31,7 @@ export default {
                 meta : {
                     menuName : 'posterInformation', //lang.config.js 里面的语言键值
                     _name : 'market-poster',
-                    iconClass : 'icon-channel',
+                    iconClass : 'icon-poster-info',
                     rightPath : topMenuName + '.' + 'posterInformation',
                     isMenu : true,
                 },
@@ -44,7 +44,7 @@ export default {
                 meta : {
                     menuName : 'comprehensiveSetup', //lang.config.js 里面的语言键值
                     _name : 'market-setting',
-                    iconClass : 'icon-channel',
+                    iconClass : 'icon-comprehensive-set',
                     rightPath : topMenuName + '.' + 'comprehensiveSetup',
                     isMenu : true,
                 },
@@ -83,7 +83,7 @@ export default {
                 meta : {
                     menuName : 'cashRecord', //lang.config.js 里面的语言键值
                     _name : 'market-withdraw',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-deposit',
                     rightPath : topMenuName + '.' + 'cashRecord',
                     isMenu : true,
                 },
@@ -96,7 +96,7 @@ export default {
                 meta : {
                     menuName : 'marketingProductManage', //lang.config.js 里面的语言键值
                     _name : 'market-product',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-marketing-product',
                     rightPath : topMenuName + '.' + 'marketingProductManage',
                     isMenu : true,
                 },
@@ -109,7 +109,7 @@ export default {
                 meta : {
                     menuName : 'salesUserInfo', //lang.config.js 里面的语言键值
                     _name : 'market-user',
-                    iconClass : 'icon-diamond',
+                    iconClass : 'icon-market-user',
                     rightPath : topMenuName + '.' + 'salesUserInfo',
                     isMenu : true,
                 },

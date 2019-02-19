@@ -70,6 +70,7 @@
 					{
 						title : 'sendNum',
                         width : 110,
+                        enWidth : 130,
 						field : 'count'
 					},
 					{

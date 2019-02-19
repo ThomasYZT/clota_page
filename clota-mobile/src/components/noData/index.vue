@@ -2,20 +2,22 @@
 
 <template>
     <div class="no-data" v-if="!isLoading">
-        <img src="../../assets/images/icon-no-data.svg" alt="">
+        <img src="../../assets/images/icon-no-data.svg" v-if="lang === 'zh-CN'" alt="">
+        <img src="../../assets/images/icon-no-data-en.png" v-if="lang === 'en'" alt="">
     </div>
 </template>
 
 <script>
     import {mapGetters} from 'vuex';
     export default {
-        data() {
+        data () {
             return {}
         },
-        methods: {},
+        methods : {},
         computed : {
             ...mapGetters({
-                isLoading : 'isLoading'
+                isLoading : 'isLoading',
+                lang : 'lang'
             })
         }
     }

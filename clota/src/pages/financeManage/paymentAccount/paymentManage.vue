@@ -36,38 +36,8 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column3"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.availableBalance | moneyFilter}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column4"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.accountBalance | moneyFilter}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column5"
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.creditBalance | moneyFilter}}
-                </template>
-            </el-table-column>
-
-            <el-table-column
                 v-if="canRecharge"
+                fixed="right"
                 slot="column6"
                 slot-scope="row"
                 :label="row.title"

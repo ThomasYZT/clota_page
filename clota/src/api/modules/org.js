@@ -118,5 +118,7 @@ export default {
     'generateChannelAccount' : '/selfChannel/generateChannelAccount',
     //合作伙伴获取组织架构信息
     'getWholeOrgTree' : '/organize/getWholeOrgTree',
+    //校验该机构是否拥有该服务包
+    'checkOrgServiceById' : '/privilege/checkOrgServiceById',
 
 };

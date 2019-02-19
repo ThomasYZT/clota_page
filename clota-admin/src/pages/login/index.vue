@@ -283,7 +283,6 @@
                 border-radius: 4px;
                 font-size: $font_size_16px;
                 color: $color_fff;
-                letter-spacing: 6px;
                 line-height: 28px;
             }
 

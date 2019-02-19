@@ -14,7 +14,10 @@
             <span class="title" >{{$t('addProductType')}}</span>
         </div>
         <div class="target-body">
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="100">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 100 : 130">
                 <FormItem :label="$t('typeName')" prop="typeName">
                     <Input v-model.trim="formData.typeName"/>
                 </FormItem>
@@ -37,6 +40,8 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from  'vuex';
+
     export default {
         props : {
             //模态框是否显示
@@ -166,6 +171,11 @@
                     this.formData.remark = '';
                 }
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -191,7 +201,8 @@
         }
 
         .target-body{
-            padding: 60px 70px 0 70px;
+            padding: 60px 20px 0 0;
+            margin: 0 auto;
             height: 223px;
         }
     }

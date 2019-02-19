@@ -8,16 +8,19 @@ export const region = [
     {
         title : 'scenicName',//景区名称
         minWidth : 150,
+        enWidth : 160,
         field : 'orgName'
     },
     {
         title : 'controlAccount',//管理账号
         minWidth : 130,
+        enWidth : 190,
         field : 'manager'
     },
     {
         title : 'phone',//联系电话
         minWidth : 130,
+        enWidth : 150,
         field : 'telephone'
     },
 ];

@@ -14,14 +14,14 @@ export const marketingProductHead = [
     {
         title : 'printPrice', // 票面价格
         width : 110,
-        enWidth : 130,
+        enWidth : 150,
         type : 'money',
         field : 'printPrice'
     },
     {
         title : 'salePolicyProductUnitPrice', // 销售政策产品单价
         width : 160,
-        enWidth : 180,
+        enWidth : 250,
         type : 'money',
         field : 'settlePrice'
     },
@@ -34,12 +34,13 @@ export const marketingProductHead = [
     {
         title : 'commission', // 佣金
         width : 110,
+        enWidth : 130,
         type : 'money',
         field : 'commission'
     },
     {
         title : 'operate',
         width : 200,
-        enWidth : 200,
+        enWidth : 230,
     }
 ];

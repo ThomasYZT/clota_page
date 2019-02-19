@@ -5,7 +5,7 @@
         title="Title"
         :mask-closable="false"
         :value="value"
-        :width="500"
+        :width="lang === 'zh-CN' ? 500 : 550"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="add-card-category"
@@ -13,22 +13,22 @@
         <div slot="header" class="target-class">
             <span class="title" >{{$t('memberTypeSetting')}}</span>
         </div>
-        <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="150">
+        <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="lang === 'zh-CN' ? 150 : 210">
             <FormItem :label="$t('memberCardTypeName')" prop="memberCategoryName">
                 <Input v-model.trim="formData.memberCategoryName"
                        style="width: 280px"
                        :placeholder="$t('inputField', { field : $t('memberCardTypeNameInputTip') })"/>
             </FormItem>
-            <FormItem :label="$t('会员卡类型')" prop="cardType">
+            <FormItem :label="$t('memberCardType')" prop="cardType">
                 <RadioGroup v-model="formData.cardType" >
-                    <Radio :disabled="canAddCardType.personDisabled || !!formData.id" label="personal">{{$t('个人')}}</Radio>
-                    <Radio :disabled="canAddCardType.companyDisabled || !!formData.id" label="enterprise">{{$t('企业')}}</Radio>
+                    <Radio :disabled="canAddCardType.personDisabled || !!formData.id" label="personal">{{$t('personal')}}</Radio>
+                    <Radio :disabled="canAddCardType.companyDisabled || !!formData.id" label="enterprise">{{$t('enterprise')}}</Radio>
                 </RadioGroup>
             </FormItem>
-            <FormItem :label="$t('会员卡属性')" prop="attribute">
+            <FormItem :label="$t('memberCardAttribute')" prop="attribute">
                 <RadioGroup v-model="formData.attribute" @on-change="attibuteChange">
-                    <Radio label="growth" v-if="cardIsGrowth" :disabled="!!formData.id">{{$t('成长型')}}</Radio>
-                    <Radio label="sale" v-if="cardIsSaling" :disabled="!!formData.id">{{$t('售卖型')}}</Radio>
+                    <Radio label="growth" v-if="cardIsGrowth" :disabled="!!formData.id">{{$t('cardGrowthType')}}</Radio>
+                    <Radio label="sale" v-if="cardIsSaling" :disabled="!!formData.id">{{$t('cardSaleType')}}</Radio>
                 </RadioGroup>
             </FormItem>
             <FormItem :label="$t('remark')" prop="remark">
@@ -282,6 +282,7 @@
             },
             ...mapGetters({
                 memberConfigInfo : 'memberConfigInfo',
+                lang : 'lang',
             }),
             //是否是售卖型会员卡
             cardIsSaling () {
@@ -371,6 +372,7 @@
             display: flex;
             align-items: center;
             min-height: 220px;
+            padding-top: 30px;
         }
     }
 </style>

@@ -63,12 +63,12 @@
             uploadSuc (response, file, fileList) {
                 if (response.success) {
                     this.$emit('upload-success',response.data);
-                    this.$Message.success(this.$t('analysisSuc'));
+                    this.$Message.success(this.$t('analysisFileSuccess'));
                 } else {
                     if (response.code === 'S003') {
                         this.$Message.error( this.$t('uploadCardError') );
                     } else {
-                        this.$Message.error( this.$t('analysisFail') );
+                        this.$Message.error( this.$t('analysisFileFail') );
                     }
                 }
                 this.$store.commit('changePromisings','del');
@@ -80,7 +80,7 @@
              * @param fileList
              */
             uploadFail (err, file, fileList) {
-                this.$Message.error( this.$t('analysisFail') );
+                this.$Message.error( this.$t('analysisFileFail') );
                 this.$emit('upload-success',{
                     dataSize : 0,
                     errorSize : 0,

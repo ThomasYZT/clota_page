@@ -336,7 +336,8 @@
                     params : {
                         fundDetail : {
                             id : data.accountId,
-                            accountDefineId : data.accountTypeId
+                            accountDefineId : data.accountTypeId,
+                            cardId : data.cardId,
                         }
                     }
                 });
@@ -346,10 +347,10 @@
              * @param rowData
              */
             getUnit (rowData) {
-                if (rowData.accountTypeId === '1') {
+                if (rowData.accountTypeId === '1' || rowData.accountTypeId === '4') {
                     return this.$t('yuan');
                 } else if (rowData.unit) {
-                    return rowData.unit;
+                    return this.$t(rowData.unit);
                 } else {
                     return '';
                 }

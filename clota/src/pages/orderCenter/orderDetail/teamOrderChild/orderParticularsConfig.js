@@ -13,26 +13,31 @@ export const columnData = [
     {
         title : 'touristName',
         minWidth : 120,
+        enMinWidth : 140,
         field : 'visitorName'
     },
     {
         title : 'mobilePhone',
         minWidth : 120,
+        enMinWidth : 140,
         field : 'phoneNumber'
     },
     {
         title : 'verifySN',
         minWidth : 120,
+        enMinWidth : 190,
         field : 'serialNo'
     },
     {
         title : 'takeTicketStatus',
         minWidth : 120,
+        enMinWidth : 135,
         field : 'pickStatus'
     },
     {
         title : 'ticketTime',
         minWidth : 120,
+        enMinWidth : 135,
         field : 'pickTime'
     }
 ];

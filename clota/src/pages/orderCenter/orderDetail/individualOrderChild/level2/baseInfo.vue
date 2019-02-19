@@ -102,7 +102,7 @@
             },
             //重发短信按钮是否可以使用
             resendBtnCanUsed () {
-                return this.reSendTimes >= 0 && this.reSendTimes <= 5;
+                return this.resendTimes >= 0 && this.resendTimes < 5;
             }
         },
         data () {

@@ -45,10 +45,10 @@
                         id : newVal.id,
                         status : 'show',
                     };
-                }
-            },
-            immediate : true,
-            deep : true
+                },
+                immediate : true,
+                deep : true
+            }
         }
     };
 </script>

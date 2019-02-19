@@ -103,13 +103,9 @@
                 productNameOperateHead : productNameOperateHead,
             };
         },
-        computed : {},
         created () {
             this.getPartnerQuota();
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             getPartnerQuota () {
                 ajax.post('workbench-queryPartnerWorkbenchOptions',{
@@ -137,8 +133,22 @@
     .workbench-main {
         @include block_outline();
         @include padding_place();
-        width: 80%;
         margin: 0 auto;
+
+        @media screen and (max-width: 1500px) {
+            @at-root {
+                .workbench-main{
+                    width: calc(100% - 60px);
+                }
+            }
+        }
+        @media screen and (min-width: 1500px) {
+            @at-root {
+                .workbench-main{
+                    width: 85%;
+                }
+            }
+        }
 
         &:after {
             background: transparent;
@@ -157,13 +167,15 @@
         }
         .quota-info-bottom {
             padding-bottom: 15px;
-            height: 340px;
+            min-height: 450px;
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
+            overflow: auto;
         }
 
         .placement-bottom-left {
             width: unquote('calc(100% - 425px)');
+            float: left;
         }
     }
 </style>

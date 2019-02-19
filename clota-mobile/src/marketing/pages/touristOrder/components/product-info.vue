@@ -8,10 +8,12 @@
         </div>
         <ul class="label-input">
             <li class="label-list" v-if="cannotReturn">不可退</li>
+            <li class="label-list" v-else>可退</li>
             <li class="label-list" v-if="cannotAlter">不可改</li>
+            <li class="label-list" v-else>可改</li>
         </ul>
-        <div class="ticket-notick" @click="$emit('show-notice',productInfo)">购票须知</div>
         <div class="price-info">
+            <div class="ticket-notick" @click="$emit('show-notice',productInfo)">购票须知</div>
             <span class="order-btn" @click="toCreateOrder">{{$t('立即预定')}}</span>
         </div>
     </div>
@@ -98,7 +100,6 @@
     @import '~@/assets/scss/base';
 
     .product-list-info{
-        @include block_outline($height : 128px);
         background: $color_fff;
         margin-bottom: 8px;
         padding: 14px 14px 0;
@@ -129,8 +130,8 @@
         }
 
         .label-input{
-            @include block_outline($height : 29px);
-            padding: 2.5px 0;
+            @include block_outline($height : 33px);
+            padding: 2.5px 0 4px;
 
             .label-list{
                 font-size: $font_size_11px;
@@ -144,20 +145,22 @@
             }
         }
 
-        .ticket-notick{
-            display: inline-block;
-            @include block_outline(auto, 26px);
-            padding-bottom: 10px;
-            font-size: $font_size_12px;
-            color: $color_999;
-            @include overflow_tip();
-        }
-
         .price-info{
             @include block_outline($height : 35px);
             border-top: 0.5px solid #E8E8E8;
             text-align: right;
             padding-top: 6px;
+
+            .ticket-notick{
+                float: left;
+                display: inline-block;
+                @include block_outline(auto, 26px);
+                padding-bottom: 10px;
+                font-size: $font_size_12px;
+                color: $color_999;
+                @include overflow_tip();
+                padding-top: 2px;
+            }
 
             .order-btn{
                 padding: 2px 6px;

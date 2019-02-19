@@ -21,7 +21,7 @@
             <!--备注-->
             <div>
                 <span class="label-remark">{{$t('remark')}}：</span>
-                <div :style="{marginLeft: lang=='zh-CN'?'45px':'60px', position: 'relative'}">
+                <div :style="{marginLeft: lang==='zh-CN'?'45px':'60px', position: 'relative'}">
                     <Input v-model.trim="auditRemark"
                            type="textarea"
                            :rows="3"

@@ -14,11 +14,13 @@ export const rechargeHead = [
     {
         title : 'rechargeAmount', // 充值金额
         minWidth : 100,
+        enMinWidth : 170,
         field : 'amount'
     },
     {
         title : 'rechargeType', // 充值方式
         minWidth : 120,
+        enMinWidth : 170,
         field : 'paymentType'
     },
     {
@@ -34,16 +36,19 @@ export const rechargeHead = [
     {
         title : 'paymentStatus', // 支付状态
         minWidth : 120,
+        enMinWidth : 150,
         field : 'txnStatus'
     },
     {
         title : 'systemStatus', // 系统状态
         minWidth : 120,
+        enMinWidth : 150,
         field : 'status'
     },
     {
         title : 'operate', // 操作
         minWidth : 120,
+        enMinWidth : 150,
         field : ''
     },
 ];
@@ -53,6 +58,7 @@ export const paymentHead = [
     {
         title : 'status', // 状态
         minWidth : 110,
+        enMinWidth : 170,
         field : 'status'
     },
     {
@@ -68,21 +74,25 @@ export const paymentHead = [
     {
         title : 'availableCredit', // 可用额度
         minWidth : 180,
-        field : 'availableBalance'
+        field : 'availableBalance',
+        type : 'money'
     },
     {
         title : 'moneyBalance', // 账户余额
         minWidth : 180,
-        field : 'accountBalance'
+        field : 'accountBalance',
+        type : 'money'
     },
     {
         title : 'creditBalance', // 信用额度
         minWidth : 180,
-        field : 'creditBalance'
+        field : 'creditBalance',
+        type : 'money'
     },
     {
         title : 'operate', // 操作
         minWidth : 80,
+        enWidth : 130,
         field : ''
     },
 ];

@@ -5,7 +5,7 @@
         title="Title"
         :mask-closable="false"
         :value="value"
-        :width="420"
+        :width="lang === 'zh-CN' ? 420 : 450"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="product-err"
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //绑定modal的v-modal值
@@ -105,6 +107,11 @@
                 this.$emit('del-failed-product',this.productList.map(item => item.productId));
                 this.changeValue(false);
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -145,7 +152,6 @@
                 position: relative;
 
                 .product-name{
-                    @include absolute_pos(absolute,27px);
                     font-size: $font_size_14px;
                     color: #606266;
                 }
@@ -165,7 +171,6 @@
                     }
 
                     &.list{
-                        padding-left: 65px;
                         color: #606266;
                     }
                 }
@@ -184,7 +189,7 @@
 
         /deep/ .ivu-modal-footer{
             .ivu-btn{
-                width: 148px;
+                min-width: 148px;
                 padding-left: 10px;
                 padding-right: 10px;
             }

@@ -13,7 +13,7 @@ export const columnData = [
     },
     {
         title : 'playDate',
-        minWidth : 120,
+        minWidth : 130,
         field : 'visitDate'
     },
     {
@@ -63,7 +63,7 @@ export const columnData = [
     {
         title : 'syncStatus',
         width : 130,
-        enWidth : 180,
+        enWidth : 200,
         field : 'syncStatus'
     },
     {
@@ -101,5 +101,6 @@ export const columnData = [
     {
         title : 'operate',
         width : 170,
+        enWidth : 210
     }
 ];

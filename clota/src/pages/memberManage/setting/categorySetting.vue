@@ -10,8 +10,9 @@
             <div class="btn-wrap">
                 <!--新增会员类别-->
                 <Button type="primary"
+                        icon="android-add"
                         :disabled="!canAddCardType"
-                        @click="showAddMemberModal">+ {{$t('addMemberCardCategory')}}</Button>
+                        @click="showAddMemberModal">{{$t('addMemberCardCategory')}}</Button>
                 <!--<span class="tips">{{$t('mostAddNumOfMemberType', { num : '12' })}}</span>&lt;!&ndash;最多新增12个会员类别&ndash;&gt;-->
             </div>
             <div class="table-wrap">
@@ -27,7 +28,6 @@
                         :key="row.index"
                         :width="row.width"
                         :min-width="row.minWidth"
-                        fixed="right"
                         slot-scope="row">
                         <template slot-scope="scoped">
                             <template v-if="scoped.row.cardForm === 'sale'">{{$t('cardSaleType')}}</template>

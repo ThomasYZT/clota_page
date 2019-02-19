@@ -24,7 +24,6 @@
                     @query-data="queryList">
                     <el-table-column
                         slot="column0"
-                        show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -41,6 +40,7 @@
                         show-overflow-tooltip
                         slot-scope="row"
                         :label="row.title"
+                        fixed="right"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
@@ -273,12 +273,20 @@
                                 numCount = this.productPolicy[item.productId].maxNum;
                             }
                         }
+                        let maxValue = this.productPolicy[item.productId] ? (this.productPolicy[item.productId].maxNum ? Number(this.productPolicy[item.productId].maxNum) : 10000000) : 0;
+                        let minValue = this.productPolicy[item.productId] ? (this.productPolicy[item.productId].minNum ? Number(this.productPolicy[item.productId].minNum) : 1) : 0;
+                        let numValue = Number(numCount);
+                        if (numValue > maxValue) {
+                            numValue = maxValue;
+                        } else if (numValue < minValue) {
+                            numValue = minValue;
+                        }
                         return {
                             ...item,
                             disabled : false,
-                            max : this.productPolicy[item.productId] ? this.productPolicy[item.productId].maxNum ? Number(this.productPolicy[item.productId].maxNum) : 0 : 0,
-                            min : this.productPolicy[item.productId] ? this.productPolicy[item.productId].minNum ? Number(this.productPolicy[item.productId].minNum) : 0 : 0,
-                            num : Number(numCount)
+                            max : maxValue,
+                            min : minValue,
+                            num : numValue
                         };
                     });
                 } else {

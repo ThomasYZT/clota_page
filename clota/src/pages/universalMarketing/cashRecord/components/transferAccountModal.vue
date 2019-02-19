@@ -10,7 +10,7 @@
             v-model="visible"
             class-name="vertical-center-modal"
             :mask-closable="false"
-            :width="560"
+            :width="lang === 'zh-CN' ? 560 : 660"
             :title="$t('fillTransferNumber')"
             @on-cancel="hide">
 
@@ -18,7 +18,7 @@
             <Form ref="formValidate"
                   :model="transferParams"
                   :rules="ruleValidate"
-                  :label-width="180"
+                  :label-width="lang === 'zh-CN' ? 180 : 295"
                   style="padding-right: 30px;"
                   @submit.native.prevent>
                 <!--订单号-->
@@ -98,10 +98,9 @@
     import ajax from '@/api/index';
     import { bankList, proxyBankList } from '@/assets/js/constVariable.js';
     import { transAccountType } from '../cashRecordFun';
+    import { mapGetters } from 'vuex';
 
     export default {
-        components : {},
-        props : {},
         data () {
             return {
                 visible : false, //显示模态框变量
@@ -151,11 +150,10 @@
             //是否微信、支付宝付款方式
             isProxyBank () {
                 return this.withdrawInfo.accountType === 'wxPay' || this.withdrawInfo.accountType === 'aliPay';
-            }
-        },
-        created () {
-        },
-        mounted () {
+            },
+            ...mapGetters([
+                'lang'
+            ])
         },
         watch : {
             /*'withdrawInfo.accountType' : {
@@ -179,6 +177,9 @@
             show (data) {
                 this.getRecentlyPayTypes(3);
                 this.withdrawInfo = data;
+                this.transferParams.payAccount = data.accountInfo ? data.accountInfo : ''; //付款账号/卡号
+                this.transferParams.payName = data.payName ? data.payName : ''; //付款方姓名
+                this.transferParams.remark = data.transferRemark ? data.transferRemark : ''; //备注
                 this.transferParams.marketOrderId = data.id;
                 this.transferParams.salaryPayment = this.isProxyBank ? this.$t('marketing.cashRecord.' + data.accountType) : data.accountType;
 
@@ -253,5 +254,8 @@
 <style lang="scss" scoped>
     /deep/ .ivu-btn {
         width: 88px;
+    }
+    /deep/ .ivu-form-item {
+        margin-bottom: 10px;
     }
 </style>

@@ -8,57 +8,55 @@
            :title="$t('uploadPoster')"
            class-name="vertical-center-modal"
            width="540"
-           :mask-closable="false">
+           :mask-closable="false"
+           @on-cancel="hide()">
         <div class="form-wrapper">
             <Form ref="form"
                   :model="formData"
                   :rules="ruleValidate"
-                  :label-width="120">
-                <i-row>
-                    <i-col span="18" offset="3">
-                        <FormItem :label="$t('colonSetting', { key : $t('posterName') })" prop="posterName">
-                            <Input type="text"
-                                   style="width:200px;"
-                                   v-model.trim="formData.posterName"
-                                   :placeholder="$t('inputField', { field : $t('posterName') })"/>
-                        </FormItem>
-                        <!-- 业态类型下拉框暂不需要 -->
-                        <!--<FormItem :label="$t('colonSetting', { key : $t('industryType') })"  prop="posterType">-->
-                            <!--<Select v-model="formData.posterType"-->
-                                    <!--:placeholder="$t('selectField', { msg : $t('industryType') })"-->
-                                    <!--show-name-->
-                                    <!--style="width:200px">-->
-                                <!--<Option v-for="item in posterTypeList"-->
-                                        <!--:value="item.value"-->
-                                        <!--:key="item.value">{{ item.label }}-->
-                                <!--</Option>-->
-                            <!--</Select>-->
-                        <!--</FormItem>-->
-                        <!-- 所属景区下拉框暂不需要 -->
-                        <!--<FormItem :label="$t('colonSetting', { key : $t('scenePlace') })"  prop="scenePlace">-->
-                            <!--<Select v-model="formData.scenePlace"-->
-                                    <!--:placeholder="$t('selectField', { msg : $t('scenePlace') })"-->
-                                    <!--show-name-->
-                                    <!--style="width:200px">-->
-                                <!--<Option v-for="item in scenePlaceList"-->
-                                        <!--:value="item.value"-->
-                                        <!--:key="item.value">{{ item.label }}-->
-                                <!--</Option>-->
-                            <!--</Select>-->
-                            <!--<span>{{manageOrgs.orgName}}</span>-->
-                        <!--</FormItem>-->
-                        <FormItem :label="$t('colonSetting', { key : $t('uploadPicture') })"  prop="img">
-                            <uploadImg v-if="visible"
-                                       :quantityLimit="1"
-                                       :size="20"
-                                       :format="['jpeg','png','bmp']"
-                                       @remove-img="removeImg"
-                                       @upload-success="uploadSuccess"></uploadImg>
+                  :label-width="lang === 'zh-CN' ? 120 : 130">
+                <FormItem :label="$t('colonSetting', { key : $t('posterName') })" prop="posterName">
+                    <Input type="text"
+                           style="width:200px;"
+                           v-model.trim="formData.posterName"
+                           :placeholder="$t('inputField', { field : $t('posterName') })"/>
+                </FormItem>
+                <!-- 业态类型下拉框暂不需要 -->
+                <!--<FormItem :label="$t('colonSetting', { key : $t('industryType') })"  prop="posterType">-->
+                <!--<Select v-model="formData.posterType"-->
+                <!--:placeholder="$t('selectField', { msg : $t('industryType') })"-->
+                <!--show-name-->
+                <!--style="width:200px">-->
+                <!--<Option v-for="item in posterTypeList"-->
+                <!--:value="item.value"-->
+                <!--:key="item.value">{{ item.label }}-->
+                <!--</Option>-->
+                <!--</Select>-->
+                <!--</FormItem>-->
+                <!-- 所属景区下拉框暂不需要 -->
+                <!--<FormItem :label="$t('colonSetting', { key : $t('scenePlace') })"  prop="scenePlace">-->
+                <!--<Select v-model="formData.scenePlace"-->
+                <!--:placeholder="$t('selectField', { msg : $t('scenePlace') })"-->
+                <!--show-name-->
+                <!--style="width:200px">-->
+                <!--<Option v-for="item in scenePlaceList"-->
+                <!--:value="item.value"-->
+                <!--:key="item.value">{{ item.label }}-->
+                <!--</Option>-->
+                <!--</Select>-->
+                <!--<span>{{manageOrgs.orgName}}</span>-->
+                <!--</FormItem>-->
+                <FormItem :label="$t('colonSetting', { key : $t('uploadPicture') })"  prop="img">
+                    <uploadImg v-if="visible"
+                               :quantityLimit="1"
+                               :size="20"
+                               :message="$t('uploadPicture')"
+                               :format="['jpeg','png','bmp']"
+                               @remove-img="removeImg"
+                               @upload-success="uploadSuccess"></uploadImg>
 
-                            <span class="format-info">{{$t('colonSetting', { key : $t('imgFormat') })}} PNG/JPG/BMP   {{$t('colonSetting', { key : $t('imgSize') })}}< 20Mb </span>
-                        </FormItem>
-                    </i-col>
-                </i-row>
+                    <span class="format-info">{{$t('colonSetting', { key : $t('imgFormat') })}} PNG/JPG/BMP   {{$t('colonSetting', { key : $t('imgSize') })}}< 20Mb </span>
+                </FormItem>
             </Form>
         </div>
 
@@ -75,7 +73,9 @@
 
 <script>
     import ajax from '@/api/index';
-    import uploadImg from './uploadImg';
+    import uploadImg from '../../../register/components/ImgUploader';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {
             uploadImg
@@ -125,6 +125,10 @@
                     this.reset();
                 }
                 this.visible = !this.visible;
+            },
+            hide () {
+                this.visible = false;
+                this.reset();
             },
             /**
              * 上传
@@ -203,6 +207,11 @@
                 this.posterTypeList = [];
                 this.$refs.form.resetFields();
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -211,10 +220,41 @@
     @import '~@/assets/scss/base';
     .form-wrapper {
         margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /deep/ .ivu-form{
+            width: 420px;
+        }
     }
 
     .format-info {
         font-size: 12px;
         color: #F7981C;
+    }
+
+    /deep/ .el-upload {
+        min-width: 80px;
+        height: 80px;
+        font-size: 12px;
+        background-color: #FAFAFA;
+        color: #999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i.el-icon-plus {
+            color: #999999;
+            font-size: 12px;
+        }
+    }
+    /deep/ .el-upload-list__item {
+        width: 80px;
+        height: 80px;
+    }
+
+    /deep/ .picture-preview.ivu-modal-wrap {
+        z-index: 9999;
     }
 </style>

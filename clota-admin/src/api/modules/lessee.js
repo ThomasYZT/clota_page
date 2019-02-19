@@ -82,5 +82,6 @@ export default {
     //获取会员配置
     'getMemberServiceSetting' : 'tenant/getMemberServiceSetting.json',
     //删除微信上的支付即会员规则
-    'deletePayGiftCardRule' : '/external/organize/deletePayGiftCardRule',
+    'deletePayGiftCardRule' : 'tenant/deletePayGiftCardRule.json',
+
 };

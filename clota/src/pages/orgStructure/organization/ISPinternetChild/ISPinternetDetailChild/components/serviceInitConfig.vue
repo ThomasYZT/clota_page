@@ -3,7 +3,7 @@
 <template>
     <div class="service-init-config">
         <div class="pick-up-title" >
-            <span class="label">{{$t('服务初始化配置')}}</span>
+            <span class="label">{{$t('serviceInit')}}</span>
             <span class="back-up"
                   @click="isPackUp = !isPackUp">
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
@@ -11,7 +11,7 @@
             </span>
         </div>
 
-        <transition name="fade">
+        <transition name="el-zoom-in-top">
             <div class="table-wrap" v-if="isPackUp">
                 <div class="edit-wrap">
                     <!--<span class="edit" v-if="!isEditing" @click="edit">-->
@@ -25,8 +25,9 @@
                 <Form ref="formValidate"
                       :model="formData"
                       :rules="ruleValidate"
-                      :label-width="280">
-                    <FormItem :label="$t('已开通会员-储值服务，储值账户类型:')"
+                      :label-width="lang === 'zh-CN' ? 280 : 390">
+                    <FormItem :label="$t('serviceAccountType')"
+                              :class="{ 'en-label' : lang === 'en' }"
                               v-if="defaultSetting.memberRecharge === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountType"
@@ -41,7 +42,8 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem :label="$t('已开通会员相关服务，会员卡相关配置:')"
+                    <FormItem :label="$t('serviceCardType')"
+                              :class="{ 'en-label' : lang === 'en' }"
                               v-if="defaultSetting.memberRecharge === 'true' || defaultSetting.memberPoint === 'true'"
                               prop="accountType">
                         <Select v-model="formData.accountAttribute"
@@ -64,6 +66,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -144,6 +147,9 @@
             }
         },
         computed : {
+            ...mapGetters([
+                'lang'
+            ]),
             //账户类型列表
             accountTypeList () {
                 //单账户是否禁用
@@ -159,12 +165,12 @@
                 }
                 return [
                     {
-                        label : this.$t('单账户'),
+                        label : this.$t('singleAccount'),
                         value : 'single',
                         disabled : singleDisabled
                     },
                     {
-                        label : this.$t('多账户'),
+                        label : this.$t('moreAccount'),
                         value : 'multiple',
                         disabled : multipleDisabled
                     }
@@ -190,17 +196,17 @@
                 if (this.defaultSetting.memberPoint === 'true' && this.defaultSetting.memberRecharge === 'false') {
                     return [
                         {
-                            label : this.$t('成长型'),
+                            label : this.$t('cardGrowthType'),
                             value : 'growth',
                             disabled : growthDisabled
                         },
                         {
-                            label : this.$t('售卖型'),
+                            label : this.$t('cardSaleType'),
                             value : 'sale',
                             disabled : true
                         },
                         {
-                            label : this.$t('成长型+售卖型'),
+                            label : this.$t('growthAndSaleCard'),
                             value : 'sale_growth',
                             disabled : true
                         }
@@ -208,17 +214,17 @@
                 } else {
                     return [
                         {
-                            label : this.$t('成长型'),
+                            label : this.$t('cardGrowthType'),
                             value : 'growth',
                             disabled : growthDisabled
                         },
                         {
-                            label : this.$t('售卖型'),
+                            label : this.$t('cardSaleType'),
                             value : 'sale',
                             disabled : saleDisabled
                         },
                         {
-                            label : this.$t('成长型+售卖型'),
+                            label : this.$t('growthAndSaleCard'),
                             value : 'sale_growth',
                             disabled : false
                         }
@@ -247,6 +253,13 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .service-init-config{
+
+        .en-label{
+            /deep/ .ivu-form-item-label{
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
 
         .pick-up-title{
             @include block_outline($height: 59px);

@@ -11,7 +11,7 @@
             class="addChannel"
             class-name="vertical-center-modal"
             :mask-closable="false"
-            :width="560"
+            :width="lang === 'zh-CN' ? 560 : 700"
             :title="$t('auditCashInfo')"
             @on-cancel="hide">
 
@@ -19,7 +19,7 @@
             <Form ref="formValidate"
                   :model="auditParams"
                   :rules="ruleValidate"
-                  :label-width="140"
+                  :label-width="lang === 'zh-CN' ? 140 : 290"
                   @submit.native.prevent>
                 <!--订单号-->
                 <Form-item :label="$t('colonSetting', { key: $t('orderId') })">
@@ -56,8 +56,12 @@
             </Form>
             <!--自定义页脚-->
             <div slot="footer">
-                <i-button type="primary" @click="handlePass()">{{$t('passed')}}</i-button>
-                <i-button type="error" @click="handleReject()">{{$t('reject')}}</i-button>
+                <i-button class="ivu-btn-90px"
+                          type="primary"
+                          @click="handlePass()">{{$t('passed')}}</i-button>
+                <i-button class="ivu-btn-90px"
+                          type="error"
+                          @click="handleReject()">{{$t('reject')}}</i-button>
             </div>
         </Modal>
         <!--驳回提示框-->
@@ -68,6 +72,7 @@
     import rejectModal from './rejectModal.vue';
     import ajax from '@/api/index';
     import { transAccountType } from '../cashRecordFun';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : { rejectModal },
@@ -107,12 +112,11 @@
                 },
             };
         },
-        computed : {},
-        created () {
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 显示模态框
@@ -189,7 +193,8 @@
 </script>
 
 <style lang="scss" scoped>
-    /deep/ .ivu-btn {
-        width: 88px;
+
+    /deep/ .ivu-form-item {
+        margin-bottom: 10px;
     }
 </style>

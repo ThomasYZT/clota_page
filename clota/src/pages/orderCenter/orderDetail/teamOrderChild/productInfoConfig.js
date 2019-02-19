@@ -42,22 +42,26 @@ export const columnData2 = [
     {
         title : 'scenicDistrbutePrice',
         minWidth : 120,
+        enMinWidth : 235,
         field : 'scenicPrice',
         type : 'money'
     },
     {
         title : '1levelAllowcation',
         minWidth : 170,
+        enMinWidth : 277,
         field : 'firstAllocationPrice'
     },
     {
         title : '2levelAllowcation',
         minWidth : 170,
+        enMinWidth : 300,
         field : 'secondAllocationPrice'
     },
     {
         title : '3levelAllowcation',
         minWidth : 170,
+        enMinWidth : 277,
         field : 'thirdAllocationPrice'
     },
     {
@@ -69,16 +73,19 @@ export const columnData2 = [
     {
         title : 'reserveNum',
         minWidth : 120,
+        enMinWidth : 170,
         field : 'quantity'
     },
     {
         title : 'ticketPickNum',
         minWidth : 120,
+        enMinWidth : 150,
         field : 'quantityPicked'
     },
     {
         title : 'verificationNum',
         minWidth : 120,
+        enMinWidth : 190,
         field : 'quantityVerified'
     }
 ];
@@ -110,16 +117,19 @@ export const columnData3 = [
     {
         title : 'reserveNum', // 预定数量
         minWidth : 120,
+        enMinWidth : 175,
         field : 'quantity'
     },
     {
         title : 'ticketPickNum',
         minWidth : 120,
+        enMinWidth : 150,
         field : 'quantityPicked'
     },
     {
         title : 'verificationNum',
         minWidth : 120,
+        enMinWidth : 186,
         field : 'quantityVerified'
     }
 ];

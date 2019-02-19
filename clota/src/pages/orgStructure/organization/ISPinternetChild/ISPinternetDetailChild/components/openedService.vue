@@ -17,6 +17,7 @@
                             :disabled="!canDelService"
                             @click="delService(selectedService)">{{$t('delService')}}</Button>
                     <Button type="primary"
+                            icon="android-add"
                             @click="orgAddService(selectedService)">{{$t('addService')}}</Button>
                 </div>
                 <table-com
@@ -41,7 +42,7 @@
                         :label="row.title"
                         fixed="left"
                         type="selection"
-                        :width="row.width"
+                        :width="65"
                         :min-width="row.minWidth">
                     </el-table-column>
                     <el-table-column

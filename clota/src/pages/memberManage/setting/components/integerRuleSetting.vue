@@ -4,7 +4,7 @@
     <div class="integer-rule-set">
         <div class="title">
             {{$t('setRulesForMemberPointTransactionDeduction')}}
-            <span class="blue-label" @click="addRule">+ {{$t('addRule')}}</span>
+            <span class="blue-label" @click="addRule"><Icon type="android-add"></Icon>&nbsp;{{$t('addRule')}}</span>
         </div>
         <div class="main">
             <table-com
@@ -79,11 +79,12 @@
         </add-integer-rule-modal>
 
         <!--删除模态框-->
-        <del-modal ref="delModal">
+        <del-modal ref="delModal" class="del-min-width">
             <span class="content-text">
-                <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
-                <span class="yellow-label">{{currentData ? currentData['data'].ruleName : ''}}</span></span>
-            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
+                <i class="iconfont icon-help delete-icon"></i>{{$t('colonSetting',{ key : $t('isDoing') })}}
+                <span class="yellow-label">{{currentData ? currentData['data'].ruleName : ''}}</span>
+                <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
+            </span>
         </del-modal>
     </div>
 </template>
@@ -182,7 +183,7 @@
 
         .delete-icon {
             position: absolute;
-            left: -27px;
+            left: -20px;
             margin-right: 12px;
             color: $color_red;
         }

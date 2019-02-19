@@ -73,16 +73,6 @@
                                 {{scope.row.originVisitDate | timeFormat('yyyy-MM-dd')}}
                             </template>
                         </el-table-column>
-                        <!--<el-table-column-->
-                            <!--slot="column3"-->
-                            <!--slot-scope="row"-->
-                            <!--:label="row.title"-->
-                            <!--:width="row.width"-->
-                            <!--:min-width="row.minWidth">-->
-                            <!--<template slot-scope="scope">-->
-                                <!--{{scope.row.orderAmount | moneyFilter}}-->
-                            <!--</template>-->
-                        <!--</el-table-column>-->
                     </table-com>
                     <!--订单金额合计-->
                     <div class="order-amount">

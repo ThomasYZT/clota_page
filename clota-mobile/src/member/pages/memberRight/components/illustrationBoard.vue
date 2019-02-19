@@ -5,8 +5,8 @@
 <template>
   <div class="illustration-board">
       <h5 class="title">{{info.name}}</h5>
-      <p class="item"><span class="item-title">{{$t('scoreRate')}}：</span>1 : {{info.scoreRate}} ({{$t('score')}} ： {{$t('RMB')}})</p>
-      <p class="item"><span class="item-title">{{$t('discountRate')}}：</span>{{info.discountRate}}</p>
+      <p class="item"><span class="item-title">{{$t('scoreRate')}} {{$t('colon')}} </span>1 {{$t('colon')}} {{info.scoreRate}} {{$t('bracketSetting', { content : $t('score') + $t('colon') + $t('RMB') })}}</p>
+      <p class="item"><span class="item-title">{{$t('discountRate')}} {{$t('colon')}} </span>{{info.discountRate}}</p>
 
   </div>
 </template>

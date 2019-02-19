@@ -9,6 +9,7 @@
                     {{$t(isPackUp ? 'backUp' : 'upLoad')}}
                 <span class="iconfont icon-pull-down" :class="{'icon-reverse' : isPackUp}"></span>
             </span>
+            <span class="notice-event" v-if="showWarningMsg">{{$t('请完成服务初始化配置，以免影响会员模块正常使用')}}</span>
         </div>
 
         <transition name="fade">
@@ -224,6 +225,10 @@
                         }
                     ];
                 }
+            },
+            //是否显示提示信息
+            showWarningMsg () {
+                return (this.defaultSetting.memberRecharge === 'true' || this.defaultSetting.memberPoint === 'true') && !this.formData.accountAttribute;
             }
         },
         watch : {
@@ -258,6 +263,13 @@
                 color: $color_333;
                 line-height: 24px;
                 vertical-align: middle;
+            }
+
+            .notice-event{
+                font-size: $font_size_14px;
+                color: $color_err;
+                display: inline-block;
+                margin-left: 10px;
             }
 
             .back-up {

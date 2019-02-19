@@ -4,7 +4,7 @@ export const columnData = [
     {
         title : 'memberTypes', // 会员类别
         minWidth : 100,
-        enMinWidth : 160,
+        enMinWidth : 213,
         field : 'typeName'
     },
     {
@@ -34,7 +34,7 @@ export const columnData = [
     {
         title : 'operate', // 操作
         width : 340,
-        enWidth : 550,
+        enWidth : 520,
     }
 ];
 
@@ -44,7 +44,7 @@ export const specialColumnData = [
     {
         title : 'memberTypes', // 会员类别
         minWidth : 160,
-        enMinWidth : 160,
+        enMinWidth : 205,
         field : 'typeName'
     },
     {
@@ -80,6 +80,6 @@ export const specialColumnData = [
     {
         title : 'operate', // 操作
         width : 340,
-        enWidth : 550,
+        enWidth : 520,
     }
 ];

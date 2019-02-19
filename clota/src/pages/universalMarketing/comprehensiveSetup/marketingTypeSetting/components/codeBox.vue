@@ -22,7 +22,8 @@
                     <i-row class="box-row">
                         <i-col span="24">
                             <!-- 营销类别 -->
-                            <FormItem :label="$t('colonSetting', { key : $t('marketType') })">
+                            <FormItem :label="$t('colonSetting', { key : $t('marketType') })"
+                                      :label-width="lang === 'zh-CN' ? 100 : 160">
                                 <span>{{codeInfo.typeName | contentFilter}}</span>
                             </FormItem>
 
@@ -52,7 +53,8 @@
                     <i-row class="box-row">
                         <i-col span="24">
                             <!-- 营销类别 -->
-                            <FormItem :label="$t('colonSetting', { key : $t('marketType') })">
+                            <FormItem :label="$t('colonSetting', { key : $t('marketType') })"
+                                      :label-width="lang === 'zh-CN' ? 100 : 150">
                                 <span>{{codeInfo.typeName | contentFilter}}</span>
                             </FormItem>
 
@@ -80,7 +82,7 @@
             </div>
         </transition>
 
-        <delModal ref="delModal">
+        <delModal ref="delModal" class="del-min-width">
             <div class="del-modal">
                 <i class="iconfont icon-help"></i>
                 <span class="result">{{$t('sureToDelQRcode')}}</span>
@@ -125,6 +127,7 @@
             ...mapGetters([
                 'manageOrgs',
                 'permissionInfo',
+                'lang',
             ]),
             boxStatus : {
                 get : function () {
@@ -192,6 +195,7 @@
              */
             del () {
                 this.$refs.delModal.show({
+                    title : this.$t('notice'),
                     confirmCallback : () => {
                         this.boxStatus = 'null';
                         this.updateCode({ path : '', type : 'del' });
@@ -226,9 +230,9 @@
             codeInfo : {
                 handler () {
                     this.resetBox();
-                }
-            },
-            deep : true
+                },
+                deep : true
+            }
         },
     };
 </script>

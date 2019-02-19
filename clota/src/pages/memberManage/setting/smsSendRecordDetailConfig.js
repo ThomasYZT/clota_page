@@ -21,11 +21,13 @@ export const columnData = [
     {
         title : 'sendeeName',
         minwidth : 80,
+        enMinWidth : 155,
         field : 'receiver',
     },
     {
         title : 'sendeePhone',
         width : 140,
+        enWidth : 155,
         field : 'phone',
     },
     {

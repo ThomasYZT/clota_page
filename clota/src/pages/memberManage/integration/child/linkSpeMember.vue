@@ -13,7 +13,8 @@
             <div class="filter-wrap">
                 <Input v-model.trim="keyword"
                        :placeholder="$t('inputMemNameOPhone')"
-                       style="width: 240px;margin-right: 15px;" />
+                       :style="{ 'width' : lang === 'zh-CN' ? '240px' : '400px' }"
+                       style="margin-right: 15px;" />
                 <Button type="primary" @click="queryList">{{$t('query')}}</Button>
                 <Button type="ghost" @click="reset">{{$t('reset')}}</Button>
             </div>
@@ -32,6 +33,7 @@
                         slot="column5"
                         slot-scope="row"
                         :label="row.title"
+                        fixed="right"
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
@@ -61,6 +63,7 @@
     import ajax from '@/api/index.js';
     import linkBelongModal from '../components/linkBelongModal.vue';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -129,6 +132,11 @@
                 });
             }
         },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        }
     };
 </script>
 

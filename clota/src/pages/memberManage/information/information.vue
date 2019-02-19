@@ -4,9 +4,13 @@
 
         <div class="filter-wrap">
             <!--会员卡类型-->
-            <Select v-model="queryParams.cardTypeId" @on-change="cardTypeChange">
+            <Select v-model="queryParams.cardTypeId"
+                    :style="{ width : lang === 'en' ? '240px' : '180px' }"
+                    @on-change="cardTypeChange">
                 <Option v-for="item in memberCardTypesList"
-                        :key="item.label"
+                        :key="item.id"
+                        class="overflow-tip-list"
+                        v-w-title="$t(item.label)"
                         :value="item.value">
                     {{$t(item.label)}}
                 </Option>
@@ -105,7 +109,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="false"
-                    slot="column5"
+                    slot="column6"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -119,7 +123,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="showMemberPoint"
-                    slot="column6"
+                    slot="column7"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -133,7 +137,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="showMemberRecharge"
-                    slot="column7"
+                    slot="column8"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -146,7 +150,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column8"
+                    slot="column9"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"
@@ -160,7 +164,7 @@
                 </el-table-column>
                 <el-table-column
                     v-if="canModifyMemberInfo"
-                    slot="column9"
+                    slot="column10"
                     :label="row.title"
                     :prop="row.field"
                     :key="row.index"

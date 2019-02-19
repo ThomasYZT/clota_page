@@ -29,3 +29,21 @@
 .overflow-tip-list{
     @include overflow_tip();
 }
+
+.ivu-icon-ios-search{
+    font-family: iconfont;
+    font-size: 14px;
+
+    &:before {
+        content: "\e661";
+    }
+}
+
+.en-label-wrap .ivu-form-item-label{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.del-min-width .warn-info{
+    max-width: 250px;
+    margin: 0 auto;
+}

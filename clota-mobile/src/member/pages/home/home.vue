@@ -65,10 +65,12 @@
             };
         },
         created () {
-            //判断是否开通了微信卡包
-            if (this.wxMpSet.openMembercard === 'true') {
-                this.queryUnboundCard();
-            }
+            this.getCardListInfo().then(() => {
+                //判断是否开通了微信卡包
+                if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId) {
+                    this.queryUnboundCard();
+                }
+            })
         },
         computed : {
             ...mapGetters([
@@ -147,7 +149,7 @@
                             link : '/integralDetail',
                             routeName : 'integralDetail',
                             iconClass : 'icon-my-points',
-                            info : '',
+                            info : this.cardInfo.pointBalance,
                             params : {},
                             iconColor : '#F46462'
                         },
@@ -170,7 +172,7 @@
                             link : '/account',
                             routeName : 'account',
                             iconClass : 'icon-default-account',
-                            info : '',
+                            info : this.cardInfo.moneyBalance,
                             params : {},
                             iconColor : '#368CE3'
                         },
@@ -211,8 +213,7 @@
             swiperChange (index) {
                 //更新会员卡数据
                 this.updateCardInfo(this.cardInfoList[index]);
-                //设置菜单数据
-                this.setCell();
+                this.$store.dispatch('getMemberConfigInfo');
             },
             /**
              * 跳转到会员详情
@@ -231,25 +232,6 @@
                 });
             },
             /**
-             * //设置菜单数据
-             */
-            setCell () {
-                for (let i = 0,len = this.labelList.length; i < len; i++) {
-                    switch (this.labelList[i].title) {
-                        case 'integralDetail':
-                            this.labelList[i].info = this.cardInfo.pointBalance;
-                            this.labelList[i].params.num = this.cardInfo.pointBalance;
-                            break;
-                        case 'accountOfStoreValue':
-                            this.labelList[i].info = this.cardInfo.moneyBalance;
-                            break;
-                        default :
-                            this.labelList[i].info = '';
-                            this.labelList[i].params = {};
-                    }
-                }
-            },
-            /**
              * 是否领取会员卡至微信卡包
              */
             queryUnboundCard () {
@@ -260,7 +242,6 @@
                         if (res.data && res.data.length != 0) {
                             this.isShowCard = true;
                             this.getCardExt();
-                            this.getCardListInfo();
                         }
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
@@ -314,17 +295,6 @@
                 });
             }
         },
-        watch : {
-            //切换了卡下面的子菜单也要更换
-            cardInfo : {
-                handler (newVal) {
-                    if (newVal && Object.keys(newVal).length > 0) {
-                        this.setCell();
-                    }
-                },
-                immediate : true
-            },
-        }
   };
 </script>
 
@@ -383,6 +353,7 @@
             background: #FFFFFF;
             border-radius: 14px;
             .txt {
+                padding: 15px;
                 font-size: 15px;
                 color: #888888;
                 .title {

@@ -28,10 +28,10 @@ export const columnData = [
         field : 'scenicOrgName'
     },
     {
-        title : 'productType',
+        title : 'productClassifiction',
         width : 130,
         enWidth : 180,
-        field : 'productType'
+        field : 'productClassifiction'
     },
     {
         title : 'sellingOrg',

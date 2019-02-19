@@ -13,21 +13,25 @@ export const columnData = [
     {
         title : 'thirdOrderNo',
         minWidth : 150,
+        enMinWidth : 210,
         field : 'thirdOrderNo'
     },
     {
         title : 'touristPhoneNumber',
         minWidth : 150,
+        enMinWidth : 200,
         field : 'phoneNumber'
     },
     {
         title : 'productNameAndReserveNum',
         minWidth : 180,
+        enMinWidth : 273,
         field : ''
     },
     {
         title : 'productUnitPriceAndSubTotal',
         minWidth : 180,
+        enMinWidth : 275,
         field : ''
     },
     {
@@ -58,31 +62,36 @@ export const columnData = [
     {
         title : 'smsStatus',
         minWidth : 150,
+        enMinWidth : 175,
         field : 'smsStatus'
     },
     {
         title : 'syncStatus',
         minWidth : 150,
+        enMinWidth : 200,
         field : 'syncStatus'
     },
     {
         title : 'stockPriceAndSubtotalAmount',
         minWidth : 180,
+        enMinWidth : 281,
         field : ''
     },
     {
         title : 'allowcationPriceAndSubtotalAmount',
         minWidth : 180,
+        enMinWidth : 299,
         field : ''
     },
     {
         title : 'EstimatedDistributionCommission',
         minWidth : 150,
+        enMinWidth : 299,
         field : 'allocationCommission'
     },
     {
         title : 'operate',
-        minWidth : 120,
+        width : 120,
         field : ''
     }
 ];

@@ -15,6 +15,7 @@
             </x-input>
             <!--手机号-->
             <x-input :title="$t('新的手机号')"
+                     keyboard="number"
                      v-model.trim="formData.phoneNum"
                      text-align="right"
                      :placeholder="$t('pleaseInputMsg')" >
@@ -35,6 +36,7 @@
             <x-input
                 :title="$t('验证码')"
                 text-align="right"
+                keyboard="number"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
                 v-model.trim="formData.code"
@@ -82,7 +84,7 @@
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'market_change_phone',
-                            companyCode : this.marketINgCompanyCode
+                            companyCode : this.companyCode
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -221,7 +223,7 @@
         },
         computed : {
             ...mapGetters({
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
             })
         }
     };

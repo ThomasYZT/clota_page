@@ -67,6 +67,7 @@
     import tradeProportion from './components/tradeProportion.vue';
     import ticketPerformance from './components/ticketPerformance.vue';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {
@@ -93,13 +94,14 @@
                 }
             };
         },
-        computed : {},
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        },
         created () {
             this.getScenicQuota();
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             getScenicQuota () {
                 ajax.post('workbench-queryScenicWorkbenchOptions',{
@@ -120,8 +122,22 @@
     .workbench-main {
         @include block_outline();
         @include padding_place();
-        width: 80%;
         margin: 0 auto;
+
+        @media screen and (max-width: 1500px) {
+            @at-root {
+                .workbench-main{
+                    width: calc(100% - 60px);
+                }
+            }
+        }
+        @media screen and (min-width: 1500px) {
+            @at-root {
+                .workbench-main{
+                    width: 85%;
+                }
+            }
+        }
 
         &:after {
             background: transparent;
@@ -140,7 +156,7 @@
         }
         .quota-info-bottom {
             padding-bottom: 15px;
-            height: 340px;
+            height: 450px;
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
         }

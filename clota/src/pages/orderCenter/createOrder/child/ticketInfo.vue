@@ -120,6 +120,7 @@
             }
 
             .ticket-info-detail{
+                height: calc(100% - 60px);
                 min-height: 70px;
                 padding: 10px 0;
                 font-size: $font_size_12px;
@@ -128,11 +129,13 @@
                 line-height: 26px;
                 overflow: auto;
                 word-break: break-all;
+                white-space: pre-line;
             }
         }
 
         /deep/ .ivu-modal-body{
             padding: 0 20px;
+            overflow: auto;
         }
     }
 </style>

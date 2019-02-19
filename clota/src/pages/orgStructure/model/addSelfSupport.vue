@@ -4,12 +4,12 @@
         class="addChannel"
         class-name="vertical-center-modal"
         :mask-closable="false"
-        :width="560"
+        :width="lang === 'zh-CN' ? 560 : 650"
         :title="type=='add' ? $t('addSelfChannel') : $t('editSelfChannel')"
         @on-cancel="hide">
 
         <!--内容区域-->
-        <Form ref="formValidate" :model="addChannel" :rules="ruleValidate" :label-width="120">
+        <Form ref="formValidate" :model="addChannel" :rules="ruleValidate" :label-width="lang === 'zh-CN' ? 120 : 200">
             <!--自营渠道名称-->
             <Form-item :label="$t('selfSaleChannelName')" prop="channelName">
                 <Input v-model="addChannel.channelName" :placeholder="$t('inputField', {field: ''})" />
@@ -65,6 +65,7 @@
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
     import pick from 'lodash/pick';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : {},
@@ -175,6 +176,11 @@
                     }
                 });
             },
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>
@@ -183,7 +189,7 @@
 
     .addChannel {
         /deep/ .ivu-modal-body {
-            padding: 42px 90px 40px 66px;
+            padding: 42px 90px 20px 66px;
         }
 
         /deep/ .ivu-btn {

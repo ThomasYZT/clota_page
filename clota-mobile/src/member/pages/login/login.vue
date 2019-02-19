@@ -9,7 +9,7 @@
                  :title="$t('mobile')"
                  keyboard="number"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('mobile') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model.trim="loginInfo.phoneNum"
                  label-width="150px">
         </x-input>
@@ -17,7 +17,7 @@
         <x-input class="c-input verify-input"
                  :title="$t('validCode')"
                  v-model.trim="loginInfo.vcode"
-                 :placeholder="$t('enterCode')"
+                 :placeholder="$t('pleaseInputMsg')"
                  :show-clear="false"
                  text-align="right"
                  keyboard="number"
@@ -26,12 +26,12 @@
                  class="validate"
                  :class="{active: isGetCode}"
                  @click="getCode">
-                <p>{{$t('getValidCode')}}{{countDown ? '(' + countDown/1000 + ')': ''}}</p>
+                <p class="btn-text">{{$t('getValidCode')}}{{countDown ? '(' + countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
         <!-- 注册按钮 -->
         <div class="bottom-info">
-            <p class="msg">
+            <p class="msg" v-if="showActiveCardBtn">
                 <span @click="activateCard">{{$t('activateMemberCard')}}</span>
             </p>
             <p class="register-entry" v-if="hasRegister">
@@ -78,6 +78,8 @@
                 openId : '',
                 //是否有注册入口
                 hasRegister : false,
+                //是否显示
+                showActiveCardBtn : false
             };
         },
         computed : {
@@ -121,6 +123,11 @@
                                 } else if (res.message && (res.message === 'M049' || res.message === 'M050' || res.message === 'M051')) {
                                     this.$vux.toast.show({
                                         text : this.$t(res.message),
+                                        type : 'cancel',
+                                    });
+                                } else if (res.code === 'A006') {
+                                    this.$vux.toast.show({
+                                        text : this.$t('errorMsg.A006'),
                                         type : 'cancel',
                                     });
                                 } else {
@@ -222,6 +229,9 @@
                 if (queryParams && queryParams.openId) {
                     this.openId = queryParams.openId;
                 }
+                if (this.companyCode) {
+                    this.getMemberServiceSettingByCode();
+                }
             },
             /**
              * 获取微信用户信息
@@ -271,7 +281,7 @@
              * @param{Object} res 返回的用户信息
              */
             dataToLogin (res) {
-                localStorage.clear();
+                // localStorage.clear();
                 //存储token信息
                 localStorage.setItem('token', res.data.token);
                 //存储本地、vuex用户信息
@@ -328,6 +338,18 @@
                         this.hasRegister = false;
                     }
                 })
+            },
+            /**
+             * 获取微信配置信息
+             */
+            getMemberServiceSettingByCode () {
+                ajax.post('getMemberServiceSettingByCode',{
+                    nodeCode : this.companyCode,
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.showActiveCardBtn = res.data.memberRecharge === 'true';
+                    }
+                });
             }
         },
         beforeRouteEnter (to,from,next) {
@@ -355,18 +377,24 @@
             .msg {
                 flex: 1 0;
                 padding: 10px 12.5px;
+                height: 30.5px;
+                line-height: 30.5px;
                 color: #046FDB;
                 font-size: 12.5px;
             }
 
             .register-entry {
                 flex: 1 0;
-                padding-right: 16.5px;
+                padding: 10px 16.5px 10px 12.5px;
                 color: #046FDB;
-                height: 50.5px;
-                line-height: 50.5px;
+                height: 30.5px;
+                line-height: 30.5px;
                 font-size: 12.5px;
                 text-align: right;
+            }
+
+            span {
+                white-space: nowrap;
             }
         }
 
@@ -413,6 +441,10 @@
 
         /deep/ .weui-input{
             font-size: $font_size_15px;
+        }
+
+        /deep/ .btn-text {
+            white-space: nowrap;
         }
     }
 </style>

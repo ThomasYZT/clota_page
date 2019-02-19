@@ -102,9 +102,10 @@
                         </Form-item>
                     </i-col>
                 </i-row>
+                <!--选择设备分组-->
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId"><!--设备分组-->
+                        <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupId">
                             <Select v-model="formData.gardenGroupId"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
@@ -118,6 +119,7 @@
                         </FormItem>
                     </i-col>
                 </i-row>
+                <!-- 入园检票处 列表数据 -->
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('enterCheckPlace')"><!--入园检票处-->
@@ -972,7 +974,7 @@
                             }
                             if (this.check) {
                                 //处理修改数据联动赋值
-                                this.getOriginDate();
+                                //this.getOriginDate();
                             }
                         }
                     } else {
@@ -1064,20 +1066,22 @@
             color: $color_333;
             padding: 25px 40px;
             text-align: left;
-            max-height: 600px;
             overflow: auto;
 
             /deep/ .ivu-form {
-
                 @include block_outline();
                 margin: 0 auto;
+            }
 
+            /deep/ .ivu-form-item-content {
+                line-height: 22px;
             }
 
             /deep/ .ivu-input-wrapper{
                 width: 280px;
                 &.short-input{
                     width: 90px;
+                    vertical-align: middle;
                 }
             }
 

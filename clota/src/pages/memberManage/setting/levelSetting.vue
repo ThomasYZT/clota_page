@@ -12,8 +12,9 @@
             <div class="btn-wrap">
                 <template v-if="cardTypeId !== '1'">
                     <Button type="primary"
+                            icon="android-add"
                             :disabled="tableData.length > 11"
-                            @click="showAddMemberModal">+ {{$t('addMemberLevel')}}</Button><!--新增会员级别-->
+                            @click="showAddMemberModal">{{$t('addMemberLevel')}}</Button><!--新增会员级别-->
                     <Button type="primary"
                             v-if="cardAttribute === 'growth'"
                             :disabled="tableData.length < 1"
@@ -147,11 +148,11 @@
         <member-rule-modal ref="memberRule" @modify-success="queryList"></member-rule-modal>
 
         <!--删除级别模态框-->
-        <del-modal ref="delModal">
+        <del-modal ref="delModal" class="del-min-width">
             <span class="content-text">
-                <i class="iconfont icon-help delete-icon"></i>{{$t('isDoing')}}{{$t('delete')}}：
+                <i class="iconfont icon-help delete-icon"></i>{{$t('colonSetting',{ key : $t('isDoing') })}}
                 <span class="yellow-label">{{currentData ? currentData.levelDesc : ''}}</span></span>
-            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>，{{$t('sureToDel')}}</span>
+            <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
         </del-modal>
 
     </div>

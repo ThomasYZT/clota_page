@@ -198,7 +198,7 @@
                 <!--产品有效性-->
                 <title-temp title="productEffect"></title-temp>
                 <div class="form-content">
-                    <div class="ivu-form-item-wrap">
+                    <div class="ivu-form-item-wrap hasIcon">
                         <Form-item :label="$t('productEffSet')" prop="productEffSet"><!--产品有效性设置-->
                             <Select v-model="formData.productEffSet"
                                     :disabled="!productEffSetEnable"
@@ -209,6 +209,18 @@
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
+                            <div style="position: absolute;right: -20px;top: 0px;">
+                                <Tooltip transfer>
+                                    <div slot="content" style="width: 200px;">
+                                        游玩日期之日起M天有效：是指产品必须在下单时指定的游玩日期核销，
+                                        在首次核销之后的M天可多次入园游玩。
+                                        <br>
+                                        同销售政策适用游玩期限：
+                                        在销售政策指定游玩期限内，任意一天均可核销。不适用于团队产品，不可限定每日库存
+                                    </div>
+                                    <i class="iconfont icon-note"></i>
+                                </Tooltip>
+                            </div>
                         </Form-item>
                     </div>
                     <!--空字段站位用-->
@@ -253,6 +265,18 @@
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
                                        {{$t(scope.row.saleType) | contentFilter}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column2"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <span v-if="scope.row.saleType === 'one_ticket'">-</span>
+                                        <span v-else>{{scope.row.itemCheckTimes}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -532,12 +556,14 @@
                     //     { validator : validateNumber, trigger : 'blur' }
                     // ],
                     limitByIdDay : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('limitByIdDay') }), trigger : 'blur' },
                         { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('limitByIdDay'), length : 10 }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' },
                         { validator : validateIdBuyTicket, trigger : 'blur' }
                     ],
                     limitByMobileDay : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('limitByMobileDay') }), trigger : 'blur' },
                         { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('limitByMobileDay'), length : 10 }), trigger : 'blur' },
                         { validator : validateMethod.emoji, trigger : 'blur' },
                         { validator : validateNumber, trigger : 'blur' },
@@ -911,6 +937,10 @@
                         .label{
                             margin-right: 10px;
                         }
+
+                        /deep/ .ivu-form-item-content {
+                            line-height: 22px;
+                        }
                     }
 
                     &.single{
@@ -921,6 +951,9 @@
                     }
                 }
 
+                .icon-note {
+                    color: $color_gray;
+                }
             }
 
             .red{

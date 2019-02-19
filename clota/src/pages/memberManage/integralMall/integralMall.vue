@@ -4,41 +4,49 @@
 -->
 <template>
     <div class="container">
-        <i-row>
-            <i-col span="8">
+        <i-row class="search-row">
+            <i-col span="10">
+                <Button v-if="canOperateProduct"
+                        class=" tool-btn"
+                        :class="{ 'ivu-btn-90px' :  lang === 'zh-CN'}"
+                        type="primary"
+                        @click="getGoods()">{{$t('GetTheGoods')}}</Button>
+            </i-col>
+            <i-col span="8" style="float: right;">
                 <!-- 搜索框 -->
                 <Input class="input-field"
                        v-model.trim="queryParams.keyword"
                        icon="ios-search"
                        :placeholder="$t('inputSpecificForSearch', { field : $t('goodsName') })"
+                       style="float: right;"
                        @on-click="getListData"
                        @on-enter="getListData"/>
             </i-col>
         </i-row>
         <!-- 工具栏 -->
-        <tool-box :toolNum="2">
-            <div slot="tool0" class="button-tool">
-                <!-- 上架 -->
-                <!--<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>-->
-                <!-- 下架 -->
-                <!--<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>-->
-                <!-- 领取商品 -->
-                <Button v-if="canOperateProduct"
-                        class="ivu-btn-90px tool-btn"
-                        type="primary"
-                        @click="getGoods()">{{$t('GetTheGoods')}}</Button>
-            </div>
-            <div slot="tool1">
-                <div class="placeholder"></div>
-            </div>
-        </tool-box>
+        <!--<tool-box :toolNum="2">-->
+            <!--<div slot="tool0" class="button-tool">-->
+                <!--&lt;!&ndash; 上架 &ndash;&gt;-->
+                <!--&lt;!&ndash;<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'down'" @click="up()">{{$t('up')}}</Button>&ndash;&gt;-->
+                <!--&lt;!&ndash; 下架 &ndash;&gt;-->
+                <!--&lt;!&ndash;<Button class="ivu-btn-90px tool-btn" type="primary" :disabled="goodsStatus !== 'up'" @click="down()">{{$t('down')}}</Button>&ndash;&gt;-->
+                <!--&lt;!&ndash; 领取商品 &ndash;&gt;-->
+                <!--<Button v-if="canOperateProduct"-->
+                        <!--class="ivu-btn-90px tool-btn"-->
+                        <!--type="primary"-->
+                        <!--@click="getGoods()">{{$t('GetTheGoods')}}</Button>-->
+            <!--</div>-->
+            <!--<div slot="tool1">-->
+                <!--<div class="placeholder"></div>-->
+            <!--</div>-->
+        <!--</tool-box>-->
 
         <!-- 表格 -->
         <div class="table-wrapper">
             <tableCom :column-data="tableColumn"
                       :table-data="tableData"
                       :border="true"
-                      :ofsetHeight="170"
+                      :ofsetHeight="110"
                       :show-pagination="true"
                       :column-check="true"
                       :total-count="totalCount"
@@ -54,7 +62,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span>{{scope.row.stockNum - scope.row.upNum}}</span>
+                        <span>{{(scope.row.stockNum - scope.row.upNum - scope.row.undrawNum) > 0 ? (scope.row.stockNum - scope.row.upNum - scope.row.undrawNum) : 0}}</span>
                     </template>
                 </el-table-column>
                 <!-- 商品状态 -->
@@ -105,7 +113,7 @@
         <!--下架商品模态框-->
         <del-modal ref="delModal">
             <div class="content-text"><i class="iconfont icon-warn"></i>
-                <span v-if="delModalType === 'down'">{{$t('isSureDownGoods')}}？</span><span v-else>{{$t('isSureUpGoods')}}</span>
+                <span v-if="delModalType === 'down'">{{$t('isSureDownGoods')}}</span><span v-else>{{$t('isSureUpGoods')}}</span>
                 <span class="warn">{{$t('operationIrrevocable')}}</span><span>{{$t('WhetherToContinue')}}</span>
             </div>
         </del-modal>
@@ -333,7 +341,8 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
+                'lang',
             ]),
             //是否可以进行操作
             canOperateProduct () {
@@ -353,10 +362,14 @@
         background: $color-fff;
         border-radius: 4px;
 
+        .search-row{
+            @include block_outline($height : 50px);
+            padding: 10px 30px;
+        }
+
         /deep/ .input-field {
             width: 350px;
             padding-left: 30px;
-            margin-top: 9px;
         }
 
         .button-tool {
@@ -367,7 +380,6 @@
         }
 
         .table-wrapper {
-            margin-top: 20px;
 
             .status {
                 position: relative;

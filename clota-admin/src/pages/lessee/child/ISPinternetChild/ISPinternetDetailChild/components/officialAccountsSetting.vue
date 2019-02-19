@@ -65,59 +65,62 @@
                             </i-row>
                             <i-row v-show="memberConfig.openMembercard">
                                 <i-col span="20">
-                                    <FormItem label="支付即会员" prop="payGiftCard">
+                                    <FormItem label="支付即会员规则" prop="payGiftCard">
                                         <Checkbox v-model="memberConfig.payGiftCard"
                                                   :disabled="!isEditing">{{''}}</Checkbox>
                                     </FormItem>
                                 </i-col>
-                                <i-col span="20">
-                                    <FormItem label="微信支付商户号" prop="mchId">
-                                        <Input v-model.trim="memberConfig.mchId"
-                                               type="text"
-                                               :disabled="!isEditing"
-                                               :placeholder="$t('inputField', { field : '微信支付商户号' })"
-                                               style="width: 200px"></Input>
-                                    </FormItem>
-                                </i-col>
-                                <i-col span="20">
-                                    <FormItem label="有效期" prop="time">
-                                        <DatePicker v-model="memberConfig.time"
-                                                    type="daterange"
-                                                    :editable="false"
-                                                    format="yyyy-MM-dd"
-                                                    transfer
-                                                    placement="bottom-end"
-                                                    :disabled="!isEditing"
-                                                    :placeholder="$t('selectField', { msg : '有效期' })"></DatePicker>
-                                    </FormItem>
-                                </i-col>
-                                <i-col span="20">
-                                    <FormItem label="金额范围">
-                                        <i-row>
-                                            <i-col span="6" class="first-input">
-                                                <FormItem prop="payGiftCardMinAmount">
-                                                    <Input v-model.trim="memberConfig.payGiftCardMinAmount"
-                                                           type="text"
-                                                           :disabled="!isEditing"
-                                                           :placeholder="$t('inputField', { field : '金额' })"
-                                                           style="width: 170px"></Input>
-                                                </FormItem>
-                                            </i-col>
-                                            <i-col span="2" style="text-align: center">
-                                                -
-                                            </i-col>
-                                            <i-col span="6">
-                                                <FormItem prop="payGiftCardMaxAmount">
-                                                    <Input v-model.trim="memberConfig.payGiftCardMaxAmount"
-                                                           type="text"
-                                                           :disabled="!isEditing"
-                                                           :placeholder="$t('inputField', { field : '金额' })"
-                                                           style="width: 170px"></Input>
-                                                </FormItem>
-                                            </i-col>
-                                        </i-row>
-                                    </FormItem>
-                                </i-col>
+                                <template v-if="memberConfig.payGiftCard">
+                                    <i-col span="20">
+                                        <FormItem label="微信支付商户号" prop="mchId">
+                                            <Input v-model.trim="memberConfig.mchId"
+                                                   type="text"
+                                                   :disabled="!isEditing"
+                                                   :placeholder="$t('inputField', { field : '微信支付商户号' })"
+                                                   style="width: 200px"></Input>
+                                        </FormItem>
+                                    </i-col>
+                                    <i-col span="20">
+                                        <FormItem label="规则有效期" prop="time">
+                                            <DatePicker v-model="memberConfig.time"
+                                                        type="daterange"
+                                                        :editable="false"
+                                                        format="yyyy-MM-dd"
+                                                        transfer
+                                                        placement="bottom-end"
+                                                        :disabled="!isEditing"
+                                                        :readonly="!isEditing"
+                                                        :placeholder="$t('selectField', { msg : '有效期' })"></DatePicker>
+                                        </FormItem>
+                                    </i-col>
+                                    <i-col span="20">
+                                        <FormItem label="支付金额范围">
+                                            <i-row>
+                                                <i-col span="6" class="first-input">
+                                                    <FormItem prop="payGiftCardMinAmount">
+                                                        <Input v-model.trim="memberConfig.payGiftCardMinAmount"
+                                                               type="text"
+                                                               :disabled="!isEditing"
+                                                               :placeholder="$t('inputField', { field : '金额' })"
+                                                               style="width: 100%"></Input>
+                                                    </FormItem>
+                                                </i-col>
+                                                <i-col span="2" style="text-align: center">
+                                                    -
+                                                </i-col>
+                                                <i-col span="6">
+                                                    <FormItem prop="payGiftCardMaxAmount">
+                                                        <Input v-model.trim="memberConfig.payGiftCardMaxAmount"
+                                                               type="text"
+                                                               :disabled="!isEditing"
+                                                               :placeholder="$t('inputField', { field : '金额' })"
+                                                               style="width: 100%"></Input>
+                                                    </FormItem>
+                                                </i-col>
+                                            </i-row>
+                                        </FormItem>
+                                    </i-col>
+                                </template>
                             </i-row>
                         </div>
 
@@ -222,6 +225,27 @@
                     callback(this.$t('selectField', { msg : this.$t('validatedDate') }));
                 }
             }
+
+            const comparator = (rule, value, callback) => {
+                if (rule && rule.params && Object.keys(rule.params).length > 0 &&
+                    value && this.memberConfig[rule.params.target]) {
+                    if (rule.params.type === 'smaller') {
+                        if (Number(value) >= Number(this.memberConfig[rule.params.target])) {
+                            callback(this.$t("必须小于最大支付金额"))
+                        } else {
+                            callback()
+                        }
+                    } else {
+                        if (Number(value) <= Number(this.memberConfig[rule.params.target])) {
+                            callback(this.$t("必须大于最小支付金额"))
+                        } else {
+                            callback()
+                        }
+                    }
+                } else {
+                    callback();
+                }
+            }
             return {
                 //是否收起
                 isPackUp : true,
@@ -255,6 +279,8 @@
                 validateMoney : validateMoney,
                 //校验是否选择有效期
                 validateDateRange : validateDateRange,
+                //比较器
+                comparator : comparator,
             };
         },
         computed : {
@@ -303,13 +329,15 @@
                         { required : this.wxPackageRequired,
                           message : this.$t('inputField', { field : this.$t('金额') }), trigger : 'blur'},
                         { validator : this.validateMoney, trigger : 'blur' },
-                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) }
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) },
+                        { validator : this.comparator, trigger : 'blur', params : { type : 'smaller', target : 'payGiftCardMaxAmount' } }
                     ],
                     payGiftCardMaxAmount : [
                         { required : this.wxPackageRequired,
                           message : this.$t('inputField', { field : this.$t('金额') }), trigger : 'blur'},
                         { validator : this.validateMoney, trigger : 'blur' },
-                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) }
+                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('金额'),length : 50 }) },
+                        { validator : this.comparator, trigger : 'blur', params : { type : 'bigger', target : 'payGiftCardMinAmount' } }
                     ],
                     marketWxAppId : [
                         { required : this.marketBaseConfigRequired,
@@ -348,15 +376,16 @@
              * 校验表单数据
              */
             validateData () {
-                let formData = {};
                 //校验会员表单
                 this.$refs.memberSetting.validate((valid) => {
                     if (valid) {
+                        let formData = {};
                         formData = defaultsDeep(formData, this.memberConfig);
-                        formData.payGiftCardStartTime = this.memberConfig.time[0].format("yyyy-MM-dd HH:mm:ss");
-                        formData.payGiftCardEndTime = this.memberConfig.time[1].format("yyyy-MM-dd HH:mm:ss");
+                        formData.payGiftCardStartTime = this.memberConfig.time[0] ? new Date(this.memberConfig.time[0]).format("yyyy-MM-dd HH:mm:ss") : '';
+                        formData.payGiftCardEndTime = this.memberConfig.time[1] ? new Date(this.memberConfig.time[1]).format("yyyy-MM-dd HH:mm:ss") : '';
                         formData.openMembercard = this.memberConfig.openMembercard.toString();
                         formData.payGiftCard = this.memberConfig.payGiftCard.toString();
+
                         delete formData.time;
                         this.setWxMpSet(formData);
                     }
@@ -374,9 +403,11 @@
              */
             setWxMpSet (formData) {
                 formData.orgId = this.searchParams.id;
-                if (formData.payGiftCard === 'false' && this.wxMpSet.payGiftCardRuleId) {
-                    ajax.post('deletePayGiftCardRule').then((res) => {
-                        if (res.success) {
+                if ((formData.payGiftCard === 'false' || formData.openMembercard === 'false') && this.wxMpSet.payGiftCardRuleId) {
+                    ajax.post('deletePayGiftCardRule', {
+                        orgId : this.searchParams.id
+                    }).then((res) => {
+                        if (res.status === 200) {
                             this.setWxMpSetApi(formData);
                         } else {
                             this.$Message.error(this.$t('failureTip',{ tip : this.$t('modify') }));

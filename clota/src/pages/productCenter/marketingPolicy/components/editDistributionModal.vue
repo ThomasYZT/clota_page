@@ -57,15 +57,27 @@
                             slot="column1"
                             slot-scope="row"
                             :label="row.title"
-                            :width="120"
-                            :min-width="120"
+                            :width="row.width"
+                            :min-width="row.minWidth"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{scope.row.stockNum | contentFilter}}
+                                {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
                             </template>
                         </el-table-column>
                         <el-table-column
                             slot="column2"
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="130"
+                            :min-width="130"
+                            show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
+                                <span v-else>{{scope.row.stockNum | contentFilter}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            slot="column3"
                             slot-scope="row"
                             :label="row.title"
                             :width="120"
@@ -76,7 +88,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            slot="column3"
+                            slot="column4"
                             slot-scope="row"
                             :label="row.title"
                             :width="130"
@@ -87,7 +99,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            slot="column4"
+                            slot="column5"
                             slot-scope="row"
                             :label="$t('mySalePrice')"
                             :width="140"
@@ -247,6 +259,8 @@
                 info : {},
                 //销售渠道分组数据
                 saleGroupList : [],
+                //已选择的分组数据
+                haveSaleGroups : [],
                 //设置销售渠道表头配置
                 saleChannelColumn : saleChannelColumn,
                 //设置我的分销单价表头配置
@@ -327,36 +341,53 @@
                         this.tempData = res.data;
 
                         //已选择的销售渠道组数据
-                        this.haveSaleGroups = this.detail.haveSaleGroups;
+                        //this.haveSaleGroups = this.detail.haveSaleGroups;
+                    }
+                });
+                //获取已选择销售渠道组数据接口
+                await ajax.post('queryHaveAllocationSaleGroups',{
+                    allocationId : this.detail.listItem.allocationId
+                }).then(res => {
+                    if (res.success) {
+                        //已选择的销售渠道组
+                        this.haveSaleGroups = res.data.filter(item => {
+                            return !this.detail.haveSaleGroups.find(group => {
+                                return group.groupId === item.id;
+                            });
+                        });
 
                         //过滤没有销售渠道的销售组
-                        for (let i = 0,len = this.tempData.length; i < len; i++) {
-                            if (this.tempData[i].channelModels && this.tempData[i].channelModels.length === 0) {
-                                this.tempData.splice(i,1);
-                                len--;
-                                i--;
-                                continue;
-                            }
-                        }
+                        this.tempData = this.tempData.filter((item) => {
+                            return item.channelModels && item.channelModels.length > 0;
+                        });
+
+                        // //过滤已其他分销政策已选择的销售渠道组
+                        this.tempData = this.tempData.filter(item => {
+                            return !this.haveSaleGroups.find(group => {
+                                return item.id === group.id;
+                            })
+                        });
 
                         //设置销售渠道组列表数据
                         this.saleGroupList = this.tempData;
 
                         //设置已选择的销售渠道组
-                        let _channels = this.saleGroupList;
-                        let _chosedChannels = this.haveSaleGroups.map((item) => {
-                            return item.groupId;
-                        });
-                        for (let i = 0,len = _channels.length; i < len; i++) {
-                            for (let j = 0,jlen = _chosedChannels.length; j < jlen; j++) {
-                                if (_channels[i].id === _chosedChannels[j]) {
-                                    this.selectedRow.push({
-                                        item : _channels[i],
-                                        index : i
-                                    });
-                                }
+                        let _chosedChannels = this.saleGroupList.filter((item) => {
+                            return this.detail.haveSaleGroups.find(group => {
+                                return item.id === group.groupId;
+                            });
+                        }).map(item => {
+                            return item.id;
+                        })
+
+                        this.selectedRow = this.saleGroupList.filter(item => {
+                            return _chosedChannels.includes(item.id)
+                        }).map((item, index) => {
+                            return {
+                                item : item,
+                                index : index,
                             }
-                        }
+                        })
 
                         this.$nextTick(() => {
                             this.selectedRow.forEach((item) => {
@@ -365,20 +396,6 @@
                             });
                         });
 
-                        //去除其他分销选择过的销售组
-                        for (let i = 0,len = this.tempData.length; i < len; i++) {
-                            for (let j = 0,jlen = this.haveSaleGroups.length; j < jlen; j++) {
-                                if (len > 0 && jlen > 0 && this.haveSaleGroups[j].groupId === this.tempData[i].id && _chosedChannels.indexOf(this.tempData[i].id) <= -1) {
-                                    this.haveSaleGroups.splice(j,1);
-                                    j--;
-                                    jlen--;
-                                    this.tempData.splice(i,1);
-                                    i--;
-                                    len--;
-                                    break;
-                                }
-                            }
-                        }
                         this.tempData = null;
                     }
                 });
@@ -426,16 +443,14 @@
              * 表格选择框事件
              */
             colomnSelect (data) {
-                this.formData.groupIds = "";
-                data.forEach((item) => {
-                    this.formData.groupIds += item.id + ',';
-
+                this.formData.groupIds = data.map((item) => {
                     item.channelModels.forEach(channel => {
                         if (channel.channelName === this.detail.parentDistributor) {
                             this.isTipShow = true;
                         }
                     });
-                });
+                    return item.id;
+                }).join(',');
             },
             /**
              * 关闭模态框

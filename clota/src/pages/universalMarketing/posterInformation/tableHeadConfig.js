@@ -23,7 +23,7 @@ export const posterInfoHead = [
     {
         title : 'operate',
         width : 140,
-        minWidth : 100,
+        enWidth : 170,
         field : ''
     },
 ];

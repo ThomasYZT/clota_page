@@ -7,23 +7,22 @@
               :rules="ruleCustom"
               :label-width="80">
             <i-row>
-                <i-col span="9">
+                <i-col span="6">
                     <!--游玩日期-->
                     <FormItem :label="$t('playDate')">
                         <DatePicker v-model="formData.playDate"
+                                    style="width: 100%;"
                                     type="date"
                                     :options="dateOptions"
                                     :editable="false"
-                                    style="width: 280px"
                                     @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>
                 <i-col span="6">
                     <!--订单类型-->
-                    <FormItem :label="$t('orderType')" >
+                    <FormItem :label="$t('orderType')" :label-width="lang === 'zh-CN' ? 80 : 85">
                         <Select v-model="formData.orderType"
-                                style="width: 160px"
                                 @on-change="orderTypeChange">
                             <Option v-for="item in orderType"
                                     :key="item.value"
@@ -33,13 +32,10 @@
                         </Select>
                     </FormItem>
                 </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="9">
+                <i-col span="6">
                     <!--所属景区-->
-                    <FormItem :label="$t('scenePlace')">
+                    <FormItem :label="$t('scenePlace')" :label-width="lang === 'zh-CN' ? 80 : 85">
                         <Select v-model="formData.scenicOrgId"
-                                style="width: 280px"
                                 @on-change="sceneChange">
                             <Option v-for="item  in belongScene"
                                     :key="item.id"
@@ -50,9 +46,8 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <FormItem :label="$t('sellingOrg')" >
+                    <FormItem :label="$t('sellingOrg')"  :label-width="lang === 'zh-CN' ? 80 : 95">
                         <Select v-model="formData.saleOrgId"
-                                style="width: 160px"
                                 :disabled="saleDisabled"
                                 @on-change="searchProductList">
                             <Option v-for="item  in saleOrgList"
@@ -63,10 +58,11 @@
                         </Select>
                     </FormItem>
                 </i-col>
+            </i-row>
+            <i-row>
                 <i-col span="6">
-                    <FormItem :label="$t('orderOrg')" >
+                    <FormItem :label="$t('orderOrg')" :label-width="lang === 'zh-CN' ? 80 : 120">
                         <Select v-model="formData.orderOrgId"
-                                style="width: 160px"
                                 :disabled="orderTaskDisabled"
                                 @on-change="searchProductList">
                             <Option v-for="item  in orderTakeList"
@@ -77,27 +73,27 @@
                         </Select>
                     </FormItem>
                 </i-col>
-            </i-row>
-            <i-row>
-                <i-col span="9">
-                    <FormItem :label="$t('keyWord')" >
-                        <Input v-model.trim="formData.productName"
-                               style="width: 280px"
-                               :placeholder="$t('inputField',{field : $t('productName')})" />
-                    </FormItem>
-                </i-col>
                 <i-col span="6">
-                    <FormItem :label="$t('industryType')" >
+                    <FormItem :label="$t('industryType')" :label-width="lang === 'zh-CN' ? 80 : 120">
                         <Select v-model="formData.type"
-                                style="width: 160px"
                                 @on-change="searchProductList">
                             <Option value="ticket">{{$t('ticketType')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
+                <i-col span="6">
+                    <FormItem :label="$t('keyWord')" >
+                        <Input v-model.trim="formData.productName"
+                               :placeholder="$t('inputField',{field : $t('productName')})" />
+                    </FormItem>
+                </i-col>
                 <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">{{$t('searching')}}</Button>
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button>
+                    <Button type="primary"
+                            class="ivu-btn-65px"
+                            @click="searchProductList">{{$t('roleQuery')}}</Button>
+                    <Button type="ghost"
+                            class="ivu-btn-65px reset"
+                            @click="reset">{{$t('reset')}}</Button>
                 </i-col>
             </i-row>
         </Form>
@@ -248,7 +244,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                lang : 'lang',
             }),
             //发售机构名字
             saleOrgName () {
@@ -305,11 +302,16 @@
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
     .filter-head{
-        padding: 14px 30px 5px 30px;
+        padding: 14px 10px 5px 10px;
         border-bottom: 1px solid #EEEEEE;
 
         /deep/ .ivu-form-item{
             margin-bottom: 7px;
+        }
+
+        /deep/ .ivu-form-item-label{
+            padding-left: 5px;
+            padding-right: 5px;
         }
 
         .reset{

@@ -7,6 +7,7 @@
            width="900"
            class="modal"
            :mask-closable="false"
+           class-name="vertical-center-modal"
            v-model="show">
         <div class="content">
             <Form ref="formValidate"
@@ -180,8 +181,8 @@
                         :width="row.width"
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
-                        <template v-if="manageOrgs.nodeType !== 'partner'" slot-scope="scope">
-                            <span>{{scope.row.standardPrice | moneyFilter | contentFilter}}</span>
+                        <template slot-scope="scope">
+                            <span></span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -203,11 +204,23 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.stockNum | contentFilter}}
+                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
                         </template>
                     </el-table-column>
                     <el-table-column
                         slot="column4"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth"
+                        show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
+                            <span v-else>{{scope.row.stockNum | contentFilter}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        slot="column5"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -253,9 +266,7 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <p class="remark">{{$t('productCenter.refundTip1')}}</p>
-                <p class="remark">{{$t('productCenter.refundTip2')}}</p>
-                <p class="remark">{{$t('productCenter.refundTip3')}}</p>
+                <p class="remark">{{$t('defaultRefundFee')}}</p>
 
                 <!--改签规则-->
                 <br/>
@@ -311,6 +322,8 @@
                 detail : {},
                 //模态框调用来源
                 callFrom : '',
+                //列表项数据
+                listItem : {},
             };
         },
         computed : {
@@ -319,22 +332,34 @@
             ]),
             //产品列表表头
             productColumn () {
-                if (this.manageOrgs.nodeType === 'partner') {
-                    return productColumn.map((item) => {
-                        if (item.field !== 'standardPrice') {
-                            return item;
-                        } else {
-                            return {
-                                title : '', // 景区成本价
-                                minWidth : 20,
-                                field : '',
-                                isShow : 'false'
-                            };
-                        }
-                    });
-                } else {
-                    return productColumn;
-                }
+                return productColumn.map((item) => {
+                    if (item.field !== 'standardPrice') {
+                        return item;
+                    } else {
+                        return {
+                            title : '', // 景区成本价
+                            minWidth : 1,
+                            field : '',
+                            isShow : 'false'
+                        };
+                    }
+                });
+                // if (this.manageOrgs.nodeType === 'partner') {
+                //     return productColumn.map((item) => {
+                //         if (item.field !== 'standardPrice') {
+                //             return item;
+                //         } else {
+                //             return {
+                //                 title : '', // 景区成本价
+                //                 minWidth : 20,
+                //                 field : '',
+                //                 isShow : 'false'
+                //             };
+                //         }
+                //     });
+                // } else {
+                //     return productColumn;
+                // }
             },
         },
         methods : {
@@ -343,7 +368,7 @@
              */
             getPolicyDetailData () {
                 ajax.post('getPolicyInfo', {
-                    allocationId : this.listItem.allocationId
+                    allocationId : this.listItem.rootAllocationId
                 }).then((res) => {
                     if (res.success) {
                         this.detail = res.data ? res.data : {};
@@ -397,6 +422,10 @@
             overflow: auto;
         }
     }
+    /deep/ .ivu-form-item {
+        margin-bottom: 10px;
+    }
+
     .content {
         padding: 0 50px;
         margin: 0 auto;
@@ -611,6 +640,7 @@
 
     .remark {
         margin-top: 5px;
+        margin-left: 12px;
         color: $color_yellow;
         &:last-child {
             margin-bottom: 20px;

@@ -9,13 +9,21 @@
 
         <div class="fund-detail-content">
             <div class="filter-wrap">
-                <Select v-model="queryParams.operType" @on-change="filterDealList" :placeholder="$t('selectField', {msg: ''})">
-                    <Option v-for="item in type" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
+                <Select v-model="queryParams.operType"
+                        :style="{ 'width' : lang === 'zh-CN' ? '180px' : '200px' }"
+                        @on-change="filterDealList"
+                        :placeholder="$t('selectField', {msg: ''})">
+                    <Option v-for="item in type"
+                            class="overflow-tip-list"
+                            :value="item.value"
+                            v-w-title="$t(item.label)"
+                            :key="item.value">{{ $t(item.label) }}</Option>
                 </Select>
                 <Date-picker
                     type="date"
                     v-model="queryParams.startDate"
                     :editable="false"
+                    :style="{ 'width' : lang === 'zh-CN' ? '180px' : '256px' }"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('startDate')})"
                     @on-change="filterDealList()">
@@ -24,31 +32,34 @@
                     type="date"
                     v-model="queryParams.endDate"
                     :editable="false"
+                    :style="{ 'width' : lang === 'zh-CN' ? '180px' : '256px' }"
                     format="yyyy-MM-dd"
                     :placeholder="$t('selectField', {msg: $t('endDate')})"
                     @on-change="filterDealList()"><!--请选择结束日期-->
                 </Date-picker>
                 <div class="btn-wrap">
-                    <Button type="primary" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->
-                    <Button type="ghost" @click="resetQueryParams()">{{$t('reset')}}</Button><!--重置-->
-                    <a :href="downloadUrl">
-                        <Button type="ghost">{{$t('exporting')}}</Button><!--导出-->
-                    </a>
+                    <Button type="primary" class="ivu-btn-65px" @click="filterDealList()">{{$t('query')}}</Button><!--查询-->
+                    <Button type="ghost" class="ivu-btn-65px" @click="resetQueryParams()">{{$t('reset')}}</Button><!--重置-->
                 </div>
             </div>
-            <ul class="total-amount">
-                <li class="amount-record">
-                    <span class="key-label">{{$t('colonSetting', { key : $t('hasPayed') })}}</span>
-                    <span class="value-label">{{disbursement | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
-                </li>
-                <li class="amount-record">
-                    <span class="key-label">{{$t('colonSetting', { key : $t('storeTotalValue') })}}</span>
-                    <span class="value-label">{{storeAmount | moneyFilter | contentFilter}}{{$t('yuan')}}</span>
-                </li>
-            </ul>
+            <div class="other-info-line">
+                <a :href="downloadUrl">
+                    <Button type="primary">{{$t('exporting')}}</Button><!--导出-->
+                </a>
+                <ul class="total-amount">
+                    <li class="amount-record">
+                        <span class="key-label">{{$t('colonSetting', { key : $t('hasPayed') })}}</span>
+                        <span class="value-label">{{disbursement | moneyFilter | contentFilter}} {{$t(accountUnit)}}</span>
+                    </li>
+                    <li class="amount-record">
+                        <span class="key-label">{{$t('colonSetting', { key : $t('storeTotalValue') })}}</span>
+                        <span class="value-label">{{storeAmount | moneyFilter | contentFilter}} {{$t(accountUnit)}}</span>
+                    </li>
+                </ul>
+            </div>
             <table-com
                 v-if="queryParams.accountTypeIds"
-                :ofsetHeight="190"
+                :ofsetHeight="210"
                 :show-pagination="true"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -65,10 +76,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span class="green-color" v-if="scope.row.amount > -1">
-                            +{{ scope.row.amount | moneyFilter | contentFilter }}{{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            +{{ scope.row.amount | moneyFilter | contentFilter }} {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                         <span class="red-color" v-if="scope.row.amount < 0">
-                            {{ scope.row.amount }}{{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            {{ scope.row.amount }} {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                     </template>
                 </el-table-column>
@@ -96,14 +107,14 @@
                     <template slot-scope="scope">
                         <span v-if="scope.row.accountSubType === 'corpus'"><!--本金-->
                             {{$t('principal')}}：{{ scope.row.amount | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                         <span v-else-if="scope.row.accountSubType === 'donate'"><!--赠送-->
                             {{$t('sendGift')}}：{{ scope.row.amount  | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}
+                            {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}
                         </span>
                         <span v-else>{{ scope.row.amount  | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}</span>
+                            {{(scope.row.accountTypeId === '1' || scope.row.accountTypeId === '4') ? $t('yuan') : $t(scope.row.unit)}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -114,7 +125,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span>{{ scope.row.endingBalance | moneyFilter | contentFilter }}
-                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(fundDetail.unit)}}</span>
+                            {{scope.row.accountTypeId === '1' ? $t('yuan') : $t(scope.row.unit)}}</span>
                     </template>
                 </el-table-column>
             </table-com>
@@ -174,7 +185,9 @@
                 //已储值
                 storeAmount : '',
                 //账户类型id
-                accountTypeId : ''
+                accountTypeId : '',
+                //账户单位
+                accountUnit : ''
             };
         },
         methods : {
@@ -264,10 +277,12 @@
                 }).then(res => {
                     if (res.success) {
                         this.storeAmount = res.data ? res.data.add : '';
+                        this.accountUnit = res.data ? res.data.unit : '';
                         this.disbursement = res.data ? res.data.reduce * -1 : '';
                     } else {
                         this.storeAmount = '';
                         this.disbursement = '';
+                        this.accountUnit = '';
                     }
                 });
             }
@@ -330,6 +345,7 @@
             },
             ...mapGetters({
                 memberConfigInfo : 'memberConfigInfo',
+                lang : 'lang',
             }),
             //是否是售卖型会员卡
             cardIsSaling () {
@@ -355,26 +371,6 @@
 
         .fund-detail-content{
 
-            .total-amount{
-                height: 25px;
-                line-height: 20px;
-                text-align: right;
-                overflow: auto;
-                padding: 0 30px 5px 0;
-
-                .amount-record{
-                    display: inline-block;
-                    margin-left: 20px;
-
-                    .key-label{
-                        color: $color_yellow;
-                    }
-
-                    .value-label{
-                        color: $color_999;
-                    }
-                }
-            }
 
             .filter-wrap{
                 height: 50px;
@@ -392,6 +388,34 @@
 
                 /deep/ .ivu-btn{
                     margin-right: 5px;
+                }
+            }
+
+            .other-info-line{
+                padding: 4px 30px;
+                @include block_outline($height : 50px);
+
+                .total-amount{
+                    display: inline-block;
+                    height: 25px;
+                    line-height: 20px;
+                    text-align: right;
+                    overflow: auto;
+                    padding: 4px 0 5px 0;
+                    float: right;
+
+                    .amount-record{
+                        display: inline-block;
+                        margin-left: 20px;
+
+                        .key-label{
+                            color: $color_yellow;
+                        }
+
+                        .value-label{
+                            color: $color_999;
+                        }
+                    }
                 }
             }
 

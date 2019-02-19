@@ -185,7 +185,8 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        {{scope.row.stockNum | contentFilter}}
+                                        <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
+                                        <span v-else>{{scope.row.stockNum | contentFilter}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -243,7 +244,7 @@
                 </div>
 
                 <!--全民营销-->
-                <div class="form-content line" v-if="detail.marketSalePriceVos">
+                <div class="form-content line" v-if="detail.marketSalePriceVos && hasMarket === 'true'">
                     <Form-item :label="$t('allPeopleMarket')+'：'"><!--全民营销-->
                         <div>
                             <table-com
@@ -283,9 +284,7 @@
                                     </template>
                                </el-table-column>
                             </table-com>
-                            <p class="remark">{{$t('productCenter.refundTip1')}}</p>
-                            <p class="remark">{{$t('productCenter.refundTip2')}}</p>
-                            <p class="remark">{{$t('productCenter.refundTip3')}}</p>
+                            <p class="remark">{{$t('默认退票手续费率为0')}}</p>
                         </div>
                     </Form-item>
                 </div>
@@ -399,6 +398,8 @@
                 remark : '',
                 //分销id
                 allocationId : '',
+                //是否有全名营销模块
+                hasMarket : 'false',
             };
         },
         computed : {
@@ -525,7 +526,19 @@
                             name : 'marketingPolicy'
                         });
                     }
+                    this.checkOrgServiceById();
                 }
+            },
+            checkOrgServiceById () {
+                ajax.post('checkOrgServiceById', {
+                    serviceId : '20'
+                }).then(res => {
+                    if (res.success) {
+                        this.hasMarket = res.data ? res.data : 'false';
+                    } else {
+                        this.hasMarket = 'false';
+                    }
+                })
             },
         },
     };
@@ -571,7 +584,7 @@
             .form-content{
                 border-top: 1px dashed $color_979797_020;
                 width: 85%;
-                margin: 0 auto;
+                margin-left: 20px;
                 padding: 20px 0;
 
                 &:first-child{
@@ -643,6 +656,9 @@
                     div {
                         word-break: break-all;
                     }
+                }
+                /deep/ .table-com {
+                    line-height: 22px;
                 }
 
             }

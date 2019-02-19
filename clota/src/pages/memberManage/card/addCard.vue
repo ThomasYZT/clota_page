@@ -95,7 +95,9 @@
                         <Select v-model="formData.conditionOrgId"
                                 :multiple="true"
                                 :clearable="true"
-                                :placeholder="$t('selectField', {msg: ''})">
+                                :placeholder="$t('selectField', {msg: ''})"
+                                @on-open-change="shopChangeStatus"
+                                @on-change="querySelfOwnedChannelByOrgIds">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
                                     :value="item.id">
@@ -121,7 +123,7 @@
                             <Option v-for="(item,index) in channelSetList"
                                     :key="index"
                                     :value="item.id">
-                                {{item.channelName}}
+                                {{item.orgChannelName}}
                             </Option>
                         </Select>
                     </Form-item>
@@ -204,7 +206,9 @@
                         <Select v-model="formData.conditionOrgId"
                                 :multiple="true"
                                 :clearable="true"
-                                :placeholder="$t('selectField', {msg: ''})">
+                                :placeholder="$t('selectField', {msg: ''})"
+                                @on-open-change="shopChangeStatus"
+                                @on-change="querySelfOwnedChannelByOrgIds">
                             <Option v-for="(item,index) in listAmountRange"
                                     :key="index"
                                     :value="item.id">
@@ -248,7 +252,7 @@
                             <Option v-for="(item,index) in channelSetList"
                                     :key="index"
                                     :value="item.id">
-                                {{item.channelName}}
+                                {{item.orgChannelName}}
                             </Option>
                         </Select>
                     </Form-item>
@@ -961,7 +965,8 @@
              */
             queryListAmountRange () {
                 ajax.post('getSubNode',{
-                    orgType : 'scenic'
+                    orgType : 'scenic',
+                    includeMe : this.manageOrgs.nodeType === 'scenic'
                 }).then(res => {
                     if (res.success) {
                         this.listAmountRange = res.data ? res.data : [];
@@ -1131,6 +1136,35 @@
                     }
                 }
                 return '';
+            },
+            /**
+             * 更改选择的店铺下拉框状态
+             * @param{String} status 下拉框状态
+             */
+            shopChangeStatus (status) {
+                // if (status === false) {
+                //     if (this.formData.conditionOrgId.length > 0) {
+                //         this.querySelfOwnedChannelByOrgIds();
+                //     } else {
+                //         this.formData.conditionChannelId = [];
+                //         this.channelSetList = [];
+                //     }
+                // }
+            },
+            /**
+             * 查询店铺下的可用渠道
+             */
+            querySelfOwnedChannelByOrgIds () {
+                ajax.post('querySelfOwnedChannelByOrgIds',{
+                    orgIds : this.formData.conditionOrgId.join(',')
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.channelSetList = res.data;
+                    } else {
+                        this.channelSetList = [];
+                    }
+                    this.formData.conditionChannelId = [];
+                });
             }
         },
         created () {
@@ -1149,7 +1183,8 @@
         },
         computed : {
             ...mapGetters({
-                lang : 'lang'
+                lang : 'lang',
+                manageOrgs : 'manageOrgs'
             })
         }
     };
@@ -1175,7 +1210,7 @@
             width: 100%;
             background-color: #FFFFFF;
             border-radius: 4px;
-            overflow: hidden;
+
             .ivu-input-icon{
                 z-index: 2;
             }

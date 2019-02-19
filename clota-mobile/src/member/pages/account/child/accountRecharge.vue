@@ -14,7 +14,7 @@
             <div class="actual-money">
                 <span class="label">{{$t('actualToAccount')}}</span>
                 <span class="account">{{actualMoney | moneyFilter | contentFilter}}{{accountDefineId !== '1' ? $t(unit) : $t('yuan')}}</span>
-                <span class="other-data">{{$t('bracketSetting',{ content : $t('includeDonate',{num : donateMoney}) + (accountDefineId !== '1' ? $t(unit) : $t('yuan')) })}}</span>
+                <span class="other-data">{{$t('includeDonate',{num : donateMoney + ' ' + (accountDefineId !== '1' ? $t(unit) : $t('yuan'))})}}</span>
             </div>
         </div>
         <div class="pay-type-chose">
@@ -45,7 +45,7 @@
     import ajax from '@/member/api/index.js';
     import lifeCycle from '@/mixins/lifeCycleMixins.js';
     import common from '@/assets/js/common';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycle],
         data () {
@@ -218,7 +218,7 @@
                         this.chosedAccount = {};
                         this.payType = '';
                     }
-                })
+                });
             },
             /**
              * 判断是否在微信浏览器
@@ -243,7 +243,17 @@
                     channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : this.getRedirectUrl()
+                    redirectUrl : this.getRedirectUrl(),
+                    extData : JSON.stringify({
+                        accountBizType : 'recharge',
+                        accountTypeId : this.accountTypeId,
+                        amount : this.rechargeMoney,
+                        paymentType : 'weixin',
+                        orgId : this.cardInfo.orgId,
+                        cardId : this.cardInfo.id,
+                        memberId : this.cardInfo.memberId,
+                        operUserId : this.cardInfo.orgId
+                    })
                 }).then(res => {
                     if (res.success) {
                         this.payFormData = res.data ? res.data : {};
@@ -276,7 +286,7 @@
                         //     }
                         // });
                         location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
-                            return item.module === 'member'
+                            return item.module === 'member';
                         })[0].path + '/h5Pay?memberId=' + this.userInfo.memberId +
                             '&cardId=' + this.cardInfo.id +
                             '&accounId=' + this.accounId +
@@ -314,7 +324,17 @@
                     channelId : 'weixin',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : this.getRedirectUrl()
+                    redirectUrl : this.getRedirectUrl(),
+                    extData : JSON.stringify({
+                        accountBizType : 'recharge',
+                        accountTypeId : this.accountTypeId,
+                        amount : this.rechargeMoney,
+                        paymentType : 'weixin',
+                        orgId : this.cardInfo.orgId,
+                        cardId : this.cardInfo.id,
+                        memberId : this.cardInfo.memberId,
+                        operUserId : this.cardInfo.orgId
+                    })
                 }).then(res => {
                     if (res.success) {
                         //设置支付表单信息
@@ -334,13 +354,13 @@
                         //     }
                         // });
                         location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
-                            return item.module === 'member'
+                            return item.module === 'member';
                         })[0].path + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));
                     }
-                })
+                });
             },
             /**
              * 获取支付回调地址
@@ -349,7 +369,7 @@
                 let router = this.$router;
                 let base = router.options.base;
                 let module = this.$router.options.routes.filter((item) => {
-                    return item.module === 'member'
+                    return item.module === 'member';
                 })[0].path;
                 return encodeURI(location.origin + base + module + '/payStatus');
             }
@@ -421,16 +441,19 @@
                 .label{
                     font-size: $font_size_13px;
                     color: #353B48;
+                    white-space: nowrap;
                 }
 
                 .account{
                     font-size: $font_size_13px;
                     color: #F7981C;
+                    margin: 0 5px;
                 }
 
                 .other-data{
                     font-size: $font_size_11px;
                     color: $color_999;
+                    white-space: nowrap;
                 }
             }
         }

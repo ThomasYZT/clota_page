@@ -20,27 +20,27 @@
         </div>
         <!--自定义页脚-->
         <div slot="footer">
-            <i-button type="primary" @click="handleAllow('reject')">{{$t('allow')}}</i-button>
-            <i-button type="ghost" @click="handleAllow('reject_no_req')">{{$t('notAllowWithoutfield')}}</i-button>
+            <i-button class="ivu-btn-90px"
+                      type="primary"
+                      @click="handleAllow('reject')">
+                {{$t('allow')}}
+            </i-button>
+            <i-button class="ivu-btn-90px"
+                      type="ghost"
+                      @click="handleAllow('reject_no_req')">
+                {{$t('notAllowWithoutfield')}}
+            </i-button>
         </div>
     </Modal>
 </template>
 <script>
 
     export default {
-        components : {},
-        props : {},
         data () {
             return {
                 visible : false, //显示模态框变量
             };
         },
-        computed : {},
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 显示模态框
@@ -68,12 +68,15 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
 
-    /deep/ .ivu-btn {
-        width: 88px;
-    }
-
     .icon-warn {
         color: $color_yellow;
+    }
+
+    /deep/ .ivu-modal-body{
+        min-height: 164px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .tip-word {

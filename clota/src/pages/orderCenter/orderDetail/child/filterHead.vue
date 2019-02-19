@@ -15,7 +15,6 @@
                                     type="daterange"
                                     placement="bottom-end"
                                     :placeholder="$t('selectField',{msg: ''})"
-                                    style="max-width: 260px"
                                     @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
@@ -29,16 +28,14 @@
                                     type="daterange"
                                     placement="bottom-end"
                                     :placeholder="$t('selectField',{msg: ''})"
-                                    style="max-width: 260px"
                                     @on-change="searchProductList">
                         </DatePicker>
                     </FormItem>
                 </i-col>
-                <i-col span="4">
+                <i-col span="5">
                     <!--订单类型-->
-                    <FormItem :label="$t('orderType')" >
+                    <FormItem :label="$t('orderType')" :label-width="lang === 'zh-CN' ? 80 :85 ">
                         <Select v-model.trim="formData.orderType"
-                                style="max-width: 100px"
                                 @on-change="orderTypeChange">
                             <Option v-for="item in orderType"
                                     :key="item.value"
@@ -48,11 +45,10 @@
                         </Select>
                     </FormItem>
                 </i-col>
-                <i-col span="4">
+                <i-col span="5">
                     <!--是否分销-->
-                    <FormItem :label="$t('whetherVerify')" >
+                    <FormItem :label="$t('whetherVerify')" :label-width="lang === 'zh-CN' ? 80 : 165 ">
                         <Select v-model.trim="formData.allocationStatus"
-                                style="max-width: 100px"
                                 @on-change="allocationStatusChange">
                             <Option v-for="item in tOfSelectList"
                                     :key="item.value"
@@ -66,9 +62,8 @@
             <i-row>
                 <i-col span="6">
                     <!--取票状态-->
-                    <FormItem :label="$t('takeTicketStatus')">
+                    <FormItem :label="$t('takeTicketStatus')" :label-width="lang === 'zh-CN' ? 80 : 95 ">
                         <Select v-model.trim="formData.pickStatus"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in takeTicketStatusList"
                                     :key="item.value"
@@ -80,9 +75,8 @@
                 </i-col>
                 <i-col span="6">
                     <!--退票状态-->
-                    <FormItem :label="$t('refundStatus')">
+                    <FormItem :label="$t('refundStatus')"  :label-width="lang === 'zh-CN' ? 80 : 105 ">
                         <Select v-model.trim="formData.refundStatus"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in refundStatusList"
                                     :key="item.value"
@@ -94,9 +88,8 @@
                 </i-col>
                 <i-col span="6">
                     <!--所属景区-->
-                    <FormItem :label="$t('scenePlace')">
+                    <FormItem :label="$t('scenePlace')" :label-width="lang === 'zh-CN' ? 80 : 90 ">
                         <Select v-model.trim="formData.scenicId"
-                                style="max-width: 200px"
                                 @on-change="sceneChange">
                             <Option v-for="item  in belongScene"
                                     :key="item.id"
@@ -108,9 +101,8 @@
                 </i-col>
                 <i-col span="6">
                     <!--下单企业-->
-                    <FormItem :label="$t('orderOrg')" >
+                    <FormItem :label="$t('orderOrg')" :label-width="lang === 'zh-CN' ? 80 : 120 ">
                         <Select v-model.trim="formData.orderOrgId"
-                                style="max-width: 200px"
                                 :disabled="orderTaskDisabled"
                                 @on-change="searchProductList">
                             <Option v-for="item  in orderTakeList"
@@ -125,9 +117,8 @@
             <i-row>
                 <i-col span="6">
                     <!--下单渠道-->
-                    <FormItem :label="$t('orderChannel')" >
+                    <FormItem :label="$t('orderChannel')" :label-width="lang === 'zh-CN' ? 80 : 105 ">
                         <Select v-model.trim="formData.orderChannel"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in orderChannelList"
                                     :key="item.value"
@@ -139,9 +130,8 @@
                 </i-col>
                 <i-col span="6">
                     <!--核销状态-->
-                    <FormItem :label="$t('verifyStatus')" >
+                    <FormItem :label="$t('verifyStatus')" :label-width="lang === 'zh-CN' ? 80 : 120 ">
                         <Select v-model.trim="formData.verifyStatus"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in verifyStatusList"
                                     :key="item.value"
@@ -153,9 +143,8 @@
                 </i-col>
                 <i-col span="6">
                     <!--是否同步-->
-                    <FormItem :label="$t('whetherSync')" >
+                    <FormItem :label="$t('whetherSync')"  :label-width="lang === 'zh-CN' ? 80 : 90 ">
                         <Select v-model.trim="formData.syncStatus"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in synchronizationList"
                                     :key="item.value"
@@ -167,9 +156,8 @@
                 </i-col>
                 <i-col span="6">
                     <!--改签状态-->
-                    <FormItem :label="$t('rescheduleStatus')" >
+                    <FormItem :label="$t('rescheduleStatus')"  :label-width="lang === 'zh-CN' ? 80 : 110 ">
                         <Select v-model.trim="formData.rescheduleStatus"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in rescheduleStatus"
                                     :key="item.value"
@@ -183,10 +171,9 @@
             <i-row>
                 <i-col span="6">
                     <!--营销类别-->
-                    <FormItem :label="$t('marketType')" >
+                    <FormItem :label="$t('marketType')"  :label-width="lang === 'zh-CN' ? 80 : 140 ">
                         <Select v-model.trim="formData.marketTypeId"
                                 :disabled="formData.orderChannel !== 'market'"
-                                style="max-width: 200px"
                                 @on-change="marketTypeChange">
                             <Option v-for="item  in marketTypeListFull"
                                     :key="item.id"
@@ -198,10 +185,9 @@
                 </i-col>
                 <i-col span="6">
                     <!--营销级别-->
-                    <FormItem :label="$t('marketLevel')" >
+                    <FormItem :label="$t('marketLevel')"  :label-width="lang === 'zh-CN' ? 80 : 115 ">
                         <Select v-model.trim="formData.marketLevelId"
                                 :disabled="formData.orderChannel !== 'market'"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in marketLevelListFull"
                                     :key="item.id"
@@ -212,25 +198,18 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
-                    <!--审核状态-->
-                    <FormItem :label="$t('auditStatus')" >
-                        <Select v-model.trim="formData.auditStatus"
-                                :disabled="formData.orderType === 'individual'"
-                                style="max-width: 200px"
+                    <!--业态类型-->
+                    <FormItem :label="$t('industryType')" :label-width="lang === 'zh-CN' ? 80 : 125 ">
+                        <Select v-model.trim="formData.productType"
                                 @on-change="searchProductList">
-                            <Option v-for="item  in auditStatusList"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label)}}
-                            </Option>
+                            <Option value="ticket">{{$t('tickets')}}</Option>
                         </Select>
                     </FormItem>
                 </i-col>
                 <i-col span="6">
                     <!--支付状态-->
-                    <FormItem :label="$t('paymentStatus')" >
+                    <FormItem :label="$t('paymentStatus')" :label-width="lang === 'zh-CN' ? 80 : 120 ">
                         <Select v-model.trim="formData.paymentStatus"
-                                style="max-width: 200px"
                                 @on-change="searchProductList">
                             <Option v-for="item  in payStatusList"
                                     :key="item.value"
@@ -243,12 +222,16 @@
             </i-row>
             <i-row>
                 <i-col span="6">
-                    <!--业态类型-->
-                    <FormItem :label="$t('industryType')" >
-                        <Select v-model.trim="formData.productType"
-                                style="max-width: 200px"
+                    <!--审核状态-->
+                    <FormItem :label="$t('teamOrderAudit')"  :label-width="lang === 'zh-CN' ? 115 : 136">
+                        <Select v-model.trim="formData.auditStatus"
+                                :disabled="formData.orderType === 'individual'"
                                 @on-change="searchProductList">
-                            <Option value="ticket">{{$t('tickets')}}</Option>
+                            <Option v-for="item  in auditStatusList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
                         </Select>
                     </FormItem>
                 </i-col>
@@ -256,14 +239,13 @@
                     <FormItem :label="$t('keyWord')" >
                         <!--输入游客姓名/手机号/订单明细编号-->
                         <Input v-model.trim="formData.keyword"
-                               style="max-width: 380px"
                                :placeholder="$t('enterNamePhoneAndOrderNo')"
                                @on-enter="searchProductList"/>
                     </FormItem>
                 </i-col>
                 <i-col span="6" style="text-align: right;float: right">
-                    <Button type="primary" class="ivu-btn-90px" @click="searchProductList">{{$t('searching')}}</Button>
-                    <Button type="ghost" class="ivu-btn-90px reset" @click="reset">{{$t('reset')}}</Button>
+                    <Button type="primary" class="ivu-btn-65px" @click="searchProductList">{{$t('roleQuery')}}</Button>
+                    <Button type="ghost" class="ivu-btn-65px reset" @click="reset">{{$t('reset')}}</Button>
                 </i-col>
             </i-row>
             <i-row>
@@ -542,7 +524,8 @@
         },
         computed : {
             ...mapGetters({
-                manageOrgs : 'manageOrgs'
+                manageOrgs : 'manageOrgs',
+                lang : 'lang',
             }),
             //下单企业名字
             orderOrgName () {
@@ -663,7 +646,7 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .filter-head{
-        padding: 14px 20px 15px 18px;
+        padding: 14px 10px 15px 10px;
         /*border: 1px solid #EEEEEE;*/
 
         /deep/ .ivu-date-picker{
@@ -675,7 +658,7 @@
         }
 
         .reset{
-            margin-left: 15px;
+            margin-left: 5px;
         }
 
         .abnormal-order{
@@ -688,6 +671,11 @@
             /deep/ .ivu-form-item{
                 margin-bottom: 0;
             }
+        }
+
+        /deep/ .ivu-form-item-label{
+            padding-left: 5px;
+            padding-right: 5px;
         }
     }
 </style>

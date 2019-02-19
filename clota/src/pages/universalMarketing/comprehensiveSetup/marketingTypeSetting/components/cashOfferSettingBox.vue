@@ -24,7 +24,7 @@
                         <i-col span="24">
                             <!-- 提现天数 -->
                             <FormItem label=""  prop="withdrawDay">
-                                <Input style="width:120px;"
+                                <Input style="width:230px;"
                                        type="text"
                                        v-model.trim="formData.withdrawDay"
                                        :placeholder="$t('inputField', { field : $t('cashOfferDays') })"/>
@@ -157,9 +157,9 @@
             codeInfo : {
                 handler () {
                     this.reset();
-                }
-            },
-            deep : true
+                },
+                deep : true
+            }
         }
     };
 </script>
@@ -200,8 +200,11 @@
                 line-height: 24px;
                 font-size: 18px;
                 color: #000;
+                margin-bottom: 10px;
+
                 i {
                     color: $color_gray;
+                    vertical-align: text-top;
                 }
             }
 

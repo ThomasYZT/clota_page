@@ -4,6 +4,7 @@ export const columnData = [
     {
         title : 'productName',
         width : 200,
+        enWidth : 300,
         field : 'productName'
     },
     {
@@ -14,6 +15,7 @@ export const columnData = [
     {
         title : 'settlePrice',
         width : 100,
+        enWidth : 170,
         field : 'settlePrice'
     },
     {

@@ -5,10 +5,10 @@
         <div class="filter-box">
             <Button type="primary"
                     v-if="canAddEmployee"
-                    icon="md-add"
                     style="float: left;margin-right: 10px"
+                    icon="android-add"
                     @click="getNewPartner('add')"
-                    size="default"><span class="add-icon">+ {{$t('newEmployee')}}</span>
+                    size="default">{{$t('newEmployee')}}</span>
             </Button>
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
@@ -180,7 +180,8 @@
         },
         computed : {
             ...mapGetters({
-                permissionInfo : 'permissionInfo'
+                permissionInfo : 'permissionInfo',
+                lang : 'lang',
             }),
             //是否有新增员工的权限
             canAddEmployee () {
@@ -198,13 +199,16 @@
             operateColumnWidth () {
                 if (this.canDelEmployee && this.canModifyEmployee) {
                     return {
-                        minWidth : 120
+                        minWidth : this.lang === 'zh-CN' ? 120 : 150
                     };
                 } else if (this.canDelEmployee || this.canModifyEmployee) {
                     return {
-                        minWidth : 80
+                        minWidth : this.lang === 'zh-CN' ? 80 : 100
                     };
                 }
+                return {
+                    minWidth : 80
+                };
             }
         },
         created () {

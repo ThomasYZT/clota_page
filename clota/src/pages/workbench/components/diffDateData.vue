@@ -5,25 +5,30 @@
 -->
 
 <template>
-    <div class="diff-date-data">
+    <div class="diff-date-data" :class="{ 'en-modal' : lang === 'en' }">
         <div class="header-box">
-            <span class="title">{{$t(cardTitle)}}</span>
-            <DatePicker type="daterange"
-                        v-model.trim="date"
-                        :editable="false"
-                        :clearable="false"
-                        :placeholder="$t('selectField',{msg: ''})"
-                        placement="bottom-end"
-                        class="date-picker"
-                        :transfer="true"
-                        @on-change="queryList">
-            </DatePicker>
+            <div class='title-wrapper' v-w-title="$t(cardTitle)">
+                {{$t(cardTitle)}}
+            </div>
+            <div class="date-wrapper">
+                <DatePicker type="daterange"
+                            v-model.trim="date"
+                            :editable="false"
+                            :clearable="false"
+                            :placeholder="$t('selectField',{msg: ''})"
+                            placement="bottom-end"
+                            class="date-picker"
+                            :transfer="true"
+                            style="width: 215px;"
+                            @on-change="queryList">
+                </DatePicker>
+            </div>
         </div>
 
         <div class="table-list-area">
             <table-com
                 :ofsetHeight="200"
-                :height="263"
+                :height="lang === 'zh-CN' ? 365 : 375"
                 :show-pagination="false"
                 :column-data="columnData"
                 :table-data="tableData"
@@ -68,6 +73,7 @@
 </template>
 <script>
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         components : { tableCom },
@@ -96,13 +102,14 @@
                 date : [new Date().addMonths(-1), new Date()],
             };
         },
-        computed : {},
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        },
         created () {
             this.queryList();
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询数据
@@ -124,21 +131,35 @@
         border: 1px solid $color_DFE2E5;
         border-radius: 4px;
 
-        .header-box {
-            @include block_outline($height: 45px);
-            border-bottom: 1px solid $color_E1E1E1;
-            line-height: 45px;
-            padding: 0 20px;
+        .en-modal{
 
-            .title {
+        }
+
+        .header-box {
+            border-bottom: 1px solid $color_E1E1E1;
+            padding: 6px 10px;
+            overflow: auto;
+
+            .title-wrapper {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: 32px;
+                max-width: calc(100% - 215px);
+                @include overflow_tip();
+                padding-right: 5px;
                 font-size: $font_size_16px;
                 color: $color_353B5E;
             }
-
-            .date-picker {
-                width: 150px;
+            .date-wrapper {
+                display: inline-block;
+                vertical-align: middle;
                 float: right;
-                margin-top: 7px;
+                margin-top: 2px;
+
+                .date-picker {
+                    width: 150px;
+                    float: right;
+                }
             }
 
             .chart-area {

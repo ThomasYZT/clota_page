@@ -12,7 +12,18 @@
                 </div>
                 <div class="fund-list">
                     <div class="account-name" v-w-title="item.accountName + (item.unit ? `（${item.unit}）` : '')">
-                        {{item.accountName}}{{getUnit(item)}}
+                        {{$t(item.accountName) | contentFilter}}{{getUnit(item)}}
+                    </div>
+                    <!--<div class="account-money">{{item.amount | moneyFilter}}</div>-->
+                    <div class="account-type-wrap">
+                        <div class="corpus-amount">
+                            <div class="number">{{item.corpusAmount | moneyFilter | contentFilter}}</div>
+                            <div class="account-type-name">{{$t('account.corpus')}}</div>
+                        </div>
+                        <div class="corpus-amount" v-if="item.id !== '4'">
+                            <div class="number">{{item.donateAmount | moneyFilter | contentFilter}}</div>
+                            <div class="account-type-name">{{$t('presentAccountTotal')}}</div>
+                        </div>
                     </div>
                     <!--<div class="account-money">{{item.amount | moneyFilter}}</div>-->
                     <div class="account-type-wrap">
@@ -161,18 +172,29 @@
             font-size: $font_size_16px;
             color:$color_333;
         }
+        @media screen and (min-width : 1600px) {
+            .account-info {
+                min-width: 30%;
+
+                &:nth-of-type(3n){
+                    margin: 0 5% 30px 5%;
+                }
+            }
+        }
+        @media screen and (max-width : 1600px) {
+            .account-info {
+                min-width: 46%;
+                margin: 0 2%;
+            }
+        }
         .account-info{
             position: relative;
             float: left;
             @include block_outline(auto,178px);
-            min-width: 30%;
             background: $color_fff;
             border: 1px solid $color_E9E9E9;
             border-radius: 2px;
             margin-bottom: 30px;
-            &:nth-of-type(3n){
-                margin: 0 5% 30px 5%;
-            }
 
             .account-detail{
                 @include block_outline($height : 138px);

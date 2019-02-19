@@ -48,13 +48,13 @@
             <x-input  v-show="stage === 2"
                       :title="$t('validCode')"
                      v-model="formData.code"
-                     class="c-input"
                      text-align="right"
                      label-width="150px"
                      :placeholder="$t('enterCode')">
             </x-input>
             <cell v-show="stage === 3"
                   :title="$t('所属类别')"
+                  class="c-input type-collect-info"
                   is-link
                   @click.native="typeChooseModalShow = true"
                   :value="typeName">
@@ -145,7 +145,7 @@
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'market_reset_password',
-                            companyCode : this.marketINgCompanyCode
+                            companyCode : this.companyCode
                         }).then((res) => {
                             if (!res.success) {
                                 this.$vux.toast.show({
@@ -182,7 +182,7 @@
                     });
                 } else if (this.stage === 2) {
                     this.queryUserTypeList().then(() => {
-                        return this.validatePhone()
+                        return this.validatePhone();
                     }).then(() => {
                         return this.validateCode();
                     }).then(() => {
@@ -322,7 +322,7 @@
                     mobile : this.formData.phoneNum,
                     newPassword : MD5(this.formData.password).toString(),
                     typeIds : this.typeChoosed.join(','),
-                    orgId : this.marketOrgId,
+                    // orgId : this.marketOrgId,
                 }).then(res => {
                     if (res.success) {
                         this.$router.push({
@@ -351,7 +351,7 @@
                 ajax.post('market_checkVerifyCode',{
                     mobile : this.formData.phoneNum,
                     code : this.formData.code,
-                    companyCode : this.marketINgCompanyCode,
+                    companyCode : this.companyCode,
                     type : 'market_reset_password',
                 }).then((res) => {
                     if (res.success) {
@@ -377,13 +377,14 @@
                     ajax.post('market_queryUserTypeForReset',{
                         phone : this.formData.phoneNum,
                         idno : this.formData.idNum,
-                        orgId : this.marketOrgId
+                        orgId : this.marketCompanyId
                     }).then(res => {
                         if (!res.success && res.code === 'MK013') {
                             this.typeList = res.data ? res.data.map(item => {
                                 return {
                                     key : item.id,
-                                    value : item.typeName
+                                    value : item.typeName,
+                                    orgId : item.orgId
                                 };
                             }) : [];
                             resolve();
@@ -391,7 +392,8 @@
                             this.typeList = res.data ? res.data.map(item => {
                                 return {
                                     key : item.id,
-                                    value : item.typeName
+                                    value : item.typeName,
+                                    orgId : item.orgId
                                 };
                             }) : [];
                             this.$set(this.typeChoosed,0,this.typeList.length > 0 ? this.typeList[0]['key'] : '');
@@ -423,7 +425,7 @@
                         this.$store.commit('marketUpdateOrgId','');
                     }
                 }).finally(() => {
-                    this.$store.commit('marketUpdateCompanyCode',orgCode);
+                    this.$store.commit('updateCompanyCode',orgCode);
                 });
             },
             /**
@@ -460,9 +462,10 @@
             ...mapGetters({
                 companyName : 'companyName',
                 isWeixin : 'isWeixin',
-                marketOrgId : 'marketOrgId',
+                marketCompanyId : 'marketCompanyId',
                 marketTypeId : 'marketTypeId',
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
+                marketOrgId : 'marketOrgId',
             }),
             //所选的类别名称信息
             typeName () {
@@ -569,6 +572,14 @@
 
             &:before{
                 top : 50px;
+            }
+        }
+
+        .type-collect-info  {
+            /deep/ .weui-cell__ft{
+                max-width : calc(100% - 104px);
+                white-space : nowrap;
+                overflow : hidden;
             }
         }
     }

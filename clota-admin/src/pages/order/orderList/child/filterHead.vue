@@ -165,6 +165,22 @@
                     </FormItem>
                 </i-col>
                 <i-col span="6">
+                    <!--支付状态-->
+                    <FormItem :label="$t('paymentStatus')" >
+                        <Select v-model.trim="formData.paymentStatus"
+                                style="max-width: 260px"
+                                @on-change="searchProductList">
+                            <Option v-for="item  in payStatusList"
+                                    :key="item.value"
+                                    :value="item.value">
+                                {{$t(item.label)}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                </i-col>
+            </i-row>
+            <i-row>
+                <i-col span="6">
                     <!--营销类别-->
                     <FormItem label="营销类别" >
                         <Select v-model.trim="formData.marketTypeId"
@@ -179,8 +195,6 @@
                         </Select>
                     </FormItem>
                 </i-col>
-            </i-row>
-            <i-row>
                 <i-col span="6">
                     <!--营销级别-->
                     <FormItem label="营销级别" >
@@ -192,20 +206,6 @@
                                     :key="item.id"
                                     :value="item.id">
                                 {{$t(item.levelName)}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                </i-col>
-                <i-col span="6">
-                    <!--支付状态-->
-                    <FormItem :label="$t('paymentStatus')" >
-                        <Select v-model.trim="formData.paymentStatus"
-                                style="max-width: 260px"
-                                @on-change="searchProductList">
-                            <Option v-for="item  in payStatusList"
-                                    :key="item.value"
-                                    :value="item.value">
-                                {{$t(item.label)}}
                             </Option>
                         </Select>
                     </FormItem>

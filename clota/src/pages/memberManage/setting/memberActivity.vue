@@ -12,7 +12,7 @@
                   :model="formData"
                   label-position="left"
                   :rules="ruleValidate"
-                  :label-width="110">
+                  :label-width="lang === 'zh-CN' ? 110 : 255">
 				<FormItem :label="$t('colonSetting', { key : $t('smsContent') })" prop="content">
 					<i-input v-model.trim="formData.content"
                              type="textarea"
@@ -43,6 +43,8 @@
 <script>
 	import headerTabs from './components/headerTabs.vue';
 	import ajax from '@/api/index';
+	import { mapGetters } from 'vuex';
+
 	export default {
 		components : {
 			headerTabs
@@ -166,7 +168,10 @@
 			//发送短信景区名字列表
 			sendRangeText () {
 				return this.memberLevels.filter(item => this.formData.sendRange.includes(item.id)).map(item => item.levelDesc).join(',');
-			}
+			},
+            ...mapGetters([
+                'lang'
+            ])
 		}
 	};
 </script>

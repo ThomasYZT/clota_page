@@ -8,10 +8,14 @@
                     <Input v-model.trim="formData.keyWord"
                            :placeholder="$t('memberSearchKeyWord')"
                            @on-enter="queryList"
+                           :style="{ 'width' : lang === 'zh-CN' ? '280px' : '360px' }"
                            style="width: 280px"/>
                 </i-col>
                 <i-col style="width: auto;display:inline-block;margin-left: 10px">
                     <Button type="primary" @click="queryList">{{$t('searching')}}</Button>
+                </i-col>
+                <i-col  style="width: auto;display:inline-block;margin-left: 10px">
+                    <slot></slot>
                 </i-col>
             </i-row>
         </div>
@@ -35,6 +39,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './memberInfoConfig';
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
 
 	export default {
 	    components : {
@@ -86,6 +91,11 @@
             rowClick (rowData) {
                 this.$emit('click-row-todo',rowData);
             }
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         }
 	};
 </script>

@@ -8,6 +8,7 @@ export const tradeRecordHead = [
     {
         title : 'tradeMoney', // 交易金额
         minWidth : 100,
+        enMinWidth : 170,
         field : 'txnAmt',
         type : 'money'
     },
@@ -19,11 +20,13 @@ export const tradeRecordHead = [
     {
         title : 'memberCardType', // 会员卡类型
         minWidth : 150,
+        enMinWidth : 170,
         field : 'cardTypeName'
     },
     {
         title : 'memberCardLevel', // 会员卡级别
         minWidth : 150,
+        enMinWidth : 195,
         field : 'cardLevelName'
     },
     {
@@ -34,16 +37,19 @@ export const tradeRecordHead = [
     {
         title : 'payType', // 支付方式
         minWidth : 100,
+        enMinWidth : 152,
         field : 'payType'
     },
     {
         title : 'paymentStatus', // 支付状态
         minWidth : 100,
+        enMinWidth : 152,
         field : 'txnStatus'
     },
     {
         title : 'memberSystemStatus', // 会员系统状态
         minWidth : 150,
+        enMinWidth : 198,
         field : 'bizStatus'
     },
     {

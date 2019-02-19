@@ -29,7 +29,7 @@ instance.interceptors.response.use(function (response) {
         router.push({
             name : 'marketingLogin',
             query : {
-                companyCode : store.getters.marketINgCompanyCode
+                companyCode : store.getters.companyCode
             }
         },() => {
             store.commit('marketUpdateUserInfo');

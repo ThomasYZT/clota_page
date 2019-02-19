@@ -21,9 +21,11 @@
         <group class="cell">
             <popup-picker :title="$t('integrallAccountChoose')"
                           :popup-title="$t('integrallAccountChoose')"
+                          :confirm-text="$t('confirm')"
+                          :cancel-text="$t('cancel')"
                           show-name
                           :data="memberCardList" v-model="memberCardId"
-                          :placeholder="$t('pleaseSelectCard')+' '"></popup-picker>
+                          :placeholder="$t('pleaseChoose')+' '"></popup-picker>
         </group>
 
     </div>
@@ -91,7 +93,10 @@
              */
             exchange () {
                 if (!this.memberCardId.length > 0 || !this.memberCardId[0].length > 0) {
-                    this.$vux.toast.text(this.$t('pleaseSelectCard'));
+                    this.$vux.toast.show({
+                        type : 'text',
+                        text : `<div style="width:5rem;">${this.$t('pleaseSelectCard')}</div> `,
+                    });
                 } else {
                     ajax.post('exchangeGoods', {
                         goodsId : this.detail.id,
@@ -209,6 +214,10 @@
 
                 }
 
+            }
+
+            /deep/ .weui-label {
+                white-space: nowrap;
             }
         }
 

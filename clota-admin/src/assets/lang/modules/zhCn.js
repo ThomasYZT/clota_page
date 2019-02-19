@@ -31,7 +31,7 @@ export default {
     serverCount : '服务器数量',
     circleName : '同比昨天',
     ISPinternet : '服务提供商',
-    cooperaChannelOrg : '合作渠道(机构)',
+    cooperaChannelOrg : '合作渠道（机构）',
     cooperaChannelPer : '合作渠道（个人）',
     readyDeal : '待处理',
     auditTrue : '审核通过',
@@ -623,4 +623,8 @@ export default {
     'validatedDate' : '有效期',
     'returnRuleNotAllowMsg' : '提示：您申请改签的产品中包含按产品规则不允许退票的产品，是否继续申请？',
     'alterProductTip' : '提示：您申请改签的产品中包含按产品规则不允许改签的产品，是否继续申请？',
+    'expiredVerify' : '过期核销',
+    'cannotDelte' : '无法删除',
+    'cannotDeleteReason' : '原因：收付款尚未结清或会员储值余额未清零',
+    'hint' : '提示'
 };

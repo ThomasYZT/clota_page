@@ -87,8 +87,7 @@
             display: flex;
 
             .tree-wrapper {
-                flex: 1 0;
-                flex-basis: 20%;
+                width: 270px;
                 height: 100%;
                 border-right: 1px solid #E1E1E1;
                 overflow: auto;

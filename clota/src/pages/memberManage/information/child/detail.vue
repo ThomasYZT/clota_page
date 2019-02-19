@@ -123,16 +123,15 @@
                         </integral-account-info>
                     </template>
 
-                    <!--会员3期暂时去掉-->
-                    <!--<div class="content-info">-->
-                    <!--<div class="title">{{$t("couponInfo")}}</div>&lt;!&ndash;优惠券信息&ndash;&gt;-->
-                    <!--<more-card type="view"-->
-                    <!--:status="status"-->
-                    <!--:table-data="couponData"-->
-                    <!--@view-more="showCouponModal"-->
-                    <!--@change-status="changeStatus">-->
-                    <!--</more-card>-->
-                    <!--</div>-->
+                    <div class="content-info" v-if="showCoupon">
+                        <div class="title">{{$t("couponInfo")}}</div><!--优惠券信息-->
+                        <more-card type="view"
+                            :status="status"
+                            :table-data="couponData"
+                            @view-more="showCouponModal"
+                            @change-status="changeStatus">
+                        </more-card>
+                    </div>
                     <!--我的订单-->
                     <div class="content-info">
                         <div class="title">{{$t("myOrder")}}</div>
@@ -493,6 +492,10 @@
             showMemberRecharge () {
                 return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
             },
+            //是否可以显示优惠券信息
+            showCoupon () {
+                return this.permissionInfo && this.permissionInfo['members-coupon'] === 'allow';
+            },
         },
         methods : {
 
@@ -647,14 +650,13 @@
                     }
                 });
             },
-            // 会员3期暂时去掉
-            // //切换优惠券状态查询
-            // changeStatus ( val ) {
-            //     if (val) {
-            //         this.status = val;
-            //         this.listCouponsByStatus( this.memberBaseDetail );
-            //     }
-            // },
+            //切换优惠券状态查询
+            changeStatus ( val ) {
+                if (val) {
+                    this.status = val;
+                    this.listCouponsByStatus( this.memberBaseDetail );
+                }
+            },
             //点击查看更多显示卡劵所有列表弹窗
             showCouponModal () {
                 if (this.$refs.viewMoreCoupon) {
@@ -833,8 +835,10 @@
                     //根据会员卡获取账户信息
                     // 会员3期暂时去掉
                     // this.listCardAccountInfo(params.detail);
-                    //获取更多优惠券
-                    this.listCouponsByStatus(params.detail);
+                    if (this.showCoupon) {
+                        //获取更多优惠券
+                        this.listCouponsByStatus(params.detail);
+                    }
                     // 会员3期暂时去掉
                     //字母卡列合并
                     // this.queryChildOrMotherCard(params.detail);

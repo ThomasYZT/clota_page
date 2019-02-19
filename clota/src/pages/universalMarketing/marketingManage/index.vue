@@ -33,6 +33,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                class-name="modifiedSalePrice"
                 slot="column4"
                 slot-scope="row"
                 show-overflow-tooltip
@@ -53,7 +54,6 @@
                     <span v-else>{{scope.row.salePrice | contentFilter}}</span>
                 </template>
             </el-table-column>
-
             <el-table-column
                 v-if="canModifyMarketPrice || canQueryMarketPolicy"
                 slot="column6"
@@ -65,8 +65,8 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <template v-if="currRowIndex==scope.$index">
-                            <li @click="cancelModifyPrice()">{{$t('cancel')}}</li>
                             <li @click="modifySalePrice(scope.row)">{{$t('save')}}</li>
+                            <li style="color: #999;" @click="cancelModifyPrice()">{{$t('cancel')}}</li>
                         </template>
                         <template v-else>
                             <li @click="modifyPrice(scope)" v-if="canModifyMarketPrice">{{$t('modify')}}</li>
@@ -76,7 +76,6 @@
                 </template>
             </el-table-column>
         </table-com>
-
 
         <!--查看销售政策详情弹窗-->
         <policy-detail-modal ref="detailView"></policy-detail-modal>
@@ -90,6 +89,7 @@
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
     import policyDetailModal from '@/pages/productCenter/marketingPolicy/components/policyDetailModal.vue';
+    import debounce from 'lodash/debounce';
     export default {
         components : {
             marketingProductFilter,
@@ -120,16 +120,16 @@
                 //表头配置
                 columnData : marketingProductHead,
                 //表格数据
-                tableData : [{}],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //当前被修改的行
                 currRowIndex : null,
                 //提现记录传参
                 queryParams : {
-                    marketTypeId : 'all',
-                    marketLevelId : 'all',
-                    policyId : '',
+                    marketTypeId : '',
+                    marketLevelId : '',
+                    policyId : 'all',
                     pageNo : 1,
                     pageSize : 10,
                 },
@@ -171,8 +171,9 @@
             /**
              * 查询营销产品列表数据
              */
-            queryList () {
+            queryList : debounce(function () {
                 let params = Object.assign({}, this.queryParams);
+                params.policyId = params.policyId === 'all' ? '' : params.policyId;
                 // ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
                 //     if (params[key].includes('all')) {
                 //         params[key] = '';
@@ -182,7 +183,12 @@
                     ...params
                 }).then(res => {
                     if (res.success && res.data) {
-                        this.tableData = res.data.data || [];
+                        this.tableData = res.data.data.map((item) => {
+                            return {
+                                ...item,
+                                rootAllocationId : item.allocationId
+                            };
+                        }) || [];
                         this.totalCount = res.data.totalRow;
                     } else {
                         this.tableData = [];
@@ -190,7 +196,9 @@
                     }
                 });
                 this.cancelModifyPrice();
-            },
+            },200),
+            // queryList () {
+            // },
             /**
              * 搜索提现记录
              * @param params  Object
@@ -239,7 +247,7 @@
                             if (res.success) {
                                 scopeRow.salePrice = this.modifyModel.modifiedSalePrice;
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
-                                this.cancelModifyPrice();
+                                this.queryList();
                             } else {
                                 this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
                             }
@@ -271,6 +279,15 @@
         border-radius: 4px;
         /deep/ .ivu-form-item {
             margin: 0;
+        }
+
+        /deep/ .modifiedSalePrice {
+            .ivu-form-item-content {
+                line-height: 22px;
+            }
+            input {
+                height: 22px;
+            }
         }
     }
 </style>

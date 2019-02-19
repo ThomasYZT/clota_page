@@ -245,9 +245,9 @@
                             <TimelineItem v-for="(item,index) in recordsVos" :key="index" color="#DFDFDF">
                                 <p class="time">{{item.createdTime}}</p>
                                 <p class="content">
-                                    <span class="name">{{item.createName}}/{{item.createAccount}}</span>
+                                    <span class="name">{{item.orgName | contentFilter}}/{{item.createUserName | contentFilter}}</span>
                                     <span>{{$t(item.operationStatus === 'auditing' ? 'PRODUCT_APPLY' : item.operationStatus)}}</span>
-                                    <span v-if="item.contents">{{$t('remark')}}：{{item.contents}}</span>
+                                    <span v-if="item.contents">{{$t('remark')}}：{{item.contents | contentFilter}}</span>
                                 </p>
                             </TimelineItem>
                         </Timeline>
@@ -344,8 +344,6 @@
                 productPlayRuleVo : [],
                 //产品日志数据
                 recordsVos : [],
-                //可游玩园区表头
-                columnData : parkColumn,
                 //可游玩园区列表数据
                 parkList : [],
                 //备注
@@ -377,6 +375,16 @@
             canApplyAuditProduct () {
                 return this.permissionInfo && 'addProduct' in this.permissionInfo;
             },
+            //可游玩园区表头
+            columnData () {
+                if (this.manageOrgs.nodeType === 'partner') {
+                    return parkColumn.filter((item) => {
+                        return item.title !== 'operate';
+                    })
+                } else {
+                    return parkColumn;
+                }
+            }
         },
         methods : {
 
@@ -597,6 +605,10 @@
                 /deep/ .ivu-form-item-label{
                     width: auto;
                     white-space: nowrap;
+                }
+
+                /deep/ .table-com {
+                    line-height: 22px;
                 }
 
                 /deep/ .ivu-checkbox-wrapper{

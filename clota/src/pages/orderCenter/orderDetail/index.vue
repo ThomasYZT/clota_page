@@ -202,7 +202,7 @@
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
-                :width="(returnTicketMenuShow.show || returnTeamMenuShow.show) ? 170 : 80">
+                :width="(returnTicketMenuShow.show || returnTeamMenuShow.show) ? (lang === 'zh-CN' ? 170 : 210) : 80">
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual' && canApplyRefund"
@@ -499,7 +499,8 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
+                'lang',
             ]),
             //权限是否允许申请退票操作
             canApplyRefund () {

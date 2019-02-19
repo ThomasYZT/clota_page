@@ -47,7 +47,7 @@
                     <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
                 </div>
                 <x-button class="button"
-                          :disabled="!marketINgCompanyCode || !companyName"
+                          :disabled="!companyCode || !companyName"
                           @click.native="login">{{$t('login')}}</x-button>
                 <div class="to-register">
                     {{$t('没有账号?')}}<span class="login-label" @click="toRegister">去注册</span>
@@ -211,10 +211,12 @@
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.companyName : '');
                         this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
                         this.$store.commit('marketUpdatOrgAddress',res.data ? res.data.orgAddress : '');
+                        this.$store.commit('marketUpdateMarketCompanyId',res.data ? res.data.companyId : '');
                     } else if (res.code && res.code !== '300') {
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');
                         this.$store.commit('marketUpdatOrgAddress','');
+                        this.$store.commit('marketUpdateMarketCompanyId','');
                         this.$vux.toast.show({
                             text : this.$t('errorMsg.' + res.code),
                             type : 'cancel'
@@ -223,9 +225,10 @@
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');
                         this.$store.commit('marketUpdatOrgAddress','');
+                        this.$store.commit('marketUpdateMarketCompanyId','');
                     }
                 }).finally(() => {
-                    this.$store.commit('marketUpdateCompanyCode',orgCode);
+                    this.$store.commit('updateCompanyCode',orgCode);
                 });
             },
             /**
@@ -233,12 +236,12 @@
              * @param{Object} params 路由信息
              */
             getParams (params) {
-                if (params && Object.keys(params).length > 0) {
-                    this.$store.commit('marketUpdateCompanyCode',params.companyCode);
+                if (params && params.companyCode) {
+                    this.$store.commit('updateCompanyCode',params.companyCode);
                     this.queryOrgInfo(params.companyCode);
                     this.createIMGValidCode();
-                } else if (this.marketINgCompanyCode) {
-                    this.queryOrgInfo(this.marketINgCompanyCode);
+                } else if (this.companyCode) {
+                    this.queryOrgInfo(this.companyCode);
                     this.createIMGValidCode();
                 }
             },
@@ -249,7 +252,7 @@
                 ajax.post('market_queryUserType',{
                     phone : this.formData.phoneNum,
                     password : MD5(this.formData.password).toString(),
-                    orgId : this.marketOrgId,
+                    orgId : this.marketCompanyId,
                     imgkey : this.imgCodeImfo.key,
                     imgCode : this.imgCodeImfo.code
                 }).then(res => {
@@ -257,7 +260,8 @@
                         this.userTypeList = res.data ? res.data.map(item => {
                             return {
                                 key : item.id,
-                                value : item.typeName
+                                value : item.typeName,
+                                orgId : item.orgId
                             };
                         }) : [];
                         if (this.userTypeList.length > 0 ) {
@@ -278,6 +282,7 @@
                         if (res.data && res.data.length === 1) {
                             this.$store.commit('marketUpdateTypeId',res.data[0]['id']);
                             this.$store.commit('marketUpdateTypeName',res.data[0]['typeName']);
+                            this.$store.commit('marketUpdateOrgId',res.data[0]['orgId']);
                             this.loginWithType();
                         } else {
                             this.$vux.toast.show({
@@ -294,8 +299,10 @@
              * @param{String} typeId 营销类别id
              */
             toLogin (typeId) {
+                let typeInfo = this.userTypeList.filter(item => item.key === typeId)[0];
                 this.$store.commit('marketUpdateTypeId',typeId);
-                this.$store.commit('marketUpdateTypeName',this.userTypeList.filter(item => item.id === typeId)['typeName']);
+                this.$store.commit('marketUpdateTypeName',typeInfo['value']);
+                this.$store.commit('marketUpdateOrgId',typeInfo['orgId']);
                 this.loginWithType();
             },
             /**
@@ -354,7 +361,8 @@
                 companyName : 'companyName',
                 marketOrgId : 'marketOrgId',
                 marketTypeId : 'marketTypeId',
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
+                marketCompanyId : 'marketCompanyId',
             })
         },
         beforeRouteEnter (to,from,next) {

@@ -26,7 +26,7 @@
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <li @click="showModal(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li @click="showModal(scope.row)">{{$t('details')}}</li><!--查看-->
                     </ul>
                 </template>
             </el-table-column>
@@ -55,7 +55,7 @@
                 //表头配置
                 columnData : salesUserHead,
                 //表格数据
-                tableData : [{}],
+                tableData : [],
                 //总条数
                 totalCount : 0,
                 //销售用户信息传参
@@ -67,12 +67,6 @@
                 },
             };
         },
-        computed : {},
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询销售用户信息列表数据

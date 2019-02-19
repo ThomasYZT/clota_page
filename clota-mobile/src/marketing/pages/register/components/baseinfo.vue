@@ -4,14 +4,35 @@
     <div class="base-info">
         <div class="head">
             <img class="img-head" src="../../../../assets/images/icon-avator.svg" alt="">
-            <div class="register-tips">您正在注册 <span class="company-name">{{companyName}}</span> 的销售用户</div>
-            <div class="belong-type">
+            <div class="register-tips" v-if="!needValidateScene">您正在注册 <span class="company-name">{{companyName}}</span> 的销售用户</div>
+            <div class="belong-type" v-if="!needValidateScene">
                 {{$t('colonSetting',{ key : '所属类别' })}}{{marketTypeName | contentFilter}}
             </div>
         </div>
         <div class="content">
+            <popup-radio :title="$t('景区')"
+                         v-if="needValidateScene"
+                         class="weui-cells"
+                         :options="sceneList"
+                         v-model="formData.scene">
+                <p slot="popup-header" class="vux-1px-b" :class="[$style.popuTitle]">
+                    {{$t('请选择景区')}}
+                    <span v-if="sceneList.length < 1" :class="$style.noData">{{$t('暂无数据')}}</span>
+                </p>
+            </popup-radio>
+            <popup-radio :title="$t('所属类别')"
+                         v-if="needValidateScene"
+                         class="weui-cells"
+                         :options="typeList"
+                         v-model="formData.type">
+                <p slot="popup-header" class="vux-1px-b" :class="[$style.popuTitle]">
+                    {{$t('请选择所属类别')}}
+                    <span v-if="typeList.length < 1" :class="$style.noData">{{$t('暂无数据')}}</span>
+                </p>
+            </popup-radio>
             <x-input :title="$t('mobile')"
-                     class="c-input"
+                     keyboard="number"
+                     class="c-input weui-cell"
                      v-model.trim="formData.phoneNum"
                      text-align="right"
                      :placeholder="$t('请输入您的手机号')" >
@@ -30,14 +51,15 @@
             </x-input>
             <x-input :title="$t('validCode')"
                      v-model="formData.code"
-                     class="c-input"
+                     class="c-input weui-cell"
+                     keyboard="number"
                      text-align="right"
                      label-width="150px"
                      :placeholder="$t('enterCode')">
             </x-input>
             <x-input :title="$t('登录密码')"
                      v-model="formData.password"
-                     class="c-input"
+                     class="c-input weui-cell"
                      text-align="right"
                      type="password"
                      label-width="150px"
@@ -57,6 +79,27 @@
     import { validator } from 'klwk-ui';
     import { mapGetters } from 'vuex';
 	export default {
+        props : {
+            //景区列表
+            'scene-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
+            //所属类别
+            'type-list' : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
+            //是否需要校验景区和所属类别
+            'need-validate-scene' : {
+                type : Boolean,
+                default : false
+            }
+        },
 		data () {
 			return {
                 //表单数据
@@ -66,7 +109,11 @@
                     //验证吗
                     code : '',
                     //登录密码
-                    password : ''
+                    password : '',
+                    //景区
+                    scene : '',
+                    //所属类别
+                    type : ''
                 },
                 //是否正在计时
                 isTiming : false,
@@ -84,7 +131,7 @@
                         ajax.post('market_getPhoneVerificationCode', {
                             phoneNum : this.formData.phoneNum,
                             type : 'maket_register',
-                            companyCode : this.marketINgCompanyCode,
+                            companyCode : this.companyCode,
                             orgId : this.marketOrgId
                         }).then((res) => {
                             if (!res.success) {
@@ -114,7 +161,11 @@
              * 跳转到下一步
              */
             next () {
-                this.validatePhone().then(() => {
+                this.validateScene().then(() => {
+                    return this.validateType();
+                }).then(() => {
+                    return this.validatePhone();
+                }).then(() => {
                     return this.validateCode();
                 }).then(() =>{
                     return this.validatePassword();
@@ -181,7 +232,7 @@
                 this.$router.push({
                     name : 'marketingLogin',
                     query : {
-                        companyCode : this.marketINgCompanyCode
+                        companyCode : this.companyCode
                     }
                 });
             },
@@ -192,7 +243,7 @@
                 ajax.post('market_checkVerifyCode',{
                     mobile : this.formData.phoneNum,
                     code : this.formData.code,
-                    companyCode : this.marketINgCompanyCode,
+                    companyCode : this.companyCode,
                     type : 'maket_register',
                     orgId : this.marketOrgId
                 }).then((res) => {
@@ -210,15 +261,60 @@
                         });
                     }
                 });
+            },
+            /**
+             * 校验景区
+             */
+            validateScene () {
+                return new Promise((resolve,reject) => {
+                    if (this.needValidateScene) {
+                        if (this.formData.scene) {
+                            resolve();
+                        } else {
+                            this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('景区') }));
+                            reject();
+                        }
+                    } else {
+                        resolve();
+                    }
+                });
+            },
+            /**
+             * 校验所属类别
+             */
+            validateType () {
+                return new Promise((resolve,reject) => {
+                    if (this.needValidateScene) {
+                        if (this.formData.type) {
+                            resolve();
+                        } else {
+                            this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('所属类别') }));
+                            reject();
+                        }
+                    } else {
+                        resolve();
+                    }
+                });
             }
         },
         computed : {
             ...mapGetters({
                 companyName : 'companyName',
                 marketTypeName : 'marketTypeName',
-                marketINgCompanyCode : 'marketINgCompanyCode',
+                companyCode : 'companyCode',
                 marketOrgId : 'marketOrgId',
             })
+        },
+        watch : {
+            //所属景区改变，重新获取所属类别
+            'formData.scene' (newVal) {
+                this.$emit('fresh-type',newVal);
+                this.formData.type = '';
+                this.$store.commit('marketUpdateOrgId',newVal);
+            },
+            'formData.type' (newVal) {
+                this.$store.commit('marketUpdateTypeId',newVal);
+            }
         }
 	};
 </script>
@@ -227,9 +323,8 @@
     .base-info{
 
         .head{
-            @include block_outline($height : 160px);
             background: $color_fff;
-            padding-top: 19px;
+            padding: 20px 0;
             text-align: center;
 
             .img-head{
@@ -264,6 +359,10 @@
             margin-top: 8px;
             background: $color_fff;
 
+            /deep/ .weui-cell:before{
+                display: none;
+            }
+
             .validate{
                 height: 100%;
                 padding: 0 10px;
@@ -297,5 +396,24 @@
                 color: $color_blue;
             }
         }
+    }
+
+    /deep/ .weui-cell{
+        height: 50px;
+    }
+</style>
+<style module>
+    .popuTitle {
+        width: 100%;
+        text-align: center;
+        padding: 8px 0;
+        color: #888;
+    }
+    .noData{
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333333;
     }
 </style>

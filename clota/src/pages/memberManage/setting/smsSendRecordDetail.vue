@@ -9,7 +9,9 @@
 		<Form ref="formInline">
 			<i-row>
 				<i-col style="width: auto;display: inline-block">
-					<FormItem prop="user" :label="$t('sendStatus')" :label-width="80">
+					<FormItem prop="user"
+                              :label="$t('sendStatus')"
+                              :label-width="lang === 'zh-CN' ? 80 : 100">
 						<Select v-model="formData.status"
 								style="width: 280px"
 								@on-change="queryList">
@@ -82,6 +84,7 @@
 	import ajax from '@/api/index.js';
 	import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 	import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+	import { mapGetters } from 'vuex';
 
 	export default {
 		mixins : [lifeCycleMixins],
@@ -248,6 +251,11 @@
 				return true;
 			}
 		},
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
+        }
 	};
 </script>
 

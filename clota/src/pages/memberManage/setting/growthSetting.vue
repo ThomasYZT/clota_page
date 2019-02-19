@@ -397,7 +397,7 @@
         border-radius: 4px;
 
         /deep/ .ivu-input-wrapper{
-            vertical-align: sub;
+            vertical-align: middle;
             &.single-input{
                 margin: 0 10px;
                 width: 100px !important;
@@ -406,7 +406,6 @@
 
         .content{
             padding: 30px 60px;
-            height: calc(100% - 144px);
             overflow: auto;
 
             .content-item{

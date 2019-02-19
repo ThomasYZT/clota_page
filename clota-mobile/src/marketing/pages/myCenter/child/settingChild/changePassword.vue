@@ -134,7 +134,7 @@
                     oldPassword : MD5(this.formData.oldPassword).toString(),
                 }).then(res => {
                     if (res.success) {
-                        this.$router.push({
+                        this.$router.replace({
                             name : 'marketingChangePasswordSuc',
                             params : {
                                 from : true

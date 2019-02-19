@@ -6,7 +6,7 @@
             <div class="btn-area">
                 <div class="query-params">
                     <Select v-model="cardStatus"
-                            style="width:170px;margin-right: 5px;"
+                            style="width:180px;margin-right: 5px;"
                             @on-change="statusChange">
                         <Option value="all">{{$t('allCardType')}}</Option>
                         <Option value="open">{{$t('cardOpened')}}</Option>
@@ -18,10 +18,11 @@
                             @on-change="queryList">
                         <Option value="all">{{$t('all')}}</Option>
                         <Option value="common">{{$t('normalCard')}}</Option>
-                        <Option value="password">{{$t('passwordCard')}}</Option>
+                        <Option v-if="showMemberRecharge" value="password">{{$t('passwordCard')}}</Option>
                     </Select>
                     <Input v-model.trim="keyword"
-                           style="width: 240px;margin-left: 5px;margin-right: 5px;"
+                           :style="{ width : lang === 'zh-CN' ? '240px' : '400px' }"
+                           style="margin-left: 5px;margin-right: 5px;"
                            :placeholder="$t('pleaseInputNumbers')"/>
                     <Button type="primary"
                             @click="search"
@@ -44,7 +45,15 @@
                                 class="ivu-btn-108px"
                                 style="margin-right: 5px;"
                                 @click="importSingle">{{$t('singleImport')}}</Button>
+                        <Button type="primary"
+                                v-if="importTypeList.length === 1"
+                                class="ivu-btn-108px"
+                                @click="handleCommand({
+                                            label : 'normalCard',
+                                            value : 'common'
+                                        })">{{$t('batchImport')}}</Button>
                         <el-dropdown trigger="click"
+                                     v-else
                                      placement="bottom-start"
                                      size="medium"
                                      @command="handleCommand"
@@ -168,17 +177,6 @@
                 currentData : {},
                 //卡类型
                 entityCardType : 'all',
-                //导入方式列表
-                importTypeList : [
-                    {
-                        label : 'normalCard',
-                        value : 'common'
-                    },
-                    {
-                        label : 'passwordCard',
-                        value : 'password'
-                    }
-                ]
             };
         },
         methods : {
@@ -267,7 +265,9 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
+                'memberConfigInfo',
+                'lang',
             ]),
             //是否可以导入实体卡
             canUploadCard () {
@@ -276,8 +276,34 @@
             //是否可以编辑实体卡
             canEditCard () {
                 return this.permissionInfo && this.permissionInfo['modifyEntityCard'] === 'allow';
+            },
+            //是否可以显示会员储值相关信息
+            showMemberRecharge () {
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+            },
+            //导入方式列表
+            importTypeList () {
+                if (this.showMemberRecharge) {
+                    return [
+                        {
+                            label : 'normalCard',
+                            value : 'common'
+                        },
+                        {
+                            label : 'passwordCard',
+                            value : 'password'
+                        }
+                    ];
+                } else {
+                    return [
+                        {
+                            label : 'normalCard',
+                            value : 'common'
+                        }
+                    ];
+                }
             }
-        }
+        },
     };
 </script>
 
@@ -289,7 +315,6 @@
         border-radius: 4px;
 
         .content{
-            @include block_outline($height : unquote('calc(100% - 50px)'));
 
             .btn-area{
                 @include block_outline($height : 93px);
@@ -302,6 +327,7 @@
                     .member-count{
                         float: right;
                         line-height: 32px;
+                        margin-top: 10px;
 
                         li{
                             float: left;

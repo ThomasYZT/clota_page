@@ -115,7 +115,10 @@
                     </template>
                 </el-table-column>
             </table-com>
-            <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="110">
+            <Form ref="formValidate"
+                  :model="formData"
+                  :rules="ruleValidate"
+                  :label-width="lang === 'zh-CN' ? 110 : 175">
                 <FormItem :label="$t('applyForUpgradeTo')" prop="alterDate">
                     <DatePicker type="date"
                                 :editable="false"
@@ -143,6 +146,7 @@
     import { columnData } from './applyRefundTicketConfig';
     import ajax from '@/api/index.js';
     import { transSyncStatus } from '../../commFun';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {
@@ -311,7 +315,10 @@
                         return true;
                     }
                 };
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         },
         created () {
         }

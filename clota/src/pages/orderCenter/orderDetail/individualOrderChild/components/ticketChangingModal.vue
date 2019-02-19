@@ -9,7 +9,7 @@
            @on-visible-change="visibleChange"
            width="420">
 
-        <Form :label-width="150"
+        <Form :label-width="lang === 'zh-Cn' ? 150 : 250"
               ref="formRef"
               :model="formData"
               :rules="ruleValidate"
@@ -42,6 +42,8 @@
 
 <script>
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
+
     export default {
         components : {},
         props : {
@@ -167,6 +169,9 @@
                 }
                 return '';
             },
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

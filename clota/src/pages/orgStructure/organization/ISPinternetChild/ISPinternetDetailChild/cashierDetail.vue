@@ -303,7 +303,9 @@
              * 开始编辑
              */
             edit () {
-                this.formDataCopy = defaultsDeep({} , this.cashierDetail);
+                this.formDataCopy = defaultsDeep({
+                    isStart : this.cashierDetail.status === 'open',
+                } , this.cashierDetail);
                 this.type = 'edit';
             },
             /**
@@ -505,7 +507,7 @@
             .started,
             .not-started,
             .edit {
-                @include block_outline(60px);
+                @include block_outline(70px);
                 display: inline-block;
                 vertical-align: middle;
                 line-height: 28px;
@@ -533,19 +535,16 @@
                 vertical-align: middle;
                 display: inline-block;
                 @include overflow_tip($width: auto, $height: 100%);
-                max-width: calc(100% - 127px);
+                max-width: calc(100% - 137px);
                 float: left;
             }
 
             .edit {
-                @include block_outline(60px);
+                @include block_outline(70px);
                 display: inline-block;
                 vertical-align: middle;
                 line-height: 28px;
                 font-size: $font_size_14px;
-            }
-
-            .edit {
                 float: right;
                 color: $color_blue;
                 text-align: right;

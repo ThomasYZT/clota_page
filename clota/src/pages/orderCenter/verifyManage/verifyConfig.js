@@ -35,21 +35,25 @@ export const orderTicketHead = [
     {
         title : 'thirdOrderNo', // 第三方订单号
         width : 200,
+        enWidth : 220,
         field : 'thirdOrderNo'
     },
     {
         title : 'pNameAndReverseNum', // 产品名称|预定数量
         width : 200,
+        enWidth : 270,
         field : 'productName|quantity'
     },
     {
         title : 'unitPriceAndSubtotal', // 产品单价|小计金额
         width : 230,
+        enWidth : 280,
         field : 'price|amount'
     },
     {
         title : 'visitorAndMobilePhone', // 游客|手机号
         width : 200,
+        enWidth : 270,
         field : 'visitorName|phoneNumber'
     },
     /*{
@@ -61,26 +65,31 @@ export const orderTicketHead = [
     {
         title : 'ticketGetterSN', // 取票串码
         minWidth : 200,
+        enWidth : 225,
         field : 'serialNo'
     },
     {
         title : 'ticketPickNum', // 取票数量
         width : 200,
+        enWidth : 290,
         field : 'quantityPicked'
     },
     {
         title : 'verificationNum', // 核销数量
         width : 200,
+        enWidth : 340,
         field : 'quantityVerified'
     },
     {
         title : 'quantityRefunded', // 退票数量
         width : 200,
+        enWidth : 224,
         field : 'quantityRefunded'
     },
     {
         title : 'quantityRescheduled', // 改签数量
         width : 200,
+        enWidth : 250,
         field : 'quantityRescheduled'
     },
     {
@@ -92,7 +101,7 @@ export const orderTicketHead = [
     {
         title : 'syncStatus', // 同步状态
         width : 130,
-        enWidth : 180,
+        enWidth : 200,
         field : 'syncStatus'
     },
     {
@@ -143,52 +152,61 @@ export const orderVerifyHead = [
     {
         title : 'thirdOrderNo',
         width : 200,
+        enWidth : 210,
         field : 'thirdOrderNo'
     },
     {
         title : 'pNameAndReverseNum',
         width : 200,
+        enWidth : 260,
         field : 'productName|quantity'
     },
     {
         title : 'unitPriceAndSubtotal',
         width : 230,
+        enWidth : 280,
         field : 'price|amount'
     },
     {
         title : 'visitorAndMobilePhone',
         width : 200,
+        enWidth : 280,
         field : 'visitorName|phoneNumber'
     },
     {
         title : 'SN',
         minWidth : 150,
+        enWidth : 250,
         field : 'serialNo'
     },
     {
         title : 'takeTicketStatus', // 取票状态
         width : 130,
+        enWidth : 310,
         field : 'pickStatus'
     },
     {
         title : 'verifyStatus', // 核销状态
         width : 130,
+        enWidth : 220,
         field : 'verifyStatus'
     },
     {
         title : 'refundStatus', // 退票状态
         width : 130,
+        enWidth : 230,
         field : 'refundStatus'
     },
     {
         title : 'rescheduleStatus', // 改签状态
         width : 130,
+        enWidth : 135,
         field : 'rescheduleStatus'
     },
     {
         title : 'syncStatus', // 同步状态
         width : 130,
-        enWidth : 180,
+        enWidth : 195,
         field : 'syncStatus'
     },
     {

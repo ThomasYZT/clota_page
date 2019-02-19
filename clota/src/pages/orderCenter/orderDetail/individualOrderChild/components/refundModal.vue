@@ -8,7 +8,7 @@
            class-name="vertical-center-modal order-refund-ticket"
            width="420">
 
-        <Form :label-width="150"
+        <Form :label-width="lang === 'zh-Cn' ? 150 : 219"
               label-position="right">
             <FormItem :label="$t('ApplyForRefundNum')">
                 {{num}}
@@ -30,6 +30,8 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom';
     import ajax from '@/api/index';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //申请退票的产品信息
@@ -132,7 +134,10 @@
                 } else {
                     return '';
                 }
-            }
+            },
+            ...mapGetters([
+                'lang'
+            ])
         }
     };
 </script>

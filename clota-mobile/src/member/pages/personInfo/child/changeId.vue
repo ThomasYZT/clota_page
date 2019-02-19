@@ -14,7 +14,7 @@
                          class="valid-class"
                          v-model.trim="formData.idCard"
                          text-align="right"
-                         :placeholder="$t('pleaseInputIdNum')" >
+                         :placeholder="$t('pleaseInputMsg')" >
                 </x-input>
             </group>
             <div class="btn-area">

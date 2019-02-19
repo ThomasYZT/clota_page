@@ -6,13 +6,15 @@
     <div class="register">
         <!-- 选择会员卡 -->
         <div>
-            <popup-picker :title="$t('选择会员卡')"
+            <popup-picker :title="$t('chooseCard')"
                           :data="cardLevelList"
+                          :confirm-text="$t('confirm')"
+                          :cancel-text="$t('cancel')"
                           show-name
                           v-model="cardLevel"
                           class="c-input"
                           @on-change="cardLevelChange"
-                          :placeholder="$t('pleaseChoose')">
+                          :placeholder="$t('pleaseSelectEtc')">
             </popup-picker>
         </div>
         <!-- 姓名 -->
@@ -20,7 +22,7 @@
                  :title="$t('name')"
                  type="text"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('name') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model.trim="formData.custName"
                  label-width="150px">
         </x-input>
@@ -29,10 +31,12 @@
             <popup-picker :title="$t('sex')"
                           :data="sexList"
                           show-name
+                          :confirm-text="$t('confirm')"
+                          :cancel-text="$t('cancel')"
                           v-model="gender"
                           class="c-input"
                           @on-change="sexChange"
-                          :placeholder="$t('pleaseChoose')">
+                          :placeholder="$t('pleaseSelectEtc')">
             </popup-picker>
         </div>
         <!-- 手机号码 -->
@@ -40,14 +44,14 @@
                  :title="$t('mobile')"
                  keyboard="number"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('mobile') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model.trim="formData.phoneNum"
                  label-width="150px">
         </x-input>
         <!-- 验证码 -->
         <x-input :title="$t('validCode')"
                  v-model="formData.code"
-                 :placeholder="$t('pleaseInputValidCode')"
+                 :placeholder="$t('pleaseInputMsg')"
                  class="c-input verify-input"
                  :show-clear="false"
                  text-align="right"
@@ -58,31 +62,34 @@
                  :class="{active: isGetCode}"
                  :disabled="true"
                  @click="getCode()">
-                <p>{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
+                <p class="btn-text">{{$t('getValidCode')}}{{this.countDown ? '(' + this.countDown/1000 + ')': ''}}</p>
             </div>
         </x-input>
         <!-- 生日 -->
-        <datetime
-            class="c-input"
-            start-date="1970-01-01"
-            :end-date="endDate"
-            :confirm-text="$t('confirm')"
-            :cancel-text="$t('cancel')"
-            :title="$t('birthday')"
-            :min-year="1960"
-            :max-year="new Date().getFullYear()"
-            :placeholder="$t('pleaseSelect',{field : $t('birthday') })"
-            v-model="formData.birthDay">
-        </datetime>
+        <div class="c-input">
+            <datetime
+                start-date="1970-01-01"
+                :end-date="endDate"
+                :confirm-text="$t('confirm')"
+                :cancel-text="$t('cancel')"
+                :title="$t('birthday')"
+                :min-year="1960"
+                :max-year="new Date().getFullYear()"
+                :placeholder="$t('pleaseSelectEtc')"
+                v-model="formData.birthDay">
+            </datetime>
+        </div>
         <!-- 证件类型 -->
         <div style="border-top: 1px solid #F5F5F5;">
             <popup-picker :title="$t('cardType')"
                           :data="idTypeList"
+                          :confirm-text="$t('confirm')"
+                          :cancel-text="$t('cancel')"
                           show-name
                           v-model="certificationType"
                           class="c-input"
                           @on-change="certificationTypeChange"
-                          :placeholder="$t('pleaseSelect',{field : $t('cardType') })">
+                          :placeholder="$t('pleaseSelectEtc')">
             </popup-picker>
         </div>
         <!-- 证件号码 -->
@@ -90,7 +97,7 @@
                  :title="$t('IdNumber')"
                  keyboard="number"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('IdNumber') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model="formData.idCardNumber"
                  label-width="150px">
         </x-input>
@@ -98,7 +105,7 @@
                  class="c-input"
                  label-width="150px"
                  text-align="right"
-                 :placeholder="$t('pleaseInput',{field : $t('address') })"
+                 :placeholder="$t('pleaseInputMsg')"
                  v-model="formData.homeAddr"></x-input>
 
         <x-button class="button"
@@ -475,6 +482,13 @@
             padding-right: 10px;
         }
 
+        /deep/ .vux-cell-placeholder {
+            margin-right: 10px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: $color_gray;
+        }
+
         .msg {
             margin-left: 14px;
             padding: 10px 0;
@@ -505,6 +519,19 @@
             &.time-counting{
                 color: #C5C5C5;
             }
+        }
+
+        /deep/ .btn-text {
+            white-space: nowrap;
+        }
+
+        /deep/ .weui-label {
+            white-space: nowrap;
+        }
+
+        /deep/ .vux-datetime {
+            height: 100%;
+            border-bottom: 1px solid #F5F5F5;
         }
     }
 </style>

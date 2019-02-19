@@ -808,7 +808,7 @@
         border-radius: 4px;
 
         .content{
-            padding: 30px 60px 10px;
+            padding: 30px 30px 10px;
             height: calc(100% - 124px);
             overflow: auto;
 

@@ -158,6 +158,7 @@
                 right: 18px;
                 font-size: 14px;
                 color: $color_333;
+                white-space: nowrap;
             }
         }
 

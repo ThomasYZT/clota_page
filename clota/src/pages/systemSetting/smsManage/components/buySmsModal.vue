@@ -10,41 +10,47 @@
             @on-cancel="hide">
 
             <div class="modal-body">
-
-                <Form ref="formValidate" :model="formData" :rules="ruleValidate" :label-width="130">
-                    <!--短信套餐名称-->
-                    <Form-item :label="$t('smsPackageName') + '：'" prop="">
-                        <span>{{formData.packageName}}</span>
-                    </Form-item>
-                    <!--套餐价格-->
-                    <Form-item :label="$t('packagePrice') + '：'" prop="">
-                        <span>￥{{formData.price | moneyFilter}}</span>
-                    </Form-item>
-                    <!--短信数量-->
-                    <Form-item :label="$t('smsCount') + '：'" prop="">
-                        <span>{{formData.smsCount | contentFilter}}{{$t('item')}}</span>
-                    </Form-item>
-                    <!--短信供应商-->
-                    <Form-item :label="$t('smsProvider') + '：'" prop="">
-                        <span>{{formData.provider | contentFilter}}</span>
-                    </Form-item>
-                    <!--支付方式-->
-                    <Form-item :label="$t('payType') + '：'" prop="payType">
-                        <RadioGroup v-model="formData.payType" @on-change="onTypeChanged">
-                            <Radio v-for="(item,index) in onlineAccountList"
-                                   :key="index"
-                                   :label="item.value">
-                                {{$t('onlineAccount.' + item.value)}}
-                            </Radio>
-                        </RadioGroup>
-                    </Form-item>
-
-                </Form>
-
+                <template v-if="onlineAccountList.length > 0">
+                    <Form ref="formValidate"
+                          :model="formData"
+                          :rules="ruleValidate"
+                          :label-width="lang === 'zh-CN' ? 130 : 220">
+                        <!--短信套餐名称-->
+                        <Form-item :label="$t('smsPackageName') + '：'" prop="">
+                            <span>{{formData.packageName}}</span>
+                        </Form-item>
+                        <!--套餐价格-->
+                        <Form-item :label="$t('packagePrice') + '：'" prop="">
+                            <span>￥{{formData.price | moneyFilter}}</span>
+                        </Form-item>
+                        <!--短信数量-->
+                        <Form-item :label="$t('smsCount') + '：'" prop="">
+                            <span>{{formData.smsCount | contentFilter}}{{$t('item')}}</span>
+                        </Form-item>
+                        <!--短信供应商-->
+                        <Form-item :label="$t('smsProvider') + '：'" prop="">
+                            <span>{{formData.provider | contentFilter}}</span>
+                        </Form-item>
+                        <!--支付方式-->
+                        <Form-item :label="$t('payType') + '：'" prop="payType">
+                            <RadioGroup v-model="formData.payType" @on-change="onTypeChanged">
+                                <Radio v-for="(item,index) in onlineAccountList"
+                                       :key="index"
+                                       :label="item.value">
+                                    {{$t('onlineAccount.' + item.value)}}
+                                </Radio>
+                            </RadioGroup>
+                        </Form-item>
+                    </Form>
+                </template>
+                <template v-else>
+                    <div class="warn-tip">你还未配置在线收款账户请联系客服</div>
+                </template>
             </div>
 
             <div slot="footer" class="modal-footer">
-                <Button type="primary" @click="buyNow(formData)" >{{$t('buyNow')}}</Button>
+                <Button v-if="onlineAccountList.length > 0" type="primary" @click="buyNow(formData)" >{{$t('buyNow')}}</Button>
+                <Button v-else type="primary" @click="hide()">{{$t('close')}}</Button>
             </div>
 
 
@@ -107,6 +113,9 @@
             show ( data ) {
                 if ( data ) {
                     this.formData = defaultsDeep({}, data.item, this.formData);
+                    if (this.onlineAccountList.length > 0) {
+                        this.formData.payType = this.onlineAccountList[0].accountType;
+                    }
                 }
                 this.visible = true;
             },
@@ -134,29 +143,25 @@
             // 立即购买
             buyNow ( params ) {
                 let newWindow = window.open();
-                this.$refs.formValidate.validate(valid => {
-                    if (valid) {
-                        ajax.post('orderBuySmsPackage', {
-                            smsPackageId : params.id,
-                            payType : this.formData.payType,
-                        }).then(res => {
-                            if ( res.success ) {
-                                if (res.data) {
-                                    this.payNow({
-                                        bizId : res.data,
-                                        merchantId : this.payInfo.merchantId,
-                                        partnerId : this.payInfo.partnerId,
-                                        payType : this.formData.payType,
-                                        payMoney : this.formData.price,
-                                        newWindow : newWindow,
-                                    });
-                                } else {
-                                    this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
-                                }
-                            } else {
-                                this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
-                            }
-                        });
+                ajax.post('orderBuySmsPackage', {
+                    smsPackageId : params.id,
+                    payType : this.formData.payType,
+                }).then(res => {
+                    if ( res.success ) {
+                        if (res.data) {
+                            this.payNow({
+                                bizId : res.data,
+                                merchantId : this.payInfo.merchantId,
+                                partnerId : this.payInfo.partnerId,
+                                payType : this.formData.payType,
+                                payMoney : this.formData.price,
+                                newWindow : newWindow,
+                            });
+                        } else {
+                            this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
+                        }
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                     }
                 });
             },
@@ -209,7 +214,8 @@
         },
         computed : {
             ...mapGetters([
-                'onlineAccountList'
+                'onlineAccountList',
+                'lang'
             ])
         }
     };
@@ -220,6 +226,7 @@
     .add-account-modal{
 
         .modal-body{
+            min-height: 200px;
             padding: 4px 14px;
 
             .steps-wrap{
@@ -252,6 +259,11 @@
                 }
             }
 
+            .warn-tip {
+                @include div_center();
+                font-size: 18px;
+                white-space: nowrap;
+            }
         }
 
         .modal-footer{

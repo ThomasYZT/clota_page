@@ -5,13 +5,16 @@
 <template>
     <div class="container">
         <div class="tool-box">
-            <Button type="primary" icon="md-add" style="float: left;margin-right: 10px" @click="getNewPartner('add')"
-                    size="default"><span class="add-icon">+ {{$t('addNewCourier')}}</span>
+            <Button type="primary"
+                    icon="android-add"
+                    style="float: left;margin-right: 10px"
+                    @click="getNewPartner('add')"
+                    size="default">{{$t('addNewCourier')}}
             </Button>
             <Input class="input-field"
                    v-model.trim="queryParams.keyword"
                    icon="ios-search"
-                   :placeholder="$t('inputAnywordForSearch')"
+                   :placeholder="$t('inputField', { field : $t('tourGuideName') + '/' + $t('IDNumber') })"
                    @on-enter="handleSearch"
                    @on-click="handleSearch" />
         </div>
@@ -105,9 +108,11 @@
              */
             queryList () {
                 ajax.post('queryPagedOrgStaff',this.queryParams).then(res => {
-                    if (res.success) {
+                    if (res.success && res.data) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
                     }
                 });
             },
@@ -135,6 +140,8 @@
                     if (res.success) {
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('delete') }));
                         this.queryList();
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('delete') }));
                     }
                 });
             }

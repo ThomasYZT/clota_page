@@ -3,6 +3,7 @@
     <div class="partner">
         <div class="orgHeader">
             <Button type="primary"
+                    icon="android-add"
                     v-if="hasAddRolePermission"
                     @click="addRole">{{$t('addRole')}}</Button>
             <Input v-model.trim="keyWrod"

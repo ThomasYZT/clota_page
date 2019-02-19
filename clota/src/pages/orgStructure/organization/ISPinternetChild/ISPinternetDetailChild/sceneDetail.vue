@@ -85,7 +85,7 @@
                             <Input v-model.trim="formDataCopy.checkinCode"  />
                         </FormItem>
                         <div class="node-info" v-else>
-                            <span class="info-key">{{$t('enterpriseCode')+'('+$t('offlineVerify')}}：</span>
+                            <span class="info-key">{{$t('enterpriseCode')+'('+$t('offlineVerify') + ')'}}：</span>
                             <span class="info-val" v-w-title="sceneDetail.checkinCode">
                                 {{sceneDetail.checkinCode | contentFilter}}
                             </span>

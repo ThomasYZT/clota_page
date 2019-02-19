@@ -1,86 +1,93 @@
-<!--
+1<!--
     新增经纬度模态框
     作者：杨泽涛
 -->
 <template>
-    <Modal v-model="visible"
-           :title="$t('addNewLngLat')"
-           class-name="vertical-center-modal add-lng-lat"
-           width="600"
-           :mask-closable="false">
+    <div>
+        <Modal v-model="visible"
+               :title="$t('addNewLngLat')"
+               class-name="vertical-center-modal add-lng-lat"
+               width="600"
+               :mask-closable="false">
 
-        <div class="form-wrapper">
-            <Form ref="form"
-                  :model="formData"
-                  :rules="ruleValidate"
-                  :label-width="180">
-                <i-row>
-                    <i-col span="18" offset="3">
-                        <!-- 所属景区 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('scenePlace') })" prop="orgId">
-                            <span>{{manageOrgs.orgName | contentFilter}}</span>
-                        </FormItem>
-                        <!-- 位置名称 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('positionName') })"  prop="address">
-                            <Input type="text"
-                                   style="width:200px;"
-                                   v-model.trim="formData.address"
-                                   :placeholder="$t('inputField', { field : $t('positionName') })"/>
-                        </FormItem>
-                        <!-- 获取经纬度坐标值 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })">
-                            <span class="click-btn" @click="getPosition">{{$t('clickHereGetValue')}}</span>
-                        </FormItem>
-                        <!-- 经度 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('longitude') })"  prop="longitude">
-                            <Input type="text"
-                                   style="width:200px;"
-                                   v-model.trim="formData.longitude"
-                                   :placeholder="$t('inputField', { field : $t('longitude') })"/>
-                        </FormItem>
-                        <!-- 纬度 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('latitude') })"  prop="latitude">
-                            <Input type="text"
-                                   style="width:200px;"
-                                   v-model.trim="formData.latitude"
-                                   :placeholder="$t('inputField', { field : $t('latitude') })"/>
-                        </FormItem>
-                        <!-- 半径 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('radiusWithUnit') })"  prop="radius">
-                            <Input type="text"
-                                   style="width:200px;"
-                                   v-model.trim="formData.radius"
-                                   :placeholder="$t('inputField', { field : $t('radiusWithoutUnit') })"/>
-                        </FormItem>
-                        <!-- 备注 -->
-                        <FormItem :label="$t('colonSetting', { key : $t('remark') })"  prop="remark">
-                            <Input style="width:200px;"
-                                   type="textarea"
-                                   v-model.trim="formData.remark"
-                                   :placeholder="$t('inputField', { field : $t('remark') })"/>
-                        </FormItem>
-                    </i-col>
-                </i-row>
-            </Form>
-        </div>
+            <div class="form-wrapper">
+                <Form ref="form"
+                      :model="formData"
+                      :rules="ruleValidate"
+                      :label-width="180">
+                    <i-row>
+                        <i-col span="18" offset="2">
+                            <!-- 所属景区 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('scenePlace') })" prop="orgId">
+                                <span>{{manageOrgs.orgName | contentFilter}}</span>
+                            </FormItem>
+                            <!-- 位置名称 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('positionName') })"  prop="address">
+                                <Input type="text"
+                                       style="width:200px;"
+                                       v-model.trim="formData.address"
+                                       :placeholder="$t('inputField', { field : $t('positionName') })"/>
+                            </FormItem>
+                            <!-- 获取经纬度坐标值 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('getLogLatValue') })"
+                                      :label-width="lang === 'zh-CN' ? 180 : 320">
+                                <span class="click-btn" @click="getPosition">{{$t('clickHereGetValue')}}</span>
+                            </FormItem>
+                            <!-- 经度 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('longitude') })"  prop="longitude">
+                                <Input type="text"
+                                       style="width:240px;"
+                                       v-model.trim="formData.longitude"
+                                       :placeholder="$t('inputField', { field : $t('longitude') })"/>
+                            </FormItem>
+                            <!-- 纬度 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('latitude') })"  prop="latitude">
+                                <Input type="text"
+                                       style="width:240px;"
+                                       v-model.trim="formData.latitude"
+                                       :placeholder="$t('inputField', { field : $t('latitude') })"/>
+                            </FormItem>
+                            <!-- 半径 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('radiusWithUnit') })"  prop="radius">
+                                <Input type="text"
+                                       style="width:240px;"
+                                       v-model.trim="formData.radius"
+                                       :placeholder="$t('inputField', { field : $t('radiusWithoutUnit') })"/>
+                            </FormItem>
+                            <!-- 备注 -->
+                            <FormItem :label="$t('colonSetting', { key : $t('remark') })"  prop="remark">
+                                <Input style="width:240px;"
+                                       type="textarea"
+                                       v-model.trim="formData.remark"
+                                       :placeholder="$t('inputField', { field : $t('remark') })"/>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+                </Form>
+            </div>
 
-        <div slot="footer" class="modal-footer">
-            <Button class="ivu-btn-90px"
-                    type="primary"
-                    @click="save" >{{$t('save')}}</Button>
-            <Button class="ivu-btn-90px"
-                    type="ghost"
-                    @click="toggle({type : 'hide'})" >{{$t("cancel")}}</Button>
-        </div>
-    </Modal>
+            <div slot="footer" class="modal-footer">
+                <Button class="ivu-btn-90px"
+                        type="primary"
+                        @click="save" >{{$t('save')}}</Button>
+                <Button class="ivu-btn-90px"
+                        type="ghost"
+                        @click="toggle({type : 'hide'})" >{{$t("cancel")}}</Button>
+            </div>
+        </Modal>
+        <mapModal ref="mapModal" @setPosition="setPosition"></mapModal>
+    </div>
 </template>
 
 <script>
+    import mapModal from './mapModal';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
     import { validator } from 'klwk-ui';
     export default {
-        components : {},
+        components : {
+            mapModal,
+        },
         data () {
             //校验经度
             const longitudeValid = (rule, value, callback) => {
@@ -166,7 +173,8 @@
         },
         computed : {
             ...mapGetters([
-                'manageOrgs'
+                'manageOrgs',
+                'lang'
             ])
         },
         methods : {
@@ -281,12 +289,17 @@
              * 获取位置信息
              */
             getPosition () {
-                this.$store.dispatch('getLocation').then(locationInfo => {
-                    this.formData.longitude = String(locationInfo.lng);
-                    this.formData.latitude = String(locationInfo.lat);
-                }).catch(() => {
-                    this.$Message.error(this.$t('failureTip', { tip : this.$t('getLocationInfo') }));
-                });
+                this.$refs.mapModal.show();
+                // this.$store.dispatch('getLocation').then(locationInfo => {
+                //     this.formData.longitude = String(locationInfo.lng);
+                //     this.formData.latitude = String(locationInfo.lat);
+                // }).catch(() => {
+                //     this.$Message.error(this.$t('failureTip', { tip : this.$t('getLocationInfo') }));
+                // });
+            },
+            setPosition (postion) {
+                this.formData.longitude = String(postion.lng);
+                this.formData.latitude = String(postion.lat);
             }
         }
     };

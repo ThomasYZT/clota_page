@@ -318,7 +318,7 @@
                             <span>{{$t('allowModifyScore')}}<!--允许修改会员的积分账户，如允许修改，请设置修改原因-->
                                 <span class="add-span blue-color"
                                       v-if="settingData.allowAdjustScoreAccount === 'true'"
-                                      @click="handleAddReason">+ {{$t('addModifyReason')}}</span><!--新增修改原因-->
+                                      @click="handleAddReason"><Icon type="android-add"></Icon> {{$t('addModifyReason')}}</span><!--新增修改原因-->
                             </span>
                         </Radio>
                     </RadioGroup>
@@ -963,7 +963,7 @@
                     .ivu-form-item {
                         width: 520px;
                         text-align: left;
-                        margin-bottom: 3px;
+                        margin-bottom: 10px;
                     }
 
                     &.short-wrap {
@@ -981,7 +981,7 @@
         }
 
         /deep/ .ivu-input-wrapper{
-            vertical-align: sub;
+            vertical-align: middle;
 
             &.single-input {
                 margin: 0 10px;
@@ -993,7 +993,7 @@
             padding-left: 50px;
             margin-bottom: 0 !important;
             position: relative;
-            margin-top : 5px;
+            margin-top : 10px;
 
             &:nth-child(1){
                 margin-top: 10px;

@@ -72,39 +72,39 @@
                     name : routerName
                 });
             },
-            /**
-             * 获取微信配置
-             */
-            getWxConfig () {
-                if (this.isWeixin) {
-                    ajax.post('getWxConfig',{
-                        url : window.location.origin
-                    }).then(res => {
-                        if (res.success) {
-                            this.$wechat.config({
-                                // debug : true,
-                                appId : res.data.appId,
-                                timestamp : res.data.timestamp,
-                                nonceStr : res.data.nonceStr,
-                                signature : res.data.signature,
-                                jsApiList : [
-                                    'chooseImage',
-                                    'getLocalImgData',
-                                    'uploadImage',
-                                    'addCard',
-                                    'getLocation'
-                                ]
-                            });
-                            this.$wechat.error(() => {
-                                this.$store.commit('updateWeixinConfig',false);
-                            });
-                        }
-                    });
-                }
-            }
+            // /**
+            //  * 获取微信配置
+            //  */
+            // getWxConfig () {
+            //     if (this.isWeixin) {
+            //         ajax.post('getWxConfig',{
+            //             url : window.location.origin
+            //         }).then(res => {
+            //             if (res.success) {
+            //                 this.$wechat.config({
+            //                     // debug : true,
+            //                     appId : res.data.appId,
+            //                     timestamp : res.data.timestamp,
+            //                     nonceStr : res.data.nonceStr,
+            //                     signature : res.data.signature,
+            //                     jsApiList : [
+            //                         'chooseImage',
+            //                         'getLocalImgData',
+            //                         'uploadImage',
+            //                         'addCard',
+            //                         'getLocation'
+            //                     ]
+            //                 });
+            //                 this.$wechat.error(() => {
+            //                     this.$store.commit('updateWeixinConfig',false);
+            //                 });
+            //             }
+            //         });
+            //     }
+            // }
         },
         created () {
-            this.getWxConfig();
+            // this.getWxConfig();
         },
         computed : {
             //是否显示底部tab栏

@@ -38,6 +38,7 @@ export const integraDetailHead = [
     {
         title : 'transactionInfo', // 交易信息
         width : 140,
+        enWidth : 195,
         field : ''
     },
 ];
