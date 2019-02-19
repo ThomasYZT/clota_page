@@ -171,7 +171,6 @@
                     }
 
                     &.list{
-                        padding-left: 65px;
                         color: #606266;
                     }
                 }

@@ -53,10 +53,11 @@
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
     import debounce from 'lodash/debounce';
-    import merge from 'lodash/merge';
     import { mapGetters } from 'vuex';
+    import treeMixins from '@/mixins/treeMixins.js';
 
     export default {
+        mixins : [treeMixins],
         props : {
             //默认选中的节点
             'default-chosed-node-init' : {
@@ -357,7 +358,7 @@
                         for (let i = 0,j = res.data.length; i < j; i++) {
                             let privCode = res.data[i]['privCode'];
                             if (privCode in allowPrivateCode) {
-                                allowPrivateCode[privCode] = merge(allowPrivateCode[privCode],res.data[i]);
+                                allowPrivateCode[privCode] = this.mergeTreeData(this.deepToJSON(allowPrivateCode[privCode]),this.deepToJSON(res.data[i]));
                             } else {
                                 allowPrivateCode[privCode] = res.data[i];
                             }

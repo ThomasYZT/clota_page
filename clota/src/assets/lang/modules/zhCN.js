@@ -2519,4 +2519,5 @@ export default {
     'allType' : '全部类别',
     'printPriceWithInfo' : '票面价格（原价）',
     'S015' : '名称重复',
+    'productClassifiction' : '产品类型'
 };

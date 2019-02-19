@@ -22,7 +22,7 @@ export default {
         },
         children : {
             productList : {
-                //产品中心--产品列表
+                //产品中心--产品列表--三级菜单
                 path : '/productCenter/pList',
                 // name : 'productList',
                 component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/index.vue'),
@@ -34,7 +34,6 @@ export default {
                     isMenu : true
                 },
                 children : {
-                    //票类模块
                     ticketType : {
                         //产品中心--产品列表--票类
                         path : '/productCenter/pList/ticket',

@@ -31,6 +31,7 @@
                         <!-- 等级 -->
                         <FormItem :label="$t('colonSetting', { key : $t('level') })"  prop="level">
                             <Select v-if="type === 'add'"
+                                    transfer
                                     v-model="formData.level"
                                     :placeholder="$t('selectField', { msg : $t('level') })"
                                     show-name

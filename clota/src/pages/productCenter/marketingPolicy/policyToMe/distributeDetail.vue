@@ -235,7 +235,8 @@
                                 for (let j = 0,jlen = res.data.myAllocationLists.length; j < jlen; j++) {
                                     this.myAllocationLists[i]['allocationName' + j] = res.data.myAllocationLists[j].allocationName;
                                     this.myAllocationLists[i]['allocationId' + j] = res.data.myAllocationLists[j].allocationId;
-                                    this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i].settlePrice;
+                                    this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i] ?
+                                        res.data.myAllocationLists[j].itemVos[i].settlePrice : this.myAllocationLists[i].settlePrice;
                                     this.myAllocationLists[i]['itemVos' + j] = Array.from(res.data.myAllocationLists[j].itemVos);
                                     this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos);
                                     if (i === 0) {
@@ -324,10 +325,12 @@
                     haveSaleGroups : this.myAllocationLists[0]['haveSaleGroups' + _index],
                     groupIds : this.myAllocationLists[this.myAllocationLists.length - 1]['groupIds' + _index]
                 };
-                this.myAllocationLists.forEach((item, index) => {
-                    if (index !== this.myAllocationLists.length - 1) {
-                        columnData.productList = item['itemVos' + _index];
-                    }
+                columnData.productList = this.myAllocationLists.map((item, index) => {
+                    let _obj = {
+                        ...item
+                    };
+                    _obj.settlePrice = item['price' + _index] ? item['price' + _index] : item.settlePrice;
+                    return _obj;
                 });
                 return columnData;
             },

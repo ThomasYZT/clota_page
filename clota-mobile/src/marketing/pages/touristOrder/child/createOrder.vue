@@ -21,13 +21,12 @@
                     class="padding-right"
                     :value="playDate">
                 </cell>
-                <cell :title="$t('购买数量')">
-                    <inline-x-number style="display:block;"
-                                     v-model="buyNum"
-                                     :max="maxChoosed"
-                                     :min="minChoosed" >
-                    </inline-x-number>
-                </cell>
+                <x-number :title="$t('购买数量')"
+                          :fillable="true"
+                          v-model="buyNum"
+                          :max="maxChoosed"
+                          :min="minChoosed">
+                </x-number>
             </group>
             <group class="group-wrap" v-for="(item,index) in formData" :key="index">
                 <popup-radio :title="$t('证件类型')"

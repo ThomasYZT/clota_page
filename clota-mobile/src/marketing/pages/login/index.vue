@@ -283,6 +283,7 @@
                         if (res.data && res.data.length === 1) {
                             this.$store.commit('marketUpdateTypeId',res.data[0]['id']);
                             this.$store.commit('marketUpdateTypeName',res.data[0]['typeName']);
+                            this.$store.commit('marketUpdateOrgId',res.data[0]['orgId']);
                             this.loginWithType();
                         } else {
                             this.$vux.toast.show({
@@ -302,7 +303,7 @@
             toLogin (typeId) {
                 let orgInfo = this.userTypeList.find(item => item.key === typeId);
                 this.$store.commit('marketUpdateTypeId',typeId);
-                this.$store.commit('marketUpdateTypeName',orgInfo['typeName']);
+                this.$store.commit('marketUpdateTypeName',orgInfo['value']);
                 this.$store.commit('marketUpdateOrgId',orgInfo['orgId']);
                 this.loginWithType();
             },

@@ -49,7 +49,7 @@ export default {
     mobile : '手机号码',
     validCode : '验证码',
     getValidCode : '获取验证码',
-    pleaseInputMsg : '请输入...',
+    pleaseInputMsg : '请输入',
     pleaseInputValidCode : '请输入验证码',
     nextStep : '下一步',
     setTradePass : '设置交易密码',
