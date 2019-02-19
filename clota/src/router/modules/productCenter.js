@@ -70,7 +70,6 @@ export default {
                     },
                 }
             },
-
             marketingPolicy : {
                 //产品中心--销售政策
                 path : '/productCenter/marketingPolicy',
@@ -93,6 +92,17 @@ export default {
                     menuName : 'marketingPolicy', //lang.config.js 里面的语言键值
                     _name : 'addAndModifyPolicy',
                     rightPath : topMenuName + '.' + 'marketingPolicy',
+                },
+            },
+            quotaAllowance : {
+                //产品中心--销售政策--配额余量
+                path : '/productCenter/quotaAllowance',
+                name : 'quotaAllowance',
+                component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/marketingPolicy/myDefinedPolicy/quotaAllowance/quotaAllowance.vue'),
+                meta : {
+                    menuName : 'quotaAllowance', //lang.config.js 里面的语言键值
+                    _name : 'addAndModifyPolicy',
+                    rightPath : topMenuName + '.' + 'quotaAllowance',
                 },
             },
             salePolicyDetail : {

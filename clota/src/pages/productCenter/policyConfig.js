@@ -28,8 +28,8 @@ export const myPolicyHead = [
     },
     {
         title : 'operate', // 操作
-        width : 120,
-        enWidth : 150,
+        width : 200,
+        enWidth : 220,
         field : ''
     },
 ];

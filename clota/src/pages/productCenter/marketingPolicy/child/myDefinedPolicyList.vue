@@ -71,8 +71,9 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li class="normal" @click="viewDetail(scope.row)">{{$t('check')}}</li><!--查看-->
+                        <li class="normal" @click="quotaAllowance(scope.row)">{{$t('配额余量')}}</li><!--查看-->
                         <li class="red-label"
-                            v-if="scope.row.auditStatus === 'rejected' || scope.row.auditStatus === 'not_enabled'"
+                            :class="{disabled : scope.row.auditStatus !== 'rejected' && scope.row.auditStatus !== 'not_enabled'}"
                             @click="batchDel(scope.row)">{{$t('delete')}}</li><!--删除-->
                     </ul>
                 </template>
@@ -232,6 +233,17 @@
                 });
             },
             /**
+             *  前往配额余量页面
+             */
+            quotaAllowance ( data ) {
+                this.$router.push({
+                    name : 'quotaAllowance',
+                    params : {
+                        info : data,
+                    }
+                });
+            },
+            /**
              * 点击dropdown回调 (checked-enabled审核,up-enabled上架,down-not_enabled下架,delete-删除)
              * @param item
              */
@@ -293,6 +305,7 @@
              */
             batchDel (data) {
                 if (data) {
+                    if (data.auditStatus !== 'rejected' && data.auditStatus !== 'not_enabled') return;
                     let ids = data.id;
                     this.delUnits = data.name;
                     this.$refs.delModal.show({
