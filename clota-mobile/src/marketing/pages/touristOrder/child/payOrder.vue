@@ -77,14 +77,16 @@
                                     icon : require('../../../../assets/images/icon-wx-pay.svg'),
                                     key : 'wx',
                                     value : this.$t('wxPay'),
-                                    param : item
+                                    param : item,
+                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                                 };
                             } else if (item.accountType === 'alipay') {
                                 return {
                                     icon : require('../../../../assets/images/icon-ali-pay.svg'),
                                     key : 'ali',
                                     value : this.$t('aliPay'),
-                                    param : item
+                                    param : item,
+                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                                 };
                             }
                         }) : [];
@@ -129,6 +131,7 @@
                     txnAmt : this.totalAmount,
                     redirectUrl : this.getRedirectUrl(),
                     orgId : this.marketOrgId,
+                    paymentChannel : this.payTypeList.find(item => item.key === 'wx')['payType'],
                     ...createOrderParams
                 }).then(res => {
                     if (res.success) {
