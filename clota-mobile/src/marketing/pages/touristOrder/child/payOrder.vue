@@ -24,8 +24,14 @@
         </div>
         <div class="btn-area">
             <x-button @click.native="recharge"
+                      v-if="payType !== 'collect'"
                       :disabled="payTypeList.length < 1">
                 {{$t('去支付')}}
+            </x-button>
+            <x-button @click.native="recharge"
+                      v-else
+                      :disabled="payTypeList.length < 1">
+                {{$t('确定')}}
             </x-button>
         </div>
     </div>
