@@ -278,6 +278,7 @@
                             type : 'cancel'
                         });
                         this.setLoginErrNum();
+                        this.createIMGValidCode();
                     } else {
                         if (res.data && res.data.length === 1) {
                             this.$store.commit('marketUpdateTypeId',res.data[0]['id']);
@@ -290,6 +291,7 @@
                             });
                         }
                         this.setLoginErrNum();
+                        this.createIMGValidCode();
                     }
                 });
             },
