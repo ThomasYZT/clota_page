@@ -37,9 +37,9 @@ export default {
                     //票类模块
                     ticketType : {
                         //产品中心--产品列表--票类
-                        path : '/productCenter/pList/ticketType',
+                        path : '/productCenter/pList/ticket',
                         name : 'ticketType',
-                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType/ticketTypeList.vue'),
+                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticket/ticketTypeList.vue'),
                         meta : {
                             menuName : 'ticketType', //lang.config.js 里面的语言键值
                             _name : 'ticket',
@@ -51,7 +51,7 @@ export default {
                         //产品中心--产品列表--新建/修改票类
                         path : '/productCenter/pList/addTicket',
                         name : 'addTicket',
-                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType/editTicket/editTicket.vue'),
+                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticket/editTicket/editTicket.vue'),
                         meta : {
                             menuName : 'ticketType', //lang.config.js 里面的语言键值
                             _name : 'ticket',
@@ -62,7 +62,7 @@ export default {
                         //产品中心--产品列表--票类详情
                         path : '/productCenter/pList/ticketDetail',
                         name : 'ticketDetail',
-                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticketType/ticketDetail.vue'),
+                        component : () => import(/* webpackChunkName: "productCenter" */ '../../pages/productCenter/productList/ticket/ticketDetail.vue'),
                         meta : {
                             menuName : 'ticketType', //lang.config.js 里面的语言键值
                             _name : 'ticket',
