@@ -222,6 +222,7 @@
                     paymentType : this.formData.paymentTypeId,
                     qrCode : code ,
                     txnAmt : this.formData.amount,
+                    paymentChannel : this.payAccountList.find(item => item.accountType === this.formData.paymentTypeId)['payType']
                 }).then(res => {
                     if ( res.success ) {
                         this.$refs.payResultModal.setStage('success');
