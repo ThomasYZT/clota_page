@@ -224,7 +224,7 @@
             payTypeListDeal () {
                 if (this.$route.name === 'salesManCreateOrderToPay' && this.supportCollect === 'true') {
                     return [].concat(this.payTypeList,[{
-                        icon : require('../../../../assets/images/icon-wx-pay.svg'),
+                        icon : require('../../../../assets/images/icon-offline-pay.svg'),
                         key : 'collect',
                         value : this.$t('线下支付'),
                         param : {}
