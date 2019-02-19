@@ -484,7 +484,8 @@
                     channelType : this.cardParam.payType,
                     qrCode : this.cardParam.qrCode,
                     txnAmt : this.selectedCard.salePrice,
-                    txnShortDesc : this.cardParam.payType === 'alipay' ? 'test' : ''
+                    txnShortDesc : this.cardParam.payType === 'alipay' ? '开卡' : '',
+                    paymentChannel : this.payAccountList.find(item => item.accountType === this.cardParam.payType)['payType']
                 }).then(res => {
                     if (res.success) {
                         this.$refs.payResultModal.setStage('success');

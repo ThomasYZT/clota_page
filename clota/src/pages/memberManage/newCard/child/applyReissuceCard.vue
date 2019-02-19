@@ -116,6 +116,7 @@
     import confirmMemberInfo from '../components/confirmDetailModal';
     import loopForPayResult from '../../../../components/loopForPayResult/loopForPayResult';
     import confirmModal from '@/components/delModal/index.vue';
+    import { mapGetters } from 'vuex';
 
 	export default {
         mixins : [ lifeCycleMixins ],
@@ -208,7 +209,8 @@
                     cardId : this.memberInfo.cardId,
                     levelId : this.memberInfo.levelId,
                     channelType : this.formData.payType,
-                    qrCode : qrCode
+                    qrCode : qrCode,
+                    paymentChannel : this.payAccountList.find(item => item.accountType === this.formData.payType)['payType']
                 }).then(res => {
                     if (res.success) {
                         this.$refs.payResultModal.setStage('success');
@@ -232,6 +234,8 @@
                                 this.confirmApplyForLost();
                             }
                         });
+                    } else if (res.code === 'M015') { //实体卡不存在
+                        this.$Message.error(this.$t('entityNotExist'));
                     } else {
                         if (this.payModalShow) {
                             this.$refs.payResultModal.setStage('fail');
@@ -304,6 +308,11 @@
         },
         created () {
             this.queryCardReplaceFee();
+        },
+        computed : {
+            ...mapGetters([
+                'payAccountList'
+            ])
         }
 	};
 </script>
