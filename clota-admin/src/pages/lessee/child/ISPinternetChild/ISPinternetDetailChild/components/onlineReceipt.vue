@@ -308,6 +308,12 @@
                     params.aliUseStatus = params.aliUseStatus ? 'true' : 'false';
                     params.weixinUseStatus = params.weixinUseStatus ? 'true' : 'false';
                 }
+                if (params.merchantNum) {
+                    params.weixinOpenStatus = 'open';
+                }
+                if (params.appID) {
+                    params.aliOpenStatus = 'open';
+                }
                 params.paymentChannel = paymentChannel;
                 ajax.post('addPayInfo',params).then(res => {
                     if (res.status === 200) {
