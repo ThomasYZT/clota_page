@@ -75,4 +75,6 @@ export default {
     'market_getAllScenicInCompany' : '/external/organize/getAllScenicInCompany',
     //获取景区下的所属类别
     'market_queryMarketTypes' : '/market/marketUser/queryMarketTypes',
+    //查询支付结果
+    'market_queryPayRecordByOutTradeNo' : '/external/pay/queryPayRecordByOutTradeNo',
 };

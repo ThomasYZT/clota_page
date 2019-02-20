@@ -51,7 +51,7 @@
             </el-table-column>
         </table-com>
 
-        <!--撤回充值申请 - 弹窗-->
+        <!--充值申请 - 弹窗-->
         <recharge-modal ref="rechargeModal"
                         @update-list="queryList"></recharge-modal>
     </div>

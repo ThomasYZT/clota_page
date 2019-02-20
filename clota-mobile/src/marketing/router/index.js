@@ -295,6 +295,17 @@ export const marketingRoutes = [
                     hideTabbar : true,
                     notNeedCheck : true
                 }
+            },
+            //直连支付
+            {
+                path : 'tourist/createOrder/directPay',
+                name : 'wxOrAlidirectPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/wxoraliPay.vue'),
+                meta : {
+                    title : '支付结果',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
             }
         ]
     }

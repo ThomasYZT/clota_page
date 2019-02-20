@@ -474,10 +474,10 @@
                     remark : this.remark,
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('updateStatus') + this.$t('success'));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('updateStatus') }));
                         this.goBack();
                     } else {
-                        this.$Message.error(res.message || this.$t('fail'));
+                        this.$Message.success(res.message || this.$t('failureTip',{ tip : this.$t('updateStatus') }));
                     }
                 });
             },

@@ -65,7 +65,7 @@
                 <div class="open-card-suc-label">
                     {{$t('unknowResult')}}
                 </div>
-                <div class="to-for-detail">
+                <div class="to-for-detail" v-if="canSeeTransactionRecord">
                 {{$t('canGo')}}<span class="trade-record" @click="toTradeRecrod"> {{resultLocation ? $t(resultLocation) : $t('onlineTradeRecord')}}  </span>{{$t('goForResult')}}
                 </div>
             </template>
@@ -93,6 +93,7 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
     export default {
         props : {
             //模态框是否显示
@@ -255,6 +256,15 @@
                     }
                 });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'permissionInfo'
+            ]),
+            //是否可以查看在线交易记录
+            canSeeTransactionRecord () {
+                return this.permissionInfo && this.permissionInfo['transaction-record'] === 'allow';
+            },
         }
     };
 </script>

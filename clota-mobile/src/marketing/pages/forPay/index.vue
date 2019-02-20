@@ -182,6 +182,7 @@
         },
         beforeDestroy () {
             window.removeEventListener("popstate", this.physicalBack);
+            this.physicalBack();
         }
     };
 </script>

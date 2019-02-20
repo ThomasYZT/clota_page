@@ -149,12 +149,21 @@
             },
             /**
              * 获取支付回调地址
+             * @param{String} paymentChannel 支付类型（'直连或银石支付'）
              * @return{String} 回调地址加密
              */
-            getRedirectUrl () {
-                let router = this.$router;
-                let base = router.options.base;
-                return encodeURI(location.origin + base + '/marketing/tourist/createOrder/payResult');
+            getRedirectUrl (paymentChannel) {
+                if (paymentChannel === 'zhilian') {
+                    const { href } = this.$router.resolve({
+                        name : 'wxOrAlidirectPay'
+                    });
+                    return encodeURI(location.origin + href);
+                } else {
+                    const { href } = this.$router.resolve({
+                        name : 'marketingCreateOrderPayResult'
+                    });
+                    return encodeURI(location.origin + href);
+                }
             },
             /**
              * 获取手机网页支付信息
@@ -167,7 +176,7 @@
                     bizType : 'pay_order',
                     channelType : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.totalAmount,
-                    redirectUrl : this.getRedirectUrl(),
+                    redirectUrl : this.getRedirectUrl(paymentChannel),
                     orgId : this.marketOrgId,
                     paymentChannel : paymentChannel,
                     ...createOrderParams
@@ -175,17 +184,22 @@
                     if (res.success) {
                         if (paymentChannel === 'zhilian') {
                             if (this.isWeixin) {
+                                const { href } = this.$router.resolve({
+                                    name : 'wxOrAlidirectPay'
+                                });
                                 this.payFormData = res.data ? res.data : {};
-                                this.payFormData.paymentChannel = paymentChannel;
+                                this.payFormData.channelType = this.payType;
                                 //设置支付表单信息
                                 localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                                location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay';
+                                location.href = location.origin + href + '?formContent=' + encodeURI(res.data.formContent.replace(/&/g,'%26')) + '&transactionId=' + res.data.transactionId;
                             } else {
-                                const div = document.createElement('div');
-                                div.innerHTML = res.data.formContent;
-                                document.body.appendChild(div);
-                                document.forms[0].acceptCharset = 'UTF8';
-                                document.forms[0].submit();
+                                this.$router.push({
+                                    name : 'wxOrAlidirectPay',
+                                    params : {
+                                        payType : this.payType,
+                                        formContent : res.data.formContent
+                                    }
+                                });
                             }
                         } else {
                             this.payFormData = res.data ? res.data : {};
