@@ -71,8 +71,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span :class="{'blue-lable' : scope.row.verifyStatus === 'true'}">
-                            <!--{{scope.row.verifyStatus === 'true' ? $t('已核销') : $t('未核销')}}-->
-                            {{scope.row.verifyStatus === 'true' ? $t('consumed') : $t('noConsumed')}}
+                            {{(scope.row.verifyStatus === 'true' || scope.row.verifyStatus === 'overdue') ? $t('consumed') : $t('noConsumed')}}
                         </span>
                     </template>
                 </el-table-column>

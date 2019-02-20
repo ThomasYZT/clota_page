@@ -118,7 +118,10 @@
         </service-delay-modal>
         <!--删除服务模态框-->
         <del-modal ref="delModal">
-            <span class="red-bale">删除服务后，本景区在该服务板块下的所有数据也将被同步删除，</span>请及时保存。
+            <div class="tip-info">
+                <span class="red-bale">删除服务后，本景区在该服务板块下的所有数据也将被同步删除，</span>
+                <span>请及时保存。</span>
+            </div>
         </del-modal>
         <!--添加服务模态框-->
         <add-service
@@ -466,12 +469,12 @@
         }
 
         @at-root .red-bale{
-            padding: 0 20px;
-            /*white-space: nowrap;*/
-            /*overflow: hidden;*/
-            /*text-overflow: ellipsis;*/
             max-width : 100%;
             color:#ed3f14;
+        }
+
+        @at-root .tip-info{
+            padding: 0 20px;
         }
     }
 </style>
