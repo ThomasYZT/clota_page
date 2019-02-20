@@ -621,7 +621,7 @@
                             message : this.$t('inputField',{ field : this.$t('API密钥') }),
                             trigger : 'blur',
                         },
-                        { max : 50,trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('API密钥'),length : 50 }) }
+                        { max : 4000,trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('API密钥'),length : 4000 }) }
                     ],
                     appID : [
                         {
@@ -637,7 +637,7 @@
                             message : this.$t('inputField',{ field : this.$t('私钥') }),
                             trigger : 'blur',
                         },
-                        { max : 50, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('私钥'),length : 50 }) }
+                        { max : 4000, trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('私钥'),length : 4000 }) }
                     ],
                     publicKey : [
                         {
@@ -645,7 +645,7 @@
                             message : this.$t('inputField',{ field : this.$t('公钥') }),
                             trigger : 'blur',
                         },
-                        {max : 50,trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('公钥'),length : 50 }) }
+                        {max : 4000,trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('公钥'),length : 4000 }) }
                     ]
                 }
             },
