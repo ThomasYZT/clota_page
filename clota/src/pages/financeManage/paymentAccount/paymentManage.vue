@@ -53,6 +53,7 @@
 
         <!--充值申请 - 弹窗-->
         <recharge-modal ref="rechargeModal"
+                        :onlineAccountList="onlineAccountList"
                         @update-list="queryList"></recharge-modal>
     </div>
 </template>
@@ -84,6 +85,8 @@
                 tableData : [],
                 // 数据总条数
                 totalCount : 0,
+                //收款账户列表
+                onlineAccountList : []
             };
         },
         computed : {
@@ -127,7 +130,24 @@
              */
             handleRecharge (scopeRow) {
                 if (!this.canRecharge) return;
-                this.$refs.rechargeModal.show({ item : scopeRow });
+                ajax.post('queryOnlineAccount',{
+                    isPlatformAcc : false,
+                    orgId : scopeRow.peerOrgId
+                }).then(res => {
+                    if (res.success) {
+                        this.onlineAccountList = res.data ? res.data.filter(item => item.useStatus === 'enabled').map(item => {
+                            return {
+                                ...item,
+                                value : item.accountType,
+                                label : item.accountType,
+                            };
+                        }) : [];
+                    } else {
+                        this.onlineAccountList = [];
+                    }
+                }).finally(() => {
+                    this.$refs.rechargeModal.show({ item : scopeRow });
+                });
             },
         }
     };
