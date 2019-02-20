@@ -202,7 +202,7 @@
                             partnerId : this.payInfo.partnerId,
                             payType : this.formData.payType,
                             payMoney : this.formData.rechargeAmount,
-                            newWindow : newWindow,
+                            newWindow : newWindow
                         });
                     } else {
                         this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('topUp') }));
@@ -213,6 +213,7 @@
              * 支付接口调用
              */
             payNow ({ bizId, payType, payMoney, merchantId, partnerId, newWindow }) {
+                let paymentChannel = this.onlineAccountList.find(item => item.accountType === payType)['payType'];
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -221,8 +222,20 @@
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
+                    paymentChannel : paymentChannel
                 }).then(res => {
                     if (res.success) {
+                        // if (paymentChannel === 'zhilian') {
+                        //     const divEle = document.createElement('div');
+                        //     divEle.innerHTML = res.data ? res.data.formContent : '';
+                        //     this.$el.appendChild(divEle);
+                        //     document.forms[0].acceptCharset = 'UTF8';
+                        //     console.log(this.$el.)
+                        //     // document.forms[0].submit();
+                        // } else {
+                        //
+                        // }
+
                         const { href } = this.$router.resolve({
                             name : 'financeRecharge',
                             params : {

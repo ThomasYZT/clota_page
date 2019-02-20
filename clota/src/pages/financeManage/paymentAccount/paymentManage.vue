@@ -140,6 +140,7 @@
                                 ...item,
                                 value : item.accountType,
                                 label : item.accountType,
+                                payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                             };
                         }) : [];
                     } else {
