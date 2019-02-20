@@ -44,7 +44,7 @@
                     </Form>
                 </template>
                 <template v-else>
-                    <div class="warn-tip">你还未配置在线收款账户请联系客服</div>
+                    <div class="warn-tip">平台暂未配置在线收款账户，请联系客服</div>
                 </template>
             </div>
 
@@ -102,7 +102,9 @@
                 payInfo : {},
                 //是否显示支付状态模态框
                 payModalShow : false,
-                transactionId : ''
+                transactionId : '',
+                //平台在线支付账户列表
+                onlineAccountList : []
             };
         },
         watch : {
@@ -117,7 +119,7 @@
                         this.formData.payType = this.onlineAccountList[0].accountType;
                     }
                 }
-                this.visible = true;
+                this.queryAccountList();
             },
 
             //关闭模态框
@@ -211,10 +213,31 @@
                 this.$emit('add-success');
                 this.hide();
             },
+            /**
+             * 查询在线支付账户列表
+             */
+            queryAccountList () {
+                ajax.post('queryOnlineAccount',{
+                    isPlatformAcc : true,
+                }).then(res => {
+                    if (res.success) {
+                        this.onlineAccountList = res.data ? res.data.filter(item => item.useStatus === 'enabled').map(item => {
+                            return {
+                                ...item,
+                                value : item.accountType,
+                                label : item.accountType,
+                            };
+                        }) : [];
+                    } else {
+                        this.onlineAccountList = [];
+                    }
+                }).finally(() => {
+                    this.visible = true;
+                });
+            }
         },
         computed : {
             ...mapGetters([
-                'onlineAccountList',
                 'lang'
             ])
         }
