@@ -78,7 +78,7 @@
     import common from '@/assets/js/common';
 
     export default {
-        props : ['row-data'],
+        props : ['row-data','onlineAccountList'],
         components : {
             loopForPayResult
         },
@@ -275,7 +275,6 @@
         },
         computed : {
             ...mapGetters([
-                'onlineAccountList',
                 'lang',
             ])
         }
