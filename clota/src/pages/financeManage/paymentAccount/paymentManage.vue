@@ -54,7 +54,8 @@
         <!--充值申请 - 弹窗-->
         <recharge-modal ref="rechargeModal"
                         :onlineAccountList="onlineAccountList"
-                        @update-list="queryList"></recharge-modal>
+                        @update-list="queryList">
+        </recharge-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -86,7 +87,7 @@
                 // 数据总条数
                 totalCount : 0,
                 //收款账户列表
-                onlineAccountList : []
+                onlineAccountList : [],
             };
         },
         computed : {
@@ -150,6 +151,7 @@
                     this.$refs.rechargeModal.show({ item : scopeRow });
                 });
             },
+
         }
     };
 </script>
