@@ -226,7 +226,7 @@
                         .server-name{
                             width: 200px;
                             text-align: left;
-                            //@include overflow_tip();
+                            @include overflow_tip();
                         }
 
                         .event-name {
