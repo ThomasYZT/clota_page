@@ -477,7 +477,7 @@
                         this.$Message.success(this.$t('successTip',{ tip : this.$t('updateStatus') }));
                         this.goBack();
                     } else {
-                        this.$Message.success(res.message || this.$t('failureTip',{ tip : this.$t('updateStatus') }));
+                        this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t('updateStatus') }));
                     }
                 });
             },
