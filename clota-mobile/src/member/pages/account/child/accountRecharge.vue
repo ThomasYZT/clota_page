@@ -82,7 +82,7 @@
             ]),
             //是否设置交易密码
             hasTradePassword () {
-                return this.cardInfo.hasTradePassword === 'true' ? true : false;
+                return this.cardInfo.hasTradePassword === 'true';
             }
         },
         methods : {
@@ -192,7 +192,9 @@
              *  获取在线支付方式列表
              */
             queryOnlinePayAccount () {
-                ajax.post('queryOnlinePayAccount').then(res => {
+                ajax.post('queryOnlinePayAccount',{
+                    orgId : this.cardInfo.orgId
+                }).then(res => {
                     if (res.success) {
                         this.commonList = res.data && res.data.length > 0 ? res.data.map((item) => {
                             if (item.accountType === 'weixin') {
@@ -200,14 +202,16 @@
                                     icon : require('../../../../assets/images/icon-wx-pay.svg'),
                                     key : 'wx',
                                     value : this.$t('wxPay'),
-                                    param : item
+                                    param : item,
+                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                                 };
                             } else if (item.accountType === 'alipay') {
                                 return {
                                     icon : require('../../../../assets/images/icon-ali-pay.svg'),
                                     key : 'ali',
                                     value : this.$t('aliPay'),
-                                    param : item
+                                    param : item,
+                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                                 };
                             }
                         }) : [];
@@ -236,6 +240,7 @@
              * 获取手机网页支付信息
              */
             getPayPageForMobile () {
+                let paymentChannel = this.commonList.find(item => item.key === this.payType )['payType'];
                 ajax.post('getPayPageForMobile', {
                     bizScene : 'member',
                     bizType : 'recharge',
@@ -243,7 +248,8 @@
                     channelId : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.rechargeMoney,
                     memberLevelId : this.cardInfo.levelId,
-                    redirectUrl : this.getRedirectUrl(),
+                    redirectUrl : this.getRedirectUrl(paymentChannel),
+                    paymentChannel : paymentChannel,
                     extData : JSON.stringify({
                         accountBizType : 'recharge',
                         accountTypeId : this.accountTypeId,
@@ -253,60 +259,60 @@
                         cardId : this.cardInfo.id,
                         memberId : this.cardInfo.memberId,
                         operUserId : this.cardInfo.orgId
-                    })
+                    }),
+                    orgId : this.cardInfo.orgId,
                 }).then(res => {
                     if (res.success) {
                         this.payFormData = res.data ? res.data : {};
-
-                        //设置支付表单信息
-                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        // this.$router.push({
-                        //     name : 'h5Pay',
-                        //     query : {
-                        //         memberId : this.userInfo.memberId,
-                        //         cardId : this.userInfo.id,
-                        //         accounId : this.accounId,
-                        //         paymentTypeId : this.payType,
-                        //         accountTypeId : this.accountTypeId,
-                        //         amount : this.payFormData.txnAmt,
-                        //         txnType : this.payFormData.txnType,
-                        //         partnerId : this.payFormData.partnerId,
-                        //         channelId : this.payFormData.channelId,
-                        //         merchantTxnNo : this.payFormData.merchantTxnNo,
-                        //         merchantId : this.payFormData.merchantId,
-                        //         txnAmt : this.payFormData.txnAmt,
-                        //         redirectUrl : this.payFormData.redirectUrl,
-                        //         txnShortDesc : this.payFormData.txnShortDesc,
-                        //         sign : this.payFormData.sign,
-                        //         currencyCode : this.payFormData.currencyCode,
-                        //         notifyUrl : escape(this.payFormData.notifyUrl),
-                        //         payWebUrl : escape(this.payFormData.payWebUrl),
-                        //         transactionId : this.payFormData.transactionId,
-                        //         token : ajax.getToken(),
-                        //     }
-                        // });
-                        location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
-                            return item.module === 'member';
-                        })[0].path + '/h5Pay?memberId=' + this.userInfo.memberId +
-                            '&cardId=' + this.cardInfo.id +
-                            '&accounId=' + this.accounId +
-                            '&paymentTypeId=' + this.payType +
-                            '&accountTypeId=' + this.accountTypeId +
-                            '&amount=' + this.payFormData.txnAmt +
-                            '&txnType=' + this.payFormData.txnType +
-                            '&partnerId=' + this.payFormData.partnerId +
-                            '&channelId=' + this.payFormData.channelId +
-                            '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
-                            '&merchantId=' + this.payFormData.merchantId +
-                            '&txnAmt=' + this.payFormData.txnAmt +
-                            '&redirectUrl=' + this.payFormData.redirectUrl +
-                            '&txnShortDesc=' + this.payFormData.txnShortDesc +
-                            '&sign=' + this.payFormData.sign +
-                            '&currencyCode=' + this.payFormData.currencyCode +
-                            '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
-                            '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
-                            '&transactionId=' + this.payFormData.transactionId +
-                            '&token=' + ajax.getToken();
+                        if (paymentChannel === 'zhilian') {
+                            if (this.isWeixin) {
+                                const { href } = this.$router.resolve({
+                                    name : 'wOraDirectPay'
+                                });
+                                const divEle = document.createElement('div');
+                                divEle.innerHTML = res.data.formContent;
+                                this.$el.appendChild(divEle);
+                                const formEle = this.$el.querySelector('form[name=punchout_form]');
+                                let queryParam = formEle.getAttribute('action').split('?')[ 1 ];
+                                Array.prototype.slice.call(formEle.querySelectorAll("input[type=hidden]")).forEach(function ( ele ) {
+                                    queryParam += '&' + ele.name + "=" + encodeURIComponent(ele.value);
+                                });
+                                location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true';
+                            } else {
+                                this.$router.push({
+                                    name : 'wOraDirectPay',
+                                    params : {
+                                        payType : this.payType,
+                                        formContent : res.data.formContent
+                                    }
+                                });
+                            }
+                        } else {
+                            //设置支付表单信息
+                            localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                            location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
+                                    return item.module === 'member';
+                                })[0].path + '/h5Pay?memberId=' + this.userInfo.memberId +
+                                '&cardId=' + this.cardInfo.id +
+                                '&accounId=' + this.accounId +
+                                '&paymentTypeId=' + this.payType +
+                                '&accountTypeId=' + this.accountTypeId +
+                                '&amount=' + this.payFormData.txnAmt +
+                                '&txnType=' + this.payFormData.txnType +
+                                '&partnerId=' + this.payFormData.partnerId +
+                                '&channelId=' + this.payFormData.channelId +
+                                '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
+                                '&merchantId=' + this.payFormData.merchantId +
+                                '&txnAmt=' + this.payFormData.txnAmt +
+                                '&redirectUrl=' + this.payFormData.redirectUrl +
+                                '&txnShortDesc=' + this.payFormData.txnShortDesc +
+                                '&sign=' + this.payFormData.sign +
+                                '&currencyCode=' + this.payFormData.currencyCode +
+                                '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
+                                '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
+                                '&transactionId=' + this.payFormData.transactionId +
+                                '&token=' + ajax.getToken();
+                        }
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));
@@ -364,14 +370,30 @@
             },
             /**
              * 获取支付回调地址
+             * @param{String} paymentChannel 支付方式
              */
-            getRedirectUrl () {
-                let router = this.$router;
-                let base = router.options.base;
-                let module = this.$router.options.routes.filter((item) => {
-                    return item.module === 'member';
-                })[0].path;
-                return encodeURI(location.origin + base + module + '/payStatus');
+            getRedirectUrl (paymentChannel) {
+                if (paymentChannel === 'zhilian') {
+                    const { href } = this.$router.resolve({
+                        name : 'wOraDirectPay'
+                    });
+                    return encodeURI(location.origin + href);
+                } else {
+                    const { href } = this.$router.resolve({
+                        name : 'payStatus'
+                    });
+                    return encodeURI(location.origin + href);
+                }
+                // if (paymentChannel === 'zhilian') {
+                //
+                // } else {
+                //     let router = this.$router;
+                //     let base = router.options.base;
+                //     let module = this.$router.options.routes.filter((item) => {
+                //         return item.module === 'member';
+                //     })[0].path;
+                //     return encodeURI(location.origin + base + module + '/payStatus');
+                // }
             }
         },
         mounted () {

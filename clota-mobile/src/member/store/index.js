@@ -68,7 +68,17 @@ export const memberGetters = {
     },
     //会员配置信息
     memberConfigInfo : state => {
-        return state.memberConfigInfo;
+        let memberConfigInfo = {};
+        try {
+            memberConfigInfo = localStorage.getItem('memberConfigInfo') ? JSON.parse(localStorage.getItem('memberConfigInfo')) : {};
+        } catch (e) {
+            memberConfigInfo = {};
+        }
+        if (state.memberConfigInfo && Object.keys(state.memberConfigInfo).length > 0) {
+            return state.memberConfigInfo;
+        } else {
+            return memberConfigInfo;
+        }
     },
     wxMpSet : state => {
         return state.wxMpSet;
@@ -157,6 +167,7 @@ export const memberMutations = {
      * @param{Object} memberConfigInfo 会员配置信息
      */
     updateMemberConfig (state, memberConfigInfo) {
+        localStorage.setItem('memberConfigInfo',JSON.stringify(memberConfigInfo));
         state.memberConfigInfo = memberConfigInfo;
     },
     /**

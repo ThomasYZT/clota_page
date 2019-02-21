@@ -35,6 +35,7 @@
     import ajax from '@/marketing/api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { mapGetters } from 'vuex';
+
     export default {
         mixins : [lifeCycleMixins],
         data () {
@@ -181,17 +182,21 @@
                     paymentChannel : paymentChannel,
                     ...createOrderParams
                 }).then(res => {
-                    if (res.success) {
+                    if (res.success && res.data) {
                         if (paymentChannel === 'zhilian') {
                             if (this.isWeixin) {
                                 const { href } = this.$router.resolve({
                                     name : 'wxOrAlidirectPay'
                                 });
-                                this.payFormData = res.data ? res.data : {};
-                                this.payFormData.channelType = this.payType;
-                                //设置支付表单信息
-                                localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                                location.href = location.origin + href + '?formContent=' + encodeURI(res.data.formContent.replace(/&/g,'%26')) + '&transactionId=' + res.data.transactionId;
+                                const divEle = document.createElement('div');
+                                divEle.innerHTML = res.data.formContent;
+                                this.$el.appendChild(divEle);
+                                const formEle = this.$el.querySelector('form[name=punchout_form]');
+                                let queryParam = formEle.getAttribute('action').split('?')[1];
+                                Array.prototype.slice.call(formEle.querySelectorAll("input[type=hidden]")).forEach(function (ele) {
+                                    queryParam += '&' + ele.name + "=" + encodeURIComponent(ele.value);
+                                });
+                                location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true';
                             } else {
                                 this.$router.push({
                                     name : 'wxOrAlidirectPay',

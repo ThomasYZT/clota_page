@@ -3,24 +3,21 @@
 <template>
     <div class="wx-ali-direct-connection">
         <div class="pay-result" v-if="paySuccess !== null">
-            <!--预定成功-->
+            <!--支付成功-->
             <div class="pay-success" v-if="paySuccess === true">
                 <img class="status-icon" src="../../../assets/images/pay-success.svg" alt="">
-                <p class="status-message">{{$t('预定成功')}}</p>
-                <div class="label-info">
-                    {{$t('取票凭证将以短信形式发送到您指定的手机，请注意查收！')}}
-                </div>
+                <p class="status-message">{{$t('paySuccess')}}</p>
             </div>
-            <!--预定失败-->
+            <!--支付失败-->
             <div class="pay-failed" v-if="paySuccess === false">
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
-                <p class="status-message">{{$t('预定失败')}}</p>
+                <p class="status-message">{{$t('payFailure')}}</p>
             </div>
-            <x-button class="button" @click.native="toOrderPage" v-if="marketUserId">{{$t('继续预定')}}</x-button>
+            <x-button  v-if="canBackToAccount" class="button" @click.native="toAccount">{{$t('backToAccount')}}</x-button>
         </div>
         <div v-if="aliPayInWeixin === true && paySuccess === null" class="img-wrapper">
             <img class="notice" src="../../../assets/images/open-in-browser.svg" alt="">
-            <!-- 取消支付按钮 -->
+            <!-- 返回账户 -->
             <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
         </div>
     </div>
@@ -44,6 +41,8 @@
                 transactionId : '',
                 //定时器
                 timer : '',
+                //是否能返回账户页面
+                canBackToAccount : false
             };
         },
         methods : {
@@ -100,9 +99,9 @@
             /**
              * 跳转到下单页面
              */
-            toOrderPage () {
+            toAccount () {
                 this.$router.push({
-                    name : 'marketingTourist'
+                    name : 'account'
                 });
             },
             /**
@@ -123,12 +122,14 @@
         computed : {
             ...mapGetters({
                 isWeixin : 'isWeixin',
-                marketUserId : 'marketUserId',
             })
         },
         beforeDestroy () {
             clearInterval(this.timer);
             this.timer = '';
+        },
+        created () {
+            this.canBackToAccount = localStorage.getItem('token') ? true : false;
         }
     };
 </script>
