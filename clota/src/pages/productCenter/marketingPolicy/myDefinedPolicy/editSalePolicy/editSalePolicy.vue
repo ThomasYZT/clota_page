@@ -26,7 +26,7 @@
             <!-- 产品信息 -->
             <productInfo ref="productInfo"></productInfo>
             <!-- 销售渠道 -->
-            <saleChannels ref="saleChannels"></saleChannels>
+            <saleChannels ref="saleChannels" @manageQuota="manageQuota"></saleChannels>
             <!-- 全民营销 -->
             <marketInfo ref="marketInfo"
                         v-if="hasMarket === 'true'"></marketInfo>
@@ -46,9 +46,7 @@
 
                 </Button>
             </div>
-
         </div>
-
     </div>
 </template>
 
@@ -94,8 +92,6 @@
                     }
                 ],
                 loading : false,
-                //控制点选日期控件显示/隐藏
-                open : true,
                 //表单数据
                 formData : {
                     //政策id
@@ -145,6 +141,13 @@
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
+            },
+            /**
+             *  进行配额管理
+             *  @param 销售渠道组数据
+             */
+            manageQuota (channelGroupData) {
+                this.$refs.productInfo.manageQuota(channelGroupData);
             },
             /**
              *  表单校验
@@ -201,7 +204,9 @@
                     return item.id;
                 }).join(',') : '';
                 //产品数据
-                params.itemsData = JSON.stringify(defaultsDeep([], this.formData.itemsData));
+                params.quotaData = JSON.stringify(defaultsDeep([], this.formData.quotaData));
+                //产品配额数据
+                params.quotaChannelData = JSON.stringify(defaultsDeep([], this.formData.quotaChannelData));
                 //销售规则数据
                 params.saleRule.weekSold = this.formData.saleRule.weekSold && this.formData.saleRule.weekSold.length > 0 ?
                     this.formData.saleRule.weekSold.join(',') : '';
@@ -422,17 +427,22 @@
 
                 //产品列表表单初始化
                 let productInfoForm = {
-                    itemsData : [],
+                    quotaData : [],
+                    quotaChannelData : [],
                 };
+                data.policyChannels.forEach(item => {
+                    productInfoForm.quotaChannelData = productInfoForm.quotaChannelData.concat(item.quotaChannelModels);
+                });
                 data.policyItems.forEach( item => {
-                    productInfoForm.itemsData.push({
+                    productInfoForm.quotaData.push({
                         id : item.id,
                         productId : item.productId,
                         productName : item.productName,
+                        quotaType : item.quotaType,
+                        totalQuota : item.totalQuota,
+                        sharedQuota : item.sharedQuota,
                         settlePrice : item.settlePrice,
-                        standardPrice : item.standardPrice,
-                        stockNum : item.stockNum,
-                        stockType : item.stockType,
+                        marketQuota : item.marketQuota,
                         itemRule : item.itemRule ? JSON.parse(item.itemRule) : [],
                     });
                 });

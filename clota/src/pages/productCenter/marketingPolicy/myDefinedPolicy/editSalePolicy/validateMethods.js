@@ -81,7 +81,7 @@ export const validateAlterRule = (rule, value, callback) => {
  * @param callback
  */
 export const validateProductInfo = (rule, value, callback) => {
-    if (rule.params.itemsData && rule.params.itemsData.length < 1) {
+    if (rule.params.quotaData && rule.params.quotaData.length < 1) {
         callback(i18n.t('please', { msg : i18n.t('addProduct') }));
 
     } else {

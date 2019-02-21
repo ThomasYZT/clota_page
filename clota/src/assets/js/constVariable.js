@@ -281,19 +281,15 @@ export const idType = [
     }
 ];
 
-//限制库存
-export const limitStore = [
+//配额限制方式
+export const quotaType = [
     {
-        label : 'everyday',//限制每日库存
+        label : 'everydayQuota',//限制每日配额
         value : 'everyday'
     },
     {
-        label : 'total',//限制库存总量
+        label : 'totalQuota',//限制配额总量
         value : 'total'
-    },
-    {
-        label : 'is_no_limit',//不限库存
-        value : 'is_no_limit'
     }
 ];
 

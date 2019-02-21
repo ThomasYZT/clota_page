@@ -33,6 +33,20 @@
                                         </span>
                                 </template>
                             </el-table-column>
+                            <el-table-column
+                                slot="column2"
+                                slot-scope="row"
+                                :label="row.title"
+                                :width="row.width"
+                                show-overflow-tooltip>
+                                <template slot-scope="scope">
+                                    <ul class="operate-list">
+                                        <li :class="{ disabled : (selectedRow.findIndex((item) => { return item.id === scope.row.id }) <= -1) ||
+                                        !scope.row.channelModels || scope.row.channelModels.length === 0 }"
+                                            @click="quotaManage(scope.row)">{{$t('配额管理')}}</li><!--配额管理-->
+                                    </ul>
+                                </template>
+                            </el-table-column>
                         </table-com>
                     </Form-item>
                 </div>
@@ -114,6 +128,16 @@
                 Object.assign(this.formData, formData);
                 //查询销售渠道组
                 this.queryOrgGroupVoList();
+            },
+            /**
+             * 配额管理
+             * @param data
+             */
+            quotaManage (data) {
+                if (this.selectedRow.findIndex((item) => {
+                    return item.id === data.id
+                }) <= -1 || !data.channelModels || data.channelModels.length === 0) return;
+                this.$emit("manageQuota", data);
             }
         },
         created () {

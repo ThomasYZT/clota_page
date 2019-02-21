@@ -8,67 +8,76 @@
         title="Title"
         v-model="visible"
         :mask-closable="false"
+        width="740"
         class="edit-product-modal"
-        class-name="vertical-center-modal">
+        class-name="vertical-center-modal"
+        @on-cancel="cancel">
         <div slot="header" class="target-class">
             <span class="title" >
                 {{title}}
             </span>
         </div>
         <div class="content-info">
-
             <!--一票制表单信息-->
             <Form ref="formValidate"
                   :model="formData"
                   :rules="ruleValidate"
                   label-position="top">
-
-                <div class="padding-bottom" style="padding: 10px 0;">
-                    <span>{{$t('scenePlace')}}：</span>
-                    <span>{{manageOrgs.orgName}}</span>
-                </div>
-                <i-row>
-                    <i-col span="12">
-                        <FormItem :label="$t('chooseProduct')" prop="productId"><!--选择产品-->
-                            <template v-if="type === 'modify'">
-                                <Input :value="formData.productName"
-                                       disabled
-                                       placeholder=""/>
-                            </template>
-                            <template v-else>
-                                <Select v-model="formData.productId"
-                                        :disabled="type === 'check'"
-                                        transfer
-                                        :placeholder="$t('selectField', {msg: ''})"
-                                        @on-change="changeChooseProduct">
-                                    <Option v-for="(item,index) in list"
-                                            :key="index"
-                                            :value="item.id">
-                                        {{item.productName}}
-                                    </Option>
-                                </Select>
-                            </template>
-                        </FormItem>
-                    </i-col>
-                    <i-col span="12" v-if="Object.keys(productInfo).length > 0">
-                        <FormItem :label="$t('productEffect')" prop="productId"><!--产品有效性-->
-                            <span>{{$t(productInfo.productEffSet)}}</span>
-                        </FormItem>
-                    </i-col>
-                </i-row>
-
-                <template v-if="formData.productId">
-
-                    <!--分割线-->
-                    <div class="split-line"></div>
-
+                <!-- 产品选择选择 -->
+                <template>
+                    <!-- 所属景区 -->
+                    <div class="padding-bottom" style="padding: 10px 0;">
+                        <span class="label-title">{{$t('scenePlace')}}：</span>
+                        <span class="label-name">{{manageOrgs.orgName}}</span>
+                    </div>
                     <i-row>
                         <i-col span="12">
-                            <FormItem :label="$t('stockType')" prop="stockType"><!--限制库存-->
-                                <Select v-model="formData.stockType"
-                                        @on-change="changeStockType"
+                            <!--选择产品-->
+                            <FormItem :label="$t('chooseProduct')" prop="productId">
+                                <template v-if="type === 'modify'">
+                                    <Input :value="formData.productName"
+                                           disabled
+                                           placeholder=""/>
+                                </template>
+                                <template v-else>
+                                    <Select v-model="formData.productId"
+                                            :disabled="type === 'check'"
+                                            transfer
+                                            :placeholder="$t('selectField', {msg: ''})"
+                                            @on-change="changeChooseProduct">
+                                        <Option v-for="(item,index) in productSelectList"
+                                                :key="index"
+                                                :value="item.id">
+                                            {{item.productName}}
+                                        </Option>
+                                    </Select>
+                                </template>
+                            </FormItem>
+                        </i-col>
+                        <i-col span="12"  v-if="Object.keys(chosedProductInfo).length > 0">
+                            <!--产品单价-->
+                            <FormItem :label="$t('settlePrice')" prop="settlePrice">
+                                <Input v-model.trim="formData.settlePrice"
+                                       :disabled="type === 'check'"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </FormItem>
+                        </i-col>
+                    </i-row>
+                </template>
+                <!-- 配额设置 -->
+                <template v-if="Object.keys(chosedProductInfo).length > 0">
+                    <div class="divider-header">
+                        <span>{{$t('配额设置')}}</span>
+                    </div>
+                    <i-row>
+                        <i-col span="12">
+                            <!--限制配额方式-->
+                            <FormItem :label="$t('限制配额方式')" prop="quotaType">
+                                <Select v-model="formData.quotaType"
+                                        :disabled="type === 'check'"
+                                        transfer
                                         :placeholder="$t('selectField', {msg: ''})">
-                                    <Option v-for="(item,index) in enumData.limitStore"
+                                    <Option v-for="(item,index) in enumData.quotaType"
                                             :key="index"
                                             :value="item.value">
                                         {{$t(item.label)}}
@@ -77,79 +86,83 @@
                             </FormItem>
                         </i-col>
                         <i-col span="12">
-                            <template v-if="formData.stockType">
-                                <FormItem :label="$t('stockNum')" prop="stockNum"><!--库存数量-->
-                                    <Input v-if="formData.stockType !== 'is_no_limit'"
-                                           v-model.trim="formData.stockNum"
-                                           :disabled="type === 'check'"
-                                           :placeholder="$t('inputField', {field: ''})"/>
-                                    <span v-else>
-                                        {{$t('disableSet')}}
-                                    </span>
-                                </FormItem>
-                            </template>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col span="12">
-                            <FormItem :label="$t('standardPrice')"><!--景区成本价-->
-                                <Input v-model.trim="productInfo.standardPrice"
-                                       disabled
-                                       placeholder=""/>
-                            </FormItem>
+                            <!-- 占位符 -->
+                            <div class="form-placeholder"></div>
                         </i-col>
                         <i-col span="12">
-                            <FormItem :label="$t('settlePrice')" prop="settlePrice"><!--产品单价-->
-                                <Input v-model.trim="formData.settlePrice"
+                            <!--产品配额数量-->
+                            <FormItem :label="$t('产品配额数量')" prop="totalQuota">
+                                <Input v-model.trim="formData.totalQuota"
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
                             </FormItem>
                         </i-col>
+                        <i-col span="12">
+                            <!--共享配额数量-->
+                            <FormItem :label="$t('共享配额数量')" prop="sharedQuota">
+                                <Input v-model.trim="formData.sharedQuota"
+                                       :disabled="type === 'check'"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </FormItem>
+                        </i-col>
+                        <i-col span="12">
+                            <!--全民营销配额数量-->
+                            <FormItem :label="$t('全民营销配额数量')" prop="marketQuota">
+                                <Input v-model.trim="formData.marketQuota"
+                                       :disabled="type === 'check'"
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </FormItem>
+                        </i-col>
+                        <i-col span="12">
+                            <!--可分配配额数量-->
+                            <FormItem :label="$t('可分配配额数量')">
+                                <Input :value="allocableQuota"
+                                       disabled
+                                       :placeholder="$t('inputField', {field: ''})"/>
+                            </FormItem>
+                        </i-col>
                     </i-row>
-
-                    <template v-if="formData.itemRule && formData.itemRule.length > 1">
-
-                        <i-row>
-                            <i-col span="24">
-                                <FormItem :label="$t('priceSet')"><!--分账设置-->
-                                    <!--入园检票处--核销表格,区分查看与编辑-->
-                                    <table-com
-                                        :table-com-min-height="250"
-                                        :column-data="subAccountColumn"
-                                        :table-data="formData.itemRule"
-                                        :border="true">
-                                        <el-table-column
-                                            slot="column1"
-                                            :label="row.title"
-                                            :prop="row.field"
-                                            :key="row.index"
-                                            :width="row.width"
-                                            :min-width="row.minWidth"
-                                            show-overflow-tooltip
-                                            slot-scope="row">
-                                            <template slot-scope="scope">
-                                                <InputNumber   class="short-input"
-                                                               :max="formData.settlePrice ? Number(formData.settlePrice) : 9999999999"
-                                                               :min="0"
-                                                               :disabled="type === 'check'"
-                                                               v-model.trim="scope.row.subPrice"
-                                                               :placeholder="$t('inputField', {field: ''})">
-                                                </InputNumber>
-                                            </template>
-                                        </el-table-column>
-                                    </table-com>
-                                </FormItem>
-                            </i-col>
-                        </i-row>
-
-                        <div><span class="red-span" v-if="showCountMoney > 0">{{$t('unShareMoney')}}：{{showCountMoney}}{{$t('yuan')}}</span></div>
-
-                    </template>
-
                 </template>
-
+                <!-- 分账设置 -->
+                <template v-if="formData.itemRule && formData.itemRule.length > 1">
+                    <div class="divider-header">
+                        <span>{{$t('分账设置')}}</span>
+                    </div>
+                    <i-row>
+                        <i-col span="24">
+                            <!--分账设置-->
+                            <!--入园检票处--核销表格,区分查看与编辑-->
+                            <table-com
+                                :auto-height="true"
+                                :table-com-min-height="250"
+                                :column-data="subAccountColumn"
+                                :table-data="formData.itemRule"
+                                :border="true">
+                                <el-table-column
+                                    slot="column1"
+                                    :label="row.title"
+                                    :prop="row.field"
+                                    :key="row.index"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip
+                                    slot-scope="row">
+                                    <template slot-scope="scope">
+                                        <InputNumber   class="short-input"
+                                                       :max="formData.settlePrice ? Number(formData.settlePrice) : 9999999999"
+                                                       :min="0"
+                                                       :disabled="type === 'check'"
+                                                       v-model.trim="scope.row.subPrice"
+                                                       :placeholder="$t('inputField', {field: ''})">
+                                        </InputNumber>
+                                    </template>
+                                </el-table-column>
+                            </table-com>
+                        </i-col>
+                    </i-row>
+                    <div><span class="red-span" v-if="showCountMoney > 0">{{$t('unShareMoney')}}：{{showCountMoney}}{{$t('yuan')}}</span></div>
+                </template>
             </Form>
-
         </div>
         <div slot="footer">
             <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
@@ -162,10 +175,11 @@
 
     import tableCom from '@/components/tableCom/tableCom.vue';
     import titlePark from '../../../components/titlePark.vue';
-    import { limitStore } from '@/assets/js/constVariable';
+    import { quotaType } from '@/assets/js/constVariable';
     import { subAccountColumn } from '../editSalePolicy/editPolicyConfig';
-    import common from '@/assets/js/common.js';
     import { mapGetters } from 'vuex';
+    import { emoji, validateMoney, validateSettlePrice, validateNumber,validateSharedQuota,
+        validateMarketQuota, validateNaturalNumber, validateTotalQuota } from './validateMethods';
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
 
@@ -175,81 +189,9 @@
             titlePark,
         },
         data () {
-            let validateMethod = {
-                emoji : (rule, value, callback) => {
-                    if (value && value.isUtf16()) {
-                        callback(new Error( this.$t('errorIrregular') )); // 输入内容不合规则
-                    } else {
-                        callback();
-                    }
-                }
-            };
-            //校验正整数
-            const validateNumber = (rule,value,callback) => {
-                if (value) {
-                    common.validateInteger(value).then(() => {
-                        callback();
-                    }).catch(err => {
-                        if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
-                        } else {
-                            callback(this.$t(err,{ field : this.$t(rule.field) }));
-                        }
-                    });
-                } else {
-                    callback();
-                }
-            };
-            //校验钱
-            const validateMoney = (rule,value,callback) => {
-                if (value) {
-                    common.validateMoney(value).then(() => {
-                        callback();
-                    }).catch(err => {
-                        if (err === 'errorMaxLength') {
-                            callback(this.$t('errorMaxLength',{ field : this.$t(rule.field),length : 10 }));
-                        } else {
-                            callback(this.$t(err,{ field : this.$t(rule.field) }));
-                        }
-                    });
-                } else {
-                    callback();
-                }
-            };
-            //校验库存数量
-            const validateStockNum = (rule,value,callback) => {
-                if (this.formData.stockType && this.formData.stockType != "is_no_limit"/* && value && this.productDetail.productSaleVo.stockNum*/) {
-                    /*if ( Number(value) > Number(this.productDetail.productSaleVo.stockNum) ) {
-                        //console.log(Number(value), Number(this.productDetail.productSaleVo.stockNum))
-                        callback(this.$t('errorGreaterThan',{ small : this.$t('stockNum'),big : this.$t('upLevelStockName') + this.productDetail.productSaleVo.stockNum }));
-                    } else {
-                        callback();
-                    }*/
-                    if (!value) {
-                        callback(this.$t('errorEmpty', { msg : this.$t('stockNum') }));
-                    } else {
-                        callback();
-                    }
-                } else {
-                    callback();
-                }
-            };
-            //校验单价
-            const validateSettlePrice = (rule,value,callback) => {
-                if (value && this.productInfo.standardPrice) {
-                    if ( Number(value) < Number(this.productInfo.standardPrice) ) {
-                        callback(this.$t('sizeErrorS',{ filed1 : this.$t('settlePrice'),filed2 : this.productInfo.standardPrice }));
-                    } else {
-                        callback();
-                    }
-                } else {
-                    callback();
-                }
-            };
-
             return {
                 //可选产品下拉列表数据
-                list : [],
+                productSelectList : [],
                 //类型 add/modify/check
                 type : 'add',
                 //标题信息
@@ -264,41 +206,23 @@
                 formData : {
                     productId : '',//"产品ID",
                     productName : '',//"产品名称",
-                    standardPrice : '',//"景区成本价",
-                    stockType : "",//库存限制类型（总量-total,每日-everyday,不限库存-is_no_limit）
-                    stockNum : "",//库存数量
-                    settlePrice : "",//单价
-                    //分账设置表格数据 {orgId: "",parkName: "",subPrice: 0 }
-                    itemRule : [],
-                },
-                ruleValidate : {
-                    productId : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('chooseProduct') }), trigger : 'change' }, // 不能为空
-                    ],
-                    stockType : [
-                        { required : true, message : this.$t('selectField', { msg : this.$t('stockType') }), trigger : 'change' }, // 不能为空
-                    ],
-                    stockNum : [
-                        { validator : validateStockNum, trigger : 'blur' },
-                        { validator : validateMethod.emoji, trigger : 'blur' },
-                        { validator : validateNumber, trigger : 'blur' },
-                    ],
-                    settlePrice : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('settlePrice') }), trigger : 'change' }, // 不能为空
-                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('settlePrice'), length : 10 }), trigger : 'blur' },
-                        { validator : validateMethod.emoji, trigger : 'blur' },
-                        { validator : validateMoney, trigger : 'blur' },
-                        { validator : validateSettlePrice, trigger : 'blur' },
-                    ],
+                    settlePrice : '',//单价
+                    itemRule : [],//分账设置数据 {orgId: "",parkName: "",subPrice: 0 }
+                    quotaType : '',//配额限制方式
+                    totalQuota : '',//产品配额数量
+                    sharedQuota : '',//共享配额数量
+                    marketQuota : '',//全民营销配额数量
+                    toTalExclusiveQuota : 0,//分配出去的全部专享配额数量
                 },
                 //枚举数据
                 enumData : {
-                    //限制库存
-                    limitStore : limitStore,
+                    //配额限制类型
+                    quotaType : quotaType,
                 },
-                //所选产品
-                productInfo : {},
-                productDetail : {},
+                //所选产品列表项信息数据
+                chosedProductInfo : {},
+                //所选产品详细信息数据
+                chosedProductDetail : {},
                 //分账表头
                 subAccountColumn : subAccountColumn,
             };
@@ -307,6 +231,11 @@
             ...mapGetters({
                 manageOrgs : 'manageOrgs',
             }),
+            //可分配配额数量
+            allocableQuota () {
+                return Number(this.formData.totalQuota ? this.formData.totalQuota : 0) - Number(this.formData.sharedQuota ? this.formData.sharedQuota : 0) -
+                    Number(this.formData.marketQuota ? this.formData.marketQuota : 0) - Number(this.formData.toTalExclusiveQuota ? this.formData.toTalExclusiveQuota : 0);
+            },
             //未分账金额
             showCountMoney () {
                 if (this.formData.settlePrice && this.formData.itemRule && this.formData.itemRule.length > 1) {
@@ -322,45 +251,84 @@
                     return 0;
                 }
             },
+            //表单校验规则
+            ruleValidate () {
+                return {
+                    productId : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('chooseProduct') }), trigger : 'change' }, // 不能为空
+                    ],
+                    settlePrice : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('settlePrice') }), trigger : 'change' }, // 不能为空
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('settlePrice'), length : 10 }), trigger : 'blur' },
+                        { validator : emoji, trigger : 'blur' },
+                        { validator : validateMoney, trigger : 'blur' },
+                        { validator : validateSettlePrice, trigger : 'blur', standardPrice : this.chosedProductInfo.standardPrice },
+                    ],
+                    quotaType : [
+                        { required : true, message : this.$t('selectField', { msg : this.$t('配额限制方式') }), trigger : 'change' }, // 不能为空
+                    ],
+                    totalQuota : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('产品配额数量') }), trigger : 'change' }, // 不能为空
+                        { validator : emoji, trigger : 'blur' },
+                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateTotalQuota, trigger : 'change',
+                          marketQuota : this.formData.marketQuota,
+                          sharedQuota : this.formData.sharedQuota,
+                          toTalExclusiveQuota : this.formData.toTalExclusiveQuota}
+                    ],
+                    sharedQuota : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('共享配额数量') }), trigger : 'change' }, // 不能为空
+                        { validator : emoji, trigger : 'blur' },
+                        { validator : validateNaturalNumber, trigger : 'blur' },
+                        { validator : validateSharedQuota,
+                          trigger : 'change',
+                          totalQuota : this.formData.totalQuota,
+                          marketQuota : this.formData.marketQuota,
+                          toTalExclusiveQuota : this.formData.toTalExclusiveQuota}
+                    ],
+                    marketQuota : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('全民营销配额数量') }), trigger : 'change' }, // 不能为空
+                        { validator : emoji, trigger : 'blur' },
+                        { validator : validateNaturalNumber, trigger : 'blur' },
+                        { validator : validateMarketQuota,
+                            trigger : 'change',
+                            totalQuota : this.formData.totalQuota,
+                            sharedQuota : this.formData.sharedQuota,
+                            toTalExclusiveQuota : this.formData.toTalExclusiveQuota }
+                    ],
+                }
+            }
         },
         methods : {
-
-            //选择产品改变
+            /**
+             *  选择产品改变
+             */
             changeChooseProduct ( val , bool) {
                 if (bool) {
-                    this.findProductById(this.productInfo, bool);
+                    this.findProductById(this.chosedProductInfo, bool);
                 } else {
                     if (val) {
-                        this.productInfo = this.list.find( item => val === item.id );
-                        if (this.productInfo && this.productInfo.id) {
-                            this.formData.productName = this.productInfo.productName;
-                            this.formData.standardPrice = this.productInfo.standardPrice;
-                            this.findProductById(this.productInfo);
-                        }
-                        //改变限制库存选择列表
-                        if (this.productInfo.productEffSet === 'same_to_policy') {
-                            this.enumData = {
-                                limitStore : limitStore.filter((item) => {
-                                    return item.value !== 'everyday';
-                                })
-                            };
-                        } else {
-                            this.enumData = {
-                                limitStore : limitStore,
-                            };
+                        this.reset();
+                        this.formData.productId = val;
+                        this.chosedProductInfo = this.productSelectList.find( item => val === item.id );
+                        if (this.chosedProductInfo && this.chosedProductInfo.id) {
+                            this.formData.productName = this.chosedProductInfo.productName;
+                            this.findProductById(this.chosedProductInfo);
                         }
                     }
                 }
             },
-
-            // 根据产品Id查明细
+            /**
+             *  根据产品Id查明细
+             *  @param data
+             *  @param bool
+             */
             findProductById ( data , bool) {
                 ajax.post('findProductById', {
                     productId : data.id
                 }).then(res => {
                     if (res.success) {
                         this.productDetail = res.data || {};
-                        //this.formData.stockType = res.data.productSaleVo.stockType;
                         if (!bool) {
                             this.formData.itemRule = [];
                             if (res.data && res.data.productPlayRuleVo && res.data.productPlayRuleVo.length > 0) {
@@ -373,14 +341,12 @@
                                 } );
                             }
                         }
-
                     } else {
                         this.itemRule = [];
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
-
             /**
              * 确认
              */
@@ -400,52 +366,41 @@
                     }
                 });
             },
-
             /**
              * 取消
              */
             cancel () {
+                this.reset();
                 this.visible = false;
-                this.$refs.formValidate.resetFields();
                 if (this.cancelCallback) {
                     this.cancelCallback();
                 }
-                this.resetFunc();
             },
-
             /**
              * 显示 模态框
              * @param data
              * @param type
              * @param title
+             * @param productList 所有产品列表数据
+             * @param chosedProducts 已添加的产品列表数据
              * @param confirmCallback
              * @param cancelCallback
              */
             show ({ data, type, productList, chosedProducts, title, confirmCallback = null, cancelCallback }) {
+                this.$refs.formValidate.resetFields();
                 this.title = title;
                 this.type = type;
-                let _productList = productList;
-                let _chosedProducts = chosedProducts;
-                for (let i = 0, len = _productList.length; i < len; i++) {
-                    for (let j = 0, jlen = _chosedProducts.length; j < jlen; j++) {
-                        if (_chosedProducts[j].productId === _productList[i].id) {
-                            _productList.splice(i, 1);
-                            _chosedProducts.splice(j, 1);
-                            i--;
-                            len--;
-                            j--;
-                            jlen--;
-                            break;
-                        }
-                    }
-                }
-                this.list = _productList;
+                this.productSelectList = productList.filter(item => {
+                    return chosedProducts.findIndex(choesedProduct => {
+                        return choesedProduct.productId === item.id;
+                    }) <= -1;
+                });
                 if (data) {
                     this.formData = defaultsDeep({}, data);
                     this.formData.settlePrice = this.formData.settlePrice.toString();
                     if (data.productId) {
-                        this.productInfo = data;
-                        this.productInfo.id = data.productId;
+                        this.chosedProductInfo = data;
+                        this.chosedProductInfo.id = data.productId;
                         this.changeChooseProduct(data.productId, true);
                     }
                 }
@@ -457,29 +412,17 @@
                 }
                 this.visible = true;
             },
-
-            //重置数据
-            resetFunc () {
-                this.formData = {
-                    productId : '',
-                    stockType : '',
-                    stockNum : '',
-                    settlePrice : '',
-                    itemRule : [],
-                };
-                this.productInfo = {};
+            /**
+             *  重置数据
+             */
+            reset () {
+                this.formData.itemRule = [];
+                this.formData.productName = '';
+                this.formData.toTalExclusiveQuota = 0;
+                this.$refs.formValidate.resetFields();
+                this.chosedProductInfo = {};
                 this.productDetail = {};
             },
-            /**
-             * 更改困存限制
-             * @param {string} val
-             */
-            changeStockType (val) {
-                this.formData.stockNum = '';
-                this.$nextTick(() => {
-                    this.$refs.formValidate.validateField('stockNum');
-                });
-            }
 
         }
     };
@@ -490,7 +433,6 @@
 
     .edit-product-modal {
         & /deep/ .ivu-modal {
-            width: 740px !important;
             min-height: 580px;
         }
 
@@ -508,15 +450,6 @@
                 @include overflow_tip(100%);
             }
         }
-
-        & /deep/ .ivu-modal-header {
-            padding: 12px 30px;
-        }
-
-        & /deep/ .ivu-modal-close {
-            top: 7px;
-        }
-
         & /deep/ .ivu-modal-body {
             padding: 0;
             position: relative;
@@ -535,11 +468,18 @@
             text-align: left;
             max-height: 600px;
             min-height: 240px;
-            overflow: auto;
 
             /deep/ .ivu-form {
                 @include block_outline();
                 margin: 0 auto;
+                .ivu-form-item-label {
+                    font-size: 14px;
+                    color: #666666 !important;
+                    padding: 0 0 5px 0;
+                }
+                .ivu-form-item-content {
+                    line-height: 100%;
+                }
             }
 
             /deep/ .ivu-input-wrapper{
@@ -561,30 +501,65 @@
                 font-size: $font_size_14px;
             }
 
+            .label-title {
+                font-size: 14px;
+                color: #333333;
+                line-height: 22px;
+            }
+
+            .label-name {
+                font-size: 14px;
+                color: #666666;
+                line-height: 22px;
+            }
+
             .padding-bottom{
                 padding-bottom: 10px;
             }
-
-            .split-line{
-                border-top: 1px dashed $color_979797_020;
-                padding-bottom: 20px;
-            }
-
             .red-span{
                 color: $color_red;
             }
+            /**
+                分割线样式
+            */
+            .divider-header {
+                margin: 20px 0;
+                display: table;
+                position: relative;
+                text-align: center;
+                width: 100%;
 
+                span {
+                    white-space: nowrap;
+                    margin: 0 20px;
+                    font-size: 14px;
+                    color: #333333;
+                }
+                &:before {
+                    display: table-cell;
+                    position: relative;
+                    content: "";
+                    border-top: 1px dashed #E1E1E1;
+                    width: 50%;
+                    transform: translateY(50%);
+                }
+                &:after {
+                    display: table-cell;
+                    position: relative;
+                    content: "";
+                    border-top: 1px dashed #E1E1E1;
+                    width: 50%;
+                    transform: translateY(50%);
+                }
+            }
+            .form-placeholder {
+                height: 77px;
+            }
         }
     }
 
     .span-yellow{
         color: $color_yellow !important;
-    }
-
-    /deep/ .el-table {
-        th {
-            padding: 7px 0;
-        }
     }
 
 </style>

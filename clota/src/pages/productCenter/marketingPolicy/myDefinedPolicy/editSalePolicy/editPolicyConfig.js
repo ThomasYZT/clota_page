@@ -39,6 +39,11 @@ export const selectSaleChannelColumn = [
         minWidth : 120,
         field : 'channelNames'
     },
+    {
+        title : 'operate', // 操作
+        minWidth : 120,
+        field : ''
+    }
 ];
 
 // 销售渠道表头-查看

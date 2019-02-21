@@ -2519,4 +2519,6 @@ export default {
     'S015' : '名称重复',
     'productClassifiction' : '产品类型',
     'quotaAllowance' : '配额余量',
+    'everydayQuota' : '限制每日配额',
+    'totalQuota' : '限制配额总量',
 };
