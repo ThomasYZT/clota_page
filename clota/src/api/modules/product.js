@@ -85,5 +85,11 @@ export default {
     //删除产品标签，做使用校验
     'deleteProductTags' : '/product/deleteProductTags',
     //删除产品类别，做使用校验
-    'deletedProductTagType' : '/product/deletedProductTagType'
+    'deletedProductTagType' : '/product/deletedProductTagType',
+    //获取销售政策下使用到的产品
+    'getProductsByPolicyId' : '/salePolicy/getProductsByPolicyId',
+    //获取销售政策地下使用到的渠道
+    'getSaleChannelsByPolicyId' : '/salePolicy/getSaleChannelsByPolicyId',
+    //获取配额余量变化数据
+    'getQuotaChanges' : '/salePolicy/getQuotaChanges',
 };

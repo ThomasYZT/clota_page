@@ -9,20 +9,30 @@
                         :before-router-list="beforeRouterList"></breadCrumbHead>
         <div class="content">
             <div class="title">
-                <span>{{$t('colonSetting', { key : '销售政策名称' })}} {{$t('10周年圆庆')}}</span>
+                <span>{{$t('colonSetting', { key : '销售政策名称' })}} {{$t(policyItem.name)}}</span>
             </div>
             <div class="filter-head">
                 <i-row>
                     <i-col span="6">
                         <span>选择产品</span>
-                        <Select v-model="params.productId" style="width:180px">
-                            <Option v-for="item in productList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        <Select v-model="params.productId"
+                                transfer
+                                style="width:180px"
+                                @on-change="queryList">
+                            <Option v-for="item in productList"
+                                    :value="item.id"
+                                    :key="item.id">{{ item.productName }}</Option>
                         </Select>
                     </i-col>
                     <i-col span="6">
                         <span>选择渠道</span>
-                        <Select v-model="params.channelId" style="width:180px">
-                            <Option v-for="item in channelsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        <Select v-model="params.channelId"
+                                transfer
+                                style="width:180px"
+                                @on-change="queryList">
+                            <Option v-for="item in channelsList"
+                                    :value="item.partnerId"
+                                    :key="item.partnerId">{{ item.channelName }}</Option>
                         </Select>
                     </i-col>
                 </i-row>
@@ -30,7 +40,7 @@
             <div class="time-filter">
                 <div class="left-board">
                     <span class="label-title">{{$t('colonSetting', { key : $t('配额限制方式') })}}</span>
-                    <span class="label-name">{{'限制每日配额'}}</span>
+                    <span class="label-name">{{$t(quotaType)}}</span>
                 </div>
                 <div class="right-board">
                     <!--时间范围选择-->
@@ -55,16 +65,28 @@
             </div>
             <div class="table-wrapper">
                 <table-com
+                    v-if="params.productId && params.channelId"
                     :table-com-min-height="500"
                     :auto-height="true"
                     :column-data="columnData"
                     :table-data="tableData"
                     :border="true"
-                    :show-pagination="true"
+                    :show-pagination="false"
                     :page-no-d.sync="params.pageNo"
                     :page-size-d.sync="params.pageSize"
                     :total-count="totalCount"
                     @query-data="queryList">
+                    <el-table-column
+                        slot="column1"
+                        slot-scope="row"
+                        :label="row.title"
+                        :width="row.width"
+                        :min-width="row.minWidth">
+                        <template slot-scope="scope">
+                            <span>{{Number(scope.row.initQuota ? scope.row.initQuota : 0) -
+                                Number(scope.row.restQuota ? scope.row.restQuota : 0)}}</span>
+                        </template>
+                    </el-table-column>
                 </table-com>
             </div>
             <!-- 配额调配器 -->
@@ -79,6 +101,7 @@
     import tableCom from '@/components/tableCom/tableCom';
     import quotaController from './components/quotaController';
     import { quotaAllowanceHead } from './headConfig';
+    import ajax from '@/api/index';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -101,8 +124,8 @@
                 policyItem : {},
                 //查询条件参数
                 params : {
-                    pageNo : 1,
-                    pageSize : 10,
+                    // pageNo : 1,
+                    // pageSize : 10,
                     productId : '',
                     channelId : '',
                 },
@@ -120,8 +143,41 @@
                 tableData : [],
                 //表格数据总条数
                 totalCount : 0,
-
+                //配额限制方式
+                quotaType : ''
             };
+        },
+        computed : {
+            //获取日期信息
+            getDateInfo () {
+                if (this.timeType === 'week') {//近7天数据
+                    return {
+                        startDate : new Date().addDays(-7).format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
+                    };
+                } else if (this.timeType === 'month') {//近30天数据
+                    return {
+                        startDate : new Date().addDays(-30).format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
+                    };
+                } else if (this.timeType === 'year') {//本年数据
+                    let year = String(new Date().getFullYear());
+                    return {
+                        startDate : new Date(year).format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
+                    };
+                } else if (this.timeType === 'autoDefTime') {//自定义时间范围
+                    return {
+                        startDate : this.autoDefTime[0] ? this.autoDefTime[0].format('yyyy-MM-dd') : '',
+                        endDate : this.autoDefTime[1] ? this.autoDefTime[1].format('yyyy-MM-dd') : '',
+                    };
+                } else {
+                    return {
+                        startDate : new Date().addDays(-7).format('yyyy-MM-dd'),
+                        endDate : new Date().format('yyyy-MM-dd'),
+                    };
+                }
+            },
         },
         methods : {
             /**
@@ -131,6 +187,8 @@
             getParams (params) {
                 if (params && params.info) {
                     this.policyItem = params.info;
+                    this.getProductsByPolicyId();
+                    this.getSaleChannelsByPolicyId();
                 } else {
                     this.$router.push({
                         name : 'marketingPolicy'
@@ -144,23 +202,63 @@
             changeTimeType (timeType) {
                 this.autoDefTIme = [];
                 this.timeType = timeType;
-                this.$emit('on-change', this.getDateInfo);
+                this.queryList();
             },
             /**
              * 自定义查看时间范围
              */
             changeDateCustom () {
                 this.timeType = 'autoDefTime';
+                this.queryList();
             },
             /**
              * 查询表格数据
              */
             queryList () {
-                this.tableData = [
-                    {},{},{},{},{},{},{},{},{},{},
-                ];
-                this.totalCount = 24;
-            }
+                ajax.post('getQuotaChanges', {
+                    policyId : this.policyItem.id,
+                    startDate : new Date(this.getDateInfo.startDate).format('yyyy-MM-dd'),
+                    endDate : new Date(this.getDateInfo.endDate).format('yyyy-MM-dd'),
+                    ...this.params,
+                }).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
+                        this.quotaType = res.data ? res.data.quotaType : '';
+                    } else {
+                        this.tableData = [];
+                    }
+                });
+            },
+            /**
+             * 根据销售政策id查询销售政策下使用到的产品
+             */
+            getProductsByPolicyId () {
+                ajax.post('getProductsByPolicyId', {
+                    policyId : this.policyItem.id,
+                }).then(res => {
+                    if (res.success) {
+                        this.productList = res.data ? res.data : [];
+                        this.params.productId = this.productList[0].id;
+                    } else {
+                        this.productList = [];
+                    }
+                });
+            },
+            /**
+             * 根据销售政策id查询销售政策下使用到的渠道
+             */
+            getSaleChannelsByPolicyId () {
+                ajax.post('getSaleChannelsByPolicyId', {
+                    policyId : this.policyItem.id,
+                }).then(res => {
+                    if (res.success) {
+                        this.channelsList = res.data ? res.data : [];
+                        this.params.channelId = this.channelsList[0].partnerId;
+                    } else {
+                        this.channelsList = [];
+                    }
+                });
+            },
         }
     };
 </script>
