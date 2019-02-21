@@ -438,6 +438,7 @@
                         id : item.id,
                         productId : item.productId,
                         productName : item.productName,
+                        standardPrice : item.standardPrice,
                         quotaType : item.quotaType,
                         totalQuota : item.totalQuota,
                         sharedQuota : item.sharedQuota,

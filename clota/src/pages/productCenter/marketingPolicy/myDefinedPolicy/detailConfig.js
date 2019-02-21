@@ -17,14 +17,14 @@ export const productColumn = [
         field : 'settlePrice'
     },
     {
-        title : 'stockTypeMod', // 限制库存类型
+        title : '限制配额方式', // 限制配额方式
         minWidth : 130,
-        field : 'stockType'
+        field : 'quotaType'
     },
     {
-        title : 'limitStockNum', // 限制库存数量
+        title : '配额数量', // 配额数量
         minWidth : 130,
-        field : 'stockType'
+        field : 'totalQuota'
     },
     {
         title : 'status', // 状态

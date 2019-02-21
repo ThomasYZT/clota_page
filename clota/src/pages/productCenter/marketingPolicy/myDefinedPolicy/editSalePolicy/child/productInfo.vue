@@ -29,7 +29,7 @@
                                 :width="row.width"
                                 :min-width="row.minWidth">
                                 <template slot-scope="scope">
-                                    {{$t(scope.row.stockType)}}
+                                    {{scope.row.quotaType ? $t(scope.row.quotaType) : '-'}}
                                 </template>
                             </el-table-column>
                             <el-table-column

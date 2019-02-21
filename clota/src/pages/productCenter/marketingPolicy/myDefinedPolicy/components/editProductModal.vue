@@ -207,6 +207,7 @@
                     productId : '',//"产品ID",
                     productName : '',//"产品名称",
                     settlePrice : '',//单价
+                    standardPrice : '',//"景区成本价",
                     itemRule : [],//分账设置数据 {orgId: "",parkName: "",subPrice: 0 }
                     quotaType : '',//配额限制方式
                     totalQuota : '',//产品配额数量
@@ -313,6 +314,7 @@
                         this.chosedProductInfo = this.productSelectList.find( item => val === item.id );
                         if (this.chosedProductInfo && this.chosedProductInfo.id) {
                             this.formData.productName = this.chosedProductInfo.productName;
+                            this.formData.standardPrice = this.chosedProductInfo.standardPrice;
                             this.findProductById(this.chosedProductInfo);
                         }
                     }

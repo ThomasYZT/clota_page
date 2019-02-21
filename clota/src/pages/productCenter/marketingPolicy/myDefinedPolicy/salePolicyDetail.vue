@@ -174,7 +174,7 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        {{scope.row.stockType ? $t(scope.row.stockType) : '-' | contentFilter}}
+                                        {{scope.row.quotaType ? $t(scope.row.quotaType) : '-'}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -185,8 +185,7 @@
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
-                                        <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
-                                        <span v-else>{{scope.row.stockNum | contentFilter}}</span>
+                                        <span>{{scope.row.totalQuota | contentFilter}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column

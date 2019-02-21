@@ -16,9 +16,9 @@ export const productColumn = [
         minWidth : 130,
         field : 'settlePrice'
     }, {
-        title : 'stockType', // 限制库存
+        title : '限制配额方式', // 限制配额方式
         minWidth : 130,
-        field : 'stockType'
+        field : 'quotaType'
     },
     {
         title : 'operate', // 操作
