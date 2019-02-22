@@ -2522,4 +2522,6 @@ export default {
     'everydayQuota' : '限制每日配额',
     'totalQuota' : '限制配额总量',
     'PD001' : '产品名称重复',
+    'editPolicy.everyday' : '每日',
+    'editPolicy.total' : '总量',
 };

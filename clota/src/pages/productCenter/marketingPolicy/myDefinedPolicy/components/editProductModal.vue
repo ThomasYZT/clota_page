@@ -34,7 +34,7 @@
                         <i-col span="12">
                             <!--选择产品-->
                             <FormItem :label="$t('chooseProduct')" prop="productId">
-                                <template v-if="type === 'check'">
+                                <template v-if="type !== 'add'">
                                     <Input :value="formData.productName"
                                            disabled
                                            placeholder=""/>
@@ -84,16 +84,20 @@
                                 </Select>
                             </FormItem>
                         </i-col>
-                        <i-col span="12">
-                            <!-- 占位符 -->
-                            <div class="form-placeholder"></div>
-                        </i-col>
+                    </i-row>
+                    <i-row>
                         <i-col span="12">
                             <!--产品配额数量-->
                             <FormItem :label="$t('产品配额数量')" prop="totalQuota">
                                 <Input v-model.trim="formData.totalQuota"
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
+                                <Tooltip transfer placement="right">
+                                    <i class="iconfont icon-note"></i>
+                                    <div slot="content">
+                                        <p style="width: 100px;">说明：产品配额数量是指该产品在本销售政策中的配额总量或每日配额数量。</p>
+                                    </div>
+                                </Tooltip>
                             </FormItem>
                         </i-col>
                         <i-col span="12">
@@ -102,6 +106,12 @@
                                 <Input v-model.trim="formData.sharedQuota"
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
+                                <Tooltip transfer placement="right">
+                                    <i class="iconfont icon-note"></i>
+                                    <div slot="content">
+                                        <p style="width: 100px;">说明：共享配额数量是指各个销售渠道（不含全民营销）在消耗完专享配额之后，可继续消耗的共享配额部分。</p>
+                                    </div>
+                                </Tooltip>
                             </FormItem>
                         </i-col>
                         <i-col span="12">
@@ -110,6 +120,12 @@
                                 <Input v-model.trim="formData.marketQuota"
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
+                                <Tooltip transfer placement="right">
+                                    <i class="iconfont icon-note"></i>
+                                    <div slot="content">
+                                        <p style="width: 100px;">说明：全民营销配额数量指定给全民营销所有销售用户的配额。</p>
+                                    </div>
+                                </Tooltip>
                             </FormItem>
                         </i-col>
                         <i-col span="12">
@@ -490,7 +506,7 @@
                     padding: 0 0 5px 0;
                 }
                 .ivu-form-item-content {
-                    line-height: 100%;
+                    line-height: 29px;
                 }
             }
 
@@ -563,9 +579,6 @@
                     width: 50%;
                     transform: translateY(50%);
                 }
-            }
-            .form-placeholder {
-                height: 77px;
             }
         }
     }

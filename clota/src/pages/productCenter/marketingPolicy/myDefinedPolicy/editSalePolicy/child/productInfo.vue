@@ -23,13 +23,25 @@
                             :table-data="formData.quotaData"
                             :border="false">
                             <el-table-column
+                                slot="column2"
+                                slot-scope="row"
+                                :label="row.title"
+                                :width="row.width"
+                                :min-width="row.minWidth">
+                                <template slot-scope="scope">
+                                    {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                    scope.row.totalQuota : '-'}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column
                                 slot="column3"
                                 slot-scope="row"
                                 :label="row.title"
                                 :width="row.width"
                                 :min-width="row.minWidth">
                                 <template slot-scope="scope">
-                                    {{scope.row.quotaType ? $t(scope.row.quotaType) : '-'}}
+                                    {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                        scope.row.sharedQuota : '-'}}
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -37,6 +49,18 @@
                                 slot-scope="row"
                                 :label="row.title"
                                 :width="row.width"
+                                :min-width="row.minWidth">
+                                <template slot-scope="scope">
+                                    {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                    scope.row.marketQuota : '-'}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                slot="column5"
+                                slot-scope="row"
+                                :label="row.title"
+                                :width="row.width"
+                                fixed="right"
                                 :min-width="row.minWidth">
                                 <template slot-scope="scope">
                                     <ul class="operate-list">
