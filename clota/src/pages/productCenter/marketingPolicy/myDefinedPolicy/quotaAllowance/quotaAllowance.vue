@@ -90,7 +90,7 @@
                 </table-com>
             </div>
             <!-- 配额调配器 -->
-            <quotaController></quotaController>
+            <quotaController :quotaType="quotaType"></quotaController>
         </div>
     </div>
 </template>
