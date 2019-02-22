@@ -117,6 +117,7 @@
                 }).then(res => {
                     if (!res.success) {
                         this.changeValue(false);
+                        clearInterval(this.timer);
                         this.$Message.error(this.$t('cancelTradeFail'));
                     } else {
                         this.$emit('cancel-success');
