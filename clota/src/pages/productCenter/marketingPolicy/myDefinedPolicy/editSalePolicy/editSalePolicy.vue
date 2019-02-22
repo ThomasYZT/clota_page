@@ -437,7 +437,7 @@
                     return {
                         productId : item.productId,
                         channelId : item.channelId,
-                        quotaType : item.everyday,
+                        quotaType : item.quotaType,
                         vipQuota : item.vipQuota,
                     }
                 });
