@@ -182,6 +182,14 @@
              */
             initData (formData) {
                 Object.assign(this.formData, formData);
+                //初始化每个产品的专享配额总数
+                this.formData.quotaData.forEach(item => {
+                    item.toTalExclusiveQuota = this.formData.quotaChannelData.filter(quotaItem => {
+                        return quotaItem.productId === item.productId;
+                    }).reduce((prev, next) => {
+                        return Number(prev.vipQuota) + Number(next.vipQuota);
+                    });
+                });
             },
             /**
              * 配额管理

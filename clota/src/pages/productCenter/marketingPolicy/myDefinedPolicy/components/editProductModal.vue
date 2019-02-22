@@ -34,14 +34,13 @@
                         <i-col span="12">
                             <!--选择产品-->
                             <FormItem :label="$t('chooseProduct')" prop="productId">
-                                <template v-if="type === 'modify'">
+                                <template v-if="type === 'check'">
                                     <Input :value="formData.productName"
                                            disabled
                                            placeholder=""/>
                                 </template>
                                 <template v-else>
                                     <Select v-model="formData.productId"
-                                            :disabled="type === 'check'"
                                             transfer
                                             :placeholder="$t('selectField', {msg: ''})"
                                             @on-change="changeChooseProduct">
@@ -165,8 +164,13 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
-            <Button type="ghost" class="ivu-btn-90px" @click="cancel">{{$t('cancel')}}</Button>
+            <template v-if="type !=='check'">
+                <Button type="primary" class="ivu-btn-90px" @click="confirm">{{$t('confirm')}}</Button>
+                <Button type="ghost" class="ivu-btn-90px" @click="cancel">{{$t('cancel')}}</Button>
+            </template>
+            <template v-else>
+                <Button type="ghost" class="ivu-btn-90px" @click="cancel">{{$t('close')}}</Button>
+            </template>
         </div>
     </Modal>
 </template>
@@ -385,6 +389,7 @@
              * @param title
              * @param productList 所有产品列表数据
              * @param chosedProducts 已添加的产品列表数据
+             * @param quotaChannelData 配额管理数据
              * @param confirmCallback
              * @param cancelCallback
              */
@@ -392,20 +397,25 @@
                 this.$refs.formValidate.resetFields();
                 this.title = title;
                 this.type = type;
-                this.productSelectList = productList.filter(item => {
-                    return chosedProducts.findIndex(choesedProduct => {
-                        return choesedProduct.productId === item.id;
-                    }) <= -1;
-                });
-                if (data) {
-                    this.formData = defaultsDeep({}, data);
-                    this.formData.settlePrice = this.formData.settlePrice.toString();
-                    if (data.productId) {
-                        this.chosedProductInfo = data;
-                        this.chosedProductInfo.id = data.productId;
-                        this.changeChooseProduct(data.productId, true);
+                if (this.type === 'add') {
+                    //过滤已添加的产品
+                    this.productSelectList = productList.filter(item => {
+                        return chosedProducts.findIndex(choesedProduct => {
+                            return choesedProduct.productId === item.id;
+                        }) <= -1;
+                    });
+                } else {
+                    if (data) {
+                        this.formData = defaultsDeep({}, data);
+                        this.formData.settlePrice = this.formData.settlePrice.toString();
+                        if (data.productId) {
+                            this.chosedProductInfo = data;
+                            this.chosedProductInfo.id = data.productId;
+                            this.changeChooseProduct(data.productId, true);
+                        }
                     }
                 }
+
                 if (confirmCallback && typeof confirmCallback == 'function') {
                     this.confirmCallback = confirmCallback;
                 }

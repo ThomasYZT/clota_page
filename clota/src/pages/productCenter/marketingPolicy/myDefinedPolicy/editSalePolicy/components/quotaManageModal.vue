@@ -86,6 +86,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
+                                v-if="type !== 'check'"
                                 slot="column4"
                                 :label="row.title"
                                 :prop="row.field"
@@ -137,6 +138,8 @@
         },
         data () {
             return {
+                //模态框类型状态 check-查看 modify-修改 add-新增
+                type : '',
                 //是否显示模态框
                 visible : false,
                 //销售渠道组数据
@@ -145,8 +148,6 @@
                 chosedChannelId : '',
                 //销售渠道列表
                 channelList : [],
-                //配额管理表格表头配置
-                columnData : quotaManageHead,
                 //表格数据
                 tableData : [],
                 //渠道配额管理数据
@@ -155,13 +156,27 @@
                 validateVipQuota : validateVipQuota
             };
         },
+        computed : {
+            //配额管理表格表头配置
+            columnData () {
+                if (this.type === 'check') {
+                    return quotaManageHead.filter(item => {
+                        return item.title !== 'operate';
+                    });
+                } else {
+                    return quotaManageHead;
+                }
+            }
+        },
         methods : {
             /**
              * 显示模态框
              * @param channelGroupData 销售渠道组数据
              * @param quotaChannelData 额管理数据
              */
-            show ({channelGroupData, quotaChannelData}) {
+            show ({channelGroupData, quotaChannelData, type}) {
+                //设置模态框类型状态
+                this.type = type;
                 //获取销售分组下销售渠道列表数据
                 this.channelGroupData = channelGroupData;
                 this.channelList = channelGroupData.channelModels ? channelGroupData.channelModels : [];

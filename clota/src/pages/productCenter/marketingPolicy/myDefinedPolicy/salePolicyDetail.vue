@@ -206,6 +206,19 @@
                                         <span v-if="scope.row.productIsDeleted === 'true'">{{$t('deletedField', { field : '' })}}</span>
                                     </template>
                                 </el-table-column>
+                                <el-table-column
+                                    slot="column6"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <ul class="operate-list">
+                                            <li @click="checkProduct(scope)">{{$t('check')}}</li><!--查看-->
+                                        </ul>
+                                    </template>
+                                </el-table-column>
                             </table-com>
                         </div>
                     </Form-item>
@@ -235,6 +248,18 @@
                                             {{item.channelName}}
                                             <span class="disable" v-if="item.status !== 'valid'">({{$t('unStarting')}})</span>
                                         </span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    slot="column2"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <ul class="operate-list">
+                                            <li :class="{ disabled : !scope.row.channelModels || scope.row.channelModels.length === 0 }"
+                                                @click="checkQuotaManage(scope.row)">{{$t('查看配额管理')}}</li><!--配额管理-->
+                                        </ul>
                                     </template>
                                 </el-table-column>
                             </table-com>
@@ -354,6 +379,13 @@
 
         <!-- 审核确认弹窗 -->
         <auditConfirmModal ref="auditConfirmModal"></auditConfirmModal>
+
+        <!-- 配额管理模态框 -->
+        <quotaManageModal ref="quotaManageModal"
+                          :quotaData="quotaData"></quotaManageModal>
+
+        <!-- 产品信息模态框 -->
+        <editProductModal ref="editProductModal"></editProductModal>
     </div>
 </template>
 
@@ -364,6 +396,8 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import addRemarkModal from '../../components/addRemarkModal.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
+    import editProductModal from './components/editProductModal';
+    import quotaManageModal from './editSalePolicy/components/quotaManageModal';
     import { productColumn, saleChannelColumn, marketingColumn, refundColumn } from './detailConfig';
     import ajax from '@/api/index';
     import auditConfirmModal from './components/auditConfirmModal';
@@ -376,7 +410,9 @@
             titleTemp,
             tableCom,
             addRemarkModal,
-            auditConfirmModal
+            auditConfirmModal,
+            quotaManageModal,
+            editProductModal
         },
         data () {
             return {
@@ -407,6 +443,11 @@
                 allocationId : '',
                 //是否有全名营销模块
                 hasMarket : 'false',
+                //产品列表数据
+                quotaData : [],
+                //配额管理数据
+                quotaChannelData : [],
+
             };
         },
         computed : {
@@ -495,13 +536,56 @@
                 }).then(res => {
                     if (res.success) {
                         this.detail = res.data || {};
+                        //初始化产品配额数据
+                        this.initQuotaData();
                     } else {
                         this.detail = {};
                         this.$Message.error(res.message || this.$t('fail'));
                     }
                 });
             },
-
+            /**
+             *  初始化产品配额数据
+             */
+            initQuotaData () {
+                //初始化产品列表数据
+                this.quotaData = this.detail.policyItems.map( item => {
+                    return {
+                        id : item.id,
+                        allocationId : item.allocationId,
+                        productId : item.productId,
+                        productName : item.productName,
+                        standardPrice : item.standardPrice,
+                        quotaType : item.quotaType,
+                        totalQuota : item.totalQuota,
+                        sharedQuota : item.sharedQuota,
+                        settlePrice : item.settlePrice,
+                        marketQuota : item.marketQuota,
+                        itemRule : item.itemRule ? JSON.parse(item.itemRule) : [],
+                    }
+                });
+                //初始化配额管理数据
+                this.quotaChannelData = this.detail.policyChannels.map( item => {
+                    return item.quotaChannelModels;
+                }).reduce((prev, next) => {
+                    return prev.concat(next);
+                }).map(item => {
+                    return {
+                        productId : item.productId,
+                        channelId : item.channelId,
+                        quotaType : item.everyday,
+                        vipQuota : item.vipQuota,
+                    }
+                });
+                //初始化每个产品的专享配额总数
+                this.quotaData.forEach(item => {
+                    item.toTalExclusiveQuota = this.quotaChannelData.filter(quotaItem => {
+                        return quotaItem.productId === item.productId;
+                    }).reduce((prev, next) => {
+                        return Number(prev.vipQuota) + Number(next.vipQuota);
+                    });
+                });
+            },
             //显示备注弹窗
             showRemarkModal () {
                 this.$refs.addRemarkModal.show({
@@ -547,6 +631,29 @@
                     }
                 })
             },
+            /**
+             * 查看产品数据
+             * @param {object} scope 行数据
+             */
+            checkProduct (scope) {
+                this.$refs.editProductModal.show({
+                    data : this.quotaData[scope.$index],
+                    title : this.$t('check') + this.$t('product'),
+                    type : 'check',
+                    quotaChannelData : this.quotaChannelData
+                });
+            },
+            /**
+             * 查看配额管理信息
+             * @param {object} data
+             */
+            checkQuotaManage (data) {
+                this.$refs.quotaManageModal.show({
+                    type : 'check',
+                    channelGroupData : data,
+                    quotaChannelData : this.quotaChannelData,
+                });
+            }
         },
     };
 </script>

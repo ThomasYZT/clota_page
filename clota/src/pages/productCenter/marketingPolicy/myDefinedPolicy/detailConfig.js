@@ -30,6 +30,11 @@ export const productColumn = [
         title : 'status', // 状态
         minWidth : 100,
         field : 'productStatus'
+    },
+    {
+        title : 'operate', // 操作
+        minWidth : 100,
+        field : ''
     }
 ];
 
@@ -103,13 +108,18 @@ export const myDistributeConfig = [
 export const saleChannelColumn = [
     {
         title : 'chooseSaleChannelGroup', // 选择销售渠道分组
-        width : 200,
+        minWidth : 100,
         field : 'groupName'
     },
     {
         title : 'selectedSaleChannel', // 已选中的销售渠道
-        minWidth : 300,
+        minWidth : 500,
         field : 'groupchannels'
+    },
+    {
+        title : 'operate', // 操作
+        minWidth : 100,
+        field : ''
     }
 ];
 
