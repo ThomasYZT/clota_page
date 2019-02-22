@@ -2282,7 +2282,7 @@ export default {
     'sureToDeleteVisitorInfo' : '确认删除游客信息？',
     'MostBuy' : '最多购买',
     'boughtGoods' : '购买的产品',
-    'ge' : '个',
+    'ge' : '张',
     'orderBatchAuditPass' : '订单已批量审核通过',
     'orderBatchAuditReject' : '订单已批量驳回',
     'marketLevel' : '营销级别',
@@ -2514,5 +2514,6 @@ export default {
     'outOfStock' : '缺货',
     'defaultRefundFee' : '默认退票手续费率为0',
     'productClassifiction' : '产品类型',
-    'entityNotExist' : '实体卡不存在'
+    'entityNotExist' : '实体卡不存在',
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}'
 };

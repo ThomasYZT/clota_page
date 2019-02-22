@@ -14,14 +14,19 @@
                   :rules="ruleValidate"
                   :label-width="lang === 'zh-CN' ? 180 : 220">
                 <div class="ivu-form-item-wrap show-item">
-                    <Form-item :label="accountInfo.accountName + $t('PrincipalAccBalance') + ':'">
+                    <Form-item :label="$t('account')+ '：'">
+                        {{accountInfo.accountName}}
+                    </Form-item>
+                </div>
+                <div class="ivu-form-item-wrap show-item">
+                    <Form-item :label="$t('PrincipalAccBalance') + '：'">
                       <span class="yellow-color">
                         {{accountInfo.corpusBalance ? accountInfo.corpusBalance.toCurrency() : '0'}}
                     </span> {{(accountInfo.accountDefineId === '1' || accountInfo.accountDefineId === '4') ? $t('yuan') : $t(accountInfo.unit)}}
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap show-item">
-                    <Form-item :label="$t('storedValueRatio') + ':'">
+                    <Form-item :label="$t('storedValueRatio') + '：'">
                         <span class="yellow-color">{{accountInfo.rateNumerator}}</span>
                         <span class="split-line">:</span>
                         <span class="yellow-color">{{accountInfo.rateDenominator}}</span>

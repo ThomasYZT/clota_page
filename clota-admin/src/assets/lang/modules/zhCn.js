@@ -626,5 +626,8 @@ export default {
     'expiredVerify' : '过期核销',
     'cannotDelte' : '无法删除',
     'cannotDeleteReason' : '原因：收付款尚未结清或会员储值余额未清零',
-    'hint' : '提示'
+    'hint' : '提示',
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}',
+    'overDueVarify' : '过期系统自动核销',
+    'amount' : '数量',
 };

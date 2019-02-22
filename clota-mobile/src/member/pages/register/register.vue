@@ -533,5 +533,9 @@
             height: 100%;
             border-bottom: 1px solid #F5F5F5;
         }
+
+        /deep/ .vux-datetime{
+            border-bottom: 0!important;
+        }
     }
 </style>
