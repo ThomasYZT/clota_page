@@ -186,9 +186,9 @@
                 this.formData.quotaData.forEach(item => {
                     item.toTalExclusiveQuota = this.formData.quotaChannelData.filter(quotaItem => {
                         return quotaItem.productId === item.productId;
-                    }).reduce((prev, next) => {
-                        return Number(prev.vipQuota) + Number(next.vipQuota);
-                    });
+                    }).reduce((sum, next) => {
+                        return sum + Number(next.vipQuota ? next.vipQuota : 0);
+                    }, 0);
                 });
             },
             /**

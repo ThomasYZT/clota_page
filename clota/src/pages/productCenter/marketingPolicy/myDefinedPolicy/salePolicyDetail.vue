@@ -573,7 +573,7 @@
                     return {
                         productId : item.productId,
                         channelId : item.channelId,
-                        quotaType : item.everyday,
+                        quotaType : item.quotaType,
                         vipQuota : item.vipQuota,
                     }
                 });
@@ -581,9 +581,9 @@
                 this.quotaData.forEach(item => {
                     item.toTalExclusiveQuota = this.quotaChannelData.filter(quotaItem => {
                         return quotaItem.productId === item.productId;
-                    }).reduce((prev, next) => {
-                        return Number(prev.vipQuota) + Number(next.vipQuota);
-                    });
+                    }).reduce((sum, next) => {
+                        return sum + Number(next.vipQuota ? next.vipQuota : 0);
+                    }, 0);
                 });
             },
             //显示备注弹窗
