@@ -38,6 +38,17 @@
             <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
         </div>
 
+
+        <confirm v-model="confirmShow"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false"
+                 @on-confirm="confirmPayResult">
+            <p style="text-align:center;">{{ $t('下单失败，退还金额请联系工作人员。') }}</p>
+        </confirm>
+
     </div>
 </template>
 
@@ -67,6 +78,8 @@
                 },
                 //计时器
                 intervalId : null,
+                //确认提示框是否显示
+                confirmShow : false
             };
         },
         methods : {
@@ -127,7 +140,6 @@
                 }).then(res => {
                     if (res.success && (res.data !== 'doing' && res.data !== 'unknown') ) {
                         clearInterval(this.intervalId);
-                        //alert("查询支付状态")
                         this.$router.push({
                             name : 'marketingCreateOrderPayResult',
                             params : {
@@ -135,6 +147,10 @@
                                 payFormData : this.payFormData
                             }
                         });
+                    } else if (res.code === 'OD009') {
+                        clearInterval(this.intervalId);
+                        this.intervalId = '';
+                        this.confirmShow = true;
                     }
                 });
             },
@@ -169,6 +185,19 @@
                     clearInterval(this.intervalId);
                     this.intervalId = null;
                 }
+            },
+            /**
+             * 错误提示确认
+             */
+            confirmPayResult () {
+                this.confirmShow = false;
+                this.$router.push({
+                    name : 'marketingCreateOrderPayResult',
+                    params : {
+                        status : 'fail',
+                        payFormData : this.payFormData
+                    }
+                });
             }
         },
         mounted () {

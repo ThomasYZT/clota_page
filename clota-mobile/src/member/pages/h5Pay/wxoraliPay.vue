@@ -20,6 +20,15 @@
             <!-- 返回账户 -->
             <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
         </div>
+        <confirm v-model="confirmShow"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false"
+                 @on-confirm="confirmPayResult">
+            <p style="text-align:center;">{{ $t('支付失败，如未退款，请联系工作人员。') }}</p>
+        </confirm>
     </div>
 </template>
 
@@ -42,7 +51,9 @@
                 //定时器
                 timer : '',
                 //是否能返回账户页面
-                canBackToAccount : false
+                canBackToAccount : false,
+                //确认提示框是否显示
+                confirmShow : false
             };
         },
         methods : {
@@ -115,9 +126,20 @@
                         clearInterval(this.timer);
                         this.timer = '';
                         this.paySuccess = true;
+                    } else if (res.code === 'OD009') {
+                        clearInterval(this.timer);
+                        this.timer = '';
+                        this.confirmShow = true;
                     }
                 });
             },
+            /**
+             * 错误提示确认
+             */
+            confirmPayResult () {
+                this.confirmShow = false;
+                this.toAccount();
+            }
         },
         computed : {
             ...mapGetters({

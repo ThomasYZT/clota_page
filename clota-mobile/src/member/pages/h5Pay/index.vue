@@ -48,6 +48,16 @@
             <p style="text-align:center;">{{ $t('请关闭无痕模式，然后刷新页面继续付款。') }}</p>
         </confirm>
 
+        <!--充值失败提示框-->
+        <confirm v-model="errConfirmShow"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false"
+                 @on-confirm="confirmPayResult">
+            <p style="text-align:center;">{{ $t('支付失败，如未退款，请联系工作人员。') }}</p>
+        </confirm>
     </div>
 </template>
 
@@ -78,7 +88,9 @@
                 //计时器
                 intervalId : null,
                 //提示模态框是否显示
-                confirmShow : false
+                confirmShow : false,
+                //充值失败提示框
+                errConfirmShow : false
             };
         },
         methods : {
@@ -151,7 +163,6 @@
                 }).then(res => {
                     if (res.success && (res.data !== 'doing' && res.data !== 'unknown') ) {
                         clearInterval(this.intervalId);
-                        //alert("查询支付状态")
                         this.$router.push({
                             name : 'payStatus',
                             params : {
@@ -159,6 +170,10 @@
                                 payFormData : this.payFormData
                             }
                         });
+                    } else if (res.code === 'OD009') {
+                        clearInterval(this.intervalId);
+                        this.intervalId = '';
+                        this.errConfirmShow = true;
                     }
                 });
             },
@@ -180,6 +195,19 @@
              */
             clearIntervalInfo () {
                 clearInterval(this.intervalId);
+            },
+            /**
+             * 错误提示确认
+             */
+            confirmPayResult () {
+                this.errConfirmShow = false;
+                this.$router.push({
+                    name : 'payStatus',
+                    params : {
+                        status : 'fail',
+                        payFormData : this.payFormData
+                    }
+                });
             }
         },
         mounted () {

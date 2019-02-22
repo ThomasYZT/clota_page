@@ -35,7 +35,7 @@
             return {
                 isSuccess : null,
                 status : '',
-                payFormData : {}
+                payFormData : {},
             };
         },
         computed : {
