@@ -25,11 +25,11 @@
                     </div>
                 </div>
 
-                <div class="tags-wrapper">
+                <div class="tags-wrapper" v-if="isTagsShow">
                     <productTag v-for="item in tagsList"
                                 :checkable="!isManaging && item.canCheck"
                                 :closable="isManaging"
-                                :key="item.uid"
+                                :key="item.id"
                                 :name="item.name"
                                 :chosed="item.chosed"
                                 @closeTag="deleteTag"
@@ -91,6 +91,8 @@
                 isManaging : false,
                 //模态框是否显示
                 visible : false,
+                //标签列表是否显示
+                isTagsShow : true,
                 //标签列表
                 tagsList : [],
                 //选择的标签列表
@@ -199,17 +201,27 @@
                     if (res.success) {
                         this.$refs.tagForm.resetFields();
                         this.queryTagDefines(this.chosedTags).then(() => {
-                            // this.chosedTags.push(this.tagsList[this.tagsList.length - 1]);
-                            // this.tagsList.forEach(item => {
-                            //     if (this.chosedTags.find(tag => {
-                            //         return tag.id === item.id;
-                            //     })) {
-                            //         item.chosed = true;
-                            //     } else {
-                            //         item.chosed = false;
-                            //     }
-                            // });
-                            // this.limitControl();
+                            if (this.chosedTags.length < 3) {
+                                let chosedItem = this.tagsList[this.tagsList.length - 1];
+                                this.chosedTags.push({
+                                    id : chosedItem.id,
+                                    name : chosedItem.name,
+                                });
+                                this.tagsList.forEach(item => {
+                                    if (this.chosedTags.find(tag => {
+                                        return tag.id === item.id;
+                                    })) {
+                                        item.chosed = true;
+                                    } else {
+                                        item.chosed = false;
+                                    }
+                                });
+                                this.limitControl();
+                                this.isTagsShow = false;
+                                this.$nextTick(() => {
+                                    this.isTagsShow = true;
+                                });
+                            }
                         });
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                     } else {

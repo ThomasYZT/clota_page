@@ -208,7 +208,6 @@
                 this.formData = formData;
                 this.formData.tags = this.formData.tags.map((item) => {
                     return {
-                        uid : item.id,
                         id : item.tagId,
                         name : item.name,
                     };
