@@ -219,7 +219,7 @@
                         inNum : this.formData.inNum || '',
                         isGroup : this.formData.isGroup || '',
                         printName : this.formData.printName || '',
-                        printPrice : this.formData.printPrice || '',
+                        printPrice : this.formData.printPrice || null,
                         printRemark : this.formData.printRemark || '',
                         printTpl : this.formData.printTpl || '',
                         productName : this.formData.productName || '',
