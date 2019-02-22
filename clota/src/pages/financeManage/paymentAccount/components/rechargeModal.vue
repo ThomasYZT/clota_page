@@ -95,7 +95,7 @@
     import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
-        props : ['row-data','onlineAccountList'],
+        props : ['row-data','onlineAccountList','partner-info'],
         components : {
             loopForPayResult,
             wxQrcode,
@@ -249,7 +249,8 @@
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
-                    paymentChannel : paymentChannel
+                    paymentChannel : paymentChannel,
+                    orgId : this.partnerInfo.peerOrgId
                 }).then(res => {
                     if (res.success && res.data) {
                         if (payType === 'weixin' && paymentChannel === 'zhilian') {

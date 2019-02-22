@@ -53,6 +53,7 @@
 
         <!--充值申请 - 弹窗-->
         <recharge-modal ref="rechargeModal"
+                        :partner-info="currentData"
                         :onlineAccountList="onlineAccountList"
                         @update-list="queryList">
         </recharge-modal>
@@ -88,6 +89,8 @@
                 totalCount : 0,
                 //收款账户列表
                 onlineAccountList : [],
+                //当前操作的合作伙伴数据
+                currentData : {}
             };
         },
         computed : {
@@ -131,6 +134,7 @@
              */
             handleRecharge (scopeRow) {
                 if (!this.canRecharge) return;
+                this.currentData = scopeRow;
                 ajax.post('queryOnlineAccount',{
                     isPlatformAcc : false,
                     orgId : scopeRow.peerOrgId
