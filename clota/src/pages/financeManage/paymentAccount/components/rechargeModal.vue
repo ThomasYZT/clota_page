@@ -199,8 +199,8 @@
              *  确认充值
              */
             confirmRecharge ( params ) {
-                let newWindow = window.open();
-                let paymentChannel = this.onlineAccountList.find(item => item.accountType === payType)['payType'];
+                let newWindow = '';
+                let paymentChannel = this.onlineAccountList.find(item => item.accountType === this.formData.payType)['payType']
                 if (!(this.formData.payType === 'weixin' && paymentChannel === 'zhilian')) {
                     newWindow = window.open();
                 }
