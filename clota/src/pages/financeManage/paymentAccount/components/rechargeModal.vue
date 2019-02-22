@@ -69,8 +69,18 @@
 
         <!--微信二维码支付-->
         <wx-qrcode :pay-link="wxSrc"
-                   v-model="wxPayShow">
+                   :transaction-id="transactionId"
+                   v-model="wxPayShow"
+                   @pay-success="wxPaySuccess"
+                   @pay-fail="wxPayFail"
+                   @pay-unknow="wxPayUnknown">
         </wx-qrcode>
+
+        <notice-modal ref="noticeModal">
+            <span>
+                {{$t('支付结果未知，如果已支付，请联系合作伙伴。')}}
+            </span>
+        </notice-modal>
     </div>
 </template>
 
@@ -82,12 +92,14 @@
     import { mapGetters } from 'vuex';
     import common from '@/assets/js/common';
     import wxQrcode from '@/components/weixinPay/index.vue';
+    import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
         props : ['row-data','onlineAccountList'],
         components : {
             loopForPayResult,
-            wxQrcode
+            wxQrcode,
+            noticeModal
         },
         data () {
             const validateMethod = {
@@ -148,7 +160,7 @@
                 //微信二维码链接
                 wxSrc : '',
                 //微信支付是否显示
-                wxPayShow : false
+                wxPayShow : false,
             };
         },
         watch : {
@@ -239,10 +251,12 @@
                     txnAmt : payMoney,
                     paymentChannel : paymentChannel
                 }).then(res => {
-                    if (res.success) {
+                    if (res.success && res.data) {
                         if (payType === 'weixin' && paymentChannel === 'zhilian') {
                             this.wxPayShow = true;
                             this.wxSrc = res.data.formContent;
+                            this.transactionId = res.data.transactionId;
+                            this.hide();
                         } else {
                             const { href } = this.$router.resolve({
                                 name : 'financeRecharge',
@@ -293,6 +307,30 @@
                 if (status === false) {
                     this.$refs.formValidate.resetFields();
                 }
+            },
+            /**
+             * 微信支付完成
+             */
+            wxPaySuccess () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('success');
+                this.$emit('update-list');
+            },
+            /**
+             * 微信支付失败
+             */
+            wxPayFail () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('fail');
+            },
+            /**
+             * 交易结果未知
+             */
+            wxPayUnknown () {
+                this.$refs.noticeModal.show({
+                    title : this.$t('notice'),
+                    showCancel : false
+                });
             }
         },
         computed : {
