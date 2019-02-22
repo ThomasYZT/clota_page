@@ -200,6 +200,7 @@
                     this.$Message.warning('请添加产品')
                 } else {
                     this.$refs.quotaManageModal.show({
+                        type : 'edit',
                         channelGroupData : channelGroupData,
                         quotaChannelData : this.formData.quotaChannelData,
                     });

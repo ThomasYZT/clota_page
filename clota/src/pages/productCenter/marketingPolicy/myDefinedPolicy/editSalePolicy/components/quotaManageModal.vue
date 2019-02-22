@@ -138,7 +138,7 @@
         },
         data () {
             return {
-                //模态框类型状态 check-查看 modify-修改 add-新增
+                //模态框类型状态 check-查看 edit-编辑
                 type : '',
                 //是否显示模态框
                 visible : false,
