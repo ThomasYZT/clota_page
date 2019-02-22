@@ -2280,7 +2280,7 @@ export default {
     'sureToDeleteVisitorInfo' : 'are you sure to delete the visitor information? ',
     'MostBuy' : 'maximum purchase',
     'boughtGoods' : 'purchased products',
-    'ge' : 'item',
+    'ge' : ' item ',
     'orderBatchAuditPass' : 'the order has been approved in batches',
     'orderBatchAuditReject' : 'order has been bulk rejected',
     'marketLevel' : 'marketing level',
@@ -2511,5 +2511,6 @@ export default {
     'saveWxCardInfoFailure' : 'failed to save the wechat card card face information',
     'outOfStock' : 'out of stock',
     'defaultRefundFee' : 'default refund procedure rate is 0',
-    'productClassifiction' : '产品类型'
+    'productClassifiction' : '产品类型',
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}'
 };
