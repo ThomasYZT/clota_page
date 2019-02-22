@@ -2523,4 +2523,5 @@ export default {
     'quotaAllowance' : '配额余量',
     'everydayQuota' : '限制每日配额',
     'totalQuota' : '限制配额总量',
+    'PD001' : '产品名称重复',
 };
