@@ -209,8 +209,24 @@
              * 确认
              */
             confirm () {
-                this.$emit('updateQuotaChannelData', this.quotaChannelData);
-                this.hide();
+                if (this.validateUnSavedData()) {
+                    this.$emit('updateQuotaChannelData', this.quotaChannelData);
+                    this.hide();
+                } else {
+                    this.$Message.warning("请保存设置");
+                }
+            },
+            /**
+             *  校验是否有为保存的数据
+             */
+            validateUnSavedData () {
+                if (this.tableData.findIndex(item => {
+                    return item.editable;
+                }) > -1) {
+                    return false;
+                } else {
+                    return true;
+                }
             },
             /**
              *  配额变更成可修改状态

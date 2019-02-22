@@ -430,12 +430,21 @@
                     quotaData : [],
                     quotaChannelData : [],
                 };
-                data.policyChannels.forEach(item => {
+                data.policyChannels.forEach( item => {
                     productInfoForm.quotaChannelData = productInfoForm.quotaChannelData.concat(item.quotaChannelModels);
+                });
+                productInfoForm.quotaChannelData = productInfoForm.quotaChannelData.map(item => {
+                    return {
+                        productId : item.productId,
+                        channelId : item.channelId,
+                        quotaType : item.everyday,
+                        vipQuota : item.vipQuota,
+                    }
                 });
                 data.policyItems.forEach( item => {
                     productInfoForm.quotaData.push({
                         id : item.id,
+                        allocationId : item.allocationId,
                         productId : item.productId,
                         productName : item.productName,
                         standardPrice : item.standardPrice,
