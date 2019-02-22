@@ -73,13 +73,13 @@
                    v-model="wxPayShow"
                    @pay-success="wxPaySuccess"
                    @pay-fail="wxPayFail"
-                   @pay-unknow="wxPayUnknown">
+                   @pay-unknow="wxPayUnknown"
+                   @cancel-success="cancelSuccess">
         </wx-qrcode>
 
+        <!--支付错误提示框-->
         <notice-modal ref="noticeModal">
-            <span>
-                {{$t('支付结果未知，如果已支付，请联系合作伙伴。')}}
-            </span>
+            {{$t('支付结果未知，如果已支付，请联系合作伙伴。')}}
         </notice-modal>
     </div>
 </template>
@@ -331,6 +331,13 @@
                     title : this.$t('notice'),
                     showCancel : false
                 });
+            },
+            /**
+             * 交易取消成功
+             */
+            cancelSuccess () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('cancel');
             }
         },
         computed : {

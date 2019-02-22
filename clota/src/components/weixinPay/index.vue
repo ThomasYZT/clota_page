@@ -13,6 +13,9 @@
         <div class="scan-img">
             <img src="../../assets/images/icon-wait-pay.svg" alt="">
         </div>
+        <div class="cancel-area">
+            <Button type="ghost" @click="revocation">{{$t('cancleTrade')}}</Button>
+        </div>
     </Modal>
 </template>
 
@@ -79,6 +82,8 @@
                             }
                         }
                     },3000);
+                } else {
+                    this.revocation();
                 }
             },
             /**
@@ -101,6 +106,21 @@
                 }).finally(() => {
                     this.searchIng = false;
                     this.loopSearchTime -= 3000;
+                });
+            },
+            /**
+             * 撤销
+             */
+            revocation () {
+                ajax.post('revocation',{
+                    transactionId : this.transactionId
+                }).then(res => {
+                    if (!res.success) {
+                        this.changeValue(false);
+                        this.$Message.error(this.$t('cancelTradeFail'));
+                    } else {
+                        this.$emit('cancel-success');
+                    }
                 });
             }
         }
@@ -134,6 +154,10 @@
             @include block_outline($height : 140px);
             text-align: center;
             padding-top: 25px;
+        }
+
+        .cancel-area{
+            text-align: center;
         }
     }
 </style>
