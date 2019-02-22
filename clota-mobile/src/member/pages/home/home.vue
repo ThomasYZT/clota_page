@@ -67,7 +67,7 @@
         created () {
             this.getCardListInfo().then(() => {
                 //判断是否开通了微信卡包
-                if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId) {
+                if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId && this.isWeixin && this.userInfo.openId) {
                     this.queryUnboundCard();
                 }
             })
@@ -81,6 +81,7 @@
                 'companyCode',
                 'memberConfigInfo',
                 'wxMpSet',
+                'isWeixin'
             ]),
             //当前卡索引
             cardIndex () {
@@ -283,10 +284,10 @@
                 });
                 this.$wechat.addCard({
                     cardList : cardList,
-                    success : res => {
-                        console.log(res);
+                    success : () => {
+                        this.$vux.toast.text(this.$t('getCardSuccess'));
                     },
-                    fail : res => {
+                    fail : () => {
                         this.$vux.toast.text(this.$t('getCardFail'));
                     },
                     complete : () => {
