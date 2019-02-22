@@ -827,8 +827,9 @@
             },
 
             //校验表格填入次数与总数
-            // checkTimes ( data ) {
-            // },
+            checkTimes ( data ) {
+
+            },
 
             //跳转进入示例页面
             // jumpForExample () {
