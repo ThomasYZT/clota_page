@@ -93,7 +93,7 @@
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
                                 <Tooltip transfer placement="right">
-                                    <i class="iconfont icon-note"></i>
+                                    <i class="iconfont icon-note" style="color: #C5C5C5"></i>
                                     <div slot="content">
                                         <p style="width: 100px;">说明：产品配额数量是指该产品在本销售政策中的配额总量或每日配额数量。</p>
                                     </div>
@@ -107,7 +107,7 @@
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
                                 <Tooltip transfer placement="right">
-                                    <i class="iconfont icon-note"></i>
+                                    <i class="iconfont icon-note" style="color: #C5C5C5"></i>
                                     <div slot="content">
                                         <p style="width: 100px;">说明：共享配额数量是指各个销售渠道（不含全民营销）在消耗完专享配额之后，可继续消耗的共享配额部分。</p>
                                     </div>
@@ -121,7 +121,7 @@
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
                                 <Tooltip transfer placement="right">
-                                    <i class="iconfont icon-note"></i>
+                                    <i class="iconfont icon-note" style="color: #C5C5C5"></i>
                                     <div slot="content">
                                         <p style="width: 100px;">说明：全民营销配额数量指定给全民营销所有销售用户的配额。</p>
                                     </div>
