@@ -74,8 +74,10 @@
     import tabItemList from './components/tab-item-list';
     import ajax from '@/marketing/api/index';
     import productFilter from './components/productFilter';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 
     export default {
+        mixins : [lifeCycleMixins],
         data () {
             return {
                 //选择的菜单
@@ -96,9 +98,11 @@
                     }
                 ],
                 //开始日期
-                startDate : new Date().addMonths(-1).format('yyyy-MM-dd'),
+                startDate : '',
+                // startDate : new Date().addMonths(-1).format('yyyy-MM-dd'),
                 //结束日期
-                endDate : new Date().format('yyyy-MM-dd'),
+                endDate : '',
+                // endDate : new Date().format('yyyy-MM-dd'),
                 cardType : 0,
                 //全部订单信息
                 allOrderInfo : [],
@@ -162,6 +166,11 @@
                     onConfirm : (val) => {
                         this.startDate = val;
                         this.cardTypeChange(this.tabSelected);
+                        this.updateStorgeInfo({
+                            startDate : this.startDate,
+                            endDate : this.endDate,
+                            choosedProductInfo : this.choosedProductInfo
+                        });
                     }
                 });
             },
@@ -178,6 +187,11 @@
                     onConfirm : (val) => {
                         this.endDate = val;
                         this.cardTypeChange(this.tabSelected);
+                        this.updateStorgeInfo({
+                            startDate : this.startDate,
+                            endDate : this.endDate,
+                            choosedProductInfo : this.choosedProductInfo
+                        });
                     }
                 });
             },
@@ -240,6 +254,11 @@
             getChoosedProduct (productData) {
                 this.choosedProductInfo = productData;
                 this.cardTypeChange(this.tabSelected);
+                this.updateStorgeInfo({
+                    startDate : this.startDate,
+                    endDate : this.endDate,
+                    choosedProductInfo : this.choosedProductInfo
+                });
             },
             /**
              * 查询所有产品信息
@@ -268,11 +287,28 @@
                         this.tapInfo[2]['count'] = 0;
                     }
                 });
+            },
+            /**
+             * 获取路由信息
+             * @param{Object} params 路由信息
+             */
+            getParams (params) {
+                if (params && Object.keys(params).length > 0) {
+                    this.startDate = params.startDate ? params.startDate : new Date().addMonths(-1).format('yyyy-MM-dd');
+                    this.endDate = params.endDate ? params.endDate : new Date().format('yyyy-MM-dd');
+                    this.choosedProductInfo = params.choosedProductInfo ? params.choosedProductInfo : [
+                        {
+                            productName : this.$t('全部'),
+                            productId : 'all'
+                        }
+                    ];
+                } else {
+                    this.startDate = new Date().addMonths(-1).format('yyyy-MM-dd');
+                    this.endDate = new Date().format('yyyy-MM-dd');
+                }
+                this.queryOrderInfo('');
+                this.queryProductInfo();
             }
-        },
-        created () {
-            this.queryOrderInfo('');
-            this.queryProductInfo();
         },
         beforeDestroy () {
             this.$vux.datetime.hide();

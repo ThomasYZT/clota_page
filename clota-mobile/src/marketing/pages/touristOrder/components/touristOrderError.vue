@@ -7,7 +7,7 @@
                 <li :class="$style.liTitle">{{$t('根据产品销售政策设置：')}}</li>
                 <li v-for="item in touristInfo"
                     :key="item.productId"
-                    :class="$style.detail">{{item.visitorName}}最多购买{{item.maxCount}}个{{item.productName}}。</li>
+                    :class="$style.detail">{{item.visitorName}}最多购买{{item.maxCount}}张{{item.productName}}</li>
             </ul>
             <div :class="$style.confirm" @click="$emit('input',false)">{{$t('confirm')}}</div>
         </div>

@@ -318,6 +318,6 @@ export default {
     'goldCoin' : '金币',
     'gameCoin' : '游戏币',
     'chooseCard' : '选择会员卡',
-    'pleaseSelectEtc' : '请选择...',
+    'pleaseSelectEtc' : '请选择',
     'colon' : '：',
 };

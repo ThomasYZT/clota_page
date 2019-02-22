@@ -8,6 +8,7 @@
     字体大小统一 15px
  */
 div.c-input {
+    position: relative;
     &:before {
         border: none !important;
     }
