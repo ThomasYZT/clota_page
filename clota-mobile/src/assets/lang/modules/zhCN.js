@@ -287,7 +287,7 @@ export default {
     'passport' : '护照',
     'addMemberCard' : '添加会员卡',
     'addMemberCardTxtOne' : '有',
-    'addMemberCardTxtTwo' : ' 张会员卡, 是否加入微信卡包',
+    'addMemberCardTxtTwo' : ' 张会员卡, 是否加入微信卡包！',
     'getCardBtn' : '确定',
     'getCardBtnNo' : '取消',
     'getCardSuccess' : '领取成功',

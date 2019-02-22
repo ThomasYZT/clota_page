@@ -32,7 +32,7 @@
                 :hide-on-blur="true">
           <div class="txt">
               <p class="title">{{$t('addMemberCard')}}</p>
-              <p>{{$t('addMemberCardTxtOne') + cardExt.length + $t('addMemberCardTxtTwo')}}！</p>
+              <p>{{$t('addMemberCardTxtOne') + cardNotGet.length + $t('addMemberCardTxtTwo')}}</p>
           </div>
           <div class="opreta-btn">
               <div class="no" @click="isShowCard=false;">{{$t('getCardBtnNo')}}</div>
@@ -61,7 +61,9 @@
                 // 展示卡包
                 isShowCard : false,
                 // 卡的拓展信息
-                cardExt : []
+                cardExt : [],
+                //没有领取的会员卡
+                cardNotGet : []
             };
         },
         created () {
@@ -240,6 +242,7 @@
                     memberId : this.userInfo.memberId
                 }).then((res) => {
                     if (res.success) {
+                        this.cardNotGet = res.data;
                         if (res.data && res.data.length != 0) {
                             this.isShowCard = true;
                             this.getCardExt();
