@@ -90,7 +90,11 @@
                 </table-com>
             </div>
             <!-- 配额调配器 -->
-            <quotaController :quotaType="quotaType"></quotaController>
+            <quotaController :quotaType="quotaType"
+                             :policyInfo="policyItem"
+                             :channelId="params.channelId"
+                             :productId="params.productId"
+                             @updateList="queryList"></quotaController>
         </div>
     </div>
 </template>

@@ -164,3 +164,11 @@ export const validateTotalQuota = (rule, value, callback) => {
         callback()
     }
 }
+
+export const validateDateRange = (rule, value, callback) => {
+    if (value && value.length === 2 && value[0] && value[1]) {
+        callback();
+    } else {
+        callback(i18n.t("请选择日期"));
+    }
+}

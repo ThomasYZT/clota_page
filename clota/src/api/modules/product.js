@@ -92,4 +92,10 @@ export default {
     'getSaleChannelsByPolicyId' : '/salePolicy/getSaleChannelsByPolicyId',
     //获取配额余量变化数据
     'getQuotaChanges' : '/salePolicy/getQuotaChanges',
+    //调入调出配额
+    'transferQuota' : '/salePolicy/transferQuota',
+    //获取销售政策开始售卖的日期
+    'getFirstSoldDate' : '/salePolicy/getFirstSoldDate',
+    //获取最小可调配配额
+    'getMinQuota' : '/salePolicy/getMinQuota',
 };
