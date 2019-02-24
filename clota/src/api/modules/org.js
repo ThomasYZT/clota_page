@@ -120,5 +120,7 @@ export default {
     'getWholeOrgTree' : '/organize/getWholeOrgTree',
     //校验该机构是否拥有该服务包
     'checkOrgServiceById' : '/privilege/checkOrgServiceById',
+    //下载base64图片
+    'base64Str2Img' : '/base64Str2Img',
 
 };

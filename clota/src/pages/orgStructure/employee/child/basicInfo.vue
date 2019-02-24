@@ -85,72 +85,79 @@
                     </Option>
                 </Select>
             </Form-item>-->
+            <div class="ivu-form-item-wrap">
+                <Form-item class="privilege-wrap" :label="$t('rolePermission')" prop="privileges">
 
-            <Form-item class="privilege-wrap" :label="$t('rolePermission')" prop="privileges">
-
-                <span class="text text-ellipsis" v-if="rolePrivileges.length != 0">{{roleNames}}</span>
-                <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})">
-                    <Option :value="''">
-                        <div class="select-content" @click.stop="">
-                            <div class="selectTop" @click="$refs.roleSearcher.focus()">
-                                <Input class="search-classify-input"
-                                       ref="roleSearcher"
-                                       v-model.trim="roleKeyword"
-                                       :placeholder="$t('search',{msg: ''})"
-                                       @on-enter="searchMatched"
-                                       @on-click="searchMatched"
-                                       icon="ios-search" />
-                            </div>
-                            <Checkbox-group v-model="rolePrivileges" @on-change="onChangeSelect">
-                                <div :class="['select-group-item', {'active': item.id==activeGroupItem.id}]"
-                                     v-for="(item,index) in matchedData" :key="index"
-                                     @click="handleClickItem(item)">
-                                    <Checkbox :label="item.id" @click.native.stop="">{{''}}</Checkbox>
-                                    <span class="value text-ellipsis" v-w-title="item.roleName">{{item.roleName}}</span>
+                    <span class="text text-ellipsis" v-if="rolePrivileges.length != 0">{{roleNames}}</span>
+                    <Select :placeholder="rolePrivileges.length != 0 ? '' : $t('selectField', {msg: ''})">
+                        <Option :value="''">
+                            <div class="select-content" @click.stop="">
+                                <div class="selectTop" @click="$refs.roleSearcher.focus()">
+                                    <Input class="search-classify-input"
+                                           ref="roleSearcher"
+                                           v-model.trim="roleKeyword"
+                                           :placeholder="$t('search',{msg: ''})"
+                                           @on-enter="searchMatched"
+                                           @on-click="searchMatched"
+                                           icon="ios-search" />
                                 </div>
+                                <Checkbox-group v-model="rolePrivileges" @on-change="onChangeSelect">
+                                    <div :class="['select-group-item', {'active': item.id==activeGroupItem.id}]"
+                                         v-for="(item,index) in matchedData" :key="index"
+                                         @click="handleClickItem(item)">
+                                        <Checkbox :label="item.id" @click.native.stop="">{{''}}</Checkbox>
+                                        <span class="value text-ellipsis" v-w-title="item.roleName">{{item.roleName}}</span>
+                                    </div>
 
-                            </Checkbox-group>
-                            <div class="no-data" v-if="enumData.privileges.length == 0">{{$t('noData')}}</div>
-                            <div class="no-data" v-if="enumData.privileges.length != 0 && matchedData.length==0">{{$t('noSearchResult')}}</div>
-                            <!--右侧内容-->
-                            <privalige-chose-com ref="privalige"
-                                                 :extra-privalige="extraPrivs"
-                                                 :chose-roles="rolePrivileges">
-                            </privalige-chose-com>
-                            <!--<div class="privilege-part">-->
+                                </Checkbox-group>
+                                <div class="no-data" v-if="enumData.privileges.length == 0">{{$t('noData')}}</div>
+                                <div class="no-data" v-if="enumData.privileges.length != 0 && matchedData.length==0">{{$t('noSearchResult')}}</div>
+                                <!--右侧内容-->
+                                <privalige-chose-com ref="privalige"
+                                                     :extra-privalige="extraPrivs"
+                                                     :chose-roles="rolePrivileges">
+                                </privalige-chose-com>
+                                <!--<div class="privilege-part">-->
                                 <!--<div class="part-1">-->
-                                    <!--<h4>{{$t('scenePermission')}}</h4>-->
-                                    <!--<div class="part-content">-->
-                                        <!--<div :class="['part-author', {'active-author': item.orgId==activeRoleInOrg.orgId}]"-->
-                                             <!--v-for="(item,index) in roleInOrg" :key="index"-->
-                                             <!--@click="onActiveAuthor(item)">{{item.orgName}}-->
-                                        <!--</div>-->
-                                        <!--<p class="no-data" v-if="roleInOrg.length==0">{{$t('noData')}}</p>-->
-                                    <!--</div>-->
+                                <!--<h4>{{$t('scenePermission')}}</h4>-->
+                                <!--<div class="part-content">-->
+                                <!--<div :class="['part-author', {'active-author': item.orgId==activeRoleInOrg.orgId}]"-->
+                                <!--v-for="(item,index) in roleInOrg" :key="index"-->
+                                <!--@click="onActiveAuthor(item)">{{item.orgName}}-->
+                                <!--</div>-->
+                                <!--<p class="no-data" v-if="roleInOrg.length==0">{{$t('noData')}}</p>-->
+                                <!--</div>-->
                                 <!--</div>-->
                                 <!--<div class="part-2">-->
-                                    <!--<h4>{{$t('menuPermission')}}-->
-                                        <!--<span v-if="activeRoleInOrg.orgName">-->
-                                            <!--（<span class="title-desc text-ellipsis" v-w-title="activeRoleInOrg.orgName">{{activeRoleInOrg.orgName}}</span>）-->
-                                        <!--</span>-->
-                                    <!--</h4>-->
-                                    <!--<div class="part-content">-->
-                                        <!--<div :class="['part-author']"-->
-                                             <!--v-for="(item,index) in menuInRole" :key="index"-->
-                                             <!--@click="">{{$t(item.privCode)}}-->
-                                        <!--</div>-->
-                                        <!--&lt;!&ndash;<div>menuInRole</div>&ndash;&gt;-->
-                                        <!--<p class="no-data" v-if="menuInRole.length==0">{{$t('noData')}}</p>-->
-                                    <!--</div>-->
+                                <!--<h4>{{$t('menuPermission')}}-->
+                                <!--<span v-if="activeRoleInOrg.orgName">-->
+                                <!--（<span class="title-desc text-ellipsis" v-w-title="activeRoleInOrg.orgName">{{activeRoleInOrg.orgName}}</span>）-->
+                                <!--</span>-->
+                                <!--</h4>-->
+                                <!--<div class="part-content">-->
+                                <!--<div :class="['part-author']"-->
+                                <!--v-for="(item,index) in menuInRole" :key="index"-->
+                                <!--@click="">{{$t(item.privCode)}}-->
                                 <!--</div>-->
-                            <!--</div>-->
-                        </div>
-                    </Option>
-                </Select>
-            </Form-item>
+                                <!--&lt;!&ndash;<div>menuInRole</div>&ndash;&gt;-->
+                                <!--<p class="no-data" v-if="menuInRole.length==0">{{$t('noData')}}</p>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </Option>
+                    </Select>
+                </Form-item>
+            </div>
             <!--</div>-->
             <div class="ivu-form-item-wrap">
                 <Form-item :label="$t('isStarted')" prop="status"><!--是否启用-->
+                    <Checkbox v-model="employee.status" :true-value="'valid'" :false-value="'invalid'"></Checkbox>
+                </Form-item>
+            </div>
+            <div class="ivu-form-item-wrap">
+                <!--限制订单可用范围，只可查询/操作该员工创建的订单-->
+                <Form-item :label="$t('限制订单可用范围，只可查询/操作该员工创建的订单')" prop="status" style="width: 400px;">
                     <Checkbox v-model="employee.status" :true-value="'valid'" :false-value="'invalid'"></Checkbox>
                 </Form-item>
             </div>

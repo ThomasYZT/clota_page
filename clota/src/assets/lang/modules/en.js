@@ -2513,5 +2513,6 @@ export default {
     'defaultRefundFee' : 'default refund procedure rate is 0',
     'productClassifiction' : '产品类型',
     'entityNotExist' : '实体卡不存在',
-    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}'
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}',
+    'paymentRecord' : '在线收款记录'
 };

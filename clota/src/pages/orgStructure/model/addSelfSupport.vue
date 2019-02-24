@@ -29,7 +29,18 @@
             </Form-item>
             <!--URL-->
             <Form-item label="URL">
-                <Input v-model="addChannel.serverUrl" :placeholder="$t('inputField', {field: ''})" />
+                <Input v-model="addChannel.serverUrl"
+                       :placeholder="$t('inputField', {field: ''})"
+                       @on-blur="createQrcode"/>
+            </Form-item>
+            <!--二维码-->
+            <Form-item :label="$t('二维码')">
+                <img v-if="qrCodeSrc"
+                     class="qrcode-img"
+                     :src="qrCodeSrc"
+                     @click="previewImage">
+                <div class="qrcode-img" v-else></div>
+                <span v-if="qrCodeSrc" class="download-qrcode" @click="downLoadQrcode">{{$t('下载二维码')}}</span>
             </Form-item>
             <!--APP ID-->
             <Form-item label="APP ID" prop="appId">
@@ -56,6 +67,11 @@
                 <i-button type="ghost" @click="hide">{{$t('cancel')}}</i-button>
             </template>
         </div>
+        <!--二维码预览-->
+        <image-preview ref="imagePreview"
+                       :images="[qrCodeSrc]">
+            <img class="qrcode-img" :src="qrCodeSrc">
+        </image-preview>
 
     </Modal>
 
@@ -66,9 +82,14 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import pick from 'lodash/pick';
     import { mapGetters } from 'vuex';
+    import imagePreview from '@/components/imagePreview/index.vue';
+    import apiList from '@/api/apiList';
+    import ajaxConfig from '@/config/index.js';
 
     export default {
-        components : {},
+        components : {
+            imagePreview
+        },
         props : [],
         data () {
             return {
@@ -97,7 +118,10 @@
                         { max : 100, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 100 }), trigger : 'blur' }, // 备注不能超过100字符
                     ]
                 },
-
+                //二维码图片对应的链接
+                qrCodeSrc : '',
+                //后台生成的图片链接地址
+                imgUrl : ''
             };
         },
         methods : {
@@ -119,7 +143,7 @@
                     //新增的时候获取appid和appSecret
                     this.generateChannelAccount();
                 }
-
+                this.createQrcode();
                 this.visible = true;
             },
             /**
@@ -176,11 +200,59 @@
                     }
                 });
             },
+            /**
+             * 生成链接对应的二维码信息
+             */
+            createQrcode () {
+                this.qrCodeSrc = '';
+                if (this.addChannel.serverUrl) {
+                    this.$QRcode.toDataURL(this.addChannel.serverUrl, {
+                        errorCorrectionLevel : 'H',
+                        type : 'image/jpeg',
+                        rendererOpts : {
+                            quality : 0.5
+                        },
+                        width : 500
+                    }).then(res => {
+                        this.qrCodeSrc = res;
+                    });
+                }
+            },
+            /**
+             * 预览二维码
+             */
+            previewImage () {
+                this.$refs.imagePreview.show();
+            },
+            /**
+             * 下载二维码
+             */
+            downLoadQrcode () {
+                ajax.post('base64Str2Img',{
+                    base64Str : this.qrCodeSrc,
+                    name : 'qrCode.jpeg',
+                }).then(res => {
+                    this.imgUrl = res.data;
+                    this.$nextTick(() => {
+                        let alink = document.createElement('a');
+                        let event = new MouseEvent('click');
+                        alink.href = this.downloadUrl;
+                        alink.dispatchEvent(event);
+                    });
+                });
+            }
         },
         computed : {
             ...mapGetters([
                 'lang'
-            ])
+            ]),
+            //下载模板路径
+            downloadUrl () {
+                return ajaxConfig['HOST'] + apiList['downloadImage'] +
+                    '?token=' + ajax.getToken().toString() +
+                    '&url=' + this.imgUrl +
+                    '&name=' + this.$t('QRCode.jpeg');
+            },
         }
     };
 </script>
@@ -200,6 +272,19 @@
             .ivu-radio-wrapper:last-child {
                 margin-right: 0;
             }
+        }
+
+        .qrcode-img{
+            display: block;
+            width: 130px;
+            height: 130px;
+            cursor: pointer;
+        }
+
+        .download-qrcode{
+            cursor: pointer;
+            font-size: 14px;
+            color: #2f70df;
         }
     }
 </style>
