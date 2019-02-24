@@ -134,6 +134,7 @@
             outRule () {
                 return {
                     outTime : [
+                        { required : this.quotaType === 'everyday', type : 'array', message : '', trigger : 'blur' },
                         { validator : validateDateRange, isRequired : this.quotaType === 'everyday' }
                     ],
                     outNum : [
@@ -301,9 +302,9 @@
                 }).then(res => {
                     if (res.success) {
                         this.$emit('updateList');
-                        this.$Message.success(formData.type === 'out' ? this.$t('"调出成功"') : this.$t('调入成功'));
+                        this.$Message.success(formData.type === 'out' ? this.$t("调出成功") : this.$t("调入成功"));
                     } else {
-                        this.$Message.error(formData.type === 'out' ? this.$t('"调出失败"') : this.$t('调入失败'));
+                        this.$Message.error(formData.type === 'out' ? this.$t("调出失败") : this.$t("调入失败"));
                     }
                 });
             }

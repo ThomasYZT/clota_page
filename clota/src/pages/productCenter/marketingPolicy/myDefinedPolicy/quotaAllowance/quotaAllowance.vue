@@ -152,8 +152,12 @@
                 quotaType : '',
                 //禁用今天之后的日期
                 dateOption : {
-                    disabledDate (date) {
-                        return date && date.valueOf() > Date.now();
+                    disabledDate : (date) => {
+                        if (this.quotaType !== 'everyday') {
+                            return date && date.valueOf() > Date.now();
+                        } else {
+                            return false;
+                        }
                     }
                 }
             };
