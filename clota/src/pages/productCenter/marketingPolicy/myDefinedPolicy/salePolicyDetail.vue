@@ -167,14 +167,25 @@
                                 :table-data="detail.policyItems"
                                 :border="false">
                                 <el-table-column
+                                    slot="column2"
+                                    slot-scope="row"
+                                    :label="row.title"
+                                    :width="row.width"
+                                    :min-width="row.minWidth">
+                                    <template slot-scope="scope">
+                                        {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                        scope.row.totalQuota : '-'}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
                                     slot="column3"
                                     slot-scope="row"
                                     :label="row.title"
                                     :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip>
+                                    :min-width="row.minWidth">
                                     <template slot-scope="scope">
-                                        {{scope.row.quotaType ? $t(scope.row.quotaType) : '-'}}
+                                        {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                        scope.row.sharedQuota : '-'}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -182,10 +193,10 @@
                                     slot-scope="row"
                                     :label="row.title"
                                     :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip>
+                                    :min-width="row.minWidth">
                                     <template slot-scope="scope">
-                                        <span>{{scope.row.totalQuota | contentFilter}}</span>
+                                        {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                        scope.row.marketQuota : '-'}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -193,29 +204,12 @@
                                     slot-scope="row"
                                     :label="row.title"
                                     :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip>
-                                    <template slot-scope="scope">
-                                        <template v-if="scope.row.productIsDeleted === 'false'">
-                                            <span v-if="scope.row.productStatus === 'enabled'" class="status-recharge pass">{{$t('startingUse')}}</span><!--已启用-->
-                                            <span v-else-if="scope.row.productStatus === 'auditing'" class="status-recharge reject">{{$t('checking')}}</span><!--审核中-->
-                                            <span v-else-if="scope.row.productStatus === 'rejected'" class="status-recharge pending">{{$t('rejected')}}</span><!--已驳回-->
-                                            <span v-else-if="scope.row.productStatus === 'not_enabled'" class="status-recharge pending">{{$t('unStarting')}}</span><!--未启用-->
-                                            <span v-else>-</span>
-                                        </template>
-                                        <span v-if="scope.row.productIsDeleted === 'true'">{{$t('deletedField', { field : '' })}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    slot="column6"
-                                    slot-scope="row"
-                                    :label="row.title"
-                                    :width="row.width"
+                                    fixed="right"
                                     :min-width="row.minWidth"
                                     show-overflow-tooltip>
                                     <template slot-scope="scope">
                                         <ul class="operate-list">
-                                            <li @click="checkProduct(scope)">{{$t('check')}}</li><!--查看-->
+                                            <li @click="checkProduct(scope)">{{$t('details')}}</li><!--查看详情-->
                                         </ul>
                                     </template>
                                 </el-table-column>
@@ -258,7 +252,7 @@
                                     <template slot-scope="scope">
                                         <ul class="operate-list">
                                             <li :class="{ disabled : !scope.row.channelModels || scope.row.channelModels.length === 0 }"
-                                                @click="checkQuotaManage(scope.row)">{{$t('查看配额管理')}}</li><!--配额管理-->
+                                                @click="checkQuotaManage(scope.row)">{{$t('查看配额')}}</li><!--配额管理-->
                                         </ul>
                                     </template>
                                 </el-table-column>

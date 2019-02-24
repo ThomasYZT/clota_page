@@ -40,10 +40,12 @@
                                 show-overflow-tooltip
                                 slot-scope="row">
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.quotaType === 'total' ? $t('限制配额总量') : $t('限制每日配额')}}</span>
+                                    {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                    scope.row.sharedQuota : '-'}}
                                 </template>
                             </el-table-column>
                             <el-table-column
+                                v-if="type !== 'check'"
                                 slot="column2"
                                 :label="row.title"
                                 :prop="row.field"
@@ -53,6 +55,9 @@
                                 show-overflow-tooltip
                                 slot-scope="row">
                                 <template slot-scope="scope">
+                                    <span>
+                                        {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) : '-'}}
+                                    </span>
                                     <span>{{Number(scope.row.totalQuota ? scope.row.totalQuota : 0) -
                                             Number(scope.row.sharedQuota ? scope.row.sharedQuota : 0) -
                                             Number(scope.row.marketQuota ? scope.row.marketQuota : 0) -
@@ -63,7 +68,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                slot="column3"
+                                :slot="type !== 'check' ? 'column3' : 'column2'"
                                 :label="row.title"
                                 :prop="row.field"
                                 :key="row.index"
@@ -75,13 +80,17 @@
                                     <template v-if="scope.row.editable">
                                         <FormItem :prop="'tableData.' + scope.$index + '.tempVipQuota'"
                                                   :rules="[ { validator : validateVipQuota, trigger : 'change', quota : scope.row }]">
+                                            <span style="line-height: 24px">
+                                                {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) : '-'}}
+                                            </span>
                                             <Input v-model="scope.row.tempVipQuota"
                                                    size="small"
+                                                   style="width: 70px;"
                                                    :placeholder="$t('请输入')"></Input>
                                         </FormItem>
                                     </template>
                                     <template v-else>
-                                        <span>{{scope.row.vipQuota}}</span>
+                                        <span>{{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) + scope.row.vipQuota : '-'}}</span>
                                     </template>
                                 </template>
                             </el-table-column>
@@ -92,6 +101,7 @@
                                 :prop="row.field"
                                 :key="row.index"
                                 :width="row.width"
+                                fixed="right"
                                 :min-width="row.minWidth"
                                 show-overflow-tooltip
                                 slot-scope="row">
@@ -113,8 +123,13 @@
             </div>
 
             <div slot="footer">
-                <Button class="ivu-btn-90px" type="primary" @click="confirm">{{$t('confirm')}}</Button>
-                <Button class="ivu-btn-90px" type="default" @click="hide">{{$t('cancel')}}</Button>
+                <template v-if="type !== 'check'">
+                    <Button class="ivu-btn-90px" type="primary" @click="confirm">{{$t('confirm')}}</Button>
+                    <Button class="ivu-btn-90px" type="default" @click="hide">{{$t('cancel')}}</Button>
+                </template>
+                <template v-else>
+                    <Button class="ivu-btn-90px" type="default" @click="hide">{{$t('close')}}</Button>
+                </template>
             </div>
         </Modal>
     </div>
@@ -161,7 +176,7 @@
             columnData () {
                 if (this.type === 'check') {
                     return quotaManageHead.filter(item => {
-                        return item.title !== 'operate';
+                        return item.title !== 'operate' && item.title !== 'assignableQuantity';
                     });
                 } else {
                     return quotaManageHead;

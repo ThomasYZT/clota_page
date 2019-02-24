@@ -2525,5 +2525,6 @@ export default {
     'editPolicy.everyday' : '每日',
     'editPolicy.total' : '总量',
     'productClassifiction' : '产品类型',
-    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}'
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}',
+    'assignableQuantity' : '可分配配额数量',
 };

@@ -3,39 +3,40 @@
 export const productColumn = [
     {
         title : 'productName', // 产品名称
-        minWidth : 150,
+        minWidth : 200,
         field : 'productName'
     },
-    {
-        title : 'standardPrice', // 景区成本价
-        minWidth : 110,
-        field : 'standardPrice'
-    },
+    // {
+    //     title : 'standardPrice', // 景区成本价
+    //     minWidth : 150,
+    //     field : 'standardPrice'
+    // },
     {
         title : 'settlePrice', // 产品单价
-        minWidth : 100,
-        field : 'settlePrice'
-    },
-    {
-        title : '限制配额方式', // 限制配额方式
         minWidth : 130,
-        field : 'quotaType'
+        field : 'settlePrice',
+        type : 'money'
     },
     {
-        title : '配额数量', // 配额数量
+        title : '产品配额数量', // 产品配额数量
         minWidth : 130,
-        field : 'totalQuota'
+        field : ''
     },
     {
-        title : 'status', // 状态
-        minWidth : 100,
-        field : 'productStatus'
+        title : '共享配额数量', // 共享配额数量
+        minWidth : 130,
+        field : ''
+    },
+    {
+        title : '全民营销配额数量', // 全民营销配额数量
+        minWidth : 180,
+        field : ''
     },
     {
         title : 'operate', // 操作
-        minWidth : 100,
+        width : 100,
         field : ''
-    }
+    },
 ];
 
 //上级分销单价表头

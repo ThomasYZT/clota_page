@@ -24,12 +24,12 @@ export const quotaManageHead = [
         field : 'productName'
     },
     {
-        title : '产品配额限制方式', // 产品配额限制方式
+        title : '共享配额数量', // 共享配额数量
         minWidth : 200,
-        field : 'quotaType'
+        field : 'sharedQuota'
     },
     {
-        title : '可分配配额数量', // 可分配配额数量
+        title : 'assignableQuantity', // 可分配配额数量
         minWidth : 150,
         field : 'date'
     },
