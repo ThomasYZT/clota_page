@@ -79,4 +79,6 @@ export default {
     'market_queryPayRecordByOutTradeNo' : '/external/pay/queryPayRecordByOutTradeNo',
     //查询消费结果更新业务
     queryConsumeUpdateBiz : '/external/pay/queryConsumeUpdateBiz',
+    //撤销交易
+    revocation : '/external/pay/revocation',
 };

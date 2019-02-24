@@ -32,6 +32,16 @@
                  @on-confirm="confirmPayResult">
             <p style="text-align:center;">{{ $t('下单失败，退还金额请联系工作人员。') }}</p>
         </confirm>
+        <!--退款失败提示框-->
+        <confirm v-model="refundConfirmModal"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('提示')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false"
+                 @on-confirm="confirmRefundResult">
+            <p style="text-align:center;">{{ $t('取消支付失败，如未退款，请联系工作人员。') }}</p>
+        </confirm>
     </div>
 </template>
 
@@ -54,7 +64,9 @@
                 //定时器
                 timer : '',
                 //确认提示框是否显示
-                confirmShow : false
+                confirmShow : false,
+                //取消支付失败提示框
+                refundConfirmModal : false
             };
         },
         methods : {
@@ -122,7 +134,7 @@
             queryConsumeUpdateBiz () {
                 ajax.post('queryConsumeUpdateBiz', {
                     transactionId : this.transactionId
-                }).then(res => {
+                },{},false).then(res => {
                     if (res.success && (res.data !== 'doing' && res.data !== 'unknown') ) {
                         clearInterval(this.timer);
                         this.timer = '';
@@ -139,6 +151,28 @@
              */
             confirmPayResult () {
                 this.confirmShow = false;
+                this.toOrderPage();
+            },
+            /**
+             * 取消支付
+             */
+            cancelPay () {
+                ajax.post('revocation', {
+                    transactionId : this.transactionId
+                }).then((res) => {
+                    if (res.success) {
+                        this.toOrderPage();
+                    } else {
+                        this.refundConfirmModal = true;
+                    }
+                    clearInterval(this.timer);
+                    this.timer = '';
+                });
+            },
+            /**
+             * 取消支付报错确认
+             */
+            confirmRefundResult () {
                 this.toOrderPage();
             }
         },
