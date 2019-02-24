@@ -54,6 +54,7 @@
                                     type="daterange"
                                     :clearable="false"
                                     :editable="false"
+                                    :options="dateOption"
                                     transfer
                                     :placeholder="$t('selectField', { msg : $t('date') })"
                                     placement="bottom-end"
@@ -148,7 +149,13 @@
                 //表格数据总条数
                 totalCount : 0,
                 //配额限制方式
-                quotaType : ''
+                quotaType : '',
+                //禁用今天之后的日期
+                dateOption : {
+                    disabledDate (date) {
+                        return date && date.valueOf() > Date.now();
+                    }
+                }
             };
         },
         computed : {
@@ -242,7 +249,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.productList = res.data ? res.data : [];
-                        this.params.productId = this.productList[0].id;
+                        this.params.productId = this.productList[0] ? this.productList[0].id : '';
                     } else {
                         this.productList = [];
                     }
@@ -257,7 +264,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.channelsList = res.data ? res.data : [];
-                        this.params.channelId = this.channelsList[0].partnerId;
+                        this.params.channelId = this.channelsList[0] ? this.channelsList[0].partnerId : '';
                     } else {
                         this.channelsList = [];
                     }
