@@ -17,7 +17,7 @@
                     @click="batchDel()">{{$t('del')}}</Button>
         </div>
         <!-- 筛选产品类别 -->
-        <div class="filter-wrapper">
+        <div class="filter-wrapper" v-if="manageOrgs.nodeType !== 'partner'">
             <span>{{$t('colonSetting', { key : $t('选择产品类别') })}}</span>
             <Select v-model="queryParams.typeId"
                     @on-change="queryList"
@@ -32,7 +32,7 @@
         </div>
 
         <table-com
-            :ofsetHeight="120"
+            :ofsetHeight="manageOrgs.nodeType !== 'partner' ? 120 : 60"
             :show-pagination="true"
             :column-data="columnData"
             :table-data="tableData"
@@ -346,8 +346,10 @@
             }
         },
         created () {
-            //查询产品类别列表数据
-            this.queryTagDefines();
+            if (this.manageOrgs.nodeType !== 'partner') {
+                //查询产品类别列表数据
+                this.queryTagDefines();
+            }
         }
     };
 </script>

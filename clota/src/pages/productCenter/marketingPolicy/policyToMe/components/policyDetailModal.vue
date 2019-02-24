@@ -175,6 +175,7 @@
                     :table-data="detail.policyItems"
                     :border="false">
                     <el-table-column
+                        v-if="manageOrgs.nodeType !== 'partner'"
                         slot="column1"
                         slot-scope="row"
                         :label="row.title"
@@ -186,7 +187,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        slot="column2"
+                        :slot="manageOrgs.nodeType !== 'partner' ? 'column2' : 'column1'"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -198,6 +199,7 @@
                     </el-table-column>
                     <el-table-column
                         slot="column3"
+                        v-if="manageOrgs.nodeType !== 'partner'"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -209,6 +211,7 @@
                     </el-table-column>
                     <el-table-column
                         slot="column4"
+                        v-if="manageOrgs.nodeType !== 'partner'"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -221,6 +224,7 @@
                     </el-table-column>
                     <el-table-column
                         slot="column5"
+                        v-if="manageOrgs.nodeType !== 'partner'"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
@@ -291,7 +295,7 @@
                        </i-row>
                        <i-row>
                            <i-col span="24">
-                               <Form-item :label="$t('预定须知')+':'"><!--预定须知-->
+                               <Form-item :label="$t('入园须知')+':'"><!--入园须知-->
                                    <div style="word-break: break-all;"
                                         v-html="detail.productPolicy.buyTicketNotes"
                                         v-if="detail.productPolicy.buyTicketNotes"></div>
@@ -340,34 +344,13 @@
             ]),
             //产品列表表头
             productColumn () {
-                return productColumn.map((item) => {
-                    if (item.field !== 'standardPrice') {
-                        return item;
-                    } else {
-                        return {
-                            title : '', // 景区成本价
-                            minWidth : 1,
-                            field : '',
-                            isShow : 'false'
-                        };
-                    }
-                });
-                // if (this.manageOrgs.nodeType === 'partner') {
-                //     return productColumn.map((item) => {
-                //         if (item.field !== 'standardPrice') {
-                //             return item;
-                //         } else {
-                //             return {
-                //                 title : '', // 景区成本价
-                //                 minWidth : 20,
-                //                 field : '',
-                //                 isShow : 'false'
-                //             };
-                //         }
-                //     });
-                // } else {
-                //     return productColumn;
-                // }
+                if (this.manageOrgs.nodeType === 'partner') {
+                    return productColumn.filter((item) => {
+                        return item.field === 'productName' || item.field === 'settlePrice'
+                    });
+                } else {
+                    return productColumn;
+                }
             },
         },
         methods : {

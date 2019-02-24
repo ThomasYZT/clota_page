@@ -61,7 +61,8 @@
                             :min-width="row.minWidth"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                                {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                (Number(scope.row.vipQuota ? scope.row.vipQuota : 0) + Number(scope.row.sharedQuota ? scope.row.sharedQuota : 0)) : '-'}}
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -72,34 +73,11 @@
                             :min-width="130"
                             show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
-                                <span v-else>{{scope.row.stockNum | contentFilter}}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column3"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="120"
-                            :min-width="120"
-                            show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                {{scope.row.printPrice | contentFilter}}
+                                {{scope.row.printPrice | moneyFilter | contentFilter}}
                             </template>
                         </el-table-column>
                         <el-table-column
                             slot="column4"
-                            slot-scope="row"
-                            :label="row.title"
-                            :width="130"
-                            :min-width="120"
-                            show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                {{scope.row.settlePrice | moneyFilter}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            slot="column5"
                             slot-scope="row"
                             :label="$t('mySalePrice')"
                             :width="140"

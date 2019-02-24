@@ -84,7 +84,10 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                            <span>
+                                {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                                    (Number(scope.row.vipQuota ? scope.row.vipQuota : 0) + Number(scope.row.sharedQuota ? scope.row.sharedQuota : 0)) : '-'}}
+                            </span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -95,19 +98,7 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
-                            <span v-else>{{scope.row.stockNum | contentFilter}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        slot="column3"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            {{scope.row.printPrice | moneyFilter}}
+                            {{scope.row.printPrice | moneyFilter | contentFilter}}
                         </template>
                     </el-table-column>
                 </tableCom>
