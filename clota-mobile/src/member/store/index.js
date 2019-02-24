@@ -47,10 +47,10 @@ export const memberGetters = {
     },
     //会员卡列表信息
     cardInfoList : state => {
-        // let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
-        // if (cardInfoList && Object.keys(cardInfoList).length > 0) {
-        //     state.cardInfoList = cardInfoList;
-        // }
+        let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
+        if (cardInfoList && Object.keys(cardInfoList).length > 0) {
+            state.cardInfoList = cardInfoList;
+        }
         return state.cardInfoList;
     },
     hashKey : state => {

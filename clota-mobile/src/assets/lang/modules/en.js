@@ -280,6 +280,7 @@ export default {
     'errorMsg.A006' : 'the company does not exist',
     'errorMsg.A004' : 'verification code error',
     'errorMsg.MK021' : 'no withdrawal is allowed without a collection account',
+    'errorMsg.OD009' : '下单失败，退还金额请联系工作人员。',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'complete information',
     'getActivate' : 'immediately active',

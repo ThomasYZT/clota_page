@@ -280,6 +280,7 @@ export default {
     'errorMsg.A006' : '公司不存在',
     'errorMsg.A004' : '验证码错误',
     'errorMsg.MK021' : '未设置收款账户，不可提现',
+    'errorMsg.OD009' : '下单失败，退还金额请联系工作人员。',
     'cardRegister' : 'register',
     'cardFinishInfo' : 'Complete information',
     'getActivate' : 'Immediately active',

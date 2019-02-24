@@ -29,6 +29,13 @@
                  @on-confirm="confirmPayResult">
             <p style="text-align:center;">{{ $t('支付失败，如未退款，请联系工作人员。') }}</p>
         </confirm>
+
+        <div v-if="aliPayInWeixin === true && paySuccess === null" class="img-wrapper">
+            <img class="notice" src="../../../assets/images/open-in-browser.svg" alt="">
+
+            <!-- 取消支付按钮 -->
+            <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
+        </div>
     </div>
 </template>
 
@@ -53,7 +60,7 @@
                 //是否能返回账户页面
                 canBackToAccount : false,
                 //确认提示框是否显示
-                confirmShow : false
+                confirmShow : false,
             };
         },
         methods : {
@@ -84,8 +91,7 @@
                         let urlParms = JSON.parse(JSON.stringify(toRoute.query));
                         delete urlParms.transactionId;
                         delete urlParms.fromzl;
-                        let url = ('https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms));
-                        window.location.href = url;
+                        window.location.href = 'https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms);
                     } else if (toRoute && toRoute.query.out_trade_no) {//处理支付结果
                         this.queryPayRecordByOutTradeNo(toRoute.query.out_trade_no);
                     }
@@ -144,6 +150,8 @@
         computed : {
             ...mapGetters({
                 isWeixin : 'isWeixin',
+                cardInfo : 'cardInfo',
+                cardInfoList : 'cardInfoList',
             })
         },
         beforeDestroy () {
@@ -151,7 +159,11 @@
             this.timer = '';
         },
         created () {
-            this.canBackToAccount = localStorage.getItem('token') ? true : false;
+            this.canBackToAccount = !!localStorage.getItem('token')
+                && this.cardInfo
+                && Object.keys(this.cardInfo).length > 0
+                && this.cardInfoList
+                && this.cardInfoList.length > 0;
         }
     };
 </script>

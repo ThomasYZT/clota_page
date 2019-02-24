@@ -37,16 +37,14 @@
             <!-- 取消支付按钮 -->
             <x-button class="button" @click.native="cancelPay">{{$t('cancelPay')}}</x-button>
         </div>
-
-
         <confirm v-model="confirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
                  :title="$t('提示')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
-                 @on-confirm="confirmPayResult">
-            <p style="text-align:center;">{{ $t('下单失败，退还金额请联系工作人员。') }}</p>
+                 @on-confirm="confirmShow = false">
+            <p style="text-align:center;">{{ $t('errorMsg.OD009') }}</p>
         </confirm>
 
     </div>
@@ -78,7 +76,7 @@
                 },
                 //计时器
                 intervalId : null,
-                //确认提示框是否显示
+                //确认模态框是否显示
                 confirmShow : false
             };
         },
@@ -147,9 +145,8 @@
                                 payFormData : this.payFormData
                             }
                         });
-                    } else if (res.code === 'OD009') {
+                    } else if (res.success === false && res.code === 'OD009') {
                         clearInterval(this.intervalId);
-                        this.intervalId = '';
                         this.confirmShow = true;
                     }
                 });
@@ -185,19 +182,6 @@
                     clearInterval(this.intervalId);
                     this.intervalId = null;
                 }
-            },
-            /**
-             * 错误提示确认
-             */
-            confirmPayResult () {
-                this.confirmShow = false;
-                this.$router.push({
-                    name : 'marketingCreateOrderPayResult',
-                    params : {
-                        status : 'fail',
-                        payFormData : this.payFormData
-                    }
-                });
             }
         },
         mounted () {
@@ -211,7 +195,7 @@
         },
         beforeDestroy () {
             window.removeEventListener("popstate", this.physicalBack);
-            this.physicalBack();
+            clearInterval(this.intervalId);
         }
     };
 </script>
