@@ -2280,7 +2280,7 @@ export default {
     'sureToDeleteVisitorInfo' : 'are you sure to delete the visitor information? ',
     'MostBuy' : 'maximum purchase',
     'boughtGoods' : 'purchased products',
-    'ge' : 'item',
+    'ge' : ' item ',
     'orderBatchAuditPass' : 'the order has been approved in batches',
     'orderBatchAuditReject' : 'order has been bulk rejected',
     'marketLevel' : 'marketing level',
@@ -2524,4 +2524,6 @@ export default {
     'PD001' : '产品名称重复',
     'editPolicy.everyday' : '每日',
     'editPolicy.total' : '总量',
+    'productClassifiction' : '产品类型',
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}'
 };

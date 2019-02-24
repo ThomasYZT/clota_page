@@ -234,6 +234,11 @@
                             content : `${this.$t('teamOrderCancelApply')}：${this.$t('checkPass')}
                         ${contentsObj['remark'] ? ( '，' + this.$t('remark') + '：' + contentsObj.remark + '。') : '' }`
                         };
+                    //团队取票，
+                    case 'ORDER_TEAM_PICK_TICKET' :
+                        return {
+                            content : `${this.$t('pickUpTicket',{ getNum : contentsObj.pickCount,returnCount : contentsObj.returnCount,seriesNo : contentsObj.pickSerialNos ? contentsObj.pickSerialNos.join(',') : '' })}`
+                        };
                     default : return '';
                 }
             }

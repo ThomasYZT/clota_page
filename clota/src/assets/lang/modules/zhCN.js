@@ -2282,7 +2282,7 @@ export default {
     'sureToDeleteVisitorInfo' : '确认删除游客信息？',
     'MostBuy' : '最多购买',
     'boughtGoods' : '购买的产品',
-    'ge' : '个',
+    'ge' : '张',
     'orderBatchAuditPass' : '订单已批量审核通过',
     'orderBatchAuditReject' : '订单已批量驳回',
     'marketLevel' : '营销级别',
@@ -2526,4 +2526,6 @@ export default {
     'PD001' : '产品名称重复',
     'editPolicy.everyday' : '每日',
     'editPolicy.total' : '总量',
+    'productClassifiction' : '产品类型',
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}'
 };
