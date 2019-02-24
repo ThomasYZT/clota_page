@@ -70,8 +70,6 @@ require('echarts/lib/component/dataZoom');
 
 let plugin = {};
 plugin.install = function (Vue, options) {
-    // 引入iView
-    // Vue.use(iView);
 
     // element-ui按需引入
     Vue.use(scrollbar);

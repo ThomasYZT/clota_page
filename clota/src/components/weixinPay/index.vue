@@ -40,7 +40,7 @@
                 //二维码图片
                 qrCodeSrc : '',
                 //定时器
-                timer : '',
+                timer : null,
                 //轮询查询时间
                 loopSearchTime : 1200000,
                 //是否在查询支付结果中
@@ -74,6 +74,7 @@
                     this.timer = setInterval(() => {
                         if (this.loopSearchTime <= 0) {
                             clearInterval(this.timer);
+                            this.timer = null;
                             this.changeValue(false);
                             this.$emit('pay-unknow');
                         } else {
@@ -83,7 +84,9 @@
                         }
                     },3000);
                 } else {
-                    this.revocation();
+                    if (this.timer !== null) {
+                        this.revocation();
+                    }
                 }
             },
             /**
@@ -98,10 +101,12 @@
                         this.$emit('pay-success');
                         this.changeValue(false);
                         clearInterval(this.timer);
+                        this.timer = null;
                     } else if (res.data === 'fail') {
                         this.$emit('pay-fail');
                         this.changeValue(false);
                         clearInterval(this.timer);
+                        this.timer = null;
                     }
                 }).finally(() => {
                     this.searchIng = false;
@@ -118,6 +123,7 @@
                     if (!res.success) {
                         this.changeValue(false);
                         clearInterval(this.timer);
+                        this.timer = null;
                         this.$Message.error(this.$t('cancelTradeFail'));
                     } else {
                         this.$emit('cancel-success');

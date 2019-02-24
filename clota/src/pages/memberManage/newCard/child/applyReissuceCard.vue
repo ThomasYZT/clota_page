@@ -210,7 +210,7 @@
                     levelId : this.memberInfo.levelId,
                     channelType : this.formData.payType,
                     qrCode : qrCode,
-                    paymentChannel : this.payAccountList.find(item => item.accountType === this.formData.payType)['payType']
+                    paymentChannel : this.payAccountList.find(item => item.value === this.formData.payType)['payType']
                 }).then(res => {
                     if (res.success) {
                         this.$refs.payResultModal.setStage('success');
