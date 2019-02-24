@@ -19,7 +19,8 @@
                               @set-card-data="getCardData">
             </entity-card-info>
             <!--支付方式选择-->
-            <pay-type-select @set-pay-type="formData.payType = $event">
+            <pay-type-select v-show="replaceCardFee > 0"
+                             @set-pay-type="formData.payType = $event">
             </pay-type-select>
             <!--footer 按钮-->
             <div class="content-footer">
