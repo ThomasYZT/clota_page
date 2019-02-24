@@ -10,6 +10,7 @@
             </div>
             <div class="board">
                 <Form ref="outForm"
+                      v-if="isFormShow"
                       :rules="outRule"
                       label-position="top"
                       :model="outFormData">
@@ -48,6 +49,7 @@
             </div>
             <div class="board">
                 <Form ref="inForm"
+                      v-if="isFormShow"
                       :rules="inRule"
                       label-position="top"
                       :model="inFormData">
@@ -124,6 +126,7 @@
                     inTime : [],
                     inNum : '',
                 },
+                isFormShow : true,
             };
         },
         computed : {
@@ -131,10 +134,10 @@
             outRule () {
                 return {
                     outTime : [
-                        { validator : validateDateRange }
+                        { validator : validateDateRange, isRequired : this.quotaType === 'everyday' }
                     ],
                     outNum : [
-                        { required : true, message : '请输入调出配额数量', trigger : 'change' },
+                        { required : true, message : '请输入调出配额数量', trigger : 'blur' },
                         { validator : validateNaturalNumber }
                     ],
                 };
@@ -143,10 +146,11 @@
             inRule () {
                 return {
                     inTime : [
+                        { required : this.quotaType === 'everyday', type : 'array', message : '', trigger : 'blur' },
                         { validator : validateDateRange }
                     ],
                     inNum : [
-                        { required : true, message : '请输入调入配额数量', trigger : 'change' },
+                        { required : true, message : '请输入调入配额数量', trigger : 'blur' },
                         { validator : validateNaturalNumber }
                     ],
                 };
@@ -170,11 +174,13 @@
                 this.$refs.outForm.validate(valid => {
                     if (valid) {
                         let formData = {
-                            startDate : this.outFormData.outTime[0].format("yyyy-MM-dd"),
-                            endDate : this.outFormData.outTime[1].format("yyyy-MM-dd"),
                             num : this.outFormData.outNum,
                             type : 'out',
                         };
+                        if (this.quotaType === 'everyday') {
+                            formData.startDate = this.outFormData.outTime[0].format("yyyy-MM-dd");
+                            formData.endDate = this.outFormData.outTime[1].format("yyyy-MM-dd");
+                        }
                         this.getFirstSoldDate().then(() => {
                             this.getMinQuota(formData, 'channel').then(() => {
                                 this.transferQuota(formData);
@@ -203,11 +209,13 @@
                 this.$refs.inForm.validate(valid => {
                     if (valid) {
                         let formData = {
-                            startDate : this.inFormData.inTime[0].format("yyyy-MM-dd"),
-                            endDate : this.inFormData.inTime[1].format("yyyy-MM-dd"),
                             num : this.inFormData.inNum,
                             type : 'in',
                         };
+                        if (this.quotaType === 'everyday') {
+                            formData.startDate = this.inFormData.inTime[0].format("yyyy-MM-dd");
+                            formData.endDate = this.inFormData.inTime[1].format("yyyy-MM-dd");
+                        }
                         this.getFirstSoldDate().then(() => {
                             this.getMinQuota(formData, 'share').then(() => {
                                 this.transferQuota(formData);
@@ -264,23 +272,23 @@
              */
             getFirstSoldDate () {
                 return new Promise((resolve, reject) => {
-                   ajax.post('getFirstSoldDate', {
+                    ajax.post('getFirstSoldDate', {
                         policyId : this.policyInfo.id,
-                   }).then(res => {
-                      if (res.success) {
-                          if (res.data) {
-                              if (new Date() > new Date(res.data)) {
-                                  resolve();
-                              } else {
-                                  reject("销售政策不在售卖日期内，无法调配配额");
-                              }
-                          } else {
-                              reject();
-                          }
-                      } else {
-                          reject();
-                      }
-                   });
+                    }).then(res => {
+                        if (res.success) {
+                            if (res.data) {
+                                if (new Date() > new Date(res.data)) {
+                                    resolve();
+                                } else {
+                                    reject("销售政策不在售卖日期内，无法调配配额");
+                                }
+                            } else {
+                                reject();
+                            }
+                        } else {
+                            reject();
+                        }
+                    });
                 });
             },
             /**
@@ -298,6 +306,16 @@
                         this.$Message.error(formData.type === 'out' ? this.$t('"调出失败"') : this.$t('调入失败'));
                     }
                 });
+            }
+        },
+        watch : {
+            quotaType : {
+                handler () {
+                    this.isFormShow = false;
+                    this.$nextTick(() => {
+                        this.isFormShow = true;
+                    })
+                },
             }
         }
     };
