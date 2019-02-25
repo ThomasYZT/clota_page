@@ -47,10 +47,10 @@ export const memberGetters = {
     },
     //会员卡列表信息
     cardInfoList : state => {
-        // let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
-        // if (cardInfoList && Object.keys(cardInfoList).length > 0) {
-        //     state.cardInfoList = cardInfoList;
-        // }
+        let cardInfoList = localStorage.getItem('cardInfoList') && localStorage.getItem('cardInfoList') !== 'undefined' ? JSON.parse(localStorage.getItem('cardInfoList')) : [];
+        if (cardInfoList && Object.keys(cardInfoList).length > 0) {
+            state.cardInfoList = cardInfoList;
+        }
         return state.cardInfoList;
     },
     hashKey : state => {
@@ -68,7 +68,17 @@ export const memberGetters = {
     },
     //会员配置信息
     memberConfigInfo : state => {
-        return state.memberConfigInfo;
+        let memberConfigInfo = {};
+        try {
+            memberConfigInfo = localStorage.getItem('memberConfigInfo') ? JSON.parse(localStorage.getItem('memberConfigInfo')) : {};
+        } catch (e) {
+            memberConfigInfo = {};
+        }
+        if (state.memberConfigInfo && Object.keys(state.memberConfigInfo).length > 0) {
+            return state.memberConfigInfo;
+        } else {
+            return memberConfigInfo;
+        }
     },
     wxMpSet : state => {
         return state.wxMpSet;
@@ -157,6 +167,7 @@ export const memberMutations = {
      * @param{Object} memberConfigInfo 会员配置信息
      */
     updateMemberConfig (state, memberConfigInfo) {
+        localStorage.setItem('memberConfigInfo',JSON.stringify(memberConfigInfo));
         state.memberConfigInfo = memberConfigInfo;
     },
     /**

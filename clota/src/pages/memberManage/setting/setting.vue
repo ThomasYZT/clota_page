@@ -300,7 +300,7 @@
                                 <Input type="text"
                                        v-model.trim="wxMpSettingData.brandName"
                                        @on-blur="checkWxPackageInfo(wxMpSettingData.brandName,'brandNameErr',true)"
-                                       :disabled="WxMpSetInfo.brandName"
+                                       :disabled="!!WxMpSetInfo.brandName"
                                        style="margin: 0 10px;width: 300px;"></Input>
                                 <span class="warning-tip">{{$t('businessNameSetTip')}}</span>
                                 <div class="fixed-error ivu-form-item-error-tip"

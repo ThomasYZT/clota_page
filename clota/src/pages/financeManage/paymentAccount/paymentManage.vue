@@ -51,10 +51,12 @@
             </el-table-column>
         </table-com>
 
-        <!--撤回充值申请 - 弹窗-->
+        <!--充值申请 - 弹窗-->
         <recharge-modal ref="rechargeModal"
+                        :partner-info="currentData"
                         :onlineAccountList="onlineAccountList"
-                        @update-list="queryList"></recharge-modal>
+                        @update-list="queryList">
+        </recharge-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -86,7 +88,9 @@
                 // 数据总条数
                 totalCount : 0,
                 //收款账户列表
-                onlineAccountList : []
+                onlineAccountList : [],
+                //当前操作的合作伙伴数据
+                currentData : {}
             };
         },
         computed : {
@@ -130,6 +134,7 @@
              */
             handleRecharge (scopeRow) {
                 if (!this.canRecharge) return;
+                this.currentData = scopeRow;
                 ajax.post('queryOnlineAccount',{
                     isPlatformAcc : false,
                     orgId : scopeRow.peerOrgId
@@ -140,6 +145,7 @@
                                 ...item,
                                 value : item.accountType,
                                 label : item.accountType,
+                                payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                             };
                         }) : [];
                     } else {
@@ -149,6 +155,7 @@
                     this.$refs.rechargeModal.show({ item : scopeRow });
                 });
             },
+
         }
     };
 </script>

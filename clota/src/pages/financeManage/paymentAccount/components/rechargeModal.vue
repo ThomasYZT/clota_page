@@ -66,6 +66,21 @@
                          :resultLocation="'rechargeRecord'"
                          @search-success="paySuccess">
         </loopForPayResult>
+
+        <!--微信二维码支付-->
+        <wx-qrcode :pay-link="wxSrc"
+                   :transaction-id="transactionId"
+                   v-model="wxPayShow"
+                   @pay-success="wxPaySuccess"
+                   @pay-fail="wxPayFail"
+                   @pay-unknow="wxPayUnknown"
+                   @cancel-success="cancelSuccess">
+        </wx-qrcode>
+
+        <!--支付错误提示框-->
+        <notice-modal ref="noticeModal">
+            {{$t('支付结果未知，如果已支付，请联系合作伙伴。')}}
+        </notice-modal>
     </div>
 </template>
 
@@ -76,11 +91,15 @@
     import loopForPayResult from '@/components/loopForPayResult/loopForPayResult';
     import { mapGetters } from 'vuex';
     import common from '@/assets/js/common';
+    import wxQrcode from '@/components/weixinPay/index.vue';
+    import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
-        props : ['row-data','onlineAccountList'],
+        props : ['row-data','onlineAccountList','partner-info'],
         components : {
-            loopForPayResult
+            loopForPayResult,
+            wxQrcode,
+            noticeModal
         },
         data () {
             const validateMethod = {
@@ -138,6 +157,10 @@
                 transactionId : '',
                 //账户交易信息
                 payInfo : {},
+                //微信二维码链接
+                wxSrc : '',
+                //微信支付是否显示
+                wxPayShow : false,
             };
         },
         watch : {
@@ -188,7 +211,11 @@
              *  确认充值
              */
             confirmRecharge ( params ) {
-                let newWindow = window.open();
+                let newWindow = '';
+                let paymentChannel = this.onlineAccountList.find(item => item.accountType === this.formData.payType)['payType']
+                if (!(this.formData.payType === 'weixin' && paymentChannel === 'zhilian')) {
+                    newWindow = window.open();
+                }
                 ajax.post('recharge', {
                     orgAccountId : params.id,
                     amount : this.formData.rechargeAmount,
@@ -202,7 +229,8 @@
                             partnerId : this.payInfo.partnerId,
                             payType : this.formData.payType,
                             payMoney : this.formData.rechargeAmount,
-                            newWindow : newWindow,
+                            newWindow,
+                            paymentChannel
                         });
                     } else {
                         this.$Message.error(res.message || this.$t('failureTip',{ 'tip' : this.$t('topUp') }));
@@ -212,7 +240,7 @@
             /**
              * 支付接口调用
              */
-            payNow ({ bizId, payType, payMoney, merchantId, partnerId, newWindow }) {
+            payNow ({ bizId, payType, payMoney, merchantId, partnerId,newWindow,paymentChannel }) {
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -221,19 +249,28 @@
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
+                    paymentChannel : paymentChannel,
+                    orgId : this.partnerInfo.peerOrgId
                 }).then(res => {
-                    if (res.success) {
-                        const { href } = this.$router.resolve({
-                            name : 'financeRecharge',
-                            params : {
-                                payFormData : res.data
-                            },
-                        });
-                        localStorage.setItem('financeRecharge', JSON.stringify({ payFormData : res.data }));
-                        newWindow.location.href = location.href.replace(location.hash, href);
-                        this.payModalShow = true;
-                        this.hide();
-                        this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
+                    if (res.success && res.data) {
+                        if (payType === 'weixin' && paymentChannel === 'zhilian') {
+                            this.wxPayShow = true;
+                            this.wxSrc = res.data.formContent;
+                            this.transactionId = res.data.transactionId;
+                            this.hide();
+                        } else {
+                            const { href } = this.$router.resolve({
+                                name : 'financeRecharge',
+                                params : {
+                                    payFormData : res.data
+                                },
+                            });
+                            localStorage.setItem('financeRecharge', JSON.stringify({ payFormData : res.data }));
+                            newWindow.location.href = location.href.replace(location.hash, href);
+                            this.payModalShow = true;
+                            this.hide();
+                            this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
+                        }
                     } else {
                         this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                     }
@@ -271,6 +308,37 @@
                 if (status === false) {
                     this.$refs.formValidate.resetFields();
                 }
+            },
+            /**
+             * 微信支付完成
+             */
+            wxPaySuccess () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('success');
+                this.$emit('update-list');
+            },
+            /**
+             * 微信支付失败
+             */
+            wxPayFail () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('fail');
+            },
+            /**
+             * 交易结果未知
+             */
+            wxPayUnknown () {
+                this.$refs.noticeModal.show({
+                    title : this.$t('notice'),
+                    showCancel : false
+                });
+            },
+            /**
+             * 交易取消成功
+             */
+            cancelSuccess () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('cancel');
             }
         },
         computed : {

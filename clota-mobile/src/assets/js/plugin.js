@@ -40,7 +40,8 @@ import {
     PopupRadio,
     DatetimePlugin,
     Popover,
-    XNumber
+    XNumber,
+    LoadingPlugin
 } from 'vux';
 
 
@@ -98,6 +99,7 @@ plugin.install = function (Vue, options) {
     Vue.component('PopupRadio', PopupRadio);
     Vue.component('Popover', Popover);
     Vue.component('XNumber', XNumber);
+    Vue.use(LoadingPlugin);
     Vue.use(DatetimePlugin);
     Vue.use(AlertPlugin);
 

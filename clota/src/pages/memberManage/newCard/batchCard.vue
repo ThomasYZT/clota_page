@@ -297,6 +297,7 @@
                     channelType : this.cardParam.payType,
                     qrCode : qrCode,
                     txnAmt : this.entityCardTotalPrice,
+                    paymentChannel : this.payAccountList.find(item => item.value === this.cardParam.payType)['payType']
                 }).then(res => {
                     if (res.success) {
                         this.tableData = [];

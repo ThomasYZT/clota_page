@@ -32,7 +32,7 @@
                 :hide-on-blur="true">
           <div class="txt">
               <p class="title">{{$t('addMemberCard')}}</p>
-              <p>{{$t('addMemberCardTxtOne') + cardExt.length + $t('addMemberCardTxtTwo')}}！</p>
+              <p>{{$t('addMemberCardTxtOne') + cardNotGet.length + $t('addMemberCardTxtTwo')}}</p>
           </div>
           <div class="opreta-btn">
               <div class="no" @click="isShowCard=false;">{{$t('getCardBtnNo')}}</div>
@@ -61,13 +61,15 @@
                 // 展示卡包
                 isShowCard : false,
                 // 卡的拓展信息
-                cardExt : []
+                cardExt : [],
+                //没有领取的会员卡
+                cardNotGet : []
             };
         },
         created () {
             this.getCardListInfo().then(() => {
                 //判断是否开通了微信卡包
-                if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId) {
+                if (this.wxMpSet.openMembercard === 'true' && this.wxMpSet.wxCardId && this.isWeixin && this.userInfo.openId) {
                     this.queryUnboundCard();
                 }
             })
@@ -81,6 +83,7 @@
                 'companyCode',
                 'memberConfigInfo',
                 'wxMpSet',
+                'isWeixin'
             ]),
             //当前卡索引
             cardIndex () {
@@ -239,6 +242,7 @@
                     memberId : this.userInfo.memberId
                 }).then((res) => {
                     if (res.success) {
+                        this.cardNotGet = res.data;
                         if (res.data && res.data.length != 0) {
                             this.isShowCard = true;
                             this.getCardExt();
@@ -283,10 +287,10 @@
                 });
                 this.$wechat.addCard({
                     cardList : cardList,
-                    success : res => {
-                        console.log(res);
+                    success : () => {
+                        this.$vux.toast.text(this.$t('getCardSuccess'));
                     },
-                    fail : res => {
+                    fail : () => {
                         this.$vux.toast.text(this.$t('getCardFail'));
                     },
                     complete : () => {

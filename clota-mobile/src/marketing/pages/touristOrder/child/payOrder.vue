@@ -41,6 +41,7 @@
     import ajax from '@/marketing/api/index';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { mapGetters } from 'vuex';
+
     export default {
         mixins : [lifeCycleMixins],
         data () {
@@ -100,14 +101,16 @@
                                     icon : require('../../../../assets/images/icon-wx-pay.svg'),
                                     key : 'wx',
                                     value : this.$t('wxPay'),
-                                    param : item
+                                    param : item,
+                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                                 };
                             } else if (item.accountType === 'alipay') {
                                 return {
                                     icon : require('../../../../assets/images/icon-ali-pay.svg'),
                                     key : 'ali',
                                     value : this.$t('aliPay'),
-                                    param : item
+                                    param : item,
+                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                                 };
                             }
                         }) : [];
@@ -153,6 +156,7 @@
                     txnAmt : this.totalAmount,
                     redirectUrl : this.getRedirectUrl(),
                     orgId : this.marketOrgId,
+                    paymentChannel : this.payTypeList.find(item => item.key === 'wx')['payType'],
                     ...createOrderParams
                 }).then(res => {
                     if (res.success) {
@@ -169,48 +173,85 @@
             },
             /**
              * 获取支付回调地址
+             * @param{String} paymentChannel 支付类型（'直连或银石支付'）
              * @return{String} 回调地址加密
              */
-            getRedirectUrl () {
-                let router = this.$router;
-                let base = router.options.base;
-                return encodeURI(location.origin + base + '/marketing/tourist/createOrder/payResult');
+            getRedirectUrl (paymentChannel) {
+                if (paymentChannel === 'zhilian') {
+                    const { href } = this.$router.resolve({
+                        name : 'wxOrAlidirectPay'
+                    });
+                    return encodeURI(location.origin + href);
+                } else {
+                    const { href } = this.$router.resolve({
+                        name : 'marketingCreateOrderPayResult'
+                    });
+                    return encodeURI(location.origin + href);
+                }
             },
             /**
              * 获取手机网页支付信息
              */
             getPayPageForMobile () {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
+                let paymentChannel = this.payTypeList.find(item => item.key === 'ali')['payType'];
                 ajax.postWithoutToken('market_getPayPageForMobileNoLogin', {
                     bizScene : 'order',
                     bizType : 'pay_order',
                     channelType : this.payType === 'wx' ? 'weixin' : 'alipay',
                     txnAmt : this.totalAmount,
-                    redirectUrl : this.getRedirectUrl(),
+                    redirectUrl : this.getRedirectUrl(paymentChannel),
                     orgId : this.marketOrgId,
+                    paymentChannel : paymentChannel,
                     ...createOrderParams
                 }).then(res => {
-                    if (res.success) {
-                        this.payFormData = res.data ? res.data : {};
-                        this.payFormData.orderId = res.data ? res.data.bizId : '';
-                        //设置支付表单信息
-                        localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay' +
-                            '?paymentTypeId=' + this.payType +
-                            '&amount=' + this.payFormData.txnAmt +
-                            '&txnType=' + this.payFormData.txnType +
-                            '&partnerId=' + this.payFormData.partnerId +
-                            '&channelId=' + this.payFormData.channelId +
-                            '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
-                            '&merchantId=' + this.payFormData.merchantId +
-                            '&txnAmt=' + this.payFormData.txnAmt +
-                            '&redirectUrl=' + this.payFormData.redirectUrl +
-                            '&txnShortDesc=' + this.payFormData.txnShortDesc +
-                            '&sign=' + this.payFormData.sign +
-                            '&currencyCode=' + this.payFormData.currencyCode +
-                            '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
-                            '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
-                            '&transactionId=' + this.payFormData.transactionId;
+                    if (res.success && res.data) {
+                        if (paymentChannel === 'zhilian') {
+                            if (this.isWeixin) {
+                                const { href } = this.$router.resolve({
+                                    name : 'wxOrAlidirectPay'
+                                });
+                                const divEle = document.createElement('div');
+                                divEle.innerHTML = res.data.formContent;
+                                this.$el.appendChild(divEle);
+                                const formEle = this.$el.querySelector('form[name=punchout_form]');
+                                let queryParam = formEle.getAttribute('action').split('?')[1];
+                                Array.prototype.slice.call(formEle.querySelectorAll("input[type=hidden]")).forEach(function (ele) {
+                                    queryParam += '&' + ele.name + "=" + encodeURIComponent(ele.value);
+                                });
+                                location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true';
+                            } else {
+                                this.$router.push({
+                                    name : 'wxOrAlidirectPay',
+                                    params : {
+                                        payType : this.payType,
+                                        formContent : res.data.formContent
+                                    }
+                                });
+                            }
+                        } else {
+                            this.payFormData = res.data ? res.data : {};
+                            this.payFormData.orderId = res.data ? res.data.bizId : '';
+                            this.payFormData.paymentChannel = paymentChannel;
+                            //设置支付表单信息
+                            localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
+                            location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay' +
+                                '?paymentTypeId=' + this.payType +
+                                '&amount=' + this.payFormData.txnAmt +
+                                '&txnType=' + this.payFormData.txnType +
+                                '&partnerId=' + this.payFormData.partnerId +
+                                '&channelId=' + this.payFormData.channelId +
+                                '&merchantTxnNo=' + this.payFormData.merchantTxnNo +
+                                '&merchantId=' + this.payFormData.merchantId +
+                                '&txnAmt=' + this.payFormData.txnAmt +
+                                '&redirectUrl=' + this.payFormData.redirectUrl +
+                                '&txnShortDesc=' + this.payFormData.txnShortDesc +
+                                '&sign=' + this.payFormData.sign +
+                                '&currencyCode=' + this.payFormData.currencyCode +
+                                '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
+                                '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
+                                '&transactionId=' + this.payFormData.transactionId;
+                        }
                     } else {
                         this.payFormData = {};
                         this.$vux.toast.text(this.$t('payAbnormal'));

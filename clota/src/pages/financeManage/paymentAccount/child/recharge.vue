@@ -57,10 +57,19 @@
                     params = JSON.parse(params);
                 }
                 if (params && params.payFormData) {
-                    this.payFormData = params.payFormData;
-                    this.$nextTick(() => {
-                        this.$refs.payForm.submit();
-                    });
+                    if (params.payFormData.formContent) {
+                        const divEle = document.createElement('div');
+                        divEle.innerHTML = params.payFormData.formContent;
+                        this.$el.appendChild(divEle);
+                        const formEle = this.$el.querySelector('form[name=punchout_form]');
+                        formEle.acceptCharset = 'UTF8';
+                        formEle.submit();
+                    } else {
+                        this.payFormData = params.payFormData;
+                        this.$nextTick(() => {
+                            this.$refs.payForm.submit();
+                        });
+                    }
                 } else {
                     this.$router.push({
                         name : 'rechargeRecord'

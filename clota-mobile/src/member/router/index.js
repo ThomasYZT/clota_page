@@ -9,6 +9,7 @@ export const memberRouterDeal = (to, from, next) => {
         || to.name === 'activateCard' //激活会员卡
         || to.name === 'activateInfo' //填写激活会员卡信息
         || to.name === 'h5Pay' //c端支付
+        || to.name === 'wOraDirectPay' //c端直连支付
         || to.name === 'payStatus' //c端支付结果
         || to.name === 'mobileRegister' // 会员注册
         || to.name === 'wxActivateCard' // 微信会员卡激活
@@ -363,6 +364,17 @@ export const memberRoutes = [
                 component : () => import(/* webpackChunkName: "integralMall" */'../pages/wxPay/wxPay.vue'),
                 meta : {
                     title : 'wxPay'
+                }
+            },
+            //直连支付
+            {
+                path : 'directPay',
+                name : 'wOraDirectPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/h5Pay/wxoraliPay.vue'),
+                meta : {
+                    title : '支付结果',
+                    hideTabbar : true,
+                    notNeedCheck : true
                 }
             }
         ],

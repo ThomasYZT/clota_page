@@ -123,6 +123,8 @@ export default {
     //新增机构图片资源
     'addOrgImage' : '/organize/addOrgImage',
     //修改(删除)机构图片资源
-    'updateOrgImage' : '/organize/updateOrgImage'
+    'updateOrgImage' : '/organize/updateOrgImage',
+    //下载base64图片
+    'base64Str2Img' : '/base64Str2Img',
 
 };

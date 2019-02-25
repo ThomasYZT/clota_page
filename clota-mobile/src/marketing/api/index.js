@@ -21,7 +21,7 @@ const instance = axios.create({
     }
 });
 //不需要提示的code
-let codeExclude = ['MK013','400'];
+let codeExclude = ['MK013','OD009','400'];
 // 响应拦截器校验token，在每一个请求配置之后执行
 instance.interceptors.response.use(function (response) {
     if (response.data.message === '请先登录') {

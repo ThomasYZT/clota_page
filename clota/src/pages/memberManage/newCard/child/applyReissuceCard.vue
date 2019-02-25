@@ -19,7 +19,8 @@
                               @set-card-data="getCardData">
             </entity-card-info>
             <!--支付方式选择-->
-            <pay-type-select @set-pay-type="formData.payType = $event">
+            <pay-type-select v-show="replaceCardFee > 0"
+                             @set-pay-type="formData.payType = $event">
             </pay-type-select>
             <!--footer 按钮-->
             <div class="content-footer">
@@ -116,6 +117,7 @@
     import confirmMemberInfo from '../components/confirmDetailModal';
     import loopForPayResult from '../../../../components/loopForPayResult/loopForPayResult';
     import confirmModal from '@/components/delModal/index.vue';
+    import { mapGetters } from 'vuex';
 
 	export default {
         mixins : [ lifeCycleMixins ],
@@ -208,7 +210,8 @@
                     cardId : this.memberInfo.cardId,
                     levelId : this.memberInfo.levelId,
                     channelType : this.formData.payType,
-                    qrCode : qrCode
+                    qrCode : qrCode,
+                    paymentChannel : this.payAccountList.find(item => item.value === this.formData.payType)['payType']
                 }).then(res => {
                     if (res.success) {
                         this.$refs.payResultModal.setStage('success');
@@ -232,6 +235,8 @@
                                 this.confirmApplyForLost();
                             }
                         });
+                    } else if (res.code === 'M015') { //实体卡不存在
+                        this.$Message.error(this.$t('entityNotExist'));
                     } else {
                         if (this.payModalShow) {
                             this.$refs.payResultModal.setStage('fail');
@@ -304,6 +309,11 @@
         },
         created () {
             this.queryCardReplaceFee();
+        },
+        computed : {
+            ...mapGetters([
+                'payAccountList'
+            ])
         }
 	};
 </script>

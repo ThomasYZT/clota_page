@@ -77,4 +77,8 @@ export default {
     'market_queryMarketTypes' : '/market/marketUser/queryMarketTypes',
     //撤销交易
     'revocation' : '/external/pay/revocation',
+    //查询支付结果
+    'market_queryPayRecordByOutTradeNo' : '/external/pay/queryPayRecordByOutTradeNo',
+    //查询消费结果更新业务
+    queryConsumeUpdateBiz : '/external/pay/queryConsumeUpdateBiz',
 };

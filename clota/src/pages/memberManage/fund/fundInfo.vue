@@ -25,6 +25,17 @@
                             <div class="account-type-name">{{$t('presentAccountTotal')}}</div>
                         </div>
                     </div>
+                    <!--<div class="account-money">{{item.amount | moneyFilter}}</div>-->
+                    <div class="account-type-wrap">
+                        <div class="corpus-amount">
+                            <div class="number">{{item.corpusAmount | moneyFilter | contentFilter}}</div>
+                            <div class="account-type-name">{{$t('account.corpus')}}</div>
+                        </div>
+                        <div class="corpus-amount" v-if="item.id !== '4'">
+                            <div class="number">{{item.corpusAmount | moneyFilter | contentFilter}}</div>
+                            <div class="account-type-name">{{$t('presentAccountTotal')}}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul class="account-operate">

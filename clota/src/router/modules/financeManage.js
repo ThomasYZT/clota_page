@@ -39,7 +39,7 @@ export default {
                 // 财务管理 -- 付款账户管理
                 path : '/financeManage/payment',
                 name : 'paymentManage',
-                component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/paymentAccount/paymentManage.vue'),
+                component : () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/paymentAccount/paymentManage.vue'),
                 meta : {
                     _name : 'payment-account-manage',
                     menuName : 'paymentManage', //lang.config.js 里面的语言键值
@@ -52,7 +52,7 @@ export default {
                 // 财务管理 -- 付款账户管理 -- 充值
                 path : '/financeManage/financeRecharge',
                 name : 'financeRecharge',
-                component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/paymentAccount/child/recharge.vue'),
+                component : () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/paymentAccount/child/recharge.vue'),
                 meta : {
                     _name : 'payment-account-manage',
                     menuName : 'financeRecharge', //lang.config.js 里面的语言键值
@@ -64,7 +64,7 @@ export default {
                 // 财务管理 -- 收款账户管理
                 path : '/financeManage/collection',
                 name : 'collectionManage',
-                component : () => import(/* webpackChunkName: "systemSetting" */ '../../pages/financeManage/collectionAccount/collectionManage.vue'),
+                component : () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/collectionAccount/collectionManage.vue'),
                 meta : {
                     _name : 'receivable-account-manage', //
                     menuName : 'collectionManage', //lang.config.js 里面的语言键值
@@ -72,7 +72,19 @@ export default {
                     iconClass : 'icon-credited-account',
                     isMenu : true
                 },
-
+            },
+            //在线收款记录
+            paymentRecord : {
+                path : '/financeManage/paymentRecord',
+                name : 'paymentRecord',
+                component : () => import(/* webpackChunkName: "financeManage" */ '../../pages/financeManage/paymentRecord/index.vue'),
+                meta : {
+                    _name : 'receivable-account-manage', //
+                    menuName : 'paymentRecord', //lang.config.js 里面的语言键值
+                    rightPath : topMenuName + '.' + 'paymentRecord',
+                    iconClass : 'icon-credited-account',
+                    isMenu : true
+                },
             },
         }
     }

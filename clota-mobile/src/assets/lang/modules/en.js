@@ -288,7 +288,7 @@ export default {
     'passport' : 'passport',
     'addMemberCard' : 'add membership card',
     'addMemberCardTxtOne' : 'there are ',
-    'addMemberCardTxtTwo' : ' membership cards, whether to add membership card to WeChat card package',
+    'addMemberCardTxtTwo' : ' membership cards, whether to add membership card to WeChat card package!',
     'getCardBtn' : 'confirm',
     'getCardBtnNo' : 'cancel',
     'getCardSuccess' : 'get the success',

@@ -172,6 +172,7 @@
              * 支付接口调用
              */
             payNow ({ bizId, payType, payMoney, merchantId, partnerId, newWindow }) {
+                let paymentChannel = this.onlineAccountList.find(item => item.accountType === payType)['payType'];
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -180,6 +181,7 @@
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
+                    paymentChannel : paymentChannel
                 }).then(res => {
                     if (res.success) {
                         const { href } = this.$router.resolve({
@@ -226,6 +228,7 @@
                                 ...item,
                                 value : item.accountType,
                                 label : item.accountType,
+                                payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                             };
                         }) : [];
                     } else {
