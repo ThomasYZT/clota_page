@@ -11,11 +11,11 @@
                 @click.native="showPreImage">
             </qrcode>
             <div class="re-get-qrcode" v-if="!haveUserInfo">
-                <span @click="getQrcode">{{$t('重新获取')}}</span>
+                <span @click="getQrcode">{{$t('reGet')}}</span>
             </div>
         </div>
         <div class="scene-name">{{companyName}}</div>
-        <div class="buy-ticket-tips">{{$t('扫码购票入口')}}</div>
+        <div class="buy-ticket-tips">{{$t('scanToTicket')}}</div>
         <!--预览图片-->
         <previewer
             v-transfer-dom

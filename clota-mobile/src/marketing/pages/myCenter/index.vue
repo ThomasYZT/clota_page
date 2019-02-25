@@ -4,7 +4,7 @@
     <div class="my-center">
         <div class="toast-info" v-if="canShowLocationTips && marketNeedGetLocation">
             <x-icon type="ios-information" size="18"></x-icon>
-            您还未允许系统定位手机的权限，请前往设置允许权限
+            {{$t('positionPrivalige')}}
         </div>
         <div class="base-info">
             <img class="head-img" src="../../../assets/images/icon-avator.svg" alt="">
@@ -21,32 +21,32 @@
         <!--提现金额-->
         <div class="cell-list" @click="toDepositDetail">
             <span class="icon iconfont icon-default-account"></span>
-            <span class="label-title">可提现金额</span>
-            <span class="label-value"><span class="money">{{userInfo.canApplyWithdrawAmount | moneyFilter | contentFilter}}</span>元</span>
+            <span class="label-title">{{$t('amountOfWithdrawal')}}</span>
+            <span class="label-value"><span class="money">{{userInfo.canApplyWithdrawAmount | moneyFilter | contentFilter}}</span>{{$t('yuan')}}</span>
             <span class="iconfont icon-arrow"></span>
         </div>
         <!--海报-->
         <div class="cell-list" @click="toPoster">
             <span class="icon iconfont icon-my-orders"></span>
-            <span class="label-title">海报</span>
+            <span class="label-title">{{$t('poster')}}</span>
             <span class="label-value"></span>
             <span class="iconfont icon-arrow"></span>
         </div>
         <!--设置-->
         <div class="cell-list" @click="toSettingDetail">
             <span class="icon iconfont icon-security-setting"></span>
-            <span class="label-title">设置</span>
+            <span class="label-title">{{$t('setting')}}</span>
             <span class="label-value"></span>
             <span class="iconfont icon-arrow"></span>
         </div>
         <confirm v-model="confirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
-                 :confirm-text="$t('继续')"
+                 :title="$t('notice')"
+                 :confirm-text="$t('continue')"
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
-            <p style="text-align:center;">{{ $t('根据景区要求，当前位置扫码下达的订单不计算佣金！') }}</p>
+            <p style="text-align:center;">{{ $t('orderWithoutCommission') }}</p>
         </confirm>
     </div>
 </template>

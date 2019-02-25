@@ -7,14 +7,14 @@
                  <span class="start-date" @click="chooseStartDate">{{startDate | contentFilter}}</span>
                 <span class="iconfont icon-arrow-right"></span>
             </span>
-            <span class="zhi">至</span>
+            <span class="zhi">{{$t('to')}}</span>
             <span class="time">
                  <span class="end-date" @click="chooseEndDate">{{endDate | contentFilter}}</span>
                 <span class="iconfont icon-arrow-right"></span>
             </span>
             <div class="bar"></div>
             <span class="product-filter" @click="productFilterShow = true">
-                <span :class="{ 'text-filter' : choosedProductInfo.filter(item => item.productId !== 'all').length > 0 }">产品</span>
+                <span :class="{ 'text-filter' : choosedProductInfo.filter(item => item.productId !== 'all').length > 0 }">{{$t('product')}}</span>
                 <img v-if="choosedProductInfo.filter(item => item.productId !== 'all').length > 0" class="filter" src="../../../assets/images/icon-filter-activated.svg" alt="">
                 <img v-else class="filter" src="../../../assets/images/icon-filter.svg" alt="">
             </span>
@@ -85,15 +85,15 @@
                 //菜单列表
                 tapInfo : [
                     {
-                        name : '全部',
+                        name : this.$t('all'),
                         count : '0'
                     },
                     {
-                        name : '未提现',
+                        name : this.$t('noWithdrawal'),
                         count : '0'
                     },
                     {
-                        name : '已提现',
+                        name : this.$t('withdrawal'),
                         count : '0'
                     }
                 ],
@@ -119,7 +119,7 @@
                 //选择的产品筛选数据
                 choosedProductInfo : [
                     {
-                        productName : this.$t('全部'),
+                        productName : this.$t('all'),
                         productId : 'all'
                     }
                 ],
@@ -158,8 +158,8 @@
              */
             chooseStartDate () {
                 this.$vux.datetime.show({
-                    cancelText : '取消',
-                    confirmText : '确定',
+                    cancelText : this.$t('cancel'),
+                    confirmText : this.$t('confirm'),
                     format : 'YYYY-MM-DD',
                     value : this.startDate,
                     endDate : this.endDate,
@@ -179,8 +179,8 @@
              */
             chooseEndDate () {
                 this.$vux.datetime.show({
-                    cancelText : '取消',
-                    confirmText : '确定',
+                    cancelText : this.$t('cancel'),
+                    confirmText : this.$t('confirm'),
                     format : 'YYYY-MM-DD',
                     value : this.endDate,
                     startDate : this.startDate,
@@ -298,7 +298,7 @@
                     this.endDate = params.endDate ? params.endDate : new Date().format('yyyy-MM-dd');
                     this.choosedProductInfo = params.choosedProductInfo ? params.choosedProductInfo : [
                         {
-                            productName : this.$t('全部'),
+                            productName : this.$t('all'),
                             productId : 'all'
                         }
                     ];

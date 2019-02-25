@@ -6,7 +6,7 @@
         <popup-header
             :left-text="$t('cancel')"
             :right-text="$t('confirm')"
-            :title='$t("请选择您要登录的类别")'
+            :title='$t("chooseMarketingTypes")'
             :show-bottom-border="false"
             @on-click-left="cancel"
             @on-click-right="confirm">

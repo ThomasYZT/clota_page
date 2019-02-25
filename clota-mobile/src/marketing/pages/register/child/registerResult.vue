@@ -4,9 +4,9 @@
     <div class="register-result">
         <div class="success-wrap">
             <img class="suc-img" src="../../../../assets/images/pay-success.svg" alt="">
-            <div class="suc-label">恭喜，注册成功</div>
+            <div class="suc-label">{{$t('registerSuccessfully')}}</div>
             <x-button class="button"
-                      @click.native="toLogin">{{$t('现在登录')}}</x-button>
+                      @click.native="toLogin">{{$t('loginNow')}}</x-button>
         </div>
     </div>
 </template>

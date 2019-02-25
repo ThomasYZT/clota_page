@@ -3,14 +3,14 @@
     <popup :value="value" :class="$style.wrap" v-transfer-dom @input="changeStatus">
         <div :class="$style.popupBody">
             <div :class="$style.head">
-                <span :class="$style.known" @click="changeStatus(false)">{{$t('知道了')}}</span>
-                购票须知
+                <span :class="$style.known" @click="changeStatus(false)">{{$t('isee')}}</span>
+                {{$t('ticketInfo')}}
             </div>
             <div :class="$style.content">
                 <div :class="$style.productTitle">{{choosedProductInfo.productName | contentFilter}}</div>
-                <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('产品说明') })}}</div>
+                <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('productExplain') })}}</div>
                 <div :class="$style.notice">{{choosedProductInfo.productDes | contentFilter}}</div>
-                <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('购票须知') })}}</div>
+                <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('ticketInfo') })}}</div>
                 <div :class="$style.notice">{{choosedProductInfo.productDes | contentFilter}}</div>
             </div>
         </div>

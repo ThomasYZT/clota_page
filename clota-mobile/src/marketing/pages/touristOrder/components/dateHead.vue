@@ -18,8 +18,8 @@
                 <span>{{activeDate.format('MM-dd')}}</span>
             </div>
             <template v-else>
-                <div>全部</div>
-                <div>日期</div>
+                <div>{{$t('all')}}</div>
+                <div>{{$t('date')}}</div>
             </template>
         </div>
     </div>

@@ -9,74 +9,74 @@
                     <span class="order-type">{{orderDetail.productName | contentFilter}}</span>
                 </div>
                 <div class="detail-list">
-                    <span class="key">{{$t('colonSetting',{ key : $t('订单明细编号') })}}</span>
+                    <span class="key">{{$t('colonSetting',{ key : $t('orderDetailCode') })}}</span>
                     <span class="value">{{orderDetail.orderId | contentFilter}}</span>
                 </div>
                 <div class="detail-list">
-                    <span class="key">{{$t('colonSetting',{ key : $t('使用日期') })}}</span>
+                    <span class="key">{{$t('colonSetting',{ key : $t('usageOfdate') })}}</span>
                     <span class="value">{{orderDetail.playDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
                 </div>
             </div>
             <div class="preorder-info">
-                <div class="title">{{$t('预定信息')}}</div>
+                <div class="title">{{$t('orderInfo')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('产品单价') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('productUnitPrice') })}}</span>
                         <span class="value">{{orderDetail.itemSalePrice | moneyFilter(2,'￥') | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('预定数量') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('orderNum') })}}</span>
                         <span class="value">{{orderDetail.productNum | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('订单金额') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('orderAmount') })}}</span>
                         <span class="value">{{orderDetail.orderAmount | moneyFilter(2,'￥') | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('下单日期') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('createDate') })}}</span>
                         <span class="value">{{orderDetail.createdTime | contentFilter}}</span>
                     </div>
                 </div>
             </div>
             <!--核销信息-->
             <div class="preorder-info">
-                <div class="title">{{$t('核销-退票信息')}}</div>
+                <div class="title">{{$t('verifyRefundInfo')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('已核销数量') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('verifiedQuantity') })}}</span>
                         <span class="value">{{orderDetail.verifiedNum | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('已退票数量') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('refundQuantity') })}}</span>
                         <span class="value">{{orderDetail.refundNum | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('过期已核销数量') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('overdueQuantity') })}}</span>
                         <span class="value">{{orderDetail.overdueNum | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('说明') })}}{{$t('本订单产品全部核销或退票后才能申请提现')}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('explain') })}}{{$t('withdrawCondition')}}</span>
                     </div>
                 </div>
             </div>
             <!--佣金-->
             <div class="preorder-info">
-                <div class="title">{{$t('佣金')}}</div>
+                <div class="title">{{$t('commission')}}</div>
                 <div class="info-list">
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('佣金总额') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('totalAmountCommission') })}}</span>
                         <span class="value">{{orderDetail.orderSalary | moneyFilter(2,'￥') | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('申请提现日期') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('withdrawalDate') })}}</span>
                         <span class="value">{{orderDetail.reqWithdrawTime | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('景区审核日期') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('scenicAuditDate') })}}</span>
                         <span class="value">{{orderDetail.auditTime | contentFilter}}</span>
                     </div>
                     <div class="detail-list">
-                        <span class="key">{{$t('colonSetting',{ key : $t('佣金支付方式') })}}</span>
+                        <span class="key">{{$t('colonSetting',{ key : $t('commissionPayType') })}}</span>
                         <span class="value">{{$t(orderDetail.salaryPayment) | contentFilter}}</span>
                     </div>
                 </div>
@@ -84,25 +84,25 @@
         </div>
         <div class="deposit" v-if="orderDetail.withdrawStatus !== 'success'">
             <div class="commission">
-                {{$t('colonSetting',{ key : $t('可提现佣金') })}}
+                {{$t('colonSetting',{ key : $t('withdrawAvailable') })}}
                 <span class="money">{{orderDetail.expectedSalary | moneyFilter(2,'￥') | contentFilter}}</span>
             </div>
             <div v-if="canApplyDeposit"
                  class="apply-deposit"
-                 @click="deposit">{{$t('申请提现')}}</div>
+                 @click="deposit">{{$t('requestWithdrawal')}}</div>
             <div v-else-if="orderDetail.withdrawStatus === 'reject_no_req'"
-                 class="apply-deposit" :class="{ 'disabled' : true }">{{$t('申请被驳回')}}</div>
+                 class="apply-deposit" :class="{ 'disabled' : true }">{{$t('applicationRejected')}}</div>
             <div v-else
-                 class="apply-deposit" :class="{ 'disabled' : true }">{{$t('申请提现')}}</div>
+                 class="apply-deposit" :class="{ 'disabled' : true }">{{$t('requestWithdrawal')}}</div>
         </div>
         <!--未设置账户提示框-->
         <confirm v-model="confirmShow"
                  v-transfer-dom
-                 :title="$t('提示')"
-                 :confirm-text="$t('立即设置')"
+                 :title="$t('notice')"
+                 :confirm-text="$t('immediatelySet')"
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
-            <p style="text-align:center;">{{ $t('您还未设置佣金收款账户。') }}</p>
+            <p style="text-align:center;">{{ $t('withoutCollectAccount') }}</p>
         </confirm>
     </div>
 </template>
@@ -166,7 +166,7 @@
                         });
                     } else {
                         this.$vux.toast.show({
-                            text : this.$t('operateFail',{ msg : this.$t('申请提现') }),
+                            text : this.$t('operateFail',{ msg : this.$t('requestWithdrawal') }),
                             type : 'cancel'
                         });
                     }

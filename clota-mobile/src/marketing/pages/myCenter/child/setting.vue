@@ -17,7 +17,7 @@
             </x-input>
             <!-- 身份证号 -->
             <x-input
-                :title="$t('身份证号')"
+                :title="$t('idNum')"
                 text-align="right"
                 disabled
                 :placeholder="$t('pleaseInputMsg')"
@@ -27,7 +27,7 @@
             </x-input>
             <!-- 手机 -->
             <cell
-                :title="$t('手机')"
+                :title="$t('phone')"
                 is-link
                 class="padding-right"
                 :value="formData.phoneNum"
@@ -35,7 +35,7 @@
             </cell>
             <!-- 登录密码 -->
             <cell
-                :title="$t('登录密码')"
+                :title="$t('loginPass')"
                 is-link
                 class="padding-right"
                 :value="formData.password"
@@ -43,7 +43,7 @@
             </cell>
             <!-- 收款账户 -->
             <cell
-                :title="$t('收款账户')"
+                :title="$t('accountToBeCredited')"
                 is-link
                 class="padding-right"
                 :value="formData.account"
@@ -51,7 +51,7 @@
             </cell>
         </group>
         <x-button class="button"
-                  @click.native="logOut">{{$t('退出登录')}}</x-button>
+                  @click.native="logOut">{{$t('logout')}}</x-button>
     </div>
 </template>
 

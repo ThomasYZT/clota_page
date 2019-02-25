@@ -4,45 +4,45 @@
     <div class="deposit">
         <div class="head">
             <div class="deposit-num">
-                {{accountDetail.canApplyWithdrawAmount | moneyFilter | contentFilter}}
+                {{canApplyWithdrawAmount}}
             </div>
-            <div class="tips">{{$t('可提现金额(元)')}}</div>
+            <div class="tips">{{$t('amountOfWithdrawal')}}{{$t('bracketSetting',{ content : $t('yuan') })}}</div>
         </div>
         <div class="money-detail-box">
             <div class="mark"></div>
             <div class="top">
                 <div class="detail-box border-right">
                     <div class="num-info">{{accountDetail.haveWithdrawAmount | moneyFilter | contentFilter}}</div>
-                    <div class="des">{{$t('已提现(元)')}}</div>
+                    <div class="des">{{$t('withdrawalWithUnit')}}</div>
                 </div>
                 <div class="detail-box">
                     <div class="num-info">{{accountDetail.auditWithdrawAmount | moneyFilter | contentFilter}}</div>
-                    <div class="des">{{$t('已冻结(元)')}}</div>
+                    <div class="des">{{$t('frozenWithUnit')}}</div>
                 </div>
             </div>
             <div class="bottom">
                 <div class="detail-box border-right">
                     <div class="num-info">{{accountDetail.totalEarnAmount | moneyFilter | contentFilter}}</div>
-                    <div class="des">{{$t('累计赚取(元)')}}</div>
+                    <div class="des">{{$t('totalEarnWithUnit')}}</div>
                 </div>
                 <div class="detail-box">
                     <div class="num-info">{{accountDetail.totalMarketAmount | moneyFilter | contentFilter}}</div>
-                    <div class="des">{{$t('累计销售(元)')}}</div>
+                    <div class="des">{{$t('totalSaleWithUnit')}}</div>
                 </div>
             </div>
         </div>
 
         <x-button class="button"
                   :disabled="!canDeposit"
-                  @click.native="deposit">{{$t('全部提现')}}</x-button>
+                  @click.native="deposit">{{$t('allWithdrawal')}}</x-button>
         <!--未设置账户提示框-->
         <confirm v-model="confirmShow"
                  v-transfer-dom
-                 :title="$t('提示')"
-                 :confirm-text="$t('立即设置')"
+                 :title="$t('notice')"
+                 :confirm-text="$t('immediatelySet')"
                  @on-cancel="onCancel"
                  @on-confirm="toSetAccount">
-            <p style="text-align:center;">{{ $t('您还未设置佣金收款账户。') }}</p>
+            <p style="text-align:center;">{{ $t('withoutCollectAccount') }}</p>
         </confirm>
         <!--提现金额以及收款方式确认模态框-->
         <confirm v-model="depositConfirmModalShow"
@@ -51,15 +51,15 @@
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
             <template>
-                <div class="receipt-money">
-                    您申请提现<span class="num">{{accountDetail.canApplyWithdrawAmount | moneyFilter | contentFilter}}</span>元
+                <div class="receipt-money"
+                     v-html="$t('requestWithdrawalMoney',{ money : `<span class='num'>${canApplyWithdrawAmount}</span>` })">
                 </div>
                 <div class="receipt-type">
-                    <span class="key">{{$t('colonSetting',{ key : $t('收款方式') })}}</span>
+                    <span class="key">{{$t('colonSetting',{ key : $t('paymentTerm') })}}</span>
                     <span class="value">{{accountType}}</span>
                 </div>
                 <div class="receipt-type">
-                    <span class="key">{{$t('colonSetting',{ key : $t('收款账户名') })}}</span>
+                    <span class="key">{{$t('colonSetting',{ key : $t('paymentAccountName') })}}</span>
                     <span class="value">{{$t(accountDetail.accountInfo)}}</span>
                 </div>
             </template>
@@ -135,13 +135,13 @@
                 }).then(res => {
                     if (res.success) {
                         this.$vux.toast.show({
-                            text : this.$t('operateSuc',{ msg : this.$t('申请提现') }),
+                            text : this.$t('operateSuc',{ msg : this.$t('requestWithdrawal') }),
                         });
                         //申请成功，重新查询提现信息
                         this.queryUserInfo();
                     } else {
                         this.$vux.toast.show({
-                            text : this.$t('operateFail',{ msg : this.$t('申请提现') }),
+                            text : this.$t('operateFail',{ msg : this.$t('requestWithdrawal') }),
                             type : 'cancel'
                         });
                     }
@@ -191,6 +191,15 @@
                     return this.$t(this.accountDetail.accountType);
                 } else {
                     return this.accountDetail.accountType;
+                }
+            },
+            //申请提现金额
+            canApplyWithdrawAmount () {
+                let content = this.accountDetail.canApplyWithdrawAmount;
+                if (content === '' || content === null || content === undefined) {
+                    return '-';
+                } else {
+                    return content === 0 ? '0.00' : Number(content).formatMoney(2,'');
                 }
             }
         }

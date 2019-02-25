@@ -6,17 +6,17 @@
             <!--预定成功-->
             <div class="pay-success" v-if="paySuccess === true">
                 <img class="status-icon" src="../../../assets/images/pay-success.svg" alt="">
-                <p class="status-message">{{$t('预定成功')}}</p>
+                <p class="status-message">{{$t('reserveSucessfully')}}</p>
                 <div class="label-info">
-                    {{$t('取票凭证将以短信形式发送到您指定的手机，请注意查收！')}}
+                    {{$t('reserveSuccessfullyNotice')}}
                 </div>
             </div>
             <!--预定失败-->
             <div class="pay-failed" v-if="paySuccess === false">
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
-                <p class="status-message">{{$t('预定失败')}}</p>
+                <p class="status-message">{{$t('reserveFaield')}}</p>
             </div>
-            <x-button class="button" @click.native="toOrderPage" v-if="marketUserId">{{$t('继续预定')}}</x-button>
+            <x-button class="button" @click.native="toOrderPage" v-if="marketUserId">{{$t('continueToReserve')}}</x-button>
         </div>
         <div v-if="aliPayInWeixin === true && paySuccess === null" class="img-wrapper">
             <img class="notice" src="../../../assets/images/open-in-browser.svg" alt="">
@@ -26,21 +26,21 @@
         <confirm v-model="confirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
                  @on-confirm="confirmPayResult">
-            <p style="text-align:center;">{{ $t('下单失败，退还金额请联系工作人员。') }}</p>
+            <p style="text-align:center;">{{ $t('errorMsg.OD009') }}</p>
         </confirm>
         <!--退款失败提示框-->
         <confirm v-model="refundConfirmModal"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
                  @on-confirm="confirmRefundResult">
-            <p style="text-align:center;">{{ $t('取消支付失败，如未退款，请联系工作人员。') }}</p>
+            <p style="text-align:center;">{{ $t('cancelPaymentResultNotice') }}</p>
         </confirm>
     </div>
 </template>
@@ -110,7 +110,7 @@
              */
             queryPayRecordByOutTradeNo (outTradeNo) {
                 this.$vux.loading.show({
-                    text : this.$t('支付结果查询中')
+                    text : this.$t('searchIngPayResult')
                 });
                 ajax.post('market_queryPayRecordByOutTradeNo',{
                     outTradeNo

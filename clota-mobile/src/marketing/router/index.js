@@ -72,7 +72,7 @@ export const marketingRoutes = [
                 name : 'marketingRegisterSuc',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/register/child/registerResult.vue'),
                 meta : {
-                    title : '注册成功',
+                    title : 'registSuccess',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -94,7 +94,7 @@ export const marketingRoutes = [
                 name : 'marketingResetPassword',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/resetPass/index.vue'),
                 meta : {
-                    title : '重置密码',
+                    title : 'resetPass',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -105,7 +105,7 @@ export const marketingRoutes = [
                 name : 'marketingResetPasswordSuc',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/resetPass/child/resetPasswordResult.vue'),
                 meta : {
-                    title : '重置密码成功',
+                    title : 'resetPassSuccessfully',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -116,7 +116,7 @@ export const marketingRoutes = [
                 name : 'marketingProduct',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/product/index.vue'),
                 meta : {
-                    title : '我的产品',
+                    title : 'myProduct',
                     menuBar : 'product'
                 }
             },
@@ -126,7 +126,7 @@ export const marketingRoutes = [
                 name : 'salesManCreateOrder',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/createOrder.vue'),
                 meta : {
-                    title : '填写订单',
+                    title : 'writeOrder',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -137,7 +137,7 @@ export const marketingRoutes = [
                 name : 'salesManCreateOrderToPay',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/payOrder.vue'),
                 meta : {
-                    title : '支付方式',
+                    title : 'payType',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -148,7 +148,7 @@ export const marketingRoutes = [
                 name : 'salesManCreateOrderPayResult',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/payStatus.vue'),
                 meta : {
-                    title : '支付结果',
+                    title : 'payStatus',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -159,7 +159,7 @@ export const marketingRoutes = [
                 name : 'marketingOrder',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/index.vue'),
                 meta : {
-                    title : '我的订单',
+                    title : 'myOrder',
                     menuBar : 'order'
                 }
             },
@@ -169,7 +169,7 @@ export const marketingRoutes = [
                 name : 'marketingOrderDetail',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/child/orderDetail.vue'),
                 meta : {
-                    title : '订单详情',
+                    title : 'orderDetail',
                     hideTabbar : true
                 }
             },
@@ -179,7 +179,7 @@ export const marketingRoutes = [
                 name : 'marketingDepositResult',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/order/child/depositResult.vue'),
                 meta : {
-                    title : '提现申请',
+                    title : 'applicationForWithdrawal',
                     hideTabbar : true
                 }
             },
@@ -189,7 +189,7 @@ export const marketingRoutes = [
                 name : 'marketingOwnerCenter',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/index.vue'),
                 meta : {
-                    title : '我的',
+                    title : 'my',
                     menuBar : 'mine'
                 }
             },
@@ -199,7 +199,7 @@ export const marketingRoutes = [
                 name : 'marketingDeposit',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/deposit.vue'),
                 meta : {
-                    title : '可提现金额',
+                    title : 'amountOfWithdrawal',
                     hideTabbar : true
                 }
             },
@@ -209,7 +209,7 @@ export const marketingRoutes = [
                 name : 'marketingQrCode',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/qrCode.vue'),
                 meta : {
-                    title : '扫码购票',
+                    title : 'scanCodeForTicket',
                     hideTabbar : true
                 }
             },
@@ -219,7 +219,7 @@ export const marketingRoutes = [
                 name : 'marketingSetAccount',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/setDepositAccount.vue'),
                 meta : {
-                    title : '设置收款账户',
+                    title : 'setCollectionAccount',
                     hideTabbar : true
                 }
             },
@@ -229,7 +229,7 @@ export const marketingRoutes = [
                 name : 'marketingPoster',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/poster.vue'),
                 meta : {
-                    title : '海报',
+                    title : 'poster',
                     hideTabbar : true
                 }
             },
@@ -239,7 +239,7 @@ export const marketingRoutes = [
                 name : 'marketingSetting',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/setting.vue'),
                 meta : {
-                    title : '设置',
+                    title : 'setting',
                     hideTabbar : true
                 }
             },
@@ -249,7 +249,7 @@ export const marketingRoutes = [
                 name : 'marketingChangePhone',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/settingChild/changePhone.vue'),
                 meta : {
-                    title : '更改手机号',
+                    title : 'changePhone',
                     hideTabbar : true
                 }
             },
@@ -259,7 +259,7 @@ export const marketingRoutes = [
                 name : 'marketingChangePassword',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/settingChild/changePassword.vue'),
                 meta : {
-                    title : '更改密码',
+                    title : 'changePass',
                     hideTabbar : true
                 }
             },
@@ -269,7 +269,7 @@ export const marketingRoutes = [
                 name : 'marketingChangePasswordSuc',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/myCenter/child/settingChild/changePasswordSuc.vue'),
                 meta : {
-                    title : '更改密码',
+                    title : 'changePass',
                     hideTabbar : true
                 }
             },
@@ -290,7 +290,7 @@ export const marketingRoutes = [
                 name : 'marketingCreateOrder',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/createOrder.vue'),
                 meta : {
-                    title : '填写订单',
+                    title : 'writeOrder',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -301,7 +301,7 @@ export const marketingRoutes = [
                 name : 'marketingCreateOrderToPay',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/touristOrder/child/payOrder.vue'),
                 meta : {
-                    title : '支付方式',
+                    title : 'payType',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -312,7 +312,7 @@ export const marketingRoutes = [
                 name : 'marketingCreateOrderStartPay',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/index.vue'),
                 meta : {
-                    title : '支付方式',
+                    title : 'payType',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -323,7 +323,7 @@ export const marketingRoutes = [
                 name : 'marketingCreateOrderPayResult',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/payStatus.vue'),
                 meta : {
-                    title : '支付结果',
+                    title : 'payStatus',
                     hideTabbar : true,
                     notNeedCheck : true
                 }
@@ -334,7 +334,7 @@ export const marketingRoutes = [
                 name : 'wxOrAlidirectPay',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/wxoraliPay.vue'),
                 meta : {
-                    title : '支付结果',
+                    title : 'payStatus',
                     hideTabbar : true,
                     notNeedCheck : true
                 }

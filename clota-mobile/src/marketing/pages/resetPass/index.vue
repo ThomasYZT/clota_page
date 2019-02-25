@@ -6,7 +6,7 @@
             <img class="img-head" src="../../../assets/images/icon-avator.svg" alt="">
             <div class="register-tips">{{companyName}}</div>
             <div class="belong-type">
-                {{$t('全民营销系统')}}
+                {{$t('marketingSystem')}}
             </div>
         </div>
         <div class="content">
@@ -19,19 +19,19 @@
                      :placeholder="$t('inputField',{ field : $t('name') })">
             </x-input>
             <x-input v-show="stage === 1"
-                     :title="$t('身份证号')"
+                     :title="$t('idNum')"
                      v-model.trim="formData.idNum"
                      class="c-input"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('身份证号') })">
+                     :placeholder="$t('inputField',{ field : $t('idNum') })">
             </x-input>
             <x-input v-show="stage === 2"
                      :title="$t('mobile')"
                      class="c-input"
                      v-model.trim="formData.phoneNum"
                      text-align="right"
-                     :placeholder="$t('请输入您的手机号')" >
+                     :placeholder="$t('pleaseInputYourPhoneNumber')" >
                 <div slot="right-full-height"
                      class="validate"
                      :class="{'time-counting' : isTiming}"
@@ -53,39 +53,39 @@
                      :placeholder="$t('enterCode')">
             </x-input>
             <cell v-show="stage === 3"
-                  :title="$t('所属类别')"
+                  :title="$t('belongsToCategory')"
                   class="c-input type-collect-info"
                   is-link
                   @click.native="typeChooseModalShow = true"
                   :value="typeName">
             </cell>
             <x-input v-show="stage === 3"
-                     :title="$t('设置新密码')"
+                     :title="$t('setNewPass')"
                      v-model.trim="formData.password"
                      class="c-input"
                      type="password"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('密码') })">
+                     :placeholder="$t('inputField',{ field : $t('password') })">
             </x-input>
             <x-input v-show="stage === 3"
-                     :title="$t('再次输入密码')"
+                     :title="$t('inputPassAgain')"
                      v-model.trim="formData.passwordAgain"
                      class="c-input"
                      type="password"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('密码') })">
+                     :placeholder="$t('inputField',{ field : $t('password') })">
             </x-input>
         </div>
         <x-button class="button"
-                  @click.native="next">{{$t('下一步')}}</x-button>
-        <div class="before-step" v-if="stage > 1" @click="beforeStep">{{$t('上一步')}}</div>
+                  @click.native="next">{{$t('nextStep')}}</x-button>
+        <div class="before-step" v-if="stage > 1" @click="beforeStep">{{$t('lastStep')}}</div>
         <!--所属类别多选-->
         <pop-check-box v-model="typeChooseModalShow"
                        :left-text="$t('cancel')"
                        :right-text="$t('confirm')"
-                       :head-title="$t('请选择所属类别')"
+                       :head-title="$t('pleaseSelect',{ field : $t('belongsToCategory') })"
                        :operate-list="typeList"
                        :choosed-list-default="typeChoosed"
                        @get-choosed-lists="getChoosedTypeLists">
@@ -301,7 +301,7 @@
             validatePasswordAgain () {
                 return new Promise((resolve,reject) => {
                     if (this.formData.passwordAgain === '') {
-                        this.$vux.toast.text(this.$t('请再次输入密码') );
+                        this.$vux.toast.text(this.$t('inputPasswordAgain') );
                         reject();
                     } else {
                         if (this.formData.password === this.formData.passwordAgain) {
@@ -338,7 +338,7 @@
                         });
                     } else {
                         this.$vux.toast.show({
-                            text : this.$t('operateFail',{ msg : this.$t('重置密码') }),
+                            text : this.$t('operateFail',{ msg : this.$t('resetPass') }),
                             type : 'cancel'
                         });
                     }
@@ -364,7 +364,7 @@
                     } else {
                         this.$vux.toast.show({
                             type : 'cancel',
-                            text : this.$t('验证码错误')
+                            text : this.$t('errorMsg.A003')
                         });
                     }
                 });
@@ -402,7 +402,7 @@
                             this.typeList = [];
                             this.$vux.toast.show({
                                 type : 'cancel',
-                                text : this.$t('手机号或证件号错误')
+                                text : this.$t('phoneOrIdNumberError')
                             });
                             reject(res.code);
                         }
@@ -452,7 +452,7 @@
                     if (this.typeChoosed && this.typeChoosed.length > 0 ) {
                         resolve();
                     } else {
-                        this.$vux.toast.text(this.$t('请选择所属类别') );
+                        this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('belongsToCategory') }) );
                         reject();
                     }
                 });

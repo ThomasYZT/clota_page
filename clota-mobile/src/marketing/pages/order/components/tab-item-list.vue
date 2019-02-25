@@ -17,19 +17,19 @@
         </scroll-wrap>
         <div class="deposit-btn" v-if="chosedOrder.length > 0">
             <div class="commission">
-                {{$t('colonSetting',{ key : $t('可提现佣金') })}}
+                {{$t('colonSetting',{ key : $t('withdrawAvailable') })}}
                 <span class="money">{{expectedSalary | moneyFilter(2,'￥') | contentFilter}}</span></div>
-            <div class="dis-select" @click="disSelect">取消选择</div>
-            <div class="apply-deposit" @click="queryUserInfo">申请提现</div>
+            <div class="dis-select" @click="disSelect">{{$t('cancelChoose')}}</div>
+            <div class="apply-deposit" @click="queryUserInfo">{{$t('requestWithdrawal')}}</div>
         </div>
         <!--未设置账户提示框-->
         <confirm v-model="confirmShow"
                  v-transfer-dom
-                 :title="$t('提示')"
-                 :confirm-text="$t('立即设置')"
+                 :title="$t('notice')"
+                 :confirm-text="$t('immediatelySet')"
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
-            <p style="text-align:center;">{{ $t('您还未设置佣金收款账户。') }}</p>
+            <p style="text-align:center;">{{ $t('withoutCollectAccount') }}</p>
         </confirm>
     </div>
 </template>
@@ -123,7 +123,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$vux.toast.show({
-                            text : this.$t('operateSuc',{ msg : this.$t('申请提现') }),
+                            text : this.$t('operateSuc',{ msg : this.$t('requestWithdrawal') }),
                         });
                         this.chosedOrder = [];
                         this.$emit('fresh-data');
@@ -134,7 +134,7 @@
                         });
                     } else {
                         this.$vux.toast.show({
-                            text : this.$t('operateFail',{ msg : this.$t('申请提现') }),
+                            text : this.$t('operateFail',{ msg : this.$t('requestWithdrawal') }),
                             type : 'cancel'
                         });
                     }

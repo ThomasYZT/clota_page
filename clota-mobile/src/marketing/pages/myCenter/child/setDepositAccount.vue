@@ -3,7 +3,7 @@
 <template>
     <div class="set-deposit-account">
         <div class="hr" v-if="stage === 1"></div>
-        <div v-else class="warning-tips">{{$t('为保障您的资金安全，变更收款账户需要进行短信验证')}}</div>
+        <div v-else class="warning-tips">{{$t('checkMobileCodeNotice')}}</div>
         <group>
             <!-- 账户类型 -->
             <!--<x-input-->
@@ -17,13 +17,13 @@
             <!--</x-input>-->
             <popup-radio v-show="stage === 1"
                          class="account-type"
-                         :title="$t('收款账户类型')"
+                         :title="$t('collectionAccount')"
                          :options="accountTypeList"
                          v-model="formData.accountType">
             </popup-radio>
             <x-input
                 v-show="stage === 1 && formData.accountType === 'other'"
-                :title="$t('请输入收款账户类型')"
+                :title="$t('pleaseInput',{ field : $t('collectionAccount') })"
                 text-align="right"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
@@ -33,7 +33,7 @@
             <!-- 收款人姓名 -->
             <x-input
                 v-show="stage === 1"
-                :title="$t('收款人姓名')"
+                :title="$t('payeeName')"
                 text-align="right"
                 disabled
                 :placeholder="$t('pleaseInputMsg')"
@@ -44,7 +44,7 @@
             <!-- 收款账户 -->
             <x-input
                 v-show="stage === 1"
-                :title="$t('收款账户')"
+                :title="$t('accountToBeCredited')"
                 text-align="right"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
@@ -52,7 +52,7 @@
                 placeholder-align="right">
             </x-input>
             <!--短信验证码-->
-            <x-input :title="$t('短信验证码')"
+            <x-input :title="$t('msgCode')"
                      v-show="stage === 2"
                      v-model.trim="formData.code"
                      text-align="right"
@@ -72,14 +72,14 @@
             </x-input>
         </group>
         <x-button class="button"
-                  @click.native="save">{{$t('下一步')}}</x-button>
+                  @click.native="save">{{$t('nextStep')}}</x-button>
         <confirm v-model="confirmShow"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :show-cancel-button="false"
-                 :confirm-text="$t('立即返回')"
+                 :confirm-text="$t('backNow')"
                  @on-confirm="onConfirm">
-            <p style="text-align:center;">{{ $t('设置成功，5S后返回。') }}</p>
+            <p style="text-align:center;">{{ $t('backAfter5seconds') }}</p>
         </confirm>
     </div>
 </template>
@@ -123,12 +123,12 @@
                     //微信支付
                     {
                         key : 'wxPay',
-                        value : this.$t('微信')
+                        value : this.$t('wx')
                     },
                     //支付宝支付
                     {
                         key : 'aliPay',
-                        value : this.$t('支付宝')
+                        value : this.$t('ali')
                     },
                     //其它
                     {
@@ -168,16 +168,16 @@
                     } else if (this.formData && this.formData.accountType && this.formData.accountType === 'other') {
                         if (this.formData.otherAccountType) {
                             if (this.formData.otherAccountType.length > 50) {
-                                this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('收款账户类型'),length : 50 }));
+                                this.$vux.toast.text(this.$t('errorMaxLength',{ field : this.$t('collectionAccount'),length : 50 }));
                             } else {
                                 resolve();
                             }
                         } else {
-                            this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('收款账户类型') }));
+                            this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('collectionAccount') }));
                             reject();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('收款账户类型') }));
+                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('collectionAccount') }));
                         reject();
                     }
                 });
@@ -190,13 +190,13 @@
                 return new Promise ((resolve,reject) => {
                     if (this.formData && this.formData.name ) {
                         if (this.formData.name.length > 20) {
-                            this.$vux.toast.text(this.$t('maxLengthErr',{ field : this.$t('收款人姓名'),length : 20 }));
+                            this.$vux.toast.text(this.$t('maxLengthErr',{ field : this.$t('payeeName'),length : 20 }));
                             reject();
                         } else {
                             resolve();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('收款人姓名') }));
+                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('payeeName') }));
                         reject();
                     }
                 });
@@ -209,13 +209,13 @@
                 return new Promise((resolve,reject) => {
                     if (this.formData && this.formData.account ) {
                         if (this.formData.account.length > 100) {
-                            this.$vux.toast.text(this.$t('maxLengthErr',{ field : this.$t('收款账户'),length : 100 }));
+                            this.$vux.toast.text(this.$t('maxLengthErr',{ field : this.$t('accountToBeCredited'),length : 100 }));
                             reject();
                         } else {
                             resolve();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('收款账户') }));
+                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('accountToBeCredited') }));
                         reject();
                     }
                 });
@@ -315,7 +315,7 @@
                     } else {
                         this.$vux.toast.show({
                             type : 'cancel',
-                            text : this.$t('修改账户失败')
+                            text : this.$t('operateFail',{ msg : this.$t('changeAccount') })
                         });
                     }
                 });
@@ -340,7 +340,7 @@
                     } else {
                         this.$vux.toast.show({
                             type : 'cancel',
-                            text : this.$t('验证码错误')
+                            text : this.$t('errorMsg.A003')
                         });
                     }
                 });

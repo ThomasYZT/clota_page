@@ -6,7 +6,7 @@
         <group>
             <!-- 身份证号 -->
             <x-input
-                :title="$t('身份证号')"
+                :title="$t('idNum')"
                 text-align="right"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
@@ -14,7 +14,7 @@
                 placeholder-align="right">
             </x-input>
             <!--手机号-->
-            <x-input :title="$t('新的手机号')"
+            <x-input :title="$t('newMobile')"
                      keyboard="number"
                      v-model.trim="formData.phoneNum"
                      text-align="right"
@@ -34,7 +34,7 @@
             </x-input>
             <!-- 验证码 -->
             <x-input
-                :title="$t('验证码')"
+                :title="$t('validCode')"
                 text-align="right"
                 keyboard="number"
                 :placeholder="$t('pleaseInputMsg')"
@@ -44,7 +44,7 @@
             </x-input>
         </group>
         <x-button class="button"
-                  @click.native="confirm">{{$t('确定')}}</x-button>
+                  @click.native="confirm">{{$t('confirm')}}</x-button>
     </div>
 </template>
 
@@ -126,11 +126,11 @@
                         if (validator.isIdCard(this.formData.idNum)) {
                             resolve();
                         } else {
-                            this.$vux.toast.text(this.$t('errFormat',{ field : this.$t('身份证号') }));
+                            this.$vux.toast.text(this.$t('errFormat',{ field : this.$t('idNum') }));
                             reject();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('身份证号') }));
+                        this.$vux.toast.text(this.$t('pleaseInput',{ field : this.$t('idNum') }));
                         reject();
                     }
                 });

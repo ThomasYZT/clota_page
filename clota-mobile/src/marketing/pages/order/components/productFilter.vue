@@ -8,7 +8,7 @@
            v-transfer-dom
            @on-show="initData">
         <div :class="$style.productWrap">
-            <div :class="$style.head">{{$t('筛选')}}</div>
+            <div :class="$style.head">{{$t('filter')}}</div>
             <div :class="$style.content">
                 <div :class="$style.productList"
                      v-for="(item,index) in productData"
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <ul :class="$style.btnWrap">
-                <li :class="$style.reset" @click="reset">{{$t('重置')}}</li>
-                <li :class="[$style.complete]" @click="completeChoose">{{$t('完成')}}</li>
+                <li :class="$style.reset" @click="reset">{{$t('reset')}}</li>
+                <li :class="[$style.complete]" @click="completeChoose">{{$t('complete')}}</li>
             </ul>
         </div>
     </popup>
@@ -82,7 +82,7 @@
              */
             reset () {
                 this.choosedProductList = [{
-                    productName : this.$t('全部'),
+                    productName : this.$t('all'),
                     productId : 'all'
                 }];
                 this.completeChoose();
@@ -98,7 +98,7 @@
             //产品信息列表
             productData () {
                 return [{
-                    productName : this.$t('全部'),
+                    productName : this.$t('all'),
                     productId : 'all'
                 }].concat(this.data);
             }

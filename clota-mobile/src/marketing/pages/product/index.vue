@@ -3,7 +3,7 @@
 <template>
     <div class="product-info">
         <div class="date-list">
-            <span>{{$t('colonSetting',{ key : $t('选择游玩日期') })}}</span>
+            <span>{{$t('colonSetting',{ key : $t('selectPlayDate') })}}</span>
             <span class="date-area" @click="choseDate">
             {{productDate}}
             <span class="iconfont icon-arrow-right"></span>
@@ -14,7 +14,7 @@
                 <div slot="content" class="popover-demo-content">
                     {{marketOrgAddress | contentFilter}}
                 </div>
-                <span :class="$style.addInfo">{{$t('colonSetting',{ key : $t('地址') })}}{{marketOrgAddress | contentFilter}}</span>
+                <span :class="$style.addInfo">{{$t('colonSetting',{ key : $t('address') })}}{{marketOrgAddress | contentFilter}}</span>
             </popover>
         </div>
         <div class="product-list">
@@ -34,22 +34,22 @@
             <popup v-model="showProductNotice" :class="$style.wrap">
                 <div :class="$style.popupBody">
                     <div :class="$style.head">
-                        <span :class="$style.known" @click="showProductNotice = false">{{$t('知道了')}}</span>
-                        购票须知
+                        <span :class="$style.known" @click="showProductNotice = false">{{$t('isee')}}</span>
+                        {{$t('ticketInfo')}}
                     </div>
                     <div :class="$style.content">
                         <div :class="$style.productTitle">{{currentProductInfo.productName | contentFilter}}</div>
-                        <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('产品说明') })}}</div>
+                        <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('productExplain') })}}</div>
                         <div :class="$style.notice">{{currentProductInfo.productDes | contentFilter}}</div>
-                        <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('购票须知') })}}</div>
+                        <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('ticketInfo') })}}</div>
                         <div :class="$style.notice">{{currentProductInfo.buyTicketNotes | contentFilter}}</div>
                     </div>
                     <div :class="$style.footer">
                         <span :class="$style.price">
-                            {{$t('colonSetting',{ key : $t('佣金') })}}{{ currentProductInfo.salary | moneyFilter(2,'¥') | contentFilter }}
+                            {{$t('colonSetting',{ key : $t('commission') })}}{{ currentProductInfo.salary | moneyFilter(2,'¥') | contentFilter }}
                         </span>
                         <span :class="$style.commission">
-                            {{$t('colonSetting',{ key : $t('售价') })}}{{ currentProductInfo.salePrice | moneyFilter(2,'¥') | contentFilter }}
+                            {{$t('colonSetting',{ key : $t('sellingPrice') })}}{{ currentProductInfo.salePrice | moneyFilter(2,'¥') | contentFilter }}
                         </span>
                     </div>
                 </div>
@@ -90,8 +90,8 @@
              */
             choseDate () {
                 this.$vux.datetime.show({
-                    cancelText : '取消',
-                    confirmText : '确定',
+                    cancelText : this.$t('cancel'),
+                    confirmText : this.$t('confirm'),
                     format : 'YYYY-MM-DD',
                     value : this.productDate,
                     startDate : new Date().format('yyyy-MM-dd'),

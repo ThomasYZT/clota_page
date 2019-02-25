@@ -9,17 +9,17 @@
         <div :class="$style.dateBody">
             <div :class="$style.title">
                 <div :class="$style.cancelBtn" @click="changeModalStatus(false)">{{$t('cancel')}}</div>
-                <div :class="$style.operateTxt">{{$t('选择游玩日期')}}</div>
+                <div :class="$style.operateTxt">{{$t('selectPlayDate')}}</div>
                 <div :class="$style.confirmBtn" @click="confirmChooseDay">{{$t('confirm')}}</div>
             </div>
             <ul :class="$style.weekTitle">
-                <li :class="[$style.weekDay,$style.redLabel]">日</li>
-                <li :class="$style.weekDay">一</li>
-                <li :class="$style.weekDay">二</li>
-                <li :class="$style.weekDay">三</li>
-                <li :class="$style.weekDay">四</li>
-                <li :class="$style.weekDay">五</li>
-                <li :class="[$style.weekDay,$style.redLabel]">六</li>
+                <li :class="[$style.weekDay,$style.redLabel]">{{$t('sundayShort')}}</li>
+                <li :class="$style.weekDay">{{$t('mondayShort')}}</li>
+                <li :class="$style.weekDay">{{$t('tuesdayShort')}}</li>
+                <li :class="$style.weekDay">{{$t('wednesdayShort')}}</li>
+                <li :class="$style.weekDay">{{$t('thursdayShort')}}</li>
+                <li :class="$style.weekDay">{{$t('fridayShort')}}</li>
+                <li :class="[$style.weekDay,$style.redLabel]">{{$t('saturdayShort')}}</li>
             </ul>
             <div :class="$style.content">
                 <swiper v-model="dateIndex"
@@ -33,7 +33,7 @@
                     <swiper-item v-for="(item,index) in dateInfo" :key="index">
                         <div :class="$style.item">
                             <div :class="$style.dateTitle">
-                                {{item.date | timeFormat('yyyy年MM月') | contentFilter}}
+                                {{item.date | timeFormat($t('dateFormat')) | contentFilter}}
                             </div>
                             <ul :class="$style.dateListInfo">
                                 <li :class="$style.dateRow"

@@ -4,9 +4,9 @@
     <div class="register-result">
         <div class="success-wrap">
             <img class="suc-img" src="../../../../assets/images/pay-success.svg" alt="">
-            <div class="suc-label">{{$t('恭喜，密码重置成功!')}}</div>
+            <div class="suc-label">{{$t('resetPasswordSuccessfully')}}</div>
             <x-button class="button"
-                      @click.native="toLogin">{{$t('现在登录')}}</x-button>
+                      @click.native="toLogin">{{$t('loginNow')}}</x-button>
         </div>
     </div>
 </template>

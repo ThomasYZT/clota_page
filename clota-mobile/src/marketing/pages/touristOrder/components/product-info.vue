@@ -7,14 +7,14 @@
             <div class="product-price">{{productInfo.salePrice | moneyFilter(2,'¥') | contentFilter}}</div>
         </div>
         <ul class="label-input">
-            <li class="label-list" v-if="cannotReturn">不可退</li>
-            <li class="label-list" v-else>可退</li>
-            <li class="label-list" v-if="cannotAlter">不可改</li>
-            <li class="label-list" v-else>可改</li>
+            <li class="label-list" v-if="cannotReturn">{{$t('withoutReturn')}}</li>
+            <li class="label-list" v-else>{{$t('returnable')}}</li>
+            <li class="label-list" v-if="cannotAlter">{{$t('unmodifiable')}}</li>
+            <li class="label-list" v-else>{{$t('modifiable')}}</li>
         </ul>
         <div class="price-info">
-            <div class="ticket-notick" @click="$emit('show-notice',productInfo)">购票须知</div>
-            <span class="order-btn" @click="toCreateOrder">{{$t('立即预定')}}</span>
+            <div class="ticket-notick" @click="$emit('show-notice',productInfo)">{{$t('ticketInfo')}}</div>
+            <span class="order-btn" @click="toCreateOrder">{{$t('reserveNow')}}</span>
         </div>
     </div>
 </template>

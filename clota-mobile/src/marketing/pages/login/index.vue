@@ -9,7 +9,7 @@
             <div class="company-name">
                 {{companyName}}
             </div>
-            <div class="system-name">{{$t('全民营销系统')}}</div>
+            <div class="system-name">{{$t('marketingSystem')}}</div>
             <div class="content">
                 <x-input :title="$t('mobile')"
                          ref="mobile"
@@ -17,16 +17,16 @@
                          class="c-input"
                          text-align="right"
                          label-width="150px"
-                         :placeholder="$t('请输入您的手机号')" >
+                         :placeholder="$t('pleaseInputYourPhoneNumber')" >
                 </x-input>
-                <x-input :title="$t('登录密码')"
+                <x-input :title="$t('loginPass')"
                          ref="password"
                          v-model="formData.password"
                          class="c-input"
                          text-align="right"
                          type="password"
                          label-width="150px"
-                         :placeholder="$t('inputField',{ field : $t('登录密码') })">
+                         :placeholder="$t('inputField',{ field : $t('loginPass') })">
                 </x-input>
                 <x-input :title="$t('validCode')"
                          ref="code"
@@ -44,13 +44,13 @@
                          @click="createIMGValidCode">
                 </x-input>
                 <div class="regret-pass" >
-                    <span class="label" @click="toResetPass">{{$t('忘记密码')}}</span>
+                    <span class="label" @click="toResetPass">{{$t('forgetPass')}}</span>
                 </div>
                 <x-button class="button"
                           :disabled="!companyCode || !companyName"
                           @click.native="login">{{$t('login')}}</x-button>
                 <div class="to-register">
-                    {{$t('没有账号?')}}<span class="login-label" @click="toRegister">去注册</span>
+                    {{$t('noAccount')}}<span class="login-label" @click="toRegister">{{$t('toRegister')}}</span>
                 </div>
             </div>
         </div>
@@ -82,8 +82,6 @@
                     phoneNum : '',
                     //登录密码
                     password : '',
-                    //所属类别
-                    type : '出租车',
                     //验证码
                     code : '',
                 },
@@ -154,7 +152,7 @@
             validatePassword () {
                 return new Promise((resolve,reject) => {
                     if (this.formData.password === '') {
-                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('登录密码') }));
+                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('loginPass') }));
                         reject();
                     } else {
                         resolve();

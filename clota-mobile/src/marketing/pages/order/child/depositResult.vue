@@ -4,10 +4,10 @@
     <div class="register-result">
         <div class="success-wrap">
             <img class="suc-img" src="../../../../assets/images/pay-success.svg" alt="">
-            <div class="suc-label">{{$t('您的提现申请已提交!')}}</div>
-            <div class="wait-tips">{{$t('请耐心等待景区审核。')}}</div>
+            <div class="suc-label">{{$t('applicationSubmitted')}}</div>
+            <div class="wait-tips">{{$t('waitScenicAudit')}}</div>
             <x-button class="button"
-                      @click.native="back">{{$t('返回')}}</x-button>
+                      @click.native="back">{{$t('back')}}</x-button>
         </div>
     </div>
 </template>

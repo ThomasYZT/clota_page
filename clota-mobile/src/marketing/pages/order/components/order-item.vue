@@ -10,21 +10,21 @@
         <div class="content">
             <div class="order-title">
                 <div class="order-name">{{orderDetail.productName | contentFilter}}</div>
-                <div class="order-num">{{$t('colonSetting',{ key : $t('数量') })}}{{orderDetail.productNum | contentFilter}}</div>
+                <div class="order-num">{{$t('colonSetting',{ key : $t('num') })}}{{orderDetail.productNum | contentFilter}}</div>
             </div>
             <div class="order-detail">
-                <div class="time-info">{{$t('colonSetting',{ key : $t('使用日期') })}}{{orderDetail.playDate | timeFormat('yyyy-MM-dd') | contentFilter}}</div>
-                <div class="commission">{{$t('colonSetting',{ key : $t('佣金') })}}{{orderDetail.expectedSalary | moneyFilter | contentFilter}}</div>
+                <div class="time-info">{{$t('colonSetting',{ key : $t('usageOfdate') })}}{{orderDetail.playDate | timeFormat('yyyy-MM-dd') | contentFilter}}</div>
+                <div class="commission">{{$t('colonSetting',{ key : $t('commission') })}}{{orderDetail.expectedSalary | moneyFilter | contentFilter}}</div>
             </div>
             <div class="detail-footer">
                 <div class="order-date">{{orderDetail.createdTime | contentFilter}}</div>
-                <div class="for-detail" @click="toDetail">{{$t('查看详情')}}</div>
+                <div class="for-detail" @click="toDetail">{{$t('toDetail')}}</div>
             </div>
             <div class="wait-audit" v-if="orderDetail.withdrawStatus === 'auditing'">
-                <span class="text-label">{{$t('审核中')}}</span>
+                <span class="text-label">{{$t('auditing')}}</span>
             </div>
             <div class="wait-audit err" v-if="orderDetail.withdrawStatus === 'reject_no_req'">
-                <span class="text-label">{{$t('已驳回')}}</span>
+                <span class="text-label">{{$t('rejected')}}</span>
             </div>
         </div>
     </div>

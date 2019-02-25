@@ -6,7 +6,7 @@
         <group>
             <!-- 输入旧密码 -->
             <x-input
-                :title="$t('输入旧密码')"
+                :title="$t('inputOldPass')"
                 text-align="right"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
@@ -16,7 +16,7 @@
             </x-input>
             <!-- 输入新密码 -->
             <x-input
-                :title="$t('输入新密码')"
+                :title="$t('inputNewPass')"
                 text-align="right"
                 :placeholder="$t('pleaseInputMsg')"
                 :show-clear="false"
@@ -26,7 +26,7 @@
             </x-input>
             <!-- 再次输入密码 -->
             <x-input
-                :title="$t('再次输入密码')"
+                :title="$t('inputPassAgain')"
                 text-align="right"
                 type="password"
                 :placeholder="$t('pleaseInputMsg')"
@@ -36,7 +36,7 @@
             </x-input>
         </group>
         <x-button class="button"
-                  @click.native="confirm">{{$t('确定')}}</x-button>
+                  @click.native="confirm">{{$t('getCardBtn')}}</x-button>
     </div>
 </template>
 
@@ -73,7 +73,7 @@
                             reject();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('新密码') }));
+                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('newPass') }));
                         reject();
                     }
                 });
@@ -92,7 +92,7 @@
                             reject();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('inputPassAgain'));
+                        this.$vux.toast.text(this.$t('inputPasswordAgain'));
                         reject();
                     }
                 });
@@ -106,7 +106,7 @@
                     if (this.formData && this.formData.oldPassword) {
                         resolve();
                     } else {
-                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('旧密码') }));
+                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('oldPass') }));
                         reject();
                     }
                 });
@@ -147,7 +147,7 @@
                         });
                     } else {
                         this.$vux.toast.show({
-                            text : this.$t('operateFail',{ msg : this.$t('修改密码') }),
+                            text : this.$t('operateFail',{ msg : this.$t('changePass') }),
                             type : 'cancel'
                         });
                     }

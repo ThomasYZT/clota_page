@@ -12,30 +12,30 @@
     export default {
         data () {
             return {
-                goodInfo: {
-                    body: '测试商品', // 商品信息
-                    total_fee: 1, // 订单总金额
-                    trade_type: 'JSAPI', // 交易类型
-                    product_id: '1',// 商品ID
+                goodInfo : {
+                    body : '测试商品', // 商品信息
+                    total_fee : 1, // 订单总金额
+                    trade_type : 'JSAPI', // 交易类型
+                    product_id : '1',// 商品ID
                 },
                 //微信用户信息
                 wxUserInfo : {}
-            }
+            };
         },
         mixins : [lifeCycleMixins],
-        methods: {
+        methods : {
             /**
              * 获取支付配置
              */
             wxPayConfig () {
                 let payParams = Object.assign({
-                    openid: this.wxUserInfo.openId
+                    openid : this.wxUserInfo.openId
                 }, this.goodInfo);
-                console.log(JSON.stringify(payParams))
-                ajax.post('payUnifiedorder', JSON.stringify(payParams), { headers: {
-                    'Content-Type': 'application/json;charset-UTF-8'
-                }}).then((res) => {
-                    if(res.success && res.data) {
+                console.log(JSON.stringify(payParams));
+                ajax.post('payUnifiedorder', JSON.stringify(payParams), { headers : {
+                    'Content-Type' : 'application/json;charset-UTF-8'
+                } }).then((res) => {
+                    if (res.success && res.data) {
                         this.wxPay(res.data);
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
@@ -48,18 +48,18 @@
             wxPay (data) {
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', {
-                        'appId': data.appid, //公众号名称，由商户传入
-                        'timeStamp':data.timeStamp, //时间戳，自1970年以来的秒数
-                        'nonceStr': data.nonce_str, //随机串
-                        'package': 'prepay_id=' + data.prepay_id,
-                        'signType': data.signType, //微信签名方式：
-                        'paySign': data.paySign //微信签名
+                        'appId' : data.appid, //公众号名称，由商户传入
+                        'timeStamp' : data.timeStamp, //时间戳，自1970年以来的秒数
+                        'nonceStr' : data.nonce_str, //随机串
+                        'package' : 'prepay_id=' + data.prepay_id,
+                        'signType' : data.signType, //微信签名方式：
+                        'paySign' : data.paySign //微信签名
                     },
-                    function(res){
-                        if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                    function (res) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok" ) {
                             // 使用以上方式判断前端返回,微信团队郑重提示：
                             //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                            console.log(res)
+                            console.log(res);
                         }
                     });
             },
@@ -78,7 +78,7 @@
              */
             getOAuth2UserInfo (code) {
                 // 已经存在用户信息则不用获取
-                let wxUserInfo = localStorage.getItem('wxUserInfo') && localStorage.getItem('wxUserInfo')!=={} ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
+                let wxUserInfo = localStorage.getItem('wxUserInfo') && localStorage.getItem('wxUserInfo') !== {} ? JSON.parse(localStorage.getItem('wxUserInfo')) : {};
                 if (wxUserInfo && wxUserInfo.openId) {
                     this.wxUserInfo = wxUserInfo;
                     return false;
@@ -125,12 +125,12 @@
                 return obj;
             }
         },
-        computed :{
+        computed : {
             ...mapGetters({
                 lang : 'lang',
                 companyCode : 'companyCode',
                 sourceInfo : 'sourceInfo'
             })
         }
-    }
+    };
 </script>

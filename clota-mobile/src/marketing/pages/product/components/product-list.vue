@@ -7,14 +7,14 @@
             <div class="product-price">{{productInfo.salePrice | moneyFilter(2,'¥') | contentFilter}}</div>
         </div>
         <ul class="label-input">
-            <li class="label-list" v-if="cannotReturn">不可退</li>
-            <li class="label-list" v-else>可退</li>
-            <li class="label-list" v-if="cannotAlter">不可改</li>
-            <li class="label-list" v-else>可改</li>
+            <li class="label-list" v-if="cannotReturn">{{$t('withoutReturn')}}</li>
+            <li class="label-list" v-else>{{$t('returnable')}}</li>
+            <li class="label-list" v-if="cannotAlter">{{$t('unmodifiable')}}</li>
+            <li class="label-list" v-else>{{$t('modifiable')}}</li>
         </ul>
-        <div class="ticket-notick" @click="$emit('show-notice',productInfo)">购票须知</div>
+        <div class="ticket-notick" @click="$emit('show-notice',productInfo)">{{$t('ticketInfo')}}</div>
         <div class="price-info">
-            {{$t('colonSetting',{ key : $t('佣金') })}}{{ productInfo.salary | moneyFilter(2,'¥') | contentFilter }}
+            {{$t('colonSetting',{ key : $t('commission') })}}{{ productInfo.salary | moneyFilter(2,'¥') | contentFilter }}
         </div>
     </DIV>
 </template>

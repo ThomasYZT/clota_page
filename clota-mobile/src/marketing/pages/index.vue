@@ -19,7 +19,7 @@
                          class="tabbar-img"
                          src="../../assets/images/icon-product-tabbar.svg">
                 </div>
-                <span slot="label">产品</span>
+                <span slot="label">{{$t('product')}}</span>
             </tabbar-item>
             <tabbar-item :selected="selectedTabbar === 'order'"
                          @on-item-click="toRouter('marketingOrder')">
@@ -31,7 +31,7 @@
                      slot="icon"
                      class="tabbar-img"
                      src="../../assets/images/icon-order-tabbar.svg">
-                <span slot="label">订单</span>
+                <span slot="label">{{$t('order')}}</span>
             </tabbar-item>
             <tabbar-item :selected="selectedTabbar === 'mine'"
                          @on-item-click="toRouter('marketingOwnerCenter')">
@@ -43,13 +43,13 @@
                      slot="icon"
                      class="tabbar-img"
                      src="../../assets/images/icon-own-tabbar.svg">
-                <span slot="label">我的</span>
+                <span slot="label">{{$t('my')}}</span>
             </tabbar-item>
         </tabbar>
         <loading
             v-transfer-dom
             :show="marketIsGettingLocation"
-            :text="$t('获取位置信息中')">
+            :text="$t('gettingPosition')">
         </loading>
     </div>
 </template>

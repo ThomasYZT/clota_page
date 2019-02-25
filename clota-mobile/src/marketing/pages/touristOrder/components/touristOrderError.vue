@@ -4,10 +4,10 @@
     <x-dialog :show="value" class="dialog-demo" v-transfer-dom>
         <div :class="$style.ProductInfo">
             <ul :class="$style.proList">
-                <li :class="$style.liTitle">{{$t('根据产品销售政策设置：')}}</li>
+                <li :class="$style.liTitle">{{$t('accordingToSaleRules')}}</li>
                 <li v-for="item in touristInfo"
                     :key="item.productId"
-                    :class="$style.detail">{{item.visitorName}}最多购买{{item.maxCount}}张{{item.productName}}</li>
+                    :class="$style.detail">{{$t('eceedPurchaseLimitError',{ visitorName : item.visitorName,maxCount : item.maxCount,productName : item.productName })}}</li>
             </ul>
             <div :class="$style.confirm" @click="$emit('input',false)">{{$t('confirm')}}</div>
         </div>

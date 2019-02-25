@@ -5,23 +5,23 @@
         <div class="order-title">
             <div class="order-info">
                 <div class="order-name">{{productDetail.productName | contentFilter}}</div>
-                <div class="notice" @click="showProductNotice = true">{{$t('购票须知')}}</div>
+                <div class="notice" @click="showProductNotice = true">{{$t('ticketInfo')}}</div>
             </div>
             <ul class="label-input">
-                <li class="label-list" v-if="cannotReturn">不可退</li>
-                <li class="label-list" v-else>可退</li>
-                <li class="label-list" v-if="cannotAlter">不可改</li>
-                <li class="label-list" v-else>可改</li>
+                <li class="label-list" v-if="cannotReturn">{{$t('withoutReturn')}}</li>
+                <li class="label-list" v-else>{{$t('returnable')}}</li>
+                <li class="label-list" v-if="cannotAlter">{{$t('unmodifiable')}}</li>
+                <li class="label-list" v-else>{{$t('modifiable')}}</li>
             </ul>
         </div>
         <div class="content">
             <group class="group-wrap">
                 <cell
-                    :title="$t('游玩日期')"
+                    :title="$t('playDate')"
                     class="padding-right"
                     :value="playDate">
                 </cell>
-                <x-number :title="$t('购买数量')"
+                <x-number :title="$t('buyNum')"
                           :fillable="true"
                           v-model="buyNum"
                           :max="maxChoosed"
@@ -29,7 +29,7 @@
                 </x-number>
             </group>
             <group class="group-wrap" v-for="(item,index) in formData" :key="index">
-                <popup-radio :title="$t('证件类型')"
+                <popup-radio :title="$t('cardType')"
                              v-if="acceptIdType.length > 0"
                              :options="acceptIdType"
                              v-model="formData[index].idType">
@@ -37,40 +37,40 @@
                 <!-- 证件号 -->
                 <x-input
                     v-if="acceptIdType.length > 0"
-                    :title="$t('证件号')"
+                    :title="$t('idNumber')"
                     text-align="right"
                     :show-clear="false"
                     v-model.trim="formData[index].idNum"
-                    :placeholder="$t('请输入证件号码')"
+                    :placeholder="$t('pleaseInput',{ field : $t('idNumber') })"
                     placeholder-align="right">
                 </x-input>
                 <!-- 游客姓名 -->
                 <x-input
-                    :title="$t('游客姓名')"
+                    :title="$t('touristName')"
                     text-align="right"
                     :show-clear="false"
                     v-model.trim="formData[index].name"
-                    :placeholder="$t('与证件名一致')"
+                    :placeholder="$t('sameAsCertificate')"
                     placeholder-align="right">
                 </x-input>
                 <!-- 手机号 -->
                 <x-input
-                    :title="$t('手机号')"
+                    :title="$t('mobile')"
                     text-align="right"
                     :show-clear="false"
                     keyboard="tel"
                     v-model.trim="formData[index].phone"
-                    :placeholder="$t('用于接收取票验证短信')"
+                    :placeholder="$t('forGetMsg')"
                     placeholder-align="right">
                 </x-input>
             </group>
         </div>
         <div class="btn-wrap">
             <div class="total-amount">
-                {{$t('colonSetting',{ key : $t('总额') })}}
+                {{$t('colonSetting',{ key : $t('amount') })}}
                 <span class="money">{{totalAmount | moneyFilter(2,'￥') | contentFilter}}</span>
             </div>
-            <div class="create-btn" @click="createOrder">{{$t('下单')}}</div>
+            <div class="create-btn" @click="createOrder">{{$t('createOrder')}}</div>
         </div>
 
         <!--购票须知模态框-->
@@ -160,7 +160,7 @@
                     if ( this.acceptIdType.length > 0) {
                         for ( let i = 0,j = this.formData.length; i < j; i++) {
                             if (this.formData[i]['idType'] === '') {
-                                this.$vux.toast.text(this.$t('请选择证件类型'));
+                                this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('cardType') }));
                                 reject();
                             }
                         }
@@ -179,7 +179,7 @@
                     if ( this.acceptIdType.length > 0) {
                         for ( let i = 0,j = this.formData.length; i < j; i++) {
                             if (this.formData[i]['idNum'] === '') {
-                                this.$vux.toast.text(this.$t('请输入证件号'));
+                                this.$vux.toast.text(this.$t('pleaseInputIdNum'));
                                 reject();
                             } else if (this.formData[i]['idNum']) {
                                 if (this.formData[i]['idType'] === 'identity') {
@@ -283,7 +283,7 @@
                     } else if (res.code && res.code !== '300') {
                         this.$vux.toast.text(this.$t('errorMsg.' + res.code));
                     } else {
-                        this.$vux.toast.text(this.$t('下单失败'));
+                        this.$vux.toast.text(this.$t('operateFail',{ msg : this.$t('createOrder') }));
                     }
                 });
             },
@@ -456,7 +456,7 @@
                             this.validateOrderIsRight();
                         }
                     } else {
-                        this.$vux.toast.text(this.$t('下单失败'));
+                        this.$vux.toast.text(this.$t('operateFail',{ msg : this.$t('createOrder') }));
                     }
                 });
             }

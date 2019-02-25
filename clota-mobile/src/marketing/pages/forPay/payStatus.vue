@@ -7,18 +7,18 @@
         <div class="status-wrapper">
             <div class="status" v-show="isSuccess === true">
                 <img class="status-icon" src="../../../assets/images/pay-success.svg" alt="">
-                <p class="status-message">{{$t('预定成功')}}</p>
+                <p class="status-message">{{$t('reserveSucessfully')}}</p>
                 <div class="success-label">
-                    {{$t('取票凭证将以短信形式发送到您指定的手机，请注意查收！')}}
+                    {{$t('reserveSuccessfullyNotice')}}
                 </div>
             </div>
             <div class="status" v-show="isSuccess === false">
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
-                <p class="status-message">{{$t('预定失败')}}</p>
+                <p class="status-message">{{$t('reserveFaield')}}</p>
             </div>
 
             <!-- 返回按钮 -->
-            <x-button class="button" @click.native="toAccount">{{$t('继续预定')}}</x-button>
+            <x-button class="button" @click.native="toAccount">{{$t('continueToReserve')}}</x-button>
         </div>
     </div>
 </template>

@@ -13,7 +13,7 @@
                     <div slot="content" class="popover-demo-content">
                        {{sceneAddress | contentFilter}}
                     </div>
-                    <span>{{$t('colonSetting',{ key : $t('地址') })}}{{sceneAddress | contentFilter}}</span>
+                    <span>{{$t('colonSetting',{ key : $t('address') })}}{{sceneAddress | contentFilter}}</span>
                 </popover>
             </span>
             <!--<span class="re-get-location" @click="getLocation">-->
@@ -49,11 +49,11 @@
         <confirm v-model="confirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
                  @on-confirm="confirmShow = false">
-            <p style="text-align:center;">{{ $t('请先获取当前地理位置信息，否则无法下单！') }}</p>
+            <p style="text-align:center;">{{ $t('cannotCreateOrderWithoutPosition') }}</p>
         </confirm>
     </div>
 </template>

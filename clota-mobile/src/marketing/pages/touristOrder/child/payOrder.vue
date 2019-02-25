@@ -5,12 +5,12 @@
         <div class="product-info">
             <div class="product-name">{{productName | contentFilter}}</div>
             <div class="pay-money">
-                <span class="pay-label">{{$t('colonSetting',{ key : $t('应付总额') })}}</span>
+                <span class="pay-label">{{$t('colonSetting',{ key : $t('amountToPay') })}}</span>
                 <span class="money">{{totalAmount | moneyFilter(2,'￥') | contentFilter}}</span>
             </div>
         </div>
         <div class="pay-type-select">
-            <div class="title">{{$t('选择支付方式')}}</div>
+            <div class="title">{{$t('chosePayType')}}</div>
             <div class="type-list">
                 <group >
                     <radio
@@ -26,12 +26,12 @@
             <x-button @click.native="recharge"
                       v-if="payType !== 'collect'"
                       :disabled="payTypeList.length < 1">
-                {{$t('去支付')}}
+                {{$t('toPay')}}
             </x-button>
             <x-button @click.native="recharge"
                       v-else
                       :disabled="payTypeList.length < 1">
-                {{$t('确定')}}
+                {{$t('confirm')}}
             </x-button>
         </div>
     </div>
@@ -273,7 +273,7 @@
                     return [].concat(this.payTypeList,[{
                         icon : require('../../../../assets/images/icon-offline-pay.svg'),
                         key : 'collect',
-                        value : this.$t('线下支付'),
+                        value : this.$t('offlinePayment'),
                         param : {}
                     }]);
                 } else {

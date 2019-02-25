@@ -4,30 +4,30 @@
     <div class="base-info">
         <div class="head">
             <img class="img-head" src="../../../../assets/images/icon-avator.svg" alt="">
-            <div class="register-tips" v-if="!needValidateScene">您正在注册 <span class="company-name">{{companyName}}</span> 的销售用户</div>
+            <div class="register-tips" v-if="!needValidateScene" v-html="$t('registerCompanyMarketing',{ companyName : `<span class='company-name'>${companyName}</span>` })"></div>
             <div class="belong-type" v-if="!needValidateScene">
-                {{$t('colonSetting',{ key : '所属类别' })}}{{marketTypeName | contentFilter}}
+                {{$t('colonSetting',{ key : $t('belongsToCategory') })}}{{marketTypeName | contentFilter}}
             </div>
         </div>
         <div class="content">
-            <popup-radio :title="$t('景区')"
+            <popup-radio :title="$t('scenic')"
                          v-if="needValidateScene"
                          class="weui-cells"
                          :options="sceneList"
                          v-model="formData.scene">
                 <p slot="popup-header" class="vux-1px-b" :class="[$style.popuTitle]">
-                    {{$t('请选择景区')}}
-                    <span v-if="sceneList.length < 1" :class="$style.noData">{{$t('暂无数据')}}</span>
+                    {{$t('pleaseSelect',{ field : $t('scenic') })}}
+                    <span v-if="sceneList.length < 1" :class="$style.noData">{{$t('noData')}}</span>
                 </p>
             </popup-radio>
-            <popup-radio :title="$t('所属类别')"
+            <popup-radio :title="$t('belongsToCategory')"
                          v-if="needValidateScene"
                          class="weui-cells"
                          :options="typeList"
                          v-model="formData.type">
                 <p slot="popup-header" class="vux-1px-b" :class="[$style.popuTitle]">
-                    {{$t('请选择所属类别')}}
-                    <span v-if="typeList.length < 1" :class="$style.noData">{{$t('暂无数据')}}</span>
+                    {{$t('pleaseSelect',{ field : $t('belongsToCategory') })}}
+                    <span v-if="typeList.length < 1" :class="$style.noData">{{$t('noData')}}</span>
                 </p>
             </popup-radio>
             <x-input :title="$t('mobile')"
@@ -35,7 +35,7 @@
                      class="c-input weui-cell"
                      v-model.trim="formData.phoneNum"
                      text-align="right"
-                     :placeholder="$t('请输入您的手机号')" >
+                     :placeholder="$t('pleaseInputYourPhoneNumber')" >
                 <div slot="right-full-height"
                      class="validate"
                      :class="{'time-counting' : isTiming}"
@@ -57,19 +57,19 @@
                      label-width="150px"
                      :placeholder="$t('enterCode')">
             </x-input>
-            <x-input :title="$t('登录密码')"
+            <x-input :title="$t('loginPass')"
                      v-model="formData.password"
                      class="c-input weui-cell"
                      text-align="right"
                      type="password"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('登录密码') })">
+                     :placeholder="$t('inputField',{ field : $t('loginPass') })">
             </x-input>
         </div>
         <x-button class="button"
-                  @click.native="next">{{$t('下一步')}}</x-button>
+                  @click.native="next">{{$t('nextStep')}}</x-button>
         <div class="to-login">
-            {{$t('已有账号')}}<span class="login-label" @click="toLogin">去登录</span>
+            {{$t('haveAccount')}}<span class="login-label" @click="toLogin">{{$t('toLogin')}}</span>
         </div>
     </div>
 </template>
@@ -212,7 +212,7 @@
             validatePassword () {
                 return new Promise((resolve,reject) => {
                     if (this.formData.password === '') {
-                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('登录密码') }));
+                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('loginPass') }));
                         reject();
                     } else {
                         let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
@@ -257,7 +257,7 @@
                     } else {
                         this.$vux.toast.show({
                             type : 'cancel',
-                            text : this.$t('验证码错误')
+                            text : this.$t('errorMsg.A003')
                         });
                     }
                 });
@@ -271,7 +271,7 @@
                         if (this.formData.scene) {
                             resolve();
                         } else {
-                            this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('景区') }));
+                            this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('scenic') }));
                             reject();
                         }
                     } else {
@@ -288,7 +288,7 @@
                         if (this.formData.type) {
                             resolve();
                         } else {
-                            this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('所属类别') }));
+                            this.$vux.toast.text(this.$t('pleaseSelect',{ field : this.$t('belongsToCategory') }));
                             reject();
                         }
                     } else {
@@ -341,7 +341,7 @@
                 font-size: $font_size_14px;
                 color: $color_333;
 
-                .company-name{
+                /deep/ .company-name{
                     color: $color_yellow;
                 }
             }

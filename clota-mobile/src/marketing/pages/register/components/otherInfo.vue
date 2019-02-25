@@ -2,7 +2,7 @@
 
 <template>
     <div class="other-info">
-        <div class="warn-tips">{{$t('为保障您的合法权益，销售用户实行实名制注册')}}</div>
+        <div class="warn-tips">{{$t('remindOfCertification')}}</div>
         <div class="other-info-content">
             <x-input :title="$t('name')"
                      v-model.trim="formData.name"
@@ -11,17 +11,17 @@
                      label-width="150px"
                      :placeholder="$t('inputField',{ field : $t('name') })">
             </x-input>
-            <x-input :title="$t('身份证号')"
+            <x-input :title="$t('idNum')"
                      v-model.trim="formData.idNum"
                      class="c-input"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('身份证号') })">
+                     :placeholder="$t('inputField',{ field : $t('idNum') })">
             </x-input>
         </div>
         <x-button class="button"
                   @click.native="register">{{$t('marketingRegister')}}</x-button>
-        <div class="before-step" @click="beforeStep">{{$t('上一步')}}</div>
+        <div class="before-step" @click="beforeStep">{{$t('lastStep')}}</div>
     </div>
 </template>
 
@@ -75,13 +75,13 @@
             validateIdNum () {
                 return new Promise((resolve,reject) => {
                     if (this.formData.idNum === '') {
-                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('身份证号') }));
+                        this.$vux.toast.text(this.$t('inputField',{ field : this.$t('idNum') }));
                         reject();
                     } else {
                         if (validator.isIdCard(this.formData.idNum)) {
                             resolve();
                         } else {
-                            this.$vux.toast.text(this.$t('errFormat',{ field : this.$t('身份证号') }));
+                            this.$vux.toast.text(this.$t('errFormat',{ field : this.$t('idNum') }));
                         }
                     }
                 });

@@ -40,7 +40,7 @@
         <confirm v-model="confirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
                  @on-confirm="confirmShow = false">
@@ -166,7 +166,7 @@
                     } else {
                         this.$vux.toast.show({
                             type : 'cancel',
-                            text : this.$t('取消支付失败')
+                            text : this.$t('operateFail',{ msg : this.$t('cancelPay') })
                         });
                         this.$router.push({
                             name : 'marketingTourist'
