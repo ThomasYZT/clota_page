@@ -266,7 +266,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="24">
-                        <FormItem :label="$t('景区资源')+'：'"
+                        <FormItem :label="$t('scenicResource')+'：'"
                                   class="img-upload-item"
                                   :label-width="0">
                             <pictureManager :orgImages="orgImages"

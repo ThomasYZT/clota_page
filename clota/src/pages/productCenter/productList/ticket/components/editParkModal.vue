@@ -203,7 +203,7 @@
                 <i-row>
                     <i-col span="24">
                         <!-- 入园须知 -->
-                        <Form-item :label="$t('入园须知')" prop="admissionInstructions">
+                        <Form-item :label="$t('noticeInPark')" prop="admissionInstructions">
                             <template v-if="type === 'check'">
                                 <div style="word-break:break-all;" v-html="formData.admissionInstructions"></div>
                             </template>
@@ -535,7 +535,7 @@
                 <i-row>
                     <i-col span="24">
                         <!-- 入园须知 -->
-                        <Form-item :label="$t('入园须知')" prop="admissionInstructions">
+                        <Form-item :label="$t('noticeInPark')" prop="admissionInstructions">
                             <template v-if="type === 'check'">
                                 <div style="word-break:break-all;" v-html="formData.admissionInstructions"></div>
                             </template>

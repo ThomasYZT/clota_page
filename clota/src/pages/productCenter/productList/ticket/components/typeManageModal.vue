@@ -49,10 +49,10 @@
                           :model="addFormData"
                           :rules="ruleValidate"
                           label-position="left">
-                        <FormItem :label="$t('colonSetting', { key : $t('类别名称') })" prop="name">
+                        <FormItem :label="$t('colonSetting', { key : $t('typeName') })" prop="name">
                             <Input v-model="addFormData.name"
                                    :placeholder="$t('inputPlaceholder')" style="width: 200px" />
-                            <span class="btn-inline" @click="validateType">新增类别</span>
+                            <span class="btn-inline" @click="validateType">{{$t('addProductType')}}</span>
                         </FormItem>
                     </Form>
                 </div>
@@ -112,8 +112,8 @@
             //表单校验规则
             rules () {
                 return [
-                    { required : true, message : this.$t('errorEmpty', { msg : this.$t('类别名称') }), trigger : 'blur' },
-                    { max : 10, message : this.$t('errorMaxLength', { field : this.$t('类别名称'), length : 10 }), trigger : 'blur' },
+                    { required : true, message : this.$t('errorEmpty', { msg : this.$t('typeName') }), trigger : 'blur' },
+                    { max : 10, message : this.$t('errorMaxLength', { field : this.$t('typeName'), length : 10 }), trigger : 'blur' },
                     { validator : this.validateMethods.emoji, trigger : 'blur' },
                 ]
             },
@@ -122,8 +122,8 @@
                 return {
                     //类别名称
                     name : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('类别名称') }), trigger : 'blur' },
-                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('类别名称'), length : 10 }), trigger : 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('typeName') }), trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('typeName'), length : 10 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]
                 }

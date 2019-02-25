@@ -79,7 +79,7 @@
 
         <!--支付错误提示框-->
         <notice-modal ref="noticeModal">
-            {{$t('支付结果未知，如果已支付，请联系合作伙伴。')}}
+            {{$t('payResultError')}}
         </notice-modal>
     </div>
 </template>

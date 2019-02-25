@@ -96,14 +96,14 @@
                     cardType : [
                         {
                             required : true,
-                            message : this.$t('selectField',{ msg : this.$t('会员卡类型') }),
+                            message : this.$t('selectField',{ msg : this.$t('memberCardType') }),
                             trigger : 'change'
                         }
                     ],
                     attribute : [
                         {
                             required : true,
-                            message : this.$t('selectField',{ msg : this.$t('会员卡属性') }),
+                            message : this.$t('selectField',{ msg : this.$t('memberCardAttribute') }),
                             trigger : 'change'
                         }
                     ]
@@ -212,13 +212,13 @@
                 }).catch((err) => {
                     if (err) {
                         if (err === 'sale_personal') {
-                            this.$Message.error('最多新增2张售卖型个人会员卡');
+                            this.$Message.error(this.$t('maxAddTwoPersonSaleCard'));
                         } else if (err === 'sale_enterprise') {
-                            this.$Message.error('最多新增2张售卖型企业会员卡');
+                            this.$Message.error(this.$t('maxAddTwoCompanySaleCard'));
                         } else if (err === 'growth_personal') {
-                            this.$Message.error('最多新增2张成长型型个人会员卡');
+                            this.$Message.error(this.$t('maxAddTwoPersonGrowthCard'));
                         } else if (err === 'growth_enterprise') {
-                            this.$Message.error('最多新增2张成长型型企业会员卡');
+                            this.$Message.error(this.$t('maxAddTwoCompanyGrowthCard'));
                         } else {
                             this.$Message.error(this.$t('failureTip', { tip : this.$t('addMemberType') }));
                         }

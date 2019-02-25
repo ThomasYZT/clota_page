@@ -4,7 +4,7 @@
 -->
 <template>
     <Modal v-model="isMapShow"
-           :title="$t('选择经纬度')"
+           :title="$t('chooseLongitudeAndLatitude')"
            class-name="vertical-center-modal map-modal"
            width="600"
            :mask-closable="false">

@@ -17,7 +17,7 @@
         </div>
         <div v-else>
             <div class="no-poster">
-                <span class="no-poster-tip">无海报</span>
+                <span class="no-poster-tip">{{$t('noPoster')}}</span>
             </div>
         </div>
     </div>

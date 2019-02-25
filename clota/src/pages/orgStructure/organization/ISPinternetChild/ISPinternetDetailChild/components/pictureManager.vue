@@ -13,20 +13,20 @@
             <div class="img-wrapper">
                 <img :src="item.sourceUrl" alt="">
                 <div class="tags-wrapper">
-                    <span class="cover" v-if="item.isCover === 'true'">封面</span>
-                    <span class="rotation" v-if="item.isRotation === 'true'">轮播</span>
+                    <span class="cover" v-if="item.isCover === 'true'">{{$t('coverPage')}}</span>
+                    <span class="rotation" v-if="item.isRotation === 'true'">{{$t('carousel')}}</span>
                 </div>
                 <p v-if="item.isCover === 'false'"
                    class="img-btn"
-                   @click="inCover(item)">设为封面</p>
+                   @click="inCover(item)">{{$t('setToCover')}}</p>
                 <p v-else class="img-btn"
-                   @click="outCover(item)">取消封面</p>
+                   @click="outCover(item)">{{$t('cancelCover')}}</p>
                 <p v-if="item.isRotation === 'false'"
                    class="img-btn"
-                   @click="inRotation(item)">加入轮播</p>
+                   @click="inRotation(item)">{{$t('addToCover')}}</p>
                 <p v-else class="img-btn"
-                   @click="outRotation(item)">取消轮播</p>
-                <p @click="del(item)" class="img-btn del-btn">删除</p>
+                   @click="outRotation(item)">{{$t('cancelCover')}}</p>
+                <p @click="del(item)" class="img-btn del-btn">{{$t('del')}}</p>
             </div>
             <div class="layer">
                 <span class="preview" @click="preview(item)">+</span>
@@ -34,7 +34,7 @@
         </div>
         <img-uploader  ref="imgUpload"
                        :format="['png','jpeg']"
-                       :message="'点击上传'"
+                       :message="$t('clickToUpload')"
                        :quantity-limit="1"
                        :tipStop="true"
                        @upload-failure="uploadFail"
@@ -43,7 +43,7 @@
         <delModal ref="delModal">
             <div :class="$style.delTips">
                 <Icon :class="$style.icon" type="help-circled"></Icon>
-                <span :class="$style.redBale">是否确认删除图片</span>
+                <span :class="$style.redBale">{{$t('sureToDeletePic')}}</span>
             </div>
         </delModal>
         <!--<image-preview ref="imagePreview" :images="orgImages.map(item => { return item.sourceUrl })">-->
@@ -106,7 +106,7 @@
              *  上传图片失败
              */
             uploadFail () {
-                this.$Message.error('景区资源上传失败');
+                this.$Message.error(this.$t('uploadScenicResourceFaield'));
             },
             /**
              * 新增机构图片资源
@@ -123,9 +123,9 @@
                 }).then(res => {
                     if (res.success) {
                         this.$emit('freshOrgInfo');
-                        this.$Message.success('景区资源上传成功');
+                        this.$Message.success(this.$t('uploadScenicResourceSuccessfully'));
                     } else {
-                        this.$Message.error('景区资源上传失败');
+                        this.$Message.error(this.$t('uploadScenicResourceFaield'));
                     }
                 })
             },
@@ -157,7 +157,7 @@
                     isDeleted : 'true',
                 };
                 this.$refs.delModal.show({
-                    title : this.$t('删除资源'),
+                    title : this.$t('deleteResource'),
                     confirmCallback : () => {
                         this.updateOrgImage(params, 'del');
                     }
@@ -186,7 +186,7 @@
                     id : item.id,
                     isCover : 'true',
                 }
-                this.updateOrgImage(params, '设为封面');
+                this.updateOrgImage(params, this.$t('setToCover'));
             },
             /**
              * 取消封面
@@ -197,7 +197,7 @@
                     id : item.id,
                     isCover : 'false',
                 }
-                this.updateOrgImage(params, '取消封面');
+                this.updateOrgImage(params, this.$t('cancelCover'));
             },
             /**
              * 加入轮播
@@ -208,7 +208,7 @@
                     id : item.id,
                     isRotation : 'true',
                 }
-                this.updateOrgImage(params, '加入轮播');
+                this.updateOrgImage(params, this.$t('addToCover'));
             },
             /**
              * 取消轮播
@@ -219,7 +219,7 @@
                     id : item.id,
                     isRotation : 'false',
                 }
-                this.updateOrgImage(params, '取消轮播');
+                this.updateOrgImage(params, this.$t('cancelCarousel'));
             },
             /**
              * 预览图片

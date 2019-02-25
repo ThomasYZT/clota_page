@@ -18,7 +18,7 @@
         </div>
         <!-- 筛选产品类别 -->
         <div class="filter-wrapper" v-if="manageOrgs.nodeType !== 'partner'">
-            <span>{{$t('colonSetting', { key : $t('选择产品类别') })}}</span>
+            <span>{{$t('colonSetting', { key : $t('selectProductType') })}}</span>
             <Select v-model="queryParams.typeId"
                     @on-change="queryList"
                     style="width:250px">
@@ -28,7 +28,7 @@
                     {{ $t(item.name) }}
                 </Option>
             </Select>
-            <span class="inline-btn" @click="manageType">管理</span>
+            <span class="inline-btn" @click="manageType">{{$t('management')}}</span>
         </div>
 
         <table-com

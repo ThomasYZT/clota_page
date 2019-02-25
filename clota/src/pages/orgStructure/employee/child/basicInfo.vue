@@ -157,7 +157,7 @@
             </div>
             <div class="ivu-form-item-wrap">
                 <!--限制订单可用范围，只可查询/操作该员工创建的订单-->
-                <Form-item :label="$t('限制订单可用范围，只可查询/操作该员工创建的订单')" prop="status" style="width: 400px;">
+                <Form-item :label="$t('specialEmployeeDesc')" prop="status" style="width: 400px;">
                     <Checkbox v-model="employee.status" :true-value="'valid'" :false-value="'invalid'"></Checkbox>
                 </Form-item>
             </div>

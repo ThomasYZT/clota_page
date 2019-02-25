@@ -8,28 +8,28 @@
                class-name="vertical-center-modal choose-poster-modal"
                transfer
                width="1000"
-               :title="$t('选择海报底图：')"
+               :title="$t('colonSetting',{ key : $t('choosePosterBasePic') })"
                @on-cancel="choosePosterHide"
                :mask-closable="false">
             <div class="choose-wrapper">
                 <div class="box">
-                    <div class="box-title">方式1：从已上传的海报图片中选择</div>
+                    <div class="box-title">{{$t('chosePosterPicTypeOne')}}</div>
                     <div class="box-body">
                         <posterSelection :poster-list="posterList"
                                          @posterChosed="posterChosed"></posterSelection>
                     </div>
                 </div>
                 <div class="box">
-                    <div class="box-title">方式2：</div>
+                    <div class="box-title">{{$t('chosePosterPicTypeTwo')}}</div>
                     <div class="box-body">
                         <Button type="primary" class="ivu-btn-90px"
-                                @click="addPoster">{{$t('上传海报')}}</Button>
+                                @click="addPoster">{{$t('uploadPoster')}}</Button>
                     </div>
                 </div>
             </div>
 
             <div slot="footer">
-                <Button class="ivu-btn-90px" type="primary" @click="nextStep">{{$t('下一步')}}</Button>
+                <Button class="ivu-btn-90px" type="primary" @click="nextStep">{{$t('nextStep')}}</Button>
                 <Button class="ivu-btn-90px" type="default" @click="choosePosterHide">{{$t('cancel')}}</Button>
             </div>
         </Modal>
@@ -37,7 +37,7 @@
                class-name="vertical-center-modal edit-poster-modal"
                transfer
                width="1000"
-               :title="$t('编辑海报：')"
+               :title="$t('colonSetting',{ key : $t('editPoster') })"
                @on-cancel="editPosterHide"
                :mask-closable="false">
                 <div class="workspace">
@@ -116,12 +116,12 @@
                             this.editPosterVisible = true;
                         } else {
                             this.src64 = '';
-                            this.$t('海报底图获取失败');
+                            this.$Message.error(this.$t('getPosterFaield'));
                         }
                     });
                     this.editPosterVisible = true;
                 } else {
-                    this.$Message.warning(this.$t('请选择海报底图'));
+                    this.$Message.warning(this.$t('choosePosterBasePic'));
                 }
             },
             /**

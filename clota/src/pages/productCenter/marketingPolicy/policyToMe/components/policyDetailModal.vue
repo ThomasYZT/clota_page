@@ -270,7 +270,7 @@
                                 {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
                             </template>
                             <template>
-                                <span>过期自动核销</span>
+                                <span>{{$t('cancelAfterVerify')}}</span>
                             </template>
                         </template>
                     </el-table-column>
@@ -295,7 +295,7 @@
                        </i-row>
                        <i-row>
                            <i-col span="24">
-                               <Form-item :label="$t('入园须知')+':'"><!--入园须知-->
+                               <Form-item :label="$t('noticeInPark')+':'"><!--入园须知-->
                                    <div style="word-break: break-all;"
                                         v-html="detail.productPolicy.buyTicketNotes"
                                         v-if="detail.productPolicy.buyTicketNotes"></div>

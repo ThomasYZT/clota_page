@@ -49,7 +49,7 @@
                             <div class="right-item">
                                 <div class="inline-btn-wrapper" style="text-align: right">
                                     <span class="add-type-btn"
-                                          @click="addType">{{$t('添加类别')}}</span>
+                                          @click="addType">{{$t('addType')}}</span>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                 </div>
                 <!--产品标签-->
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('产品标签')" prop="thirdCode">
+                    <Form-item :label="$t('productLabel')" prop="thirdCode">
                         <div class="tags-wrapper">
                             <productTag v-for="item in formData.tags"
                                         :checkable="false"
@@ -66,16 +66,16 @@
                                         :name="item.name"
                                         :chosed="true"></productTag>
                             <span class="add-type-btn"
-                                  @click="addTag">{{$t('添加标签')}}</span>
+                                  @click="addTag">{{$t('addLabel')}}</span>
                         </div>
                     </Form-item>
                 </div>
                 <!--产品封面-->
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('产品封面')" prop="pictureUrl">
+                    <Form-item :label="$t('productCover')" prop="pictureUrl">
                         <img-uploader  ref="imgUpload"
                                        :format="['png','jpeg']"
-                                       :message="'点击上传'"
+                                       :message="$t('clickToUpload')"
                                        :quantity-limit="1"
                                        :defaultList="defaultImg"
                                        @upload-success="uploadSuc"
@@ -171,10 +171,10 @@
                         { validator : emoji, trigger : 'blur' },
                     ],
                     typeId : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('产品类别') }), trigger : 'change' }, // 不能为空
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('productType') }), trigger : 'change' }, // 不能为空
                     ],
                     pictureUrl : [
-                        { required : true, message : this.$t('pleaseUpload', { field : this.$t('产品封面') }), trigger : 'change' }, // 不能为空
+                        { required : true, message : this.$t('pleaseUpload', { field : this.$t('productCover') }), trigger : 'change' }, // 不能为空
                     ]
                 };
             }

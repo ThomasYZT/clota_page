@@ -44,7 +44,7 @@
                     </Form>
                 </template>
                 <template v-else>
-                    <div class="warn-tip">平台暂未配置在线收款账户，请联系客服</div>
+                    <div class="warn-tip">{{$t('plantformNoSetAccountErr')}}</div>
                 </template>
             </div>
 

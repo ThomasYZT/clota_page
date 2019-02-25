@@ -59,14 +59,14 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('产品类别')+'：'"><!--产品类别-->
+                            <Form-item :label="$t('productType')+'：'"><!--产品类别-->
                                 <div class="form-item-content" v-w-title="detail.typeName">{{detail.typeName | contentFilter}}</div>
                             </Form-item>
                         </i-col>
                     </i-row>
                     <i-row>
                         <i-col span="12">
-                            <Form-item :label="$t('产品标签')+'：'"><!--产品标签-->
+                            <Form-item :label="$t('productLabel')+'：'"><!--产品标签-->
                                 <div class="form-item-content">
                                     <productTag v-for="item in detail.tags"
                                                 :checkable="false"
@@ -78,7 +78,7 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('产品封面')+'：'"><!--产品封面-->
+                            <Form-item :label="$t('productCover')+'：'"><!--产品封面-->
                                 <div class="form-item-content" v-viewer>
                                     <img style="cursor: pointer;" class="image-thumb" :src="detail.pictureUrl">
                                 </div>

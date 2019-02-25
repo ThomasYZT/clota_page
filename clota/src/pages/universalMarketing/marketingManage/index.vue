@@ -70,12 +70,12 @@
                             <Select v-model="supportCollectModal.supportCollect"
                                     transfer
                                     size="small">
-                                <Option :value="'true'">{{ $t('支持') }}</Option>
-                                <Option :value="'false'">{{ $t('禁止') }}</Option>
+                                <Option :value="'true'">{{ $t('support') }}</Option>
+                                <Option :value="'false'">{{ $t('ban') }}</Option>
                             </Select>
                         </FormItem>
                     </Form>
-                    <span v-else>{{scope.row.supportCollect && scope.row.supportCollect === 'true' ? '支持' : '禁止' | contentFilter}}</span>
+                    <span v-else>{{scope.row.supportCollect && scope.row.supportCollect === 'true' ? $t('support') : $t('ban')}}</span>
                 </template>
             </el-table-column>
             <el-table-column

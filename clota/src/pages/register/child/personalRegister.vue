@@ -41,8 +41,8 @@
                                 <img-uploader ref="imgUpload1"
                                               @upload-success="uploadSuc($event, 'pos')"
                                               @remove-img="removeIDimg($event, 'pos')"
-                                              :message="$t('上传图片')"
-                                              :imgInfo="$t('正面')"
+                                              :message="$t('uploadPicture')"
+                                              :imgInfo="$t('frontPage')"
                                               :format="['png','jpeg']"
                                               :quantity-limit="1"></img-uploader>
                             </FormItem>
@@ -52,8 +52,8 @@
                                 <img-uploader ref="imgUpload2"
                                               @upload-success="uploadSuc($event, 'neg')"
                                               @remove-img="removeIDimg($event, 'neg')"
-                                              :message="$t('上传图片')"
-                                              :imgInfo="$t('反面')"
+                                              :message="$t('uploadPicture')"
+                                              :imgInfo="$t('reverseSide')"
                                               :format="['png','jpeg']"
                                               :quantity-limit="1"></img-uploader>
                             </FormItem>
@@ -199,10 +199,10 @@
                     //     { required : true, type : 'array', min : 2, message : this.$t('pleaseUpload', { field : this.$t('posAndNagIDImg') }), trigger : 'blur' }
                     // ],
                     posImg : [
-                        { required : true, type : 'array', min : 1, message : this.$t('pleaseUpload', { field : this.$t('正面照') }), trigger : 'blur' }
+                        { required : true, type : 'array', min : 1, message : this.$t('pleaseUpload', { field : this.$t('fullFacePhoto') }), trigger : 'blur' }
                     ],
                     negImg : [
-                        { required : true, type : 'array', min : 1, message : this.$t('pleaseUpload', { field : this.$t('反面照') }), trigger : 'blur' }
+                        { required : true, type : 'array', min : 1, message : this.$t('pleaseUpload', { field : this.$t('reverseFacePhoto') }), trigger : 'blur' }
                     ],
                     email : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('email') }), trigger : 'blur' },

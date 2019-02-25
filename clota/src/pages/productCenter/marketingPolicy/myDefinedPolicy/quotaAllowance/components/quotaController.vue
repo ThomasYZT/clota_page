@@ -6,7 +6,7 @@
     <div class="quota-controller">
         <div class="board-wrapper">
             <div class="title">
-                <span>{{$t('调出配额')}}</span>
+                <span>{{$t('bringUpQuota')}}</span>
             </div>
             <div class="board">
                 <Form ref="outForm"
@@ -17,7 +17,7 @@
                     <i-row>
                         <template v-if="quotaType === 'everyday'">
                             <i-col span="7">
-                                <FormItem :label="$t('指定日期')" prop="outTime">
+                                <FormItem :label="$t('appointedDay')" prop="outTime">
                                     <!--<span class="label-title">{{$t('指定日期')}}</span>-->
                                     <DatePicker v-model="outFormData.outTime"
                                                 format="yyyy-MM-dd"

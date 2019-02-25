@@ -102,7 +102,7 @@
                     </template>
                     <!-- 下单失败 -->
                     <template v-else-if="scope.row.type.includes('failure')">
-                        <span>{{$t('colonSetting', { key : $t('reason') })}}{{'付款账户可用额度不足'}} {{$t('comma')}}</span>
+                        <span>{{$t('colonSetting', { key : $t('reason') })}}{{$t('payerLackOfCredit')}} {{$t('comma')}}</span>
                         <span>{{$t('colonSetting', { key : $t('superiorDistribution') })}} {{scope.row.content.peerOrg | contentFilter}} {{$t('comma')}}</span>
                         <span>{{$t('colonSetting', { key : $t('availableCredit') })}} {{scope.row.content.accountBalance | contentFilter}}{{$t('yuan')}} {{$t('comma')}}</span>
                         <span>{{$t('colonSetting', { key : $t('purchaseAmount') })}} {{scope.row.content.orderAmount | contentFilter}}{{$t('yuan')}} {{$t('comma')}}</span>

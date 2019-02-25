@@ -17,7 +17,7 @@
                       :model="formData"
                       :rules="ruleValidate"
                       label-position="top">
-                    <FormItem :label="$t('colonSetting', { key : $t('类别名称') })" prop="name">
+                    <FormItem :label="$t('colonSetting', { key : $t('typeName') })" prop="name">
                         <Input v-model="formData.name"
                                :placeholder="$t('inputPlaceholder')" style="width: 200px" />
                     </FormItem>
@@ -69,8 +69,8 @@
                 return {
                     //类别名称
                     name : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('类别名称') }), trigger : 'blur' },
-                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('类别名称'), length : 10 }), trigger : 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('typeName') }), trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('typeName'), length : 10 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]
                 }

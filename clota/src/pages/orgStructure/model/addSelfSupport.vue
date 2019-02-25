@@ -34,13 +34,13 @@
                        @on-blur="createQrcode"/>
             </Form-item>
             <!--二维码-->
-            <Form-item :label="$t('二维码')">
+            <Form-item :label="$t('qrCode')">
                 <img v-if="qrCodeSrc"
                      class="qrcode-img"
                      :src="qrCodeSrc"
                      @click="previewImage">
                 <div class="qrcode-img" v-else></div>
-                <span v-if="qrCodeSrc" class="download-qrcode" @click="downLoadQrcode">{{$t('下载二维码')}}</span>
+                <span v-if="qrCodeSrc" class="download-qrcode" @click="downLoadQrcode">{{$t('downloadQrCode')}}</span>
             </Form-item>
             <!--APP ID-->
             <Form-item label="APP ID" prop="appId">

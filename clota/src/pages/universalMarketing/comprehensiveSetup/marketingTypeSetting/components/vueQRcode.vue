@@ -10,7 +10,7 @@
         <div v-else class="qr-code">
             <img v-if="show" :src="src" alt="">
         </div>
-        <p v-if="downloadable" class="download-btn" @click="download">下载</p>
+        <p v-if="downloadable" class="download-btn" @click="download">{{$t('download')}}</p>
     </div>
 </template>
 

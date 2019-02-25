@@ -20,7 +20,7 @@
                         </span>
                     </div>
                     <div class="right-box">
-                        <span class="manage-btn" v-if="!isManaging" @click="manage">{{$t('管理标签')}}</span>
+                        <span class="manage-btn" v-if="!isManaging" @click="manage">{{$t('manageLabel')}}</span>
                         <span class="manage-btn" @click="cancelManage" v-else>{{$t('cancel')}}</span>
                     </div>
                 </div>
@@ -115,8 +115,8 @@
             ruleValidate () {
                 return {
                     name : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('标签名称') }), trigger : 'blur' },
-                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('标签名称'), length : 10 }), trigger : 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('labelName') }), trigger : 'blur' },
+                        { max : 10, message : this.$t('errorMaxLength', { field : this.$t('labelName'), length : 10 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]
                 };

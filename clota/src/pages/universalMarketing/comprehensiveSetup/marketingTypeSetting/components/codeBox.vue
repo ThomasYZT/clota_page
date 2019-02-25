@@ -73,7 +73,7 @@
             <div class="box-footer" v-if="boxStatus !== 'null' && canOperateMarketType">
                 <template v-if="boxStatus === 'show'">
                     <div class="btn"><span class="blue-btn" @click="edit">{{$t('edit')}}</span></div>
-                    <div class="btn"><span class="blue-btn" @click="makePoster">{{$t('制作海报')}}</span></div>
+                    <div class="btn"><span class="blue-btn" @click="makePoster">{{$t('makePoster')}}</span></div>
                     <div class="btn"><span class="warn-btn" @click="del">{{$t('del')}}</span></div>
                 </template>
                 <template v-if="boxStatus === 'add' || boxStatus === 'edit'">
