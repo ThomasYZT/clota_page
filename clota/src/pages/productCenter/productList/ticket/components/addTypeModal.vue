@@ -98,11 +98,15 @@
              * 保存类别
              */
             save () {
-                if (this.type === 'modify') {
-                    this.updateType();
-                } else {
-                    this.addType();
-                }
+                this.$refs.modalForm.validate((valid) => {
+                    if (valid) {
+                        if (this.type === 'modify') {
+                            this.updateType();
+                        } else {
+                            this.addType();
+                        }
+                    }
+                });
             },
             /**
              * 新增类别
