@@ -148,7 +148,7 @@
                                <!--:rows="3"-->
                                <!--:placeholder="$t('inputField', {field: $t('buyTicketNotes')})+'，'+$t('noMax',{length: 1000})"/>-->
 
-                        <editor ref="editor" :value.sync="formData.buyTicketNotes"></editor>
+                        <editor ref="editor" :uploadImgable="false" :value.sync="formData.buyTicketNotes"></editor>
                     </Form-item>
                 </div>
             </div>

@@ -40,14 +40,35 @@
             value : {
                 type : String,
                 default : '',
-            }
+            },
+            //是否有上传图片功能
+            uploadImgable : {
+                type : Boolean,
+                default : true,
+            },
         },
         components : {
             quillEditor
         },
         data () {
             return {
-                editorOption : {
+                content : '',
+            };
+        },
+        computed : {
+            headers () {
+                return {
+                    token : ajax.getToken()
+                };
+            },
+            serverUrl () {
+                return config.HOST + api.imgUpload;
+            },
+            editor () {
+                return this.$refs.myQuillEditor.quill;
+            },
+            editorOption () {
+                return {
                     modules : {
                         toolbar : {
                             container : [
@@ -64,7 +85,8 @@
                                 [{ 'color' : [] }, { 'background' : [] }],
                                 [{ 'align' : [] }],
                                 ['clean'],
-                                ['link', 'image']
+                                ['link'],
+                                this.uploadImgable ? ['image'] : [],
                             ],
                             handlers : {
                                 'image' : function (value) {
@@ -79,22 +101,8 @@
                     },
                     placeholder : this.$t('inputPlaceholder'),
 
-                },
-                content : '',
-            };
-        },
-        computed : {
-            headers () {
-                return {
-                    token : ajax.getToken()
                 };
-            },
-            serverUrl () {
-                return config.HOST + api.imgUpload;
-            },
-            editor () {
-                return this.$refs.myQuillEditor.quill;
-            },
+            }
         },
         methods : {
             // 内容改变事件
