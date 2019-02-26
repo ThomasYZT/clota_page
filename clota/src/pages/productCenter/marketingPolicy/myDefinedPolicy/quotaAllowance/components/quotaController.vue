@@ -24,6 +24,7 @@
                                                 type="daterange"
                                                 :clearable="false"
                                                 :editable="false"
+                                                :options="dateOption"
                                                 transfer
                                                 :placeholder="$t('selectField', { msg : $t('date') })"
                                                 placement="bottom-end"
@@ -63,6 +64,7 @@
                                                 type="daterange"
                                                 :clearable="false"
                                                 :editable="false"
+                                                :options="dateOption"
                                                 transfer
                                                 :placeholder="$t('selectField', { msg : $t('date') })"
                                                 placement="bottom-end"
@@ -127,6 +129,12 @@
                     inNum : '',
                 },
                 isFormShow : true,
+                //禁用今天之前的日期
+                dateOption : {
+                    disabledDate : (date) => {
+                        return date && date.valueOf() <= Date.now() - 86400000;
+                    }
+                }
             };
         },
         computed : {
