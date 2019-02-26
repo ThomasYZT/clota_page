@@ -394,10 +394,10 @@
                                 reject('tourguideErr');
                             }
                             result.push({
-                                documentInfo : JSON.stringify({
+                                documentInfo : JSON.stringify([{
                                     data : this.tableData[i].documentNo,
                                     type : 'identity'
-                                }),
+                                }]),
                                 phoneNumber : this.tableData[i].phoneNumber,
                                 visitorName : this.tableData[i].staffName,
                                 visitorType : 'guide',

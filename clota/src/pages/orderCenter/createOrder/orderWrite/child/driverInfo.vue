@@ -346,10 +346,10 @@
                             reject('driverErr');
                         }
                         result.push({
-                            documentInfo : JSON.stringify({
+                            documentInfo : JSON.stringify([{
                                 data : this.tableData[i].documentNo,
                                 type : 'license'
-                            }),
+                            }]),
                             phoneNumber : '',
                             visitorName : this.tableData[i].staffName,
                             visitorType : 'driver',
