@@ -140,7 +140,8 @@
                     </Form-item>
                 </div>
                 <!--当日票可售时间-->
-                <div class="ivu-form-item-wrap single" v-if="formData.saleRule.beforeDay == 0 || formData.saleRule.afterDay == 0">
+                <div class="ivu-form-item-wrap single" v-if="(formData.saleRule.type == 'playBeforeSold' && formData.saleRule.beforeDay == 0 || formData.saleRule.afterDay == 0)
+                    || formData.saleRule.type !=='playBeforeSold'">
                     <Form-item :label="$t('saleTodayTime')">
                         <TimePicker format="HH:mm"
                                     v-model="formData.todaySaleTime"

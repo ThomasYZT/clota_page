@@ -25,7 +25,7 @@
                    class="img-btn"
                    @click="inRotation(item)">{{$t('addToCover')}}</p>
                 <p v-else class="img-btn"
-                   @click="outRotation(item)">{{$t('cancelCover')}}</p>
+                   @click="outRotation(item)">{{$t('cancelCarousel')}}</p>
                 <p @click="del(item)" class="img-btn del-btn">{{$t('del')}}</p>
             </div>
             <div class="layer">
@@ -173,7 +173,11 @@
                         this.$emit('freshOrgInfo');
                         this.$Message.success(this.$t('successTip', { tip : this.$t(type) }));
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t(type) }));
+                        if (res.code && res.code === 'O010') {
+                            this.$Message.error(this.$t(res.code));
+                        } else {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t(type) }));
+                        }
                     }
                 })
             },

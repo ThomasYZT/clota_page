@@ -1004,7 +1004,6 @@
                     log("Document cloned");
                     let attributeName = html2canvasNodeAttribute + html2canvasIndex;
                     let selector = "[" + attributeName + "='" + html2canvasIndex + "']";
-                    document.querySelector(selector).removeAttribute(attributeName);
                     let clonedWindow = container.contentWindow;
                     let node = clonedWindow.document.querySelector(selector);
                     let oncloneHandler = (typeof (options.onclone) === "function") ? Promise.resolve(options.onclone(clonedWindow.document)) : Promise.resolve(true);

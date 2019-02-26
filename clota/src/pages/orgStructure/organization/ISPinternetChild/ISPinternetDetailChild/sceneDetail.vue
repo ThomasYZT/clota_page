@@ -540,6 +540,14 @@
                     if (res.success) {
                         this.sceneDetail = res.data ? res.data.basicInfo : {};
                         this.orgImages = res.data ? res.data.orgImages : [];
+                        let coverIndex = this.orgImages.findIndex((item, index) => {
+                            return item.isCover === "true" && index !== 0;
+                        });
+                        if (coverIndex > 0) {
+                            this.orgImages.splice(0, 0, this.orgImages[coverIndex]);
+                            this.orgImages.splice(coverIndex+1, 1);
+
+                        }
                     } else {
                         this.sceneDetail = {};
                     }

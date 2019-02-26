@@ -87,7 +87,8 @@
                                 </div>
                             </Form-item>
                         </i-col>
-                        <i-col span="12" v-if="detail.productPolicy.saleRuleModel.beforeDay == 0 || detail.productPolicy.saleRuleModel.afterDay == 0">
+                        <i-col span="12" v-if="(detail.productPolicy.saleRuleModel.type == 'playBeforeSold' && detail.productPolicy.saleRuleModel.beforeDay == 0 || detail.productPolicy.saleRuleModel.afterDay == 0)
+                            || detail.productPolicy.saleRuleModel.type !=='playBeforeSold'">
                             <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
                                 <div>
                                     {{detail.productPolicy.todaySaleStartTime | contentFilter}}~{{detail.productPolicy.todaySaleEndTime | contentFilter}}
@@ -96,7 +97,7 @@
                         </i-col>
                     </i-row>
                 </div>
-
+                <!-- 游玩规则 -->
                 <div class="form-content" v-if="detail.productPolicy && detail.productPolicy.playRuleModel">
                     <i-row>
                         <i-col span="12">
@@ -115,7 +116,7 @@
                     <!--游玩期限 = 指定期间可售-->
                     <i-row v-if="detail.productPolicy.playRuleModel.type === 'specifiedPeriodSold'">
                         <i-col span="24">
-                            <Form-item :label="$t('weekSold')+'：'"><!--每周可玩日期-->
+                            <Form-item :label="$t('weekPlay')+'：'"><!--每周可玩日期-->
                                 <div>
                                     {{showWeek(detail.productPolicy.playRuleModel.weekSold) | contentFilter}}
                                 </div>
@@ -143,13 +144,6 @@
                         <i-col span="12">
                             <Form-item :label="$t('delayValidTime')+'：'"><!--下单后延迟生效-->
                                 <div>{{detail.productPolicy.delayValidTime | contentFilter}} <span class="split">{{$t('minute')}}</span></div>
-                            </Form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <Form-item :label="$t('saleTodayTime')+'：'"><!--当日票可售时间-->
-                                <div>
-                                    {{detail.productPolicy.todaySaleStartTime | contentFilter}}~{{detail.productPolicy.todaySaleEndTime | contentFilter}}
-                                </div>
                             </Form-item>
                         </i-col>
                     </i-row>

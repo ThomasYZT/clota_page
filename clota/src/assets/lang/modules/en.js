@@ -2577,5 +2577,6 @@ export default {
     'chosePosterPicTypeTwo' : '方式2：',
     'editPoster' : '编辑海报',
     'getPosterFaield' : '海报底图获取失败',
-    'noPoster' : '无海报'
+    'noPoster' : '无海报',
+    'O010' : '只能设置一个封面',
 };
