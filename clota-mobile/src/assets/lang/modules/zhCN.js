@@ -463,4 +463,8 @@ export default {
     'requestWithdrawalMoney' : '您申请提现{money}元',
     'scenicBuyTicketRule1' : '根据景区购票规则，每位游客都应提供身份信息',
     'scenicBuyTicketRule2' : '根据景区购票规则，每位游客最多可购买{num}张票',
+    'freshing' : '刷新中',
+    'payFaieldNotice' : '支付失败，如未退款，请联系工作人员。',
+    'iosSettingError' : '请关闭无痕模式，然后刷新页面继续付款。',
+    'memberCard' : '会员卡'
 };

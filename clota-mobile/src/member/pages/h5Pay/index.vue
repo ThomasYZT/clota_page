@@ -41,22 +41,22 @@
         <confirm v-model="confirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
                  @on-confirm="confirmShow = false">
-            <p style="text-align:center;">{{ $t('请关闭无痕模式，然后刷新页面继续付款。') }}</p>
+            <p style="text-align:center;">{{ $t('iosSettingError') }}</p>
         </confirm>
 
         <!--充值失败提示框-->
         <confirm v-model="errConfirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
                  @on-confirm="confirmPayResult">
-            <p style="text-align:center;">{{ $t('支付失败，如未退款，请联系工作人员。') }}</p>
+            <p style="text-align:center;">{{ $t('payFaieldNotice') }}</p>
         </confirm>
     </div>
 </template>

@@ -372,7 +372,7 @@ export const memberRoutes = [
                 name : 'wOraDirectPay',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/h5Pay/wxoraliPay.vue'),
                 meta : {
-                    title : '支付结果',
+                    title : 'payStatus',
                     hideTabbar : true,
                     notNeedCheck : true
                 }

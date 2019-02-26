@@ -23,11 +23,11 @@
         <confirm v-model="confirmShow"
                  class="confirm-modal-wrap"
                  v-transfer-dom
-                 :title="$t('提示')"
+                 :title="$t('notice')"
                  :confirm-text="$t('confirm')"
                  :show-cancel-button="false"
                  @on-confirm="confirmPayResult">
-            <p style="text-align:center;">{{ $t('支付失败，如未退款，请联系工作人员。') }}</p>
+            <p style="text-align:center;">{{ $t('payFaieldNotice') }}</p>
         </confirm>
 
         <div v-if="aliPayInWeixin === true && paySuccess === null" class="img-wrapper">
@@ -103,7 +103,7 @@
              */
             queryPayRecordByOutTradeNo (outTradeNo) {
                 this.$vux.loading.show({
-                    text : this.$t('支付结果查询中')
+                    text : this.$t('searchIngPayResult')
                 });
                 ajax.post('market_queryPayRecordByOutTradeNo',{
                     outTradeNo
