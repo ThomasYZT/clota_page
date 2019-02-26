@@ -80,6 +80,11 @@
                                        :defaultList="defaultImg"
                                        @upload-success="uploadSuc"
                                        @remove-img="removeIDimg"></img-uploader>
+                        <div class="upload-tip">
+                            <p>说明：图片格式：PNG/JPG/GIF</p>
+                            <p>图片尺寸：400*360 px</p>
+                            <p>图片文件大小不超过10M</p>
+                        </div>
                     </Form-item>
                 </div>
                 <!--产品描述-->
@@ -386,6 +391,19 @@
 
                 .right-item {
                     flex: 1 1;
+                }
+            }
+
+            .upload-tip {
+                display: inline-block;
+                vertical-align: top;
+                width: calc(100% - 100px);
+                height: 80px;
+                font-size: 12px;
+                color: $color_yellow;
+
+                p {
+                    line-height: unset;
                 }
             }
         }
