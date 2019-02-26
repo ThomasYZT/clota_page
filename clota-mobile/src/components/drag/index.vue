@@ -14,7 +14,7 @@
 
 <script>
     export default {
-        data() {
+        data () {
             return {
                 //开始拖拽标志
                 startDrag : false,
@@ -29,18 +29,18 @@
                 ny : '',
                 xPum : '',
                 yPum : ''
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 按下元素
              * @param e
              */
             down (e) {
                 let touch = null;
-                if(e.touches){
+                if (e.touches) {
                     touch = e.touches[0];
-                }else{
+                } else {
                     touch = e;
                 }
                 this.startDrag = true;
@@ -57,19 +57,19 @@
             move (e) {
                 // e.preventDefault();
                 let touch = null;
-                if(e.touches){
+                if (e.touches) {
                     touch = e.touches[0];
-                }else{
+                } else {
                     touch = e;
                 }
                 this.nx = touch.clientX - this.defaultPosition.x;
                 this.ny = touch.clientY - this.defaultPosition.y;
-                this.xPum = this.dx+this.nx;
-                this.yPum = this.dy+this.ny;
-                if(this.xPum > 0 && this.xPum < document.body.offsetWidth - 40){
+                this.xPum = this.dx + this.nx;
+                this.yPum = this.dy + this.ny;
+                if (this.xPum > 0 && this.xPum < document.body.offsetWidth - 40) {
                     this.$el.style.left = this.xPum + "px";
                 }
-                if(this.yPum > 0 && this.yPum < document.body.offsetHeight - 40){
+                if (this.yPum > 0 && this.yPum < document.body.offsetHeight - 40) {
                     this.$el.style.top = this.yPum + "px";
                 }
             },
@@ -87,7 +87,7 @@
                 e.preventDefault();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

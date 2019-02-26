@@ -28,6 +28,9 @@
                           :min="minChoosed">
                 </x-number>
             </group>
+            <div class="tip-hr" v-if="saleRuleDesc">
+                {{saleRuleDesc}}
+            </div>
             <group class="group-wrap" v-for="(item,index) in formData" :key="index">
                 <popup-radio :title="$t('cardType')"
                              v-if="acceptIdType.length > 0"
@@ -390,39 +393,6 @@
                         supportCollect : this.productDetail.supportCollect
                     }
                 });
-                 // ajax.post('market_addVisitorOrder',{
-                 //     productInfos : JSON.stringify([{
-                 //         productId : this.productDetail.productId,
-                 //         policyId : this.productDetail.policyId,
-                 //         allocationId : this.productDetail.allocationId,
-                 //         price : this.productDetail.salePrice,
-                 //         actPrice : this.productDetail.salePrice,
-                 //         quantity : this.buyNum
-                 //     }]),
-                 //     orderVisitorProductVos : JSON.stringify(this.getTouristInfo()),
-                 //     playDate : this.playDate,
-                 //     saleRuleVos : JSON.stringify(this.getSaleRuleVos()),
-                 //     orderAmount : this.totalAmount,
-                 //     orderChannel : 'market',
-                 //     marketUserId : this.marketUserId,
-                 //     latitude : this.marketLatitude,
-                 //     longitude : this.marketLongitude,
-                 // }).then(res => {
-                 //     if (res.success) {
-                 //         this.$router.replace({
-                 //             name : 'marketingCreateOrderToPay',
-                 //             params : {
-                 //                 productName : this.productDetail.productName,
-                 //                 totalAmount : this.totalAmount,
-                 //                 orderId : res.data ? res.data : ''
-                 //             }
-                 //         });
-                 //     } else if (res.code && res.code !== '300') {
-                 //         this.$vux.toast.text(this.$t('errorMsg.' + res.code));
-                 //     } else {
-                 //         this.$vux.toast.text(this.$t('下单失败'));
-                 //     }
-                 // });
             },
             /**
              * 校验订单是否符合订票规则
@@ -519,6 +489,26 @@
                     return Number(this.productPolicy.minNum);
                 } else {
                     return 1;
+                }
+            },
+            //显示的产品销售政策
+            saleRuleDesc () {
+                if (this.productPolicy && Object.keys(this.productPolicy).length > 0) {
+                    if (this.productPolicy && this.productPolicy.needId === 'one') {
+                        return this.$t(`scenicBuyTicketRule1`);
+                    } else if (this.productPolicy && this.productPolicy.needId === 'more') {
+                        let idLimit = {};
+                        try {
+                            idLimit = JSON.parse(this.productPolicy.idLimit);
+                        } catch (e) {
+                            idLimit = {};
+                        }
+                        return this.$t(`scenicBuyTicketRule2`,{ num : idLimit.quantity });
+                    } else {
+                        return '';
+                    }
+                } else {
+                    return '';
                 }
             }
         },
@@ -645,6 +635,11 @@
 
         /dee/ .vux-number-selector-plus{
             margin-right: 0!important;
+        }
+
+        .tip-hr{
+            padding: 8px 10px 0 15px;
+            font-size: 13px;
         }
     }
 </style>

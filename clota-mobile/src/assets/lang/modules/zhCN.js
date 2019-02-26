@@ -460,5 +460,7 @@ export default {
     'accordingToSaleRules' : '根据产品销售政策设置：',
     'eceedPurchaseLimitError' : '{visitorName}最多购买{maxCount}张{productName}',
     'registerCompanyMarketing' : '您正在注册 {companyName} 的销售用户',
-    'requestWithdrawalMoney' : '您申请提现{money}元'
+    'requestWithdrawalMoney' : '您申请提现{money}元',
+    'scenicBuyTicketRule1' : '根据景区购票规则，每位游客都应提供身份信息',
+    'scenicBuyTicketRule2' : '根据景区购票规则，每位游客最多可购买{num}张票',
 };
