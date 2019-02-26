@@ -469,9 +469,13 @@
                     text-align: center;
                     font-size: $font_size_14px;
                     color: #8395A7;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
                     .login-label{
                         color: $color_blue;
+                        padding-left: 5px;
                     }
                 }
             }

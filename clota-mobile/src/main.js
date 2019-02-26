@@ -16,6 +16,9 @@ import './assets/css/mobilePublic.css';
 import './assets/css/iconfont.css';
 import './assets/theme/theme.scss';
 import '@/assets/scss/_common.scss';
+import './assets/css/quill.snow.css';
+import './assets/css/quill.core.css';
+import './assets/css/quill.bubble.css';
 
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin';

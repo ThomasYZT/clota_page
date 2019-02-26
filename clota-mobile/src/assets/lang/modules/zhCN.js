@@ -438,7 +438,7 @@ export default {
     'payeeName' : '收款人姓名',
     'order' : '订单',
     'idNum' : '身份证号',
-    'gettingPosition' : '获取位置信息中',
+    'gettingPosition' : '加载中',
     'logout' : '退出登录',
     'reserveNow' : '立即预定',
     'lastStep' : '上一步',
