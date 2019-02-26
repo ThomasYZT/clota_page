@@ -29,7 +29,7 @@
                                     <div class="btn-wrapper">
                                         <ul class="operate-list">
                                             <template v-if="item.editing">
-                                                <li @click="save(item)">{{$t('save')}}</li>
+                                                <li @click="save(item, index)">{{$t('save')}}</li>
                                                 <li @click="cancel(item, index)" class="red-label" >{{$t('cancel')}}</li>
                                             </template>
                                             <template v-else>
@@ -209,8 +209,12 @@
              * 保存类别
              * @param typeItem
              */
-            save (typeItem) {
-                this.updateTagDefine(typeItem);
+            save (typeItem, index) {
+                this.$refs.typeForm.validateField('typeList.' + index + '.name', (err) => {
+                    if (!err) {
+                        this.updateTagDefine(typeItem);
+                    }
+                });
             },
             /**
              *  更新类别名称
