@@ -158,6 +158,12 @@
                     background: #046FDB;
                     color: $color_fff;
                 }
+
+                .label{
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
             }
         }
     }
