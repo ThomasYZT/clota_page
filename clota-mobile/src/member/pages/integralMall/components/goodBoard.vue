@@ -13,7 +13,7 @@
                 <p class="time">{{$t('getTime')}}: {{info.drawTime | contentFilter}}</p>
             </template>
             <template v-else>
-                <span class="price">{{$t('totalPrice')}}: {{info.marketPrice | moneyFilter | contentFilter}}</span>
+                <span class="price">{{$t('totalPrice')}}: {{info.marketPrice | moneyFilter(2,'￥') | contentFilter}}</span>
                 <p class="code">{{$t('exchangeCode')}}: {{info.exchangeSecurities | contentFilter}}</p>
                 <p class="price">{{$t('exchangeScore')}}: {{info.changeCredit | contentFilter}}</p>
                 <p class="time">{{$t('exchangeTime')}}: {{info.outTime | contentFilter}}</p>

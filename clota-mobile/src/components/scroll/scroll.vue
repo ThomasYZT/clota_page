@@ -6,7 +6,7 @@
     <div class="flex-box">
         <div class="scroll">
             <div ref="wrapper" class="list-wrapper"
-                 :class="{ 'no-data-wrap' : data.length < 1 }">
+                 :class="{ 'no-data-wrap-zh' : lang === 'zh-CN' && data.length < 1,'no-data-wrap-en' : lang === 'en' && data.length < 1 }">
                 <div class="scroll-content">
                     <div ref="listWrapper">
                         <slot>
@@ -58,6 +58,7 @@
     import Loading from './loading/loading.vue';
     import Bubble from './bubble/bubble.vue';
     import common from '../../assets/js/common';
+    import { mapGetters } from 'vuex';
 
     const COMPONENT_NAME = 'scroll';
     const DIRECTION_H = 'horizontal';
@@ -152,15 +153,18 @@
         },
         computed : {
             pullUpTxt () {
-                const moreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) || '加载中';
+                const moreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) || this.$t('loading');
 
-                const noMoreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore) || '无更多数据';
+                const noMoreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore) || this.$t('noMoreData');
 
                 return this.pullUpDirty ? moreTxt : noMoreTxt;
             },
             refreshTxt () {
-                return (this.pullDownRefresh && this.pullDownRefresh.txt) || '刷新中';
-            }
+                return (this.pullDownRefresh && this.pullDownRefresh.txt) || this.$t('freshing');
+            },
+            ...mapGetters([
+                'lang'
+            ])
         },
         created () {
             this.pullDownInitTop = -50;
@@ -366,7 +370,13 @@
                     transform: rotate(0deg);// fix 子元素超出边框圆角部分不隐藏的问题
                     background: #F4F6F9;
 
-                    &.no-data-wrap{
+                    &.no-data-wrap-en{
+                        background: url('../../assets/images/icon-no-data-en.png') no-repeat,#fff;
+                        background-position: center center;
+                        background-size: 150px 150px;
+                    }
+
+                    &.no-data-wrap-zh{
                         background: url('../../assets/images/icon-no-data.svg') no-repeat,#fff;
                         background-position: center center;
                         background-size: 150px 150px;

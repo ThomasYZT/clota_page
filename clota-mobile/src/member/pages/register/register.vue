@@ -272,7 +272,7 @@
             validate () {
                 //卡级不能为空
                 if (validator.isEmpty(this.formData.levelId)) {
-                    this.$vux.toast.text(this.$t('pleaseSelect', { field : this.$t('会员卡') }));
+                    this.$vux.toast.text(this.$t('pleaseSelect', { field : this.$t('memberCard') }));
                     return;
                 }
 
