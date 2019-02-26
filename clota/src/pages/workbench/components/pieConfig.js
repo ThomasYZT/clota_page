@@ -77,7 +77,6 @@ export default function (legendData, seriesData) {
     } else {
         seriesOption = [option];
     }
-    console.log(seriesOption);
     return defaultsDeep({
         legend : {
             data : legendData

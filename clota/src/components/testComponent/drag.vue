@@ -4,10 +4,7 @@
     <div class="drag-label"
          @mousedown="down($event)"
          @mousemove="move($event)"
-         @mouseup="end"
-         @touchstart="down($event)"
-         @touchmove="move($event)"
-         @touchend="end">
+         @mouseup="end">
         <slot></slot>
     </div>
 </template>
@@ -55,6 +52,8 @@
              * @param e
              */
             move (e) {
+                console.log(this.startDrag)
+                if (!this.startDrag) return;
                 // e.preventDefault();
                 let touch = null;
                 if (e.touches) {
@@ -91,7 +90,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '~@/assets/scss/base';
+    @import '~@/assets/scss/base';
     .drag-label{
         position: absolute;
     }

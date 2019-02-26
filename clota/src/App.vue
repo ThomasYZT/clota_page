@@ -9,6 +9,8 @@
                 </router-view>
             </transition>
         </main-frame>
+        <test-component v-transfer-dom>
+        </test-component>
     </div>
 </template>
 
@@ -16,11 +18,13 @@
     import mainFrame from '@/components/mainFrame/mainFrame';
     import { mapGetters } from 'vuex';
     import ajax from '@/api/index';
+    import testComponent from '@/components/testComponent/index.vue';
 
     export default {
         name : 'app',
         components : {
-            mainFrame
+            mainFrame,
+            testComponent
         },
         data () {
             return {

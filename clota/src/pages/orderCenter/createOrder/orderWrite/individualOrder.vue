@@ -323,6 +323,7 @@
                                 productId : product.productId,
                                 productName : product.productName,
                                 quantity : product.takeNum,
+                                allocationId : product.allocationId,
                             };
                         })
                     };
