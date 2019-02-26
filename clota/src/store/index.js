@@ -124,7 +124,11 @@ export default new Vuex.Store({
             label : 'cash'
         }],
         //会员配置信息
-        memberConfigInfo : {}
+        memberConfigInfo : {},
+        //读卡模拟器是否开启
+        readCardOpen : false,
+        //模拟读卡器物理卡号
+        readCardPhysicalId : ''
     },
     getters : {
         //左侧菜单是否收起
@@ -216,6 +220,14 @@ export default new Vuex.Store({
         //会员配置信息中不需要的权限
         memberConfigNotPermission : (state) => {
             return getMemberConfigPermissionNot(state.memberConfigInfo);
+        },
+        //读卡模拟器是否开启
+        readCardOpen : state => {
+            return state.readCardOpen;
+        },
+        //读卡模拟器物理卡号
+        readCardPhysicalId : state => {
+            return state.readCardPhysicalId;
         }
     },
     mutations : {
@@ -307,6 +319,14 @@ export default new Vuex.Store({
         //更新会员配置信息
         updateMemberConfigInfo (state,memberConfigInfo) {
             state.memberConfigInfo = memberConfigInfo;
+        },
+        //更新读卡模拟器物理卡号
+        updateReadCardData (state,physicsId) {
+            state.readCardPhysicalId = physicsId;
+        },
+        //更新读卡模拟器状态
+        updateReadCardOpen (state,status) {
+            state.readCardOpen = status;
         }
     },
     actions : {
@@ -444,8 +464,6 @@ export default new Vuex.Store({
          * 初始化读卡器信息
          */
         initCardRead (store) {
-            store.commit('updateCardReadEnabled',true);
-            return;
             //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
             if (window.rd ) {
                 try {
@@ -465,58 +483,62 @@ export default new Vuex.Store({
          * @return promise对象
          */
         getCardReadData (store) {
-            return new Promise((resolve,reject) => {
-                store.commit('updateCardReadEnabled',true);
-                resolve('666666');
-                let st;
-                //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
-                if (window.rd) {
-                    store.commit('updateCardReadEnabled',true);
-                    //如果初始化的结果小于等于0，表示初始化读卡器失败，大于0表示初始话成功
-                    try {
-                        st = window.rd.dc_init(100, 115200);
-                        if (st <= 0) {
-                            reject('dcInitError');
-                        } else {
-                            window.rd.dc_config_card(65);
-                            st = window.rd.dc_card_double(0);
-                            if (st !== 0) {
-                                //如果没有放置卡片，连续响3次，表示没有放置卡的错误
-                                st = window.rd.dc_beep(25);
-                                st = window.rd.dc_beep(25);
-                                st = window.rd.dc_beep(25);
-                                window.rd.dc_exit();
-                                reject('dcCardError');
+            if (store.getters.readCardOpen) {
+                return new Promise((resolve) => {
+                    resolve(store.getters.readCardPhysicalId);
+                });
+            } else {
+                return new Promise((resolve,reject) => {
+                    let st;
+                    //如果window下没有rd这个对象，表示当前浏览器不支持activeX插件，或者没有启用activeX插件，
+                    if (window.rd) {
+                        store.commit('updateCardReadEnabled',true);
+                        //如果初始化的结果小于等于0，表示初始化读卡器失败，大于0表示初始话成功
+                        try {
+                            st = window.rd.dc_init(100, 115200);
+                            if (st <= 0) {
+                                reject('dcInitError');
                             } else {
-                                window.rd.put_bstrSBuffer_asc = "FFFFFFFFFFFF";
-                                st = window.rd.dc_load_key(0, 0);
+                                window.rd.dc_config_card(65);
+                                st = window.rd.dc_card_double(0);
                                 if (st !== 0) {
+                                    //如果没有放置卡片，连续响3次，表示没有放置卡的错误
+                                    st = window.rd.dc_beep(25);
+                                    st = window.rd.dc_beep(25);
+                                    st = window.rd.dc_beep(25);
                                     window.rd.dc_exit();
-                                    reject('dcLoadKeyError');
+                                    reject('dcCardError');
                                 } else {
-                                    let result = '';
-                                    result = window.rd.get_bstrRBuffer_asc;
-                                    st = window.rd.dc_authentication(0, 0);
-                                    //读取成功，蜂鸣器响一次
-                                    st = window.rd.dc_beep(5);
+                                    window.rd.put_bstrSBuffer_asc = "FFFFFFFFFFFF";
+                                    st = window.rd.dc_load_key(0, 0);
                                     if (st !== 0) {
                                         window.rd.dc_exit();
-                                        reject('dcBeepError');
+                                        reject('dcLoadKeyError');
                                     } else {
-                                        window.rd.dc_exit();
-                                        resolve(result);
+                                        let result = '';
+                                        result = window.rd.get_bstrRBuffer_asc;
+                                        st = window.rd.dc_authentication(0, 0);
+                                        //读取成功，蜂鸣器响一次
+                                        st = window.rd.dc_beep(5);
+                                        if (st !== 0) {
+                                            window.rd.dc_exit();
+                                            reject('dcBeepError');
+                                        } else {
+                                            window.rd.dc_exit();
+                                            resolve(result);
+                                        }
                                     }
                                 }
-                            }
 
+                            }
+                        } catch (err) {
+                            reject('dcInitError');
                         }
-                    } catch (err) {
-                        reject('dcInitError');
+                    } else {
+                        store.commit('updateCardReadEnabled',false);
                     }
-                } else {
-                    store.commit('updateCardReadEnabled',false);
-                }
-            });
+                });
+            }
         },
         /**
          * 获取在线支付方式
