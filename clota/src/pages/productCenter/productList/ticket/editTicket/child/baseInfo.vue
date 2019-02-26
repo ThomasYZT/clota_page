@@ -101,7 +101,7 @@
             </div>
         </Form>
 
-        <addTypeModal ref="addTypeModal" @updateTypeList="queryTagDefines({ scene : 'product_type'})"></addTypeModal>
+        <addTypeModal ref="addTypeModal" @updateTypeList="queryTagDefines({ scene : 'product_type', type : 'add'})"></addTypeModal>
         <tagsManageModal ref="tagsManageModal" @updateTags="updateTags" @deleteTag="deleteTag"></tagsManageModal>
     </div>
 </template>
@@ -251,13 +251,18 @@
             },
             /**
              * 查询类别、标签列表
+             * @param scene
+             * @param type
              */
-            queryTagDefines ({ scene }) {
+            queryTagDefines ({ scene, type }) {
                 ajax.post('queryTagDefines', {
                     scene : scene,
                 }).then(res => {
                     if (res.success) {
                         this.typeList = res.data ? res.data : [];
+                        if (type && type === 'add') {
+                            this.formData.typeId = this.typeList[this.typeList.length - 1].id;
+                        }
                     } else {
                         this.typeList = [];
                     }
