@@ -61,9 +61,10 @@
                         <div class="tags-wrapper">
                             <productTag v-for="item in formData.tags"
                                         :checkable="false"
-                                        :closable="false"
+                                        :closable="true"
                                         :key="item.id"
                                         :name="item.name"
+                                        @closeTag="cancelTag"
                                         :chosed="true"></productTag>
                             <span class="add-type-btn"
                                   @click="addTag">{{$t('addLabel')}}</span>
@@ -290,6 +291,18 @@
             deleteTag (tag) {
                 let _index = this.formData.tags.findIndex((item) => {
                     return item.id === tag.id;
+                });
+                if (_index > -1) {
+                    this.formData.tags.splice(_index, 1);
+                }
+            },
+            /**
+             * 取消选择标签
+             * @param name
+             */
+            cancelTag (name) {
+                let _index = this.formData.tags.findIndex((item) => {
+                    return item.name === name;
                 });
                 if (_index > -1) {
                     this.formData.tags.splice(_index, 1);
