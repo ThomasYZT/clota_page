@@ -26,7 +26,7 @@
                          text-align="right"
                          type="password"
                          label-width="150px"
-                         :placeholder="$t('inputField',{ field : $t('loginPass') })">
+                         :placeholder="$t('pleaseInputMsg')">
                 </x-input>
                 <x-input :title="$t('validCode')"
                          ref="code"

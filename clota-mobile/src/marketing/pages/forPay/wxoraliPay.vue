@@ -28,6 +28,7 @@
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('confirm')"
+                 :cancel-text="$t('cancel')"
                  :show-cancel-button="false"
                  @on-confirm="confirmPayResult">
             <p style="text-align:center;">{{ $t('errorMsg.OD009') }}</p>
@@ -38,6 +39,7 @@
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('confirm')"
+                 :cancel-text="$t('cancel')"
                  :show-cancel-button="false"
                  @on-confirm="confirmRefundResult">
             <p style="text-align:center;">{{ $t('cancelPaymentResultNotice') }}</p>

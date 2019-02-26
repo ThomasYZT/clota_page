@@ -42,6 +42,7 @@
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('confirm')"
+                 :cancel-text="$t('cancel')"
                  :show-cancel-button="false"
                  @on-confirm="confirmShow = false">
             <p style="text-align:center;">{{ $t('errorMsg.OD009') }}</p>

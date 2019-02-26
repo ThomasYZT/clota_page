@@ -44,6 +44,7 @@
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('continue')"
+                 :cancel-text="$t('cancel')"
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
             <p style="text-align:center;">{{ $t('orderWithoutCommission') }}</p>

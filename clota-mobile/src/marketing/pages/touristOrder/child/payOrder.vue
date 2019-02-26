@@ -159,14 +159,14 @@
                     paymentChannel : this.payTypeList.find(item => item.key === 'wx')['payType'],
                     ...createOrderParams
                 }).then(res => {
+                    this.payFormData = {};
                     if (res.success) {
                         //设置支付表单信息
                         this.payFormData = res.data ? res.data : {};
                         this.payFormData.paymentTypeId = this.payType;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
                         location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
-                    } else {
-                        this.payFormData = {};
+                    } else if (res.code === '300') {
                         this.$vux.toast.text(this.$t('payAbnormal'));
                     }
                 });
@@ -205,6 +205,7 @@
                     paymentChannel : paymentChannel,
                     ...createOrderParams
                 }).then(res => {
+                    this.payFormData = {};
                     if (res.success && res.data) {
                         if (paymentChannel === 'zhilian') {
                             if (this.isWeixin) {
@@ -252,8 +253,7 @@
                                 '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
                                 '&transactionId=' + this.payFormData.transactionId;
                         }
-                    } else {
-                        this.payFormData = {};
+                    } else if (res.code === '300') {
                         this.$vux.toast.text(this.$t('payAbnormal'));
                     }
                 });

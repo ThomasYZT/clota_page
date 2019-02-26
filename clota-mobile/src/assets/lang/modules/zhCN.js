@@ -254,7 +254,7 @@ export default {
     'activityMemberRightInfo' : '特定活动积分折扣权益说明',
     'thisCardIsFrozen' : '该卡已冻结，暂无权限',
     'errorMsg.MK001' : '账号或密码错误',
-    'errorMsg.MK002' : '用户不存在',
+    'errorMsg.MK002' : '销售用户不存在',
     'errorMsg.MK003' : '身份证号错误',
     'errorMsg.MK004' : '终端售价低于销售政策产品单价',
     'errorMsg.MK005' : '暂无可提现金额',
