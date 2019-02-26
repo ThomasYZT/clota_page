@@ -16,7 +16,7 @@
                      class="c-input"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('name') })">
+                     :placeholder="$t('pleaseInputMsg')">
             </x-input>
             <x-input v-show="stage === 1"
                      :title="$t('idNum')"
@@ -24,14 +24,14 @@
                      class="c-input"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('idNum') })">
+                     :placeholder="$t('pleaseInputMsg')">
             </x-input>
             <x-input v-show="stage === 2"
                      :title="$t('mobile')"
                      class="c-input"
                      v-model.trim="formData.phoneNum"
                      text-align="right"
-                     :placeholder="$t('pleaseInputYourPhoneNumber')" >
+                     :placeholder="$t('pleaseInputMsg')">
                 <div slot="right-full-height"
                      class="validate"
                      :class="{'time-counting' : isTiming}"
@@ -50,7 +50,7 @@
                      v-model="formData.code"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('enterCode')">
+                      :placeholder="$t('pleaseInputMsg')">
             </x-input>
             <cell v-show="stage === 3"
                   :title="$t('belongsToCategory')"
@@ -66,7 +66,7 @@
                      type="password"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('password') })">
+                     :placeholder="$t('pleaseInputMsg')">
             </x-input>
             <x-input v-show="stage === 3"
                      :title="$t('inputPassAgain')"
@@ -75,7 +75,7 @@
                      type="password"
                      text-align="right"
                      label-width="150px"
-                     :placeholder="$t('inputField',{ field : $t('password') })">
+                     :placeholder="$t('pleaseInputMsg')">
             </x-input>
         </div>
         <x-button class="button"

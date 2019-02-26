@@ -78,6 +78,7 @@
                  :title="$t('notice')"
                  :show-cancel-button="false"
                  :confirm-text="$t('backNow')"
+                 :cancel-text="$t('cancel')"
                  @on-confirm="onConfirm">
             <p style="text-align:center;">{{ $t('backAfter5seconds') }}</p>
         </confirm>

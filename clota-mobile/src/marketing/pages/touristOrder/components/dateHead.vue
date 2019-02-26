@@ -64,22 +64,20 @@
                     return 'today';
                 } else if (dateFormat === new Date().addDays(1).format('yyyy-MM-dd')) {
                     return 'tomorrow';
-                } else if (dateFormat === new Date().addDays(2).format('yyyy-MM-dd')) {
-                    return 'after tomorrow';
                 } else if (date.getDay() === 0) {
-                    return 'sunday';
+                    return 'sundayShort';
                 } else if (date.getDay() === 1) {
-                    return 'monday';
+                    return 'mondayShort';
                 } else if (date.getDay() === 2) {
-                    return 'tuesday';
+                    return 'tuesdayShort';
                 } else if (date.getDay() === 3) {
-                    return 'wednesday';
+                    return 'wednesdayShort';
                 } else if (date.getDay() === 4) {
-                    return 'thursday';
+                    return 'thursdayShort';
                 } else if (date.getDay() === 5) {
-                    return 'friday';
+                    return 'fridayShort';
                 } else if (date.getDay() === 6) {
-                    return 'saturday';
+                    return 'saturdayShort';
                 }
             }
         },
@@ -157,6 +155,12 @@
                 &.active{
                     background: #046FDB;
                     color: $color_fff;
+                }
+
+                .label{
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
             }
         }

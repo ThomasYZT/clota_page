@@ -27,6 +27,7 @@
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('immediatelySet')"
+                 :cancel-text="$t('cancel')"
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
             <p style="text-align:center;">{{ $t('withoutCollectAccount') }}</p>

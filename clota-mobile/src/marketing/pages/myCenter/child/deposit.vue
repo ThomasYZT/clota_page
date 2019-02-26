@@ -40,6 +40,7 @@
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('immediatelySet')"
+                 :cancel-text="$t('cancel')"
                  @on-cancel="onCancel"
                  @on-confirm="toSetAccount">
             <p style="text-align:center;">{{ $t('withoutCollectAccount') }}</p>
@@ -47,6 +48,8 @@
         <!--提现金额以及收款方式确认模态框-->
         <confirm v-model="depositConfirmModalShow"
                  class="deposit-type-confirm-modal"
+                 :confirm-text="$t('confirm')"
+                 :cancel-text="$t('cancel')"
                  v-transfer-dom
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
