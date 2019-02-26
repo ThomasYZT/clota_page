@@ -324,27 +324,32 @@
                     if (params.allocationId) {
                         this.allocationId = params.allocationId;
                     }
-                    if (params.type === 'modify') {
-                        this.initData(params.info);
-                    }
-
                     //查询是否有全民营销模块
-                    this.checkOrgServiceById();
+                    this.checkOrgServiceById().then(() => {
+                        if (params.type === 'modify') {
+                            this.initData(params.info);
+                        }
+                    });
                 }
             },
             /**
              * 查询是否有全民营销模块
              */
             checkOrgServiceById () {
-                ajax.post('checkOrgServiceById', {
-                    serviceId : '20'
-                }).then(res => {
-                    if (res.success) {
-                        this.hasMarket = res.data ? res.data : 'false';
-                    } else {
-                        this.hasMarket = 'false';
-                    }
-                });
+                return new Promise((resolve, reject) => {
+                    ajax.post('checkOrgServiceById', {
+                        serviceId : '20'
+                    }).then(res => {
+                        if (res.success) {
+                            this.hasMarket = res.data ? res.data : 'false';
+                        } else {
+                            this.hasMarket = 'false';
+                        }
+                        resolve();
+                    }).catch(() => {
+                        reject();
+                    })
+                })
             },
             /**
              * 初始化数据
@@ -462,16 +467,17 @@
                 let marketInfoForm = {
                     marketingData : [],
                 };
-                marketInfoForm.marketingData = data.marketSalePriceVos && data.marketSalePriceVos.length > 0 ? data.marketSalePriceVos.map((item) => {
+                marketInfoForm.marketingData = data.marketSalePriceVos ? data.marketSalePriceVos.map((item) => {
                     return {
                         typeId : item.typeId,
                         typeName : item.typeName,
                         levelId : item.levelId,
                         levelName : item.levelName,
-                        editable : false
+                        editable : false,
                     };
                 }) : [];
                 if (this.hasMarket === 'true') {
+                    console.log(marketInfoForm)
                     this.$refs.marketInfo.initData(marketInfoForm);
                 }
 
