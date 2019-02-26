@@ -44,7 +44,6 @@
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('continue')"
-                 :cancel-text="$t('cancel')"
                  @on-cancel="onCancel"
                  @on-confirm="onConfirm">
             <p style="text-align:center;">{{ $t('orderWithoutCommission') }}</p>
@@ -239,16 +238,16 @@
         }
 
         .toast-info{
-            @include block_outline($height : 35px);
+            min-height : 35px;
             background: #FEF3E0;
-            line-height: 35px;
-            @include overflow_tip();
             color: #F5A623;
             padding-left: 19px;
             font-size: $font_size_11px;
             display: flex;
             flex-direction: row;
             align-items: center;
+            padding-top: 6px;
+            padding-bottom : 6px;
 
             svg[type = 'ios-information'] {
                 fill: $color_yellow;
