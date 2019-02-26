@@ -310,7 +310,8 @@
                             originVisitDate : this.playDate,
                             productId : this.productDetail.productId,
                             productName : this.productDetail.productName,
-                            quantity : this.productPolicy.needId === 'one' ? 1 : this.buyNum
+                            quantity : this.productPolicy.needId === 'one' ? 1 : this.buyNum,
+                            allocationId : this.productDetail.allocationId,
                         }];
                     } else {
                         baseInfo['documentInfo'] = [];
@@ -318,7 +319,8 @@
                             originVisitDate : this.playDate,
                             productId : this.productDetail.productId,
                             productName : this.productDetail.productName,
-                            quantity : this.productPolicy.needId === 'one' ? 1 : this.buyNum
+                            quantity : this.productPolicy.needId === 'one' ? 1 : this.buyNum,
+                            allocationId : this.productDetail.allocationId,
                         }];
                     }
                     result.push(baseInfo);
@@ -374,6 +376,7 @@
                     longitude : this.marketLongitude,
                 }));
                 let routeName = '';
+                //区分游客下单和销售用户下单
                 if (this.$route.name === 'salesManCreateOrder') {
                     routeName = 'salesManCreateOrderToPay';
                 } else {

@@ -14,12 +14,12 @@ export const columnData = [
     },
     {
         title : 'playDate',
-        width : 120,
+        width : 220,
         field : 'playDate'
     },
     {
         title : 'settlePrice',
-        width : 100,
+        width : 200,
         enWidth : 165,
         field : 'settlePrice'
     },

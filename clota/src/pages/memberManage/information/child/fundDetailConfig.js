@@ -32,7 +32,7 @@ export const fundDetailHead = [
     },
     {
         title : 'transactionTime', // 交易时间
-        width : 180,
+        width : 220,
         field : 'createdTime'
     }
 ];
