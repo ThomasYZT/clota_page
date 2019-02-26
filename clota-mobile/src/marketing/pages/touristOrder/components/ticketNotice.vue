@@ -11,7 +11,7 @@
                 <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('productExplain') })}}</div>
                 <div :class="$style.notice">{{choosedProductInfo.productDes | contentFilter}}</div>
                 <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('ticketInfo') })}}</div>
-                <div :class="$style.notice">{{choosedProductInfo.productDes | contentFilter}}</div>
+                <div :class="$style.notice" v-html="choosedProductInfo.buyTicketNotes"></div>
             </div>
         </div>
     </popup>
