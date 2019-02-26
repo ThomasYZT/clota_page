@@ -231,6 +231,8 @@
                         admissionTimes : this.formData.admissionTimes || '',
                         typeId : this.formData.typeId || '',
                         pictureUrl : this.formData.pictureUrl || '',
+                        is_deleted : "false",
+                        code : this.formData.code,
                     }),
                     //销售
                     saleRuleJson : JSON.stringify({
@@ -260,7 +262,6 @@
                     this.saveAndEditTicket( 'addProduct', params);
                 }
                 if ( this.type === 'modify' ) {
-                    delete params.code;
                     this.saveAndEditTicket( 'updateProduct', params);
                 }
             },
@@ -327,7 +328,7 @@
             initEditData (data) {
                 //基本信息表单初始化
                 let baseInfoForm = pick(data, ['productName', 'standardPrice', 'thirdCode', 'productDes',
-                    'typeId','pictureUrl', 'tags']);
+                    'typeId','pictureUrl', 'tags', 'code']);
                 if (this.type === 'copy') {
                     baseInfoForm.productName += '（副本）'
                 }
