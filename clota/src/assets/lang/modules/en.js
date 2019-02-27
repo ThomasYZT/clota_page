@@ -2567,7 +2567,7 @@ export default {
     'addToCover' : 'join the carousel',
     'sureToDeletePic' : 'whether to confirm the deletion of the picture',
     'deleteResource' : 'delete resource',
-    'cancelCarousel' : 'cancel carousel',
+    'cancelCarousel' : 'stop carousel',
     'uploadScenicResourceFaield' : 'scenic resource upload failed',
     'uploadScenicResourceSuccessfully' : 'successfully uploaded the scenic resources',
     'payerLackOfCredit' : 'insufficient amount of payment account available',
