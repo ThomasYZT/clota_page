@@ -4,6 +4,7 @@ export const productColumn = [
     {
         title : 'productName', // 产品名称
         minWidth : 200,
+        enWidth : 200,
         field : 'productName'
     },
     // {
@@ -14,26 +15,31 @@ export const productColumn = [
     {
         title : 'settlePrice', // 产品单价
         minWidth : 130,
+        enWidth : 160,
         field : 'settlePrice',
         type : 'money'
     },
     {
         title : 'quotaOfProduct', // 产品配额数量
+        enWidth : 190,
         minWidth : 130,
         field : ''
     },
     {
         title : 'sharedQuota', // 共享配额数量
+        enWidth : 210,
         minWidth : 130,
         field : ''
     },
     {
         title : 'marketQuota', // 全民营销配额数量
+        enWidth : 290,
         minWidth : 180,
         field : ''
     },
     {
         title : 'operate', // 操作
+        enWidth : 120,
         width : 100,
         field : ''
     },
@@ -104,16 +110,19 @@ export const myDistributeConfig = [
 export const saleChannelColumn = [
     {
         title : 'chooseSaleChannelGroup', // 选择销售渠道分组
+        enWidth : 200,
         minWidth : 100,
         field : 'groupName'
     },
     {
         title : 'selectedSaleChannel', // 已选中的销售渠道
+        enWidth : 300,
         minWidth : 500,
         field : 'groupchannels'
     },
     {
         title : 'operate', // 操作
+        enWidth : 100,
         minWidth : 100,
         field : ''
     }

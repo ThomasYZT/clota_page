@@ -3,33 +3,38 @@
 export const myPolicyHead = [
     {
         title : 'salePolicyName', // 销售政策名称
+        enWidth : 160,
         width : 160,
         field : 'name'
     },
     {
         title : 'industryType', // 业态类型
+        enWidth : 150,
         minWidth : 130,
         field : 'productTypeDesc'
     },
     {
         title : 'desc', // 描述
+        enWidth : 200,
         minWidth : 200,
         field : 'policyDesc'
     },
     {
         title : 'status', // 状态
+        enWidth : 150,
         minWidth : 120,
         field : 'auditStatus'
     },
     {
         title : 'saleChannelsGroup', // 销售渠道分组
+        enWidth : 180,
         minWidth : 180,
         field : 'groupNames'
     },
     {
         title : 'operate', // 操作
+        enWidth : 250,
         width : 200,
-        enWidth : 220,
         field : ''
     },
 ];

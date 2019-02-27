@@ -3,6 +3,7 @@
 export const productColumn = [
     {
         title : 'productName', // 产品名称
+        enWidth : 200,
         minWidth : 200,
         field : 'productName'
     },
@@ -13,22 +14,26 @@ export const productColumn = [
     // },
     {
         title : 'settlePrice', // 产品单价
+        enWidth : 200,
         minWidth : 130,
         field : 'settlePrice',
         type : 'money'
     },
     {
         title : 'quotaOfProduct', // 产品配额数量
+        enWidth : 200,
         minWidth : 130,
         field : ''
     },
     {
         title : 'sharedQuota', // 共享配额数量
+        enWidth : 210,
         minWidth : 130,
         field : ''
     },
     {
         title : 'marketQuota', // 全民营销配额数量
+        enWidth : 290,
         minWidth : 180,
         field : ''
     },

@@ -24,7 +24,7 @@ export const ticketTypeHead = [
     },
     {
         title : 'types', // 类别
-        minWidth : 120,
+        minWidth : 180,
         field : 'typeName'
     },
     {

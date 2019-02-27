@@ -62,7 +62,8 @@ export const viewDistributeColumnHead = [
 export const proGroupColumnHead = [
     {
         title : 'index', // 序号
-        width : 100,
+        minWidth : 100,
+        enWidth : 150,
         field : 'id'
     },
     {
@@ -72,17 +73,20 @@ export const proGroupColumnHead = [
     },
     {
         title : 'totalPlayTimes', // 累计可游玩次数
+        enWidth : 200,
         minWidth : 150,
         field : 'sumTimes'
     },
     {
         title : 'dayPlayTimes', // 每日可游玩次数
+        enWidth : 200,
         minWidth : 150,
         field : 'dayTimes'
     },
     {
         title : 'operate', // 操作
-        width : 100,
+        enWidth : 160,
+        minWidth : 100,
         field : ''
     },
 ];

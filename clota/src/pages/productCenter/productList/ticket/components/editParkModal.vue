@@ -510,6 +510,7 @@
                                 slot-scope="row"
                                 :label="row.title"
                                 :width="row.width"
+                                fixed="right"
                                 :min-width="row.minWidth">
                                 <template slot-scope="scope">
                                     <ul class="operate-list">

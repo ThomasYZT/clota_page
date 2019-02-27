@@ -20,16 +20,19 @@ export const quotaAllowanceHead = [
 export const quotaManageHead = [
     {
         title : 'productName', // 产品名称
+        enWidth : 150,
         minWidth : 150,
         field : 'productName'
     },
     {
         title : 'sharedQuota', // 共享配额数量
+        enWidth : 210,
         minWidth : 200,
         field : 'sharedQuota'
     },
     {
         title : 'assignableQuantity', // 可分配配额数量
+        enWidth : 260,
         minWidth : 150,
         field : 'date'
     },
