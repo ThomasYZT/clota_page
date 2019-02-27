@@ -221,7 +221,7 @@
              */
             manageQuota (channelGroupData) {
                 if (this.formData.quotaData && this.formData.quotaData.length === 0) {
-                    this.$Message.warning('请添加产品')
+                    this.$Message.warning(this.$t('please', { msg : this.$t('appendProduct') }));
                 } else {
                     this.$refs.quotaManageModal.show({
                         type : 'edit',

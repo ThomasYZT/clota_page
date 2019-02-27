@@ -15,7 +15,7 @@
             <div class="content">
                 <div v-if="admissionInstructions" v-html="admissionInstructions"></div>
                 <div v-else class="no-content">
-                    <span>该园区暂无入园须知</span>
+                    <span>{{$t('noEnterTip')}}</span>
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
              */
             show (data) {
                 this.admissionInstructions = data.admissionInstructions;
-                this.title = data.parkName + "入园须知";
+                this.title = data.parkName + this.$t('noticeInPark');
                 this.visible = true;
             },
             /**

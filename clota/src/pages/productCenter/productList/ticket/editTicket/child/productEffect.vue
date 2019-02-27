@@ -26,11 +26,9 @@
                         <div style="position: absolute;right: -20px;top: 0px;">
                             <Tooltip transfer>
                                 <div slot="content" style="width: 200px;">
-                                    游玩日期之日起M天有效：是指产品必须在下单时指定的游玩日期核销，
-                                    在首次核销之后的M天可多次入园游玩。
+                                    {{$t('productEffSetTip1')}}
                                     <br>
-                                    同销售政策适用游玩期限：
-                                    在销售政策指定游玩期限内，任意一天均可核销。不适用于团队产品，不可限定每日库存
+                                    {{$t('productEffSetTip2')}}
                                 </div>
                                 <i class="iconfont icon-note"></i>
                             </Tooltip>

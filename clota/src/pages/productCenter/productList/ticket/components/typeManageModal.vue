@@ -8,7 +8,7 @@
                class-name="vertical-center-modal type-manage"
                transfer
                width="500"
-               :title="$t('产品类别管理：')"
+               :title="$t('colonSetting', { key : $t('productTypeManage') })"
                @on-cancel="hide"
                :mask-closable="false">
             <div class="manager-wrapper">
@@ -201,7 +201,7 @@
                         this.queryTagDefines();
                         this.$Message.success(this.$t('successTip', { tip : this.$t('delete') }));
                     } else {
-                        this.$Message.error(this.$t('该类别正在使用，不能删除'));
+                        this.$Message.error(this.$t('productTypeIsUsingTip'));
                     }
                 })
             },

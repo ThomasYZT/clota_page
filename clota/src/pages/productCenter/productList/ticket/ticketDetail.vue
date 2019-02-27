@@ -104,7 +104,7 @@
                             </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Form-item :label="$t('printPrice') + '(原价)' +'：'"><!--票面价格-->
+                            <Form-item :label="$t('printPrice') + $t('bracketSetting', { content : $t('originalPrice') }) +'：'"><!--票面价格-->
                                 <div>{{detail.printPrice | moneyFilter | contentFilter}}</div>
                             </Form-item>
                         </i-col>
@@ -262,7 +262,7 @@
                                             <li v-if="manageOrgs.nodeType !== 'partner'" class="normal"
                                                 @click="viewParkDetail(scope.row)">{{$t('check')}}</li><!--查看-->
                                             <li v-else class="normal"
-                                                @click="viewAdmissionInstructions(scope.row)">{{$t('入园须知')}}</li><!--查看-->
+                                                @click="viewAdmissionInstructions(scope.row)">{{$t('noticeInPark')}}</li><!--查看-->
                                         </ul>
                                     </template>
                                 </el-table-column>

@@ -8,7 +8,7 @@
                class-name="vertical-center-modal add-type"
                transfer
                width="400"
-               :title="$t('添加产品类别：')"
+               :title="$t('colonSetting', { key : $t('addProductType') })"
                @on-cancel="hide"
                :mask-closable="false">
 

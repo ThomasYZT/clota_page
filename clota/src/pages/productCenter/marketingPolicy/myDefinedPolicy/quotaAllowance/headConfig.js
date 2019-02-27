@@ -6,12 +6,12 @@ export const quotaAllowanceHead = [
         field : 'quotaDate'
     },
     {
-        title : '消耗配额', // 消耗配额
+        title : 'consumptionQuota', // 消耗配额
         minWidth : 150,
         field : ''
     },
     {
-        title : '专享配额余量', // 专享配额余量
+        title : 'vipQuotaRest', // 专享配额余量
         minWidth : 150,
         field : 'restQuota'
     },
@@ -19,12 +19,12 @@ export const quotaAllowanceHead = [
 
 export const quotaManageHead = [
     {
-        title : '产品名称', // 产品名称
+        title : 'productName', // 产品名称
         minWidth : 150,
         field : 'productName'
     },
     {
-        title : '共享配额数量', // 共享配额数量
+        title : 'sharedQuota', // 共享配额数量
         minWidth : 200,
         field : 'sharedQuota'
     },
@@ -34,7 +34,7 @@ export const quotaManageHead = [
         field : 'date'
     },
     {
-        title : '渠道专享配额', // 渠道专享配额
+        title : 'vipQuota', // 渠道专享配额
         minWidth : 150,
         field : 'date'
     },

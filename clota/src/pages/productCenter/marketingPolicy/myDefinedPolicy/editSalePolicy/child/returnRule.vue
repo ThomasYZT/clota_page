@@ -61,7 +61,7 @@
                                             <span>{{$t('day')}}</span>
                                         </template>
                                         <template v-else>
-                                            <span>过期自动核销</span>
+                                            <span>{{$t('cancelAfterVerify')}}</span>
                                         </template>
                                     </template>
                                 </el-table-column>
@@ -142,7 +142,7 @@
                     </Form-item>
                 </div>
                 <div class="ivu-form-item-wrap single">
-                    <Form-item :label="$t('预定须知')" prop="buyTicketNotes"><!--预定须知-->
+                    <Form-item :label="$t('reservationNotes')" prop="buyTicketNotes"><!--预定须知-->
                         <!--<Input v-model.trim="formData.buyTicketNotes"-->
                                <!--type="textarea"-->
                                <!--:rows="3"-->

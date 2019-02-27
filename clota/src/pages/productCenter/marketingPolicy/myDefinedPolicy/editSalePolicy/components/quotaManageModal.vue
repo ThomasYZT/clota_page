@@ -6,7 +6,7 @@
     <div class="quota-manage-modal">
         <Modal  v-model="visible"
                 class-name="vertical-center-modal quota-manage"
-                :title="$t('配额管理')"
+                :title="$t('quotaManage')"
                 transfer
                 width="740"
                 :mask-closable="false"
@@ -14,7 +14,7 @@
 
             <div class="manage-wrapper">
                 <div class="filter-head">
-                    <div class="label-title">{{$t('销售渠道')}}</div>
+                    <div class="label-title">{{$t('saleChannels')}}</div>
                     <Select v-model="chosedChannelId"
                             style="width:240px"
                             @on-change="channelChange">
@@ -86,7 +86,7 @@
                                             <Input v-model="scope.row.tempVipQuota"
                                                    size="small"
                                                    style="width: 70px;"
-                                                   :placeholder="$t('请输入')"></Input>
+                                                   :placeholder="$t('inputPlaceholder')"></Input>
                                         </FormItem>
                                     </template>
                                     <template v-else>
@@ -243,7 +243,7 @@
                     this.$emit('updateQuotaChannelData', this.quotaChannelData);
                     this.hide();
                 } else {
-                    this.$Message.warning("请保存设置");
+                    this.$Message.warning("please", { msg : this.$t('saveSetting') });
                 }
             },
             /**

@@ -18,17 +18,17 @@ export const productColumn = [
         type : 'money'
     },
     {
-        title : '产品配额数量', // 产品配额数量
+        title : 'quotaOfProduct', // 产品配额数量
         minWidth : 130,
         field : ''
     },
     {
-        title : '共享配额数量', // 共享配额数量
+        title : 'sharedQuota', // 共享配额数量
         minWidth : 130,
         field : ''
     },
     {
-        title : '全民营销配额数量', // 全民营销配额数量
+        title : 'marketQuota', // 全民营销配额数量
         minWidth : 180,
         field : ''
     },
@@ -71,13 +71,13 @@ export const detailParentDistributePriceConfig = [
         field : 'productName'
     },
     {
-        title : '配额数量', // 配额数量
+        title : 'quotaQuatity', // 配额数量
         minWidth : 130,
         enMinWidth : 200,
         field : 'stockType'
     },
     {
-        title : '票面价格', // 票面价格
+        title : 'printPrice', // 票面价格
         width : 150,
         minWidth : 200,
         field : 'stockNum'

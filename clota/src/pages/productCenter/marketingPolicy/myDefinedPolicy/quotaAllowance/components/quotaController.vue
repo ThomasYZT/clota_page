@@ -34,19 +34,20 @@
                             </i-col>
                         </template>
                         <i-col span="7">
-                            <FormItem :label="$t('调出至共享配额')" prop="outNum">
+                            <FormItem :label="$t('callOutToShare')" prop="outNum">
                                 <!--<span class="label-title equal-width">{{$t('调出至共享配额')}}</span>-->
-                                <Input v-model="outFormData.outNum" type="text" placeholder="请输入" style="width: 280px;margin-right: 10px;"></Input>
+                                <Input v-model="outFormData.outNum" type="text"
+                                       :placeholder="$t('inputPlaceholder')" style="width: 280px;margin-right: 10px;"></Input>
                             </FormItem>
                         </i-col>
-                        <Button class="ivu-btn-108px middle-btn" type="primary" @click="tuneOut">{{$t('确认调出')}}</Button>
+                        <Button class="ivu-btn-108px middle-btn" type="primary" @click="tuneOut">{{$t('confirmTo', { msg : $t('callOut') })}}</Button>
                     </i-row>
                 </Form>
             </div>
         </div>
         <div class="board-wrapper">
             <div class="title">
-                <span>{{$t('调入配额')}}</span>
+                <span>{{$t('callInQuota')}}</span>
             </div>
             <div class="board">
                 <Form ref="inForm"
@@ -57,7 +58,7 @@
                     <i-row>
                         <template v-if="quotaType === 'everyday'">
                             <i-col span="7">
-                                <FormItem :label="$t('指定日期')" prop="inTime">
+                                <FormItem :label="$t('appointedDay')" prop="inTime">
                                     <!--<span class="label-title">{{$t('指定日期')}}</span>-->
                                     <DatePicker v-model="inFormData.inTime"
                                                 format="yyyy-MM-dd"
@@ -74,13 +75,15 @@
                             </i-col>
                         </template>
                         <i-col span="7">
-                            <FormItem :label="$t('从共享配额调入本渠道')" prop="inNum">
+                            <FormItem :label="$t('channelFormShareToNow')" prop="inNum">
                                 <!--<span class="label-title equal-width">{{$t('从共享配额调入本渠道')}}</span>-->
-                                <Input v-model="inFormData.inNum" type="text" placeholder="请输入" style="width: 280px;margin-right: 10px;"></Input>
+                                <Input v-model="inFormData.inNum" type="text"
+                                       :placeholder="$t('inputPlaceholder')" style="width: 280px;margin-right: 10px;"></Input>
                             </FormItem>
                         </i-col>
                         <i-col span="6">
-                            <Button class="ivu-btn-108px middle-btn" type="primary" @click="tuneIn">{{$t('确认调入')}}</Button>
+                            <Button class="ivu-btn-108px middle-btn"
+                                    type="primary" @click="tuneIn">{{$t('confirmTo', { msg : $t('callIn') })}}</Button>
                         </i-col>
                     </i-row>
                 </Form>
@@ -146,7 +149,7 @@
                         { validator : validateDateRange, isRequired : this.quotaType === 'everyday' }
                     ],
                     outNum : [
-                        { required : true, message : '请输入调出配额数量', trigger : 'blur' },
+                        { required : true, message : this.$t('inputField', { field : this.$t('quantityOfRedeploymentQuotas') }), trigger : 'blur' },
                         { validator : validateNaturalNumber }
                     ],
                 };
@@ -159,7 +162,7 @@
                         { validator : validateDateRange }
                     ],
                     inNum : [
-                        { required : true, message : '请输入调入配额数量', trigger : 'blur' },
+                        { required : true, message : this.$t('inputField', { field : this.$t('quantityOfInputQuota') }), trigger : 'blur' },
                         { validator : validateNaturalNumber }
                     ],
                 };
@@ -197,14 +200,14 @@
                                 if (err) {
                                     this.$Message.error(err);
                                 } else {
-                                    this.$Message.error("调出失败");
+                                    this.$Message.error(this.$t('failureTip', { msg : this.$t('callOut') }));
                                 }
                             });
                         }).catch(err => {
                             if (err) {
                                 this.$Message.error(err);
                             } else {
-                                this.$Message.error("调出失败");
+                                this.$Message.error(this.$t('failureTip', { msg : this.$t('callOut') }));
                             }
                         });
 
@@ -232,14 +235,14 @@
                                 if (err) {
                                     this.$Message.error(err);
                                 } else {
-                                    this.$Message.error("调入失败");
+                                    this.$Message.error(this.$t('failureTip', { msg : this.$t('callIn') }));
                                 }
                             });
                         }).catch(err => {
                             if (err) {
                                 this.$Message.error(err);
                             } else {
-                                this.$Message.error("调入失败");
+                                this.$Message.error(this.$t('failureTip', { msg : this.$t('callIn') }));
                             }
                         });
                     }
@@ -259,13 +262,13 @@
                         if (res.success) {
                             if (formData.type === 'out') {
                                 if (Number(this.outFormData.outNum) > Number(res.data ? res.data : 0)) {
-                                    reject('输入的配额数量超过可调配数量');
+                                    reject('exceeding', { field : this.$t('adjustableQuantity') });
                                 } else {
                                     resolve();
                                 }
                             } else {
                                 if (Number(this.inFormData.inNum) > Number(res.data ? res.data : 0)) {
-                                    reject('输入的配额数量超过共享配额数量');
+                                    reject('exceeding', { field : this.$t('sharedQuota') });
                                 } else {
                                     resolve();
                                 }
@@ -289,7 +292,7 @@
                                 if (new Date() > new Date(res.data)) {
                                     resolve();
                                 } else {
-                                    reject("销售政策不在售卖日期内，无法调配配额");
+                                    reject(this.$t('salePolicyDateError'));
                                 }
                             } else {
                                 reject();
@@ -310,9 +313,13 @@
                 }).then(res => {
                     if (res.success) {
                         this.$emit('updateList');
-                        this.$Message.success(formData.type === 'out' ? this.$t("调出成功") : this.$t("调入成功"));
+                        this.$Message.success(formData.type === 'out' ?
+                            this.$t('successTip', { msg : this.$t('callOut') }) :
+                            this.$t('successTip', { msg : this.$t('callIn') }))
                     } else {
-                        this.$Message.error(formData.type === 'out' ? this.$t("调出失败") : this.$t("调入失败"));
+                        this.$Message.error(formData.type === 'out' ?
+                            this.$t('failureTip', { msg : this.$t('callOut') }) :
+                            this.$t('failureTip', { msg : this.$t('callIn') }))
                     }
                 });
             }

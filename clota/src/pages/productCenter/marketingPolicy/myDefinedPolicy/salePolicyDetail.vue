@@ -246,7 +246,7 @@
                                     <template slot-scope="scope">
                                         <ul class="operate-list">
                                             <li :class="{ disabled : !scope.row.channelModels || scope.row.channelModels.length === 0 }"
-                                                @click="checkQuotaManage(scope.row)">{{$t('查看配额')}}</li><!--配额管理-->
+                                                @click="checkQuotaManage(scope.row)">{{$t('checkQuota')}}</li><!--配额管理-->
                                         </ul>
                                     </template>
                                 </el-table-column>
@@ -296,12 +296,12 @@
                                            {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
                                        </template>
                                        <template>
-                                           <span>过期自动核销</span>
+                                           <span>{{$t('cancelAfterVerify')}}</span>
                                        </template>
                                     </template>
                                </el-table-column>
                             </table-com>
-                            <p class="remark">{{$t('默认退票手续费率为0')}}</p>
+                            <p class="remark">{{$t('defaultRefundFee')}}</p>
                         </div>
                     </Form-item>
                 </div>
@@ -322,7 +322,7 @@
                     </i-row>
                     <i-row>
                         <i-col span="24">
-                            <Form-item :label="$t('预定须知')+'：'"><!--预定须知-->
+                            <Form-item :label="$t('reservationNotes')+'：'"><!--预定须知-->
                                 <div style="word-break: break-all;"
                                      v-html="detail.productPolicy.buyTicketNotes"
                                      v-if="detail.productPolicy.buyTicketNotes"></div>

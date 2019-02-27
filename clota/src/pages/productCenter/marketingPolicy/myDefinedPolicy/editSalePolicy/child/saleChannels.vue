@@ -43,7 +43,7 @@
                                     <ul class="operate-list">
                                         <li :class="{ disabled : (selectedRow.findIndex((item) => { return item.id === scope.row.id }) <= -1) ||
                                         !scope.row.channelModels || scope.row.channelModels.length === 0 }"
-                                            @click="quotaManage(scope.row)">{{$t('配额管理')}}</li><!--配额管理-->
+                                            @click="quotaManage(scope.row)">{{$t('quotaManage')}}</li><!--配额管理-->
                                     </ul>
                                 </template>
                             </el-table-column>

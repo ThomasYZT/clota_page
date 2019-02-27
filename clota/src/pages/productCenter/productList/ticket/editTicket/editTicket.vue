@@ -330,7 +330,7 @@
                 let baseInfoForm = pick(data, ['productName', 'standardPrice', 'thirdCode', 'productDes',
                     'typeId','pictureUrl', 'tags', 'code']);
                 if (this.type === 'copy') {
-                    baseInfoForm.productName += '（副本）'
+                    baseInfoForm.productName += this.$t('colonSetting', { key : this.$t('carbons') });
                 }
                 baseInfoForm.standardPrice = data.standardPrice ? String(data.standardPrice) : '';
                 baseInfoForm.tags = data.tags ? data.tags : [];

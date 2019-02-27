@@ -8,7 +8,7 @@
                class-name="vertical-center-modal tags-manage"
                transfer
                width="500"
-               :title="$t('产品标签：')"
+               :title="$t('colonSetting', { key : $t('productLabel') })"
                @on-cancel="hide"
                :mask-closable="false">
 
@@ -16,7 +16,7 @@
                 <div class="tool-box">
                     <div class="left-box">
                         <span class="tip" v-if="chosedTags.length >= 3">
-                            最多只能添加3个标签
+                            {{$t('tagsLimit')}}
                         </span>
                     </div>
                     <div class="right-box">
@@ -44,8 +44,8 @@
                           label-position="top">
                         <FormItem prop="name">
                             <Input v-model="formData.name"
-                                   :placeholder="$t('请输入标签名称')" style="width: 200px" />
-                            <span class="btn-inline" @click="validateTag">新增标签</span>
+                                   :placeholder="$t('inputField', { field : $t('labelName') })" style="width: 200px" />
+                            <span class="btn-inline" @click="validateTag">{{$t('addTag')}}</span>
                         </FormItem>
                     </Form>
                 </div>
@@ -60,7 +60,7 @@
         <delModal ref="delModal">
             <div :class="$style.delTips">
                 <Icon :class="$style.icon" type="help-circled"></Icon>
-                <span :class="$style.redBale">以下{{inUsePList.length}}个产品正在使用这些标签，确定要删除这些标签吗？</span>
+                <span :class="$style.redBale">{{$t('deleteTagsTip', { length : inUsePList.length })}}</span>
                 <br><span :class="$style['blue-txt']" v-for="(item, index) in inUsePList" :key="index">{{item}}</span>
             </div>
         </delModal>
@@ -316,7 +316,7 @@
                             this.inUsePList.push(key);
                         }
                         this.$refs.delModal.show({
-                            title : this.$t('删除产品标签'),
+                            title : this.$t('deleteProductTag'),
                             confirmCallback : () => {
                                 this.forceDelete(tag);
                             }

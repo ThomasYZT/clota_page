@@ -8,7 +8,7 @@
                class-name="vertical-center-modal add-date-plan"
                transfer
                width="400"
-               :title="$t('保存为自定义日期方案：')"
+               :title="$t('colonSetting', { key : $t('saveAsCustomDateScheme') })"
                @on-cancel="hide"
                :mask-closable="false">
             <div class="form-wrapper">
@@ -16,7 +16,7 @@
                       :model="formData"
                       :rules="ruleValidate"
                       label-position="top">
-                    <FormItem :label="$t('colonSetting', { key : $t('日期方案名称') })" prop="name">
+                    <FormItem :label="$t('colonSetting', { key : $t('dateSchemeName') })" prop="name">
                         <Input v-model="formData.name"
                                :placeholder="$t('inputPlaceholder')" style="width: 200px" />
                     </FormItem>
@@ -62,7 +62,7 @@
                 return {
                     //日期方案名称
                     name : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('自定义日期方案名称') }), trigger : 'blur' },
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('customDateSchemeName') }), trigger : 'blur' },
                         { max : 10, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 10 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]

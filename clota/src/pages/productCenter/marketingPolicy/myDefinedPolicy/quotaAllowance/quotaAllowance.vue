@@ -9,12 +9,12 @@
                         :before-router-list="beforeRouterList"></breadCrumbHead>
         <div class="content">
             <div class="title">
-                <span>{{$t('colonSetting', { key : '销售政策名称' })}} {{$t(policyItem.name)}}</span>
+                <span>{{$t('colonSetting', { key : $t('salePolicyName') })}} {{$t(policyItem.name)}}</span>
             </div>
             <div class="filter-head">
                 <i-row>
                     <i-col span="6">
-                        <span>选择产品</span>
+                        <span>{{$t('chooseProduct')}}</span>
                         <Select v-model="params.productId"
                                 transfer
                                 style="width:180px"
@@ -25,7 +25,7 @@
                         </Select>
                     </i-col>
                     <i-col span="6">
-                        <span>选择渠道</span>
+                        <span>{{$t('choseChannel')}}</span>
                         <Select v-model="params.channelId"
                                 transfer
                                 style="width:180px"
@@ -39,7 +39,7 @@
             </div>
             <div class="time-filter">
                 <div class="left-board">
-                    <span class="label-title">{{$t('colonSetting', { key : $t('配额限制方式') })}}</span>
+                    <span class="label-title">{{$t('colonSetting', { key : $t('limitOfQuota') })}}</span>
                     <span class="label-name">{{$t(quotaType)}}</span>
                 </div>
                 <div class="right-board">

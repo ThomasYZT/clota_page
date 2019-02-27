@@ -21,9 +21,9 @@ export const validateNumber = (rule,value,callback) => {
             callback();
         }).catch(err => {
             if (err === 'errorMaxLength') {
-                callback(i18n.t(err,{ field : i18n.t(rule.field),length : 10 }));
+                callback(i18n.t(err,{ field : i18n.t(rule.field === 'totalQuota' ? rule.name : rule.field), length : 10 }));
             } else {
-                callback(i18n.t(err,{ field : i18n.t(rule.field) }));
+                callback(i18n.t(err,{ field : i18n.t(rule.field === 'totalQuota' ? rule.name : rule.field) }));
             }
         });
     } else {
@@ -77,7 +77,7 @@ export const validateSettlePrice = (rule,value,callback) => {
 export const validateSharedQuota = (rule,value,callback) => {
     if (value && rule.totalQuota && rule.marketQuota) {
         if ( Number(value) + Number(rule.marketQuota) + Number(rule.toTalExclusiveQuota) > Number(rule.totalQuota) ) {
-            callback(i18n.t('超出产品配额数量'));
+            callback(i18n.t('exceeding', { field : i18n.t('quotaOfProduct') }));
         } else {
             callback();
         }
@@ -94,7 +94,7 @@ export const validateSharedQuota = (rule,value,callback) => {
 export const validateMarketQuota = (rule,value,callback) => {
     if (value && rule.totalQuota && rule.sharedQuota) {
         if ( Number(value) + Number(rule.sharedQuota) + Number(rule.toTalExclusiveQuota) > Number(rule.totalQuota) ) {
-            callback(i18n.t('超出产品配额数量'));
+            callback(i18n.t('exceeding', { field : i18n.t('quotaOfProduct') }));
         } else {
             callback();
         }
@@ -116,7 +116,7 @@ export const validateVipQuota = (rule,value,callback) => {
              (Number(rule.quota.toTalExclusiveQuota ? rule.quota.toTalExclusiveQuota : 0) -
              Number(rule.quota.vipQuota ? rule.quota.vipQuota : 0) +
              Number(rule.quota.tempVipQuota ? rule.quota.tempVipQuota : 0)) < 0 ) {
-            callback(i18n.t('超出可分配配额数量'));
+            callback(i18n.t('exceeding', { field : i18n.t('allowableQuotaQuantity') }));
         } else {
             callback();
         }
@@ -134,12 +134,12 @@ export const validateNaturalNumber = (rule, value, callback) => {
     if (value) {
         if ( validator.isNumber(value)) {
             if (Number(value) < 0) {
-                callback(i18n.t(rule.field + '必须大于等于0'));
+                callback(i18n.t('smallerError', { field : i18n.t(rule.field), num : '0' }));
             } else {
                 callback()
             }
         } else {
-            callback(i18n.t('请输入数字'))
+            callback(i18n.t('numError', { field : i18n.t(rule.field) }))
         }
     } else {
         callback();
@@ -156,7 +156,7 @@ export const validateTotalQuota = (rule, value, callback) => {
         if (Number(value) < Number(rule.marketQuota ? rule.marketQuota : 0) +
             Number(rule.sharedQuota ? rule.sharedQuota : 0) +
             Number(rule.toTalExclusiveQuota ? rule.toTalExclusiveQuota : 0)) {
-            callback(i18n.t('产品配额数量不足，请重新调整'));
+            callback(i18n.t('quotaQuantityInsufficient'));
         } else {
             callback();
         }
@@ -169,6 +169,6 @@ export const validateDateRange = (rule, value, callback) => {
     if (value && value.length === 2 && value[0] && value[1]) {
         callback();
     } else {
-        callback(i18n.t("请选择日期"));
+        callback(i18n.t("selectField", { feild : i18n.t('date') }));
     }
 }

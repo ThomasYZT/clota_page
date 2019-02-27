@@ -66,12 +66,12 @@
                 <!-- 配额设置 -->
                 <template v-if="Object.keys(chosedProductInfo).length > 0">
                     <div class="divider-header">
-                        <span>{{$t('配额设置')}}</span>
+                        <span>{{$t('quotaSetting')}}</span>
                     </div>
                     <i-row>
                         <i-col span="12">
                             <!--限制配额方式-->
-                            <FormItem :label="$t('限制配额方式')" prop="quotaType">
+                            <FormItem :label="$t('limitationOfQuotas')" prop="quotaType">
                                 <Select v-model="formData.quotaType"
                                         :disabled="type === 'check'"
                                         transfer
@@ -88,49 +88,49 @@
                     <i-row>
                         <i-col span="12">
                             <!--产品配额数量-->
-                            <FormItem :label="$t('产品配额数量')" prop="totalQuota">
+                            <FormItem :label="$t('quotaOfProduct')" prop="totalQuota">
                                 <Input v-model.trim="formData.totalQuota"
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
                                 <Tooltip transfer placement="right">
                                     <i class="iconfont icon-note" style="color: #C5C5C5"></i>
                                     <div slot="content">
-                                        <p style="width: 100px;">说明：产品配额数量是指该产品在本销售政策中的配额总量或每日配额数量。</p>
+                                        <p style="width: 100px;">{{$t('descOfProductQuota')}}</p>
                                     </div>
                                 </Tooltip>
                             </FormItem>
                         </i-col>
                         <i-col span="12">
                             <!--共享配额数量-->
-                            <FormItem :label="$t('共享配额数量')" prop="sharedQuota">
+                            <FormItem :label="$t('sharedQuota')" prop="sharedQuota">
                                 <Input v-model.trim="formData.sharedQuota"
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
                                 <Tooltip transfer placement="right">
                                     <i class="iconfont icon-note" style="color: #C5C5C5"></i>
                                     <div slot="content">
-                                        <p style="width: 100px;">说明：共享配额数量是指各个销售渠道（不含全民营销）在消耗完专享配额之后，可继续消耗的共享配额部分。</p>
+                                        <p style="width: 100px;">{{$t('descOfProductShareQuota')}}</p>
                                     </div>
                                 </Tooltip>
                             </FormItem>
                         </i-col>
                         <i-col span="12">
                             <!--全民营销配额数量-->
-                            <FormItem :label="$t('全民营销配额数量')" prop="marketQuota">
+                            <FormItem :label="$t('marketQuota')" prop="marketQuota">
                                 <Input v-model.trim="formData.marketQuota"
                                        :disabled="type === 'check'"
                                        :placeholder="$t('inputField', {field: ''})"/>
                                 <Tooltip transfer placement="right">
                                     <i class="iconfont icon-note" style="color: #C5C5C5"></i>
                                     <div slot="content">
-                                        <p style="width: 100px;">说明：全民营销配额数量指定给全民营销所有销售用户的配额。</p>
+                                        <p style="width: 100px;">{{$t('descOfProductMarketQuota')}}</p>
                                     </div>
                                 </Tooltip>
                             </FormItem>
                         </i-col>
                         <i-col span="12">
                             <!--可分配配额数量-->
-                            <FormItem :label="$t('可分配配额数量')">
+                            <FormItem :label="$t('allowableQuotaQuantity')">
                                 <Input :value="allocableQuota"
                                        disabled
                                        :placeholder="$t('inputField', {field: ''})"/>
@@ -141,7 +141,7 @@
                 <!-- 分账设置 -->
                 <template v-if="formData.itemRule && formData.itemRule.length > 1">
                     <div class="divider-header">
-                        <span>{{$t('分账设置')}}</span>
+                        <span>{{$t('priceSet')}}</span>
                     </div>
                     <i-row>
                         <i-col span="24">
@@ -286,19 +286,19 @@
                         { validator : validateSettlePrice, trigger : 'blur', standardPrice : this.chosedProductInfo.standardPrice },
                     ],
                     quotaType : [
-                        { required : true, message : this.$t('selectField', { msg : this.$t('配额限制方式') }), trigger : 'change' }, // 不能为空
+                        { required : true, message : this.$t('selectField', { msg : this.$t('limitationOfQuotas') }), trigger : 'change' }, // 不能为空
                     ],
                     totalQuota : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('产品配额数量') }), trigger : 'change' }, // 不能为空
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('quotaOfProduct') }), trigger : 'change' }, // 不能为空
                         { validator : emoji, trigger : 'blur' },
-                        { validator : validateNumber, trigger : 'blur' },
+                        { validator : validateNumber, name : this.$t('quotaOfProduct'), trigger : 'blur' },
                         { validator : validateTotalQuota, trigger : 'change',
                           marketQuota : this.formData.marketQuota,
                           sharedQuota : this.formData.sharedQuota,
                           toTalExclusiveQuota : this.formData.toTalExclusiveQuota}
                     ],
                     sharedQuota : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('共享配额数量') }), trigger : 'change' }, // 不能为空
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('sharedQuota') }), trigger : 'change' }, // 不能为空
                         { validator : emoji, trigger : 'blur' },
                         { validator : validateNaturalNumber, trigger : 'blur' },
                         { validator : validateSharedQuota,
@@ -308,7 +308,7 @@
                           toTalExclusiveQuota : this.formData.toTalExclusiveQuota}
                     ],
                     marketQuota : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('全民营销配额数量') }), trigger : 'change' }, // 不能为空
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('marketQuota') }), trigger : 'change' }, // 不能为空
                         { validator : emoji, trigger : 'blur' },
                         { validator : validateNaturalNumber, trigger : 'blur' },
                         { validator : validateMarketQuota,
