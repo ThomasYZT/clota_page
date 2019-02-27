@@ -216,6 +216,21 @@
                     </div>
                 </div>
 
+                <!--使用储值账户消费时，密码校验设置-->
+                <div class="content-item">
+                    <div class="title">{{$t('consumeSetting')}}</div>
+                    <div class="main">
+                        <RadioGroup v-model="settingData.priorityDeductionInConsumption">
+                            <Radio label="corpus">
+                                <span>{{$t('onlyUseMemberCode')}}</span>
+                            </Radio>
+                            <Radio label="donate">
+                                <span>{{$t('useMemberCodeAndPassword')}}</span>
+                            </Radio>
+                        </RadioGroup>
+                    </div>
+                </div>
+
                 <!--会员4期暂时去掉-->
                 <!--房款返还至各业态账户的比例设置-->
                 <!--<owner-refund-setting class="content-item"-->

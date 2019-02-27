@@ -2512,5 +2512,8 @@ export default {
     'outOfStock' : 'out of stock',
     'defaultRefundFee' : 'default refund procedure rate is 0',
     'productClassifiction' : '产品类型',
-    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}'
+    'pickUpTicket' : '取票{getNum}张,退票{returnCount}张，取票串码：{seriesNo}',
+    'mobileConsumeSetting' : '使用储值账户消费时，密码校验设置',
+    'onlyUseMemberCode' : '仅使用会员付款码',
+    'useMemberCodeAndPassword' : '消费时需要密码验证和付款码',
 };
