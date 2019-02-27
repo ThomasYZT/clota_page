@@ -7,6 +7,8 @@
                 <popup-picker
                     :title="$t('cardType')"
                     show-name
+                    :cancel-text="$t('cancel')"
+                    :confirm-text="$t('complete')"
                     v-model.trim="formData.idType"
                     :data="[idLists]">
                 </popup-picker>
