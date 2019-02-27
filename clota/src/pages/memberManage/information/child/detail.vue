@@ -272,6 +272,7 @@
                         :card-info="choosedCard"
                         :payment-list="paymentData"
                         :detail="choosedCard"
+                        :custName="memberBaseDetail.custName"
                         @add-success="listCardAccountInfo(choosedCard)">
         </add-fund-modal>
 
