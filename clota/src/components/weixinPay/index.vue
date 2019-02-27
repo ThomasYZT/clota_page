@@ -126,6 +126,9 @@
                         this.timer = null;
                         this.$Message.error(this.$t('cancelTradeFail'));
                     } else {
+                        this.changeValue(false);
+                        clearInterval(this.timer);
+                        this.timer = null;
                         this.$emit('cancel-success');
                     }
                 });
