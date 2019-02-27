@@ -170,6 +170,10 @@
         transition: all 0.3s;
         overflow: hidden;
 
+        /deep/ .menu-name {
+            text-transform: capitalize;
+        }
+
         &.width-is-zero {
             width: 45px !important;
             transition: all 0.3s;

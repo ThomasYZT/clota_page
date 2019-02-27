@@ -37,7 +37,7 @@
                                      :default-chosed-node-init="manageDefaultChosed">
                     </manage-role-set>
                 </TabPane>
-                <TabPane :label="$t('financeAuthority')" name="name2">
+                <TabPane :label="$t('dataAuthority')" name="name2">
                     <!--财务权限设置-->
                     <finace-role-set ref="finaceRole"
                                      :disabled="!hasSavePermission"

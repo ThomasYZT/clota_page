@@ -14,7 +14,7 @@
                     <li class="li"
                         :class="{active : tapType === 'finance'}"
                         @click="checkTap('finance')">
-                        {{$t('financeAuthority')}}
+                        {{$t('dataAuthority')}}
                     </li>
                 </ul>
             </div>
@@ -246,9 +246,12 @@
 
                     .li{
                         float: left;
-                        margin-left: 25px;
+                        margin-left: 10px;
                         cursor: pointer;
                         line-height: 38px;
+                        max-width: 110px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
 
                         &.active{
                             color: $color_blue;

@@ -40,11 +40,11 @@
                  v-show="visible"
                  @mousedown.stop="()=>{}">
                 <div class="data-tabs clearfix">
-                    <div class="tab" :class="{active: view === 'p'}" @click="view = 'p'">省份</div>
+                    <div class="tab" :class="{active: view === 'p'}" @click="view = 'p'">{{$t('province')}}</div>
                     <div class="tab" :class="{active: view === 'c'}" v-if="'a,c'.includes(type)" @click="view = 'c'">
-                        城市
+                        {{$t('city')}}
                     </div>
-                    <div class="tab" :class="{active: view === 'a'}" v-if="type === 'a'" @click="view = 'a'">区域</div>
+                    <div class="tab" :class="{active: view === 'a'}" v-if="type === 'a'" @click="view = 'a'">{{$t('area')}}</div>
                 </div>
                 <div class="data-container clearfix"
                      :class="{[view]: true}">
@@ -130,7 +130,9 @@
             // 占位文本
             placeholder : {
                 type : String,
-                default : '请选择'
+                default  () {
+                    return this.$t('selectField',{ msg : '' })
+                }
             },
             //默认选中省、市、区信息
             defaultValue : {

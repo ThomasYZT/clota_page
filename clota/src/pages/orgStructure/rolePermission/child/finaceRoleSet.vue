@@ -4,7 +4,7 @@
     <div class="finace-role-set">
         <div class="node-list">
             <div class="node-name">
-                {{$t('financeAuthority')}}：
+                {{$t('dataAuthority')}}：
             </div>
             <div class="node-info">
                 <el-tree :data="companyData"

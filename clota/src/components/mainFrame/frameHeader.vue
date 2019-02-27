@@ -328,5 +328,9 @@
                 }
             }
         }
+
+        .sub-menu{
+            text-transform: capitalize;
+        }
     }
 </style>

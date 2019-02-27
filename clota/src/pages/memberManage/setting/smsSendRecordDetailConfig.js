@@ -4,13 +4,13 @@
 export const columnData = [
     {
         title : '',
-        minminwidth : 80,
+        minWidth : 80,
         field : 'check',
     },
 
     {
         title : 'smsContent',
-        minminwidth : 80,
+        minWidth : 140,
         field : 'content',
     },
     {
@@ -20,7 +20,7 @@ export const columnData = [
     },
     {
         title : 'sendeeName',
-        minwidth : 80,
+        minWidth : 80,
         enMinWidth : 155,
         field : 'receiver',
     },
@@ -32,7 +32,7 @@ export const columnData = [
     },
     {
         title : 'sendStatus',
-        minwidth : 80,
+        minWidth : 120,
         field : 'status',
     },
     {
