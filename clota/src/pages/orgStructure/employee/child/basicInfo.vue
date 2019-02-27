@@ -158,7 +158,7 @@
             <div class="ivu-form-item-wrap">
                 <!--限制订单可用范围，只可查询/操作该员工创建的订单-->
                 <Form-item :label="$t('specialEmployeeDesc')" prop="status" style="width: 400px;">
-                    <Checkbox v-model="employee.status" :true-value="'valid'" :false-value="'invalid'"></Checkbox>
+                    <Checkbox v-model="employee.limitOrderPrivilege" :true-value="'true'" :false-value="'false'"></Checkbox>
                 </Form-item>
             </div>
             <!--空字段站位用-->
@@ -255,7 +255,9 @@
                     address : '',
                     descript : '', // 备注
                     roleIds : '', // 角色权限ids
-                    status : 'valid', // 是否启用 valid/invalid
+                    status : 'valid', // 是否启用 valid/invalid,
+                    //限制订单可用范围，只可查询/操作该员工创建的订单
+                    limitOrderPrivilege : 'false'
                 },
                 // 勾选的角色权限
                 rolePrivileges : [],

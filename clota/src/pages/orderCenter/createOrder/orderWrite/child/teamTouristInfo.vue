@@ -476,10 +476,10 @@
                             reject('touristErr');
                         }
                         result.push({
-                            documentInfo : this.tableData[i].idNum !== '' ? JSON.stringify({
+                            documentInfo : this.tableData[i].idNum !== '' ? JSON.stringify([{
                                 data : this.tableData[i].idNum,
                                 type : this.tableData[i].type
-                            }) : '',
+                            }]) : '',
                             phoneNumber : this.tableData[i].phone,
                             visitorName : this.tableData[i].name,
                             visitorType : 'visitor',
