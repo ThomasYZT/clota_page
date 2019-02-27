@@ -18,7 +18,7 @@
                       :label-width="lang === 'zh-CN' ? 150 : 240">
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('userName') + ':'">
-                            {{detail.custName | contentFilter}}
+                            {{custName | contentFilter}}
                         </Form-item>
                     </div>
                     <div class="ivu-form-item-wrap">
@@ -104,7 +104,7 @@
     import loopForPayResult from '../../../components/loopForPayResult/loopForPayResult';
 
     export default {
-        props : ['payment-list','detail','card-info'],
+        props : ['payment-list','detail','card-info','custName'],
         components : {
             loopForPayResult
         },

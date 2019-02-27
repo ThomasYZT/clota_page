@@ -280,7 +280,7 @@
             }
 
             .detail-list{
-                @include block_outline($height : 26px);
+                min-height: 26px;
                 padding: 4.5px 14px;
                 line-height: 17px;
                 display: flex;

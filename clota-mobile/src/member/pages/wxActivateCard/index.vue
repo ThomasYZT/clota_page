@@ -15,6 +15,8 @@
         <!-- 性别 -->
         <div>
             <popup-picker :title="$t('sex')"
+                          :cancel-text="$t('cancel')"
+                          :confirm-text="$t('complete')"
                           :data="sexList"
                           show-name
                           v-model="gender"
@@ -63,6 +65,8 @@
         <!-- 证件类型 -->
         <div style="border-top: 1px solid #F5F5F5;">
             <popup-picker :title="$t('cardType')"
+                          :cancel-text="$t('cancel')"
+                          :confirm-text="$t('complete')"
                           :data="idTypeList"
                           show-name
                           v-model="certificationType"

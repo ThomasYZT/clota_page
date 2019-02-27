@@ -8,24 +8,32 @@
                 <img clsss="img-span" v-else src="../../../assets/images/defaut-face.png">
                 <span class="edit">
                     <span class="label" @click="editHeadImg">{{$t('edit')}}</span>
-                    <input :disabled="!hasPermission" v-if="!weixinIsConfiged" class="upload" type="file" accept="image/*" @change="uploadImg($event)">
+                    <input :disabled="!hasPermission"
+                           v-if="!weixinIsConfiged"
+                           class="upload"
+                           type="file"
+                           accept="image/*"
+                           @change="uploadImg($event)">
                 </span>
             </div>
         </div>
         <div class="cell-list">
             <group>
-                <!-- 性别 -->
+                <!-- 姓名 -->
                 <x-input
                     :title="$t('name')"
                     text-align="right"
                     :show-clear="false"
                     :disabled="!hasPermission"
+                    :placeholder="$t('pleaseInputMsg')"
                     v-model.trim="formData.name"
                     placeholder-align="right">
                 </x-input>
                 <!-- 性别 -->
                 <popup-picker
                     :title="$t('sex')"
+                    :cancel-text="$t('cancel')"
+                    :confirm-text="$t('complete')"
                     show-name
                     :disabled="!hasPermission"
                     v-model.trim="formData.gender"
@@ -545,6 +553,8 @@
                         width: 74px;
                         opacity: 0;
                         left: 0;
+                        top : -54px;
+                        height: 74px;
                     }
                 }
             }
