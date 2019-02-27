@@ -116,7 +116,7 @@
                 return {
                     name : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('labelName') }), trigger : 'blur' },
-                        { max : 4, message : this.$t('errorMaxLength', { field : this.$t('labelName'), length : 4 }), trigger : 'blur' },
+                        { max : 5, message : this.$t('errorMaxLength', { field : this.$t('labelName'), length : 5 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]
                 };
