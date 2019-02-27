@@ -217,15 +217,14 @@
                 </div>
 
                 <!--使用储值账户消费时，密码校验设置-->
-                <!--TODO: 调试接口-->
                 <div class="content-item">
-                    <div class="title">{{$t('consumeSetting')}}</div>
+                    <div class="title">{{$t('mobileConsumeSetting')}}</div>
                     <div class="main">
-                        <RadioGroup v-model="settingData.priorityDeductionInConsumption">
-                            <Radio label="corpus">
+                        <RadioGroup v-model="settingData.consumeNeedSet">
+                            <Radio label="payCode">
                                 <span>{{$t('onlyUseMemberCode')}}</span>
                             </Radio>
-                            <Radio label="donate">
+                            <Radio label="pwd-payCode">
                                 <span>{{$t('useMemberCodeAndPassword')}}</span>
                             </Radio>
                         </RadioGroup>
@@ -331,7 +330,9 @@
                     //消费时优先扣除账户设置
                     priorityDeductionInConsumption : '',
                     //房款返还至各业态账户的比例设置
-                    houseMoneyRefunded : ''
+                    houseMoneyRefunded : '',
+                    //支付设置
+                    consumeNeedSet : ''
                 },
                 //copy数据，用于数据重置
                 copySetData : {},
@@ -476,6 +477,7 @@
                                 passwdForRechargeAccount : res.data.passwdForRechargeAccount || 'true',
                                 donateWhileRecharge : res.data.donateWhileRecharge ? JSON.parse(res.data.donateWhileRecharge) : [],
                                 priorityDeductionInConsumption : res.data.priorityDeductionInConsumption,
+                                consumeNeedSet : res.data.consumeNeedSet,
                                 houseMoneyRefunded : res.data.houseMoneyRefunded,
                                 allowAdjustRechargeAccount : res.data.allowAdjustRechargeAccount,
                             };
@@ -521,6 +523,7 @@
                         donateWhileRecharge : setParam.donateWhileRecharge.length > 0 ?
                             JSON.stringify(setParam.donateWhileRecharge) : '',
                         priorityDeductionInConsumption : this.settingData.priorityDeductionInConsumption,
+                        consumeNeedSet : this.settingData.consumeNeedSet,
                         houseMoneyRefunded : this.settingData.houseMoneyRefunded,
                         allowAdjustRechargeAccount : this.settingData.allowAdjustRechargeAccount,
                     };
