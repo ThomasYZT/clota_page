@@ -7,7 +7,7 @@
         <Modal v-model="visible"
                class-name="vertical-center-modal type-manage"
                transfer
-               :width="lang === 'en' ? '600' : '500'"
+               width="600"
                :title="$t('colonSetting', { key : $t('productTypeManage') })"
                @on-cancel="hide"
                :mask-closable="false">
@@ -24,7 +24,7 @@
                                     <Input type="text"
                                            :disabled="!item.editing"
                                            v-model="item.name"
-                                           style="width: 50%;"
+                                           style="width: 60%;"
                                            placeholder=""></Input>
                                     <div class="btn-wrapper">
                                         <ul class="operate-list">
@@ -69,7 +69,6 @@
 <script>
 
     import ajax from '@/api/index';
-    import { mapGetters } from 'vuex';
     export default {
         components : {},
         data () {
@@ -110,9 +109,6 @@
             };
         },
         computed : {
-            ...mapGetters([
-               'lang'
-            ]),
             //表单校验规则
             rules () {
                 return [
