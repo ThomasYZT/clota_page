@@ -71,7 +71,8 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li class="normal" @click="viewDetail(scope.row)">{{$t('check')}}</li><!--查看-->
-                        <li class="normal" @click="quotaAllowance(scope.row)">{{$t('quotaAllowance')}}</li><!--查看-->
+                        <li class="normal" :class="{disabled : !scope.row.groupNames}"
+                            @click="quotaAllowance(scope.row)">{{$t('quotaAllowance')}}</li><!--查看配额余量-->
                         <li class="red-label"
                             :class="{disabled : scope.row.auditStatus !== 'rejected' && scope.row.auditStatus !== 'not_enabled'}"
                             @click="batchDel(scope.row)">{{$t('delete')}}</li><!--删除-->
@@ -236,6 +237,7 @@
              *  前往配额余量页面
              */
             quotaAllowance ( data ) {
+                if (!data.groupNames) return;
                 this.$router.push({
                     name : 'quotaAllowance',
                     params : {
