@@ -15,7 +15,8 @@
                 <div class="box">
                     <div class="box-title">{{$t('chosePosterPicTypeOne')}}</div>
                     <div class="box-body">
-                        <posterSelection :poster-list="posterList"
+                        <posterSelection v-if="choosePosterVisible"
+                                         :poster-list="posterList"
                                          @posterChosed="posterChosed"></posterSelection>
                     </div>
                 </div>
@@ -41,13 +42,11 @@
                @on-cancel="editPosterHide"
                :mask-closable="false">
                 <div class="workspace">
-                    <!--<img class="" :src="chosedPost.posterUrl">-->
                     <imgSynthesizer v-if="editPosterVisible"
                                     ref="imgSynthesizer"
                                     :chosedPost="chosedPost"
                                     :src64="src64"
                                     :codeUrl="codeUrl"></imgSynthesizer>
-                    <!--<img :src="src64" width="100%" alt="">-->
                 </div>
             <div slot="footer">
                 <Button class="ivu-btn-90px" type="primary" @click="save">{{$t('save')}}</Button>
@@ -158,7 +157,6 @@
                     height : dom.offsetHeight * scale,
                     onrendered : (canvas) => {
                         this.src64 = canvas.toDataURL('image/png');
-                        console.log(this.src64)
                         //Canvas2Image.saveAsPNG(canvas, dom.offsetWidth * scale, dom.offsetHeight * scale);
                         //下载此图片
                         let aLink = document.createElement('a');
@@ -167,13 +165,6 @@
                         aLink.click();
                     }
                 });
-                // let url = _canvas.toDataURL("image/png");//PNG格式
-
-                // let aLink = document.createElement('a');
-                // aLink.href = url;
-                // aLink.download = 'test.png';
-                // aLink.click();
-
                 this.choosePosterHide();
                 this.editPosterHide();
             },
