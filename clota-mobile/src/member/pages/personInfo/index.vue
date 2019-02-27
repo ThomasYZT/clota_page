@@ -14,12 +14,13 @@
         </div>
         <div class="cell-list">
             <group>
-                <!-- 性别 -->
+                <!-- 姓名 -->
                 <x-input
                     :title="$t('name')"
                     text-align="right"
                     :show-clear="false"
                     :disabled="!hasPermission"
+                    :placeholder="$t('pleaseInputMsg')"
                     v-model.trim="formData.name"
                     placeholder-align="right">
                 </x-input>

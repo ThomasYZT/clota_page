@@ -9,7 +9,7 @@
             <p class="time">{{info.createdTime}}</p>
         </div>
         <div class="check">
-            <p>{{ (info.amount > 0 ? '+' + info.amount : info.amount )  + $t('score')}}</p>
+            <p>{{ (info.amount > 0 ? ('+' + info.amount) : info.amount ) + ' ' + $t('score')}}</p>
         </div>
     </div>
 </template>
