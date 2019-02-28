@@ -130,7 +130,7 @@
                     if (parseFloat(this.modifyModel.settlePrice) > parseFloat(value)) {
                         this.$Message.error(
                             this.$t('NoSmallerThan', { field1 : this.$t('terminalSalePrice'), field2 : this.$t('salePolicyProductUnitPrice') })
-                        )
+                        );
                         callback(new Error(
                             this.$t('NoSmallerThan', { field1 : this.$t('terminalSalePrice'), field2 : this.$t('salePolicyProductUnitPrice') }))
                         );

@@ -200,8 +200,9 @@ export const marketActions = {
     marketGetUserInfo ({ commit, dispatch }) {
         const ajax = require('../api/index').default;
         return ajax.post('market_getUserInfo').then(res => {
-            if (res.success) {
-                commit('marketUpdateUserInfo',res.data ? res.data : {});
+            if (res.success && res.data && Object.keys(res.data).length > 0) {
+                commit('marketUpdateUserInfo',res.data);
+                commit('marketUpdateMarketUserId',res.data.id);
                 return res.data;
             } else {
                 commit('marketUpdateUserInfo',{});

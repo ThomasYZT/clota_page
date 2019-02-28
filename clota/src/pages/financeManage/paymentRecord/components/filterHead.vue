@@ -19,16 +19,16 @@
 </template>
 
 <script>
-	export default {
-		data () {
-			return {
-			    //时间范围值
-			    timeRange : [],
+    export default {
+        data () {
+            return {
+                //时间范围值
+                timeRange : [],
                 //订单id
                 orderId : ''
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
              * 将改变的参数传递给上级组件
              */
@@ -39,7 +39,7 @@
                 });
             }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

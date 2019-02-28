@@ -518,7 +518,7 @@
                     } else {
                         //区分新增与修改
                         let errorTip = '';
-                        if (res.message == 'M008' || res.code == '300') {
+                        if (res.message === 'M008' || res.code === '300') {
                             errorTip = this.$t('phoneExistCard'); // 手机号已被注册，请更换手机号
                         }
 

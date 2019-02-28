@@ -84,7 +84,7 @@
         },
         methods : {
 
-            show ( data ) {
+            show () {
                 this.visible = true;
             },
 

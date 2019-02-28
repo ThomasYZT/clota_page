@@ -408,7 +408,7 @@
         watch : {
             //节点更换，重新请求节点数据
             activeNode : {
-                handler (newVal,oldVal) {
+                handler () {
                     this.getCashierDetail();
                 },
                 deep : true,

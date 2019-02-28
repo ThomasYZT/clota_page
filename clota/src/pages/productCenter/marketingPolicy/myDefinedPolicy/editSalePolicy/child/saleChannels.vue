@@ -135,7 +135,7 @@
              */
             quotaManage (data) {
                 if (this.selectedRow.findIndex((item) => {
-                    return item.id === data.id
+                    return item.id === data.id;
                 }) <= -1 || !data.channelModels || data.channelModels.length === 0) return;
                 this.$emit("manageQuota", data);
             }

@@ -375,7 +375,6 @@
              * 关闭模态框
              */
             hide () {
-                console.log("111")
                 this.toggle();
             },
         },

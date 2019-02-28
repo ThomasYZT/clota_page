@@ -713,7 +713,7 @@
             //     });
             // },
             // 子母卡列合并
-            objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
+            objectSpanMethod ({ rowIndex, columnIndex }) {
                 if (columnIndex === 0) {
                     if (rowIndex % 2 === 0) {
                         return {
@@ -912,7 +912,7 @@
             validatePassword () {
                 return new Promise((resolve,reject) => {
                     this.$refs.editModal.show({
-                        title : this.$t('inputField', { field : this.$t('loginPassword')}),
+                        title : this.$t('inputField', { field : this.$t('loginPassword') } ),
                         confirmCallback : () => {
                             this.$refs.formData.validate(valid => {
                                 if (valid) {

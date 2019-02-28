@@ -135,7 +135,7 @@
                         } else {
                             this.$Message.error( this.$t('failureTip', { tip : this.$t('upload') }));
                         }
-                    })
+                    });
                 }
                 this.$store.commit('changePromisings','del');
             },
@@ -228,7 +228,7 @@
                             reject(e);
                         }
                     } else {
-                        reject()
+                        reject();
                     }
                 });
             }
@@ -253,7 +253,7 @@
                                 this.addDisabled = false;
                             }
                         }
-                    })
+                    });
                 }
             }
         }

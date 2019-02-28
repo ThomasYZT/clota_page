@@ -73,7 +73,7 @@ require('echarts/lib/component/legendScroll');
 require('echarts/lib/component/dataZoom');
 
 let plugin = {};
-plugin.install = function (Vue, options) {
+plugin.install = function (Vue) {
 
     // element-ui按需引入
     Vue.use(scrollbar);
@@ -142,13 +142,13 @@ plugin.install = function (Vue, options) {
     Vue.prototype.$Message = Message;
     Vue.prototype.$QRcode = QRcode;
     Vue.prototype.$Notice = Notice;
-    Vue.component('VueDraggableResizable', VueDraggableResizable)
+    Vue.component('VueDraggableResizable', VueDraggableResizable);
 
     // 公用样式，指令及方法
     Vue.use(klwkUi);
 
     //引入富文本编辑器组件
-    Vue.use(VueQuillEditor)
+    Vue.use(VueQuillEditor);
 
     // 注入全局变量
     Vue.mixin({
@@ -171,7 +171,7 @@ plugin.install = function (Vue, options) {
             },
             //内容过滤器，如果内容为空或null，返回-
             contentFilter (content) {
-                if (content === '' || content === null || content === undefined) {
+                if (content === '' || content === null || typeof content === "undefined") {
                     return '-';
                 } else {
                     return content;
@@ -179,7 +179,7 @@ plugin.install = function (Vue, options) {
             },
             //货比格式化
             moneyFilter (content) {
-                if (content === '' || content === null || content === undefined) {
+                if (content === '' || content === null || typeof content === "undefined") {
                     return '-';
                 } else {
                     return content === 0 ? '0.00' : Number(content).toCurrency();

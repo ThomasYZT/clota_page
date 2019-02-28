@@ -92,20 +92,20 @@
         },
         watch : {
             'filterParams.marketTypeId' : {
-                handler (val, oldVal) {
+                handler (val) {
                     this.getMarketingLevels(val);
                 },
                 immediate : true
             },
             'filterParams.marketLevelId' : {
-                handler (val, oldVal) {
+                handler () {
                     this.getPolicyByMarketTypeAndLevel();
                 },
                 immediate : true
             },
             // 监听筛选条件只要有改变，就查询列表数据
             filterParams : {
-                handler (val, oldVal) {
+                handler () {
                     this.searchList();
                 },
                 deep : true

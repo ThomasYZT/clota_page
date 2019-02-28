@@ -96,10 +96,10 @@
     import delModal from '@/components/delModal/index.vue';
 
 	export default {
-	    props : {
-	        //交易规则数据
-	        'rule-data' : {
-	            type : Array,
+        props : {
+            //交易规则数据
+            'rule-data' : {
+                type : Array,
                 default : []
             }
         },

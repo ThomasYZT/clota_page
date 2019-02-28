@@ -168,10 +168,10 @@
             confirmAdd () {
                 let self = this;
                 let partnerObj = {};
-                if (this.type == 'add') {
+                if (this.type === 'add') {
                     partnerObj.successTip = this.$t('addChannelSuccess');
                     partnerObj.failTip = this.$t('addChannelFail');
-                } else if (this.type == 'modify') {
+                } else if (this.type === 'modify') {
                     partnerObj.successTip = this.$t('modifyChannelSuccess');
                     partnerObj.failTip = this.$t('modifyChannelFail');
                 }

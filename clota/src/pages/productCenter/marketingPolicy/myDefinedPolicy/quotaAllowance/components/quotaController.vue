@@ -315,11 +315,11 @@
                         this.$emit('updateList');
                         this.$Message.success(formData.type === 'out' ?
                             this.$t('successTip', { msg : this.$t('callOut') }) :
-                            this.$t('successTip', { msg : this.$t('callIn') }))
+                            this.$t('successTip', { msg : this.$t('callIn') }));
                     } else {
                         this.$Message.error(formData.type === 'out' ?
                             this.$t('failureTip', { msg : this.$t('callOut') }) :
-                            this.$t('failureTip', { msg : this.$t('callIn') }))
+                            this.$t('failureTip', { msg : this.$t('callIn') }));
                     }
                 });
             }
@@ -330,7 +330,7 @@
                     this.isFormShow = false;
                     this.$nextTick(() => {
                         this.isFormShow = true;
-                    })
+                    });
                 },
             }
         }

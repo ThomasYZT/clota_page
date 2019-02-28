@@ -550,7 +550,7 @@
                         settlePrice : item.settlePrice,
                         marketQuota : item.marketQuota,
                         itemRule : item.itemRule ? JSON.parse(item.itemRule) : [],
-                    }
+                    };
                 });
                 //初始化配额管理数据
                 this.quotaChannelData = this.detail.policyChannels.map( item => {
@@ -563,7 +563,7 @@
                         channelId : item.channelId,
                         quotaType : item.quotaType,
                         vipQuota : item.vipQuota,
-                    }
+                    };
                 });
                 //初始化每个产品的专享配额总数
                 this.quotaData.forEach(item => {
@@ -617,7 +617,7 @@
                     } else {
                         this.hasMarket = 'false';
                     }
-                })
+                });
             },
             /**
              * 查看产品数据

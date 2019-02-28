@@ -227,7 +227,7 @@
                 if (value && validator.isMobile(value)) {
                     this.validatePhoneIsExit().then(() => {
                         callback();
-                    }).catch(err => {
+                    }).catch(() => {
                         callback(this.$t('existMobilePhone')); // 手机号码已存在
                     });
                 } else {
@@ -428,7 +428,6 @@
             saveCardInfo (index) {
                 for (let i = 0,j = this.idTableData.length; i < j; i++) {
                     if (i !== index && this.idTableData[index]['type'] !== '' && this.idTableData[index]['type'] === this.idTableData[i]['type']) {
-//                        this.$Message.error(`${this.$t(this.idTableData[index]['type'])}已经填写，请选择其它证件类型`);
                         this.$Message.error(this.$t('selectOtherCredentialsField', { field : this.$t(this.idTableData[index]['type']) }));
                         return;
                     }
@@ -564,9 +563,8 @@
             },
             /**
              * 校验手机号码是否存在
-             * @param phone
              */
-            validatePhoneIsExit (phone) {
+            validatePhoneIsExit () {
                 return new Promise((resolve,reject) => {
                     //区分当前是修改游客还是添加游客
                     if (this.defaultInfo && Object.keys(this.defaultInfo).length > 0) {
@@ -638,7 +636,7 @@
             }
         },
         watch : {
-            productList (newVal,oldVal) {
+            productList (newVal) {
                 if (newVal) {
                     this.ticketTableData = JSON.parse(JSON.stringify(newVal));
                 } else {
@@ -748,7 +746,11 @@
                             max : max,
                             min : 0,
                             takeNum : Number(numCount),
-                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType && this.productPolicy[item.productId].needId !== 'noRequired' ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
+                            idType : this.productPolicy[item.productId]
+                            && this.productPolicy[item.productId].acceptIdType
+                            && this.productPolicy[item.productId].needId !== 'noRequired'
+                                ? this.productPolicy[item.productId].acceptIdType.split(',')[0]
+                                : '',
                             needId : needId
                         };
                     });
@@ -759,7 +761,11 @@
                             disabled : true,
                             max : 0,
                             min : 0,
-                            idType : this.productPolicy[item.productId] && this.productPolicy[item.productId].acceptIdType && this.productPolicy[item.productId].needId !== 'noRequired' ? this.productPolicy[item.productId].acceptIdType.split(',')[0] : '',
+                            idType : this.productPolicy[item.productId]
+                            && this.productPolicy[item.productId].acceptIdType
+                            && this.productPolicy[item.productId].needId !== 'noRequired'
+                                ? this.productPolicy[item.productId].acceptIdType.split(',')[0]
+                                : '',
                             needId : this.productPolicy[item.productId] ? this.productPolicy[item.productId].needId : ''
                         };
                     });

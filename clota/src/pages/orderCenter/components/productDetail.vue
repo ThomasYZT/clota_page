@@ -190,7 +190,7 @@
         },
         computed : {
             isAlter () {
-                return this.$route.name == 'bulkChangeDetail';
+                return this.$route.name === 'bulkChangeDetail';
             },
             //表头配置 --- 如果是退票审核详情，则无'申请改签后游玩日期' 这一列
             columnData () {
@@ -200,7 +200,7 @@
             },
         },
         watch : {
-            moduleInfo (val, oldVal) {
+            moduleInfo (val) {
                 if (val.length > 0) {
                     this.getReqOrderTickets();
                 }
@@ -241,7 +241,7 @@
              * @param row   // 行数据
              * @param index // 序号
              */
-            handleSelectable (row, index) {
+            handleSelectable (row, index) {//todo : 查看是否有bug
                 /*let bulkDetail = JSON.parse(sessionStorage.getItem(this.$route.name));
                 if (bulkDetail && bulkDetail.rowData) {
                     return bulkDetail.rowData.reqOrderTicketIds.includes(row.id);

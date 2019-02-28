@@ -96,7 +96,7 @@
 </template>
 <script type="text/ecmascript-6">
     import ajax from '@/api/index';
-    import { bankList, proxyBankList } from '@/assets/js/constVariable.js';
+    import { proxyBankList } from '@/assets/js/constVariable.js';
     import { transAccountType } from '../cashRecordFun';
     import { mapGetters } from 'vuex';
 
@@ -239,7 +239,7 @@
                         // 付款方式列表的组装 --- 付款方式为微信支付、支付宝，则只能选各自的支付方式；若付款方式是银行，则微信支付、支付宝、银行都可选
                         if (this.isProxyBank) {
                             this.paymentTypeList = proxyBankList.filter(item => {
-                                return item.value == this.withdrawInfo.accountType;
+                                return item.value === this.withdrawInfo.accountType;
                             });
                         } else {
                             this.paymentTypeList = this.recentPayTypes;

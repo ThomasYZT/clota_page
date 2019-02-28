@@ -7,7 +7,6 @@
         :value="value"
         :width="420"
         @input="changeValue"
-        @on-visible-change="visibleChange"
         class="product-err"
         class-name="vertical-center-modal">
         <div slot="header" class="target-class">
@@ -56,14 +55,6 @@
              */
             changeValue (data) {
                 this.$emit('input', data);
-            },
-            /**
-             * 模态框显示或隐藏
-             * @param type
-             */
-            visibleChange (type) {
-                if (type === true) {
-                }
             },
             /**
              * 确认提示信息

@@ -107,7 +107,7 @@
         data () {
             //校验第二次输入的密码和第一次是否相同 企业注册
             const isEqNewPwd2 = (rule, value, callback) => {
-                if (value != this.formDataCompany.password) {
+                if (value !== this.formDataCompany.password) {
                     callback(new Error(this.$t('passwordNotEqual')));
                 } else {
                     callback();
@@ -208,7 +208,7 @@
                         { validator : this.isEqNewPwd2, trigger : 'blur' },
 
                     ],
-                }
+                };
             }
         },
         methods : {

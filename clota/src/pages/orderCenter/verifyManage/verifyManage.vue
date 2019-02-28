@@ -473,11 +473,10 @@
             /**
              * 设置表格每一行的CheckBox是否可勾选状态（verifyRule: 'true' 表示可勾选，否则disabled不可勾选 置灰）
              * @param row
-             * @param index
              * @returns {boolean}
              */
-            setSelectable (row, index) {
-                return row.verifyRule == 'true';
+            setSelectable (row) {
+                return row.verifyRule === 'true';
             },
         }
     };

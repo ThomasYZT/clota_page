@@ -107,9 +107,9 @@
         computed : {
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
             reqType () {
-                if (this.$route.name == 'auditBulkRefund') {
+                if (this.$route.name === 'auditBulkRefund') {
                     return 'refund';
-                } else if (this.$route.name == 'auditBulkChange') {
+                } else if (this.$route.name === 'auditBulkChange') {
                     return 'alter';
                 }
             },
@@ -125,9 +125,9 @@
                         Object.assign(this.formData, data.items[0]);
                     }
 
-                    if (data.type == 'pass') {
+                    if (data.type === 'pass') {
                         this.title = 'checkPass'; // 审核通过
-                    } else if (data.type == 'reject') {
+                    } else if (data.type === 'reject') {
                         this.title = 'PRODUCT_AUDIT_REJECT'; // 驳回申请
                     }
                 }

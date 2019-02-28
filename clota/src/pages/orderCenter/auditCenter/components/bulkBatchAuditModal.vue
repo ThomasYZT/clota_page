@@ -74,9 +74,9 @@
             }),
             // 根据路由信息，判断散客退票or改签 页面：退票-refund， 改签-alter
             reqType () {
-                if (this.$route.name == 'auditBulkRefund') {
+                if (this.$route.name === 'auditBulkRefund') {
                     return 'refund';
-                } else if (this.$route.name == 'auditBulkChange') {
+                } else if (this.$route.name === 'auditBulkChange') {
                     return 'alter';
                 }
             },
@@ -86,13 +86,13 @@
             show ( data ) {
                 if (data) {
                     this.orderData = data;
-                    if (data.type == 'pass') {
+                    if (data.type === 'pass') {
                         this.title = 'batchPass';
-                    } else if (data.type == 'reject') {
+                    } else if (data.type === 'reject') {
                         this.title = 'batchReject';
                     }
 
-                    if (this.reqType == 'refund') {
+                    if (this.reqType === 'refund') {
                         this.batchColumnData = bulkBatchAuditHead.filter(item => {
                             return item.field !== 'rescheduleAfterVisitDate';
                         });

@@ -7,7 +7,7 @@ export const emoji = (rule, value, callback) => {
     } else {
         callback();
     }
-}
+};
 /**
  * 校验售票规则的指定日期
  * @param rule
@@ -69,10 +69,10 @@ export const validateAlterRule = (rule, value, callback) => {
         if (common.isNotEmpty(rule.params.befPlayLatestDays) && common.isNotEmpty(rule.params.alterNum)) {
             callback();
         } else {
-            callback(i18n.t('inputField', { field : i18n.t('lastAlterDate') }))
+            callback(i18n.t('inputField', { field : i18n.t('lastAlterDate') }));
         }
     }
-}
+};
 
 /**
  * 校验产品表单
@@ -88,7 +88,7 @@ export const validateProductInfo = (rule, value, callback) => {
         callback();
 
     }
-}
+};
 
 /**
  * 校验全民营销表单
@@ -114,7 +114,7 @@ export const validateMarketingData = (rule, value, callback) => {
     } else {
         callback();
     }
-}
+};
 /**
  * 校验退票规则
  * @param rule
@@ -127,4 +127,4 @@ export const validateReturnRule = (rule, value, callback) => {
     } else {
         callback();
     }
-}
+};

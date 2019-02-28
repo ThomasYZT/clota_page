@@ -212,7 +212,7 @@
              */
             confirmRecharge ( params ) {
                 let newWindow = '';
-                let paymentChannel = this.onlineAccountList.find(item => item.accountType === this.formData.payType)['payType']
+                let paymentChannel = this.onlineAccountList.find(item => item.accountType === this.formData.payType)['payType'];
                 if (!(this.formData.payType === 'weixin' && paymentChannel === 'zhilian')) {
                     newWindow = window.open();
                 }

@@ -92,12 +92,12 @@
         computed : {
             // 面包屑上级路由信息
             beforeRouterList () {
-                if (this.$route.name == 'bulkRefundDetail') {
+                if (this.$route.name === 'bulkRefundDetail') {
                     return [{
                         name : 'auditBulkRefund', // 散客退票审核
                         router : { name : 'auditBulkRefund' }
                     }];
-                } else if (this.$route.name == 'bulkChangeDetail') {
+                } else if (this.$route.name === 'bulkChangeDetail') {
                     return [{
                         name : 'auditBulkChange', // 散客改签审核
                         router : { name : 'auditBulkChange' }

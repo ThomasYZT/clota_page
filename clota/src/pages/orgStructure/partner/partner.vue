@@ -166,24 +166,20 @@
 
 
 <script>
-    // 表格筛选下拉模块
-    import filterDrop from '../../../components/filterDrop/filterDrop.vue';
     //新增合作伙伴弹窗
     import addPartner from '../model/addPartner.vue';
     // 删除合作伙伴弹窗
-//    import deleteList from '../model/deleteList.vue';
     import delModal from '@/components/delModal/index.vue';
     import ajax from '@/api/index';
     import { partnerListHead } from '../orgStructure';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { configVariable, batchOperate } from '@/assets/js/constVariable';
+    import { configVariable } from '@/assets/js/constVariable';
     import map from 'lodash/map';
     import { mapGetters } from 'vuex';
     import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
         components : {
-            filterDrop,
             addPartner,
             delModal,
             tableCom,
@@ -206,17 +202,6 @@
                 tableData : [],
                 // 数据总条数
                 totalCount : 0,
-
-
-                /*
-                // 表格筛选下拉菜单
-                listFilters: {
-                    stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
-                    alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
-                        name: '正常',
-                        alert: 'normal'
-                    }],
-                },*/
                 enableValue : true, //启用，未启用变量
                 name : '', //删除弹窗名字
                 deleteName : this.$t('delete') + this.$t('cooperation'), //删除内容名字
@@ -266,34 +251,16 @@
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
-
-            // 筛选下拉组件
-            renderHeader (h, params) {
-                return h(filterDrop, {
-                    props : {
-                        colParams : params.column,
-                        filters : this.listFilters
-                    },
-                    on : {
-                        'state-filter' : this.handleAlertFilter,
-                        'alert-filter' : this.handleAlertFilter,
-                    }
-                });
-            },
-            // 筛选点击事件
-            handleAlertFilter () {
-
-            },
             //启用或者禁用
             enable (scopeRow, isBatch) {
                 if (!this.canOperatePartner || scopeRow.disabled) return;
                 let partnerObj = {};
-                if (scopeRow.status == 'valid') {
+                if (scopeRow.status === 'valid') {
                     partnerObj.successTip = this.$t('disabledCooperation');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('disabled') }); // 禁用失败
                     partnerObj.status = 'invalid';
                     partnerObj.msgType = 'success';
-                } else if (scopeRow.status == 'invalid') {
+                } else if (scopeRow.status === 'invalid') {
                     partnerObj.successTip = this.$t('ableCooperation');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('commissioned') }); // 启用失败
                     partnerObj.status = 'valid';
@@ -301,7 +268,7 @@
                 }
 
                 ajax.post('updatePartnerStatus', {
-                    ids : isBatch == true ? this.partnerIds.join(',') : scopeRow.id,
+                    ids : isBatch === true ? this.partnerIds.join(',') : scopeRow.id,
                     status : partnerObj.status
                 }).then(res => {
                     if (res.success) {
@@ -335,7 +302,7 @@
              **/
             newPartnerBtn (type, scopeRow) {
                 if (!this.canAddpartner && !this.canModifyPartner) return;
-                let obj = type == 'add' ? { type : type } : { item : scopeRow, type : type };
+                let obj = type === 'add' ? { type : type } : { item : scopeRow, type : type };
                 this.$refs.addPartnerModal.show(obj);
             },
             /**
@@ -345,7 +312,7 @@
              */
             showDelModal (data, isBatch) {
                 if (!this.canDeletePartner) return;
-                if (isBatch == true) {
+                if (isBatch === true) {
                     this.partnerIds = data.map(item => item.id);
                     this.name = data.length > 1 ? `${data[0].channelName}、${data[1].channelName}` : `${data[0].channelName}`;
                 } else {

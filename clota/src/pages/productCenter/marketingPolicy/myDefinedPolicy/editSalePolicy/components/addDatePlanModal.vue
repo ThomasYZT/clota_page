@@ -55,7 +55,7 @@
                 },
                 //表单校验方法
                 validateMethods : validateMethods,
-            }
+            };
         },
         computed : {
             ruleValidate () {
@@ -66,7 +66,7 @@
                         { max : 10, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 10 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]
-                }
+                };
             }
         },
         methods : {
@@ -117,7 +117,7 @@
                                     this.$Message.error(this.$t('failureTip', { tip : this.$t('save') }));
                                 }
                             }
-                        })
+                        });
                     }
                 });
             },
@@ -140,12 +140,12 @@
                                     this.$Message.error(this.$t('failureTip', { tip : this.$t('modify') }));
                                 }
                             }
-                        })
+                        });
                     }
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

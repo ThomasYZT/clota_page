@@ -61,7 +61,7 @@
                 this.$emit('toggleChecked', {
                     type : type,
                     name : name,
-                })
+                });
             }
         }
     };

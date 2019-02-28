@@ -94,7 +94,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             }
         }
     };

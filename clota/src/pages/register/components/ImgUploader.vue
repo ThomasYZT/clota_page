@@ -181,9 +181,8 @@
              * 上传失败
              * @param err
              * @param file
-             * @param fileList
              */
-            uploadFail (err, file, fileList) {
+            uploadFail (err, file) {
                 if (!this.tipStop) {
                     this.$Message.error('failureTip', { tip : this.$t('upload') });
                 }
@@ -265,7 +264,7 @@
                                 this.addDisabled = false;
                             }
                         }
-                    })
+                    });
                 }
             }
         }

@@ -102,9 +102,9 @@
             }
         },
         computed : {
-	        //表单数据
-	        formData () {
-	            let result = [
+            //表单数据
+            formData () {
+                let result = [
                     {},
                     {},
                     {},

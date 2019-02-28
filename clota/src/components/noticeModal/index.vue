@@ -47,7 +47,7 @@
         methods : {
             /**
              * 模态框显示或隐藏
-             * @param type
+             * @param{Boolean} type 模态框状态
              */
             visibleChange (type) {
                 if (type === false) {

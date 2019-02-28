@@ -23,7 +23,7 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import filterHead from './components/filterHead';
     import { columns } from './paymentRecordConfig';
-    import ajax from '@/api/index.js';
+
     export default {
         components : {
             tableCom,
@@ -54,7 +54,7 @@
              * 查询付款记录
              */
             queryRecord  () {
-                console.log(this.orderId)
+                console.log(this.orderId);
             },
             /**
              * 获取筛选信息

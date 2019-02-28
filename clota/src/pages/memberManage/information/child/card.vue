@@ -239,12 +239,12 @@
                     if (res.success) {
                         if (res.data) {
                             // 年卡数据
-                            this.cardInfo.annual = res.data.filter((item,i) => {
-                                return item.vipType == 'annual';
+                            this.cardInfo.annual = res.data.filter((item) => {
+                                return item.vipType === 'annual';
                             }) || [];
                             // 次卡数据
-                            this.cardInfo.times = res.data.filter((item,i) => {
-                                return item.vipType == 'times';
+                            this.cardInfo.times = res.data.filter((item) => {
+                                return item.vipType === 'times';
                             }) || [];
                         }
                     } else {

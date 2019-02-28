@@ -18,7 +18,7 @@ export default {
         component : () => import(/* webpackChunkName: "helperCenter" */ '../../pages/helperCenter/index.vue'),
         name : 'helperCenter',
         meta : {
-            _name : 'org', //todo 暂时用数据报表一级菜单权限
+            isStaticMenu : true,
             menuName : 'helperCenter',
             rightPath : topMenuName + '.' + 'helperCenter',
             hasSideBar : false,

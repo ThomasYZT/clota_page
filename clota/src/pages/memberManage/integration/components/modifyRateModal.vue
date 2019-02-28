@@ -87,7 +87,6 @@
 </template>
 
 <script>
-    import ajax from '@/api/index';
     import { validator } from 'klwk-ui';
     import common from '@/assets/js/common';
     import { mapGetters } from 'vuex';
@@ -302,7 +301,7 @@
              * @param val
              */
             notEmpty (val) {
-                return val !== null && val !== '' && val !== undefined;
+                return val !== null && val !== '' && typeof val !== 'undefined';
             },
 
             /**

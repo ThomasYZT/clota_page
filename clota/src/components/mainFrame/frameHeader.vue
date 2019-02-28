@@ -149,20 +149,7 @@
                 if (routerInfo) {
                     return routerInfo.filter(item => {
                         //判断是否需要显示二级菜单
-                        // if (item.children && item.children.length > 0) {
-                        //     item.children = item.children.filter(list => list.meta && list.meta.isMenu === true);
-                        // } else {
-                        //     item.children = [];
-                        // }
-                        // item.showSubMenu = false;
                         return item.meta && item.meta.isMenu;
-                        //有路由名字需要判断路由名字和meta信息里面的_name是否相同，
-                        // if (item.name) {
-                        //     return item.name === item.meta._name;
-                        // }else{
-                        //     //没有路由名字的都是一级路由，需要显示菜单
-                        //     return  item.path !== '*'
-                        // }
                     });
                 } else {
                     return [];

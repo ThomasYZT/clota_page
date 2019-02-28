@@ -84,7 +84,7 @@
 
                 // 校验再次输入的密码是否与新密码相同
                 isEqNewPwd : (rule, value, callback) => {
-                    if (value != self.pwdForm.newPassword) {
+                    if (value !== self.pwdForm.newPassword) {
                         callback(new Error( this.$t('passwordNotEqual') )); // 输入的密码与新密码不同
                     } else {
                         callback();

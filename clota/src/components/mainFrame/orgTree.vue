@@ -21,7 +21,6 @@
 </template>
 
 <script>
-    import common from '@/assets/js/common';
     import { mapGetters } from 'vuex';
     export default {
         data () {
@@ -63,9 +62,8 @@
             /**
              * 更改组织结构
              * @param data
-             * @param node
              */
-            orgChose (data,node) {
+            orgChose (data) {
                 if (data.disabled) return;
                 if (data.id !== this.manageOrgs.id) {
                     this.$store.dispatch('resetNodeChosed',data).then(route => {
@@ -84,7 +82,7 @@
             /**
              * 菜单组织树
              */
-            menuRenderContent (h, { root, node, data }) {
+            menuRenderContent (h, { data }) {
                 if (data.disabled) {
                     return h(
                         'tooltip',
@@ -112,7 +110,7 @@
                                 }, data.orgName)
                             ])
                         ]
-                    )
+                    );
                 } else {
                     return h('div', {
                         style : {
@@ -153,7 +151,7 @@
         },
         watch : {
             //监视查询关键字，如果改变就进行查找
-            filterValue (newVal,oldVal) {
+            filterValue (newVal) {
                 this.$refs.tree.filter(newVal);
             }
         }

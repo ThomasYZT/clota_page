@@ -343,7 +343,7 @@
                         this.tempData = this.tempData.filter(item => {
                             return !this.haveSaleGroups.find(group => {
                                 return item.id === group.id;
-                            })
+                            });
                         });
 
                         //设置销售渠道组列表数据
@@ -356,16 +356,16 @@
                             });
                         }).map(item => {
                             return item.id;
-                        })
+                        });
 
                         this.selectedRow = this.saleGroupList.filter(item => {
-                            return _chosedChannels.includes(item.id)
+                            return _chosedChannels.includes(item.id);
                         }).map((item, index) => {
                             return {
                                 item : item,
                                 index : index,
-                            }
-                        })
+                            };
+                        });
 
                         this.$nextTick(() => {
                             this.selectedRow.forEach((item) => {

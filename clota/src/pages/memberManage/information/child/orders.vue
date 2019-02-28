@@ -71,7 +71,6 @@
     import { orderListHead, orderStatus } from '../infoListConfig';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { configVariable } from '@/assets/js/constVariable';
-    import map from 'lodash/map';
     import { mapGetters } from 'vuex';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
 

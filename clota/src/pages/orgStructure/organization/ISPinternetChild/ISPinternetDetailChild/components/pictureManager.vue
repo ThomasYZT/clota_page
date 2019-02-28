@@ -132,7 +132,7 @@
                     } else {
                         this.$Message.error(this.$t('uploadScenicResourceFaield'));
                     }
-                })
+                });
             },
             /**
              * 鼠标悬浮时
@@ -166,7 +166,7 @@
                     confirmCallback : () => {
                         this.updateOrgImage(params, 'del');
                     }
-                })
+                });
             },
             /**
              * 删除图片接口
@@ -184,7 +184,7 @@
                             this.$Message.error(this.$t('failureTip', { tip : this.$t(type) }));
                         }
                     }
-                })
+                });
             },
             /**
              * 设为封面
@@ -194,7 +194,7 @@
                 let params = {
                     id : item.id,
                     isCover : 'true',
-                }
+                };
                 this.updateOrgImage(params, this.$t('setToCover'));
             },
             /**
@@ -205,7 +205,7 @@
                 let params = {
                     id : item.id,
                     isCover : 'false',
-                }
+                };
                 this.updateOrgImage(params, this.$t('cancelCover'));
             },
             /**
@@ -216,7 +216,7 @@
                 let params = {
                     id : item.id,
                     isRotation : 'true',
-                }
+                };
                 this.updateOrgImage(params, this.$t('addToCover'));
             },
             /**
@@ -227,7 +227,7 @@
                 let params = {
                     id : item.id,
                     isRotation : 'false',
-                }
+                };
                 this.updateOrgImage(params, this.$t('cancelCarousel'));
             },
             /**

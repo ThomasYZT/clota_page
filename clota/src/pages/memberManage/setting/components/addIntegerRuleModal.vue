@@ -83,7 +83,6 @@
 <script>
 	import { mapGetters } from 'vuex';
 	import common from '@/assets/js/common.js';
-	import ajax from '@/api/index.js';
 
 	export default {
 		props : {
@@ -131,11 +130,11 @@
 					let endTime = value[1] ? value[1].valueOf() : 0;
 					for (let i = 0,j = this.hasSelectedTime.length; i < j; i++) {
 						if ( startTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && startTime <= this.hasSelectedTime[i]['endTime'] ) {
-							callback('timeZoneCoincideTip');
+							callback(new Error('timeZoneCoincideTip'));
 						} else if ( endTime >= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime <= this.hasSelectedTime[i]['endTime'] ) {
-							callback('timeZoneCoincideTip');
+							callback(new Error('timeZoneCoincideTip'));
 						} else if ( startTime <= this.hasSelectedTime[i]['startTime'] - 86400000 && endTime >= this.hasSelectedTime[i]['endTime'] ) {
-							callback('timeZoneCoincideTip');
+							callback(new Error('timeZoneCoincideTip'));
 						} else {
 							callback();
 						}
@@ -165,7 +164,7 @@
 			const validateRuleName = (rule,value,callback) => {
 				if (value) {
                     if (this.hasSelectedTime.some(item => item['ruleName'] === value) ) {
-                        callback('ruleNameHas');
+                        callback(new Error('ruleNameHas'));
                     } else {
                         callback();
                     }
@@ -332,7 +331,7 @@
 						startTime : new Date(item.startTime).valueOf(),
 						endTime : new Date(item.endTime).valueOf(),
 					};
-				}).filter(item => item['ruleName'] != this.defaultInfo['data']['ruleName'] );
+				}).filter(item => item['ruleName'] !== this.defaultInfo['data']['ruleName'] );
 			}
 		}
 	};

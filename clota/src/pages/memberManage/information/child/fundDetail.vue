@@ -197,7 +197,7 @@
             queryList () {
                 let param = {};
                 Object.assign(param, this.queryParams);
-                if (this.queryParams.operType == 'all') {
+                if (this.queryParams.operType === 'all') {
                     param.operType = null;
                 }
                 ajax.post('queryOrgAccountChange', Object.assign(param,{

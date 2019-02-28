@@ -149,8 +149,6 @@
 
 
 <script>
-    // 表格筛选下拉模块
-    import filterDrop from '../../../components/filterDrop/filterDrop.vue';
     // 新增自营渠道弹窗
     import addSelfSupport from '../model/addSelfSupport.vue';
     // 删除自营渠道弹窗
@@ -164,7 +162,6 @@
 
     export default {
         components : {
-            filterDrop,
             addSelfSupport,
             delModal,
             tableCom
@@ -185,15 +182,6 @@
                 tableData : [],
                 // 数据总条数
                 totalCount : 0,
-
-                // 表格筛选下拉菜单
-                /*listFilters: {
-                    stateFilter: [{name: '全部', state: 'all'}, {name: '已签到', state: 'ok'}, {name: '未签到', state: 'leak'}],
-                    alertFilter: [{name: '不限', alert: 'all'}, {name: '异常', alert: 'alert'}, {
-                        name: '正常',
-                        alert: 'normal'
-                    }],
-                },*/
                 enableValue : true, //启用，未启用变量
                 name : '', //删除弹窗名字
                 deleteName : this.$t('delChannel'), //删除内容名字
@@ -224,34 +212,16 @@
                 Object.assign(this.queryParams, this.filterParam);
                 this.queryList();
             },
-
-            // 筛选下拉组件
-            renderHeader (h, params) {
-                return h(filterDrop, {
-                    props : {
-                        colParams : params.column,
-                        filters : this.listFilters
-                    },
-                    on : {
-                        'state-filter' : this.handleAlertFilter,
-                        'alert-filter' : this.handleAlertFilter,
-                    }
-                });
-            },
-            // 筛选点击事件
-            handleAlertFilter () {
-
-            },
             // 点击启用，未启用事件
             enable (scopeRow, isBatch) {
                 if (!this.canChangeChannelStatus) return;
                 let partnerObj = {};
-                if (scopeRow.status == 'valid') {
+                if (scopeRow.status === 'valid') {
                     partnerObj.successTip = this.$t('disabledChannel');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('disabled') }); // 禁用失败
                     partnerObj.status = 'invalid';
                     partnerObj.msgType = 'warning';
-                } else if (scopeRow.status == 'invalid') {
+                } else if (scopeRow.status === 'invalid') {
                     partnerObj.successTip = this.$t('enabledChannel');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('commissioned') }); // 启用失败
                     partnerObj.status = 'valid';
@@ -348,7 +318,7 @@
                         break;
                     case 'del' :
                         if (!this.canDeleteChannel) return;
-                        let onlineData = this.chosenRowData.filter((item, i) => {
+                        let onlineData = this.chosenRowData.filter((item) => {
                             // 过滤出线上的自营渠道类型，因线下类型不可删除
                             return item.type == 'online';
                         });

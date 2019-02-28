@@ -46,7 +46,6 @@
 <script>
 
     import ajax from '@/api/index';
-    import common from '@/assets/js/common.js';
     import MD5 from 'crypto-js/md5';
     import defaultsDeep from 'lodash/defaultsDeep';
     import { mapGetters } from 'vuex';
@@ -67,7 +66,7 @@
                 },
                 // 校验再次输入的密码是否与新密码相同
                 isEqNewPwd : (rule, value, callback) => {
-                    if (value != self.formData.password) {
+                    if (value !== self.formData.password) {
                         callback(new Error( this.$t('paswordMustBeEqual') )); // 输入的密码与新密码不同
                     } else {
                         callback();
@@ -120,7 +119,7 @@
             },
 
             //表单校验
-            formValidateFunc () {
+            formValidateFunc () {//todo : 查看是否有bug
                 this.$refs.formValidate.validate((valid) => {
                     if (valid) {
 

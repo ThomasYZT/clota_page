@@ -437,8 +437,8 @@
                         } else {
                             reject('saleRuleError');
                         }
-                    })
-                })
+                    });
+                });
             },
             /**
              *  保存自定义日期时间
@@ -530,7 +530,7 @@
             }
         },
         created () {
-            this.copyFormData = defaultsDeep({}, this.formData)
+            this.copyFormData = defaultsDeep({}, this.formData);
         }
     };
 </script>

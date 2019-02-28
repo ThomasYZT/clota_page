@@ -20,7 +20,7 @@
             chosedPost : {
                 type : Object,
                 default () {
-                    return {}
+                    return {};
                 },
             },
             //选择的底图

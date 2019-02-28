@@ -45,7 +45,6 @@
 </template>
 
 <script>
-    import { validator } from 'klwk-ui';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
     export default {

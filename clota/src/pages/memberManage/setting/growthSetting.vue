@@ -179,21 +179,21 @@
         watch : {
 
             //储值获得成长值生效设置
-            'settingData.growthEffModeWhileCharging.storedType' : function (newVal, oldVal) {
+            'settingData.growthEffModeWhileCharging.storedType' : function (newVal) {
                 if (newVal !== 'checkout_after') {
                     this.error.moneyToGgowthError = '';
                 }
             },
 
             //成长值生效设置
-            'settingData.growthEffectiveMode.growthType' : function (newVal, oldVal) {
+            'settingData.growthEffectiveMode.growthType' : function (newVal) {
                 if (newVal !== 'checkout_after') {
                     this.error.growthTimeError = '';
                 }
             },
 
             //储值获得成长值比例设置
-            'settingData.growthFromCharging.chargingAddGrowth' : function (newVal, oldVal) {
+            'settingData.growthFromCharging.chargingAddGrowth' : function (newVal) {
                 if (newVal === 'false') {
                     this.error.moneyToGgowthError = '';
                 }
@@ -211,13 +211,10 @@
                 switch (type) {
                     case 'number':
                         return data ? Number(data) : 0;
-                        break;
                     case 'boolean':
-                        return data === 'true' ? true : false;
-                        break;
+                        return data === 'true';
                     case 'string':
                         return data !== null ? String(data) : '';
-                        break;
                 }
             },
 
@@ -354,7 +351,7 @@
                         this.error[errorField] = this.$t('errorMaxLength', { field : '',length : 10 });
                         return false;
                     } else {
-                        if (Number.parseInt(val) === Number.parseFloat(val)) {
+                        if (Number.parseInt(val, 10) === Number.parseFloat(val)) {
                             if (val < 0 || val == 0) {
                                 this.error[errorField] = this.$t('fieldTypeError', { field : '' });
                                 return false;

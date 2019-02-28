@@ -131,7 +131,7 @@
             placeholder : {
                 type : String,
                 default  () {
-                    return this.$t('selectField',{ msg : '' })
+                    return this.$t('selectField',{ msg : '' });
                 }
             },
             //默认选中省、市、区信息
@@ -509,7 +509,6 @@
              * 重置
              */
             reset () {
-                console.log("111111");
                 // 选择结果
                 this.select = {
                     province : null,
@@ -551,7 +550,7 @@
         },
         watch : {
             'defaultValue' : {
-                handler (newVal,oldVal) {
+                handler (newVal) {
                     this.setDefaultValue();
                 },
                 deep : true,

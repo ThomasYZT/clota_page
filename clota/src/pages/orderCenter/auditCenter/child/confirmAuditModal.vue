@@ -128,11 +128,11 @@
             }),
             // 是否散客退票
             isRefund () {
-                return (this.$route.query.reqType == 'refund') || (this.$route.name == 'bulkRefundDetail');
+                return (this.$route.query.reqType === 'refund') || (this.$route.name === 'bulkRefundDetail');
             },
             // 是否散客改签
             isAlter () {
-                return (this.$route.query.reqType == 'alter') || (this.$route.name == 'bulkChangeDetail');
+                return (this.$route.query.reqType === 'alter') || (this.$route.name === 'bulkChangeDetail');
             },
             //产品列表 - 通过
             passedProducts () {
@@ -154,7 +154,7 @@
                     this.auditType = data.type;
                     let selectItemIds = data.passList.map(passItem => passItem.id);
                     this.tableData = data.productList.map(item => {
-                        if (data.type == 'pass' && selectItemIds.includes(item.id)) {
+                        if (data.type === 'pass' && selectItemIds.includes(item.id)) {
                             item.auditStatus = 'success';
                         } else {
                             item.auditStatus = 'reject';

@@ -197,7 +197,7 @@ export default {
                     } else if (numStr.length > maxLength) {
                         reject('errorMaxLength');
                     } else {
-                        if (Number.parseInt(value) === Number.parseFloat(value)) {
+                        if (Number.parseInt(value,10) === Number.parseFloat(value)) {
                             //使用自定义正则表达式
                             if (reg) {
                                 if (reg.test(value)) {
@@ -294,7 +294,7 @@ export default {
                     } else if (numStr.length > maxLength) {
                         reject('errorMaxLength');
                     } else {
-                        if (Number.parseInt(value) === Number.parseFloat(value)) {
+                        if (Number.parseInt(value,10) === Number.parseFloat(value)) {
                             //使用自定义正则表达式
                             if (reg) {
                                 if (reg.test(value)) {

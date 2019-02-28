@@ -6,8 +6,8 @@ function requestAnimationFrame (callback) {
             window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
-            function (callback) {
-                return setTimeout(callback, 16);
+            function (callbackFunc) {
+                return setTimeout(callbackFunc, 16);
             }
         ).bind(window);
     }
@@ -22,8 +22,8 @@ function cancelAnimationFrame (id) {
             window.cancelAnimationFrame ||
             window.webkitCancelAnimationFrame ||
             window.mozCancelAnimationFrame ||
-            function (id) {
-                clearTimeout(id);
+            function (timerId) {
+                clearTimeout(timerId);
             }
         ).bind(window);
     }

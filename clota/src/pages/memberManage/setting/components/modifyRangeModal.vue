@@ -70,7 +70,6 @@
 <script>
 
     import ajax from '@/api/index';
-    import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
     import tableCom from '@/components/tableCom/tableCom.vue';
 
@@ -181,11 +180,11 @@
             //保存
             save () {
                 if (this.type === 'send') {
-                    this.multipleSelection.forEach( (item, index) => {
+                    this.multipleSelection.forEach( (item) => {
                         this.formData.donateAppliedOrgId.push(item.id);
                     });
                 } else {
-                    this.multipleSelection.forEach( (item, index) => {
+                    this.multipleSelection.forEach( (item) => {
                         this.formData.corpusAppliedOrgId.push(item.id);
                     });
                 }
@@ -205,8 +204,6 @@
                             this.formData.donateAppliedOrgId.join(',') : ''
                     })
                 };
-
-                console.log(params);
                 this.updateMemberAccountDefine(params);
             },
 

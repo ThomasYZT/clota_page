@@ -95,7 +95,7 @@
                         { type : 'string', max : 500, message : this.$t('errorMaxLength', { field : this.$t('printRemark'), length : 500 }), trigger : 'blur' },
                         { validator : emoji, trigger : 'blur' },
                     ],
-                }
+                };
             }
         },
         methods : {
@@ -111,7 +111,7 @@
                             reject("ticketInfoFormErr");
                         }
                     });
-                })
+                });
             },
             /**
              * 编辑时初始化表单数据

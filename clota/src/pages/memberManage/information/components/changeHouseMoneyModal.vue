@@ -40,8 +40,8 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import ajax from '@/api/index.js';
 
-	export default {
-	    components : {
+    export default {
+        components : {
             tableCom
         },
         props : {
@@ -58,7 +58,7 @@
                 }
             }
         },
-		data () {
+        data () {
             //校验购房总金额
             const validateHouseMoney = (rule,value,callback) => {
                 common.validateMoney(value,0,15).then(() => {
@@ -71,8 +71,8 @@
                     }
                 });
             };
-			return {
-			    //校验规则
+            return {
+                //校验规则
                 ruleValidate : {
                     houseMoney : [
                         {
@@ -120,8 +120,8 @@
                     },
                 ]
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
              * 绑定的value值改变
              * @param{Boolean} data  当前状态
@@ -198,7 +198,7 @@
                 });
             }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

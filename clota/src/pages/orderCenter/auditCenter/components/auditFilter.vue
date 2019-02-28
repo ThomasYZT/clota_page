@@ -191,7 +191,7 @@
              * @param date   范围日期
              * @param dateType   日期格式
              */
-            changeOrderTime (date, dateType) {
+            changeOrderTime (date, dateType) {//todo:查看能否去掉
                 this.formData.orderStartDate = date[0];
                 this.formData.orderEndDate = date[1];
                 this.searchAuditList();
@@ -201,7 +201,7 @@
              * @param date   范围日期
              * @param dateType   日期格式
              */
-            changeVisitDate (date, dateType) {
+            changeVisitDate (date, dateType) {//todo:查看能否去掉
                 this.formData.visitStartDate = date[0];
                 this.formData.visitEndDate = date[1];
                 this.searchAuditList();
@@ -234,7 +234,7 @@
             searchAuditList () {
                 let keys = ['channelId', 'orderChannel', 'productType', 'paymentStatus'];
                 let queryParams = Object.assign({}, this.formData);
-                keys.forEach((key, i) => {
+                keys.forEach((key) => {
                     if (queryParams[key].includes('all')) {
                         queryParams[key] = '';
                     }

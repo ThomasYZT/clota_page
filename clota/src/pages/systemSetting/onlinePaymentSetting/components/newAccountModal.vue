@@ -57,7 +57,6 @@
 <script>
 
     import ajax from '@/api/index';
-    import common from '@/assets/js/common.js';
     import defaultsDeep from 'lodash/defaultsDeep';
     import tableCom from '@/components/tableCom/tableCom.vue';
 

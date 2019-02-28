@@ -101,14 +101,14 @@
                     document.querySelector("#map-container").addEventListener("DOMNodeInserted",() => {
                         if (document.querySelector(".smnoprint")) {
                             document.querySelector("#map-container div").childNodes.forEach((item, index) => {
-                                if (index == 1 ) {
+                                if (index === 1 ) {
                                     document.querySelector("#map-container div").removeChild(item);
                                 }
                             });
                         }
 
                     });
-                })
+                });
             },
         },
     };

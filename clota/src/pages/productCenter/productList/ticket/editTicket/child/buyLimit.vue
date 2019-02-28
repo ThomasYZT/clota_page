@@ -208,7 +208,7 @@
                         { validator : validateNumber, trigger : 'blur' },
                         { validator : validateMobileBuyTicket, trigger : 'blur', limitByMobileNum : this.formData.limitByMobileNum }
                     ],
-                }
+                };
             }
         },
         methods : {

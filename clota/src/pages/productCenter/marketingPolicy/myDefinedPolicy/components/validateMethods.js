@@ -169,9 +169,9 @@ export const validateTotalQuota = (rule, value, callback) => {
             callback();
         }
     } else {
-        callback()
+        callback();
     }
-}
+};
 
 export const validateDateRange = (rule, value, callback) => {
     if (value && value.length === 2 && value[0] && value[1]) {

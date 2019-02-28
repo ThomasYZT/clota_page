@@ -144,9 +144,9 @@
     watch : {},
     methods : {
         transferDiscountRate (rate) {
-            if (this.lang == 'zh-CN') {
+            if (this.lang === 'zh-CN') {
                 return rate + this.$t('discount');
-            } else if (this.lang != 'zh-CN') {
+            } else if (this.lang !== 'zh-CN') {
                 let discount = this.$t('discount');
                 if (discount.startsWith('%')) {
                     discount = discount.slice(1);

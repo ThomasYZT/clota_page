@@ -1,4 +1,3 @@
-import { validator } from 'klwk-ui';
 import i18n from '@/assets/lang/lang.config';
 import common from '@/assets/js/common.js';
 //产品中心、销售政策表单校验方法
@@ -80,7 +79,7 @@ export const validateNumber = (rule,value,callback) => {
  * @param value
  * @param callback
  */
-export const validateIdBuyTicket =  (rule,value,callback) => {
+export const validateIdBuyTicket = (rule,value,callback) => {
     if (value || rule.limitByIdNum) {
         common.validateInteger(rule.limitByIdNum).then(() => {
             callback();

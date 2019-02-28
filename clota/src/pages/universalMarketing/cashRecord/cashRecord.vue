@@ -160,7 +160,7 @@
              */
             queryList () {
                 let params = Object.assign({}, this.queryParams);
-                ['marketTypeId', 'marketLevelId'].forEach((key, i) => {
+                ['marketTypeId', 'marketLevelId'].forEach((key) => {
                     if (params[key].includes('all')) {
                         params[key] = '';
                     }
@@ -195,7 +195,7 @@
              */
             exportCashRecord () {
                 let stringifyPar = {
-                    auditStatus : this.queryParams.auditStatus == 'reject_no_req,reject,success,auditing,pass' ? 'reject_no_req,reject,success,auditing,pass' : this.queryParams.auditStatus,
+                    auditStatus : this.queryParams.auditStatus === 'reject_no_req,reject,success,auditing,pass' ? 'reject_no_req,reject,success,auditing,pass' : this.queryParams.auditStatus,
                     marketTypeId : this.queryParams.marketTypeId.includes('all') ? '' : this.queryParams.marketTypeId,
                     marketLevelId : this.queryParams.marketLevelId.includes('all') ? '' : this.queryParams.marketLevelId,
                     pageNo : 1,

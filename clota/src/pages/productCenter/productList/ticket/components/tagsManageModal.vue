@@ -127,7 +127,7 @@
              *  显示模态框
              *  @param chosedTags 已选择的标签
              */
-            show ({chosedTags}) {
+            show ( { chosedTags } ) {
                 this.chosedTags = chosedTags;
                 this.queryTagDefines(this.chosedTags);
             },
@@ -238,7 +238,7 @@
              * @param type 标签选中状态
              * @param name 标签名称
              */
-            toggleChecked ({type, name}) {
+            toggleChecked ( { type, name } ) {
                 if (type) {
                     //最多不能超过3个标签
                     if (this.chosedTags.length < 3) {
@@ -282,7 +282,7 @@
                             reject();
                         }
                     });
-                })
+                });
             },
             /**
              * 删除标签
@@ -291,7 +291,7 @@
             deleteTag (name) {
                 let _tag = this.tagsList.find((item) => {
                     return item.name === name;
-                })
+                });
                 //删除标签校验
                 this.validateTagDelete(_tag);
             },
@@ -308,7 +308,7 @@
                         this.chosedTags.splice(this.chosedTags.findIndex(item => {
                             return tag.id === item.id;
                         }), 1);
-                        this.$emit('deleteTag', tag)
+                        this.$emit('deleteTag', tag);
                         this.$Message.success(this.$t('successTip', { tip : this.$t('delete') }));
                     } else {
                         this.inUsePList = [];
@@ -320,9 +320,9 @@
                             confirmCallback : () => {
                                 this.forceDelete(tag);
                             }
-                        })
+                        });
                     }
-                })
+                });
             },
             /**
              * 强制删除标签
@@ -342,7 +342,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('delete') }));
                     }
-                })
+                });
             }
         }
     };

@@ -17,7 +17,6 @@
 <script>
     import mainFrame from '@/components/mainFrame/mainFrame';
     import { mapGetters } from 'vuex';
-    import ajax from '@/api/index';
     import testComponent from '@/components/testComponent/index.vue';
 
     export default {

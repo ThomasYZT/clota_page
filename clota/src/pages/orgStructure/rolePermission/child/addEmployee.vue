@@ -102,8 +102,7 @@
              * @param type
              */
             visibleChange (type) {
-                if (type === true) {
-                } else {
+                if (type === false) {
                     this.tableData = [];
                     this.employeeSelected = [];
                 }

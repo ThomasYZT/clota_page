@@ -190,10 +190,10 @@
                         this.collectionAccList = res.data;
                         this.hasPaytypeList = [];
                         this.collectionAccList.forEach((item) => {
-                            if (this.hasPaytypeList.indexOf('alipay') <= -1 && item.accountType == 'alipay') {
+                            if (this.hasPaytypeList.indexOf('alipay') <= -1 && item.accountType === 'alipay') {
                                 this.hasPaytypeList.push('alipay');
                             }
-                            if (this.hasPaytypeList.indexOf('weixin') <= -1 && item.accountType == 'weixin') {
+                            if (this.hasPaytypeList.indexOf('weixin') <= -1 && item.accountType === 'weixin') {
                                 this.hasPaytypeList.push('weixin');
                             }
                         });

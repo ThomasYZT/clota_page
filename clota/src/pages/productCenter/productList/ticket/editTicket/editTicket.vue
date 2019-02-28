@@ -282,7 +282,7 @@
                         }
                     } else {
                         if (res.code && res.code === 'PD001') {
-                            this.$Message.error(this.$t(res.code))
+                            this.$Message.error(this.$t(res.code));
                         } else {
                             //区分新增与修改
                             this.$Message.error(res.message || this.$t('failureTip',{ tip : this.$t(this.type) }));

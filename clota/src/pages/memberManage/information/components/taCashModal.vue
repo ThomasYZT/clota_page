@@ -208,7 +208,6 @@
                         if (this.formData.accountBizType === 'transfer_in') {
                             params.toAccountTypeId = this.toAccountInfo.id;
                         }
-                        console.log(params);
                         this.transferAccountBalance(params);
                     }
                 });

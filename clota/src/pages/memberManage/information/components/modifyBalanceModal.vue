@@ -247,7 +247,7 @@
                 if (list && list.length > 0) {
                     let _store = defaultsDeep([], list);
                     _store.forEach( item => {
-                        if (item.id === null || item.id === undefined) {
+                        if (item.id === null || typeof item.id === 'undefined') {
                             item.id = "null";
                         }
                     } );

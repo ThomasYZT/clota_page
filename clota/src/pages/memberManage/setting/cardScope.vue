@@ -75,7 +75,7 @@
 <script>
     import headerTabs from './components/headerTabs.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
-    import { cardScopeHead,memCardHead } from './cardScopeConfig';
+    import { cardScopeHead } from './cardScopeConfig';
     import ajax from '@/api/index.js';
     import noData from '@/components/noDataTip/noData-tip.vue';
 
@@ -154,7 +154,7 @@
             /**
              * 组织树render函数
              */
-            renderContent (h, { root, node, data }) {
+            renderContent (h, { data }) {
                 if (data.nodeType === 'department'
                     || data.nodeType === 'table'
                     || data.nodeType === 'company'

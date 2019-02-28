@@ -222,7 +222,7 @@
                     if (findIndex > -1) {
                         item.tempVipQuota = item.vipQuota = this.quotaChannelData[findIndex].vipQuota;
                     }
-                })
+                });
             },
             /**
              * 隐藏模态框

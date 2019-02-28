@@ -67,7 +67,9 @@
         props : {
             infoData : {
                 type : Array,
-                default : []
+                default () {
+                    return [];
+                }
             }
         },
         data () {

@@ -63,9 +63,9 @@
     import confirmMemberInfo from './confirmDetailModal';
     import ajax from '@/api/index.js';
 
-	export default {
-	    props : {
-	        //会员信息
+    export default {
+        props : {
+            //会员信息
             'member-info' : {
               type : Object,
               default () {
@@ -74,20 +74,20 @@
             },
             //是否显示模态框
             value : {
-	            type : Boolean,
+                type : Boolean,
                 default : false
             }
         },
-	    components : {
+        components : {
             confirmMemberInfo
         },
-		data () {
-			return {
-			    //补卡费
+        data () {
+            return {
+                //补卡费
                 replaceCardFee : ''
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
              * 确认重新开卡
              */
@@ -108,9 +108,9 @@
             },
         },
         created () {
-	        this.queryCardReplaceFee();
+            this.queryCardReplaceFee();
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

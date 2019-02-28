@@ -404,9 +404,11 @@
                     case 'number':
                         return data ? Number(data) : 0;
                     case 'boolean':
-                        return data === 'true' ? true : false;
+                        return data === 'true';
                     case 'string':
                         return data !== null ? String(data) : '';
+                    default :
+                        return data ? Number(data) : 0;
                 }
             },
 
@@ -565,7 +567,7 @@
                         this.error[errorField] = this.$t('errorMaxLength', { field : '',length : 10 });
                         return false;
                     } else {
-                        if (Number.parseInt(val) === Number.parseFloat(val)) {
+                        if (Number.parseInt(val,10) === Number.parseFloat(val)) {
                             if (val < 0 || val == 0) {
                                 this.error[errorField] = this.$t('fieldTypeError', { field : '' });
                                 return false;
@@ -644,7 +646,7 @@
                 this.$refs.addAccount.show({ item, index });
             },
             //保存后回调传参
-            submitFundsAccount (data) {
+            submitFundsAccount () {
                 this.queryMemberAccountDefine();
             },
             //点击储值账户的应用设置，显示应用设置弹窗

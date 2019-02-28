@@ -105,7 +105,7 @@
                     } else {
                         this.todayMemberIncreaseCount = '';
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.todayMemberIncreaseCount = '';
                 });
             },
@@ -122,7 +122,7 @@
                     } else {
                         this.yesterdayMemberIncreaseCount = '';
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.yesterdayMemberIncreaseCount = '';
                 });
             },
@@ -139,7 +139,7 @@
                     } else {
                         this.monthMemberIncreeaseCount = '';
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.monthMemberIncreeaseCount = '';
                 });
             },

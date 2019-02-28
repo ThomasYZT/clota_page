@@ -73,7 +73,7 @@
                         { max : 10, message : this.$t('errorMaxLength', { field : this.$t('typeName'), length : 10 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]
-                }
+                };
             }
         },
         methods : {

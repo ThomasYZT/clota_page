@@ -41,15 +41,15 @@
     import ajax from '@/api/index.js';
     import { mapGetters } from 'vuex';
 
-	export default {
-	    components : {
+    export default {
+        components : {
             tableCom
         },
-		data () {
-			return {
-			    //表单数据
-				formData : {
-					keyWord : ''
+        data () {
+            return {
+                //表单数据
+                formData : {
+                    keyWord : ''
                 },
                 //表头配置
                 columnData : columnData,
@@ -59,8 +59,8 @@
                 pageSize : 10,
                 totalCount : 0
             };
-		},
-		methods : {
+        },
+        methods : {
             /**
              * 查询会员数据
              */
@@ -97,7 +97,7 @@
                 'lang'
             ])
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

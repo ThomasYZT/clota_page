@@ -194,7 +194,7 @@
             }
         },
         watch : {
-            'employeeList' (newVal,oldVal) {
+            'employeeList' (newVal) {
                 if (newVal) {
                     this.tableData = JSON.parse(JSON.stringify(newVal));
                     this.$emit('updateSelected',this.tableData);

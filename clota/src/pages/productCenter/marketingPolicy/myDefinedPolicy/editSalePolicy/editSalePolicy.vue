@@ -134,7 +134,7 @@
                                     //日期数据
                                     rangeDates : item.dateList,
 
-                                }
+                                };
                             })) : this.enumData.specialHoliday;
                     } else {
                         this.specialHoliday = this.enumData.specialHoliday;
@@ -348,8 +348,8 @@
                         resolve();
                     }).catch(() => {
                         reject();
-                    })
-                })
+                    });
+                });
             },
             /**
              * 初始化数据
@@ -444,7 +444,7 @@
                         channelId : item.channelId,
                         quotaType : item.quotaType,
                         vipQuota : item.vipQuota,
-                    }
+                    };
                 });
                 data.policyItems.forEach( item => {
                     productInfoForm.quotaData.push({
@@ -477,7 +477,6 @@
                     };
                 }) : [];
                 if (this.hasMarket === 'true') {
-                    console.log(marketInfoForm)
                     this.$refs.marketInfo.initData(marketInfoForm);
                 }
 

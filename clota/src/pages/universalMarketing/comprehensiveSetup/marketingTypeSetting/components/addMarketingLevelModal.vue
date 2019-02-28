@@ -61,8 +61,8 @@
                             <div v-if="extremeValue.length === 2">
                                 <span v-if="extremeValue[0] || extremeValue[1]" class="level-amount-tip">{{$t('colonSetting', { key : $t('range') })}}</span>
                                 <span v-if="extremeValue[0] && extremeValue[1]">{{extremeValue[0] | moneyFilter | contentFilter}} ~ {{extremeValue[1] | moneyFilter | contentFilter}}</span>
-                                <span v-else-if="extremeValue[0] && !extremeValue[1]"> > {{extremeValue[0] | moneyFilter | contentFilter}}</span>
-                                <span v-else-if="!extremeValue[0] && extremeValue[1]"> < {{extremeValue[1] | moneyFilter | contentFilter}}</span>
+                                <span v-else-if="extremeValue[0] && !extremeValue[1]"> &gt; {{extremeValue[0] | moneyFilter | contentFilter}}</span>
+                                <span v-else-if="!extremeValue[0] && extremeValue[1]"> &lt; {{extremeValue[1] | moneyFilter | contentFilter}}</span>
                                 <span v-else></span>
                             </div>
                         </FormItem>
@@ -135,12 +135,12 @@
                         biggerMixItem,
                         smallerMaxItem;
                     this.haslevelList.forEach((item) => {
-                        if (item.level > parseInt(this.formData.level)) {
+                        if (item.level > parseInt(this.formData.level, 10)) {
                             if (item.level < biggerMix) {
                                 biggerMix = item.level;
                                 biggerMixItem = item;
                             }
-                        } else if (item.level < parseInt(this.formData.level)) {
+                        } else if (item.level < parseInt(this.formData.level, 10)) {
                             if (item.level > smallerMax) {
                                 smallerMax = item.level;
                                 smallerMaxItem = item;
@@ -254,7 +254,7 @@
                 } else {
                     lvList = lvList.map((item) => {
                         if (this.haslevelList.find((hasitem) => {
-                            return hasitem.level === parseInt(item.value);
+                            return hasitem.level === parseInt(item.value, 10);
                         })) {
                             return {
                                 ...item,
@@ -278,12 +278,12 @@
                         biggerMixItem,
                         smallerMaxItem;
                     this.haslevelList.forEach((item) => {
-                        if (item.level > parseInt(this.formData.level)) {
+                        if (item.level > parseInt(this.formData.level, 10)) {
                             if (item.level < biggerMix) {
                                 biggerMix = item.level;
                                 biggerMixItem = item;
                             }
-                        } else if (item.level < parseInt(this.formData.level)) {
+                        } else if (item.level < parseInt(this.formData.level, 10)) {
                             if (item.level > smallerMax) {
                                 smallerMax = item.level;
                                 smallerMaxItem = item;

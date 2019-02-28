@@ -201,11 +201,6 @@
             //校验是否选择了证件
             const validateidTypeIn = (rule,value,callback) => {
                 callback();
-                // if (rule.rowData.type) {
-                //     callback();
-                // } else {
-                //     callback(this.$t('selectField', { msg : this.$t('credentialsType') })); // 请选择证件类型
-                // }
             };
             //校验证件号码
             const validateIdCard = (rule,value,callback) => {
@@ -228,7 +223,11 @@
                         }
                     }
                 } else {
-                    callback();
+                    if (rule.rowData.type) {
+                        callback(this.$t('inputField',{ field : this.$t('credentialsNumber') }));
+                    } else {
+                        callback();
+                    }
                 }
             };
             //校验游客姓名
@@ -447,9 +446,8 @@
             /**
              * 判断当前游客是否可以选择
              * @param row
-             * @param index
              */
-            selectableFunc (row,index) {
+            selectableFunc (row) {
                 return row['editType'] !== 'edit';
             },
             /**
@@ -496,39 +494,6 @@
             //产品接受的证件类型
             acceptCertificateType () {
                 return idType;
-                // let result = [];
-                // let arrTmp = [];
-                // let accpet = [];
-                // let productIdsList = {};
-                // for (let item in this.productPolicy) {
-                //     arrTmp = this.productPolicy[item].acceptIdType ? this.productPolicy[item].acceptIdType.split(',') : [];
-                //     for (let i = 0,j = arrTmp.length; i < j; i++) {
-                //         if (!result.includes(arrTmp[i]) && this.productPolicy[item]['needId'] !== 'noRequired') {
-                //             result.push(arrTmp[i]);
-                //         }
-                //     }
-                //     productIdsList[item] = [];
-                //     for (let i = 0,j = idType.length; i < j; i++) {
-                //         if (arrTmp.includes(idType[i]['value'])) {
-                //             productIdsList[item].push(idType[i]);
-                //         }
-                //     }
-                // }
-                // for (let i = 0,j = idType.length; i < j; i++) {
-                //     if (result.includes(idType[i]['value'])) {
-                //         accpet.push(idType[i]);
-                //     }
-                // }
-                // return {
-                //     all : [
-                //         {
-                //             value : 1,
-                //             label : 1
-                //         }
-                //     ],
-                //     acceptArr : result,
-                //     ...productIdsList
-                // };
             },
             //将要删除的游客信息
             delingTouristInfo () {

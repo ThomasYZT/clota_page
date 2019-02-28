@@ -198,9 +198,9 @@
                         } else {
                             reject('admissionTimes');
                         }
-                    })
+                    });
 
-                })
+                });
             },
             /**
              * 基本信息表单校验
@@ -221,7 +221,7 @@
                     } else {
                         reject('playParkNull');
                     }
-                })
+                });
             },
             /**
              * 编辑时初始化表单数据

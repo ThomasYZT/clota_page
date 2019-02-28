@@ -486,14 +486,14 @@
         watch : {
 
             //储值获得积分、成长值生效设置
-            'settingData.scoreEffModeWhileCharging.storedType' : function (newVal, oldVal) {
+            'settingData.scoreEffModeWhileCharging.storedType' : function (newVal) {
                 if (newVal !== 'checkout_after') {
                     this.error.storedTimeError = '';
                 }
             },
 
             //会员积分有效期设置
-            'settingData.scoreValidityPeriod.validityType' : function (newVal, oldVal) {
+            'settingData.scoreValidityPeriod.validityType' : function (newVal) {
                 if (newVal === 'perpetual') {
                     this.settingData.scoreValidityPeriod.checked = false;
                     this.error.validityTimeError = '';
@@ -503,21 +503,21 @@
                     this.settingData.scoreValidityPeriod.checked = true;
                 }
             },
-            'settingData.scoreValidityPeriod.checked' : function (newVal, oldVal) {
+            'settingData.scoreValidityPeriod.checked' : function (newVal) {
                 if (!newVal) {
                     this.error.remindError = '';
                 }
             },
 
             //会员生日积分多倍积分
-            'settingData.scoreMultipleOnBirthday.isSwitch' : function (newVal, oldVal) {
+            'settingData.scoreMultipleOnBirthday.isSwitch' : function (newVal) {
                 if (!newVal) {
                     this.error.multipleError = '';
                 }
             },
 
             //积分生效设置
-            'settingData.scoreEffectiveMode.isIntegralType' : function (newVal, oldVal) {
+            'settingData.scoreEffectiveMode.isIntegralType' : function (newVal) {
                 if (newVal !== 'checkout_after') {
                     this.error.isNoIntegralTimeError = '';
                 }
@@ -551,7 +551,7 @@
             // },
 
             //会员积分有效期设置
-            'settingData.scoreExToCharge.donateType' : function (newVal, oldVal) {
+            'settingData.scoreExToCharge.donateType' : function (newVal) {
                 if (!newVal) {
                     this.error.donateIntegrateError = '';
                 }
@@ -776,7 +776,7 @@
                         this.error[errorField] = this.$t('errorMaxLength', { field : '',length : 10 });
                         return false;
                     } else {
-                        if (Number.parseInt(val) === Number.parseFloat(val)) {
+                        if (Number.parseInt(val,10) === Number.parseFloat(val)) {
                             if (val < 0 || val == 0) {
                                 this.error[errorField] = this.$t('fieldTypeError', { field : '' });
                                 return false;

@@ -162,7 +162,7 @@
                     ...this.auditParams
                 }).then(res => {
                     if (res.success) {
-                        if (this.auditParams.auditStatus == 'pass') {
+                        if (this.auditParams.auditStatus === 'pass') {
                             this.$Message.success(this.$t('pass', { field : this.$t('withdrawCashAudit') }));
                             this.hide();
                         } else {

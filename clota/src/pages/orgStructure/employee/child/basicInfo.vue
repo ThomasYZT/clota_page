@@ -328,7 +328,7 @@
                 this.$refs.formValidate.validateField('orgName');
             },*/
             employeeInfo : {
-                handler : function (newVal, oldVal) {
+                handler : function (newVal) {
                     if (this.isEdit && newVal.id) {
 //                        this.employee = Object.assign(this.employee, newVal);
                         this.getEmployeeDetail(newVal.id);
@@ -339,7 +339,7 @@
         },
         computed : {
             isEdit () {
-                return this.$route.query.type && (this.$route.query.type == 'modify');
+                return this.$route.query.type && (this.$route.query.type === 'modify');
             }
         },
 
@@ -369,7 +369,7 @@
                     { apiKey : 'getProvinceList', dataKey : 'nativePlace' },
                     { apiKey : 'queryRoleList', dataKey : 'privileges' },
                 ];
-                fields.forEach((item, i) => {
+                fields.forEach((item) => {
                     this.getFieldInitData(item.apiKey, item.dataKey);
                 });
             },
@@ -382,14 +382,14 @@
                 ajax.post(apiKey).then(res => {
                     if (res.success) {
                         this.enumData[dataKey] = res.data || [];
-                        if (dataKey == 'privileges') {
+                        if (dataKey === 'privileges') {
                             this.matchedData = JSON.parse(JSON.stringify(this.enumData[dataKey]));
                         }
                     }
                 });
             },
             //新增员工接口
-            saveEmployee ( param ) {
+            saveEmployee ( ) {
                 let self = this;
                 // 如果是编辑员工且密码未被修改过，那就不需要MD5加密
                 // if (self.oldPwd !== self.employee.password) {
@@ -449,7 +449,7 @@
 
             // 搜索匹配到的角色
             searchMatched () {
-                this.matchedData = this.enumData.privileges.filter((roleItem, i) => {
+                this.matchedData = this.enumData.privileges.filter((roleItem) => {
                     return roleItem.roleName.includes(this.roleKeyword);
                 });
             },
@@ -460,7 +460,7 @@
                 let professionText = [];
                 val.forEach(item => {
                     this.enumData.privileges.forEach(child => {
-                        if (child.id == item) {
+                        if (child.id === item) {
                             professionText.push(child.roleName);
                         }
                     });

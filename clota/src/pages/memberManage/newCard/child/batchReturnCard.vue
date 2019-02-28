@@ -92,23 +92,23 @@
     import confirmMemberInfo from '../components/confirmDetailModal';
     import ajax from '@/api/index.js';
 
-	export default {
-		data () {
-			return {
-			    //表头配置
+    export default {
+        data () {
+            return {
+                //表头配置
                 columnData : batchRefundColumnData,
                 //表格数据
                 tableData : [],
                 //是否显示确认模态框
                 showConfirmModal : false
             };
-		},
+        },
         components : {
             breadCrumbHead,
             tableCom,
             confirmMemberInfo
         },
-		methods : {
+        methods : {
             /**
              * 取消操作
              */
@@ -218,7 +218,7 @@
                 return this.tableData.reduce((price,item) => item.sumRefundMoney + price,0);
             }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';

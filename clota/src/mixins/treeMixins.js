@@ -32,10 +32,10 @@ export default {
          * 合并权限数据，并且将格式转换为数组格式
          * @param{Object} target 合并的权限对象数据
          * @param{Object} source 参与合并的权限对象数据
-         * @return {*}
+         * @return {*} 转换后的权限数据
          */
         mergeTreeData (target,source) {
-            let result = merge(target,source)
+            let result = merge(target,source);
             for (let item in result) {
                 return this.deepToArray(result[item]);
             }
@@ -43,7 +43,7 @@ export default {
         /**
          * 递归将权限数据转换为数组格式
          * @param{Object} param 权限对象格式信息
-         * @return {{}}
+         * @return {{}} 转换的数组结果
          */
         deepToArray (param) {
             let result = {};
@@ -65,4 +65,4 @@ export default {
             return result;
         }
     }
-}
+};

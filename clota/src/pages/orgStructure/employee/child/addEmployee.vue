@@ -32,7 +32,6 @@
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import basicForm from './basicInfo.vue';
-    import MD5 from 'crypto-js/md5';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
     import { mapGetters } from 'vuex';
 

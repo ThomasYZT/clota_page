@@ -259,25 +259,25 @@
                 //计算未取票数量、未核销数量、已核销数量、已退票数量、已改签数量
                 this.ticketList.forEach(item => {
                     //未取票
-                    if (item.pickStatus == "false") {
+                    if (item.pickStatus === "false") {
                         _obj.noRefundNum += 1;
-                    } else if (item.pickStatus == "true") {//已取票
+                    } else if (item.pickStatus === "true") {//已取票
                         _obj.takenNum += 1;
                     }
                     //已核销
-                    if (item.verifyStatus == "true") {
+                    if (item.verifyStatus === "true") {
                         _obj.verifyNum += 1;
-                    } else if (item.verifyStatus == "overdue") {
+                    } else if (item.verifyStatus === "overdue") {
                         _obj.verifyNum += 1;
                         _obj.overdueNum += 1;
                     }
 
                     //已退票
-                    if (item.refundStatus == 'refunded') {
+                    if (item.refundStatus === 'refunded') {
                         _obj.refundNum += 1;
                     }
                     //已改签
-                    if (item.rescheduleStatus == 'altered') {
+                    if (item.rescheduleStatus === 'altered') {
                         _obj.rescheduleNum += 1;
                     }
                 });
@@ -361,7 +361,7 @@
                 //景区可勾选所有产品明细申请退票或改签，包括已核销的产品
                 if (this.orderOrgType === 'channel') {
                     // 未取票、未核销、已同步的能够被勾选
-                    if (data.pickStatus == "false" && data.verifyStatus == "false" && data.syncStatus == 'success' ) {
+                    if (data.pickStatus === "false" && data.verifyStatus === "false" && data.syncStatus === 'success' ) {
                         return false;
                     } else {
                         return true;

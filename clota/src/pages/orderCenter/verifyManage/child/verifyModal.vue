@@ -90,9 +90,9 @@
              */
             handleVerify () {
                 let apiUrlKey = '';
-                if (this.verify.type == 'ticket') {
+                if (this.verify.type === 'ticket') {
                     apiUrlKey = 'checkByPickSerialNo';
-                } else if (this.verify.type == 'verify') {
+                } else if (this.verify.type === 'verify') {
                     apiUrlKey = 'checkByCheckSerialNo';
                 }
 

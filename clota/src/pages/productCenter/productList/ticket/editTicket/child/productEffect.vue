@@ -78,7 +78,7 @@
                     productEffSet : [
                         { validator : validateProductEffSet, trigger : 'change' }
                     ],
-                }
+                };
             }
         },
         methods : {
@@ -94,7 +94,7 @@
                             reject('effectFormErr');
                         }
                     });
-                })
+                });
             },
             /**
              * 编辑时初始化表单数据

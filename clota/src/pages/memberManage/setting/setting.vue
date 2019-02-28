@@ -482,7 +482,7 @@
         watch : {
 
             //会员卡有效期设置
-            'settingData.memberValidPeriod.type' : function (newVal, oldVal) {
+            'settingData.memberValidPeriod.type' : function (newVal) {
                 if (newVal === 'perpetual') {
                     this.error.vipValidityError = '';
                     this.error.vipValidityTimeError = '';
@@ -503,7 +503,7 @@
             },
 
             //卡券过期提醒设置
-            'settingData.notificationBeforeCouponExpire.isSwitch' : function (newVal, oldVal) {
+            'settingData.notificationBeforeCouponExpire.isSwitch' : function (newVal) {
                 if (!newVal) {
                     this.error.dayError = '';
                 }
@@ -616,7 +616,7 @@
                             this.$Message.success(this.$t('successTip', { tip : this.$t('saveBaseSetting') }) + '!'); // 保存基础设置成功
                         }).catch(() => {
                             this.$Message.error(this.$t('failureTip', { tip : this.$t('saveBaseSetting') }));
-                        })
+                        });
                     }).catch(() => {
                         //console.log("校验出错")
                     });
@@ -629,13 +629,13 @@
                         if (res.success) {
                             this.findBasicSet();
                             this.queryDocument();
-                            resolve()
+                            resolve();
                         } else {
-                            reject()
+                            reject();
                         }
                     }).catch(() => {
                         reject();
-                    })
+                    });
                 });
             },
             //点击取消重置数据
@@ -652,7 +652,7 @@
                                 url : this.WxMpSetInfo.wxCardBackgroundPic
                             }
                         ];
-                        this.wxMpSettingData.wxCardBackgroundPic = [this.WxMpSetInfo.wxCardBackgroundPic]
+                        this.wxMpSettingData.wxCardBackgroundPic = [this.WxMpSetInfo.wxCardBackgroundPic];
                     }
                     if (this.WxMpSetInfo.wxCardLogo) {
                         this.defaultMemberLogoImg = [
@@ -660,8 +660,8 @@
                                 name : 'logo',
                                 url : this.WxMpSetInfo.wxCardLogo
                             }
-                        ]
-                        this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo]
+                        ];
+                        this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo];
                     }
                 }
                 this.wxPushMemberLevelSetting.id = this.wxPushMemberLevelConfig.id ? this.wxPushMemberLevelConfig.id : 'close';
@@ -832,7 +832,7 @@
                         this.error[errorField] = this.$t('errorMaxLength', { field : '', length : 10 });
                         return false;
                     } else {
-                        if (Number.parseInt(val) === Number.parseFloat(val)) {
+                        if (Number.parseInt(val,10) === Number.parseFloat(val)) {
                             if (val < 0 || val == 0) {
                                 this.error[errorField] = this.$t('fieldTypeError', { field : '' });
                                 return false;
@@ -873,7 +873,7 @@
                             resolve();
                         }
                     } else {
-                        resolve()
+                        resolve();
                     }
                 });
             },
@@ -893,7 +893,7 @@
                     } else {
                         resolve();
                     }
-                })
+                });
             },
             /**
              * 校验输入的是否符合金钱的格式
@@ -942,7 +942,7 @@
                     } else {
                         resolve();
                     }
-                })
+                });
             },
             /**
              *  校验是否是数字或字母
@@ -957,7 +957,7 @@
                         this.error[errType] = this.$t('onlyNumOrLetter', { field : this.$t('') });
                         reject();
                     }
-                })
+                });
             },
             /**
              *  校验输入的是否是汉字
@@ -972,7 +972,7 @@
                       this.error[errType] = this.$t('onlyChineseCharactor');
                       reject();
                   }
-              })
+              });
             },
             /**
              *  只能输入中文、字母、数字
@@ -987,7 +987,7 @@
                         this.error[errType] = this.$t('onlyInputChineseLetterNum');
                         reject();
                     }
-                })
+                });
             },
             /**
              *  校验推送消息模版id字段 （不能超过20哥字符，只能为字母或数字）
@@ -1001,7 +1001,7 @@
                             reject();
                         });
                     } else {
-                        resolve()
+                        resolve();
                     }
                 });
             },
@@ -1032,12 +1032,12 @@
                             });
                         }).catch(() => {
                             reject();
-                        })
+                        });
                     } else {
                         resolve();
                     }
 
-                })
+                });
             },
             /**
              * 查询所有成长型的会员卡级别
@@ -1058,7 +1058,7 @@
                             reject();
                         }
                     });
-                })
+                });
             },
             /**
              * 保存卡级推送设置
@@ -1084,7 +1084,7 @@
                     } else {
                         resolve();
                     }
-                })
+                });
             },
             /**
              *  创建卡级推送设置
@@ -1108,8 +1108,8 @@
                         }
                     }).catch(() => {
                         reject();
-                    })
-                })
+                    });
+                });
             },
             /**
              *  删除卡级推送设置
@@ -1124,7 +1124,7 @@
                         }
                     }).catch(() => {
                         reject();
-                    })
+                    });
                 });
             },
             /**
@@ -1142,7 +1142,7 @@
                                     url : this.WxMpSetInfo.wxCardBackgroundPic
                                 }
                             ];
-                            this.wxMpSettingData.wxCardBackgroundPic = [this.WxMpSetInfo.wxCardBackgroundPic]
+                            this.wxMpSettingData.wxCardBackgroundPic = [this.WxMpSetInfo.wxCardBackgroundPic];
                         } else {
                             this.wxMpSettingData.wxCardBackgroundPic = [];
                         }
@@ -1152,8 +1152,8 @@
                                     name : 'logo',
                                     url : this.WxMpSetInfo.wxCardLogo
                                 }
-                            ]
-                            this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo]
+                            ];
+                            this.wxMpSettingData.wxCardLogo = [this.wxMpSettingData.wxCardLogo];
                         } else {
                             this.wxMpSettingData.wxCardLogo = [];
                         }
@@ -1167,7 +1167,7 @@
                     } else {
                         this.WxMpSetInfo = {};
                     }
-                })
+                });
             },
             /**
              * 查询微信会员卡推送设置
@@ -1197,7 +1197,7 @@
             uploadSuc (data, type) {
                 if (type === 'card-logo') {
                     this.wxMpSettingData.wxCardLogo = data.map((item) => {
-                        return item.url
+                        return item.url;
                     });
                     this.defaultMemberLogoImg = this.wxMpSettingData.wxCardLogo.map((url, index) => {
                         return {
@@ -1208,7 +1208,7 @@
                     this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
-                        return item.url
+                        return item.url;
                     });
                     this.defaultMemberBgImg = this.wxMpSettingData.wxCardBackgroundPic.map((url, index) => {
                         return {
@@ -1225,7 +1225,7 @@
             removeIDimg (data, type) {
                 if (type === 'card-logo') {
                     this.wxMpSettingData.wxCardLogo = data.map((item) => {
-                        return item.url
+                        return item.url;
                     });
                     this.defaultMemberLogoImg = this.wxMpSettingData.wxCardLogo.map((url, index) => {
                         return {
@@ -1236,7 +1236,7 @@
                     this.checkCardLogo();
                 } else if (type === 'card-bg') {
                     this.wxMpSettingData.wxCardBackgroundPic = data.map((item) => {
-                        return item.url
+                        return item.url;
                     });
                     this.defaultMemberBgImg = this.wxMpSettingData.wxCardBackgroundPic.map((url, index) => {
                         return {
@@ -1268,9 +1268,9 @@
                                 if (res.code && res.code === 'S014') {
                                     this.$Message.error(this.$t('clota-adminSettingError'));
                                 } else if (res.code && res.code === 'S013') {
-                                    this.$Message.error(this.$t('wechatError'))
+                                    this.$Message.error(this.$t('wechatError'));
                                 } else {
-                                    this.$Message.error(this.$t('saveWxCardInfoFailure'))
+                                    this.$Message.error(this.$t('saveWxCardInfoFailure'));
                                 }
                                 reject();
                             }
@@ -1281,7 +1281,7 @@
                         resolve();
                     }
 
-                })
+                });
             }
         },
         beforeRouteEnter (to,from,next) {
@@ -1289,7 +1289,7 @@
                 let oMeta = document.createElement('meta');
                 oMeta.content = 'never';
                 oMeta.name = 'referrer';
-                oMeta.id = 'content_never'
+                oMeta.id = 'content_never';
                 document.getElementsByTagName('head')[0].appendChild(oMeta);
             });
         },

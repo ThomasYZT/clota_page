@@ -35,7 +35,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import ajax from '@/api/index';
 
     export default {
         components : {},
@@ -57,7 +56,7 @@
              * 显示模态框
              * @param data {data有值表示查看，反之新增}
              */
-            show (data) {
+            show (data) {//todo:查看能否去掉
                 this.visible = true;
             },
             /**

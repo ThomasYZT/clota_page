@@ -11,7 +11,7 @@ import { notDistributorChannelList, payStatusList, takeTicketStatusList, refundS
  * @returns {string}
  */
 export const transOrderOrg = (value) => {
-    let orderChannel = notDistributorChannelList.find((channel, i) => {
+    let orderChannel = notDistributorChannelList.find((channel) => {
         return value === channel.value;
     });
 
@@ -24,7 +24,7 @@ export const transOrderOrg = (value) => {
  * @returns {string}
  */
 export const transPaymentStatus = (status) => {
-    let paymentStatus = payStatusList.find((payment, i) => {
+    let paymentStatus = payStatusList.find((payment) => {
         return status === payment.value;
     });
 
@@ -37,7 +37,7 @@ export const transPaymentStatus = (status) => {
  * @returns {string}
  */
 export const transSyncStatus = (status) => {
-    let syncStatus = orderSyncStatus.find((item, i) => {
+    let syncStatus = orderSyncStatus.find((item) => {
         return status === item.value;
     });
 
@@ -50,7 +50,7 @@ export const transSyncStatus = (status) => {
  * @returns {string}
  */
 export const transPickStatus = (status) => {
-    let currentStatus = [...takeTicketStatusList, ...pickTicketStatusList].find((item, i) => {
+    let currentStatus = [...takeTicketStatusList, ...pickTicketStatusList].find((item) => {
         return status === item.value;
     });
 
@@ -64,7 +64,7 @@ export const transPickStatus = (status) => {
  * @returns {string}
  */
 export const transRefundStatus = (status) => {
-    let currentStatus = refundStatusList.find((item, i) => {
+    let currentStatus = refundStatusList.find((item) => {
         return status === item.value;
     });
 
@@ -77,7 +77,7 @@ export const transRefundStatus = (status) => {
  * @returns {string}
  */
 export const transRescheduleStatus = (status) => {
-    let currentStatus = rescheduleStatus.find((item, i) => {
+    let currentStatus = rescheduleStatus.find((item) => {
         return status === item.value;
     });
 
@@ -90,7 +90,7 @@ export const transRescheduleStatus = (status) => {
  * @returns {string}
  */
 export const transVerifyStatus = (status) => {
-    let currentStatus = [...verifyStatusList, ...verifyStatus].find((item, i) => {
+    let currentStatus = [...verifyStatusList, ...verifyStatus].find((item) => {
         return status === item.value;
     });
 
@@ -103,7 +103,7 @@ export const transVerifyStatus = (status) => {
  * @returns {string}
  */
 export const transAudit = (status) => {
-    let currentStatus = batchAudit.find((item, i) => {
+    let currentStatus = batchAudit.find((item) => {
         return status === item.value;
     });
 
@@ -116,7 +116,7 @@ export const transAudit = (status) => {
  * @returns {string}
  */
 export const transSMSStatus = (status) => {
-    let currentStatus = smsStatusList.find((item, i) => {
+    let currentStatus = smsStatusList.find((item) => {
         return status === item.value;
     });
 

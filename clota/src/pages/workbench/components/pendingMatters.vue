@@ -145,7 +145,7 @@
                     } else {
                         return false;
                     }
-                })
+                });
             }
         }
     };

@@ -65,8 +65,6 @@
                     memberOrderModel : {},
                     payModels : [],
                 },
-
-//                scoreRule: {}
             };
         },
         computed : {
@@ -80,14 +78,6 @@
         },
         created () {
             this.getOrderDetail();
-            /*setTimeout(() => {
-                 this.scoreRule = {
-                    "memberList": {discountRate:0.20,scoreRate:10.00},
-                    "typeList": {"冰雪世界":[{prodDiscountRate:0.80,prodScoreRate:5.00,typeName:'主食'}]},
-                    "storeList": [{deptDiscountRate:0.90,deptScoreRate:10.00,orgName:'冰雪世界'},{deptDiscountRate:0.90,deptScoreRate:10.00,orgName:'室内景区'}],
-                    "staffList": {discountRate:0.30,scoreRate:1.00}
-                }
-            }, 2000);*/
         },
         mounted () {
         },

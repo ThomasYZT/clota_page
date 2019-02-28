@@ -62,7 +62,7 @@
                         { type : 'string', max : 500, message : this.$t('errorMaxLength', { field : this.$t('desc'), length : 500 }), trigger : 'blur' },
                         { validator : emoji, trigger : 'blur' },
                     ],
-                }
+                };
             }
         },
         methods : {
@@ -78,8 +78,8 @@
                         } else {
                             reject('baseInfoError');
                         }
-                    })
-                })
+                    });
+                });
             },
             /**
              * 编辑时初始化表单数据

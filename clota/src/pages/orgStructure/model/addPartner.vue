@@ -202,11 +202,11 @@
             // 确定新增/修改合作伙伴
             confirmAddPartner () {
                 let partnerObj = {};
-                if (this.type == 'add') {
+                if (this.type === 'add') {
                     partnerObj.apiKey = 'addPartner';
                     partnerObj.successTip = this.$t('successTip',{ tip : this.$t('addPartner') });
                     partnerObj.failTip = this.$t('failureTip',{ tip : this.$t('addPartner') });
-                } else if (this.type == 'modify') {
+                } else if (this.type === 'modify') {
                     partnerObj.apiKey = 'updatePartner';
                     partnerObj.successTip = this.$t('successTip',{ tip : this.$t('editPartner') });
                     partnerObj.failTip = this.$t('failureTip',{ tip : this.$t('editPartner') });
@@ -217,7 +217,7 @@
                 ajax.post(partnerObj.apiKey, this.addPartner).then(res => {
                     if (res.success) {
                         // 新增成功后，根据partnerId 找到匹配的合作伙伴数据，并将合作伙伴名称显示在提示信息内容中
-                        let partnerName = this.partners.find((item, i) => {
+                        let partnerName = this.partners.find((item) => {
                             return item.id === this.addPartner.partnerId;
                         });
                         this.$Message.success( partnerObj.successTip + '：' + (partnerName ? partnerName.orgName : '') );
@@ -233,7 +233,7 @@
             // 改变合作伙伴选择的处理
             handlePartnerChanged (selected) {
                 if (selected) {
-                    this.addPartner.channelName = this.partners.find((item, i) => {
+                    this.addPartner.channelName = this.partners.find((item) => {
                         return item.id === selected;
                     }).orgName;
                 }

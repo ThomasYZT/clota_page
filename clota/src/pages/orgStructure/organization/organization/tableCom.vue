@@ -58,7 +58,8 @@
                                 <template slot-scope="scoped">
                                     <span
                                         class="operate-info"
-                                        v-for="list in item.operateList"
+                                        v-for="(list,index) in item.operateList"
+                                        :key="index"
                                         @click="list['click']">{{list['name']}}</span>
                                 </template>
                             </el-table-column>
@@ -188,9 +189,8 @@
             },
             /**
              * 页码改变
-             * @param pageNo
              */
-            pageNoChange (pageNo) {
+            pageNoChange () {
                 this.$emit('get-new-data',{
                     pageSize : this.pageSize,
                     pageNo : this.pageNo,

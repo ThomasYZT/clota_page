@@ -125,7 +125,7 @@
         data () {
             //校验第二次输入的密码和第一次是否相同 个人注册
             const isEqNewPwd = (rule, value, callback) => {
-                if (value != this.formData.password) {
+                if (value !== this.formData.password) {
                     callback(new Error(this.$t('passwordNotEqual')));
                 } else {
                     callback();
@@ -230,7 +230,7 @@
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('password') }), trigger : 'blur' },
                         { validator : this.isEqNewPwd, trigger : 'blur' },
                     ],
-                }
+                };
             }
         },
         methods : {

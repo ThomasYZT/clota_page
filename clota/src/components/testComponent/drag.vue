@@ -52,7 +52,6 @@
              * @param e
              */
             move (e) {
-                console.log(this.startDrag)
                 if (!this.startDrag) return;
                 // e.preventDefault();
                 let touch = null;

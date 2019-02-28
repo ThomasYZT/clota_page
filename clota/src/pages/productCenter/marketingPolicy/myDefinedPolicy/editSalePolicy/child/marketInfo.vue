@@ -128,7 +128,7 @@
                             }
                         }
                     ]
-                }
+                };
             }
         },
         methods : {
@@ -205,7 +205,7 @@
              *  取消新增营销等级数据
              *  @param {object} data
              */
-            cancelMarketingData (data) {
+            cancelMarketingData (data) {//todo:查看能否去掉
                 this.formData.marketingData.pop();
             },
             /**

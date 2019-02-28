@@ -322,7 +322,7 @@
                           itemRule : this.formData.itemRule,
                           settlePrice : this.formData.settlePrice }
                     ]
-                }
+                };
             }
         },
         methods : {

@@ -115,7 +115,7 @@
                     { required : true, message : this.$t('errorEmpty', { msg : this.$t('typeName') }), trigger : 'blur' },
                     { max : 10, message : this.$t('errorMaxLength', { field : this.$t('typeName'), length : 10 }), trigger : 'blur' },
                     { validator : this.validateMethods.emoji, trigger : 'blur' },
-                ]
+                ];
             },
             //新增类别表单校验规则
             ruleValidate () {
@@ -126,7 +126,7 @@
                         { max : 10, message : this.$t('errorMaxLength', { field : this.$t('typeName'), length : 10 }), trigger : 'blur' },
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                     ]
-                }
+                };
             }
         },
         methods : {
@@ -149,7 +149,7 @@
              * 确认
              */
             confirm () {
-                this.hide()
+                this.hide();
             },
             /**
              * 获取类别列表数据
@@ -166,7 +166,7 @@
                                 name : item.name,
                                 //是否处于编辑状态
                                 editing : false,
-                            }
+                            };
                         });
                     } else {
                         this.typeList = [];
@@ -203,7 +203,7 @@
                     } else {
                         this.$Message.error(this.$t('productTypeIsUsingTip'));
                     }
-                })
+                });
             },
             /**
              * 保存类别

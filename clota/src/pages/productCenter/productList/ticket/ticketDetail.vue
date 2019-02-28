@@ -451,7 +451,7 @@
                 let info = {
                     admissionInstructions : data.admissionInstructions,
                     parkName : data.parkName,
-                }
+                };
                 this.$refs.admissionInstructionsModal.show(info);
             },
             /**
