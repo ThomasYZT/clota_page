@@ -13,7 +13,7 @@ class CustomFormatter {
         //对于{field} format error 格式的模板，将field对应的单词全部小写
         if (values && Object.keys(values).length > 0) {
             for (let item in values) {
-                values[item] = values[item].toLowerCase();
+                values[item] = String(values[item]).toLowerCase();
             }
         }
         return new VueI18n().formatter.interpolate(message,values);
