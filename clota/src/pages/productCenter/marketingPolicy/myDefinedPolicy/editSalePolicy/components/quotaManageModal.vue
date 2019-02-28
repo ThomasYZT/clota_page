@@ -243,7 +243,7 @@
                     this.$emit('updateQuotaChannelData', this.quotaChannelData);
                     this.hide();
                 } else {
-                    this.$Message.warning("please", { msg : this.$t('saveSetting') });
+                    this.$Message.warning(this.$t("please", { msg : this.$t('saveSetting') }));
                 }
             },
             /**
