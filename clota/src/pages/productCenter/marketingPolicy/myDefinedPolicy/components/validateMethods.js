@@ -134,9 +134,17 @@ export const validateNaturalNumber = (rule, value, callback) => {
     if (value) {
         if ( validator.isNumber(value)) {
             if (Number(value) < 0) {
-                callback(i18n.t('smallerError', { field : i18n.t(rule.field), num : '0' }));
+                callback(i18n.t('smallerError', { field : '', num : '0' }));
             } else {
-                callback()
+                common.validateInteger(value).then(() => {
+                    callback();
+                }).catch(err => {
+                    if (err === 'errorMaxLength') {
+                        callback(i18n.t(err,{ field : '', length : 10 }));
+                    } else {
+                        callback(i18n.t(err,{ field : '' }));
+                    }
+                });
             }
         } else {
             callback(i18n.t('numError', { field : i18n.t(rule.field) }))
