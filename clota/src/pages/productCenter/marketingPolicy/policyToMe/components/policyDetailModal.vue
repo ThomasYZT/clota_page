@@ -295,7 +295,7 @@
                        </i-row>
                        <i-row>
                            <i-col span="24">
-                               <Form-item :label="$t('noticeInPark')+':'"><!--入园须知-->
+                               <Form-item :label="$t('reservationNotes')+':'"><!--预定须知-->
                                    <div style="word-break: break-all;"
                                         v-html="detail.productPolicy.buyTicketNotes"
                                         v-if="detail.productPolicy.buyTicketNotes"></div>
