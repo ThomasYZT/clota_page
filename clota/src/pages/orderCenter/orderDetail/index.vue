@@ -202,7 +202,7 @@
                 slot-scope="row"
                 :label="row.title"
                 fixed="right"
-                :width="(returnTicketMenuShow.show || returnTeamMenuShow.show) ? (lang === 'zh-CN' ? 170 : 210) : 80">
+                :width="(returnTicketMenuShow.show || returnTeamMenuShow.show) ? (lang === 'zh-CN' ? 170 : 230) : 80">
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <li v-if="returnTicketMenuShow.show && scope.row.orderType === 'individual' && canApplyRefund"
