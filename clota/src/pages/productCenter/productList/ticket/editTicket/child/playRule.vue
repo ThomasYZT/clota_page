@@ -76,7 +76,7 @@
         </Form>
 
         <!--新增/编辑园区-->
-        <edit-park-modal ref="editPark" :park-list="parkList" :data="formData"></edit-park-modal>
+        <edit-park-modal ref="editPark" :park-list="parkList" :ticketDetail="formData"></edit-park-modal>
     </div>
 </template>
 
@@ -144,9 +144,8 @@
             addPark () {
                 this.$refs.editPark.show({
                     title : this.$t('add') + this.$t('one_ticket'),
-                    parkList : Array.from(this.parkList),
                     type : 'add',
-                    list : this.productPlayRuleVo,
+                    chosedParkList : this.productPlayRuleVo,
                     confirmCallback : ( data ) => {
                         this.productPlayRuleVo.push(data);
                     }
@@ -161,8 +160,7 @@
                 this.$refs.editPark.show({
                     index : index,
                     data : data,
-                    parkList : Array.from(this.parkList),
-                    list : this.productPlayRuleVo,
+                    chosedParkList : this.productPlayRuleVo,
                     title : this.$t('modify') + (data.saleType === 'one_ticket' ? this.$t('oneTicketPark') : this.$t('moreTicketPark')),
                     type : 'modify',
                     confirmCallback : ( data, index ) => {

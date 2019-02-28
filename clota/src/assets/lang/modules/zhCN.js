@@ -2604,5 +2604,6 @@ export default {
     "productEffSetTip2" : "同销售政策适用游玩期限：在销售政策指定游玩期限内，任意一天均可核销。不适用于团队产品，不可限定每日库存。",
     "province" : "省份",
     "city" : "城市",
-    "area" : "区域"
+    "area" : "区域",
+    'requiredBiggerThanItemCheckTimes' : '必选游玩项目数量不能超过游玩项目总次数'
 };

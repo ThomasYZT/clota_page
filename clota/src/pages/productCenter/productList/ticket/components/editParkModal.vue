@@ -34,11 +34,11 @@
                             </template>
                             <template v-else>
                                 <Select v-model="formData.parkId"
-                                        v-if="parkList"
+                                        v-if="type !== 'check'"
                                         :disabled="type === 'check'"
                                         :placeholder="$t('selectField', {msg: ''})"
                                         @on-change="selectParkChange">
-                                    <Option v-for="(item,index) in parkList"
+                                    <Option v-for="(item,index) in optionalParkList"
                                             :key="index"
                                             :value="item.id">
                                         {{item.orgName}}
@@ -73,7 +73,7 @@
                     </i-col>
                 </i-row>
                 <!--产品有效性设置 === 自游玩之日起M天有效-->
-                <i-row v-if="data.productEffSet === 'since_the_play'">
+                <i-row v-if="ticketDetail.productEffSet === 'since_the_play'">
                     <i-col span="24">
                         <Form-item prop="effTimes">
                             <span>{{$t('dayToPlay')}}</span>
@@ -91,7 +91,7 @@
                     </i-col>
                 </i-row>
                 <!--产品有效性设置 === 同销售政策适用游玩期限-->
-                <i-row v-if="data.productEffSet === 'same_to_policy'">
+                <i-row v-if="ticketDetail.productEffSet === 'same_to_policy'">
                     <i-col span="24">
                         <Form-item prop="effTimes">
                             <span>{{$t('timesToPolicy')}}</span>
@@ -131,7 +131,7 @@
                                 v-if="type === 'check'"
                                 :table-com-min-height="250"
                                 :column-data="viewDistributeColumnHead"
-                                :table-data="checkPoint"
+                                :table-data="formData.checkPoint"
                                 :border="false">
                                 <el-table-column
                                     slot="column0"
@@ -151,7 +151,7 @@
                                 v-else
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
-                                :table-data="checkPoint"
+                                :table-data="formData.checkPoint"
                                 :border="false">
                                 <el-table-column
                                     slot="column0"
@@ -235,11 +235,11 @@
                     <i-col span="24">
                         <FormItem :label="$t('choosePark')" prop="parkId"><!--选择园区-->
                             <Select v-model="formData.parkId"
-                                    v-if="parkList"
+                                    v-if="type !== 'check'"
                                     :disabled="type === 'check'"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     @on-change="selectParkChange">
-                                <Option v-for="(item,index) in parkList"
+                                <Option v-for="(item,index) in optionalParkList"
                                         :key="index"
                                         :value="item.id">
                                     {{item.orgName}}
@@ -258,7 +258,8 @@
                         <FormItem :label="$t('saleType')" prop="saleType"><!--售票方式-->
                             <Select v-model="formData.saleType"
                                     :disabled="type === 'check'"
-                                    :placeholder="$t('selectField', {msg: ''})" @on-change="changeSaleType">
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    @on-change="changeSaleType">
                                 <Option v-for="(item,index) in enumData.saleType"
                                         :key="index"
                                         :value="item.value">
@@ -274,7 +275,7 @@
                 <!--入园核销-->
                 <title-park title="enterCheck"></title-park>
                 <!--产品有效性设置 === 自游玩之日起M天有效-->
-                <i-row v-if="data.productEffSet === 'since_the_play'">
+                <i-row v-if="ticketDetail.productEffSet === 'since_the_play'">
                     <i-col span="24">
                         <Form-item prop="effTimes">
                             <span>{{$t('dayToPlay')}}</span>
@@ -292,7 +293,7 @@
                     </i-col>
                 </i-row>
                 <!--产品有效性设置 === 同销售政策适用游玩期限-->
-                <i-row v-if="data.productEffSet === 'same_to_policy'">
+                <i-row v-if="ticketDetail.productEffSet === 'same_to_policy'">
                     <i-col span="24">
                         <Form-item prop="effTimes">
                             <span>{{$t('timesToPolicy')}}</span>
@@ -331,7 +332,7 @@
                                 auto-height
                                 :table-com-min-height="250"
                                 :column-data="viewDistributeColumnHead"
-                                :table-data="checkPoint"
+                                :table-data="formData.checkPoint"
                                 :border="false">
                                 <el-table-column
                                     slot="column0"
@@ -352,7 +353,7 @@
                                 auto-height
                                 :table-com-min-height="250"
                                 :column-data="distributeColumnHead"
-                                :table-data="checkPoint"
+                                :table-data="formData.checkPoint"
                                 :border="false">
                                 <el-table-column
                                     slot="column0"
@@ -440,7 +441,7 @@
                             auto-height
                             :table-com-min-height="250"
                             :column-data="proGroupColumnHead"
-                            :table-data="playPoint"
+                            :table-data="formData.playPoint"
                             :border="false">
                             <el-table-column
                                 slot="column0"
@@ -475,8 +476,7 @@
                                                      :min="0"
                                                      :precision="0"
                                                      v-model.trim="scope.row.sumTimes"
-                                                     :placeholder="$t('inputField', {field: ''})"
-                                                     @on-blur="checkTimes(scope.row.sumTimes)">
+                                                     :placeholder="$t('inputField', {field: ''})">
                                         </InputNumber>
                                     </template>
                                 </template>
@@ -499,8 +499,7 @@
                                                          :min="0"
                                                          :precision="0"
                                                          v-model.trim="scope.row.dayTimes"
-                                                         :placeholder="$t('inputField', {field: ''})"
-                                                         @on-blur="checkTimes(scope.row.dayTimes)">
+                                                         :placeholder="$t('inputField', {field: ''})">
                                             </InputNumber>
                                     </template>
                                 </template>
@@ -584,7 +583,22 @@
     import ajax from '@/api/index';
 
     export default {
-        props : ['data'],
+        props : {
+            //当前票类的详细信息
+            ticketDetail : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            },
+            //全部园区列表数据
+            parkList : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            }
+        },
         components : {
             tableCom,
             titlePark,
@@ -598,72 +612,71 @@
                     } else {
                         callback();
                     }
-                }
-            };
-            //校验正整数
-            const validateNumber = (rule,value,callback) => {
-                if (value) {
-                    common.validateInteger(value).then(() => {
-                        callback();
-                    }).catch(err => {
-                        if (err === 'errorMaxLength') {
-                            callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
-                        } else {
-                            callback(this.$t(err,{ field : this.$t(rule.field) }));
-                        }
-                    });
-                }
-            };
-            //校验次数，天数
-            const validateTimes = (rule,value,callback) => {
-                common.validateInteger(value).then(() => {
-                    callback();
-                    if (this.data.productEffSet === 'since_the_play') {
-                        common.validateInteger(this.formData.effDay).then(() => {
+                },
+                //校验正整数
+                validateNumber : (rule,value,callback) => {
+                    if (value) {
+                        common.validateInteger(value).then(() => {
                             callback();
                         }).catch(err => {
                             if (err === 'errorMaxLength') {
-                                callback(this.$t(err,{ field : '', length : 10 }));
+                                callback(this.$t(err,{ field : this.$t(rule.field),length : 10 }));
                             } else {
-                                callback(this.$t(err,{ field : '' }));
+                                callback(this.$t(err,{ field : this.$t(rule.field) }));
                             }
                         });
                     }
-                }).catch(err => {
-                    if (err === 'errorMaxLength') {
-                        callback(this.$t(err,{ field : '', length : 10 }));
+                },
+                //校验次数，天数
+                validateTimes : (rule,value,callback) => {
+                    common.validateInteger(value).then(() => {
+                        callback();
+                        if (this.ticketDetail.productEffSet === 'since_the_play') {
+                            common.validateInteger(this.formData.effDay).then(() => {
+                                callback();
+                            }).catch(err => {
+                                if (err === 'errorMaxLength') {
+                                    callback(this.$t(err,{ field : '', length : 10 }));
+                                } else {
+                                    callback(this.$t(err,{ field : '' }));
+                                }
+                            });
+                        }
+                    }).catch(err => {
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t(err,{ field : '', length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : '' }));
+                        }
+                    });
+                },
+                //校验游玩项目分组
+                validateEquipmentGroup : (rule,value,callback) => {
+                    if (value && value.length > 0) {
+                        callback();
                     } else {
-                        callback(this.$t(err,{ field : '' }));
+                        callback(this.$t('selectField', { msg : this.$t('addProjectGroup') }));
                     }
-                });
-            };
-            //校验核销设备分组
-            const validateGardenGroup = (rule,value,callback) => {
-                if (value) {
-                    callback();
-                } else {
-                    callback(this.$t('selectField', { msg : this.$t('equipmentGroup') }));
-                }
-            };
-            //校验游玩项目分组
-            const validateEquipmentGroup = (rule,value,callback) => {
-                if (value && value.length > 0) {
-                    callback();
-                } else {
-                    callback(this.$t('selectField', { msg : this.$t('addProjectGroup') }));
-                }
-            };
-
-            const timesCheck = (rule, value, callback) => {
-                this.playPoint.forEach(item => {
-                    if (item.dayTimes > item.sumTimes) {
-                        callback(this.$t('sumBiggerThenDaySum'));
+                },
+                //校验每日可游玩次数和l累计可游玩次数
+                timesCheck : (rule, value, callback) => {
+                    this.formData.playPoint.forEach(item => {
+                        if (item.dayTimes > item.sumTimes) {
+                            callback(this.$t('sumBiggerThenDaySum'));
+                        } else {
+                            callback();
+                        }
+                    });
+                },
+                requiredItemCheck : (rule, value, callback) => {
+                    if (this.formData.playPoint.filter(item => item.playType === 'required').length >=
+                        Number(this.formData.itemCheckTimes)) {
+                        callback(this.$t('requiredBiggerThanItemCheckTimes'));
                     } else {
                         callback();
                     }
-                });
+                },
             };
-
             return {
                 //记录修改的数据
                 index : null,
@@ -683,40 +696,16 @@
                     parkId : '',//选择园区
                     saleType : 'one_ticket',//售票方式
                     //入园核销
+                    checkPoint : [], //可游玩园区表格数据 核销设备点 数组
+                    gardenGroupIds : [],//核销设备分组ID
                     effDay : '1',
                     effTimes : '1',
-                    gardenGroupIds : '',//核销设备分组ID
                     fingerCheck : false,//其他设置
                     //游玩项目
                     itemCheckTimes : 0,//项目游玩总次数itemCheckTimes
                     equipmentGroupIds : [],//游玩项目分组ID-多个逗号分隔
+                    playPoint : [],//项目分组表格数据(核销分组下的核销设备列表数据) 游玩项目点 数组
                     admissionInstructions : '',
-                },
-                ruleValidate : {
-                    parkId : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('choosePark') }), trigger : 'change' }, // 不能为空
-                    ],
-                    saleType : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleType') }), trigger : 'change' },
-                    ],
-                    equipmentGroupIds : [
-                        { validator : validateEquipmentGroup, trigger : 'change' }
-                    ],
-                    effTimes : [
-                        { max : 10, message : this.$t('errorMaxLength', { field : '', length : 10 }), trigger : 'blur' },
-                        { validator : validateMethod.emoji, trigger : 'blur' },
-                        { validator : validateTimes, trigger : 'blur' }
-                    ],
-                    itemCheckTimes : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('projectTotalTimes') }), trigger : 'blur' },
-                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('projectTotalTimes'), length : 10 }), trigger : 'blur' },
-                        { validator : validateMethod.emoji, trigger : 'blur' },
-                        { validator : validateNumber, trigger : 'blur' },
-                    ],
-                    timesCheck : [
-                        { validator : timesCheck, trigger : 'blur' },
-                    ],
-                    admissionInstructions : []
                 },
                 //枚举数据
                 enumData : {
@@ -729,115 +718,341 @@
                 },
                 //入园检票处表头
                 distributeColumnHead : distributeColumnHead,
-                viewDistributeColumnHead : viewDistributeColumnHead,//查看表头
-                //可游玩园区表格数据 核销设备点 数组
-                checkPoint : [],
+                //查看表头
+                viewDistributeColumnHead : viewDistributeColumnHead,
                 //项目分组表头
                 proGroupColumnHead : proGroupColumnHead,
-                //项目分组表格数据(核销分组下的核销设备列表数据) 游玩项目点 数组
-                playPoint : [],
                 //复制数据，用于修改初次赋值
                 copyData : {},
-                check : false,
-                //可游玩园区
-                parkList : []
+                //已选择的园区列表数据
+                chosedParkList : [],
+                //表单校验方法
+                validateMethod : validateMethod,
             };
         },
+        computed : {
+            //可选园区列表数据
+            optionalParkList () {
+                return this.parkList.filter(park => {
+                    return !this.chosedParkList.find(item => {
+                        return item.parkId === park.id;
+                    });
+                });
+            },
+            ruleValidate () {
+                return {
+                    parkId : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('choosePark') }), trigger : 'change' }, // 不能为空
+                    ],
+                    saleType : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('saleType') }), trigger : 'change' },
+                    ],
+                    equipmentGroupIds : [
+                        { validator : this.validateMethod.validateEquipmentGroup, trigger : 'change' }
+                    ],
+                    effTimes : [
+                        { max : 10, message : this.$t('errorMaxLength', { field : '', length : 10 }), trigger : 'blur' },
+                        { validator : this.validateMethod.emoji, trigger : 'blur' },
+                        { validator : this.validateMethod.validateTimes, trigger : 'blur' }
+                    ],
+                    itemCheckTimes : [
+                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('projectTotalTimes') }), trigger : 'blur' },
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('projectTotalTimes'), length : 10 }), trigger : 'blur' },
+                        { validator : this.validateMethod.emoji, trigger : 'blur' },
+                        { validator : this.validateMethod.validateNumber, trigger : 'blur' },
+                    ],
+                    timesCheck : [
+                        { validator : this.validateMethod.timesCheck, trigger : 'change' },
+                        { validator : this.validateMethod.requiredItemCheck, trigger : 'change' },
+                    ],
+                    admissionInstructions : []
+                };
+            }
+        },
         methods : {
-
-            //售票方式改变
+            /**
+             * 显示 模态框
+             * @param index 当前修改的产品序号
+             * @param list  已选择的园区列表
+             * @param parkList 所有园区列表
+             * @param data  当前修改的产品数据
+             * @param type  当前模态框的状态，新增、修改、查看
+             * @param title 模态框的标签
+             * @param confirmCallback 确认回调方法
+             * @param cancelCallback 取消回调方法
+             */
+            show ({ index, chosedParkList, data, type, title, confirmCallback = null, cancelCallback }) {
+                this.title = title;
+                this.type = type;
+                this.index = index;
+                //赋值已选择的园区列表数据，更新可选择的园区列表数据
+                if (chosedParkList) {
+                    this.chosedParkList = chosedParkList;
+                }
+                if (data) {
+                    //从已选择园区列表中过滤掉当前查看或修改的园区
+                    this.chosedParkList = chosedParkList.filter(item => {
+                        return item.parkId !== data.parkId;
+                    });
+                    //备份数据初始化
+                    this.dataBackup(data);
+                    //表单数据初始化
+                    this.formData = defaultsDeep({}, this.copyData);
+                    //查询景区下的核销设备组
+                    this.getOrgGroupList({ id : data.parkId });
+                }
+                if (this.ticketDetail.productEffSet === 'same_to_policy') {
+                    this.formData.effDay = '';
+                }
+                if (confirmCallback && typeof confirmCallback == 'function') {
+                    this.confirmCallback = confirmCallback;
+                }
+                if (cancelCallback && typeof cancelCallback == 'function') {
+                    this.cancelCallback = cancelCallback;
+                }
+                this.visible = true;
+            },
+            /**
+             *  北备用数据准备
+             *  @param data
+             */
+            dataBackup (data) {
+                //准备备用数据
+                this.copyData = defaultsDeep({}, data);
+                //指纹验证是否开启
+                if (data.fingerCheck == 'true' || data.fingerCheck === true) {
+                    this.copyData.fingerCheck = true;
+                } else {
+                    this.copyData.fingerCheck = false;
+                }
+                //数字转字符串
+                this.copyData.effDay = data.effDay ? String(data.effDay) : '0';
+                this.copyData.effTimes = data.effTimes ? String(data.effTimes) : '0';
+                //字符串转数组
+                this.copyData.playPoint.forEach( item => {
+                    item.sumTimes = item.sumTimes ? Number(item.sumTimes) : 0;
+                    item.dayTimes = item.dayTimes ? Number(item.dayTimes) : 0;
+                });
+                //核销设备分组ID、游玩项目分组ID初始化
+                this.copyData.gardenGroupIds = data.gardenGroupIds ? data.gardenGroupIds.split(',') : [];
+                this.copyData.equipmentGroupIds = data.equipmentGroupIds ? data.equipmentGroupIds.split(',') : [];
+            },
+            /**
+             * 查询核销设备组
+             * @param data
+             */
+            getOrgGroupList ( data ) {
+                ajax.post('getOrgGroupList', {
+                    orgId : data.id,
+                    groupType : 'check',
+                }).then(res => {
+                    if (res.success) {
+                        this.enumData.group = res.data || [];
+                    } else {
+                        this.enumData.group = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
+             *  重新选择园区，联动查询设备分组
+             *  @param val
+             */
+            selectParkChange ( val ) {
+                let obj = this.optionalParkList.find( item => val === item.id );
+                if (obj) {
+                    this.formData.parkName = obj.orgName;
+                    this.getOrgGroupList(obj);
+                }
+            },
+            /**
+             *  售票方式改变
+             *  @param val 当前选择的售票方式
+             */
             changeSaleType ( val ) {
-                let obj = this.enumData.saleType.find( item => val === item.value );
-                if (obj && val === 'one_ticket') {
+                //根据选择的售票方式设置模态框的标题 -- 修改/新增，一票制/多票制
+                if (val === 'one_ticket') {
                     this.title = this.$t(this.type) + this.$t('oneTicketPark');
                 } else {
                     this.title = this.$t(this.type) + this.$t('moreTicketPark');
                 }
+                //售票方式发生变化时，重置对应的表单
                 this.$nextTick(() => {
                     let fromRef = '';
                     if (this.formData.saleType === 'one_ticket') {
                         fromRef = 'oneTicketFormValidate';
                     } else if (this.formData.saleType === 'assort') {
                         fromRef = 'moreTicketFormValidate';
+                    } else {
+                        fromRef = '';
                     }
                     if (fromRef) {
-                        this.$refs[fromRef].resetFields();
+                        this.$refs[fromRef].fields.forEach((e) => {
+                            e.resetField();
+                        });
                     }
                 });
             },
-
-            //设备分组改变
+            /**
+             *  设备分组改变
+             *  @param val
+             */
             changeEquipmentGroup ( val ) {
-                // let obj = this.enumData.group.find( item => val === item.id );
-                // if (obj) {
-                //     this.checkPoint = [];
-                //     this.getCheckItems(obj);
-                // }
                 if (val && val.length > 0) {
-                    this.checkPoint = [];
                     val.forEach( value => {
                         let obj = this.enumData.group.find( item => value === item.id );
                         if (obj) {
-                            this.getCheckItems(obj);
+                            this.getCheckItems(obj, 'checkPoint');
                         }
                     });
                 } else {
-                    this.checkPoint = [];
+                    this.formData.checkPoint = [];
                 }
             },
-
-            //项目分组改变
+            /**
+             *  项目分组改变
+             *  @param val
+             */
             changeProjectGroup ( val ) {
                 if (val && val.length > 0) {
-                    this.playPoint = [];
                     val.forEach( value => {
                         let obj = this.enumData.group.find( item => value === item.id );
                         if (obj) {
-                            this.getCheckItems(obj,true);
+                            this.getCheckItems(obj, 'playPoint');
                         }
                     });
                 } else {
-                    this.playPoint = [];
+                    this.formData.playPoint = [];
                 }
             },
-
-            //启用
+            /**
+             * 获取核销分组下的核销设备
+             * @param data
+             * @param type checkPoint -- 设备分组改变 playPoint -- 项目分组改变
+             */
+            getCheckItems ( data, type ) {
+                ajax.post('getCheckItems', {
+                    orgId : data.orgId,
+                    groupIds : data.id,
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data && res.data.length > 0) {
+                            if (type === 'playPoint') {
+                                //游玩项目数据
+                                this.formData.playPoint = this.formData.playPoint.concat(res.data.filter(item => {
+                                    return this.formData.playPoint.findIndex(oldItem => {
+                                        return oldItem.checkId === item.partnerId;
+                                    }) < 0;
+                                }).map(item => {
+                                    return {
+                                        id : '',
+                                        parkId : this.formData.parkId,
+                                        checkId : item.partnerId,
+                                        channelName : item.channelName,
+                                        checkType : "equipment",
+                                        playType : "optional",//默认可玩
+                                        sumTimes : 0,
+                                        dayTimes : 0,
+                                    }
+                                }));
+                            } else {
+                                //入园检票处表格数据
+                                this.formData.checkPoint = this.formData.checkPoint.concat(res.data.filter(item => {
+                                    return this.formData.checkPoint.findIndex(oldItem => {
+                                        return oldItem.checkId === item.partnerId;
+                                    }) < 0;
+                                }).map(item => {
+                                    return {
+                                        id : '',
+                                        channelName : item.channelName,
+                                        parkId : this.formData.parkId,
+                                        checkId : item.partnerId,
+                                        checkType : "garden",
+                                        status : 'valid',
+                                    }
+                                }));
+                            }
+                        }
+                    } else {
+                        this.formData.playPoint = [];
+                        this.formData.checkPoint = [];
+                        this.$Message.error(res.message || this.$t('fail'));
+                    }
+                });
+            },
+            /**
+             *  重置数据
+             */
+            resetFunc () {
+                this.formData = {
+                    parkName : '',
+                    parkId : '',
+                    saleType : 'one_ticket',
+                    //入园核销
+                    checkPoint : [],
+                    effDay : '1',
+                    effTimes : '1',
+                    gardenGroupIds : [],
+                    fingerCheck : true,
+                    //游玩项目
+                    playPoint : [],
+                    itemCheckTimes : 0,
+                    equipmentGroupIds : [],
+                };
+                this.enumData = {
+                    //售票方式
+                    saleType : Array.from(saleType),
+                    //设备分组
+                    group : [],
+                    //认证方式
+                    authenticationType : authenticationType,
+                };
+                this.formData.playPoint = [];
+                this.formData.checkPoint = [];
+                this.chosedParkList = [];
+            },
+            /**
+             *  启用
+             *  @param data
+             *  @param index
+             */
             startUse ( data, index ) {
                 this.$Message.success(this.$t('commissioned') + this.$t('success'));
-                this.checkPoint[index].status = 'valid';
+                this.formData.checkPoint[index].status = 'valid';
             },
-            //禁用
+            /**
+             *  禁用
+             *  @param data
+             *  @param index
+             */
             disabled ( data, index ) {
                 this.$Message.success(this.$t('disabled') + this.$t('success'));
-                this.checkPoint[index].status = 'invalid';
+                this.formData.checkPoint[index].status = 'invalid';
             },
-
-            //设为可玩
+            /**
+             *  设为可玩
+             *  @param data
+             *  @param index
+             */
             setAblePlay ( data, index ) {
-                let params = defaultsDeep({},this.playPoint[index]);
+                let params = defaultsDeep({},this.formData.playPoint[index]);
                 params.playType = 'optional';
-                this.playPoint.splice(index,1);
-                this.playPoint.push(params);
+                this.formData.playPoint.splice(index,1);
+                this.formData.playPoint.push(params);
                 this.$Message.success(this.$t('setAblePlay') + this.$t('success'));
             },
-            //设为必玩
+            /**
+             *  设为必玩
+             *  @param data
+             *  @param index
+             */
             setMustPlay ( data, index ) {
-                let params = defaultsDeep({},this.playPoint[index]);
+                let params = defaultsDeep({},this.formData.playPoint[index]);
                 params.playType = 'required';
-                this.playPoint.splice(index,1);
-                this.playPoint.unshift(params);
+                this.formData.playPoint.splice(index,1);
+                this.formData.playPoint.unshift(params);
                 this.$Message.success(this.$t('setMustPlay') + this.$t('success'));
             },
-
-            //校验表格填入次数与总数
-            checkTimes ( data ) {
-
-            },
-
-            //跳转进入示例页面
-            // jumpForExample () {
-            // },
-
             /**
              * 确认
              */
@@ -852,7 +1067,7 @@
                     this.$refs[fromRef].validate((valid) => {
                         if ( valid ) {
                             //校验产品有效性设置与游玩规则数据
-                            if (this.data.productEffSet === 'since_the_play' && (this.formData.effDay == '' || this.formData.effDay == 0)) {
+                            if (this.ticketDetail.productEffSet === 'since_the_play' && (this.formData.effDay == '' || this.formData.effDay == 0)) {
                                 this.$Message.warning(this.$t('inputField', { field : this.$t('effectiveDays') }));
                                 return;
                             }
@@ -861,8 +1076,6 @@
                                 let formData = defaultsDeep({},this.formData);
                                 formData.gardenGroupIds = this.formData.gardenGroupIds.join(',');
                                 formData.equipmentGroupIds = this.formData.equipmentGroupIds.join(',');
-                                formData.checkPoint = defaultsDeep([],this.checkPoint);
-                                formData.playPoint = defaultsDeep([],this.playPoint);
                                 this.confirmCallback( formData, this.index );
                                 this.cancel();
                             }
@@ -870,7 +1083,6 @@
                     });
                 }
             },
-
             /**
              * 取消
              */
@@ -887,210 +1099,6 @@
                 }
                 this.resetFunc();
             },
-
-            /**
-             * 显示 模态框
-             * @param index
-             * @param data
-             * @param type
-             * @param title
-             * @param confirmCallback
-             * @param cancelCallback
-             */
-            show ({ index,list,parkList,data,type,title,confirmCallback = null,cancelCallback }) {
-                this.title = title;
-                this.type = type;
-                this.index = index;
-                this.parkList = parkList;
-                //去除已新增的园区
-                if (list) {
-                    for (let i = 0,len = this.parkList.length; i < len; i++) {
-                        for (let j = 0,jlen = list.length; j < jlen; j++) {
-                            if (this.parkList[i].id === list[j].parkId) {
-                                this.parkList.splice(i,1);
-                                i--;
-                                len--;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (data) {
-                    this.check = true;
-                    //查询核销设备组
-                    this.getOrgGroupList({ id : data.parkId });
-                    this.formData = defaultsDeep({}, data);
-                    this.copyData = defaultsDeep({}, data);
-                    if (data.fingerCheck == 'true' || data.fingerCheck === true) {
-                        this.formData.fingerCheck = true;
-                    } else {
-                        this.formData.fingerCheck = false;
-                    }
-                    this.formData.gardenGroupIds = data.gardenGroupIds ? data.gardenGroupIds.split(',') : [];
-                    this.formData.equipmentGroupIds = data.equipmentGroupIds ? data.equipmentGroupIds.split(',') : [];
-                    //查看/详情后的修改
-                    if (data.checkPoint && data.checkPoint.length > 0) {
-                        this.checkPoint = [];
-                        let checkPoint = defaultsDeep([], data.checkPoint);
-                        delete this.formData.checkPoint;
-                        checkPoint.forEach( item =>{
-                            if (this.type === 'check' && item.status === 'valid') {
-                                this.checkPoint.push(item);
-                            } else {
-                                this.checkPoint.push(item);
-                            }
-                        } );
-                    }
-                    if (data.playPoint && data.playPoint.length > 0) {
-                        this.playPoint = defaultsDeep([], data.playPoint);
-                        if ( this.playPoint.remove ) {
-                            delete this.checkPoint.remove;
-                        }
-                        delete this.formData.playPoint;
-                        this.playPoint.forEach( item =>{
-                            item.sumTimes = item.sumTimes ? Number(item.sumTimes) : 0;
-                            item.dayTimes = item.dayTimes ? Number(item.dayTimes) : 0;
-                        } );
-                    }
-                    //数字转字符串
-                    this.formData.effDay = data.effDay ? String(data.effDay) : '0';
-                    this.formData.effTimes = data.effTimes ? String(data.effTimes) : '0';
-                }
-                if (this.data.productEffSet === 'same_to_policy') {
-                    this.formData.effDay = '';
-                }
-                if (confirmCallback && typeof confirmCallback == 'function') {
-                    this.confirmCallback = confirmCallback;
-                }
-                if (cancelCallback && typeof cancelCallback == 'function') {
-                    this.cancelCallback = cancelCallback;
-                }
-
-                this.visible = true;
-            },
-
-            //处理修改数据联动赋值
-            getOriginDate () {
-                if (this.checkPoint && this.checkPoint.length > 0) {
-                    this.checkPoint = defaultsDeep([], this.copyData.checkPoint);
-                }
-                if (this.playPoint && this.playPoint.length > 0) {
-                    this.playPoint = defaultsDeep([], this.copyData.playPoint);
-                    this.playPoint.forEach( item =>{
-                        item.sumTimes = item.sumTimes ? Number(item.sumTimes) : 0;
-                        item.dayTimes = item.dayTimes ? Number(item.dayTimes) : 0;
-                    } );
-                }
-                this.check = false;
-            },
-
-            //选择园区改变，联动查询设备分组
-            selectParkChange ( val ) {
-                let obj = this.parkList.find( item => val === item.id );
-                if (obj) {
-                    this.formData.parkName = obj.orgName;
-                    this.getOrgGroupList(obj);
-                }
-            },
-
-            //查询核销设备组
-            getOrgGroupList ( data ) {
-                this.enumData.group = [];
-                this.formData.gardenGroupIds = [];
-                this.checkPoint = [];
-                this.formData.itemCheckTimes = 0;
-                this.formData.equipmentGroupIds = [];
-                this.playPoint = [];
-                ajax.post('getOrgGroupList', {
-                    orgId : data.id,
-                    groupType : 'check',
-                }).then(res => {
-                    if (res.success) {
-                        this.enumData.group = res.data || [];
-                    } else {
-                        this.enumData.group = [];
-                        this.$Message.error(res.message || this.$t('fail'));
-                    }
-                });
-            },
-
-            //获取核销分组下的核销设备
-            getCheckItems ( data, bool ) {
-                ajax.post('getCheckItems', {
-                    orgId : data.orgId,
-                    groupIds : data.id,
-                }).then(res => {
-                    if (res.success) {
-                        if (res.data && res.data.length > 0) {
-                            if (bool) {
-                                res.data.forEach(item => {
-                                    //项目分组表格数据
-                                    this.playPoint.push({
-                                        id : '',
-                                        parkId : this.formData.parkId,
-                                        checkId : item.partnerId,
-                                        channelName : item.channelName,
-                                        checkType : "equipment",
-                                        playType : "optional",//默认可玩
-                                        sumTimes : 0,
-                                        dayTimes : 0,
-                                    });
-                                });
-                            } else {
-                                res.data.forEach(item => {
-                                    //入园检票处表格数据
-                                    this.checkPoint.push({
-                                        id : '',
-                                        channelName : item.channelName,
-                                        parkId : this.formData.parkId,
-                                        checkId : item.partnerId,
-                                        checkType : "garden",
-                                        status : 'valid',
-                                    });
-                                });
-                            }
-                            if (this.check) {
-                                //处理修改数据联动赋值
-                                //this.getOriginDate();
-                            }
-                        }
-                    } else {
-                        this.playPoint = [];
-                        this.checkPoint = [];
-                        this.$Message.error(res.message || this.$t('fail'));
-                    }
-                });
-            },
-
-            //重置数据
-            resetFunc () {
-                this.formData = {
-                    parkName : '',
-                    parkId : '',
-                    saleType : 'one_ticket',
-                    //入园核销
-                    effDay : '1',
-                    effTimes : '1',
-                    gardenGroupIds : [],
-                    fingerCheck : true,
-                    //游玩项目
-                    itemCheckTimes : 0,
-                    equipmentGroupIds : [],
-                };
-                this.enumData = {
-                    //售票方式
-                    saleType : Array.from(saleType),
-                    //设备分组
-                    group : [],
-                    //认证方式
-                    authenticationType : authenticationType,
-                };
-                this.playPoint = [];
-                this.checkPoint = [];
-                this.check = false;
-                this.parkList = [];
-            },
-
         }
     };
 </script>
