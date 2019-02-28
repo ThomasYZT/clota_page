@@ -2605,5 +2605,6 @@ export default {
     "province" : "省份",
     "city" : "城市",
     "area" : "区域",
+    "produtDetailInfo" : "产品明细信息",
     'requiredBiggerThanItemCheckTimes' : '必选游玩项目数量不能超过游玩项目总次数'
 };

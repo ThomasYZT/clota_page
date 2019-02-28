@@ -15,8 +15,7 @@
         </div>
         <div class="target-body">
             <div class="ticket-title" v-w-title="$t(`${orgName} ${$t('buyTicketNotes')}`)">{{$t(`${orgName} ${$t('buyTicketNotes')}`)}}</div>
-            <div class="ticket-info-detail">
-                {{policyText | contentFilter}}
+            <div class="ticket-info-detail" v-html="policyText">
             </div>
         </div>
     </Modal>

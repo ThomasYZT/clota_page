@@ -82,7 +82,7 @@
                                        type="text"
                                        :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/>
-                                {{$t('effectAfterTime')}}</span><!--时后生效-->
+                                {{$tc('effectAfterTime',settingData.scoreEffectiveMode.isNoIntegralTime > 1 ? 2 : 1)}}</span><!--时后生效-->
                             <div class="ivu-form-item-error-tip"
                                  style="left: 153px;"
                                  v-if="error.isNoIntegralTimeError">{{error.isNoIntegralTimeError}}</div>

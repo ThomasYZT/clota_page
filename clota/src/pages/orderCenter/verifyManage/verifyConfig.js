@@ -8,7 +8,7 @@ export const orderTicketHead = [
     },
     {
         title : 'playDate', // 游玩日期
-        minWidth : 120,
+        minWidth : 150,
         field : 'visitDate'
     },
     {
