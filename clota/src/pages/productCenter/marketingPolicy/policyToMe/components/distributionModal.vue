@@ -239,6 +239,7 @@
                 if (data) {
                     //打开模态框
                     this.detail = data;
+                    this.formData.name = this.$t('myDistribute') + (new Date()).getTime();
                     this.formData.parentId = data.allocationId;
                     this.getData();
                 } else {
