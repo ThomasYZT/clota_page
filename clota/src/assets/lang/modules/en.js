@@ -2604,5 +2604,6 @@ export default {
     "productEffSetTip2" : "The same sales policy applies to the play period: within the specified period of the sales policy, any day can be written off. Not applicable to team products, not limited to daily stock.",
     "province" : "Province",
     "city" : "City",
-    "area" : "Area"
+    "area" : "Area",
+    "produtDetailInfo" : "Product details"
 };

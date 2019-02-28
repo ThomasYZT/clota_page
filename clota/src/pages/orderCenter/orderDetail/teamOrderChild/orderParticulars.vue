@@ -2,7 +2,7 @@
 
 <template>
     <div class="order-particular">
-        <div class="title">{{$t('orderDetailInformation')}}</div>
+        <div class="title">{{$t('produtDetailInfo')}}</div>
         <Form ref="formInline"
               :label-position="lang === 'zh-CN' ? 'right' : 'top'"
               :model="formData"

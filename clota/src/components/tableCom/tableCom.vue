@@ -1,7 +1,7 @@
 <!--公用table组件-->
 
 <template>
-    <div class="table-com" :style="{'min-height' : minHeight}" >
+    <div class="table-com" :class="{ 'no-data-table-wrap' : tableData.length < 1 }" :style="{'min-height' : minHeight}" >
         <el-table :data="tableData"
                   v-if="tableMaxHeight !== null"
                   :span-method="spanMethod"
@@ -399,6 +399,12 @@
                 if (newVal && newVal.length === 0 && this.pageNo !== 1) {
                     this.handleCurrentChange(1);
                 }
+                this.$nextTick(() => {
+                    if (oldVal.length < 1) {
+                        this.$el.querySelector('.el-table__body-wrapper').scrollLeft = 0;
+                        this.$el.querySelector('.el-table__header-wrapper').scrollLeft = 0;
+                    }
+                });
             }
         },
         beforeDestroy () {
@@ -414,6 +420,12 @@
     .table-com {
         position: relative;
         width: 100%;
+
+        &.no-data-table-wrap {
+            /deep/ .el-table__header-wrapper{
+                overflow: auto;
+            }
+        }
 
         .table-click-able /deep/ tbody tr{
             cursor: pointer;
@@ -433,7 +445,7 @@
         }
 
         .no-data-wrap{
-            @include absolute_pos(absolute,48px,0,0,0);
+            @include absolute_pos(absolute,60px,0,0,0);
         }
 
         /deep/ .el-table-column--selection .cell {
