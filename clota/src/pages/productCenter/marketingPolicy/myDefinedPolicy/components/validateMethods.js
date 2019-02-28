@@ -180,3 +180,14 @@ export const validateDateRange = (rule, value, callback) => {
         callback(i18n.t("selectField", { feild : i18n.t('date') }));
     }
 }
+
+//校验分账金额
+export const validateItemRule = (rule, value, callback) => {
+    let sum = 0;
+    rule.itemRule.forEach(item => {
+        sum += Number(item.subPrice);
+    });
+    if (rule.settlePrice - sum < 0) {
+        callback(i18n.t('sizeErrorB', { filed1 : i18n.t('priceSet'), filed2 : i18n.t('settlePrice') }))
+    }
+}

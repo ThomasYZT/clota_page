@@ -114,7 +114,7 @@
                                 </Tooltip>
                             </FormItem>
                         </i-col>
-                        <i-col span="12">
+                        <i-col span="12" v-if="formData.isGroup !== 'true'">
                             <!--全民营销配额数量-->
                             <FormItem :label="$t('marketQuota')" prop="marketQuota">
                                 <Input v-model.trim="formData.marketQuota"
@@ -147,35 +147,38 @@
                         <i-col span="24">
                             <!--分账设置-->
                             <!--入园检票处--核销表格,区分查看与编辑-->
-                            <table-com
-                                :auto-height="true"
-                                :table-com-min-height="250"
-                                :column-data="subAccountColumn"
-                                :table-data="formData.itemRule"
-                                :border="true">
-                                <el-table-column
-                                    slot="column1"
-                                    :label="row.title"
-                                    :prop="row.field"
-                                    :key="row.index"
-                                    :width="row.width"
-                                    :min-width="row.minWidth"
-                                    show-overflow-tooltip
-                                    slot-scope="row">
-                                    <template slot-scope="scope">
-                                        <InputNumber   class="short-input"
-                                                       :max="formData.settlePrice ? Number(formData.settlePrice) : 9999999999"
-                                                       :min="0"
-                                                       :disabled="type === 'check'"
-                                                       v-model.trim="scope.row.subPrice"
-                                                       :placeholder="$t('inputField', {field: ''})">
-                                        </InputNumber>
-                                    </template>
-                                </el-table-column>
-                            </table-com>
+                            <FormItem prop="itemRule">
+                                <table-com
+                                    :auto-height="true"
+                                    :table-com-min-height="250"
+                                    :column-data="subAccountColumn"
+                                    :table-data="formData.itemRule"
+                                    :border="true">
+                                    <el-table-column
+                                        slot="column1"
+                                        :label="row.title"
+                                        :prop="row.field"
+                                        :key="row.index"
+                                        :width="row.width"
+                                        :min-width="row.minWidth"
+                                        show-overflow-tooltip
+                                        slot-scope="row">
+                                        <template slot-scope="scope">
+                                            <InputNumber   class="short-input"
+                                                           :max="formData.settlePrice ? Number(formData.settlePrice) : 9999999999"
+                                                           :min="0"
+                                                           :disabled="type === 'check'"
+                                                           :precision="1"
+                                                           v-model.trim="scope.row.subPrice"
+                                                           :placeholder="$t('inputField', {field: ''})">
+                                            </InputNumber>
+                                        </template>
+                                    </el-table-column>
+                                </table-com>
+                            </FormItem>
                         </i-col>
                     </i-row>
-                    <div><span class="red-span" v-if="showCountMoney > 0">{{$t('unShareMoney')}}：{{showCountMoney}}{{$t('yuan')}}</span></div>
+                    <div><span class="red-span" >{{$t('unShareMoney')}}：{{showCountMoney}}{{$t('yuan')}}</span></div>
                 </template>
             </Form>
         </div>
@@ -199,7 +202,7 @@
     import { subAccountColumn } from '../editSalePolicy/editPolicyConfig';
     import { mapGetters } from 'vuex';
     import { emoji, validateMoney, validateSettlePrice, validateNumber,validateSharedQuota,
-        validateMarketQuota, validateNaturalNumber, validateTotalQuota } from './validateMethods';
+        validateMarketQuota, validateNaturalNumber, validateTotalQuota, validateItemRule } from './validateMethods';
     import ajax from '@/api/index';
     import defaultsDeep from 'lodash/defaultsDeep';
 
@@ -264,10 +267,7 @@
                     this.formData.itemRule.forEach(item => {
                         sum += Number(item.subPrice);
                     });
-                    if (this.formData.settlePrice - sum < 0) {
-                        this.$Message.warning(this.$t('sizeErrorB', { filed1 : this.$t('priceSet'), filed2 : this.$t('settlePrice') }),);
-                    }
-                    return this.formData.settlePrice - sum;
+                    return (this.formData.settlePrice - sum).toFixed(1);
                 } else {
                     return 0;
                 }
@@ -308,7 +308,7 @@
                           toTalExclusiveQuota : this.formData.toTalExclusiveQuota}
                     ],
                     marketQuota : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('marketQuota') }), trigger : 'change' }, // 不能为空
+                        { required : this.formData.isGroup !== 'true', message : this.$t('errorEmpty', { msg : this.$t('marketQuota') }), trigger : 'change' }, // 不能为空
                         { validator : emoji, trigger : 'blur' },
                         { validator : validateNaturalNumber, trigger : 'blur' },
                         { validator : validateMarketQuota,
@@ -317,6 +317,11 @@
                             sharedQuota : this.formData.sharedQuota,
                             toTalExclusiveQuota : this.formData.toTalExclusiveQuota }
                     ],
+                    itemRule : [
+                        { validator : validateItemRule,
+                          itemRule : this.formData.itemRule,
+                          settlePrice : this.formData.settlePrice }
+                    ]
                 }
             }
         },
