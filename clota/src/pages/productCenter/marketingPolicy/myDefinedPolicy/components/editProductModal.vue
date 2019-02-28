@@ -73,7 +73,7 @@
                             <!--限制配额方式-->
                             <FormItem :label="$t('limitationOfQuotas')" prop="quotaType">
                                 <Select v-model="formData.quotaType"
-                                        :disabled="type === 'check'"
+                                        :disabled="type === 'check' || formData.id"
                                         transfer
                                         :placeholder="$t('selectField', {msg: ''})">
                                     <Option v-for="(item,index) in enumData.quotaType"
