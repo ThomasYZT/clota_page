@@ -154,7 +154,7 @@
                     bizType : 'pay_order',
                     channelType : 'weixin',
                     txnAmt : this.totalAmount,
-                    redirectUrl : this.getRedirectUrl(),
+                    redirectUrl : this.getRedirectUrl(paymentChannel),
                     orgId : this.marketOrgId,
                     paymentChannel : this.payTypeList.find(item => item.key === 'wx')['payType'],
                     ...createOrderParams
