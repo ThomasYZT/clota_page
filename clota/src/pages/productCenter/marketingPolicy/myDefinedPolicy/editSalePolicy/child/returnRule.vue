@@ -49,7 +49,7 @@
                                             <span>{{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')}}</span>
                                             <template v-if="scope.row.active">
                                                 <InputNumber :max="9999999999"
-                                                             :min="scope.row.befPlayStart ? Number(scope.row.befPlayStart) : 0"
+                                                             :min=" Number(scope.row.befPlayStart ? scope.row.befPlayStart : 0 ) + 1"
                                                              class="short-input"
                                                              v-model.trim="scope.row.befPlayEnd"
                                                              :placeholder="$t('inputField', {field: ''})" @on-blur="changeNextStart(scope.row.befPlayEnd, scope.$index)">
@@ -247,19 +247,26 @@
              * 新增退票手续费率档位
              */
             addReturnRateRule () {
-                let param = {
-                    type : 'add',
-                    befPlayStart : 0,
-                    befPlayEnd : 1,
-                    procedureRates : 0,
-                    active : true,
-                    returnRuleType : 'normal',
-                };
-                if (this.formData.returnRule.rules.length > 1) {
-                    param.befPlayStart = this.formData.returnRule.rules[this.formData.returnRule.rules.length - 1].befPlayStart + 1;
-                    param.befPlayEnd = param.befPlayEnd + 1;
+                if (this.formData.returnRule.rules.find(item => {
+                    return item.active;
+                })) {
+                    this.$Message.warning(this.$t('returnRuleEditTip'));
+                } else {
+                    let param = {
+                        type : 'add',
+                        befPlayStart : 0,
+                        befPlayEnd : 1,
+                        procedureRates : 0,
+                        active : true,
+                        returnRuleType : 'normal',
+                    };
+                    if (this.formData.returnRule.rules.length > 1) {
+                        param.befPlayStart = this.formData.returnRule.rules[this.formData.returnRule.rules.length - 1].befPlayEnd + 1;
+                        param.befPlayEnd = param.befPlayStart + 1;
+                    }
+                    this.formData.returnRule.rules.push(param);
                 }
-                this.formData.returnRule.rules.push(param);
+
             },
             /**
              * 保存退票手续费率档位
@@ -276,13 +283,19 @@
              * @param index
              */
             modifyReturnItem (item, index) {
-                this.returnItem = defaultsDeep({}, this.formData.returnRule.rules[index]);
-                this.$set(this.formData.returnRule.rules[index], 'active', true);
-                this.formData.returnRule.rules.forEach( (obj,i) => {
-                    if (index !== i) {
-                        obj.active = false;
-                    }
-                } );
+                if (this.formData.returnRule.rules.find(item => {
+                    return item.active;
+                })) {
+                    this.$Message.warning(this.$t('returnRuleEditTip'));
+                } else {
+                    this.returnItem = defaultsDeep({}, this.formData.returnRule.rules[index]);
+                    this.$set(this.formData.returnRule.rules[index], 'active', true);
+                    this.formData.returnRule.rules.forEach( (obj,i) => {
+                        if (index !== i) {
+                            obj.active = false;
+                        }
+                    } );
+                }
             },
             /**
              * 取消退票手续费率档位

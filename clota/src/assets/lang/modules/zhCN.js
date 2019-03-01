@@ -2606,5 +2606,6 @@ export default {
     "city" : "城市",
     "area" : "区域",
     "produtDetailInfo" : "产品明细信息",
-    'requiredBiggerThanItemCheckTimes' : '必选游玩项目数量不能超过游玩项目总次数'
+    'requiredBiggerThanItemCheckTimes' : '必选游玩项目数量不能超过游玩项目总次数',
+    'returnRuleEditTip' : '您有未保存的退票规则',
 };
