@@ -109,7 +109,7 @@
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('save') }));
                                 this.visible = false;
                                 this.$refs.modalForm.resetFields();
-                                this.$emit('updateDateList');
+                                this.$emit('useUpdateDatePlan');
                             } else {
                                 if (res.code && res.code === 'S017') {
                                     this.$Message.error(this.$t(res.code));
@@ -132,7 +132,7 @@
                             if (res.success) {
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('modify') }));
                                 this.visible = false;
-                                this.$emit('updateDateList');
+                                this.$emit('useUpdateDatePlan', this.formData.id);
                             } else {
                                 if (res.code && res.code === 'S017') {
                                     this.$Message.error(this.$t(res.code));

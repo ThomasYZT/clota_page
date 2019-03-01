@@ -2564,7 +2564,7 @@ export default {
     "quotaQuantityInsufficient" : "产品配额数量不足，请重新调整",
     "smallerError" : "{field}必须大于等于{num}",
     "quotaManage" : "配额管理",
-    "reservationNotes" : "预定须知",
+    "reservationNotes" : "预订须知",
     "customDateSchemeName" : "自定义日期方案名称",
     "saveAsCustomDateScheme" : "保存为自定义日期方案",
     "dateSchemeName" : "日期方案名称",

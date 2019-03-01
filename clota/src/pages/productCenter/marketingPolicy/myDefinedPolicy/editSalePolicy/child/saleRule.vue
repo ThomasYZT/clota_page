@@ -154,7 +154,7 @@
         </Form>
 
         <addDatePlanModal ref="addDatePlanModal"
-                          @updateDateList="updateDateList"></addDatePlanModal>
+                          @useUpdateDatePlan="useUpdateDatePlan"></addDatePlanModal>
 
         <!--删除日期方案模态框-->
         <del-modal ref="delModal">
@@ -320,6 +320,16 @@
              * @param val
              */
             changeSelectForSale ( val ) {
+                //更新所选日期方案数据
+                this.updateChosedDatePlan(val);
+                //控制是否显示修改日期方案按钮
+                this.controlDatePlanEdit();
+            },
+            /**
+             *  更新所选日期方案数据
+             *  @param val 日期方案对应的id
+             */
+            updateChosedDatePlan (val) {
                 if (val && val !== 'custom') {
                     //选择系统方案和自定义方案时
                     this.selectedHolidayPlan = this.specialHoliday.find( item => val === item.id );
@@ -329,6 +339,7 @@
                         }));
                         this.getDateList(this.selectedHolidayPlan.rangeDates, 'saleDate');
                     } else {
+                        this.selectedHolidayPlan = { id : 'custom' };
                         this.formData.saleRule.specifiedTime = [];
                         this.saleDate = [];
                     }
@@ -338,8 +349,6 @@
                     this.saleDate = [];
                     this.formData.saleRule.specifiedTime = [];
                 }
-                //控制是否显示修改日期方案按钮
-                this.controlDatePlanEdit();
             },
             /**
              *  获取年月日表格 val-当前选择日期 field-当前操作是销售规则/游玩规则
@@ -487,7 +496,8 @@
                             if (res.success) {
                                 //重置自定义日期数据
                                 this.formData.saleRule.dateType = 'custom';
-                                this.formData.saleRule.specifiedTime = [];
+                                this.updateChosedDatePlan('custom');
+                                this.controlDatePlanEdit();
                                 //更新日期方案列表数据
                                 this.$emit('queryDatePlanList');
                                 this.$Message.success(this.$t('successTip', { tip : this.$t('delete') }));
@@ -499,14 +509,23 @@
                 });
             },
             /**
-             * 自定义日期保存成功回调
+             *  更新日期方案列表，并应用刚刚更新的日期方案
+             *  @param val
              */
-            updateDateList () {
-                //重置自定义日期数据
-                this.formData.saleRule.dateType = 'custom';
-                this.formData.saleRule.specifiedTime = [];
+            useUpdateDatePlan (val) {
                 //更新日期方案列表数据
                 this.$emit('queryDatePlanList');
+                //使用最新更新、增加的日期方案
+                setTimeout(() => {
+                    if (val) {
+                        this.updateChosedDatePlan(val);
+                        this.controlDatePlanEdit();
+                    } else {
+                        this.formData.saleRule.dateType = this.specialHoliday[this.specialHoliday.length - 1].id;
+                        this.updateChosedDatePlan(this.formData.saleRule.dateType);
+                        this.controlDatePlanEdit();
+                    }
+                }, 400);
             },
             /**
              * 编辑时 -- 初始化表单数据
@@ -527,6 +546,23 @@
                     }).join(',');
                     this.getDateList(datelist, 'saleDate');
                 }
+            }
+        },
+        watch : {
+            specialHoliday : {
+                handler () {
+                    if (this.formData.saleRule.type === 'specifiedDateSold') {
+                        //重置自定义日期数据
+                        if (this.specialHoliday.find( item => this.formData.saleRule.dateType === item.id )) {
+                            this.updateChosedDatePlan(this.formData.saleRule.dateType);
+                        } else {
+                            this.formData.saleRule.dateType = 'custom';
+                            this.updateChosedDatePlan('custom');
+                            this.controlDatePlanEdit();
+                        }
+                    }
+                },
+                deep : true,
             }
         },
         created () {
