@@ -792,9 +792,11 @@
                 }
                 if (data) {
                     //从已选择园区列表中过滤掉当前查看或修改的园区
-                    this.chosedParkList = chosedParkList.filter(item => {
-                        return item.parkId !== data.parkId;
-                    });
+                    if (this.type !== 'check') {
+                        this.chosedParkList = chosedParkList.filter(item => {
+                            return item.parkId !== data.parkId;
+                        });
+                    }
                     //备份数据初始化
                     this.dataBackup(data);
                     //表单数据初始化

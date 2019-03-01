@@ -175,26 +175,16 @@
                     :table-data="detail.policyItems"
                     :border="false">
                     <el-table-column
+                        slot="column2"
                         v-if="manageOrgs.nodeType !== 'partner'"
-                        slot="column1"
                         slot-scope="row"
                         :label="row.title"
                         :width="row.width"
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <span></span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        :slot="manageOrgs.nodeType !== 'partner' ? 'column2' : 'column1'"
-                        slot-scope="row"
-                        :label="row.title"
-                        :width="row.width"
-                        :min-width="row.minWidth"
-                        show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            <span>{{scope.row.settlePrice | moneyFilter | contentFilter}}</span>
+                            {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                            scope.row.totalQuota : '-'}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -206,7 +196,8 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            {{scope.row.stockType ? $t(scope.row.stockType) : '-'}}
+                            {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                            scope.row.sharedQuota : '-'}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -218,8 +209,8 @@
                         :min-width="row.minWidth"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <span v-if="scope.row.stockType === 'is_no_limit'">-</span>
-                            <span v-else>{{scope.row.stockNum | contentFilter}}</span>
+                            {{scope.row.quotaType ? $t('editPolicy.' + scope.row.quotaType) +
+                            scope.row.marketQuota : '-'}}
                         </template>
                     </el-table-column>
                     <el-table-column
