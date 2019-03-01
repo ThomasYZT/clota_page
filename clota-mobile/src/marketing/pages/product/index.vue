@@ -42,7 +42,7 @@
                         <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('productExplain') })}}</div>
                         <div :class="$style.notice">{{currentProductInfo.productDes | contentFilter}}</div>
                         <div :class="$style.productNotice">{{$t('colonSetting',{ key : $t('ticketInfo') })}}</div>
-                        <div :class="$style.notice">{{currentProductInfo.buyTicketNotes | contentFilter}}</div>
+                        <div :class="$style.notice" v-html="currentProductInfo.buyTicketNotes"></div>
                     </div>
                     <div :class="$style.footer">
                         <span :class="$style.price">

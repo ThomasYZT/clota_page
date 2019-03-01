@@ -165,6 +165,11 @@
                         //设置支付表单信息
                         this.payFormData = res.data ? res.data : {};
                         this.payFormData.paymentTypeId = this.payType;
+                        if (this.$route.name === 'salesManCreateOrderToPay') {
+                            this.payFormData.from = 'marketer';
+                        } else {
+                            this.payFormData.from = 'visitor';
+                        }
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
                         location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay?payFormData=' + encodeURI(this.payFormData);
                     } else if (res.code === '300') {
@@ -178,14 +183,26 @@
              * @return{String} 回调地址加密
              */
             getRedirectUrl (paymentChannel) {
+                let userType = '';
+                if (this.$route.name === 'salesManCreateOrderToPay') {
+                    userType = 'marketer';
+                } else {
+                    userType = 'visitor';
+                }
                 if (paymentChannel === 'zhilian') {
                     const { href } = this.$router.resolve({
-                        name : 'wxOrAlidirectPay'
+                        name : 'wxOrAlidirectPay',
+                        query : {
+                            userType
+                        }
                     });
                     return encodeURI(location.origin + href);
                 } else {
                     const { href } = this.$router.resolve({
-                        name : 'marketingCreateOrderPayResult'
+                        name : 'marketingCreateOrderPayResult',
+                        query : {
+                            userType
+                        }
                     });
                     return encodeURI(location.origin + href);
                 }
@@ -214,6 +231,7 @@
                                     name : 'wxOrAlidirectPay'
                                 });
                                 const divEle = document.createElement('div');
+                                let userType = '';
                                 divEle.innerHTML = res.data.formContent;
                                 this.$el.appendChild(divEle);
                                 const formEle = this.$el.querySelector('form[name=punchout_form]');
@@ -221,7 +239,12 @@
                                 Array.prototype.slice.call(formEle.querySelectorAll("input[type=hidden]")).forEach(function (ele) {
                                     queryParam += '&' + ele.name + "=" + encodeURIComponent(ele.value);
                                 });
-                                location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true';
+                                if (this.$route.name === 'salesManCreateOrderToPay') {
+                                    userType = 'marketer';
+                                } else {
+                                    userType = 'visitor';
+                                }
+                                location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true&userType=' + userType;
                             } else {
                                 this.$router.push({
                                     name : 'wxOrAlidirectPay',
@@ -235,6 +258,12 @@
                             this.payFormData = res.data ? res.data : {};
                             this.payFormData.orderId = res.data ? res.data.bizId : '';
                             this.payFormData.paymentChannel = paymentChannel;
+                            //根据路由名称判断下单角色
+                            if (this.$route.name === 'salesManCreateOrderToPay') {
+                                this.payFormData.from = 'marketer';
+                            } else {
+                                this.payFormData.from = 'visitor';
+                            }
                             //设置支付表单信息
                             localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
                             location.href = location.origin + this.$router.options.base + '/marketing/tourist/createOrder/startPay' +
@@ -252,7 +281,8 @@
                                 '&currencyCode=' + this.payFormData.currencyCode +
                                 '&notifyUrl=' + escape(this.payFormData.notifyUrl) +
                                 '&payWebUrl=' + escape(this.payFormData.payWebUrl) +
-                                '&transactionId=' + this.payFormData.transactionId;
+                                '&transactionId=' + this.payFormData.transactionId +
+                                '&userType=' + this.payFormData.from;
                         }
                     } else if (res.code === '300') {
                         this.$vux.toast.text(this.$t('payAbnormal'));

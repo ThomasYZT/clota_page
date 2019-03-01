@@ -55,9 +55,15 @@
     import { querystring } from 'vux';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
     import ajax from '@/member/api/index.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         mixins : [lifeCycleMixins],
-        components : {},
+        components : {
+            ...mapGetters([
+                'isWeixin'
+            ])
+        },
         data () {
             return {
                 isShowImg : false,
@@ -78,29 +84,21 @@
                 //计时器
                 intervalId : null,
                 //确认模态框是否显示
-                confirmShow : false
+                confirmShow : false,
+                //支付来源，销售用户或游客直接下单
+                fromUser : ''
             };
         },
         methods : {
             /**
-             * 判断是否在微信浏览器
-             */
-            isWeixin () {
-                let ua = navigator.userAgent.toLowerCase();
-                let isWeixin = ua.indexOf('micromessenger') != -1;
-                if (isWeixin) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            /**
              * 获取路由参数
-             * @param params
              */
-            getParams () {
+            getParams (param,toRoute) {
+                if (toRoute && toRoute.query && toRoute.query.userType) {
+                    this.fromUser = toRoute.query.userType;
+                }
                 //微信
-                if (this.isWeixin()) {
+                if (this.isWeixin) {
                     this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
                     //微信内，公众号支付
                     if (this.payFormData.paymentTypeId === 'wx') {
@@ -109,9 +107,8 @@
                         this.$nextTick(() => {
                             this.$refs.payForm.submit();
                         });
-
-                        //微信内支付宝支付，显示其他浏览器打开
                     } else {
+                        //微信内支付宝支付，显示其他浏览器打开
                         this.payFormData = querystring.parse(location.href.split('?')[1]);
                         this.isShowImg = true;
                         //开始轮询支付状态及支付结果
@@ -119,9 +116,8 @@
                             this.queryConsumeUpdateBiz();
                         }, 5000);
                     }
-
-                    //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
                 } else {
+                    //非微信 支付宝、微信支付、微信内支付宝跳转其他浏览器支付
                     this.payFormData = querystring.parse(location.href.split('?')[1]);
                     // this.payFormData = JSON.parse(localStorage.getItem('payFormData'));
                     this.$nextTick(() => {
@@ -161,18 +157,24 @@
                 }).then((res) => {
                     if (res.success) {
                         clearInterval(this.intervalId);
-                        this.$router.push({
-                            name : 'marketingTourist'
-                        });
                     } else {
                         this.$vux.toast.show({
                             type : 'cancel',
                             text : this.$t('operateFail',{ msg : this.$t('cancelPay') })
                         });
-                        this.$router.push({
-                            name : 'marketingTourist'
-                        });
                     }
+                }).finally(() => {
+                    setTimeout(() => {
+                        if (this.fromUser === 'marketer') {
+                            this.$router.replace({
+                                name : 'marketingProduct'
+                            });
+                        } else {
+                            this.$router.replace({
+                                name : 'marketingTourist'
+                            });
+                        }
+                    },1000);
                 });
             },
             /**

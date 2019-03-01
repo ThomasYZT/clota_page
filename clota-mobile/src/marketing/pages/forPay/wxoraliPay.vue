@@ -68,7 +68,9 @@
                 //确认提示框是否显示
                 confirmShow : false,
                 //取消支付失败提示框
-                refundConfirmModal : false
+                refundConfirmModal : false,
+                //支付来源，销售用户或游客直接下单
+                fromUser : ''
             };
         },
         methods : {
@@ -81,6 +83,7 @@
                 if (this.isWeixin) {
                     //微信里面使用支付宝支付
                     if (toRoute && toRoute.query && toRoute.query.fromzl) {
+                        this.fromUser = toRoute.query.userType;
                         this.transactionId = toRoute.query.transactionId;
                         this.aliPayInWeixin = true;
                         this.timer = setInterval(() => {
@@ -99,9 +102,9 @@
                         let urlParms = JSON.parse(JSON.stringify(toRoute.query));
                         delete urlParms.transactionId;
                         delete urlParms.fromzl;
-                        let url = ('https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms));
-                        window.location.href = url;
+                        window.location.href = 'https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms);
                     } else if (toRoute && toRoute.query.out_trade_no) {//处理支付结果
+                        this.fromUser = toRoute.query.userType;
                         this.queryPayRecordByOutTradeNo(toRoute.query.out_trade_no);
                     }
                 }
@@ -126,9 +129,15 @@
              * 跳转到下单页面
              */
             toOrderPage () {
-                this.$router.push({
-                    name : 'marketingTourist'
-                });
+                if (this.fromUser === 'marketer') {
+                    this.$router.replace({
+                        name : 'marketingProduct'
+                    });
+                } else {
+                    this.$router.replace({
+                        name : 'marketingTourist'
+                    });
+                }
             },
             /**
              * 查询交易结果
