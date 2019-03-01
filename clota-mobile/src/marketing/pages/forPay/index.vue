@@ -59,7 +59,7 @@
 
     export default {
         mixins : [lifeCycleMixins],
-        components : {
+        computed : {
             ...mapGetters([
                 'isWeixin'
             ])

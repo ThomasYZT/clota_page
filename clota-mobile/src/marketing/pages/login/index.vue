@@ -299,11 +299,15 @@
              * @param{String} typeId 营销类别id
              */
             toLogin (typeId) {
-                let orgInfo = this.userTypeList.find(item => item.key === typeId);
-                this.$store.commit('marketUpdateTypeId',typeId);
-                this.$store.commit('marketUpdateTypeName',orgInfo['value']);
-                this.$store.commit('marketUpdateOrgId',orgInfo['orgId']);
-                this.loginWithType();
+                if (typeId) {
+                    let orgInfo = this.userTypeList.find(item => item.key === typeId);
+                    this.$store.commit('marketUpdateTypeId',typeId);
+                    this.$store.commit('marketUpdateTypeName',orgInfo['value']);
+                    this.$store.commit('marketUpdateOrgId',orgInfo['orgId']);
+                    this.loginWithType();
+                } else {
+                    this.$vux.toast.text(this.$t('chooseMarketingTypes'));
+                }
             },
             /**
              * 开始登录
@@ -320,7 +324,7 @@
                     if (res.success) {
                         this.$store.commit('marketUpdateToken',res.data);
                         this.$store.dispatch('marketGetUserInfo').then(() => {
-                            this.$router.push({
+                            this.$router.replace({
                                 name : 'marketingProduct'
                             });
                             this.$store.dispatch('marketGetLoginData');
