@@ -168,7 +168,6 @@
                                                            :max="formData.settlePrice ? Number(formData.settlePrice) : 9999999999"
                                                            :min="0"
                                                            :disabled="type === 'check'"
-                                                           :precision="1"
                                                            v-model.trim="scope.row.subPrice"
                                                            :placeholder="$t('inputField', {field: ''})">
                                             </InputNumber>
@@ -265,9 +264,9 @@
                 if (this.formData.settlePrice && this.formData.itemRule && this.formData.itemRule.length > 1) {
                     let sum = 0;
                     this.formData.itemRule.forEach(item => {
-                        sum += Number(item.subPrice);
+                        sum += Number(item.subPrice ? item.subPrice : 0);
                     });
-                    return (this.formData.settlePrice - sum).toFixed(1);
+                    return Number((this.formData.settlePrice - sum).toFixed(2));
                 } else {
                     return 0;
                 }
@@ -295,7 +294,7 @@
                         { validator : validateTotalQuota, trigger : 'change',
                           marketQuota : this.formData.marketQuota,
                           sharedQuota : this.formData.sharedQuota,
-                          toTalExclusiveQuota : this.formData.toTalExclusiveQuota}
+                          toTalExclusiveQuota : this.formData.toTalExclusiveQuota }
                     ],
                     sharedQuota : [
                         { required : true, message : this.$t('errorEmpty', { msg : this.$t('sharedQuota') }), trigger : 'change' }, // 不能为空
@@ -305,7 +304,7 @@
                           trigger : 'change',
                           totalQuota : this.formData.totalQuota,
                           marketQuota : this.formData.marketQuota,
-                          toTalExclusiveQuota : this.formData.toTalExclusiveQuota}
+                          toTalExclusiveQuota : this.formData.toTalExclusiveQuota }
                     ],
                     marketQuota : [
                         { required : this.formData.isGroup !== 'true', message : this.$t('errorEmpty', { msg : this.$t('marketQuota') }), trigger : 'change' }, // 不能为空
@@ -382,6 +381,9 @@
                     if ( valid ) {
                         if (this.showCountMoney == 0) {
                             this.loading = true;
+                            this.formData.itemRule.forEach(item => {
+                                item.subPrice = item.subPrice ? item.subPrice : 0;
+                            });
                             if (this.confirmCallback) {
                                 let formData = defaultsDeep({},this.formData);
                                 this.confirmCallback( formData );
@@ -456,7 +458,6 @@
                 this.chosedProductInfo = {};
                 this.productDetail = {};
             },
-
         }
     };
 </script>

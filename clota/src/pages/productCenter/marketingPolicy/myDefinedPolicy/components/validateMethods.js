@@ -185,9 +185,11 @@ export const validateDateRange = (rule, value, callback) => {
 export const validateItemRule = (rule, value, callback) => {
     let sum = 0;
     rule.itemRule.forEach(item => {
-        sum += Number(item.subPrice);
+        sum += Number(item.subPrice ? item.subPrice : 0);
     });
     if (rule.settlePrice - sum < 0) {
         callback(i18n.t('sizeErrorB', { filed1 : i18n.t('priceSet'), filed2 : i18n.t('settlePrice') }))
+    } else {
+        callback();
     }
 }

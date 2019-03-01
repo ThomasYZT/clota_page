@@ -554,7 +554,7 @@
                 });
                 //初始化配额管理数据
                 this.quotaChannelData = this.detail.policyChannels.map( item => {
-                    return item.quotaChannelModels;
+                    return item.quotaChannelModels ? item.quotaChannelModels : [];
                 }).reduce((prev, next) => {
                     return prev.concat(next);
                 }).map(item => {

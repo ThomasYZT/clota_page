@@ -103,6 +103,8 @@
                         </Form-item>
                     </i-col>
                 </i-row>
+                <!--入园核销-->
+                <title-park title="enterCheck"></title-park>
                 <!--选择设备分组-->
                 <i-row>
                     <i-col span="24">
@@ -271,9 +273,6 @@
                         </FormItem>
                     </i-col>
                 </i-row>
-
-                <!--入园核销-->
-                <title-park title="enterCheck"></title-park>
                 <!--产品有效性设置 === 自游玩之日起M天有效-->
                 <i-row v-if="ticketDetail.productEffSet === 'since_the_play'">
                     <i-col span="24">
@@ -305,6 +304,8 @@
                         </Form-item>
                     </i-col>
                 </i-row>
+                <!--入园核销-->
+                <title-park title="enterCheck"></title-park>
                 <i-row>
                     <i-col span="24">
                         <FormItem :label="$t('selectField',{msg: $t('equipmentGroup')})" prop="gardenGroupIds"><!--设备分组-->

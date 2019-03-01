@@ -436,7 +436,8 @@
                     quotaChannelData : [],
                 };
                 data.policyChannels.forEach( item => {
-                    productInfoForm.quotaChannelData = productInfoForm.quotaChannelData.concat(item.quotaChannelModels);
+                    productInfoForm.quotaChannelData = productInfoForm.quotaChannelData.concat(item.quotaChannelModels ?
+                        item.quotaChannelModels : []);
                 });
                 productInfoForm.quotaChannelData = productInfoForm.quotaChannelData.map(item => {
                     return {
