@@ -295,7 +295,7 @@ export const marketingRoutes = [
                     notNeedCheck : true
                 }
             },
-            //支付
+            //游客支付
             {
                 path : 'tourist/createOrder/pay',
                 name : 'marketingCreateOrderToPay',

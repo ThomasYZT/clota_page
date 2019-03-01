@@ -18,7 +18,7 @@
             </div>
 
             <!-- 返回按钮 -->
-            <x-button class="button" @click.native="toAccount">{{$t('continueToReserve')}}</x-button>
+            <x-button v-show="isSuccess !== null" class="button" @click.native="toAccount">{{$t('continueToReserve')}}</x-button>
         </div>
     </div>
 </template>
@@ -36,6 +36,8 @@
                 isSuccess : null,
                 status : '',
                 payFormData : {},
+                //支付来源，销售用户或游客直接下单
+                fromUser : ''
             };
         },
         computed : {
@@ -47,35 +49,40 @@
             /**
              * 获取路由参数
              * @param params
+             * @param toRoute
              */
-            getParams (params) {
+            getParams (params,toRoute) {
+                if (toRoute && toRoute.query.userType) {
+                    this.fromUser = toRoute.query.userType;
+                }
                 //到付
                 if (params && params.payType === 'collect') {
                     this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
+                    this.fromUser = this.payFormData.from;
                     //下单
                     this.createOrder();
                 } else {
+                    this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
+                    this.fromUser = this.payFormData.from;
                     //微信内支付宝支付结果
                     if (params && params.status && params.payFormData) {
                         this.status = params.status;
-                        this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
                         if (params.status === 'success') {
                             this.isSuccess = true;
                             if (this.payFormData.paymentTypeId === 'wx') {
                                 //下单
-                                this.createOrder();
+                                // this.createOrder();
+                                this.isSuccess = true;
                             }
                         } else {
                             this.isSuccess = false;
                         }
-
-                        //微信内公众号支付、非微信的微信支付、支付宝支付结果
-                    } else {
+                    } else {//微信内公众号支付、非微信的微信支付、支付宝支付结果
                         let data = querystring.parse(location.href.split('?')[1]);
                         if (data && data.RespCode === '00') {
-                            this.payFormData = localStorage.getItem('payFormData') ? JSON.parse(localStorage.getItem('payFormData')) : {};
                             //下单
-                            this.createOrder();
+                            // this.createOrder();
+                            this.isSuccess = true;
                         } else {
                             this.isSuccess = false;
                         }
@@ -86,7 +93,7 @@
              * 若已登录前往我的产品页面，否则为切换浏览器的情况，提示返回微信
              */
             toAccount () {
-                if (this.$route.name === 'salesManCreateOrderPayResult') {
+                if (this.fromUser === 'marketer') {
                     this.$router.replace({
                         name : 'marketingProduct'
                     });

@@ -135,10 +135,10 @@
                         if (valid) {
                             //下单人姓名
                             let visitorName = '';
-                            if (this.payerType === 'other') {
+                            if (this.formData.payerType === 'other') {
                                 visitorName = this.formData.payer;
                             } else {
-                                visitorName = this.payPersonListFilter.find((item, i) => {
+                                visitorName = this.payPersonListFilter.find((item) => {
                                     return this.formData.payerType === item.value;
                                 })['label'];
                             }

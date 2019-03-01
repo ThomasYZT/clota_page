@@ -9,7 +9,7 @@
         <ul class="detail">
             <li class="row">
                 <ul class="list">
-                    <li class="col">{{$t('name')}}：{{(orderVisitor.visitorName === 'others' ? $t('others') : orderVisitor.visitorName) | contentFilter}}</li>
+                    <li class="col">{{$t('name')}}：{{orderVisitor.visitorName | contentFilter}}</li>
                     <li class="col">{{$t('mobilePhone')}}：{{orderVisitor.phoneNumber | contentFilter}}</li>
                     <li class="col" v-if="Object.keys(documentInfo).length > 0">{{$t(documentInfo['type'])}}：{{documentInfo['data'] | contentFilter}}</li>
                 </ul>

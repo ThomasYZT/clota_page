@@ -61,7 +61,12 @@ export const marketingGetters = {
     },
     //营销类别id
     marketTypeId : state => {
-        return state.marketing.typeId;
+        let marketTypeId = localStorage.getItem('marketTypeId');
+        if (state.marketing.typeId) {
+            return state.marketing.typeId;
+        } else {
+            return marketTypeId;
+        }
     },
     //营销系统token
     marketToken : state => {
@@ -142,6 +147,7 @@ export const marketMutations = {
     },
     //更新typeId
     marketUpdateTypeId (state,typeId) {
+        localStorage.setItem('marketTypeId',typeId);
         state.marketing.typeId = typeId;
     },
     //更新营销名称
@@ -150,7 +156,7 @@ export const marketMutations = {
     },
     //更新公司名称
     marketUpdateCompanyName (state,companyName) {
-        localStorage.setItem('companyName',companyName)
+        localStorage.setItem('companyName',companyName);
         state.marketing.companyName = companyName;
     },
     /**

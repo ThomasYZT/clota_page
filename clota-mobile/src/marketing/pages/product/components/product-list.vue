@@ -12,7 +12,7 @@
             <li class="label-list" v-if="cannotAlter">{{$t('unmodifiable')}}</li>
             <li class="label-list" v-else>{{$t('modifiable')}}</li>
         </ul>
-        <div class="ticket-notick" @click="$emit('show-notice',productInfo)">{{$t('ticketInfo')}}</div>
+        <div class="ticket-notick" @click.stop="watchTicketInfo">{{$t('ticketInfo')}}</div>
         <div class="price-info">
             {{$t('colonSetting',{ key : $t('commission') })}}{{ productInfo.salary | moneyFilter(2,'¥') | contentFilter }}
         </div>
@@ -34,7 +34,12 @@
             return {};
         },
         methods : {
-
+            /**
+             * 查看购票须知
+             */
+            watchTicketInfo () {
+                this.$emit('show-notice',this.productInfo);
+            }
         },
         computed : {
             //产品不可退
