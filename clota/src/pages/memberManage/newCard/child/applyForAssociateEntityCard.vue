@@ -135,6 +135,7 @@
     .apply-for-assoiate-entity-card{
         @include block_outline();
         background: $color_fff;
+        overflow: auto;
 
         .content{
             padding: 0 15px;

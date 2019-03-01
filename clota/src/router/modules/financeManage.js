@@ -82,7 +82,7 @@ export default {
                     _name : 'receivable-account-manage', //
                     menuName : 'paymentRecord', //lang.config.js 里面的语言键值
                     rightPath : topMenuName + '.' + 'paymentRecord',
-                    iconClass : 'icon-credited-account',
+                    iconClass : 'icon-payee-account',
                     isMenu : true
                 },
             },
