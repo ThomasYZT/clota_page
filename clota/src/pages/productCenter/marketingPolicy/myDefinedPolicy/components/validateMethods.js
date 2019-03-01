@@ -147,7 +147,7 @@ export const validateNaturalNumber = (rule, value, callback) => {
                 });
             }
         } else {
-            callback(i18n.t('numError', { field : i18n.t(rule.field) }))
+            callback(i18n.t('numError', { field : i18n.t(rule.customField ? rule.customField : rule.field) }))
         }
     } else {
         callback();

@@ -150,7 +150,7 @@
                     ],
                     outNum : [
                         { required : true, message : this.$t('inputField', { field : this.$t('quantityOfRedeploymentQuotas') }), trigger : 'blur' },
-                        { validator : validateNaturalNumber }
+                        { validator : validateNaturalNumber , customField : 'quantityOfRedeploymentQuotas' }
                     ],
                 };
             },
@@ -163,7 +163,7 @@
                     ],
                     inNum : [
                         { required : true, message : this.$t('inputField', { field : this.$t('quantityOfInputQuota') }), trigger : 'blur' },
-                        { validator : validateNaturalNumber }
+                        { validator : validateNaturalNumber, customField : 'quantityOfInputQuota' }
                     ],
                 };
             },
