@@ -295,7 +295,7 @@
                                            <span> ~ </span>
                                            {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
                                        </template>
-                                       <template>
+                                       <template v-else>
                                            <span>{{$t('cancelAfterVerify')}}</span>
                                        </template>
                                     </template>

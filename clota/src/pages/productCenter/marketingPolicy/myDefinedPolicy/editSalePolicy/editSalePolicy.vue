@@ -410,6 +410,7 @@
                         befPlayStart : Number(item.befPlayStart),
                         befPlayEnd : Number(item.befPlayEnd),
                         procedureRates : Number(item.procedureRates),
+                        returnRuleType : item.returnRuleType ? item.returnRuleType : 'overdue',
                         active : false,
                     });
                 });
