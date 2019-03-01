@@ -149,6 +149,7 @@
              */
             getPayPageForOfficialAccount () {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
+                let paymentChannel = this.payTypeList.find(item => item.key === 'ali')['payType'];
                 ajax.postWithoutToken('market_getPayPageForOfficialAccount', {
                     bizScene : 'order',
                     bizType : 'pay_order',
@@ -156,7 +157,7 @@
                     txnAmt : this.totalAmount,
                     redirectUrl : this.getRedirectUrl(paymentChannel),
                     orgId : this.marketOrgId,
-                    paymentChannel : this.payTypeList.find(item => item.key === 'wx')['payType'],
+                    paymentChannel : paymentChannel,
                     ...createOrderParams
                 }).then(res => {
                     this.payFormData = {};
