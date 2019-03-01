@@ -25,12 +25,12 @@
         <div class="btn-area">
             <x-button @click.native="recharge"
                       v-if="payType !== 'collect'"
-                      :disabled="payTypeList.length < 1">
+                      :disabled="payTypeListDeal.length < 1">
                 {{$t('toPay')}}
             </x-button>
             <x-button @click.native="recharge"
                       v-else
-                      :disabled="payTypeList.length < 1">
+                      :disabled="payTypeListDeal.length < 1">
                 {{$t('confirm')}}
             </x-button>
         </div>
