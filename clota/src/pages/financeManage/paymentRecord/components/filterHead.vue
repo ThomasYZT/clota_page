@@ -3,6 +3,7 @@
 <template>
     <div class="filter-head">
         <DatePicker v-model="timeRange"
+                    :editable="false"
                     :placeholder="$t('selectField',{msg : ''})"
                     type="daterange"
                     style="width: 240px"

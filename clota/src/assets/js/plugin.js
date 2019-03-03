@@ -182,7 +182,7 @@ plugin.install = function (Vue) {
                 if (content === '' || content === null || typeof content === "undefined") {
                     return '-';
                 } else {
-                    return content === 0 ? '0.00' : Number(content).toCurrency();
+                    return (content === 0 || content === '0' || content === '0.00') ? '0.00' : Number(content).toCurrency();
                 }
             }
         },
