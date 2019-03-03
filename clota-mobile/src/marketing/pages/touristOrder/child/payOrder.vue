@@ -95,25 +95,28 @@
                     orgId : this.marketOrgId
                 }).then(res => {
                     if (res.success) {
-                        this.payTypeList = res.data && res.data.length > 0 ? res.data.map((item) => {
-                            if (item.accountType === 'weixin') {
-                                return {
-                                    icon : require('../../../../assets/images/icon-wx-pay.svg'),
-                                    key : 'wx',
-                                    value : this.$t('wxPay'),
-                                    param : item,
-                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
-                                };
-                            } else if (item.accountType === 'alipay') {
-                                return {
-                                    icon : require('../../../../assets/images/icon-ali-pay.svg'),
-                                    key : 'ali',
-                                    value : this.$t('aliPay'),
-                                    param : item,
-                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
-                                };
+                        this.payTypeList = [];
+                        if (res.data && res.data.length > 0) {
+                            for (let i = 0,j = res.data.length; i < j; i++) {
+                                if (res.data[i]['accountType'] === 'weixin') {
+                                    this.payTypeList.unshift({
+                                        icon : require('../../../../assets/images/icon-wx-pay.svg'),
+                                        key : 'wx',
+                                        value : this.$t('wxPay'),
+                                        param : res.data[i],
+                                        payType : res.data[i].paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
+                                    });
+                                } else {
+                                    this.payTypeList.push({
+                                        icon : require('../../../../assets/images/icon-ali-pay.svg'),
+                                        key : 'ali',
+                                        value : this.$t('aliPay'),
+                                        param : res.data[i],
+                                        payType : res.data[i].paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
+                                    });
+                                }
                             }
-                        }) : [];
+                        }
                         this.payType = this.payTypeList.length > 0 ? this.payTypeList[0].key : '';
                     } else {
                         this.payTypeList = [];
