@@ -109,20 +109,21 @@
                 <span>{{$t('myDistribute')}}</span>
             </div>
 
-            <div class="button-wrapper" v-if="canAddAllocation && canDistribution">
-                <span @click="distribute" class="btn">+ {{ $t('add') + $t('distribution')}}</span>
-            </div>
+            <template v-if="canAddAllocation && canDistribution">
+                <div class="button-wrapper">
+                    <span @click="distribute" class="btn">+ {{ $t('add') + $t('distribution')}}</span>
+                </div>
 
-            <!-- 我的分销表格信息 -->
-            <div class="table-wrapper2">
-                <tableCom v-if="myAllocationLists.length !== 0"
-                          auto-height
-                          :column-data="myDistributeConfig"
-                          :table-com-min-height="260"
-                          :table-data="myAllocationLists"
-                          :border="false"
-                          :header-clickable="true"
-                          @headerClick="headerClick(arguments)">
+                <!-- 我的分销表格信息 -->
+                <div class="table-wrapper2">
+                    <tableCom v-if="myAllocationLists.length !== 0"
+                              auto-height
+                              :column-data="myDistributeConfig"
+                              :table-com-min-height="260"
+                              :table-data="myAllocationLists"
+                              :border="false"
+                              :header-clickable="true"
+                              @headerClick="headerClick(arguments)">
                         <template v-for="i in (myDistributeConfig.length - 1)"
                                   :slot="'column'+i"
                                   slot-scope="row">
@@ -135,11 +136,17 @@
                                 show-overflow-tooltip>
                             </el-table-column>
                         </template>
-                </tableCom>
-                <div class="no-data" v-else>
-                    <img src="../../../../assets/images/icon-no-data.png" alt="">
+                    </tableCom>
+                    <div class="no-data" v-else>
+                        <img src="../../../../assets/images/icon-no-data.png" alt="">
+                    </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="no-distribute-tip">
+                    <span>{{$t('canNotDistributeTip')}}</span>
+                </div>
+            </template>
         </div>
 
         <policy-detail ref="detailView">
@@ -560,6 +567,17 @@
                         width: 150px;
                         height: 150px;
                     }
+                }
+            }
+
+            .no-distribute-tip {
+                position: relative;
+                height: 260px;
+                width: 100%;
+
+                span {
+                    @include center_center();
+                    color: $color_gray;
                 }
             }
 
