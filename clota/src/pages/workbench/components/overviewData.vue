@@ -109,7 +109,7 @@
     @import '~@/assets/scss/base';
 
     .overview-tpl {
-        @include block_outline(unquote('calc((100% - 60px) / 4)'), 125px);
+        @include block_outline(unquote('calc((100% - 61px) / 4)'), 125px);
         float: left;
         margin-right: 20px;
         padding: 25px 30px;
