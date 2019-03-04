@@ -54,7 +54,7 @@ import elCollapseItem from 'element-ui/lib/collapse-item';
 import Loading from 'element-ui/lib/loading';
 
 //引入拖拽缩放插件
-import VueDraggableResizable from 'vue-draggable-resizable-gorkys';
+import VueDraggableResizable from 'vue-draggable-resizable'
 //引入qr-code工具
 import QRcode from 'qrcode';
 //引入富文本编辑

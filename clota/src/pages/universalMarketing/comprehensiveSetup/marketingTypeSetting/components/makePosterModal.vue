@@ -65,7 +65,7 @@
     import ImgUploader from '../../../../register/components/ImgUploader';
     import posterSelection from './posterSelection';
     import ajax from '@/api/index';
-    // import Canvas2Image from 'canvas2image';
+    import common from '../../../../../assets/js/common';
     import html2canvas from 'html2canvas';
     export default {
         components : {
@@ -88,6 +88,8 @@
                 codeUrl : '',
                 //base64编码格式海报底图
                 src64 : '',
+                //下载图片base64格式码
+                downloadImageSrc : '',
             };
         },
         methods : {
@@ -136,6 +138,7 @@
              *  隐藏编辑海报模态框
              */
             editPosterHide () {
+                this.downloadImageSrc = '';
                 this.src64 = "";
                 this.editPosterVisible = false;
             },
@@ -144,29 +147,86 @@
              */
             save () {
                 const dom = this.$refs['imgSynthesizer'].$el;
-                const scale = 1.5;
-                // let _canvas = document.createElement('canvas');
-                // let context = _canvas.getContext('2d');
-                // context.mozImageSmoothingEnabled = false;
-                // context.webkitImageSmoothingEnabled = false;
-                // context.msImageSmoothingEnabled = false;
-                // context.imageSmoothingEnabled = false;
+                const scale = 1;
                 html2canvas(this.$refs['imgSynthesizer'].$el, {
                     scale,
                     width : dom.offsetWidth * scale,
                     height : dom.offsetHeight * scale,
                     onrendered : (canvas) => {
-                        this.src64 = canvas.toDataURL('image/png');
-                        //Canvas2Image.saveAsPNG(canvas, dom.offsetWidth * scale, dom.offsetHeight * scale);
+                        let context = canvas.getContext('2d');
+                        context.mozImageSmoothingEnabled = false;
+                        context.webkitImageSmoothingEnabled = false;
+                        context.msImageSmoothingEnabled = false;
+                        context.imageSmoothingEnabled = false;
+                        this.downloadImageSrc = canvas.toDataURL('image/png');
                         //下载此图片
-                        let aLink = document.createElement('a');
-                        aLink.href = this.src64;
-                        aLink.download = 'test.png';
-                        aLink.click();
+                        this.downloadImg();
                     }
                 });
                 this.choosePosterHide();
                 this.editPosterHide();
+            },
+            /**
+             *  下载海报
+             */
+            downloadImg () {
+                if (common.whichBrowser() === "IE" || common.whichBrowser() === "Edge") {
+                    this.IEdownload();
+                } else {
+                    this.commonDownload();
+                }
+            },
+            /**
+             *  ie下载图片方法
+             */
+            IEdownload () {
+                // 截取base64的数据内容（去掉前面的描述信息，类似这样的一段：data:image/png;base64,）并解码为2进制数据
+                let bstr = atob(this.downloadImageSrc.split(',')[1]);
+                // 获取解码后的二进制数据的长度，用于后面创建二进制数据容器
+                let n = bstr.length;
+                // 创建一个Uint8Array类型的数组以存放二进制数据
+                let u8arr = new Uint8Array(n);
+                // 将二进制数据存入Uint8Array类型的数组中
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                // 创建blob对象
+                let blob = new Blob([u8arr]);
+                // 调用浏览器的方法，调起IE的下载流程
+                window.navigator.msSaveOrOpenBlob(blob, 'chart-download' + '.' + 'png');
+            },
+            /**
+             *  通用下载图片方法
+             */
+            commonDownload () {
+                let aLink = document.createElement('a');
+                //new Blob([content]);
+                let blob = this.base64ToBlob(this.downloadImageSrc);
+
+                let evt = document.createEvent("HTMLEvents");
+                //initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+                evt.initEvent("click", true, true);
+                aLink.download = 'test.png';
+                aLink.href = URL.createObjectURL(blob);
+                //兼容火狐
+                aLink.dispatchEvent(new MouseEvent('click', { bubbles : true, cancelable : true, view : window }));
+            },
+            /**
+             *  base64转blob
+             *  @param code
+             */
+            base64ToBlob (code) {
+                let parts = code.split(';base64,');
+                let contentType = parts[0].split(':')[1];
+                let raw = window.atob(parts[1]);
+                let rawLength = raw.length;
+
+                let uInt8Array = new Uint8Array(rawLength);
+
+                for (let i = 0; i < rawLength; ++i) {
+                    uInt8Array[i] = raw.charCodeAt(i);
+                }
+                return new Blob([uInt8Array], { type : contentType });
             },
             /**
              *  查询海报列表
