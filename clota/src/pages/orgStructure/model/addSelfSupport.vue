@@ -45,13 +45,11 @@
             <!--APP ID-->
             <Form-item label="APP ID" prop="appId">
                 <Input v-model="addChannel.appId"
-                       :disabled="true"
                        :placeholder="$t('inputField', {field: ''})" />
             </Form-item>
             <!--APP Secret-->
             <Form-item label="APP Secret" prop="appSecret">
                 <Input v-model="addChannel.appSecret"
-                       :disabled="true"
                        :placeholder="$t('inputField', {field: ''})" />
             </Form-item>
             <!--备注-->

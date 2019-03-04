@@ -213,7 +213,7 @@
                 pwdRule : (rule, value, callback) => {
                     if (this.passwordOrigin) {
                         if (value !== this.passwordOrigin) {
-                            if (/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value)) {
+                            if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)) {
                                 callback();
                             } else {
                                 callback(new Error( this.$t('errorPwdRule') ));
@@ -222,7 +222,7 @@
                             callback();
                         }
                     } else {
-                        if (/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/.test(value)) {
+                        if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/.test(value)) {
                             callback();
                         } else {
                             callback(new Error( this.$t('errorPwdRule') ));
