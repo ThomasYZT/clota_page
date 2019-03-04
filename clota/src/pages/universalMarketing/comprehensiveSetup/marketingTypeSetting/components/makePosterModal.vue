@@ -161,10 +161,11 @@
                         this.downloadImageSrc = canvas.toDataURL('image/png');
                         //下载此图片
                         this.downloadImg();
+
+                        this.choosePosterHide();
+                        this.editPosterHide();
                     }
                 });
-                this.choosePosterHide();
-                this.editPosterHide();
             },
             /**
              *  下载海报

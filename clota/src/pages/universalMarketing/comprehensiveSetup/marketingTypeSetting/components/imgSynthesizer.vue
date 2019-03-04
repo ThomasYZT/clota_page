@@ -3,9 +3,9 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="img-synthesizer">
+    <div id="img-synthesizer"
+         class="img-synthesizer">
         <img v-if="src64"
-             id="img-synthesizer-poster"
              style="height: 100%;"
              @load="imgLoad"
              ref="poster"
