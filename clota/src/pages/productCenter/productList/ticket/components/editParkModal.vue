@@ -902,6 +902,7 @@
              */
             changeEquipmentGroup ( val ) {
                 if (val && val.length > 0) {
+                    this.formData.checkPoint = [];
                     val.forEach( value => {
                         let obj = this.enumData.group.find( item => value === item.id );
                         if (obj) {
@@ -918,6 +919,7 @@
              */
             changeProjectGroup ( val ) {
                 if (val && val.length > 0) {
+                    this.formData.playPoint = [];
                     val.forEach( value => {
                         let obj = this.enumData.group.find( item => value === item.id );
                         if (obj) {
