@@ -328,7 +328,7 @@
             /**
              *  选择产品改变
              */
-            changeChooseProduct ( val , bool) {
+            changeChooseProduct ( val , bool ) {
                 if (bool) {
                     this.findProductById(this.chosedProductInfo, bool);
                 } else {
@@ -433,7 +433,6 @@
                         this.formData.settlePrice = this.formData.settlePrice.toString();
                         if (data.productId) {
                             this.chosedProductInfo = data;
-                            this.chosedProductInfo.id = data.productId;
                             this.changeChooseProduct(data.productId, true);
                         }
                     }
