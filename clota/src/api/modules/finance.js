@@ -15,5 +15,9 @@ export default {
     //修改收款账户
     'updatePartnerAccount' : '/partner/updatePartnerAccount',
     //付款账户充值
-    'recharge' : '/partner/recharge'
+    'recharge' : '/partner/recharge',
+
+    /***********************************在线收款***********************************/
+    //在线收款记录
+    'queryBillRecordList' : '/bill/queryBillRecordList'
 };

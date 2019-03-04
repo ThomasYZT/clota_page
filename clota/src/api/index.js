@@ -44,8 +44,11 @@ instance.interceptors.response.use(function (response) {
         return response;
     }
 }, function (error) {
-    store.dispatch('showErrToast','systemErr');
-    // Do something with response error
+    if (error.toString() === 'Error: Network Error') {
+        store.dispatch('showErrToast','networkError');
+    } else {
+        store.dispatch('showErrToast','systemErr');
+    }
     return Promise.reject(error);
 });
 
@@ -81,7 +84,7 @@ export default {
             return res.data;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
-            store.dispatch('showErrToast','systemErr');
+            // store.dispatch('showErrToast','systemErr');
         }).finally(() => {
             if (showLoading) {
                 store.commit('changePromisings','del');
@@ -128,7 +131,7 @@ export default {
             return res.data;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
-            store.dispatch('showErrToast','systemErr');
+            // store.dispatch('showErrToast','systemErr');
             return err;
         }).finally(() => {
             if (showLoading) {
@@ -192,7 +195,7 @@ export default {
             return res.data;
         }).catch((err) => {
             console.error(`接口名: ${api[urlKey]}, 错误信息: `, err);
-            store.dispatch('showErrToast','systemErr');
+            // store.dispatch('showErrToast','systemErr');
             return err;
         });
     },
