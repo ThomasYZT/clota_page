@@ -74,7 +74,7 @@
 
                 //密码只能是数字+26个英文大小写字母
                 pwdRule : (rule, value, callback) => {
-                    let reg = /^(?![^a-zA-Z]+$)(?!\D+$).{6,20}$/;
+                    let reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,20}$/;
                     if (!reg.test(value)) {
                         callback(new Error( this.$t('errorPwdRule') ));
                     } else {
