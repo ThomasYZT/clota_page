@@ -64,7 +64,7 @@
             },
             /**
              * 模态框状态改变
-             * @param{Boolean} type 当前显示的zhuagnt
+             * @param{Boolean} type 当前显示的状态
              */
             visibleChange (type) {
             },

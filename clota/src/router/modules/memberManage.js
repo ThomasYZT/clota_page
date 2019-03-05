@@ -343,6 +343,18 @@ export default {
                             isMenu : true
                         },
                     },
+                    //特殊积分折扣率设置
+                    specialIntegralSetting : {
+                        path : '/memberManage/point/special',
+                        name : 'specialIntegralSetting',
+                        component : () => import(/* webpackChunkName : "point" */ '../../pages/memberManage/integration/specialIntegralSetting.vue'),
+                        meta : {
+                            menuName : 'specialIntegralSetting',
+                            _name : 'activity-point-setting',
+                            rightPath : topMenuName + '.' + 'specialIntegralSetting',
+                            isMenu : true
+                        }
+                    },
                     setRate : {
                         //会员管理--会员积分--设置积分、折扣率
                         path : '/memberManage/point/memberRate',
