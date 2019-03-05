@@ -169,9 +169,8 @@
             /**
              * 下单时间选择变化后的处理
              * @param date   范围日期
-             * @param dateType   日期格式
              */
-            changeOrderTime (date, dateType) {//todo:查看能否去掉
+            changeOrderTime (date) {
                 this.formData.orderStartDate = date[0];
                 this.formData.orderEndDate = date[1];
                 this.searchAuditList();
@@ -179,9 +178,8 @@
             /**
              * 游玩日期选择变化后的处理
              * @param date   范围日期
-             * @param dateType   日期格式
              */
-            changeVisitDate (date, dateType) {//todo:查看能否去掉
+            changeVisitDate (date) {
                 this.formData.visitStartDate = date[0];
                 this.formData.visitEndDate = date[1];
                 this.searchAuditList();

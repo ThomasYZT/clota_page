@@ -189,7 +189,7 @@
              * @param channelGroupData 销售渠道组数据
              * @param quotaChannelData 额管理数据
              */
-            show ({channelGroupData, quotaChannelData, type}) {
+            show ( { channelGroupData, quotaChannelData, type } ) {
                 //设置模态框类型状态
                 this.type = type;
                 //获取销售分组下销售渠道列表数据

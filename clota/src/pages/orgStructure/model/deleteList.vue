@@ -54,9 +54,8 @@
 
             /**
              * 显示模态框
-             * @param data {data有值表示查看，反之新增}
              */
-            show (data) {//todo:查看能否去掉
+            show () {
                 this.visible = true;
             },
             /**

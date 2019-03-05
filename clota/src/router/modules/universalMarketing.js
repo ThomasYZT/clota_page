@@ -40,7 +40,6 @@ export default {
             comprehensiveSetup : {
                 path : '/universalMarketing/comprehensiveSetup',
                 component : () => import(/* webpackChunkName: "universalMarketing" */ '../../pages/universalMarketing/comprehensiveSetup/index.vue'),
-                name : 'comprehensiveSetup',
                 meta : {
                     menuName : 'comprehensiveSetup', //lang.config.js 里面的语言键值
                     _name : 'market-setting',

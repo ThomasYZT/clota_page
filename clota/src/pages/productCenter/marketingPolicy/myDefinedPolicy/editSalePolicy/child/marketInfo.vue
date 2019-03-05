@@ -203,9 +203,8 @@
             },
             /**
              *  取消新增营销等级数据
-             *  @param {object} data
              */
-            cancelMarketingData (data) {//todo:查看能否去掉
+            cancelMarketingData () {
                 this.formData.marketingData.pop();
             },
             /**

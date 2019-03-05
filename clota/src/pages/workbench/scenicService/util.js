@@ -103,8 +103,6 @@ export const routerPackage = (rowData, routerInfo) => {
     let hasPermission = permissionFilter(routerObj);
     if (hasPermission) {
         return routerObj;
-    } else {
-        return;
     }
 };
 

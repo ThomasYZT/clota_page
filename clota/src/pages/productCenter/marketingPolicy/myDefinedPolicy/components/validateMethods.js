@@ -188,8 +188,8 @@ export const validateItemRule = (rule, value, callback) => {
         sum += Number(item.subPrice ? item.subPrice : 0);
     });
     if (rule.settlePrice - sum < 0) {
-        callback(i18n.t('sizeErrorB', { filed1 : i18n.t('priceSet'), filed2 : i18n.t('settlePrice') }))
+        callback(i18n.t('sizeErrorB', { filed1 : i18n.t('priceSet'), filed2 : i18n.t('settlePrice') }));
     } else {
         callback();
     }
-}
+};
