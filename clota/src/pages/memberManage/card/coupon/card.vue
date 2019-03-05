@@ -1,7 +1,24 @@
 <template>
     <!--会员管理--会员卡券-->
     <div class="member-card">
-
+        <div class="header-toolbox">
+            <div class="left-tool">
+                <div class="btn-wrap" v-if="canAddMembersCoupon">
+                    <Button class="function-btn" type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button><!--新增卡券-->
+                    <Button class="function-btn" type="primary" @click="toGoodsManage">{{$t('goodsManage')}}</Button><!--新增卡券-->
+                </div>
+            </div>
+            <div class="right-tool">
+                <div class="input-wrap">
+                    <Input class="input-field"
+                           v-model.trim="filterParam.keyword"
+                           icon="ios-search"
+                           :placeholder="$t('inputField', {field: $t('name') + ' / ' + $t('loginName')})"
+                           @on-enter="queryList"
+                           @on-click="queryList" />
+                </div>
+            </div>
+        </div>
         <div class="tabs-wrap">
             <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
                 <TabPane :label="$t('created')" name="created"></TabPane>
@@ -9,9 +26,7 @@
             </Tabs>
         </div>
 
-        <div class="btn-wrap" v-if="canAddMembersCoupon">
-            <Button type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button><!--新增卡券-->
-        </div>
+
         <!--已创建的卡券信息-->
         <table-com
             v-if="tabsName === 'created'"
@@ -146,7 +161,7 @@
     import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './cardConfig';
-    import delModal from './delModal';
+    import delModal from './components/delModal';
     import defaultsDeep from 'lodash/defaultsDeep';
     import { mapGetters } from 'vuex';
 
@@ -157,6 +172,11 @@
         },
         data () {
             return {
+                //查询接口过滤参数
+                filterParam : {
+                    //关键字
+                    keyword : '',
+                },
                 //当前tap值
                 tabsName : 'created',
                 //表格数据
@@ -189,7 +209,14 @@
             add () {
                 this.$router.push({ name : 'addCard', query : { type : 'add' },params : { name : 1 } });
             },
-
+            /**
+             *  前往商品管理页面
+             */
+            toGoodsManage () {
+                this.$router.push({
+                    name : 'memberGoodsManage',
+                });
+            },
             /**
              * 修改券
              * @param data
@@ -383,16 +410,38 @@
         background: $color-fff;
         border-radius: 4px;
 
+        .header-toolbox {
+            display: flex;
+            .left-tool {
+                flex: 1 0;
+                .btn-wrap{
+                    height: 58px;
+                    padding: 10px 30px 0;
+
+                    .function-btn {
+                        margin-right: 10px;
+                    }
+                }
+            }
+
+            .right-tool {
+                flex: 1 0;
+                .input-wrap {
+                    height: 58px;
+                    padding: 10px 30px 0;
+                    .input-field {
+                        height: 32px;
+                        width: 350px;
+                        float: right;
+                    }
+                }
+            }
+        }
+
         .tabs-wrap{
             /deep/ .ivu-tabs-nav{
                 margin-left: 30px;
             }
-        }
-
-        .btn-wrap{
-            height: 58px;
-            line-height: 56px;
-            padding: 0 30px;
         }
 
         /deep/ .el-table{

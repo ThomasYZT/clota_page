@@ -2636,4 +2636,10 @@ export default {
     'wxPayRe.REVOKED' : 'Revoked',
     'wxPayRe.USERPAYING' : 'User payment',
     'wxPayRe.PAYERROR' : 'Payment failed',
+    'coupon' : '优惠券',
+    'cardCoupon' : '卡劵',
+    'cardReport' : '卡劵报表',
+    'memberGoodsManage' : '商品管理',
+    'couponCodeDetails' : '优惠券券码详情',
+    'couponUsageDetails' : '优惠券使用详情',
 };

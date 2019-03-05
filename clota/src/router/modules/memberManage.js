@@ -400,25 +400,83 @@ export default {
                     },
                 }
             },
-
+            //todo 卡券菜单权限需要重新确认
             card : {
-                //会员管理--会员卡券
+                //会员管理--卡券
                 path : '/memberManage/coupon/card',
-                name : 'card',
-                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/card.vue'),
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/index.vue'),
                 meta : {
-                    menuName : 'card', //lang.config.js 里面的语言键值
+                    menuName : 'cardCoupon', //lang.config.js 里面的语言键值
                     _name : 'members-coupon',
                     iconClass : 'icon-card',
                     rightPath : topMenuName + '.' + 'card',
                     isMenu : true
                 },
+                children : {
+                    //会员管理--优惠券模块
+                    coupon : {
+                        path : '/memberManage/coupon/card/coupon',
+                        name : 'coupon',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/coupon/card.vue'),
+                        meta : {
+                            menuName : 'coupon', //lang.config.js 里面的语言键值
+                            _name : 'members-coupon',
+                            rightPath : topMenuName + '.' + 'coupon',
+                            isMenu : true
+                        },
+                    },
+                    //会员管理--商品管理
+                    memberGoodsManage : {
+                        path : '/memberManage/coupon/card/coupon/memberGoodsManage',
+                        name : 'memberGoodsManage',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/coupon/child/memberGoodsManage/index.vue'),
+                        meta : {
+                            menuName : 'memberGoodsManage', //lang.config.js 里面的语言键值
+                            _name : 'members-coupon',
+                            rightPath : topMenuName + '.' + 'coupon',
+                        },
+                    },
+                    //会员管理--卡劵报表模块
+                    cardReport : {
+                        path : '/memberManage/coupon/card/cardReport',
+                        name : 'cardReport',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/cardReport/list.vue'),
+                        meta : {
+                            menuName : 'cardReport', //lang.config.js 里面的语言键值
+                            _name : 'members-coupon',
+                            rightPath : topMenuName + '.' + 'cardReport',
+                            isMenu : true
+                        },
+                    },
+                    //会员管理--卡劵报表模块--会员卡券码详情
+                    couponCodeDetails : {
+                        path : '/memberManage/coupon/card/cardReport/couponCodeDetails',
+                        name : 'couponCodeDetails',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/cardReport/list.vue'),
+                        meta : {
+                            menuName : 'couponCodeDetails', //lang.config.js 里面的语言键值
+                            _name : 'members-coupon',
+                            rightPath : topMenuName + '.' + 'cardReport',
+                        },
+                    },
+                    //会员管理--卡券报表模块--会员卡使用详情
+                    couponUsageDetails : {
+                        path : '/memberManage/coupon/card/cardReport/couponUsageDetails',
+                        name : 'couponUsageDetails',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/cardReport/list.vue'),
+                        meta : {
+                            menuName : 'couponUsageDetails', //lang.config.js 里面的语言键值
+                            _name : 'members-coupon',
+                            rightPath : topMenuName + '.' + 'cardReport',
+                        },
+                    }
+                }
             },
             addCard : {
                 //会员管理--会员卡券--新增卡劵
                 path : '/memberManage/coupon/add',
                 name : 'addCard',
-                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/addCard.vue'),
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/coupon/child/addCard/addCard.vue'),
                 meta : {
                     menuName : 'card', //lang.config.js 里面的语言键值
                     _name : 'addMembersCoupon',

@@ -781,9 +781,9 @@
                 //上级路由列表
                 beforeRouterList : [
                     {
-                        name : 'card',
+                        name : 'coupon',
                         router : {
-                            name : 'card'
+                            name : 'coupon'
                         }
                     }
                 ],
@@ -938,7 +938,7 @@
                 }).finally(() => {
                     this.loading = false;
                     this.$router.push({
-                        name : 'card'
+                        name : 'coupon'
                     });
                 });
             },
@@ -1100,7 +1100,7 @@
              */
             cancelEdit () {
                 this.$router.push({
-                    name : 'card'
+                    name : 'coupon'
                 });
             },
             /**
