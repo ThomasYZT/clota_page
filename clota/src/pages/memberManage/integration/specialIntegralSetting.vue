@@ -46,7 +46,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="setIntegral(scope.row)">{{$t('按会员卡级别设置积分、折扣率')}}</li>
+                            <li @click="setIntegralByMemberCard(scope.row)">{{$t('按会员卡级别设置积分、折扣率')}}</li>
                             <li @click="pauseRule(scope.row)" v-if="true">{{$t('暂停')}}</li>
                             <li @click="startRule(scope.row)" v-else>{{$t('启用')}}</li>
                             <li @click="copyRule(scope.row)">{{$t('复制规则')}}</li>
@@ -182,6 +182,18 @@
             addRule () {
                 this.currentData = {};
                 this.ruleModalShow = true;
+            },
+            /**
+             * 根据会员级别设置积分折扣率
+             * @param{Object} ruleData 规则信息
+             */
+            setIntegralByMemberCard (rowData) {
+                this.$router.push({
+                    name : 'specialIntegralCardLevelSetting',
+                    params : {
+
+                    }
+                });
             }
         },
         computed : {

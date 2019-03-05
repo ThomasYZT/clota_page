@@ -1,7 +1,12 @@
 <template>
     <!--会员管理--会员积分--积分、折扣率设置-->
     <div class="member-integration">
-
+        <bread-crumb-head
+            v-if="showBreadHead"
+            :locale-router="$t('会员积分、折扣率设置')"
+            :before-router-list="beforeRouterList">
+        </bread-crumb-head>
+        <div v-if="showBreadHead" class="hr"></div>
         <table-com
             :column-data="columnData"
             :table-data="tableData"
@@ -9,7 +14,7 @@
             :page-no-d.sync="pageNo"
             :page-size-d.sync="pageSize"
             :total-count="totalCount"
-            :ofset-height="60"
+            :ofset-height="showBreadHead ? 140 : 60"
             @query-data="queryList">
             <el-table-column
                 slot="column2"
@@ -61,11 +66,13 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import { columnData } from './integrationConfig';
     import ajax from '@/api/index.js';
+    import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
 
     export default {
         components : {
             modifyRateModal,
-            tableCom
+            tableCom,
+            breadCrumbHead
         },
         data () {
             return {
@@ -102,12 +109,22 @@
                 if (!this.isNotEmpty(data.scoreRate) || !this.isNotEmpty(data.discountRate)) {
                     return;
                 }
-                this.$router.push({
-                    name : 'setRate',
-                    params : {
-                         memberInfo : data
-                    }
-                });
+                //特殊积分折扣率，跳转到特殊积分折扣率店铺设置
+                if (this.$route.name === 'specialIntegralCardLevelSetting') {
+                    this.$router.push({
+                        name : 'specialIntegralStoreSetting',
+                        params : {
+                            memberInfo : data
+                        }
+                    });
+                } else {
+                    this.$router.push({
+                        name : 'setRate',
+                        params : {
+                            memberInfo : data
+                        }
+                    });
+                }
             },
 
             /**
@@ -126,7 +143,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                }).catch(err => {
+                }).catch(() => {
                     this.tableData = [];
                     this.totalCount = 0;
                 });
@@ -136,7 +153,7 @@
              * @param val
              */
             isNotEmpty (val) {
-                return val !== null && val !== '' && val !== undefined;
+                return val !== null && val !== '' && typeof val !== 'undefined';
             },
             /**
              * 设置会员积分、折扣率
@@ -161,6 +178,27 @@
                 });
             },
 
+        },
+        computed : {
+            //面包屑信息
+            beforeRouterList () {
+                if (this.$route.name === 'specialIntegralCardLevelSetting') {
+                    return [
+                        {
+                            name : '特殊积分折扣率设置',
+                            router : {
+                                name : 'specialIntegralSetting'
+                            }
+                        }
+                    ];
+                } else {
+                    return [];
+                }
+            },
+            //是否显示面包屑导航栏
+            showBreadHead () {
+                return this.$route.name === 'specialIntegralCardLevelSetting';
+            }
         }
     };
 </script>
@@ -174,6 +212,10 @@
         overflow: auto;
         background: $color-fff;
         border-radius: 4px;
+
+        .hr{
+            @include block_outline($height : 30px);
+        }
 
         .operate-list{
             @include table_operate();

@@ -149,8 +149,16 @@
                 if (!this.isNotEmpty(data.deptScoreRate) || !this.isNotEmpty(data.deptDiscountRate)) {
                     return;
                 }
+                let routeName = '';
+                if (this.isActivity) {
+                    routeName = 'activitySetProductRate';
+                } else if (this.$route.name === 'specialIntegralStoreSetting') {
+                    routeName = 'specialIntegralProductSetting';
+                } else {
+                    routeName = 'setProductRate';
+                }
                 this.$router.push({
-                    name : this.isActivity ? 'activitySetProductRate' : 'setProductRate',
+                    name : routeName,
                     params : {
                         memberInfo : Object.assign({
                             levelId : this.memberInfo.levelId,
@@ -194,9 +202,7 @@
                     this.levelDiscountId = params.memberInfo.levelId;
                     this.memberInfo = params.memberInfo;
                 } else {
-                    this.$router.push({
-                        name : 'integration'
-                    });
+                    this.$router.back();
                 }
             },
             /**
@@ -290,7 +296,7 @@
 
             //上级路由列表
             beforeRouterList () {
-                if (this.$route.name === 'activityStore') {
+                if (this.$route.name === 'activityStore') {//特定活动
                     return [
                         {
                             name : 'activityIntegrate',
@@ -298,6 +304,21 @@
                                 name : 'activityIntegrate'
                             }
                         }
+                    ];
+                } else if (this.$route.name === 'specialIntegralStoreSetting') {//特殊积分折扣率
+                    return [
+                        {
+                            name : '特殊积分折扣率设置',
+                            router : {
+                                name : 'specialIntegralSetting'
+                            }
+                        },
+                        {
+                            name : '会员积分、折扣率设置',
+                            router : {
+                                name : 'specialIntegralCardLevelSetting'
+                            }
+                        },
                     ];
                 } else {
                     return [
