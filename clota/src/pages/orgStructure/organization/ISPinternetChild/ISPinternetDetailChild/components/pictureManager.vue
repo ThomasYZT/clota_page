@@ -5,6 +5,7 @@
 <template>
     <div class="picture-manager">
         <div class="img-package"
+             :class="{ 'editing-wrapper' : editing }"
              v-for="(item, index) in orgImages"
              @mouseenter="enter(item, index)"
              @mouseleave="leave(item, index)"
@@ -16,17 +17,21 @@
                     <span class="cover" v-if="item.isCover === 'true'">{{$t('coverPage')}}</span>
                     <span class="rotation" v-if="item.isRotation === 'true'">{{$t('carousel')}}</span>
                 </div>
-                <p v-if="item.isCover === 'false'"
-                   class="img-btn"
-                   @click="inCover(item)">{{$t('setToCover')}}</p>
-                <p v-else class="img-btn"
-                   @click="outCover(item)">{{$t('cancelCover')}}</p>
-                <p v-if="item.isRotation === 'false'"
-                   class="img-btn"
-                   @click="inRotation(item)">{{$t('addToCover')}}</p>
-                <p v-else class="img-btn"
-                   @click="outRotation(item)">{{$t('cancelCarousel')}}</p>
-                <p @click="del(item)" class="img-btn del-btn">{{$t('del')}}</p>
+                <template v-if="editing">
+                    <div class="tool-box">
+                        <span v-if="item.isCover === 'false'"
+                           class="img-btn"
+                           @click="inCover(item)">{{$t('setToCover')}}</span>
+                        <span v-else class="img-btn"
+                           @click="outCover(item)">{{$t('cancelCover')}}</span>
+                        <span v-if="item.isRotation === 'false'"
+                           class="img-btn"
+                           @click="inRotation(item)">{{$t('addToCover')}}</span>
+                        <span v-else class="img-btn"
+                           @click="outRotation(item)">{{$t('cancelCarousel')}}</span>
+                        <span @click="del(item)" class="img-btn del-btn">{{$t('del')}}</span>
+                    </div>
+                </template>
             </div>
             <div class="layer">
                 <span class="preview" @click="preview(item)">+</span>
@@ -41,9 +46,10 @@
                        @upload-success="uploadSuc">
         </img-uploader>
         <div class="upload-tip">
-            <p>{{$t('colonSetting', { key : $t('explain') })}}{{$t('colonSetting', { key : $t('imgFormat') })}}{{'PNG/JPG/GIF'}}</p>
-            <p>{{$t('colonSetting', { key : $t('pictureSize')})}} {{'1920*600px'}}</p>
-            <p>{{$t('sizeNotExceeding', { field : $t('imgFile'), size : '10M' })}}</p>
+            <p>{{$t('colonSetting', { key : $t('explain') })}}</p>
+            <p>{{$t('colonSetting', { key : $t('imgFormat') })}}{{'PNG/JPG/GIF'}};
+                {{$t('colonSetting', { key : $t('pictureSize')})}} {{'1920*600px'}};
+                {{$t('sizeNotExceeding', { field : $t('imgFile'), size : '10M' })}}</p>
         </div>
         <delModal ref="delModal">
             <div :class="$style.delTips">
@@ -80,6 +86,11 @@
                 default () {
                     return {};
                 }
+            },
+            //是否处于编辑状态
+            editing : {
+                type : Boolean,
+                default : false,
             }
         },
         components : {
@@ -253,35 +264,68 @@
         .img-package {
             position: relative;
             margin: 0 5px;
-            width: 80px;
-            height: 160px;
+            width: 100px;
+            height: 100px;
             display: inline-block;
             vertical-align: top;
             box-sizing: border-box;
+
+            &.editing-wrapper {
+                width: 180px;
+                height: 100px;
+            }
+
             .img-wrapper {
                 position: relative;
-                height: 80px;
+                height: 100px;
                 width: 100%;
+                text-align: center;
 
-                .img-btn {
-                    margin: 5px 0;
-                    font-size: 12px;
-                    color: $color_blue;
-                    line-height: 100%;
-                    cursor: pointer;
+                .tool-box {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 180px;
+                    height: 25px;
+                    line-height: 25px;
+                    background-color: rgba(255,255,255,.8);
+                    border-bottom-left-radius: 2px;
+                    border-bottom-right-radius: 2px;
 
-                    &:hover {
-                        font-weight: bold;
+                    .img-btn {
+                        display: inline-block;
+                        margin: 5px 0;
+                        padding: 0 5px;
+                        font-size: 12px;
+                        color: $color_blue;
+                        line-height: 100%;
+                        cursor: pointer;
+
+                        &:not(:last-child) {
+                            position: relative;
+                            &:after {
+                                content : ' ';
+                                position: absolute;
+                                right: 0;
+                                top: 50%;
+                                margin-top: -5px;
+                                height: 10px;
+                                border-right: 1px solid #E1E1E1;
+                            }
+                        }
+
+                        &:hover {
+                            font-weight: bold;
+                        }
                     }
-                }
-
-                .del-btn {
-                    color: $color_red;
+                    .del-btn {
+                        color: $color_red;
+                    }
                 }
 
                 img {
                     display: inline-block;
-                    height: 100%;
+                    height: 100px;
                     width: 100%;
                     border-radius: 5px;
                     cursor: pointer;
@@ -299,19 +343,24 @@
                     left: 0;
                     line-height: 100%;
                     .cover, .rotation {
-                        padding: 2px 5px;
+                        margin: 5px 0 0 5px;
+                        width: 40px;
+                        height: 20px;
                         display: block;
                         float: left;
                         font-size: 12px;
                         color: $color_fff;
-                        border-radius: 5px;
-                        line-height: 100%;
+                        border-radius: 2px;
+                        text-align: center;
+                        line-height: 20px;
                     }
                     .cover {
-                        background-color: $color_red;
+                        background-color: #EF4747;
+                        opacity: 0.5;
                     }
                     .rotation {
-                        background-color: $color_blue;
+                        background-color: #2F70DF;
+                        opacity: 0.5;
                     }
                 }
             }
@@ -347,10 +396,10 @@
         }
 
         .upload-tip {
-            width: 200px;
+            padding-left: 5px;
             height: 80px;
             font-size: 12px;
-            color: $color_yellow;
+            color: #C0C4CC;
 
             p {
                 line-height: normal;
@@ -362,9 +411,9 @@
     }
 
     /deep/ .el-upload {
-        min-width: 80px;
-        width: 80px;
-        height: 80px;
+        min-width: 100px;
+        width: 100px;
+        height: 100px;
         font-size: 12px;
         background-color: #FAFAFA;
         color: #999999;
@@ -378,8 +427,8 @@
         }
     }
     /deep/ .el-upload-list__item {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
     }
 
     /deep/ .picture-preview.ivu-modal-wrap {

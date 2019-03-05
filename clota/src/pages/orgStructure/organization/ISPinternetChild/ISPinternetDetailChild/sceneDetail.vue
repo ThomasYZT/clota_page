@@ -271,6 +271,7 @@
                                   :label-width="0">
                             <pictureManager :orgImages="orgImages"
                                             :activeNode="activeNode"
+                                            :editing="type === 'edit'"
                                             @freshOrgInfo="getSceneDetail"></pictureManager>
                         </FormItem>
                     </i-col>
