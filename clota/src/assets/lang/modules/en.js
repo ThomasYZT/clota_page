@@ -2638,4 +2638,7 @@ export default {
     'wxPayRe.PAYERROR' : 'Payment failed',
     'publicKey' : 'Public key',
     'M057' : 'The card is a new card, please perform the associated physical card operation.',
+    'mobileConsumeSetting' : 'Password verification settings when using a stored value account',
+    'onlyUseMemberCode' : 'Use member payment code only',
+    'useMemberCodeAndPassword' : 'Password verification and payment code are required for consumption',
 };

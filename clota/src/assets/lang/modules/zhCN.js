@@ -2638,4 +2638,7 @@ export default {
     'wxPayRe.PAYERROR' : '支付失败',
     'publicKey' : '公钥',
     'M057' : '该卡为新卡,请进行关联实体卡操作',
+    'mobileConsumeSetting' : '使用储值账户消费时，密码校验设置',
+    'onlyUseMemberCode' : '仅使用会员付款码',
+    'useMemberCodeAndPassword' : '消费时需要密码验证和付款码',
 };
