@@ -47,6 +47,7 @@
                                     :chosedPost="chosedPost"
                                     :src64="src64"
                                     :codeUrl="codeUrl"></imgSynthesizer>
+                    <!--<img :src="downloadImageSrc" style="height: 432px;" alt="">-->
                 </div>
             <div slot="footer">
                 <Button class="ivu-btn-90px" type="primary" @click="save">{{$t('save')}}</Button>
@@ -146,25 +147,30 @@
              * 保存并下载制作好的海报
              */
             save () {
-                const dom = this.$refs['imgSynthesizer'].$el;
-                const scale = 1;
+                let dom = this.$refs['imgSynthesizer'].$el;
+                //获取元素相对于视察的偏移量
+                let rect = dom.getBoundingClientRect();
+                let scaledCanvas = document.createElement('canvas');
+                //设置canvas的大小为要截图区域的6倍
+                scaledCanvas.width = dom.offsetWidth * 6;
+                scaledCanvas.height = dom.offsetHeight * 6;
+                let scaledContext = scaledCanvas.getContext("2d");
+                scaledContext.scale(6, 6);
+                //设置context位置，值为相对于视窗的偏移量负值，让图片复位
+                scaledContext.translate(-rect.left,-rect.top);
                 html2canvas(this.$refs['imgSynthesizer'].$el, {
-                    scale,
-                    width : dom.offsetWidth * scale,
-                    height : dom.offsetHeight * scale,
-                    onrendered : (canvas) => {
-                        let context = canvas.getContext('2d');
-                        context.mozImageSmoothingEnabled = false;
-                        context.webkitImageSmoothingEnabled = false;
-                        context.msImageSmoothingEnabled = false;
-                        context.imageSmoothingEnabled = false;
-                        this.downloadImageSrc = canvas.toDataURL('image/png');
-                        //下载此图片
-                        this.downloadImg();
-
-                        this.choosePosterHide();
-                        this.editPosterHide();
-                    }
+                    canvas : scaledCanvas,
+                    logging : true
+                }).then(canvas => {
+                    //关闭抗锯齿
+                    let context = canvas.getContext('2d');
+                    context.mozImageSmoothingEnabled = false;
+                    context.webkitImageSmoothingEnabled = false;
+                    context.msImageSmoothingEnabled = false;
+                    context.imageSmoothingEnabled = false;
+                    this.downloadImageSrc = canvas.toDataURL('image/png');
+                    //下载此图片
+                    this.downloadImg();
                 });
             },
             /**
