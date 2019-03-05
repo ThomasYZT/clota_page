@@ -234,7 +234,7 @@
                                     this.myAllocationLists[i]['allocationName' + j] = res.data.myAllocationLists[j].allocationName;
                                     this.myAllocationLists[i]['allocationId' + j] = res.data.myAllocationLists[j].allocationId;
                                     this.myAllocationLists[i]['price' + j] = res.data.myAllocationLists[j].itemVos[i] ?
-                                        res.data.myAllocationLists[j].itemVos[i].settlePrice : this.myAllocationLists[i].settlePrice;
+                                        res.data.myAllocationLists[j].itemVos[i].settlePrice : '-';
                                     this.myAllocationLists[i]['itemVos' + j] = Array.from(res.data.myAllocationLists[j].itemVos);
                                     this.myAllocationLists[i]['haveSaleGroups' + j] = Array.from(res.data.myAllocationLists[j].policyChannelVos);
                                     if (i === 0) {
