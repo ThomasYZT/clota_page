@@ -448,6 +448,17 @@ export default {
                             rightPath : topMenuName + '.' + 'coupon',
                         },
                     },
+                    //会员管理--优惠券模块--优惠券记录详情
+                    couponRecord : {
+                        path : '/memberManage/coupon/card/coupon/couponRecord',
+                        name : 'couponRecord',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/coupon/child/couponRecord/index.vue'),
+                        meta : {
+                            menuName : 'couponRecord', //lang.config.js 里面的语言键值
+                            _name : 'members-coupon',
+                            rightPath : topMenuName + '.' + 'coupon',
+                        },
+                    },
                     //会员管理--卡劵报表模块
                     cardReport : {
                         path : '/memberManage/coupon/card/cardReport',
