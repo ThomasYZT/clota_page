@@ -28,7 +28,7 @@ const columnData = [
     },
     {
         title : 'operate', // 操作
-        width : 400,
+        width : 420,
     }
 ];
 

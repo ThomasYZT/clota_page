@@ -3,7 +3,7 @@
 <template>
     <div class="special-integral-setting">
         <!--新增区域-->
-        <title-wrap>
+        <title-wrap @add-rule="addRule">
         </title-wrap>
         <div class="rule-list">
             <div class="btn-group-wrap">
@@ -46,9 +46,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="setIntegral(scope.row)">{{$t('按会员卡级别设置积分、折扣率')}}</li>
-                            <li @click="pauseRule(scope.row)">{{$t('暂停')}}</li>
-                            <li @click="startRule(scope.row)">{{$t('启用')}}</li>
+                            <li @click="setIntegralByMemberCard(scope.row)">{{$t('按会员卡级别设置积分、折扣率')}}</li>
+                            <li @click="pauseRule(scope.row)" v-if="true">{{$t('暂停')}}</li>
+                            <li @click="startRule(scope.row)" v-else>{{$t('启用')}}</li>
+                            <li @click="copyRule(scope.row)">{{$t('复制规则')}}</li>
                             <li class="red-label" @click="deleteRule(scope.row)">{{$t('del')}}</li>
                         </ul>
                     </template>
@@ -61,6 +62,10 @@
                 <i class="iconfont icon-help delete-icon"></i>{{$t('是否确定删除该规则？')}}
             </span>
         </del-rule-modal>
+        <!--新建规则模态框-->
+        <create-rule v-model="ruleModalShow"
+                     :rule-data="currentData">
+        </create-rule>
     </div>
 </template>
 
@@ -69,12 +74,14 @@
     import tableCom from '@/components/tableCom/tableCom.vue';
     import columnData from './specialIntegralSettingConfig';
     import delRuleModal from '@/components/delModal/index.vue';
+    import createRule from './specialIntegralChild/createRule';
 
     export default {
         components : {
             titleWrap,
             tableCom,
-            delRuleModal
+            delRuleModal,
+            createRule
         },
         data () {
             return {
@@ -108,7 +115,11 @@
                 //每页条数
                 pageSize : 10,
                 //当前筛选的规则
-                localRule : 'all'
+                localRule : 'all',
+                //当前操作的规则
+                currentData : {},
+                //新建模态框是否显示
+                ruleModalShow : false
             };
         },
         methods : {
@@ -122,13 +133,13 @@
              * 暂停规则
              */
             pauseRule () {
-
+                this.queryRules();
             },
             /**
              * 启用规则
              */
             startRule () {
-
+                this.queryRules();
             },
             /**
              * 删除规则
@@ -148,13 +159,41 @@
              */
             chooseRule (ruleItem) {
                 this.localRule = ruleItem.value;
+                this.queryRules();
             },
             /**
              * 确认删除规则信息
              * @param{Object} ruleData 规则信息
              */
             confirmDelRule (ruleData) {
+                this.queryRules();
+            },
+            /**
+             * 复制规则
+             * @param{Object} ruleData 规则信息
+             */
+            copyRule (rowData) {
+                this.currentData = rowData;
+                this.ruleModalShow = true;
+            },
+            /**
+             * 新增规则
+             */
+            addRule () {
+                this.currentData = {};
+                this.ruleModalShow = true;
+            },
+            /**
+             * 根据会员级别设置积分折扣率
+             * @param{Object} ruleData 规则信息
+             */
+            setIntegralByMemberCard (rowData) {
+                this.$router.push({
+                    name : 'specialIntegralCardLevelSetting',
+                    params : {
 
+                    }
+                });
             }
         },
         computed : {

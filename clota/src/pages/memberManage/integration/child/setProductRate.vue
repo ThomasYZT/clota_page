@@ -174,9 +174,7 @@
                     this.memberInfo = params.memberInfo;
                     this.levelName = params.levelName;
                 } else {
-                    this.$router.push({
-                        name : 'integration'
-                    });
+                    this.$router.back();
                 }
             },
             /**
@@ -223,7 +221,7 @@
              * @param val
              */
             isNotEmpty (val) {
-                return val !== null && val !== '' && val !== undefined;
+                return val !== null && val !== '' && typeof val !== 'undefined';
             },
         },
         computed : {
@@ -233,7 +231,7 @@
             },
             //面包屑路由信息
             beforeRouterList () {
-                if (this.$route.name === 'activitySetProductRate') {
+                if (this.$route.name === 'activitySetProductRate') { //特定活动积分折扣率设置
                     return [
                         {
                             name : 'activityIntegrate',
@@ -247,6 +245,27 @@
                                 name : 'activityStore'
                             }
                         }
+                    ];
+                } else if (this.$route.name === 'specialIntegralProductSetting') { //特殊积分折扣率设置
+                    return [
+                        {
+                            name : '特殊积分折扣率设置',
+                            router : {
+                                name : 'specialIntegralSetting'
+                            }
+                        },
+                        {
+                            name : '会员积分、折扣率设置',
+                            router : {
+                                name : 'specialIntegralCardLevelSetting'
+                            }
+                        },
+                        {
+                            name : this.levelName + this.$t('integration'),
+                            router : {
+                                name : 'specialIntegralStoreSetting'
+                            }
+                        },
                     ];
                 } else {
                     return [

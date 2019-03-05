@@ -355,6 +355,39 @@ export default {
                             isMenu : true
                         }
                     },
+                    //特殊积分折扣率设置--会员级别积分折扣率设置
+                    specialIntegralCardLevelSetting : {
+                        path : '/memberManage/point/special/memberCard',
+                        name : 'specialIntegralCardLevelSetting',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/integration.vue'),
+                        meta : {
+                            menuName : 'specialIntegralCardLevelSetting', //lang.config.js 里面的语言键值
+                            _name : 'activity-point-setting',
+                            rightPath : topMenuName + '.' + 'specialIntegralSetting',
+                        },
+                    },
+                    //特殊积分折扣率设置--店铺积分折扣率设置
+                    specialIntegralStoreSetting : {
+                        path : '/memberManage/point/special/memberCard/store',
+                        name : 'specialIntegralStoreSetting',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setRate.vue'),
+                        meta : {
+                            menuName : 'specialIntegralStoreSetting', //lang.config.js 里面的语言键值
+                            _name : 'activity-point-setting',
+                            rightPath : topMenuName + '.' + 'specialIntegralSetting',
+                        },
+                    },
+                    //特殊积分折扣率设置--产品积分折扣率设置
+                    specialIntegralProductSetting : {
+                        path : '/memberManage/point/special/memberCard/store/product',
+                        name : 'specialIntegralProductSetting',
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/integration/child/setProductRate.vue'),
+                        meta : {
+                            menuName : 'specialIntegralProductSetting', //lang.config.js 里面的语言键值
+                            _name : 'activity-point-setting',
+                            rightPath : topMenuName + '.' + 'specialIntegralSetting',
+                        },
+                    },
                     setRate : {
                         //会员管理--会员积分--设置积分、折扣率
                         path : '/memberManage/point/memberRate',
