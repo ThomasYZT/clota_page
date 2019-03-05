@@ -37,14 +37,38 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="payment-item">
-                            <span>{{$t('colonSetting', { key : 'MerchantID' })}}</span>
-                            <span>{{item.merchantId | contentFilter}}</span>
-                        </div>
-                        <div class="payment-item">
-                            <span>{{$t('colonSetting', { key : 'partnerID' })}}</span>
-                            <span>{{item.partnerId | contentFilter}}</span>
-                        </div>
+                        <template v-if="item.paymentChannel === 'yinshi'">
+                            <div class="payment-item">
+                                <span>{{$t('colonSetting', { key : 'MerchantID' })}}</span>
+                                <span>{{item.merchantId | contentFilter}}</span>
+                            </div>
+                            <div class="payment-item">
+                                <span>{{$t('colonSetting', { key : 'partnerID' })}}</span>
+                                <span>{{item.partnerId | contentFilter}}</span>
+                            </div>
+                        </template>
+                        <template v-else-if="item.paymentChannel === 'wxorali'">
+                            <template v-if="item.accountType === 'alipay'">
+                                <div class="payment-item">
+                                    <span>{{$t('colonSetting', { key : 'appID' })}}</span>
+                                    <span>{{item.appID | contentFilter}}</span>
+                                </div>
+                                <div class="payment-item">
+                                    <span>{{$t('colonSetting', { key : 'publicKey' })}}</span>
+                                    <span>{{item.publicKey | contentFilter}}</span>
+                                </div>
+                            </template>
+                            <template v-else-if="item.accountType === 'weixin'">
+                                <div class="payment-item">
+                                    <span>{{$t('colonSetting', { key : 'appID' })}}</span>
+                                    <span>{{item.officialAccountsAppID | contentFilter}}</span>
+                                </div>
+                                <div class="payment-item">
+                                    <span>{{$t('colonSetting', { key : 'merchantNum' })}}</span>
+                                    <span>{{item.merchantNum | contentFilter}}</span>
+                                </div>
+                            </template>
+                        </template>
                         <div class="payment-item using-status">
                             <span class="start" v-if="item.useStatus === 'enabled'">{{$t('startingUse')}}</span>
                             <span class="unstart" v-else>{{$t('unStarting')}}</span>
