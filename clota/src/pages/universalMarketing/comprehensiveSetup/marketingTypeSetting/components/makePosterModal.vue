@@ -160,7 +160,6 @@
                 scaledContext.translate(-rect.left,-rect.top);
                 html2canvas(this.$refs['imgSynthesizer'].$el, {
                     canvas : scaledCanvas,
-                    logging : true
                 }).then(canvas => {
                     //关闭抗锯齿
                     let context = canvas.getContext('2d');
