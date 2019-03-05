@@ -102,6 +102,7 @@
                         let urlParms = JSON.parse(JSON.stringify(toRoute.query));
                         delete urlParms.transactionId;
                         delete urlParms.fromzl;
+                        delete urlParms.userType;
                         window.location.href = 'https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms);
                     } else if (toRoute && toRoute.query.out_trade_no) {//处理支付结果
                         this.fromUser = toRoute.query.userType;

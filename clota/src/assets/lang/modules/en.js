@@ -2637,4 +2637,5 @@ export default {
     'wxPayRe.USERPAYING' : 'User payment',
     'wxPayRe.PAYERROR' : 'Payment failed',
     'publicKey' : 'Public key',
+    'M057' : 'The card is a new card, please perform the associated physical card operation.',
 };

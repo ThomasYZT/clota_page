@@ -2637,4 +2637,5 @@ export default {
     'wxPayRe.USERPAYING' : '用户支付中',
     'wxPayRe.PAYERROR' : '支付失败',
     'publicKey' : '公钥',
+    'M057' : '该卡为新卡,请进行关联实体卡操作',
 };

@@ -237,6 +237,8 @@
                         });
                     } else if (res.code === 'M015') { //实体卡不存在
                         this.$Message.error(this.$t('entityNotExist'));
+                    } else if (res.code === 'M057') { //该卡为新卡 请进行关联实体卡操作
+                        this.$Message.error(this.$t('M057'));
                     } else {
                         if (this.payModalShow) {
                             this.$refs.payResultModal.setStage('fail');
