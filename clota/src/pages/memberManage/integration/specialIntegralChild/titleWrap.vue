@@ -11,19 +11,21 @@
 </template>
 
 <script>
-	export default {
-		data () {
-			return {};
-		},
-		methods : {
+
+    export default {
+        data () {
+            return {
+            };
+        },
+        methods : {
             /**
              * 新建规则
              */
             addRule () {
-
+                this.$emit('add-rule');
             }
         }
-	};
+    };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
