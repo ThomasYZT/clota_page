@@ -2636,4 +2636,5 @@ export default {
     'wxPayRe.REVOKED' : '已撤销',
     'wxPayRe.USERPAYING' : '用户支付中',
     'wxPayRe.PAYERROR' : '支付失败',
+    'publicKey' : '公钥',
 };

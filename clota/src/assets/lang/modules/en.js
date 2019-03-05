@@ -2636,4 +2636,5 @@ export default {
     'wxPayRe.REVOKED' : 'Revoked',
     'wxPayRe.USERPAYING' : 'User payment',
     'wxPayRe.PAYERROR' : 'Payment failed',
+    'publicKey' : 'Public key',
 };
