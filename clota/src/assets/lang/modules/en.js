@@ -2642,4 +2642,6 @@ export default {
     'mobileConsumeSetting' : 'Password verification settings when using a stored value account',
     'onlyUseMemberCode' : 'Use member payment code only',
     'useMemberCodeAndPassword' : 'Password verification and payment code are required for consumption',
+    'verifySucNum' : 'Write off successful serial code',
+    'verifyFailNum' : 'Write-off failure serial code',
 };

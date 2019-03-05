@@ -2642,4 +2642,6 @@ export default {
     'mobileConsumeSetting' : '使用储值账户消费时，密码校验设置',
     'onlyUseMemberCode' : '仅使用会员付款码',
     'useMemberCodeAndPassword' : '消费时需要密码验证和付款码',
+    'verifySucNum' : '核销成功串码',
+    'verifyFailNum' : '核销失败串码',
 };
