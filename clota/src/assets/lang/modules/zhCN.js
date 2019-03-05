@@ -1142,6 +1142,7 @@ export default {
     "order.tour" : "旅行社",
     "order.OTA" : "OTA",
     "order.scenic" : "景区",
+    "order.self_channel" : "自营渠道",
     "sumBiggerThenDaySum" : "每日可游玩次数不能大于累计可游玩次数",
     "courierManager" : "导游管理",
     "driverManager" : "司机管理",
