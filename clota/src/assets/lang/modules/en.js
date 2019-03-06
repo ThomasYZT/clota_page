@@ -2645,4 +2645,5 @@ export default {
     'memberGoodsManage' : '商品管理',
     'couponCodeDetails' : '优惠券券码详情',
     'couponUsageDetails' : '优惠券使用详情',
+    'exportMemberInfo' : 'Export data this time: {num} | Export data this time: {num}',
 };
