@@ -6,11 +6,14 @@
     <div class="container">
         <i-row class="search-row">
             <i-col span="10">
-                <Button v-if="canOperateProduct"
-                        class=" tool-btn"
-                        :class="{ 'ivu-btn-90px' :  lang === 'zh-CN'}"
-                        type="primary"
-                        @click="getGoods()">{{$t('GetTheGoods')}}</Button>
+                <ButtonGroup>
+                    <Button :type="localType === item.value ? 'primary' : 'ghost'"
+                            v-for="(item,index) in selectList"
+                            :key="index"
+                            @click="chooseType(item)">
+                        {{$t(item.name)}}
+                    </Button>
+                </ButtonGroup>
             </i-col>
             <i-col span="8" style="float: right;">
                 <!-- 搜索框 -->
@@ -21,6 +24,15 @@
                        style="float: right;"
                        @on-click="getListData"
                        @on-enter="getListData"/>
+            </i-col>
+        </i-row>
+        <i-row class="search-row border-top-line">
+            <i-col>
+                <Button v-if="canOperateProduct"
+                        class=" tool-btn"
+                        :class="{ 'ivu-btn-90px' :  lang === 'zh-CN'}"
+                        type="primary"
+                        @click="getGoods()">{{$t('GetTheGoods')}}</Button>
             </i-col>
         </i-row>
         <!-- 工具栏 -->
@@ -46,7 +58,7 @@
             <tableCom :column-data="tableColumn"
                       :table-data="tableData"
                       :border="true"
-                      :ofsetHeight="110"
+                      :ofsetHeight="160"
                       :show-pagination="true"
                       :column-check="true"
                       :total-count="totalCount"
@@ -168,7 +180,24 @@
                 //上下架按钮是否可用
                 goodsStatus : '',
                 //表格已选行数据
-                chosedData : []
+                chosedData : [],
+                //筛选值列表
+                selectList : [
+                    {
+                        name : 'all',
+                        value : 'all'
+                    },
+                    {
+                        name : 'goods',
+                        value : 'goods'
+                    },
+                    {
+                        name : 'coupon',
+                        value : 'coupon'
+                    }
+                ],
+                //当前筛选条件
+                localType : 'all'
             };
         },
         methods : {
@@ -338,6 +367,13 @@
             putOnGoods (rowData) {
                 this.$refs.goodDetailModal.toggle(rowData);
             },
+            /**
+             * 选择筛选条件
+             * @param{Object} typeInfo 筛选条件详情
+             */
+            chooseType (typeInfo) {
+                this.localType = typeInfo.value;
+            }
         },
         computed : {
             ...mapGetters([
@@ -365,6 +401,15 @@
         .search-row{
             @include block_outline($height : 50px);
             padding: 10px 30px;
+
+            &.border-top-line{
+                border-top: 1px solid #eeeeee;
+            }
+
+            .ivu-btn-group .ivu-btn{
+                padding-left: 50px;
+                padding-right: 50px;
+            }
         }
 
         /deep/ .input-field {

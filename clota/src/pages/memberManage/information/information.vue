@@ -58,6 +58,7 @@
                    @on-enter="queryList"/>
             <Button type="primary" @click="queryList">{{$t("query")}}</Button>
             <Button type="ghost" @click="reset">{{$t("reset")}}</Button>
+            <Button type="primary" @click="exportMemberInfo">{{$t("exporting")}}</Button>
         </div>
 
         <!--会员3期暂时去掉-->
@@ -182,6 +183,12 @@
             </table-com>
         </div>
 
+        <!--导出提示框-->
+        <notice-modal ref="noticeModal">
+            {{$tc('exportMemberInfo',exportMemberCount > 1 ? 2 : 1,{ num : exportMemberCount })}}
+        </notice-modal>
+        <!--导出文件下载链接-->
+        <a class="member-info-export-link" :href="memberInfoLink"></a>
     </div>
 </template>
 
@@ -192,9 +199,13 @@
     import { infoListHead } from './infoListConfig';
     import { mapGetters } from 'vuex';
     import { vipLevel, vipChannel, vipStatusEnum, cardStatusEnum, genderEnum } from '@/assets/js/constVariable';
+    import noticeModal from '@/components/noticeModal/index.vue';
 
     export default {
-        components : { tableCom },
+        components : {
+            tableCom,
+            noticeModal
+        },
         data () {
             return {
                 // 查询数据 keyWord-搜索关键字，levelId-会员级别Id，channelId-会员渠道Id，vipStatus-会员类型，cardStatus-会员状态
@@ -230,10 +241,13 @@
                 tableData : [],
                 //列表总条数
                 total : 0,
+                //导出会员条数
+                exportMemberCount : 0,
+                //会员信息导出链接
+                memberInfoLink : ''
             };
         },
         created () {
-            // this.getLevelList();
             this.getChannelList();
             this.queryCardTypeList();
         },
@@ -290,18 +304,6 @@
             }
         },
         methods : {
-            // 获取会员级别列表
-            // getLevelList () {
-            //     ajax.post('queryMemberLevels', {
-            //         pageNo : 1,
-            //         pageSize : 99999,
-            //         isDeleted : 'false',
-            //     }).then(res => {
-            //         if (res.success) {
-            //             this.$set(this.enumData, 'level', this.enumData.level.concat(res.data.data || []));
-            //         }
-            //     });
-            // },
 
             // 获取会员渠道列表
             getChannelList () {
@@ -447,6 +449,27 @@
                 } else {
                     this.queryLevelsByCardType(cardTypeId);
                 }
+            },
+            /**
+             * 导出会员信息
+             */
+            exportMemberInfo () {
+                this.$refs.noticeModal.show({
+                    title : this.$t('notice'),
+                    showCancel : true,
+                    confirmBtn : this.$t('exporting'),
+                    confirmCallback : () => {
+                        this.confirmExportMemberInfo();
+                    }
+                });
+            },
+            /**
+             * 确认导出信息
+             */
+            confirmExportMemberInfo () {
+                let aEle = this.$el.querySelector('.member-info-export-link');
+                aEle.click();
+                this.$refs.noticeModal.hide();
             }
         }
     };
