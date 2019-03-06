@@ -114,8 +114,14 @@
 			 * @param rowData 行数据
 			 */
 			checkDetail (rowData) {
-               this.currentData = rowData;
-               this.showDetailModal = true;
+               // this.currentData = rowData;
+               // this.showDetailModal = true;
+               this.$router.push({
+                   name : 'memberRightsSettingDetail',
+                   params : {
+                       detailInfo : rowData
+                   }
+               });
 			}
 		}
 	};
