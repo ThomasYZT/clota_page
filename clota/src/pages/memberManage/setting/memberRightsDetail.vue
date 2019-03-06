@@ -135,8 +135,8 @@
                     </i-col>
                     <i-col style="display: inline-block;width : auto;">
                         <FormItem
-                            :prop="'ticketScenicId' + index"
-                            :rules="{ validator : validateScenic,trigger : 'change',index : index,isEnable : item.isEnable }">
+                            :prop="'coupon' + index"
+                            :rules="{ validator : validateCoupon,trigger : 'change',index : index,isEnable : item.isEnable }">
                             <div class="ivu-select ivu-select-single" style="width: 265px;" @click="modifyCoupon(item,index)">
                                 <div tabindex="0" class="ivu-select-selection">
                                     <input type="hidden" value="">
@@ -192,6 +192,12 @@
         <add-coupon ref="addCoupon"
                     @set-coupon="setCoupon">
         </add-coupon>
+        <!--优惠券详情-->
+        <coupon-detail-modal ref="couponDetail">
+        </coupon-detail-modal>
+        <!--删除优惠券模态框-->
+        <del-coupon-modal ref="delCouponModal">
+        </del-coupon-modal>
     </div>
 </template>
 
@@ -202,11 +208,15 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import addCoupon from './components/addCoupon';
+    import couponDetailModal from './components/couponDetailModal';
+    import delCouponModal from './components/delCouponModal';
 
     export default {
         components : {
             breadCrumbHead,
-            addCoupon
+            addCoupon,
+            couponDetailModal,
+            delCouponModal
         },
         mixins : [ lifeCycleMixins ],
         props : {
@@ -471,6 +481,34 @@
                 }
             },
             /**
+             * 校验是否选择了优惠券
+             * @param{Object} rule 校验规则
+             * @param{String} value 输入的值
+             * @param{Function} callback 回调函数
+             */
+            validateCoupon (rule,value,callback) {
+                let scenicId = this.rightInfo.ticket[rule.index]['rule']['scenicId'];
+                if (rule.isEnable) {
+                    if (scenicId) {
+                        let tickets = this.rightInfo.ticket;
+                        for (let i = 0,j = tickets.length; i < j; i++) {
+                            if (i !== rule.index) {
+                                if (scenicId === tickets[i]['rule']['scenicId']) {
+                                    callback(new Error('sceneHasSelectedTip'));
+                                } else {
+                                    callback();
+                                }
+                            }
+                        }
+                        callback();
+                    } else {
+                        callback(this.$t('selectField', { msg : this.$t('scenic') }));
+                    }
+                } else {
+                    callback();
+                }
+            },
+            /**
              * 校验是否为金钱
              * @param{Object} rule 校验规则
              * @param{String} value 输入的值
@@ -599,7 +637,7 @@
              * @param{Number} index 优惠券序号
              */
             watchDetail (index) {
-                console.log(index);
+                this.$refs.couponDetail.show();
             },
             /**
              * 新增优惠券
@@ -617,7 +655,8 @@
              * @param{Number} index 优惠券序号
              */
             delCoupon (index) {
-                this.rightInfo.coupon.splice(index,1);
+                this.$refs.delCouponModal.show();
+                // this.rightInfo.coupon.splice(index,1);
             },
             /**
              * 新增或编辑权益信息
