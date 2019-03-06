@@ -508,7 +508,7 @@ export default {
                     couponCodeDetails : {
                         path : '/memberManage/coupon/card/cardReport/couponCodeDetails',
                         name : 'couponCodeDetails',
-                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/cardReport/list.vue'),
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/cardReport/child/couponCodeDetails/index.vue'),
                         meta : {
                             menuName : 'couponCodeDetails', //lang.config.js 里面的语言键值
                             _name : 'members-coupon',
@@ -519,7 +519,7 @@ export default {
                     couponUsageDetails : {
                         path : '/memberManage/coupon/card/cardReport/couponUsageDetails',
                         name : 'couponUsageDetails',
-                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/cardReport/list.vue'),
+                        component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/cardReport/child/couponUsageDetails/index.vue'),
                         meta : {
                             menuName : 'couponUsageDetails', //lang.config.js 里面的语言键值
                             _name : 'members-coupon',

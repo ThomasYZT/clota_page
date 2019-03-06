@@ -2681,4 +2681,7 @@ export default {
     'pushType' : '推送类型',
     'invalidTime' : '失效时间',
     'issuedQuantity' : '已发放数量',
+    'time' : '时间',
+    'remainingAmount' : '剩余数量',
+    'redeemed' : '已兑换',
 };
