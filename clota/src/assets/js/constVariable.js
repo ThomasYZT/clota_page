@@ -548,6 +548,10 @@ export const distributorChannelList = [
         value : 'allStatus'
     },
     {
+        label : 'self_channel',//自营渠道
+        value : 'self_channel'
+    },
+    {
         label : 'OTA',//ota
         value : 'OTA'
     },
@@ -570,6 +574,10 @@ export const notDistributorChannelList = [
     {
         label : 'market',//全民营销
         value : 'market'
+    },
+    {
+        label : 'self_channel',//自营渠道
+        value : 'self_channel'
     },
     {
         label : 'OTA',//ota

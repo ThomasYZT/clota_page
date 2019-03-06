@@ -18,8 +18,7 @@
             :page-no-d.sync="queryParams.pageNo"
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
-            @query-data="queryList"
-            @row-click="handleRowClick">
+            @query-data="queryList">
             <el-table-column
                 slot="column1"
                 slot-scope="row"
@@ -224,8 +223,6 @@
                 });
                 this.cancelModifyPrice();
             },200),
-            // queryList () {
-            // },
             /**
              * 搜索提现记录
              * @param params  Object
@@ -233,13 +230,6 @@
             searchMarketProducts (params) {
                 Object.assign(this.queryParams, params);
                 this.queryList();
-            },
-            /**
-             * 行点击事件
-             * @param data
-             */
-            handleRowClick (data) {
-                //TODO 查看营销产品详情
             },
             /**
              * 修改终端售价
@@ -273,6 +263,7 @@
                             id : scopeRow.id,
                             salePrice : this.modifyModel.modifiedSalePrice,
                             supportCollect : this.supportCollectModal.supportCollect,
+                            settlePrice : scopeRow.settlePrice,
                         }).then(res => {
                             if (res.success) {
                                 scopeRow.salePrice = this.modifyModel.modifiedSalePrice;

@@ -1142,6 +1142,7 @@ export default {
     "order.tour" : "旅行社",
     "order.OTA" : "OTA",
     "order.scenic" : "景区",
+    "order.self_channel" : "自营渠道",
     "sumBiggerThenDaySum" : "每日可游玩次数不能大于累计可游玩次数",
     "courierManager" : "导游管理",
     "driverManager" : "司机管理",
@@ -2684,5 +2685,9 @@ export default {
     'time' : '时间',
     'remainingAmount' : '剩余数量',
     'redeemed' : '已兑换',
-
+    'mobileConsumeSetting' : '使用储值账户消费时，密码校验设置',
+    'onlyUseMemberCode' : '仅使用会员付款码',
+    'useMemberCodeAndPassword' : '消费时需要密码验证和付款码',
+    'verifySucNum' : '核销成功串码',
+    'verifyFailNum' : '核销失败串码',
 };
