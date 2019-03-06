@@ -209,7 +209,7 @@
             toRecord (type) {
                 this.$router.push({
                     name : 'couponRecord',
-                    param : {
+                    params : {
                         type : type,
                     }
                 })
