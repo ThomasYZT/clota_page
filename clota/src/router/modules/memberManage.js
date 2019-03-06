@@ -813,6 +813,17 @@ export default {
                             isMenu : true
                         },
                     },
+                    //初始化设置-会员权益设置详情
+                    memberRightsSettingDetail : {
+                        path : '/memberManage/memRights/detail',
+                        name : 'memberRightsSettingDetail',
+                        component : () => import(/* webpackChunkName: "memberSetting" */ '../../pages/memberManage/setting/memberRightsDetail.vue'),
+                        meta : {
+                            menuName : 'memberRightsSettingDetail', //lang.config.js 里面的语言键值
+                            _name : 'member-right',
+                            rightPath : topMenuName + '.' + 'memberRights'
+                        },
+                    },
                     //初始化设置-会员活动
                     memberActivitySetting : {
                         path : '/memberManage/memActivity',
