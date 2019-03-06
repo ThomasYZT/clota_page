@@ -755,5 +755,32 @@ export const expiresStatus = [
         value : 'not_overdue',
     }
 ];
+//卡券是否有效
+export const cardValid = [
+    {
+        label : 'validCard', //有效卡券
+        value : 'valid',
+    },
+    {
+        label : 'invalidCard', //无效卡券
+        value : 'invalid',
+    },
+];
+
+//卡券应用场景
+export const cardScenario = [
+    {
+        label : 'all', //全部
+        value : 'all',
+    },
+    {
+        label : 'communicationCoupon', //传播型优惠券
+        value : 'communicate',
+    },
+    {
+        label : 'memberBenefitCoupon', //会员权益优惠券
+        value : 'benefit',
+    },
+];
 
 

@@ -4,8 +4,12 @@
         <div class="header-toolbox">
             <div class="left-tool">
                 <div class="btn-wrap" v-if="canAddMembersCoupon">
-                    <Button class="function-btn" type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button><!--新增卡券-->
-                    <Button class="function-btn" type="primary" @click="toGoodsManage">{{$t('goodsManage')}}</Button><!--新增卡券-->
+                    <!--新增卡券-->
+                    <Button class="function-btn" type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button>
+                    <!--商品管理-->
+                    <Button class="function-btn" type="primary" @click="toGoodsManage">{{$t('goodsManage')}}</Button>
+                    <!--商品管理-->
+                    <Button class="function-btn" type="ghost" @click="H5Setting">{{$t('H5Setting')}}</Button>
                 </div>
             </div>
             <div class="right-tool">
@@ -16,91 +20,53 @@
                            :placeholder="$t('inputField', {field: $t('name') + ' / ' + $t('loginName')})"
                            @on-enter="queryList"
                            @on-click="queryList" />
+                    <!--搜索-->
+                    <Button type="primary" @click="queryList">{{$t('searching')}}</Button>
                 </div>
             </div>
         </div>
-        <div class="tabs-wrap">
-            <Tabs :animated="false" :value="tabsName" @on-click="changeTab">
-                <TabPane :label="$t('created')" name="created"></TabPane>
-                <TabPane :label="$t('cancelled')" name="cancellation"></TabPane>
-            </Tabs>
+
+        <div class="filter-head">
+            <div class="select-wrap">
+                <span class="label-title">{{$t('applicationScenario')}}</span>
+                <Select v-model="filterParam.scene" style="width:200px">
+                    <Option v-for="item in cardScenarioList"
+                            :value="item.value"
+                            :key="item.value">{{ $t(item.label) }}</Option>
+                </Select>
+            </div>
+
+            <div class="select-wrap">
+                <span class="label-title">{{$t('wetherEffective')}}</span>
+                <Select v-model="filterParam.valid" style="width:200px">
+                    <Option v-for="item in cardValidList"
+                            :value="item.value"
+                            :key="item.value">{{ $t(item.label) }}</Option>
+                </Select>
+            </div>
+            <div class="tool-box">
+                <!-- 导出记录 -->
+                <span class="text-btn" @click="toRecord('export')">{{$t('exportRecord')}}</span>
+                <!-- 生成链接记录 -->
+                <span class="text-btn" @click="toRecord('link')">{{$t('generateLinkRecord')}}</span>
+                <!-- 会员权益优惠券推送记录 -->
+                <span class="text-btn" @click="toRecord('push')">{{$t('benefitCouponPushRecord')}}</span>
+            </div>
         </div>
 
-
-        <!--已创建的卡券信息-->
+        <!--表格-->
         <table-com
-            v-if="tabsName === 'created'"
-            key="created"
-            :column-data="columnData"
-            :table-data="tableData"
-            :border="true"
-            :show-pagination="true"
-            :total-count="totalCount"
-            :ofset-height="170"
-            @query-data="queryList">
-            <el-table-column
-                slot="column1"
-                show-overflow-tooltip
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{$t(scope.row['couponType'])}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column2"
-                show-overflow-tooltip
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{getUseCondition(scope.row)}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column3"
-                show-overflow-tooltip
-                slot-scope="row"
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                slot="column4"
-                slot-scope="row"
-                show-overflow-tooltip
-                :label="row.title"
-                :width="row.width"
-                :min-width="row.minWidth">
-                <template slot-scope="scope">
-                    <ul class="operate-list">
-                        <!--会员3期暂时去掉-->
-                        <!--<li @click="modifyFunc(scope.row)">{{$t('modify')}}</li>-->
-                        <li v-if="canOperateMembersCoupon" @click="obsoloteCoupon(scope.row)">{{$t('obsolete')}}</li>
-                        <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
-                    </ul>
-                </template>
-            </el-table-column>
-        </table-com>
-        <!--已作废的卡券信息-->
-        <table-com
-            v-if="tabsName === 'cancellation'"
-            key="cancellation"
-            :column-data="columnData"
-            :table-data="tableData"
-            :border="true"
-            :show-pagination="true"
-            :total-count="totalCount"
             :ofset-height="110"
+            :column-data="columnData"
+            :table-data="tableData"
+            :border="true"
+            :show-pagination="true"
+            :page-no-d.sync="filterParam.pageNo"
+            :page-size-d.sync="filterParam.pageSize"
+            :total-count="totalCount"
             @query-data="queryList">
             <el-table-column
-                slot="column1"
+                slot="column2"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -111,7 +77,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column2"
+                slot="column4"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -122,7 +88,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column3"
+                slot="column5"
                 show-overflow-tooltip
                 slot-scope="row"
                 :label="row.title"
@@ -133,16 +99,29 @@
                 </template>
             </el-table-column>
             <el-table-column
-                slot="column4"
+                slot="column7"
                 show-overflow-tooltip
                 slot-scope="row"
+                fixed="right"
                 :label="row.title"
-                :width="170">
+                :width="row.width"
+                :min-width="row.minWidth">
                 <template slot-scope="scope">
                     <ul class="operate-list">
-                        <!--<li @click="reloadCoupon(scope.row)">重新启用</li>-->
-                        <li v-if="canOperateMembersCoupon" @click="reloadCoupon(scope.row)">{{$t('recommissioned')}}</li>
-                        <li class="red-label" @click="showModal(scope.row)">{{$t('del')}}</li>
+                        <!-- 卡券详情 -->
+                        <li @click="showDetail(scope.row)">{{$t('detail')}}</li>
+                        <!-- 查看券码 -->
+                        <li @click="viewCouponCode(scope.row)">{{$t('viewCouponCode')}}</li>
+                        <!-- 导出券码 -->
+                        <li @click="exportCouponCode(scope.row)">{{$t('exportCouponCode')}}</li>
+                        <!-- 生成链接 -->
+                        <li @click="generateLink(scope.row)">{{$t('generateLink')}}</li>
+                        <!-- 作废 -->
+                        <li class="red-label" @click="obsoloteCoupon(scope.row)">{{$t('obsolete')}}</li>
+                        <!-- 重启 -->
+                        <li v-if="canOperateMembersCoupon" @click="reloadCoupon(scope.row)">{{$t('restart')}}</li>
+                        <!-- 手动推送 -->
+                        <li v-if="canOperateMembersCoupon" @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
                     </ul>
                 </template>
             </el-table-column>
@@ -163,6 +142,7 @@
     import { columnData } from './cardConfig';
     import delModal from './components/delModal';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import { cardValid, cardScenario } from '../../../../assets/js/constVariable';
     import { mapGetters } from 'vuex';
 
     export default {
@@ -176,33 +156,32 @@
                 filterParam : {
                     //关键字
                     keyword : '',
+                    //应用场景
+                    scene : '',
+                    //是否有效
+                    valid : '',
+                    //每页记录数量
+                    pageSize : 10,
+                    //页码
+                    pageNo : 1,
                 },
-                //当前tap值
-                tabsName : 'created',
                 //表格数据
                 tableData : [],
+                //表格数据总条数
+                totalCount : 0,
                 //删除模态框是否显示
                 visible : false,
                 //表头配置
                 columnData : columnData,
-                //表格数据总条数
-                totalCount : 0,
                 //当前操作的行数据
                 currentData : {},
-                pageSize : 10,
-                pageNo : 1
+                //会员卡是否有效下拉列表数据
+                cardValidList : cardValid,
+                //会员卡使用场景下拉列表数据
+                cardScenarioList : cardScenario,
             };
         },
         methods : {
-
-            /**
-             * 切换tab
-             * @param name
-             */
-            changeTab (name) {
-                this.tabsName = name;
-            },
-
             /**
              * 新增卡券
              */
@@ -216,6 +195,59 @@
                 this.$router.push({
                     name : 'memberGoodsManage',
                 });
+            },
+            /**
+             *  优惠券领取H5页面背景设置
+             */
+            H5Setting () {
+
+            },
+            /**
+             *  进入记录页面
+             *  @param type 记录类型
+             */
+            toRecord (type) {
+                this.$router.push({
+                    name : 'couponRecord',
+                    param : {
+                        type : type,
+                    }
+                })
+            },
+            /**
+             *  前往卡券详情
+             *  @param rowData 券数据
+             */
+            showDetail (rowData) {
+
+            },
+            /**
+             *  查看券码
+             *  @param rowData 券数据
+             */
+            viewCouponCode (rowData) {
+
+            },
+            /**
+             *  导出券码
+             *  @param rowData 券数据
+             */
+            exportCouponCode (rowData) {
+
+            },
+            /**
+             *  生成链接
+             *  @param rowData 券数据
+             */
+            generateLink (rowData) {
+
+            },
+            /**
+             *  手动推送
+             *  @param rowData 券数据
+             */
+            manualPush (rowData) {
+
             },
             /**
              * 修改券
@@ -263,14 +295,6 @@
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('commissioned') }));
                     }
                 });
-                //暂时修改重新启用的方法
-                // this.$router.push({
-                //     name: 'addCard',
-                //     query: { type: 'reLoad' },
-                //     params : this.getUpdateCouponParams(Object.assign({
-                //         status :'valid'
-                //     },data))
-                // });
             },
 
             /**
@@ -390,7 +414,7 @@
             ]),
             //是否可以新增卡券
             canAddMembersCoupon () {
-                return this.tabsName === 'created' && this.permissionInfo && this.permissionInfo['addMembersCoupon'] === 'allow';
+                return this.permissionInfo && this.permissionInfo['addMembersCoupon'] === 'allow';
             },
             //是否可以作废和重新启用卡券
             canOperateMembersCoupon () {
@@ -412,11 +436,12 @@
 
         .header-toolbox {
             display: flex;
+            border: 1px solid #EEEEEE;
             .left-tool {
                 flex: 1 0;
                 .btn-wrap{
-                    height: 58px;
-                    padding: 10px 30px 0;
+                    height: 50px;
+                    padding: 10px 20px 0;
 
                     .function-btn {
                         margin-right: 10px;
@@ -427,20 +452,59 @@
             .right-tool {
                 flex: 1 0;
                 .input-wrap {
-                    height: 58px;
+                    height: 50px;
                     padding: 10px 30px 0;
+                    text-align: right;
+
                     .input-field {
-                        height: 32px;
+                        margin-right: 10px;
                         width: 350px;
-                        float: right;
+
+                        /deep/ .ivu-input {
+                            height: 30px;
+                        }
                     }
                 }
             }
         }
 
-        .tabs-wrap{
-            /deep/ .ivu-tabs-nav{
-                margin-left: 30px;
+        .filter-head {
+            height: 50px;
+            line-height: 50px;
+            padding-left: 20px;
+            .select-wrap {
+                margin-right: 20px;
+                display: inline-block;
+                .label-title {
+                    margin-right: 10px;
+                }
+            }
+
+            .tool-box {
+                float: right;
+                .text-btn {
+                    padding: 0 15px;
+                    font-size: 14px;
+                    color: $color_blue;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #2F70DF;
+                    }
+
+                    &:not(:first-child) {
+                        position: relative;
+                        &:before {
+                            content: ' ';
+                            position: absolute;
+                            top: 50%;
+                            left: 0;
+                            margin-top: -7.5px;
+                            height: 15px;
+                            border-left: 1px solid #C5C5C5;
+                        }
+                    }
+                }
             }
         }
 
