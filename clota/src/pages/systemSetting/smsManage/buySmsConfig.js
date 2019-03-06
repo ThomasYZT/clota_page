@@ -3,7 +3,7 @@
 export const smsPkgHead = [
     {
         title : 'packageID',
-        width : 180,
+        width : 220,
         field : 'id'
     },
     {

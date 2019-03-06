@@ -144,26 +144,30 @@
 
             // 立即购买
             buyNow ( params ) {
-                let newWindow = window.open();
-                ajax.post('orderBuySmsPackage', {
-                    smsPackageId : params.id,
-                    payType : this.formData.payType,
-                }).then(res => {
-                    if ( res.success ) {
-                        if (res.data) {
-                            this.payNow({
-                                bizId : res.data,
-                                merchantId : this.payInfo.merchantId,
-                                partnerId : this.payInfo.partnerId,
-                                payType : this.formData.payType,
-                                payMoney : this.formData.price,
-                                newWindow : newWindow,
-                            });
-                        } else {
-                            this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
-                        }
-                    } else {
-                        this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        let newWindow = window.open();
+                        ajax.post('orderBuySmsPackage', {
+                            smsPackageId : params.id,
+                            payType : this.formData.payType,
+                        }).then(res => {
+                            if ( res.success ) {
+                                if (res.data) {
+                                    this.payNow({
+                                        bizId : res.data,
+                                        merchantId : this.payInfo.merchantId,
+                                        partnerId : this.payInfo.partnerId,
+                                        payType : this.formData.payType,
+                                        payMoney : this.formData.price,
+                                        newWindow : newWindow,
+                                    });
+                                } else {
+                                    this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
+                                }
+                            } else {
+                                this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
+                            }
+                        });
                     }
                 });
             },
@@ -223,7 +227,7 @@
                     isPlatformAcc : true,
                 }).then(res => {
                     if (res.success) {
-                        this.onlineAccountList = res.data ? res.data.filter(item => item.useStatus === 'enabled').map(item => {
+                        this.onlineAccountList = res.data ? res.data.map(item => {
                             return {
                                 ...item,
                                 value : item.accountType,
