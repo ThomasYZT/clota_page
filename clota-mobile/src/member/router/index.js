@@ -207,6 +207,15 @@ export const memberRoutes = [
                     title : 'memberRight'
                 }
             },
+            //我的优惠券
+            {
+                path : 'coupon',
+                name : 'myCoupon',
+                component : () => import(/* webpackChunkName: "memberRight" */'../pages/coupon/index.vue'),
+                meta : {
+                    title : 'memberRight'
+                }
+            },
             //资金明细
             {
                 path : 'checkFlow',

@@ -1,0 +1,60 @@
+<!--优惠券-->
+
+<template>
+    <div class="member-coupon">
+        <div class="tab-wrap">
+            <!--卡包tap列表-->
+            <tab v-model="tabSelected">
+                <tab-item
+                    v-for="(item,i) in tapInfo"
+                    :key="i">
+                    {{$t(item)}}
+                </tab-item>
+            </tab>
+        </div>
+        <swiper dots-position="center"
+                v-model="tabSelected"
+                :threshold="100"
+                :aspect-ratio="10"
+                :show-dots="false"
+                @on-index-change="swiperChange">
+
+        </swiper>
+    </div>
+</template>
+
+<script>
+	export default {
+		data () {
+			return {
+                //tab列表
+                tapInfo : ['可使用','已使用','已过期'],
+                //选择的tab
+                tabSelected : 0
+            };
+		},
+		methods : {
+            /**
+             * tab栏切换
+             * @param{Number} index tab序号
+             */
+            swiperChange (index) {
+            },
+        }
+	};
+</script>
+<style lang="scss" scoped>
+	@import '~@/assets/scss/base';
+    .member-coupon {
+        @include block_outline();
+        overflow: auto;
+        background: rgba(242,243,244,1);
+
+        .tab-wrap{
+            position: fixed;
+            width: 100%;
+            top : 0;
+            z-index: 9;
+        }
+    }
+</style>

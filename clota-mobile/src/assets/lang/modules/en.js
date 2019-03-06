@@ -466,5 +466,6 @@ export default {
     'freshing' : 'refreshing',
     'payFaieldNotice' : 'payment failed. if there is no refund, please contact the staff.',
     'iosSettingError' : 'please turn off the invisible mode and then refresh the page to continue the payment.',
-    'memberCard' : 'membership card'
+    'memberCard' : 'membership card',
+    'myCoupon' : '我的优惠券'
 };

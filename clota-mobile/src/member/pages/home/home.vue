@@ -165,6 +165,15 @@
                             params : {},
                             iconColor : '#6F62E5'
                         },
+                        {
+                            title : 'myCoupon',
+                            link : '/coupon',
+                            routeName : 'myCoupon',
+                            iconClass : 'icon-member-rights',
+                            info : '',
+                            params : {},
+                            iconColor : '#6F62E5'
+                        },
                     ]);
                 }
                 //配置储值套餐信息

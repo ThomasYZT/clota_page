@@ -110,7 +110,6 @@
         },
         created () {
             this.getData(0);
-
         }
     };
 </script>
