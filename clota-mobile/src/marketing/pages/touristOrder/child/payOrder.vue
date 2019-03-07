@@ -117,7 +117,11 @@
                                 }
                             }
                         }
-                        this.payType = this.payTypeList.length > 0 ? this.payTypeList[0].key : '';
+                        if (this.payTypeList.length > 0) {//选择第一个作为支付渠道
+                            this.payType = this.payTypeList[0].key;
+                        } else if (this.$route.name === 'salesManCreateOrderToPay' && this.supportCollect === 'true') {//支持到付
+                            this.payType = 'collect';
+                        }
                     } else {
                         this.payTypeList = [];
                     }
