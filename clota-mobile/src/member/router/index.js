@@ -213,7 +213,7 @@ export const memberRoutes = [
                 name : 'myCoupon',
                 component : () => import(/* webpackChunkName: "memberRight" */'../pages/coupon/index.vue'),
                 meta : {
-                    title : 'memberRight'
+                    title : '我的优惠券'
                 }
             },
             //资金明细
