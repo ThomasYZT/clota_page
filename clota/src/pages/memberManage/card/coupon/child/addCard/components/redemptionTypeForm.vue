@@ -106,7 +106,6 @@
             </i-col>
             <i-col span="12">
                 <!--可用店铺-->
-
                 <Form-item label="可用店铺" prop="useStore">
                     <treeSelector v-model="formData.conditionOrgId"
                                   nodeKey="label"
@@ -135,13 +134,21 @@
             return {
                 //表单数据
                 formData : {
+                    //有效开始日期
                     effectiveTime : '',
+                    //有效结束日期
                     expireTime : '',
+                    //生成数量
                     generationNum : '',
+                    //单日可领取数量
                     amountSingleDay : '',
+                    //可领取数量上限
                     amountLimit : '',
+                    //商品
                     goodId : '',
+                    //可用渠道
                     conditionChannelId : [],
+                    //可用店铺
                     conditionOrgId : [],
                 },
                 //商品列表
