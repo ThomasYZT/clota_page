@@ -257,7 +257,7 @@
                     roleIds : '', // 角色权限ids
                     status : 'valid', // 是否启用 valid/invalid,
                     //限制订单可用范围，只可查询/操作该员工创建的订单
-                    limitOrderPrivilege : 'false'
+                    limitOrderPrivilege : 'true'
                 },
                 // 勾选的角色权限
                 rolePrivileges : [],
