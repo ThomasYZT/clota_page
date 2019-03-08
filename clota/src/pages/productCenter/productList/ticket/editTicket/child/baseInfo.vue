@@ -169,7 +169,6 @@
                     thirdCode : [
                         { max : 50, message : this.$t('errorMaxLength', { field : this.$t('thirdCode'), length : 50 }), trigger : 'blur' },
                         { validator : emoji, trigger : 'blur' },
-                        { validator : validateNumber, trigger : 'blur' }
                     ],
                     //产品描述
                     productDes : [
