@@ -18,11 +18,35 @@
                   :rules="ruleValidate"
                   label-position="top">
                 <i-row>
+                    <i-col span="24">
+                        <!--卡券名称-->
+                        <Form-item :label="$t('couponName')" prop="couponName">
+                            <Input v-model.trim="formData.couponName"
+                                   style="width: 280px;"
+                                   :placeholder="$t('inputField', {field: ''})"/>
+                        </Form-item>
+                    </i-col>
+                    <i-col span="12">
+                        <!--应用场景-->
+                        <Form-item :label="$t('applicationScenario')" prop="scene">
+                            <Select v-model.trim="formData.scene"
+                                    :placeholder="$t('selectField', {msg: ''})"
+                                    style="width: 280px;"
+                                    @on-change="sceneChange">
+                                <Option v-for="(item,index) in cardScenarioList"
+                                        :key="index"
+                                        :value="item.value">
+                                    {{$t(item.label)}}
+                                </Option>
+                            </Select>
+                        </Form-item>
+                    </i-col>
                     <i-col span="12">
                         <!--卡券类别-->
-                        <Form-item :label="$t('couponType')" prop="couponType"><!--卡券类别-->
+                        <Form-item :label="$t('couponType')" prop="couponType">
                             <Select v-model.trim="formData.couponType"
                                     :placeholder="$t('selectField', {msg: ''})"
+                                    style="width: 280px;"
                                     @on-change="typeChange">
                                 <Option v-for="(item,index) in couponTypeList"
                                         :key="index"
@@ -34,6 +58,23 @@
                     </i-col>
                 </i-row>
             </Form>
+            <!-- 代金券表单 -->
+            <voucherTypeForm v-if="formData.couponType === 'cash_coupon'" :scene="formData.scene"></voucherTypeForm>
+            <!-- 兑换券表单 -->
+            <redemptionTypeForm v-else-if="formData.couponType === 'exchange_coupon'" :scene="formData.scene"></redemptionTypeForm>
+            <!-- 折扣券表单 -->
+            <discountTypeForm v-else-if="formData.couponType === 'discount_coupon'" :scene="formData.scene"></discountTypeForm>
+        </div>
+
+        <div class="content-footer">
+            <i-button type="primary"
+                      class="ivu-btn-108px"
+                      @click="formValidateFunc">{{$t('confirm')}}</i-button>
+            <i-button type="ghost"
+                      class="ivu-btn-108px"
+                      @click="cancelEdit">
+                {{$t('cancel')}}
+            </i-button>
         </div>
     </div>
 </template>
@@ -42,13 +83,16 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import { couponTypeList, cardScenario } from '@/assets/js/constVariable.js';
-    import discountTypeForm from './child/discountTypeForm';
-    import defaultsDeep from 'lodash/defaultsDeep';
+    import discountTypeForm from './components/discountTypeForm';
+    import voucherTypeForm from './components/voucherTypeForm';
+    import redemptionTypeForm from './components/redemptionTypeForm';
     export default {
         mixins : [lifeCycleMixins],
         components : {
             breadCrumbHead,
-            discountTypeForm
+            discountTypeForm,
+            voucherTypeForm,
+            redemptionTypeForm,
         },
         data () {
             return {
@@ -65,13 +109,17 @@
                 type : '',
                 //表单数据
                 formData : {
-                    couponType : '',
-                    scene : '',
+                    //卡券名称
+                    couponName : '',
+                    //卡券类别
+                    couponType : 'cash_coupon',
+                    //应用场景
+                    scene : 'communicate',
                 },
                 //卡券类别列表
                 couponTypeList : couponTypeList,
                 //卡券应用场景列表
-                cardScenarioList : cardScenario,
+                cardScenarioList : cardScenario.filter((item) => {return item.value !== 'all';}),
             };
         },
         computed : {
@@ -81,7 +129,7 @@
                     nominalValue : [
                         { required : true, message : this.$t('inputField',{ field : this.$t('couponFaceValue') }), trigger : 'blur' },
                     ],
-                }
+                };
             }
         },
         methods : {
@@ -98,10 +146,31 @@
                     });
                 }
             },
+            /**
+             *  卡券类别选项变更
+             *  @param val 卡券类别
+             */
             typeChange (val) {
-                this.$nextTick(() => {
-                    this.formData = defaultsDeep(this.formData, this.$refs['discountTypeForm'].getFormData());
-                })
+
+            },
+            /**
+             * 应用场景选项变更
+             * @param val 应用场景
+             */
+            sceneChange (val) {
+
+            },
+            /**
+             * 校验表单信息
+             */
+            formValidateFunc () {
+
+            },
+            /**
+             * 取消编辑
+             */
+            cancelEdit () {
+
             }
         }
     };
@@ -118,8 +187,18 @@
         border-radius: 4px;
 
         .form-container {
+            padding: 50px 0 50px 100px;
             margin: 0 auto;
             width: 80%;
+
+        }
+
+        .content-footer{
+            text-align: center;
+
+            /deep/ .ivu-btn-ghost{
+                margin-left: 15px;;
+            }
         }
     }
 

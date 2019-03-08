@@ -2690,4 +2690,6 @@ export default {
     'useMemberCodeAndPassword' : 'Password verification and payment code are required for consumption',
     'verifySucNum' : 'Write off successful serial code',
     'verifyFailNum' : 'Write-off failure serial code',
+    'amountSingleDay' : '单日可领取数量',
+    'amountLimit' : '可领取数量上限',
 };

@@ -2690,4 +2690,6 @@ export default {
     'useMemberCodeAndPassword' : '消费时需要密码验证和付款码',
     'verifySucNum' : '核销成功串码',
     'verifyFailNum' : '核销失败串码',
+    'amountSingleDay' : '单日可领取数量',
+    'amountLimit' : '可领取数量上限',
 };
