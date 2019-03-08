@@ -540,6 +540,17 @@ export default {
                     rightPath : topMenuName + '.' + 'card',
                 },
             },
+            addCardV2 : {
+                //会员管理--会员卡券--新增卡劵
+                path : '/memberManage/coupon/add2',
+                name : 'addCardV2',
+                component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/coupon/child/addCard/addCardV2.vue'),
+                meta : {
+                    menuName : 'card', //lang.config.js 里面的语言键值
+                    _name : 'addMembersCoupon',
+                    rightPath : topMenuName + '.' + 'card',
+                },
+            },
             fund : {
                 //会员管理--储值管理--三级菜单
                 path : '/memberManage/fiance',

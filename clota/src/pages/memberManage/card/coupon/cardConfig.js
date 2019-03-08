@@ -39,7 +39,7 @@ export const columnData = [
     },
     {
         title : 'operate  ',
-        minWidth : 350,
-        enWidth : 350,
+        minWidth : 400,
+        enWidth : 400,
     }
 ];

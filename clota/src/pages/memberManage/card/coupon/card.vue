@@ -6,6 +6,8 @@
                 <div class="btn-wrap" v-if="canAddMembersCoupon">
                     <!--新增卡券-->
                     <Button class="function-btn" type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button>
+                    <!--新增卡券 版本2-->
+                    <Button class="function-btn" type="primary" @click="add2">+ {{$t('newCardCoupon')}}2</Button>
                     <!--商品管理-->
                     <Button class="function-btn" type="primary" @click="toGoodsManage">{{$t('goodsManage')}}</Button>
                     <!--商品管理-->
@@ -188,6 +190,14 @@
             add () {
                 this.$router.push({ name : 'addCard', query : { type : 'add' },params : { name : 1 } });
             },
+            add2 () {
+                this.$router.push({
+                    name : 'addCardV2',
+                    params : {
+                        type : 'add',
+                    }
+                });
+            },
             /**
              *  前往商品管理页面
              */
@@ -327,25 +337,26 @@
              * 查询新建的会员卡券信息
              */
             queryList ({ pageNo,pageSize } = { pageNo : this.pageNo,pageSize : this.pageSize }) {
-                this.pageNo = pageNo;
-                this.pageSize = pageSize;
-                ajax.post('queryCoupons',{
-                    isDeleted : false,
-                    status : this.tabsName === 'created' ? 'valid' : 'invalid',
-                    pageNo : this.pageNo,
-                    pageSize : this.pageSize
-                }).then(res => {
-                   if (res.success) {
-                       this.tableData = res.data.data ? res.data.data : [];
-                       this.totalCount = res.data.totalRow;
-                   } else {
-                       this.tableData = [];
-                       this.totalCount = 0;
-                   }
-                }).catch(() => {
-                    this.tableData = [];
-                    this.totalCount = 0;
-                });
+                // this.pageNo = pageNo;
+                // this.pageSize = pageSize;
+                // ajax.post('queryCoupons',{
+                //     isDeleted : false,
+                //     status : this.tabsName === 'created' ? 'valid' : 'invalid',
+                //     pageNo : this.pageNo,
+                //     pageSize : this.pageSize
+                // }).then(res => {
+                //    if (res.success) {
+                //        this.tableData = res.data.data ? res.data.data : [];
+                //        this.totalCount = res.data.totalRow;
+                //    } else {
+                //        this.tableData = [];
+                //        this.totalCount = 0;
+                //    }
+                // }).catch(() => {
+                //     this.tableData = [];
+                //     this.totalCount = 0;
+                // });
+                this.tableData = [{}];
             },
             /**
              * 获取卡券使用条件
