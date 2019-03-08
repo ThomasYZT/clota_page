@@ -121,6 +121,7 @@
                   :label-width="lang === 'zh-CN' ? 110 : 175">
                 <FormItem :label="$t('applyForUpgradeTo')" prop="alterDate">
                     <DatePicker type="date"
+                                transfer
                                 :editable="false"
                                 :options="dateOptions"
                                 style="width: 180px"
