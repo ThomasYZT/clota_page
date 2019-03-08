@@ -11,14 +11,8 @@
     /*vertical-align: middle;*/
 /*}*/
 
-@font-face {
-    font-family: 'pingfang';
-    src:url('../fonts/PingFang-Regular.woff') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
 body {
-    font-family: 'pingfang'!important;
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Hiragino Sans GB,Microsoft Yahei,Microsoft Jhenghei,sans-serif !important;
 }
 @font-face {
     font-family: 'iconfont';

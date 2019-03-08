@@ -74,6 +74,7 @@ export const memberRouterDeal = (to, from, next) => {
     }
 };
 //会员路由页面
+// meta信息上填写了notNeedCheck表示改路由不需要校验，直接进入
 export const memberRoutes = [
     {
         module : 'member',
@@ -205,6 +206,15 @@ export const memberRoutes = [
                 component : () => import(/* webpackChunkName: "memberRight" */'../pages/memberRight/memberRight.vue'),
                 meta : {
                     title : 'memberRight'
+                }
+            },
+            //我的优惠券
+            {
+                path : 'coupon',
+                name : 'myCoupon',
+                component : () => import(/* webpackChunkName: "memberRight" */'../pages/coupon/index.vue'),
+                meta : {
+                    title : '我的优惠券'
                 }
             },
             //资金明细
@@ -373,6 +383,17 @@ export const memberRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/h5Pay/wxoraliPay.vue'),
                 meta : {
                     title : 'payStatus',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
+            },
+            //领取优惠券
+            {
+                path : 'getCoupon',
+                name : 'touristGetCoupon',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/getCoupon/index.vue'),
+                meta : {
+                    title : '领取优惠券',
                     hideTabbar : true,
                     notNeedCheck : true
                 }

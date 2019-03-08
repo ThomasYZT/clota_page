@@ -210,6 +210,7 @@
             reset () {
                 this.keyword = '';
                 this.cardStatus = 'all';
+                this.entityCardType = 'all';
                 this.queryList();
             },
             /**

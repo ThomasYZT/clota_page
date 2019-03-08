@@ -466,5 +466,6 @@ export default {
     'freshing' : '刷新中',
     'payFaieldNotice' : '支付失败，如未退款，请联系工作人员。',
     'iosSettingError' : '请关闭无痕模式，然后刷新页面继续付款。',
-    'memberCard' : '会员卡'
+    'memberCard' : '会员卡',
+    'myCoupon' : '我的优惠券'
 };
