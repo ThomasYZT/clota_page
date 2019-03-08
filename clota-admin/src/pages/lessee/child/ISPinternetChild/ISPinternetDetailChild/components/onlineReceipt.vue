@@ -23,7 +23,7 @@
                                         <Select v-model="paymentChannel"
                                                 :disabled="!isEditing"
                                                 @on-change="paymentChannelChange"
-                                                style="width:150px">
+                                                style="width:280px">
                                             <Option v-for="item in paymentChannelList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
                                         </Select>
                                     </FormItem>
@@ -55,6 +55,7 @@
                                 <FormItem :label="$t('colonSetting',{ key : '设置收款账户' })" prop="name">
                                     <Select v-model="formData.accountType"
                                             :disabled="!isEditing || paymentChannel === 'useCorpPayAcc'"
+                                            style="width:280px"
                                             @on-change="accountTypeChange">
                                         <Option v-for="(item,index) in accountListDeal"
                                                 class="options-wrap"
@@ -71,7 +72,8 @@
                             <i-col span="10">
                                 <!--MerchantID-->
                                 <FormItem :label="$t('colonSetting',{ key : 'MerchantID' })" prop="MerchantId">
-                                    <Input v-model.trim="formData.MerchantId" :disabled="!isEditing || formData.accountType !== 'auto'"/>
+                                    <Input v-model.trim="formData.MerchantId" :disabled="!isEditing || formData.accountType !== 'auto'"
+                                           style="width:280px"/>
                                 </FormItem>
                             </i-col>
                         </i-row>
@@ -79,7 +81,8 @@
                             <i-col span="10">
                                 <!--partnerID-->
                                 <FormItem :label="$t('colonSetting',{ key : 'partnerID' })" prop="partnerId">
-                                    <Input v-model.trim="formData.partnerId" :disabled="!isEditing || formData.accountType !== 'auto'"/>
+                                    <Input v-model.trim="formData.partnerId" :disabled="!isEditing || formData.accountType !== 'auto'"
+                                           style="width:280px"/>
                                 </FormItem>
                             </i-col>
                         </i-row>
@@ -111,17 +114,17 @@
                                 <i-row>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : 'appID' })" prop="officialAccountsAppID">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.officialAccountsAppID"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.officialAccountsAppID" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : '商户号' })" prop="merchantNum">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.merchantNum"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.merchantNum" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : 'API密钥' })" prop="secretKey">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.secretKey"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.secretKey" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                 </i-row>
@@ -133,17 +136,17 @@
                                 <i-row>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : 'appID' })" prop="appID">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.appID"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.appID" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : '私钥' })" prop="privateKey">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.privateKey"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.privateKey" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : '公钥' })" prop="publicKey">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.publicKey"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.publicKey" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                 </i-row>
