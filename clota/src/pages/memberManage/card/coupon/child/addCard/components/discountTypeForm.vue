@@ -43,6 +43,13 @@
                                style="width: 280px;"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('天')}}</span><!--天-->
+                        <Tooltip transfer placement="right">
+                            <span class="iconfont icon-note"></span>
+                            <div style="width: 200px; word-break: break-all;"
+                                 slot="content">
+                                <p>从发放至游客开始计算有效期</p>
+                            </div>
+                        </Tooltip>
                     </Form-item>
                 </i-col>
             </template>
@@ -100,6 +107,13 @@
                                style="width: 280px;"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
+                        <Tooltip transfer placement="right">
+                            <span class="iconfont icon-note"></span>
+                            <div style="width: 200px; word-break: break-all;"
+                                 slot="content">
+                                <p>该设置只限制将优惠券生成链接传播时限制领取数量。积分商城、批量导出部分不受该设置限制</p>
+                            </div>
+                        </Tooltip>
                     </Form-item>
                 </i-col>
             </template>

@@ -39,6 +39,14 @@
                                     {{$t(item.label)}}
                                 </Option>
                             </Select>
+                            <Tooltip transfer placement="right">
+                                <span class="iconfont icon-note"></span>
+                                <div style="width: 200px; word-break: break-all;"
+                                     slot="content">
+                                    <p>传播型主要用于：创建创建一定数量的优惠券后将优惠券进行生成链接、批量导出、上架积分商城</p>
+                                    <p>会员权益型主要用于：将创建的该类型优惠券通过自动或手动的形式发放至会员名下，该类型优惠券不可进行传播</p>
+                                </div>
+                            </Tooltip>
                         </Form-item>
                     </i-col>
                     <i-col span="12">
@@ -187,9 +195,9 @@
         border-radius: 4px;
 
         .form-container {
-            padding: 50px 0 50px 100px;
+            padding: 50px 0 50px 130px;
             margin: 0 auto;
-            width: 80%;
+            width: 90%;
 
         }
 
@@ -200,6 +208,10 @@
                 margin-left: 15px;;
             }
         }
+    }
+
+    /deep/ .ivu-tooltip {
+        vertical-align: bottom;
     }
 
 </style>
