@@ -17,6 +17,7 @@
                 <div class="detail-item"
                      @mouseout="addDetailShow = false">
                     <div
+                        class="detail-num"
                         @mouseover="showIncreaseDetail(0)">{{todayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_today")}}</div>
                 </div>
@@ -24,6 +25,7 @@
                 <div class="detail-item"
                      @mouseout="addDetailShow = false">
                     <div
+                        class="detail-num"
                         @mouseover="showIncreaseDetail(1)">{{yesterdayMemberIncreaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_yesterday")}}</div>
                 </div>
@@ -31,6 +33,7 @@
                 <div class="detail-item"
                      @mouseout="addDetailShow = false">
                     <div
+                        class="detail-num"
                         @mouseover="showIncreaseDetail(2)">{{monthMemberIncreeaseCount | contentFilter}}</div>
                     <div class="detail-label">{{$t("increase_this_month")}}</div>
                 </div>
@@ -190,8 +193,25 @@
                 }).finally(() => {
                     this.loadingMore = false;
                 });
+            },
+            /**
+             * 注册监听页面缩放事件
+             */
+            registerWindowResize () {
+                document.querySelector('.member-manage-home').addEventListener('scroll', this.closeTip);
+            },
+            /**
+             * 解除监听页面缩放事件
+             */
+            unregisterWindowResize () {
+                document.querySelector('.member-manage-home').removeEventListener('scroll', this.closeTip);
+            },
+            /**
+             * 关闭提示
+             */
+            closeTip () {
+                this.addDetailShow = false;
             }
-
         },
         created () {
             //获取今日增长数量
@@ -200,6 +220,12 @@
             this.getYesterdayIncreaseMemberCount();
             //获取本月增长数量
             this.getMonthIncreaseMemberCount();
+        },
+        mounted () {
+            this.registerWindowResize();
+        },
+        beforeDestroy () {
+            this.unregisterWindowResize();
         }
     };
 </script>
@@ -259,6 +285,10 @@
                     font-size: $font_size_28px;
                     text-align: center;
                     @include clearfix();
+
+                    .detail-num{
+                        cursor: pointer;
+                    }
 
                     .detail-label{
                         color: $color_999;

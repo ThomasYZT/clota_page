@@ -19,9 +19,9 @@
                         :children-menu="item.children"
                         v-if="item.children && item.children.length > 2 && item.children && item.children.filter(item => item.meta ? item.meta.isMenu : false).length > 0">
                     </menu-com>
-                    <MenuItem :name="item.name"
+                    <MenuItem :name="item.meta.menuName"
                               v-else
-                              :key="item.name"
+                              :key="item.meta.menuName"
                               @click.native="changeMenuItem">
                         <Tooltip :content="$tc(`${item.meta.menuName}`,item.meta.tcIndex = 1,item.meta.tcData = {})"
                                  :key="index + 'toolTip'"

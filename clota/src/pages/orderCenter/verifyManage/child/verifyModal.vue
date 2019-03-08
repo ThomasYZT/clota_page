@@ -108,7 +108,12 @@
                 }).then(res => {
                     if (res.success) {
                         this.hide();
-                        this.$router.push({ name : 'verifySuccess' });
+                        this.$router.push({
+                            name : 'verifySuccess',
+                            params : {
+                                orderInfo : res.data
+                            }
+                        });
                     } else {
                         this.$Message.error(this.$t('verifyFailure')); // 核销失败
                     }

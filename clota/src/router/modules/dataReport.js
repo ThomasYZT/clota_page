@@ -25,7 +25,6 @@ export default {
             memberReport : {
                 path : '/dataReport/memberReport',
                 component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/index.vue'),
-                name : 'memberReport',
                 meta : {
                     menuName : 'memberReport', //lang.config.js 里面的语言键值
                     _name : 'reigao-member-report',
@@ -109,7 +108,6 @@ export default {
             memberReportCommon : {
                 path : '/memberReportCommon',
                 component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReportCommon/index.vue'),
-                name : 'memberReportCommon',
                 meta : {
                     menuName : 'memberReportCommon', //lang.config.js 里面的语言键值
                     _name : 'member-report',
@@ -184,7 +182,6 @@ export default {
             financeReport : {
                 path : '/financeReport',
                 component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/index.vue'),
-                name : 'financeReport',
                 meta : {
                     menuName : 'financeReport', //lang.config.js 里面的语言键值
                     _name : 'economic-report',
@@ -211,7 +208,6 @@ export default {
             manageReport : {
                 path : '/manageReport',
                 component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/manageReport/index.vue'),
-                name : 'manageReport',
                 meta : {
                     menuName : 'manageReport', //lang.config.js 里面的语言键值
                     _name : 'manage-report',
