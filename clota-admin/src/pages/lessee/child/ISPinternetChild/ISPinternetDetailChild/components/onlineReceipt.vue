@@ -128,6 +128,17 @@
                                         </FormItem>
                                     </i-col>
                                 </i-row>
+                                <i-row>
+                                    <i-col>
+                                        <FormItem :label="$t('colonSetting',{ key : 'API证书' })" prop="wxApiCertificateName">
+                                            <upload-file :extra-data="{ orgId : activeNode.id }"
+                                                         :disabled="!isEditing || useCorpPayAcc"
+                                                         :default-data="{ certificationName : wxoraliFormData.wxApiCertificateName }"
+                                                         @set-upload-file="getCertificate">
+                                            </upload-file>
+                                        </FormItem>
+                                    </i-col>
+                                </i-row>
                             </div>
                             <div class="flex-box">
                                 <div class="box-title">
@@ -158,7 +169,7 @@
                 <!-- 不开通显示内容 -->
                 <template v-else-if="paymentChannel === 'none' ||
                          (paymentChannel === 'useCorpPayAcc' && parentOrgPaymentChannel.paymentChannel === 'none')">
-                    <div class="tip">未开通在线支付账号</div>
+                    <div class="tip">未开通在线支付账户</div>
                 </template>
             </div>
         </transition>
@@ -168,8 +179,12 @@
 <script>
     import ajax from '@/api/index.js';
     import { paymentChannelList } from '@/assets/js/constVariable';
+    import uploadFile from './uploadFile';
 
     export default {
+        components : {
+            uploadFile
+        },
         props : {
             //是否在景区
             'is-scenic' : {
@@ -188,6 +203,13 @@
                 type : Boolean,
                 default : true
             },
+            //当前节点信息
+            'active-node' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
         },
         data () {
             return {
@@ -212,6 +234,8 @@
                     aliUseStatus : '',
                     officialAccountsAppID : '',
                     publicKey : '',
+                    wxApiCertificateUrl : '',
+                    wxApiCertificateName : '',
                 },
                 //表单数据复制
                 formDataCopy : {},
@@ -341,9 +365,9 @@
                     JSON.parse(this.receiptAccountInfo.orgPaymentChannel.paramData) : {};
                 let orgPaymentChannel = this.receiptAccountInfo.orgPaymentChannel;
                 this.setReceiptAccountInfo({
-                    useCorpPayAcc : this.receiptAccountInfo.useCorpPayAcc === 'true' ? true : false,
+                    useCorpPayAcc : this.receiptAccountInfo.useCorpPayAcc === 'true',
                     paymentChannel : this.receiptAccountInfo.useCorpPayAcc === 'true' ? 'useCorpPayAcc' :
-                        orgPaymentChannel ? orgPaymentChannel.paymentChannel : 'none',
+                        (orgPaymentChannel ? orgPaymentChannel.paymentChannel : 'none'),
                     paymentChannelInfo : this.receiptAccountInfo.useCorpPayAcc === 'true' ?
                         parentOrgPaymentChannelInfo : orgPaymentChannelInfo,
                 });
@@ -408,6 +432,8 @@
                 this.wxoraliFormData.appID = parentOrgPaymentChannel.appID;
                 this.wxoraliFormData.privateKey = parentOrgPaymentChannel.privateKey;
                 this.wxoraliFormData.publicKey = parentOrgPaymentChannel.publicKey;
+                this.wxoraliFormData.wxApiCertificateName = parentOrgPaymentChannel.wxApiCertificateName;
+                this.wxoraliFormData.wxApiCertificateUrl = parentOrgPaymentChannel.wxApiCertificateUrl;
             },
             /**
              * 初始化yinshi账户配置表单数据
@@ -472,7 +498,14 @@
                 } else {
                     this.resetFormData();
                 }
-
+            },
+            /**
+             * 获取上传的微信证书信息
+             * @param{Object} fileInfo 证书信息
+             */
+            getCertificate (fileInfo) {
+                this.wxoraliFormData.wxApiCertificateName = fileInfo ? fileInfo.name : '';
+                this.$refs.wxoraliForm.validateField('wxApiCertificateName');
             }
         },
         computed : {
@@ -608,6 +641,13 @@
             //微信或支付宝账户配置表单校验规则
             wxoraliRuleValidate () {
                 return {
+                    wxApiCertificateName : [
+                        {
+                            required : this.paymentChannel === 'wxorali' && this.weixinRequired,
+                            message : this.$t('请上传微信API证书'),
+                            trigger : 'change',
+                        }
+                    ],
                     officialAccountsAppID : [
                         {
                             required : this.paymentChannel === 'wxorali' && this.weixinRequired,
