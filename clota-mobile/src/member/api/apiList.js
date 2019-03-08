@@ -116,6 +116,8 @@ const apiList = {
     queryMemberWxMpSet : '/wechat/mp/queryMemberWxMpSet',
     //根据companyCode获取微信配置信息
     getMemberServiceSettingByCode : '/external/extprivilege/getMemberServiceSettingByCode',
+    //查询会员卡级
+    queryBaseLevelOfGrowth : '/external/memberInfo/queryBaseLevelOfGrowth',
 };
 
 export default apiList;

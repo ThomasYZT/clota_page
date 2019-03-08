@@ -438,7 +438,7 @@
                 return obj;
             },
             queryLevelsOfGrowth () {
-                ajax.post('queryLevelsOfGrowth', {
+                ajax.post('queryBaseLevelOfGrowth', {
                     companyCode : this.companyCode
                 }).then(res => {
                     if (res.success) {
