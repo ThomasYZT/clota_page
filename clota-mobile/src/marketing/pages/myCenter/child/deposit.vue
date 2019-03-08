@@ -117,10 +117,7 @@
              */
             getParams (params) {
                 if (params && Object.keys(params).length > 0) {
-                    this.accountDetail = params;
-                    if (validator.isEmpty(this.accountDetail.accountType) || validator.isEmpty(this.accountDetail.accountInfo) ) {
-                        this.confirmShow = true;
-                    }
+                    this.queryUserInfo();
                 } else {
                     this.$router.push({
                         name : 'marketingOwnerCenter'
@@ -157,6 +154,9 @@
                 ajax.post('market_getMarketUserMyInfo').then(res => {
                     if (res.success) {
                         this.accountDetail = res.data ? res.data : {};
+                        if (validator.isEmpty(this.accountDetail.accountType) || validator.isEmpty(this.accountDetail.accountInfo) ) {
+                            this.confirmShow = true;
+                        }
                     } else {
                         this.userInfo = {};
                     }
