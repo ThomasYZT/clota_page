@@ -173,7 +173,12 @@
             show ( data ) {
                 this.visible = true;
                 if ( data ) {
-                    this.formData = defaultsDeep(this.formData, data.item );
+                    this.formData = defaultsDeep({
+                        partner : '',
+                        rechargeAmount : '',
+                        payType : '',
+                        remark : '',
+                    }, data.item );
                 }
                 this.controlModal();
             },
@@ -181,6 +186,9 @@
              *  关闭模态框
              */
             hide () {
+                if (this.$refs.formValidate) {
+                    this.$refs.formValidate.resetFields();
+                }
                 this.visible = false;
                 this.payInfo = {};
             },
@@ -306,7 +314,9 @@
              */
             visibleChange (status) {
                 if (status === false) {
-                    this.$refs.formValidate.resetFields();
+                    if (this.$refs.formValidate) {
+                        this.$refs.formValidate.resetFields();
+                    }
                 }
             },
             /**
