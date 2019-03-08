@@ -91,7 +91,15 @@
                             this.lineChartData.series = [];
                         }
                         //xAxisData数据
-                        this.$set(this.lineChartData, 'xAxisData', res.data.xAxisData || []);
+                        this.$set(this.lineChartData, 'xAxisData', res.data.xAxisData.map(item => {
+                            return item.replace(/\$t(.*)/,(rs,$1) => {
+                                if ($1.length > 4) {
+                                    return ' ' + this.$t($1.slice(2,-2));
+                                } else {
+                                    return $1;
+                                }
+                            });
+                        }) || []);
                     } else {
                         this.lineChartData = { series : [], xAxisData : [], legend : [] };
                     }

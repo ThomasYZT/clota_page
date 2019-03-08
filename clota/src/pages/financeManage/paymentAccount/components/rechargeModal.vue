@@ -305,7 +305,7 @@
              * @param{Boolean} status 模态框状态
              */
             visibleChange (status) {
-                if (status === false) {
+                if (status === false && this.$refs.formValidate) {
                     this.$refs.formValidate.resetFields();
                 }
             },

@@ -276,7 +276,7 @@
             //查询条件列表
             paramsObj () {
                 return {
-                    playDate : this.formData.playDate.format('yyyy-MM-dd'),
+                    playDate : this.formData.playDate ? this.formData.playDate.format('yyyy-MM-dd') : '',
                     orderType : this.formData.orderType,
                     saleOrgId : this.formData.saleOrgId,
                     orderOrgId : this.formData.orderOrgId,
