@@ -314,9 +314,7 @@
              */
             visibleChange (status) {
                 if (status === false && this.$refs.formValidate) {
-                    if (this.$refs.formValidate) {
-                        this.$refs.formValidate.resetFields();
-                    }
+                    this.$refs.formValidate.resetFields();
                 }
             },
             /**
