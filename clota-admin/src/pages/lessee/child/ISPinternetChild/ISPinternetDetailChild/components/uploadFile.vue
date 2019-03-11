@@ -143,7 +143,7 @@
 
         .upload-file-name{
             display: inline-block;
-            max-width: 200px;
+            max-width: 190px;
             @include overflow_tip();
             margin-right: 10px;
         }

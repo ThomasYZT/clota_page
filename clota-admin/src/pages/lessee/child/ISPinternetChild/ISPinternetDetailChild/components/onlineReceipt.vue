@@ -337,9 +337,13 @@
                 }
                 if (params.merchantNum) {
                     params.weixinOpenStatus = 'open';
+                } else {
+                    params.weixinOpenStatus = 'close';
                 }
                 if (params.appID) {
                     params.aliOpenStatus = 'open';
+                } else {
+                    params.aliOpenStatus = 'close';
                 }
                 params.paymentChannel = paymentChannel;
                 ajax.post('addPayInfo',params).then(res => {
