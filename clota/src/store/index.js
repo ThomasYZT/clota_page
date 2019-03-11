@@ -111,7 +111,7 @@ export default new Vuex.Store({
         promisings : 0,
         //右侧操作栏是否显示
         operateLine : false,
-        //组织信息
+        //当前登录节点信息
         manageOrgs : {},
         //当前的皮肤
         skinType : 'blue-theame',

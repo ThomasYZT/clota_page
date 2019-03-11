@@ -162,7 +162,7 @@
                     if (valid) {
                         //接口保存二维码信息
                         this.formData.path = this.formData.path + '?Ycode=' + this.manageOrgs.saleCode
-                                                                + '&Ucid=' + this.codeInfo.id;
+                                                                + '&Ucid=' + this.codeInfo.id + '&data=market-' + this.manageOrgs.nodeCode;
                         this.updateCode({ path : this.formData.path, type : this.boxStatus });
                     }
                 });
