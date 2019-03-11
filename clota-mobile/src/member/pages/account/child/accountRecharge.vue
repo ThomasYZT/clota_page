@@ -195,26 +195,27 @@
                 ajax.post('queryOnlinePayAccount',{
                     orgId : this.cardInfo.orgId
                 }).then(res => {
-                    if (res.success) {
-                        this.commonList = res.data && res.data.length > 0 ? res.data.map((item) => {
-                            if (item.accountType === 'weixin') {
-                                return {
+                    this.commonList = [];
+                    if (res.success && res.data) {
+                        for (let i = 0,j = res.data.length; i < j; i++) {
+                            if (res.data[i]['accountType'] === 'weixin') {
+                                this.commonList.unshift({
                                     icon : require('../../../../assets/images/icon-wx-pay.svg'),
                                     key : 'wx',
                                     value : this.$t('wxPay'),
-                                    param : item,
-                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
-                                };
-                            } else if (item.accountType === 'alipay') {
-                                return {
+                                    param : res.data[i],
+                                    payType : res.data[i].paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
+                                });
+                            } else {
+                                this.commonList.push({
                                     icon : require('../../../../assets/images/icon-ali-pay.svg'),
                                     key : 'ali',
                                     value : this.$t('aliPay'),
-                                    param : item,
-                                    payType : item.paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
-                                };
+                                    param : res.data[i],
+                                    payType : res.data[i].paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
+                                });
                             }
-                        }) : [];
+                        }
                         this.chosedAccount = this.commonList.length > 0 ? this.commonList[0] : {};
                         this.payType = this.commonList.length > 0 ? this.commonList[0].key : '';
                     } else {
