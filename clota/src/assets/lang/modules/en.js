@@ -2643,4 +2643,9 @@ export default {
     'useMemberCodeAndPassword' : 'Password verification and payment code are required for consumption',
     'verifySucNum' : 'Write off successful serial code',
     'verifyFailNum' : 'Write-off failure serial code',
+    'confirmStopAccount' : 'Confirm to disable {accountName} receiving account?',
+    'accountNotInUsing' : '{accountName} receiving account has been disabled',
+    'accountInUsing' : '{accountName} receiving account is enabled',
+    'accountStopFailed' : '{accountName} receiving account deactivation failed',
+    'accountStartFailed' : '{accountName} receiving account activation failed',
 };

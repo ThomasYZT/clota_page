@@ -2643,4 +2643,9 @@ export default {
     'useMemberCodeAndPassword' : '消费时需要密码验证和付款码',
     'verifySucNum' : '核销成功串码',
     'verifyFailNum' : '核销失败串码',
+    'confirmStopAccount' : '确认停用{accountName}收款账户？',
+    'accountNotInUsing' : '{accountName}收款账户已停用',
+    'accountInUsing' : '{accountName}收款账户已启用',
+    'accountStopFailed' : '{accountName}收款账户停用失败',
+    'accountStartFailed' : '{accountName}收款账户启用失败',
 };

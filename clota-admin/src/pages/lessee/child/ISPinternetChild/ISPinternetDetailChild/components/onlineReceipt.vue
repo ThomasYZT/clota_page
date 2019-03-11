@@ -169,7 +169,7 @@
                 <!-- 不开通显示内容 -->
                 <template v-else-if="paymentChannel === 'none' ||
                          (paymentChannel === 'useCorpPayAcc' && parentOrgPaymentChannel.paymentChannel === 'none')">
-                    <div class="tip">未开通在线支付账户</div>
+                    <div class="tip">未开通在线收款账户</div>
                 </template>
             </div>
         </transition>

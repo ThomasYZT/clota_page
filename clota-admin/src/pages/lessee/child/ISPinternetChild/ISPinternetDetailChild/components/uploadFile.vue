@@ -15,13 +15,13 @@
             :before-upload="beforeUpload">
             <span class="upload-text" v-if="uploadedFile === null">{{$t('上传')}}</span>
             <span class="upload-text" v-else>{{$t('重新上传')}}</span>
-            <Tooltip placement="top" transfer>
-                <div slot="content" class="tips-content">
-                    {{$t('请访问微信商户平台(pay.weixin.qq.com)，并找到账户中心-->账户设置-->API安全页面，下载名称为apiclient_cert.p12的商户证书文件，除PHP外的开发均使用此证书文件。')}}
-                </div>
-                <span class="iconfont icon-note"></span>
-            </Tooltip>
         </el-upload>
+        <Tooltip placement="top" transfer>
+            <div slot="content" class="tips-content">
+                {{$t('请访问微信商户平台(pay.weixin.qq.com)，并找到账户中心-->账户设置-->API安全页面，下载名称为apiclient_cert.p12的商户证书文件。')}}
+            </div>
+            <span class="iconfont icon-note"></span>
+        </Tooltip>
     </div>
 </template>
 
@@ -154,6 +154,11 @@
 
         .icon-note {
             font-size: 15px;
+            margin-left: 5px;
+        }
+
+        .tips-content{
+            margin-left: 10px;
         }
     }
 </style>
