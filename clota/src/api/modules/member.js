@@ -333,4 +333,12 @@ export default {
     'countCardsByType' : '/member/report/countCardsByType',
     //查询店铺下的可用渠道
     'querySelfOwnedChannelByOrgIds' : '/selfChannel/querySelfOwnedChannelByOrgIds',
+
+    /*******************************商品管理*******************************/
+    //会员优惠券-增加商品
+    'saveProduct' : '/member/memberCoupon/saveProduct',
+    //会员优惠券-查询产品
+    'listProductList' : '/member/memberCoupon/listProductList',
+    //会员优惠券-删除商品
+    'deleteProduct' : '/member/memberCoupon/deleteProduct',
 };

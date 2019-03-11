@@ -2,12 +2,12 @@ export const memberGoodsManageHead = [
     {
         title : 'goodsName',
         minwidth : 150,
-        field : 'goodsName',
+        field : 'productName',
     },
     {
         title : 'goodID',
         minwidth : 150,
-        field : 'goodID',
+        field : 'outCode',
     },
     {
         title : 'operate',

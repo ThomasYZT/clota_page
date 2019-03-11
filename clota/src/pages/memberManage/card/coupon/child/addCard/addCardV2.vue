@@ -113,7 +113,7 @@
                         }
                     }
                 ],
-                //页面当前类型 add -- 新增 modify -- 修改
+                //页面当前类型 add -- 新增 modify -- 修改 check -- 查看
                 type : '',
                 //表单数据
                 formData : {

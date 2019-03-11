@@ -2692,4 +2692,7 @@ export default {
     'verifyFailNum' : '核销失败串码',
     'amountSingleDay' : '单日可领取数量',
     'amountLimit' : '可领取数量上限',
+    'onlyInput' : '只能输入{field}',
+    'letter' : '字母',
+    'number' : '数字',
 };

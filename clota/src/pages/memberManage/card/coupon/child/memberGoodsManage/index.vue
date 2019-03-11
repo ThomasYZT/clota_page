@@ -14,7 +14,7 @@
                 <Input class="input-field"
                        v-model.trim="filterParam.keyword"
                        icon="ios-search"
-                       :placeholder="$t('inputField', {field: $t('name') + ' / ' + $t('loginName')})"
+                       :placeholder="$t('inputAnywordForSearch')"
                        @on-enter="queryList"
                        @on-click="queryList" />
             </div>
@@ -40,23 +40,39 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <!-- 删除 -->
-                            <li @click="delete(scope.row)">{{$t('del')}}</li>
+                            <li class="red-label" @click="del(scope.row)">{{$t('del')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
             </table-com>
         </div>
+
+        <!-- 新增商品模态框 -->
+        <addGoodModal ref="addGoodModal" @updateList="queryList"></addGoodModal>
+
+        <!--删除模态框-->
+        <delModal ref="delModal">
+            <div :class="$style.delTips">
+                <Icon :class="$style.icon" type="help-circled"></Icon>
+                <span><span style="color : #EB6751;">{{$t('irreversible')}}</span>{{$t('sureToDel')}}</span>
+            </div>
+        </delModal>
     </div>
 </template>
 
 <script>
     import breadCrumbHead from '@/components/breadCrumbHead/index';
     import tableCom from '@/components/tableCom/tableCom';
+    import delModal from '../../../../../../components/delModal/index';
+    import addGoodModal from './components/addGoodModal';
     import { memberGoodsManageHead } from './memberGoodsManageConfig';
+    import ajax from '@/api/index';
     export default {
         components : {
             breadCrumbHead,
-            tableCom
+            tableCom,
+            addGoodModal,
+            delModal
         },
         data () {
             return {
@@ -91,20 +107,47 @@
              * 新增商品
              */
             addGood () {
-
+                this.$refs.addGoodModal.show();
             },
             /**
              * 列表查询
              */
             queryList () {
-
+                ajax.post('listProductList').then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data : [];
+                    } else {
+                        this.tableData = [];
+                    }
+                })
             },
             /**
              * 删除商品
              * @param rowData 商品数据
              */
-            delete (rowData) {
-
+            del (rowData) {
+                this.$refs.delModal.show({
+                    title : this.$t('del') + this.$t('goods'),
+                    confirmCallback : () => {
+                        this.confirmDelete(rowData);
+                    }
+                });
+            },
+            /**
+             * 确认删除
+             * @param rowData 商品数据
+             */
+            confirmDelete (rowData) {
+                ajax.post('deleteProduct', {
+                    id : rowData.id
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip' , { tip : this.$t('del') }));
+                        this.queryList();
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
+                    }
+                })
             }
         }
     };
@@ -136,5 +179,30 @@
                 }
             }
         }
+    }
+</style>
+<style module lang="scss">
+    .delTips{
+        position: absolute;
+        padding: 0 76px 0 106px;
+        color: #333333;
+        font-size: 14px;
+    }
+
+    .icon{
+        position: absolute;
+        left: 88px;
+        top : 2px;
+        font-size: 15px;
+        color: #EB6751;
+    }
+
+    .red-bale {
+        color: #ED3F14;
+    }
+
+    .blue-txt {
+        color: #2F70DF;
+        margin-right: 5px;
     }
 </style>

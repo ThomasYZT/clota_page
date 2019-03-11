@@ -225,18 +225,23 @@
                 })
             },
             /**
-             *  前往卡券详情
+             *  查看卡券详情
              *  @param rowData 券数据
              */
             showDetail (rowData) {
-
+                this.$router.push({
+                    name : 'addCardV2',
+                    params : {
+                        type : 'check',
+                    }
+                });
             },
             /**
              *  查看券码
              *  @param rowData 券数据
              */
             viewCouponCode (rowData) {
-
+                
             },
             /**
              *  导出券码

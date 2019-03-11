@@ -3,8 +3,20 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="export-code-modal">
+    <div>
+        <Modal v-model="visible"
+               class-name="vertical-center-modal view-code-modal"
+               transfer
+               width="600"
+               :title="$t('colonSetting', { key : $t('productTypeManage') })"
+               @on-cancel="hide"
+               :mask-closable="false">
 
+            <div slot="footer" class="modal-footer">
+                <Button type="primary" @click="save()" >{{$t("save")}}</Button>
+                <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -13,12 +25,35 @@
     export default {
         components : {},
         data () {
-            return {};
+            return {
+                //是否显示模态框
+                visible : false,
+            };
         },
-        methods : {}
+        methods : {
+            /**
+             * 显示模态框
+             * @param data
+             */
+            show (data) {
+                this.visible = true;
+            },
+            hide () {
+                this.visible = false;
+            }
+        }
     };
 </script>
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .modal {
+        /deep/ .ivu-modal-body {
+            height: 500px;
+            overflow: auto;
+        }
+    }
+    .view-code-modal {
+
+    }
 </style>
