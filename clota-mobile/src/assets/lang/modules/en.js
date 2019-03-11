@@ -468,4 +468,7 @@ export default {
     'iosSettingError' : 'please turn off the invisible mode and then refresh the page to continue the payment.',
     'memberCard' : 'membership card',
     'M037' : 'the phone number has been registered',
+    'S014' : 'weChat public number configuration error',
+    'mobileNotExist' : 'phone number does not exist',
+    'mobileNotExistToRegister' : 'the mobile phone number is not registered, please register first.',
 };

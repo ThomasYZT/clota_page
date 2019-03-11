@@ -67,6 +67,7 @@
             </x-input>
         </div>
         <x-button class="button"
+                  :disabled="!companyCode || !companyName"
                   @click.native="next">{{$t('nextStep')}}</x-button>
         <div class="to-login">
             {{$t('haveAccount')}}<span class="login-label" @click="toLogin">{{$t('toLogin')}}</span>

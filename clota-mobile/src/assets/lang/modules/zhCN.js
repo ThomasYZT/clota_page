@@ -468,4 +468,7 @@ export default {
     'iosSettingError' : '请关闭无痕模式，然后刷新页面继续付款。',
     'memberCard' : '会员卡',
     'M037' : '该手机号已被注册',
+    'S014' : '微信公众号配置错误',
+    'mobileNotExist' : '手机号不存在',
+    'mobileNotExistToRegister' : '手机号未注册，请先注册。',
 };
