@@ -113,11 +113,15 @@
              * 列表查询
              */
             queryList () {
-                ajax.post('listProductList').then(res => {
+                ajax.post('listProductList', {
+                    ...this.filterParam
+                }).then(res => {
                     if (res.success) {
-                        this.tableData = res.data ? res.data : [];
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data.totalRow;
                     } else {
                         this.tableData = [];
+                        this.totalCount = 0;
                     }
                 })
             },
@@ -138,7 +142,7 @@
              * @param rowData 商品数据
              */
             confirmDelete (rowData) {
-                ajax.post('deleteProduct', {
+                ajax.post('member-deleteProduct', {
                     id : rowData.id
                 }).then(res => {
                     if (res.success) {

@@ -28,8 +28,8 @@
                     </i-col>
                     <i-col span="12">
                         <!--应用场景-->
-                        <Form-item :label="$t('applicationScenario')" prop="scene">
-                            <Select v-model.trim="formData.scene"
+                        <Form-item :label="$t('applicationScenario')" prop="appScene">
+                            <Select v-model.trim="formData.appScene"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     style="width: 280px;"
                                     @on-change="sceneChange">
@@ -67,11 +67,26 @@
                 </i-row>
             </Form>
             <!-- 代金券表单 -->
-            <voucherTypeForm v-if="formData.couponType === 'cash_coupon'" :scene="formData.scene"></voucherTypeForm>
+            <voucherTypeForm ref="cash_coupon"
+                             v-if="formData.couponType === 'cash_coupon'"
+                             :scene="formData.appScene"
+                             :channelSetList="channelSetList"
+                             :listAmountRange="listAmountRange"
+                             :productTypeList="productTypeList"></voucherTypeForm>
             <!-- 兑换券表单 -->
-            <redemptionTypeForm v-else-if="formData.couponType === 'exchange_coupon'" :scene="formData.scene"></redemptionTypeForm>
+            <redemptionTypeForm ref="exchange_coupon"
+                                v-else-if="formData.couponType === 'exchange_coupon'"
+                                :scene="formData.appScene"
+                                :channelSetList="channelSetList"
+                                :productList="productList"
+                                :listAmountRange="listAmountRange"></redemptionTypeForm>
             <!-- 折扣券表单 -->
-            <discountTypeForm v-else-if="formData.couponType === 'discount_coupon'" :scene="formData.scene"></discountTypeForm>
+            <discountTypeForm ref="discount_coupon"
+                              v-else-if="formData.couponType === 'discount_coupon'"
+                              :scene="formData.appScene"
+                              :channelSetList="channelSetList"
+                              :listAmountRange="listAmountRange"
+                              :productTypeList="productTypeList"></discountTypeForm>
         </div>
 
         <div class="content-footer">
@@ -94,6 +109,10 @@
     import discountTypeForm from './components/discountTypeForm';
     import voucherTypeForm from './components/voucherTypeForm';
     import redemptionTypeForm from './components/redemptionTypeForm';
+    import { emoji } from '../../../validateMethods';
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -122,20 +141,43 @@
                     //卡券类别
                     couponType : 'cash_coupon',
                     //应用场景
-                    scene : 'communicate',
+                    appScene : 'spread',
                 },
                 //卡券类别列表
-                couponTypeList : couponTypeList,
+                couponTypeList : couponTypeList.filter((item) => {return item.value !== 'all';}),
                 //卡券应用场景列表
                 cardScenarioList : cardScenario.filter((item) => {return item.value !== 'all';}),
+                //可用渠道列表
+                channelSetList : [],
+                //可用店铺列表
+                listAmountRange : [],
+                //可用产品类别列表
+                productTypeList : [],
+                //商品列表数据
+                productList : [],
             };
         },
         computed : {
+            ...mapGetters({
+                lang : 'lang',
+                manageOrgs : 'manageOrgs'
+            }),
             //表单验证规则
             ruleValidate () {
                 return {
-                    nominalValue : [
-                        { required : true, message : this.$t('inputField',{ field : this.$t('couponFaceValue') }), trigger : 'blur' },
+                    //卡券名称
+                    couponName : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('couponName') }), trigger : 'blur' },
+                        { validator : emoji, trigger : 'blur' },
+                        { type : 'string', max : 30, message : this.$t('errorMaxLength', { field : this.$t('couponName'), length : 30 }), trigger : 'blur' }, // 不能多于30个字符
+                    ],
+                    //应用场景
+                    appScene : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('applicationScenario') }), trigger : 'blur' },
+                    ],
+                    //卡券类别
+                    couponType : [
+                        { required : true, message : this.$t('inputField',{ field : this.$t('couponType') }), trigger : 'blur' },
                     ],
                 };
             }
@@ -166,20 +208,140 @@
              * @param val 应用场景
              */
             sceneChange (val) {
-
+                this.$refs[this.formData.couponType].formReset();
+            },
+            /**
+             *  公共表单验证
+             */
+            commonFormValidate () {
+                return new Promise((resolve, reject) => {
+                    this.$refs.formValidate.validate(valid => {
+                        if (valid) {
+                            resolve(this.formData);
+                        } else {
+                            reject();
+                        }
+                    })
+                })
             },
             /**
              * 校验表单信息
              */
             formValidateFunc () {
-
+                Promise.all([
+                    this.commonFormValidate(),
+                    this.$refs[this.formData.couponType].formValidate(),
+                ]).then(resultSet => {
+                    //最终表单数据
+                    let resultFormData = {};
+                    resultSet.forEach(res => {
+                        resultFormData = defaultsDeep(resultFormData, res);
+                    });
+                    this.updateCoupon(resultFormData);
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+            /**
+             *  新增/编辑优惠券
+             */
+            updateCoupon (resultFormData) {
+                console.log(resultFormData);
+                ajax.post('updateCoupon', resultFormData).then(res => {
+                    if (res.success) {
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        //前往卡券列表页面
+                        this.$router.push({
+                            name : 'coupon',
+                        });
+                    } else {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('add') }));
+                    }
+                });
             },
             /**
              * 取消编辑
              */
             cancelEdit () {
 
+            },
+            /**
+             * 查询所有可用渠道
+             */
+            queryChannelSet () {
+                ajax.post('querySelfOwnedChannel', {
+                    status : 'valid',
+                    pageNo : 1,
+                    pageSize : 999
+                }).then(res => {
+                    if (res.success) {
+                        this.channelSetList = res.data ? res.data.data : [];
+                    } else {
+                        this.channelSetList = [];
+                    }
+                }).catch(() => {
+                    this.channelSetList = [];
+                });
+            },
+            /**
+             * 查询所有可用店铺
+             */
+            queryListAmountRange () {
+                ajax.post('getSubNode',{
+                    orgType : 'scenic',
+                    includeMe : this.manageOrgs.nodeType === 'scenic'
+                }).then(res => {
+                    if (res.success) {
+                        this.listAmountRange = res.data ? res.data : [];
+                    } else {
+                        this.listAmountRange = [];
+                    }
+                }).catch(() => {
+                    this.listAmountRange = [];
+                });
+            },
+            /**
+             * 查询所有产品类别信息
+             */
+            queryProductType () {
+                ajax.post('queryProductType',{
+                    pageNo : 1,
+                    pageSize : 9999,
+                }).then(res => {
+                    if (res.success) {
+                        this.productTypeList = res.data ? res.data.data : [];
+                    } else {
+                        this.productTypeList = [];
+                    }
+                }).catch(err => {
+                    this.productTypeList = [];
+                });
+            },
+            /**
+             * 查询商品列表数据
+             */
+            listProductList () {
+                ajax.post('listProductList', {
+                    pageNo : 1,
+                    pageSize : 9999,
+                }).then(res => {
+                    if (res.success) {
+                        this.productList = res.data ? res.data.data : [];
+                    } else {
+                        this.productList = [];
+                    }
+                })
             }
+        },
+        created () {
+            //查询所有可用渠道
+            this.queryChannelSet();
+            //查询所有可用店铺
+            this.queryListAmountRange();
+            //查询所有产品类别信息
+            this.queryProductType();
+            //查询所有商品数据
+            this.listProductList();
         }
     };
 </script>

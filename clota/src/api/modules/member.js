@@ -340,5 +340,7 @@ export default {
     //会员优惠券-查询产品
     'listProductList' : '/member/memberCoupon/listProductList',
     //会员优惠券-删除商品
-    'deleteProduct' : '/member/memberCoupon/deleteProduct',
+    'member-deleteProduct' : '/member/memberCoupon/deleteProduct',
+    //查询优惠券列表
+    'queryCouponsList' : '/member/memberCoupon/queryCouponsList',
 };

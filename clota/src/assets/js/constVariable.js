@@ -766,12 +766,16 @@ export const expiresStatus = [
 //卡券是否有效
 export const cardValid = [
     {
+        label : 'all',
+        value : 'all'
+    },
+    {
         label : 'validCard', //有效卡券
-        value : 'valid',
+        value : 'true',
     },
     {
         label : 'invalidCard', //无效卡券
-        value : 'invalid',
+        value : 'false',
     },
 ];
 
@@ -783,11 +787,11 @@ export const cardScenario = [
     },
     {
         label : 'communicationCoupon', //传播型优惠券
-        value : 'communicate',
+        value : 'spread',
     },
     {
         label : 'memberBenefitCoupon', //会员权益优惠券
-        value : 'benefit',
+        value : 'right',
     },
 ];
 

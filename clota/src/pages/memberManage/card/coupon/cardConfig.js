@@ -3,7 +3,7 @@
 export const columnData = [
     {
         title : 'couponNameV2',
-        minWidth : 150,
+        minWidth : 200,
         field : 'couponName'
     },
     {
@@ -19,12 +19,12 @@ export const columnData = [
     },
     {
         title : 'applicationScenario',
-        minWidth : 100,
+        minWidth : 150,
         field : 'discountRate'
     },
     {
         title : 'useCondition',
-        minWidth : 100,
+        minWidth : 150,
         field : 'discountRate'
     },
     {
@@ -35,7 +35,8 @@ export const columnData = [
     {
         title : 'createdDateTime',
         minWidth : 230,
-        field : 'discountRate'
+        field : 'createdTime',
+        type : 'date'
     },
     {
         title : 'operate  ',

@@ -10,8 +10,8 @@
         <i-row>
             <i-col span="12">
                 <!--卡券折扣-->
-                <Form-item :label="$t('卡券折扣')" prop="discount">
-                    <Input v-model.trim="formData.discount"
+                <Form-item :label="$t('卡券折扣')" prop="nominalValue">
+                    <Input v-model.trim="formData.nominalValue"
                            style="width: 280px;"
                            :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
@@ -35,11 +35,11 @@
                 </Form-item>
             </i-col>
             <!-- 会员权益型要填的信息 -->
-            <template v-if="scene === 'benefit'">
+            <template v-if="scene === 'right'">
                 <i-col span="12">
                     <!--有效期-->
-                    <Form-item :label="$t('有效期')" prop="effectiveTime">
-                        <Input v-model.trim="formData.effectiveTime"
+                    <Form-item :label="$t('有效期')" prop="effDays">
+                        <Input v-model.trim="formData.effDays"
                                style="width: 280px;"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('天')}}</span><!--天-->
@@ -84,8 +84,8 @@
                 </i-col>
                 <i-col span="12">
                     <!--生成数量-->
-                    <Form-item :label="$t('generationNum')" prop="generationNum">
-                        <Input v-model.trim="formData.generationNum"
+                    <Form-item :label="$t('generationNum')" prop="quantity">
+                        <Input v-model.trim="formData.quantity"
                                style="width: 280px;"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}}</span><!--张-->
@@ -93,8 +93,8 @@
                 </i-col>
                 <i-col span="12">
                     <!--单日可领取数量-->
-                    <Form-item :label="$t('amountSingleDay')" prop="amountSingleDay">
-                        <Input v-model.trim="formData.amountSingleDay"
+                    <Form-item :label="$t('amountSingleDay')" prop="dayGain">
+                        <Input v-model.trim="formData.dayGain"
                                style="width: 280px;"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
@@ -102,8 +102,8 @@
                 </i-col>
                 <i-col span="12">
                     <!--可领取数量上限-->
-                    <Form-item :label="$t('amountLimit')" prop="amountLimit">
-                        <Input v-model.trim="formData.amountLimit"
+                    <Form-item :label="$t('amountLimit')" prop="totalGain">
+                        <Input v-model.trim="formData.totalGain"
                                style="width: 280px;"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
@@ -126,7 +126,7 @@
                     </RadioGroup>
                 </Form-item>
             </i-col>
-            <i-col span="12">
+            <i-col span="12" v-if="formData.isDiscountCoexist === 'true'">
                 <!--代金券在折扣前后使用设置-->
                 <Form-item :label="$t('isUsedBeforeOrAfterDiscount')" prop="isEffectBeforeDiscount">
                     <RadioGroup v-model="formData.isEffectBeforeDiscount">
@@ -140,26 +140,25 @@
                 <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                     <treeSelector v-model="formData.conditionChannelId"
                                   nodeKey="label"
-                                  :defaultProps="defaultProps"
+                                  :defaultProps="{ label : 'channelName' }"
                                   :data="channelSetList"></treeSelector>
                 </Form-item>
             </i-col>
             <i-col span="12">
                 <!--可用店铺-->
-
-                <Form-item label="可用店铺" prop="useStore">
+                <Form-item label="可用店铺" prop="conditionOrgId">
                     <treeSelector v-model="formData.conditionOrgId"
                                   nodeKey="label"
-                                  :defaultProps="defaultProps"
+                                  :defaultProps="{ label : 'orgName' }"
                                   :data="listAmountRange"></treeSelector>
                 </Form-item>
             </i-col>
             <i-col span="12">
                 <!--可用产品类别-->
-                <Form-item :label="$t('availableChannels')" prop="productTypeId">
-                    <treeSelector v-model="formData.productTypeId"
+                <Form-item :label="$t('availableChannels')" prop="conditionProductId">
+                    <treeSelector v-model="formData.conditionProductId"
                                   nodeKey="label"
-                                  :defaultProps="defaultProps"
+                                  :defaultProps="{ label : 'typeName' }"
                                   :data="productTypeList"></treeSelector>
                 </Form-item>
             </i-col>
@@ -169,6 +168,7 @@
 
 <script>
     import treeSelector from './treeSelector';
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         components : {
             treeSelector
@@ -178,27 +178,50 @@
             scene : {
                 type : String,
                 default : '',
-            }
+            },
+            //可用渠道列表
+            channelSetList : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
+            //可用店铺列表
+            listAmountRange : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
+            //可用产品类别列表
+            productTypeList : {
+                type : Array,
+                default () {
+                    return [];
+                }
+            },
         },
         data () {
             return {
                 formData : {
                     //卡券折扣
-                    discount : '',
+                    nominalValue : '',
                     //最低消费金额
                     conditionLowerLimtation : '',
                     //最高消费金额
                     conditionUpperLimtation : '',
+                    //有效期
+                    effDays : '',
                     //有效开始日期
                     effectiveTime : '',
                     //有效结束日期
                     expireTime : '',
                     //生成数量
-                    generationNum : '',
+                    quantity : '',
                     //单日可领取数量
-                    amountSingleDay : '',
+                    dayGain : '',
                     //可领取数量上限
-                    amountLimit : '',
+                    totalGain : '',
                     //能否和会员折扣权益同时使用
                     isDiscountCoexist : '',
                     //代金券在折扣前后使用设置
@@ -208,7 +231,7 @@
                     //可用店铺
                     conditionOrgId : [],
                     //可用产品类别
-                    productTypeId : [],
+                    conditionProductId : [],
                 },
                 //日期插件配置
                 pickerOptions : {
@@ -216,51 +239,52 @@
                         return time.getTime() < new Date().addDays(-1).valueOf();
                     },
                 },
-                defaultProps : {
-                    label : 'label',
-                },
-                //可用渠道列表数据
-                channelSetList : [
-                    {
-                        label : '111'
-                    },
-                    {
-                        label : '222'
-                    },
-                    {
-                        label : '333'
-                    }
-                ],
-                //可用店铺列表数据
-                listAmountRange : [
-                    {
-                        label : '111'
-                    },
-                    {
-                        label : '222'
-                    },
-                    {
-                        label : '333'
-                    }
-                ],
-                //可用产品类别列表数据
-                productTypeList : [
-                    {
-                        label : '111'
-                    },
-                    {
-                        label : '222'
-                    },
-                    {
-                        label : '333'
-                    }
-                ],
             };
         },
         computed : {
             //表单校验规则
             ruleValidate () {
-                return {};
+                return {
+                    nominalValue : [ //卡券面值
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('couponFaceValue') }), trigger : 'blur' },
+                    ],
+                    conditionLowerLimtation : [ //最低消费金额后可用
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('consumption') }), trigger : 'blur' },
+                    ],
+                    effDays : [ //有效天数
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('effectiveDays') }), trigger : 'blur' },
+                    ],
+                    effectiveTime : [ //有效开始日期
+                        { required : true, type : 'date', message : this.$t('inputField',{ field : this.$t('effectiveStartDate') }), trigger : 'blur' },
+                    ],
+                    expireTime : [ //有效结束日期
+                        { required : true, type : 'date', message : this.$t('inputField',{ field : this.$t('effectiveEndDate') }), trigger : 'blur' },
+                    ],
+                    quantity : [ //生成数量
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('generationNum') }), trigger : 'blur' },
+                    ],
+                    dayGain : [ //单日可领取数量
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountSingleDay') }), trigger : 'blur' },
+                    ],
+                    totalGain : [ //可领取数量上限
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountLimit') }), trigger : 'blur' },
+                    ],
+                    isDiscountCoexist : [ //能否和会员折扣同时使用
+                        { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },
+                    ],
+                    isEffectBeforeDiscount : [ //代金券在折扣前后使用设置
+                        { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },
+                    ],
+                    conditionChannelId : [ //可用渠道
+                        { required : true, type : 'array', min : 1, message : this.$t('selectField',{ msg : this.$t('availableChannels') }), trigger : 'blur' },
+                    ],
+                    conditionOrgId : [ //可用店铺
+                        { required : true, type : 'array', min : 1, message : this.$t('selectField',{ msg : this.$t('shop') }), trigger : 'blur' },
+                    ],
+                    conditionProductId : [ //可用产品类别
+                        { required : true, type : 'array', min : 1, message : this.$t('selectField',{ msg : this.$t('productType') }), trigger : 'blur' },
+                    ],
+                };
             }
         },
         methods : {
@@ -274,6 +298,39 @@
                     this.formData.isEffectBeforeDiscount = '';
                 }
             },
+            /**
+             * 表单校验
+             */
+            formValidate () {
+                return new Promise((resolve, reject) => {
+                    this.$refs.formValidate.validate(valid => {
+                        if (valid) {
+                            let resultForm = defaultsDeep({}, this.formData);
+                            resultForm.effectiveTime = resultForm.effectiveTime ? resultForm.effectiveTime.format('yyyy-MM-dd') : '';
+                            resultForm.expireTime = resultForm.expireTime ? resultForm.expireTime.format('yyyy-MM-dd') : '';
+                            resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => { return item.id }).join(',');
+                            resultForm.conditionOrgId = resultForm.conditionOrgId.map(item => { return item.id }).join(',');
+                            resultForm.conditionProductId = resultForm.conditionProductId.map(item => { return item.id }).join(',');
+                            resolve(resultForm);
+                        } else {
+                            reject();
+                        }
+                    })
+                })
+            },
+            /**
+             * 复原表单状态
+             */
+            formReset () {
+                this.$refs.formValidate.resetFields();
+            },
+            /**
+             * 重新校验表单域
+             * @param field 表单域名
+             */
+            resetField (field) {
+                this.$refs.formValidate.validateField(field);
+            }
         }
     };
 </script>

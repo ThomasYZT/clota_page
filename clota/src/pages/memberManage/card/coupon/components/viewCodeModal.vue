@@ -8,7 +8,7 @@
                class-name="vertical-center-modal view-code-modal"
                transfer
                width="600"
-               :title="$t('colonSetting', { key : $t('productTypeManage') })"
+               :title="$t(title)"
                @on-cancel="hide"
                :mask-closable="false">
 
@@ -27,7 +27,19 @@
             return {
                 //是否显示模态框
                 visible : false,
+                //列表行数据
+                rowData : {},
             };
+        },
+        computed : {
+            //模态框标题
+            title () {
+                if (this.rowData && Object.keys(this.rowData).length > 0) {
+                    return this.rowData.couponType;
+                } else {
+                    return '';
+                }
+            }
         },
         methods : {
             /**
@@ -35,9 +47,14 @@
              * @param data
              */
             show (data) {
+                this.rowData = data;
                 this.visible = true;
             },
+            /**
+             * 隐藏
+             */
             hide () {
+                this.rowData = {};
                 this.visible = false;
             }
         }
@@ -46,12 +63,11 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
-    .modal {
-        /deep/ .ivu-modal-body {
-            height: 500px;
-            overflow: auto;
-        }
+    /deep/ .ivu-modal-body {
+        height: 300px;
+        overflow: auto;
     }
+
     .view-code-modal {
 
     }

@@ -29,18 +29,23 @@
         </div>
 
         <div class="filter-head">
+            <!-- 应用场景 -->
             <div class="select-wrap">
                 <span class="label-title">{{$t('applicationScenario')}}</span>
-                <Select v-model="filterParam.scene" style="width:200px">
+                <Select v-model="filterParam.appScene"
+                        style="width:200px"
+                        @on-change="queryList">
                     <Option v-for="item in cardScenarioList"
                             :value="item.value"
                             :key="item.value">{{ $t(item.label) }}</Option>
                 </Select>
             </div>
-
+            <!-- 是否有效 -->
             <div class="select-wrap">
                 <span class="label-title">{{$t('wetherEffective')}}</span>
-                <Select v-model="filterParam.valid" style="width:200px">
+                <Select v-model="filterParam.inTime"
+                        style="width:200px"
+                        @on-change="queryList">
                     <Option v-for="item in cardValidList"
                             :value="item.value"
                             :key="item.value">{{ $t(item.label) }}</Option>
@@ -67,6 +72,7 @@
             :page-size-d.sync="filterParam.pageSize"
             :total-count="totalCount"
             @query-data="queryList">
+            <!-- 优惠券类型 -->
             <el-table-column
                 slot="column2"
                 show-overflow-tooltip
@@ -75,7 +81,19 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{$t(scope.row['couponType'])}}
+                    {{$t(scope.row['couponType']) | contentFilter}}
+                </template>
+            </el-table-column>
+            <!-- 应用场景 -->
+            <el-table-column
+                slot="column3"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    {{scope.row['appScene'] ? $t('coupon.' + scope.row['appScene']) : '-'}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -112,18 +130,24 @@
                     <ul class="operate-list">
                         <!-- 卡券详情 -->
                         <li @click="showDetail(scope.row)">{{$t('detail')}}</li>
-                        <!-- 查看券码 -->
-                        <li @click="viewCouponCode(scope.row)">{{$t('viewCouponCode')}}</li>
-                        <!-- 导出券码 -->
-                        <li @click="exportCouponCode(scope.row)">{{$t('exportCouponCode')}}</li>
-                        <!-- 生成链接 -->
-                        <li @click="generateLink(scope.row)">{{$t('generateLink')}}</li>
-                        <!-- 作废 -->
-                        <li class="red-label" @click="obsoloteCoupon(scope.row)">{{$t('obsolete')}}</li>
-                        <!-- 重启 -->
-                        <li v-if="canOperateMembersCoupon" @click="reloadCoupon(scope.row)">{{$t('restart')}}</li>
-                        <!-- 手动推送 -->
-                        <li v-if="canOperateMembersCoupon" @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
+                        <!-- 查看券码 仅传播型优惠券有查看券码的操作 -->
+                        <li v-if="scope.row.appScene === 'spread'" @click="viewCouponCode(scope.row)">{{$t('viewCouponCode')}}</li>
+                        <!-- 只有传播型的、有操作权限的优惠券才能展示以下操作 -->
+                        <template v-if="scope.row.appScene === 'spread' && canOperateMembersCoupon">
+                            <!-- 导出券码 -->
+                            <li :class="{disabled : isObsolote(scope.row) || isSpreadExpired(scope.row) }" @click="exportCouponCode(scope.row)">{{$t('exportCouponCode')}}</li>
+                            <!-- 生成链接 -->
+                            <li :class="{disabled : isObsolote(scope.row) || isSpreadExpired(scope.row) }" @click="generateLink(scope.row)">{{$t('generateLink')}}</li>
+                            <!-- 作废 -->
+                            <li v-if="!isObsolote(scope.row)" :class="{disabled : isSpreadExpired(scope.row) }" @click="obsoloteCoupon(scope.row)" class="red-label" >{{$t('obsolete')}}</li>
+                            <!-- 重启 -->
+                            <li v-else :class="{disabled : isSpreadExpired(scope.row) }" @click="reloadCoupon(scope.row)">{{$t('restart')}}</li>
+                        </template>
+                        <template v-else>
+                            <!-- 手动推送 可以无限推送 -->
+                            <li @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
+                        </template>
+
                     </ul>
                 </template>
             </el-table-column>
@@ -135,22 +159,47 @@
                    :coupon-data="currentData">
         </del-modal>
 
+        <!-- 查看券码模态框 -->
+        <viewCodeModal ref="viewCodeModal"></viewCodeModal>
+        <!-- 导出券码模态框 -->
+        <exportCodeModal ref="exportCodeModal"></exportCodeModal>
+        <!-- 生成链接模态框 -->
+        <generateLinkModal ref="generateLinkModal"></generateLinkModal>
+        <!-- 作废模态框 -->
+        <obsoleteModal ref="obsoleteModal"></obsoleteModal>
+        <!-- 手动推送模态框 -->
+        <manualPushModal ref="manualPushModal"></manualPushModal>
+        <!-- 优惠券领取H5页面背景设置模态框 -->
+        <backgroundSettingModal ref="backgroundSettingModal"></backgroundSettingModal>
+
     </div>
 </template>
 
 <script>
-    import ajax from '@/api/index.js';
     import tableCom from '@/components/tableCom/tableCom.vue';
+    import viewCodeModal from './components/viewCodeModal';
+    import exportCodeModal from './components/exportCodeModal';
+    import generateLinkModal from './components/generateLinkModal';
+    import obsoleteModal from './components/obsoleteModal';
+    import manualPushModal from './components/manualPushModal';
+    import backgroundSettingModal from './components/backgroundSettingModal';
     import { columnData } from './cardConfig';
     import delModal from './components/delModal';
     import defaultsDeep from 'lodash/defaultsDeep';
     import { cardValid, cardScenario } from '../../../../assets/js/constVariable';
     import { mapGetters } from 'vuex';
+    import ajax from '@/api/index.js';
 
     export default {
         components : {
             tableCom,
-            delModal
+            delModal,
+            viewCodeModal,
+            exportCodeModal,
+            generateLinkModal,
+            obsoleteModal,
+            manualPushModal,
+            backgroundSettingModal,
         },
         data () {
             return {
@@ -159,9 +208,9 @@
                     //关键字
                     keyword : '',
                     //应用场景
-                    scene : '',
+                    appScene : 'all',
                     //是否有效
-                    valid : '',
+                    inTime : 'all',
                     //每页记录数量
                     pageSize : 10,
                     //页码
@@ -210,7 +259,7 @@
              *  优惠券领取H5页面背景设置
              */
             H5Setting () {
-
+                this.$refs.backgroundSettingModal.show();
             },
             /**
              *  进入记录页面
@@ -233,6 +282,7 @@
                     name : 'addCardV2',
                     params : {
                         type : 'check',
+                        rowData : rowData
                     }
                 });
             },
@@ -241,27 +291,30 @@
              *  @param rowData 券数据
              */
             viewCouponCode (rowData) {
-                
+                this.$refs.viewCodeModal.show(rowData);
             },
             /**
              *  导出券码
              *  @param rowData 券数据
              */
             exportCouponCode (rowData) {
-
+                if (this.isObsolote(rowData) || this.isSpreadExpired(rowData)) return false;
+                this.$refs.exportCodeModal.show(rowData);
             },
             /**
              *  生成链接
              *  @param rowData 券数据
              */
             generateLink (rowData) {
-
+                if (this.isObsolote(rowData) || this.isSpreadExpired(rowData)) return false;
+                this.$refs.generateLinkModal.show(rowData);
             },
             /**
              *  手动推送
              *  @param rowData 券数据
              */
             manualPush (rowData) {
+                this.$refs.manualPushModal.show(rowData);
 
             },
             /**
@@ -275,23 +328,49 @@
                     params : this.getUpdateCouponParams(data)
                 });
             },
-
+            /**
+             *  根据优惠券是否作废判断按钮是否禁用
+             *  @param type
+             *  @param rowData
+             */
+            isObsolote (rowData) {
+                //判断是否作废
+                return rowData.status === 'valid' ? false : true;
+            },
+            /**
+             * 判断传播型优惠券是否过期
+             * @param rowData 券数据
+             */
+            isSpreadExpired (rowData) {
+                if (rowData.effectiveTime && rowData.expireTime) {
+                    if (new Date() >= new Date(rowData.effectiveTime) &&
+                        new Date() <= new Date(new Date(rowData.expireTime).getTime() + 24 * 60 * 60 * 1000 - 1)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            },
             /**
              * 作废券
-             * @param data 券数据
+             * @param rowData 券数据
              */
-            obsoloteCoupon ( data ) {
-                let params = this.getUpdateCouponParams(data);
-                ajax.post('updateCoupon',defaultsDeep({
-                    status : 'invalid'
-                },params)).then(res => {
-                    if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('obsolete') }));
-                        this.queryList();
-                    } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('obsolete') }));
-                    }
-                });
+            obsoloteCoupon ( rowData ) {
+                if (this.isSpreadExpired(rowData)) return false;
+                this.$refs.obsoleteModal.show(rowData);
+                // let params = this.getUpdateCouponParams(data);
+                // ajax.post('updateCoupon',defaultsDeep({
+                //     status : 'invalid'
+                // },params)).then(res => {
+                //     if (res.success) {
+                //         this.$Message.success(this.$t('successTip',{ tip : this.$t('obsolete') }));
+                //         this.queryList();
+                //     } else {
+                //         this.$Message.error(this.$t('failureTip',{ tip : this.$t('obsolete') }));
+                //     }
+                // });
             },
 
             /**
@@ -299,6 +378,7 @@
              * @param data 券数据
              */
             reloadCoupon (data) {
+                if (this.isSpreadExpired(data)) return false;
                 let params = this.getUpdateCouponParams(data);
                 ajax.post('updateCoupon',defaultsDeep({
                     status : 'valid'
@@ -341,27 +421,22 @@
             /**
              * 查询新建的会员卡券信息
              */
-            queryList ({ pageNo,pageSize } = { pageNo : this.pageNo,pageSize : this.pageSize }) {
-                // this.pageNo = pageNo;
-                // this.pageSize = pageSize;
-                // ajax.post('queryCoupons',{
-                //     isDeleted : false,
-                //     status : this.tabsName === 'created' ? 'valid' : 'invalid',
-                //     pageNo : this.pageNo,
-                //     pageSize : this.pageSize
-                // }).then(res => {
-                //    if (res.success) {
-                //        this.tableData = res.data.data ? res.data.data : [];
-                //        this.totalCount = res.data.totalRow;
-                //    } else {
-                //        this.tableData = [];
-                //        this.totalCount = 0;
-                //    }
-                // }).catch(() => {
-                //     this.tableData = [];
-                //     this.totalCount = 0;
-                // });
-                this.tableData = [{}];
+            queryList () {
+                let params = defaultsDeep({}, this.filterParam);
+                params.appScene = params.appScene === 'all' ? '' : params.appScene;
+                params.inTime = params.inTime === 'all' ? '' : params.inTime;
+                ajax.post('queryCouponsList', params).then(res => {
+                   if (res.success) {
+                       this.tableData = res.data.data ? res.data.data : [];
+                       this.totalCount = res.data.totalRow;
+                   } else {
+                       this.tableData = [];
+                       this.totalCount = 0;
+                   }
+                }).catch(() => {
+                    this.tableData = [];
+                    this.totalCount = 0;
+                });
             },
             /**
              * 获取卡券使用条件

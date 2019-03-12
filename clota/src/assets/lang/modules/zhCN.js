@@ -2695,4 +2695,6 @@ export default {
     'onlyInput' : '只能输入{field}',
     'letter' : '字母',
     'number' : '数字',
+    'coupon.spread' : '传播型',
+    'coupon.right' : '权益型',
 };

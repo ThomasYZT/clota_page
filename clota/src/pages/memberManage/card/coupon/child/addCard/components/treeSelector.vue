@@ -87,7 +87,8 @@
                         this.$refs.elTree.setCheckedKeys(value.map(item => {
                             return item[this.nodeKey];
                         }));
-                    })
+                    });
+                    this.$emit('on-change', value);
                 },
             }
         }
