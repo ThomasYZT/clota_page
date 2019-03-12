@@ -384,11 +384,12 @@
              */
             marketAutoLogin () {
                 ajax.post('market_autoLogin',{
-                    orgId : this.marketOrgId,
+                    companyCode : this.companyCode,
                     openId : this.wxOpenId
                 }).then(res => {
                     if (res.success && res.data) {
-                        this.dataToLogin(res.data);
+                        this.$store.commit('marketUpdatOrgAddress',res.data['orgAddress']);
+                        this.dataToLogin(res.data.token);
                     } else {
                         this.showPage = true;
                     }
@@ -401,11 +402,12 @@
             dataToLogin (token) {
                 this.$store.commit('marketUpdateToken',token);
                 this.$store.dispatch('marketGetUserInfo').then(() => {
-                    this.$router.replace({
-                        name : 'marketingProduct'
+                    this.$store.dispatch('marketGetLoginData').then(() => {
+                        this.$router.replace({
+                            name : 'marketingProduct'
+                        });
+                        sessionStorage.setItem('loginErr',0);
                     });
-                    this.$store.dispatch('marketGetLoginData');
-                    sessionStorage.setItem('loginErr',0);
                 });
             }
         },
