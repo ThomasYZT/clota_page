@@ -24,7 +24,7 @@ export const columnData = [
     },
     {
         title : 'useCondition',
-        minWidth : 150,
+        minWidth : 250,
         field : 'discountRate'
     },
     {

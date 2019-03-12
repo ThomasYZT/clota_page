@@ -96,7 +96,6 @@
                 <!--选择商品-->
                 <Form-item :label="$t('选择商品')" prop="goodId">
                     <Select v-model.trim="formData.conditionGoodId"
-                            :multiple="true"
                             transfer
                             :clearable="true"
                             style="width: 280px;height: 34px;"
@@ -253,6 +252,7 @@
                             resultForm.expireTime = resultForm.expireTime ? resultForm.expireTime.format('yyyy-MM-dd') : '';
                             resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => { return item.id }).join(',');
                             resultForm.conditionOrgId = resultForm.conditionOrgId.map(item => { return item.id }).join(',');
+                            resultForm.remark = this.getDiscountRemark();
                             resolve(resultForm);
                         } else {
                             reject();
@@ -272,7 +272,19 @@
              */
             resetField (field) {
                 this.$refs.formValidate.validateField(field);
-            }
+            },
+            /**
+             * 获取兑换券的使用条件
+             */
+            getDiscountRemark () {
+                let remark = [];
+                this.productList.forEach(item => {
+                    if (this.formData.conditionGoodId === item.id) {
+                        remark.push(item.productName);
+                    }
+                });
+                return remark.join(',');
+            },
         }
     };
 </script>

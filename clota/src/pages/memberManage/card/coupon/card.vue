@@ -115,7 +115,8 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
+                    <span v-if="scope.row.appScene === 'spread'">{{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}</span>
+                    <span v-else>{{scope.row.effDays + $t('day')}}</span>
                 </template>
             </el-table-column>
             <el-table-column
