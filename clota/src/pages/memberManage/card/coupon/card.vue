@@ -19,7 +19,7 @@
                     <Input class="input-field"
                            v-model.trim="filterParam.keyword"
                            icon="ios-search"
-                           :placeholder="$t('inputField', {field: $t('name') + ' / ' + $t('loginName')})"
+                           :placeholder="$t('inputField', {field: $t('coupon') + $t('name') + ' / ' + $t('批次号') + ' / ' + $t('券码')})"
                            @on-enter="queryList"
                            @on-click="queryList" />
                     <!--搜索-->
