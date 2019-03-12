@@ -102,7 +102,7 @@
                             :placeholder="$t('selectField', {msg: ''})">
                         <Option v-for="(item,index) in productList"
                                 :key="index"
-                                :value="item.id">
+                                :value="item.outCode">
                             {{item.productName}}
                         </Option>
                     </Select>
