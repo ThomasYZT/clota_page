@@ -85,4 +85,6 @@ export default {
     'getOAuth2UserInfo' : '/wechat/mp/getOAuth2UserInfo',
     //获取用户信息
     'market_autoLogin' : '/market/marketUser/autoLogin',
+    //微信直连支付
+    'market_getPayPageForMobile' : '/external/pay/getPayPageForMobile',
 };
