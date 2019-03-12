@@ -2477,6 +2477,7 @@ export default {
     "picUploadLimit" : "图片限制：1000*600像素、大小小于1M，仅支持jpg/png/jpeg格式",
     "cardTitle" : "会员卡标题",
     "onlyInputChineseLetterNum" : "只能输入中文、字母或数字",
+    'onlyInputLetterNum' : '只能输入字母、数字',
     "clota-adminSettingError" : "运营后台公众号信息配置错误",
     "wechatError" : "微信服务请求错误",
     "saveWxCardInfoFailure" : "保存微信卡包卡面信息失败",

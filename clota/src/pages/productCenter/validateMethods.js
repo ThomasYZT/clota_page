@@ -144,6 +144,21 @@ export const validateProductEffSet = (rule,value,callback) => {
     if (value) {
         callback();
     } else {
-        callback(this.$t('selectField', { msg : this.$t('productEffSet') }));
+        callback(i18n.t('selectField', { msg : i18n.t('productEffSet') }));
     }
 };
+
+/**
+ * 只能输入英文和数字
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const validateOnlyCE = (rule, value, callback) => {
+    let reg = /^[0-9a-zA_Z]+$/
+    if (reg.test(value)) {
+        callback();
+    } else {
+        callback(i18n.t('onlyInputLetterNum'));
+    }
+}

@@ -57,7 +57,7 @@
                 </div>
                 <!--产品标签-->
                 <div class="ivu-form-item-wrap">
-                    <Form-item :label="$t('productLabel')" prop="thirdCode">
+                    <Form-item :label="$t('productLabel')">
                         <div class="tags-wrapper">
                             <productTag v-for="item in formData.tags"
                                         :checkable="false"
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-    import { validateMoney, emoji, validateNumber } from '../../../../validateMethods';
+    import { validateMoney, emoji, validateOnlyCE } from '../../../../validateMethods';
     import titleTemp from '../../../../components/titleTemp';
     import productTag from '../../components/productTag';
     import ImgUploader from '../../../../../register/components/ImgUploader';
@@ -169,6 +169,7 @@
                     thirdCode : [
                         { max : 50, message : this.$t('errorMaxLength', { field : this.$t('thirdCode'), length : 50 }), trigger : 'blur' },
                         { validator : emoji, trigger : 'blur' },
+                        { validator : validateOnlyCE, trigger : 'blur' }
                     ],
                     //产品描述
                     productDes : [

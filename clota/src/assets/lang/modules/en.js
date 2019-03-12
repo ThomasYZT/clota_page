@@ -2477,6 +2477,7 @@ export default {
     "picUploadLimit" : "Image limit: 1000*600 pixels, size less than 1M, only supports jpg/png/jpeg format",
     "cardTitle" : "Membership card title",
     "onlyInputChineseLetterNum" : "Can only enter chinese, letters or numbers",
+    'onlyInputLetterNum' : 'Can only enter letters or numbers',
     "clota-adminSettingError" : "Operational background system WeChat public account configuration error",
     "wechatError" : "Wechat service request error",
     "saveWxCardInfoFailure" : "Failed to save the wechat card card face information",
