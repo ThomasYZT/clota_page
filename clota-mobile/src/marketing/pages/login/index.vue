@@ -17,7 +17,7 @@
                          class="c-input"
                          text-align="right"
                          label-width="150px"
-                         :placeholder="$t('pleaseInputYourPhoneNumber')" >
+                         :placeholder="$t('pleaseInputMsg')" >
                 </x-input>
                 <x-input :title="$t('loginPass')"
                          ref="password"
