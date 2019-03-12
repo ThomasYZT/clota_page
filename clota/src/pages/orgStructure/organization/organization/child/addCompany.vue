@@ -41,15 +41,15 @@
                     <Input v-model.trim="formData.mail" :placeholder="$t('emailtip')" style="width: 280px"/>
                 </FormItem>
                 <!--短信服务商-->
-                <FormItem :label="$t('smsProvider')" prop="smsProvider">
-                    <Select v-model.trim="formData.smsProvider" style="width:280px">
-                        <Option v-for="item in smsProviderList"
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.provider }}
-                        </Option>
-                    </Select>
-                </FormItem>
+                <!--<FormItem :label="$t('smsProvider')" prop="smsProvider">-->
+                    <!--<Select v-model.trim="formData.smsProvider" style="width:280px">-->
+                        <!--<Option v-for="item in smsProviderList"-->
+                                <!--:value="item.id"-->
+                                <!--:key="item.id">-->
+                            <!--{{ item.provider }}-->
+                        <!--</Option>-->
+                    <!--</Select>-->
+                <!--</FormItem>-->
                 <!--联系人-->
                 <FormItem :label="$t('person')" prop="person">
                     <Input v-model.trim="formData.person" style="width: 280px"/>
