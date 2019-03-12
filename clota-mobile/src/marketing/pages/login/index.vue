@@ -33,7 +33,6 @@
                          v-if="showValidateCode"
                          v-model="formData.code"
                          class="c-input"
-                         type="password"
                          text-align="right"
                          label-width="150px"
                          :placeholder="$t('inputField',{ field : $t('validCode') })">
