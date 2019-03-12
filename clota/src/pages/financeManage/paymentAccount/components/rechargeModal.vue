@@ -144,7 +144,7 @@
                         { validator : validateMethod.validateMoney, trigger : 'blur' },
                     ],
                     payType : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('payType') }), trigger : 'blur' },
+                        { required : true, message : this.$t('selectField', { msg : this.$t('payType') }), trigger : 'blur' },
                     ]
                 },
                 //模态框标题
