@@ -355,12 +355,10 @@
                         line-height: 20px;
                     }
                     .cover {
-                        background-color: #EF4747;
-                        opacity: 0.5;
+                        background-color: rgba(#EF4747,0.5);
                     }
                     .rotation {
-                        background-color: #2F70DF;
-                        opacity: 0.5;
+                        background-color: rgba(#2F70DF,0.5);
                     }
                 }
             }

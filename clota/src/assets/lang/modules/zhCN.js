@@ -2643,4 +2643,11 @@ export default {
     'useMemberCodeAndPassword' : '消费时需要密码验证和付款码',
     'verifySucNum' : '核销成功串码',
     'verifyFailNum' : '核销失败串码',
+    'confirmStopAccount' : '确认停用{accountName}收款账户？',
+    'accountNotInUsing' : '{accountName}收款账户已停用',
+    'accountInUsing' : '{accountName}收款账户已启用',
+    'accountStopFailed' : '{accountName}收款账户停用失败',
+    'accountStartFailed' : '{accountName}收款账户启用失败',
+    'pointClearRuleTip' : '积分清除规则：积分将逐月过期，过期日为每个自然月月底。如：持卡人在2018年7月1日至7月31日获得的积分将在2020年7月31日过期；以此类推，2018 年4月、5月、6月……产生的积分，将在2020 年4 月月底、5月月底、6月月底……过期。',
+    'newCardPointDonateSetting' : '新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。'
 };

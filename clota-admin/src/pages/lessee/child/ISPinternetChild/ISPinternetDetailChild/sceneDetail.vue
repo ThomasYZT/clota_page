@@ -237,6 +237,7 @@
         </Form>
         <!--在线收款账户-->
         <online-receipt :receipt-account-info="sceneDetail"
+                        :active-node="activeNode"
                         :is-scenic="true"
                         @fresh-org-data="getSceneDetail">
         </online-receipt>

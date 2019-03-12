@@ -3,7 +3,7 @@
     作者：杨泽涛
 -->
 <template>
-    <div class="login">
+    <div class="login" v-if="showPage">
         <!-- 手机号码 -->
         <x-input class="c-input"
                  :title="$t('mobile')"
@@ -35,7 +35,6 @@
                 <span @click="activateCard">{{$t('activateMemberCard')}}</span>
             </p>
             <p class="register-entry" v-if="hasRegister">
-                <!-- 注册入口暂时屏蔽 -->
                 <span @click="toRegister()">{{$t('register')}}</span>
             </p>
         </div>
@@ -44,10 +43,21 @@
                   @click.native="login()">
             {{$t('login')}}
         </x-button>
-        <!-- 购买会员卡 -->
-        <div class="entry-wrapper">
-            <span @click="buyMemberCard">{{$t('buyMemberCard')}}</span>
-        </div>
+        <!-- 购买会员卡暂时去掉 -->
+        <!--<div class="entry-wrapper">-->
+            <!--<span @click="buyMemberCard">{{$t('buyMemberCard')}}</span>-->
+        <!--</div>-->
+
+        <!--引导注册提示框-->
+        <confirm v-model="confirmShow"
+                 class="confirm-modal-wrap"
+                 v-transfer-dom
+                 :title="$t('notice')"
+                 :confirm-text="$t('toRegister')"
+                 :cancel-text="$t('cancel')"
+                 @on-confirm="toRegister">
+            <p style="text-align:center;">{{ $t('mobileNotExistToRegister') }}</p>
+        </confirm>
     </div>
 </template>
 
@@ -79,7 +89,11 @@
                 //是否有注册入口
                 hasRegister : false,
                 //是否显示
-                showActiveCardBtn : false
+                showActiveCardBtn : false,
+                //是否显示页面
+                showPage : false,
+                //引导注册确认框是否显示
+                confirmShow : false
             };
         },
         computed : {
@@ -112,15 +126,16 @@
                             companyCode : this.companyCode
                         }).then((res) => {
                             if (!res.success) {
-                                if (res.message && res.message === 'M045') {
-                                    this.$vux.toast.show({
-                                        text : this.$t(res.message),
-                                        type : 'cancel',
-                                    });
-                                    this.$router.push({
-                                        name : 'mobileRegister'
-                                    });
-                                } else if (res.message && (res.message === 'M049' || res.message === 'M050' || res.message === 'M051')) {
+                                if (res.message && res.message === 'M049') {
+                                    if (this.hasRegister) {
+                                        this.confirmShow = true;
+                                    } else {
+                                        this.$vux.toast.show({
+                                            text : this.$t('mobileNotExist'),
+                                            type : 'cancel',
+                                        });
+                                    }
+                                } else if (res.message && (res.message === 'M050' || res.message === 'M051')) {
                                     this.$vux.toast.show({
                                         text : this.$t(res.message),
                                         type : 'cancel',
@@ -224,7 +239,10 @@
             getparms () {
                 let queryParams = this.getUrlString(location.href);
                 if (queryParams && queryParams.code) {
+                    this.showPage = false;
                     this.getOAuth2UserInfo(queryParams.code);
+                } else {
+                    this.showPage = true;
                 }
                 if (queryParams && queryParams.openId) {
                     this.openId = queryParams.openId;
@@ -247,10 +265,11 @@
                     if (res.success) {
                         this.dataToLogin(res);
                     } else {
+                        this.showPage = true;
                         //错误信息为空，表示获取到了用户信息
                         if (!res.errcode) {
                             this.wxUserInfo = res.data ? res.data : {};
-                            //存储token信息
+                            //存储微信用户信息
                             localStorage.setItem('wxUserInfo', JSON.stringify(this.wxUserInfo));
                         } else {
                             this.wxUserInfo = {};
@@ -293,6 +312,7 @@
              * 跳到注册界面
              */
             toRegister () {
+                this.confirmShow = false;
                 this.$router.replace({
                     name : 'mobileRegister'
                 });
@@ -329,11 +349,7 @@
                     companyCode : this.companyCode,
                 }).then((res) => {
                     if (res.success) {
-                        if (res.data) {
-                            this.hasRegister = true;
-                        } else {
-                            this.hasRegister = false;
-                        }
+                        this.hasRegister = !!res.data;
                     } else {
                         this.hasRegister = false;
                     }

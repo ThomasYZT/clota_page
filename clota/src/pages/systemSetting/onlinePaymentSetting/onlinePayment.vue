@@ -23,7 +23,6 @@
                     </div>
                     <div class="payment-list">
                         <div class="payment-name" v-w-title="item.paymentName">
-                            <!--{{payTypeName[item.accountType]}}-->
                             {{$t('collectionAccountInformation')}}
                         </div>
                         <div class="payment-item">
@@ -54,7 +53,7 @@
                                     <span>{{item.appID | contentFilter}}</span>
                                 </div>
                                 <div class="payment-item">
-                                    <span>{{$t('colonSetting', { key : 'publicKey' })}}</span>
+                                    <span>{{$t('colonSetting', { key : $t('publicKey') })}}</span>
                                     <span>{{item.publicKey | contentFilter}}</span>
                                 </div>
                             </template>
@@ -64,7 +63,7 @@
                                     <span>{{item.officialAccountsAppID | contentFilter}}</span>
                                 </div>
                                 <div class="payment-item">
-                                    <span>{{$t('colonSetting', { key : 'merchantNum' })}}</span>
+                                    <span>{{$t('colonSetting', { key : $t('merchantNum') })}}</span>
                                     <span>{{item.merchantNum | contentFilter}}</span>
                                 </div>
                             </template>
@@ -96,66 +95,38 @@
                         <!--</div>-->
                     </div>
                 </div>
-                <!--<ul class="account-operate">-->
-                    <!--<li class="list" @click="addPaymentAccount('modifyAccount',item)">{{$t('edit')}}</li>&lt;!&ndash;编辑&ndash;&gt;-->
-                    <!--<li class="list" @click="delPaymentAccount(item)">{{$t('del')}}</li>&lt;!&ndash;删除&ndash;&gt;-->
-                <!--</ul>-->
             </div>
         </template>
 
         <div class="no-data-wrap" v-if="collectionAccList.length < 1">
-
             <!--无数据组件-->
             <no-data ></no-data>
-            <!--<Button type="primary"-->
-                    <!--class="btn-add-new"-->
-                    <!--@click="addPaymentAccount('addAccount')">+ {{$t("addAccount")}}</Button>-->
         </div>
-
-        <!--增加/修改账户Modal-->
-        <new-account-modal ref="addAccount"
-                           :modal-title="modalTitle"
-                           :hasPaytypeList="hasPaytypeList"
-                           @updata-list="queryOnlineAccount">
-        </new-account-modal>
-
-        <!--删除模态框-->
-        <del-modal ref="delModal">
-            <span class="content-text">{{$t('isDoing')}}{{$t('delete')}}：<span class="yellow-label">{{selectedPayType}}</span></span>
-            <span><span class="red-label">{{$t('irreversible')}}</span>，{{$t('continueYesRoNo')}}？</span>
-        </del-modal>
-
-        <!-- 停用/启用在线收款账户 -->
-        <operateAccountModal ref="operateAccountModal" @updateAccount="queryOnlineAccount"></operateAccountModal>
+        <!--停用账户提示框-->
+        <confirm-modal ref="confirmMoal">
+            {{$t(`confirmStopAccount`,{ accountName : $t('payType.' + operateAccountInfo.accountType) })}}
+        </confirm-modal>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import noData from '@/components/noDataTip/noData-tip.vue';
-    import newAccountModal from './components/newAccountModal.vue';
-    import delAccountModal from './components/delAccountModal.vue';
-
-    import delModal from '@/components/delModal';
     import ajax from '@/api/index';
-    import operateAccountModal from './components/operateAccountModal';
     import { mapGetters } from 'vuex';
+    import confirmModal from '@/components/noticeModal/index.vue';
 
     export default {
-        components : { noData, newAccountModal, delAccountModal, delModal, operateAccountModal },
+        components : {
+            noData,
+            confirmModal
+        },
         props : {},
         data () {
             return {
                 collectionAccList : [],
-
-                // 增加/修改账户modalTitle
-                modalTitle : '',
-                //当前选中删除的账户类型
-                selectedPayType : '',
-                // payTypeName: {
-                //     'alipay': '支付宝支付账户',
-                //     'weixin': '微信支付账户'
-                // },
                 //当前用户已拥有的账户类型list
-                hasPaytypeList : []
+                hasPaytypeList : [],
+                //当前操作的账户信息
+                operateAccountInfo : {}
             };
         },
         computed : {
@@ -170,41 +141,7 @@
         created () {
             this.queryOnlineAccount();
         },
-        mounted () {
-        },
-        watch : {},
         methods : {
-            /**
-             * 增加/修改账户
-             * @param operate - 增加、修改的双语键值
-             */
-            addPaymentAccount (operate, item) {
-                let index = this.collectionAccList.length;
-
-                this.modalTitle = operate;
-                this.$refs.addAccount.show({ item, index });
-            },
-            /**
-             * 删除账户
-             */
-            delPaymentAccount (item) {
-                this.selectedPayType = item.paymentName;
-                this.$refs.delModal.show({
-                    title : this.$t('deleteAccount'),
-                    confirmCallback : () => {
-                        ajax.post('deleteOnlineAccount', {
-                            id : item.id
-                        }).then((res) => {
-                            if (res.success) {
-                                this.$Message.success(this.$t('success') + this.$t('delete'));
-                                this.queryOnlineAccount();
-                            } else {
-                                this.$Message.error(res.message || this.$t('fail'));
-                            }
-                        });
-                    }
-                });
-            },
             /**
              * 获取在线账户支付列表
              */
@@ -229,10 +166,59 @@
             },
             /**
              * 改变收款账户状态
-             * @param {*} item
+             * @param {Object} item 账户信息
              */
             operateSatus (item) {
-                this.$refs.operateAccountModal.toggle(item);
+                this.operateAccountInfo = item;
+                if (item.useStatus === 'not_enabled') {
+                    this.updateAccountStatus(item);
+                } else {
+                    this.$refs.confirmMoal.show({
+                        title : this.$t('notice'),
+                        confirmCallback : () => {
+                            this.$refs.confirmMoal.hide();
+                            this.updateAccountStatus(item);
+                        }
+                    });
+                }
+            },
+            /**
+             * 修改账户启用状态
+             * @param{String} accountInfo 账户信息
+             */
+            updateAccountStatus (accountInfo) {
+                ajax.post('updateOnlineAccount', {
+                    id : accountInfo.id,
+                    useStatus : accountInfo.useStatus === 'enabled' ? 'not_enabled' : 'enabled',
+                    accountType : accountInfo.accountType,
+                }).then(res => {
+                    if (res.success) {
+                        if (accountInfo.useStatus === 'enabled') {
+                            this.$Message.success({
+                                content : this.$t('accountNotInUsing',{ accountName : this.$t('payType.' + accountInfo.accountType) }),
+                                duration : 5
+                            });
+                        } else {
+                            this.$Message.success({
+                                content : this.$t('accountInUsing',{ accountName : this.$t('payType.' + accountInfo.accountType) }),
+                                duration : 5
+                            });
+                        }
+                        this.queryOnlineAccount();
+                    } else {
+                        if (accountInfo.useStatus === 'enabled') {
+                            this.$Message.error({
+                                content : this.$t('accountStopFailed',{ accountName : this.$t('payType.' + accountInfo.accountType) }),
+                                duration : 5
+                            });
+                        } else {
+                            this.$Message.error({
+                                content : this.$t('accountStartFailed',{ accountName : this.$t('payType.' + accountInfo.accountType) }),
+                                duration : 5
+                            });
+                        }
+                    }
+                });
             }
         }
     };
@@ -370,7 +356,8 @@
 
         .no-data-wrap {
             position: relative;
-            top: 160px;
+            height: calc(100% - 80px);
+
             .btn-add-new {
                 position: absolute;
                 top: 0;
