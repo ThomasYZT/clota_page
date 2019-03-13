@@ -32,7 +32,16 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom';
     import { exportCouponRecordHead } from '../couponRecordConfig';
+    import ajax from '@/api/index';
     export default {
+        props : {
+            dateTime : {
+                type : Array,
+                default () {
+                    return [new Date(), new Date().addDays(-7)]
+                }
+            }
+        },
         components : {
             tableCom
         },
@@ -52,7 +61,28 @@
         },
         methods : {
             queryList () {
-
+                ajax.post('queryCouponsLogs', {
+                    optType : 'download',
+                    startTime : this.dateTime[0].format('yyyy-MM-dd'),
+                    endTime : this.dateTime[1].format('yyyy-MM-dd'),
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize,
+                }).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                })
+            }
+        },
+        watch : {
+            dateTime : {
+                handler (newVal) {
+                    this.queryList();
+                },
             }
         }
     };

@@ -29,18 +29,18 @@
             </div>
             <div class="right-tool">
                 <span class="label-title">{{$t('exportTime')}}</span>
-                <DatePicker v-modal="dateTime"
+                <DatePicker v-model="dateTime"
                             type="daterange"
                             split-panels
-                            placeholder="Select date"
+                            :placeholder="$t('selectField', { msg : '' })"
                             style="width: 200px"></DatePicker>
             </div>
         </div>
 
         <div class="table-wrapper">
-            <exportCouponRecordTable v-if="type === 'export'"></exportCouponRecordTable>
-            <generateLinkRecordTable v-else-if="type === 'link'"></generateLinkRecordTable>
-            <pushRecordTable v-else-if="type === 'push'"></pushRecordTable>
+            <exportCouponRecordTable :dateTime="dateTime" v-if="type === 'export'"></exportCouponRecordTable>
+            <generateLinkRecordTable :dateTime="dateTime" v-else-if="type === 'link'"></generateLinkRecordTable>
+            <pushRecordTable :dateTime="dateTime" v-else-if="type === 'push'"></pushRecordTable>
         </div>
     </div>
 </template>
@@ -73,7 +73,7 @@
                 //记录类型
                 type : '',
                 //日期范围
-                dateTime : [],
+                dateTime : [new Date(), new Date().addDays(-7)],
             };
         },
         methods : {
