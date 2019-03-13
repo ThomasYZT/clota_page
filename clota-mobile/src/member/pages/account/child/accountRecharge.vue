@@ -198,7 +198,7 @@
                     this.commonList = [];
                     if (res.success && res.data) {
                         for (let i = 0,j = res.data.length; i < j; i++) {
-                            if (res.data[i]['useStatus'] === 'not_enabled') return;
+                            if (res.data[i]['useStatus'] === 'not_enabled') continue;
                             if (res.data[i]['accountType'] === 'weixin') {
                                 this.commonList.unshift({
                                     icon : require('../../../../assets/images/icon-wx-pay.svg'),
