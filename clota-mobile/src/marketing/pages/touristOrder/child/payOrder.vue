@@ -103,6 +103,7 @@
                         this.payTypeList = [];
                         if (res.data && res.data.length > 0) {
                             for (let i = 0,j = res.data.length; i < j; i++) {
+                                if (res.data[i]['useStatus'] === 'not_enabled') continue;
                                 if (res.data[i]['accountType'] === 'weixin') {
                                     this.payTypeList.unshift({
                                         icon : require('../../../../assets/images/icon-wx-pay.svg'),
