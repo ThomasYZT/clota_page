@@ -2697,4 +2697,9 @@ export default {
     'number' : '数字',
     'coupon.spread' : '传播型',
     'coupon.right' : '权益型',
+    'coupon.status.wait' : '未领取',
+    'coupon.status.occupy' : '已领取',
+    'coupon.status.used' : '已使用',
+
+    'M059' : '卡券不足'
 };

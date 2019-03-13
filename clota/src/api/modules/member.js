@@ -134,6 +134,18 @@ export default {
     'queryProduct' : '/product/queryProduct',
     //查询会员渠道，只包含自营渠道和ota
     'querySelfChannel' : '/member/channelSet/querySelfChannel',
+    //查看优惠券详细（查看券码）
+    'listCouponsDetai' : '/member/memberCoupon/listCouponsDetail',
+    //生成链接
+    'generateLinks' : '/member/memberCoupon/generateLinks',
+    //手动推送卡券
+    'manualPullCoupons' : '/memberCoupon/manualPullCoupons',
+    //导出券码
+    'downLoadCoupon' : '/member/memberCoupon/downLoadCoupon',
+    //会员优惠券-查看卡券日志
+    'queryCouponsLogs' : 'member/memberCoupon/queryCouponsLogs',
+    //会员优惠券-日志详情
+    'queryCouponsDetailByStatus' : '/member/memberCoupon/queryCouponsDetailByStatus',
 
     /***********************************初始化设置***********************************/
     //基础设置-会员基础设置-查询

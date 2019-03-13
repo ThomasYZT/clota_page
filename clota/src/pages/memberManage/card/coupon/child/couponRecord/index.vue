@@ -29,7 +29,8 @@
             </div>
             <div class="right-tool">
                 <span class="label-title">{{$t('exportTime')}}</span>
-                <DatePicker type="daterange"
+                <DatePicker v-modal="dateTime"
+                            type="daterange"
                             split-panels
                             placeholder="Select date"
                             style="width: 200px"></DatePicker>
@@ -70,7 +71,9 @@
                     }
                 ],
                 //记录类型
-                type : ''
+                type : '',
+                //日期范围
+                dateTime : [],
             };
         },
         methods : {

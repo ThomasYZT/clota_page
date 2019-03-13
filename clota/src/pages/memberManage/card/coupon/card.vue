@@ -142,7 +142,7 @@
                             <!-- 作废 -->
                             <li v-if="!isObsolote(scope.row)" :class="{disabled : isSpreadExpired(scope.row) }" @click="obsoloteCoupon(scope.row)" class="red-label" >{{$t('obsolete')}}</li>
                             <!-- 重启 -->
-                            <li v-else :class="{disabled : isSpreadExpired(scope.row) }" @click="reloadCoupon(scope.row)">{{$t('restart')}}</li>
+                            <li v-else class="yellow-btn" :class="{disabled : isSpreadExpired(scope.row) }" @click="reloadCoupon(scope.row)">{{$t('restart')}}</li>
                         </template>
                         <template v-else>
                             <!-- 手动推送 可以无限推送 -->
@@ -167,7 +167,7 @@
         <!-- 生成链接模态框 -->
         <generateLinkModal ref="generateLinkModal"></generateLinkModal>
         <!-- 作废模态框 -->
-        <obsoleteModal ref="obsoleteModal"></obsoleteModal>
+        <obsoleteModal ref="obsoleteModal" @updateList="queryList"></obsoleteModal>
         <!-- 手动推送模态框 -->
         <manualPushModal ref="manualPushModal"></manualPushModal>
         <!-- 优惠券领取H5页面背景设置模态框 -->
@@ -361,34 +361,22 @@
             obsoloteCoupon ( rowData ) {
                 if (this.isSpreadExpired(rowData)) return false;
                 this.$refs.obsoleteModal.show(rowData);
-                // let params = this.getUpdateCouponParams(data);
-                // ajax.post('updateCoupon',defaultsDeep({
-                //     status : 'invalid'
-                // },params)).then(res => {
-                //     if (res.success) {
-                //         this.$Message.success(this.$t('successTip',{ tip : this.$t('obsolete') }));
-                //         this.queryList();
-                //     } else {
-                //         this.$Message.error(this.$t('failureTip',{ tip : this.$t('obsolete') }));
-                //     }
-                // });
             },
 
             /**
              * 重新启用券
-             * @param data 券数据
+             * @param rowData 券数据
              */
-            reloadCoupon (data) {
-                if (this.isSpreadExpired(data)) return false;
-                let params = this.getUpdateCouponParams(data);
-                ajax.post('updateCoupon',defaultsDeep({
-                    status : 'valid'
-                },params)).then(res => {
+            reloadCoupon (rowData) {
+                ajax.post('updateCoupon', {
+                    id : rowData.id,
+                    status : 'valid',
+                }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('commissioned') }));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('启用') }));
                         this.queryList();
                     } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('commissioned') }));
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('启用') }));
                     }
                 });
             },
@@ -609,6 +597,10 @@
 
         .operate-list{
             @include table_operate();
+        }
+
+        .yellow-btn {
+            color: $color_yellow !important;
         }
     }
 

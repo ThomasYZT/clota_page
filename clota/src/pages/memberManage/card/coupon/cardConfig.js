@@ -44,3 +44,61 @@ export const columnData = [
         enWidth : 400,
     }
 ];
+
+//代金券详情表头
+export const viewCodeCashCouponHead = [
+    {
+        title : '金额',
+        minWidth : 150,
+        field : 'nominalValue',
+        type : 'money'
+    },
+    {
+        title : '券码',
+        minWidth : 150,
+        field : 'couponCode',
+    },
+    {
+        title : '状态',
+        minWidth : 150,
+        field : 'status',
+    }
+];
+
+//兑换券详情表头
+export const viewCodeExchangeCouponHead = [
+    {
+        title : '商品信息',
+        minWidth : 150,
+        field : 'remark',
+    },
+    {
+        title : '券码',
+        minWidth : 150,
+        field : 'couponCode',
+    },
+    {
+        title : '状态',
+        minWidth : 150,
+        field : 'status',
+    }
+];
+
+//折扣券详情表头
+export const viewCodeDiscountCouponHead = [
+    {
+        title : '折扣',
+        minWidth : 150,
+        field : 'nominalValue',
+    },
+    {
+        title : '券码',
+        minWidth : 150,
+        field : 'couponCode',
+    },
+    {
+        title : '状态',
+        minWidth : 150,
+        field : 'status',
+    }
+];
