@@ -4,8 +4,6 @@ import axios from 'axios';
 import config from '@/config/index.js';
 
 import { ajaxMethods } from '../../api/index.js';
-import store from "../../store";
-import router from "../../router";
 
 const instance = axios.create({
     baseURL : config.HOST,
@@ -19,22 +17,6 @@ const instance = axios.create({
     }
 });
 
-// 响应拦截器校验token，在每一个请求配置之后执行
-instance.interceptors.response.use(function (response) {
-    if (response.data.message === '请先登录') {
-        localStorage.removeItem('token');
-        router.push({
-            name : 'mobileLogin',
-        },() => {
-            store.commit('marketUpdateUserInfo');
-        });
-    }
-    return response;
-}, function (error) {
-    // Do something with response error
-    return Promise.reject(error);
-});
-
 //通过axios发送请求
 export default {
     /**
@@ -45,5 +27,6 @@ export default {
     },
     api : api,
     instance : instance,
-    ...ajaxMethods
+    //不需要token的post请求
+    postWithoutToken : ajaxMethods['postWithoutToken']
 };

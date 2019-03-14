@@ -249,7 +249,7 @@ export const memberActions = {
                     }
                 }).catch(() => {
                     reject();
-                })
+                });
             })
         ]);
     },
