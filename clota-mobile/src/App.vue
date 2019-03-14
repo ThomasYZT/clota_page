@@ -165,7 +165,8 @@
                                     'uploadImage',
                                     'addCard',
                                     'closeWindow',
-                                    'getLocation'
+                                    'getLocation',
+                                    'chooseWXPay'
                                 ]
                             });
                             this.$wechat.error(() => {

@@ -203,6 +203,7 @@
              * @param{String} qrCode 扫码枪扫码结果
              */
             createMember (qrCode) {
+                let paymentChannel = this.payAccountList.find(item => item.value === this.formData.payType);
                 this.showConfirmModal = false;
                 ajax.post('reissueEntityCard',{
                     faceNum : this.formData.faceNum,
@@ -211,7 +212,7 @@
                     levelId : this.memberInfo.levelId,
                     channelType : this.formData.payType,
                     qrCode : qrCode,
-                    paymentChannel : this.payAccountList.find(item => item.value === this.formData.payType)['payType']
+                    paymentChannel : paymentChannel ? paymentChannel['payType'] : ''
                 }).then(res => {
                     if (res.success) {
                         this.$refs.payResultModal.setStage('success');

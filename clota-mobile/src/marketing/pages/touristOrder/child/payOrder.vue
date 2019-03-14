@@ -65,9 +65,9 @@
              */
             recharge () {
                 if (this.isWeixin && this.payType === 'wx') {
-                    let paymentChannel = this.payTypeList.find(item => item.key === 'ali')['payType'];
+                    let paymentChannel = this.payTypeList.find(item => item.key === this.payType)['payType'];
                     if (paymentChannel === 'zhilian') {
-                        this.getPayPageForMobile('market_getPayPageForMobileNoLogin');
+                        this.getWxOpenUrl();
                     } else {
                         //在微信中调用微信支付--银石支付
                         this.getPayPageForOfficialAccount();
@@ -162,7 +162,7 @@
              */
             getPayPageForOfficialAccount () {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
-                let paymentChannel = this.payTypeList.find(item => item.key === 'ali')['payType'];
+                let paymentChannel = this.payTypeList.find(item => item.key === this.payType)['payType'];
                 ajax.postWithoutToken('market_getPayPageForOfficialAccount', {
                     bizScene : 'order',
                     bizType : 'pay_order',
@@ -226,7 +226,7 @@
              */
             getPayPageForMobile (urlKey) {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
-                let paymentChannel = this.payTypeList.find(item => item.key === 'ali')['payType'];
+                let paymentChannel = this.payTypeList.find(item => item.key === this.payType)['payType'];
                 ajax.postWithoutToken(urlKey, {
                     bizScene : 'order',
                     bizType : 'pay_order',
@@ -244,7 +244,33 @@
                                 if (res.data.formContent) {
                                     try {
                                         let formContent = JSON.parse(res.data.formContent);
-                                        location.href = formContent.mwebUrl;
+                                        if (this.isWeixin) {
+                                            this.$wechat.chooseWXPay({
+                                                timestamp : formContent.timeStamp,
+                                                nonceStr : formContent.nonceStr, // 支付签名随机串，不长于 32 位
+                                                package : formContent.packageValue, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                                                signType : formContent.signTyp, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                                paySign : formContent.paySign, // 支付签名
+                                                success : () => {
+                                                      this.$router.replace({
+                                                          name : 'wxOrAlidirectPay',
+                                                          query : {
+                                                              wxJsdk : true
+                                                          }
+                                                      });
+                                                },
+                                                fail : () => {
+                                                    this.$router.replace({
+                                                        name : 'wxOrAlidirectPay',
+                                                        query : {
+                                                            wxJsdk : false
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            location.href = formContent.mwebUrl;
+                                        }
                                     } catch (err) {
                                         this.$vux.toast.text(this.$t('payAbnormal'));
                                     }
@@ -316,6 +342,19 @@
                     }
                 });
             },
+            /**
+             * 获取微信支付授权地址
+             */
+            getWxOpenUrl () {
+                const { href } = this.$router.resolve({
+                    name : 'wxAccountPay',
+                });
+                ajax.post('market_generateWxAuthUrl',{
+                    redirectUrl : location.origin + href
+                }).then(res => {
+                    console.log(res);
+                });
+            }
         },
         created () {
             this.queryAllPayType();

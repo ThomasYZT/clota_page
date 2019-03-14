@@ -89,6 +89,12 @@
                         this.timer = setInterval(() => {
                             this.queryConsumeUpdateBiz();
                         },1000);
+                    } else if (toRoute && toRoute.query && 'wxJsdk' in toRoute.query) { //在微信里面使用微信支付
+                        if (toRoute.query['wxJsdk'] === 'true') {
+                            this.paySuccess = true;
+                        } else {
+                            this.paySuccess = false;
+                        }
                     }
                 } else {
                     //跳转到支付页面
