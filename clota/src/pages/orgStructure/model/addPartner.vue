@@ -4,6 +4,7 @@
         class="addPartner"
         class-name="vertical-center-modal"
         :mask-closable="false"
+        @on-visible-change="visibleChange"
         :width="lang === 'zh-CN' ? 560 : 700"
         @on-cancel="hide">
         <!--自定义页头-->
@@ -36,6 +37,15 @@
                             @on-change="changeDateRange">
                 </DatePicker>
             </Form-item>
+            <!--额外的配置参数-->
+            <template v-for="(item,index) in addPartner.otherParams">
+                <Form-item :label="$t(item.key)"
+                           :key="index"
+                           :prop="item.key"
+                           :rules="{ required : true, validator : validateOtherParamsData,trigger : 'blur', _index :index ,_key : item.key }">
+                    <Input v-model="item.value" :placeholder="$t('inputField',{ field : '' })" style="width: 100%"/>
+                </Form-item>
+            </template>
 
             <Form-item :label="$t('saleChannelsGroup')" prop="saleGroupId">
                 <Select v-model="addPartner.saleGroupId"
@@ -49,7 +59,7 @@
             </Form-item>
 
             <Form-item :label="$t('remark') + '：'" prop="description"><!--备注-->
-                <Input v-model="addPartner.description" type="textarea" :rows="4" :placeholder="$t('inputField', {field: ''})"/>
+                <Input v-model.trim="addPartner.description" type="textarea" :rows="4" :placeholder="$t('inputField', {field: ''})"/>
             </Form-item>
 
             <Form-item :label="$t('ifStartProtocol')" prop="status">
@@ -94,6 +104,8 @@
                     channelName : '',
                     description : '',
                     status : 'invalid',
+                    //其它自定义参数
+                    otherParams : []
                 },
 
                 // 表单校验
@@ -150,6 +162,19 @@
                 if ( data.item ) {
                     this.addPartner = defaultsDeep({}, pick(data.item, [...Object.keys(this.addPartner), 'id']), this.addPartner);
                     this.protoDate = [data.item.startDate, data.item.endDate];
+                    if (data.item.otaParamJson) {
+                        try {
+                            let otaParamJson = JSON.parse(data.item.otaParamJson);
+                            for (let item in otaParamJson) {
+                                this.addPartner.otherParams.push({
+                                    key : item,
+                                    value : otaParamJson[item]
+                                });
+                            }
+                        } catch (err) {
+                            console.err(err);
+                        }
+                    }
                 }
                 this.type = data.type;
 
@@ -202,6 +227,7 @@
             // 确定新增/修改合作伙伴
             confirmAddPartner () {
                 let partnerObj = {};
+                let otherData = this.getOtherData();
                 if (this.type === 'add') {
                     partnerObj.apiKey = 'addPartner';
                     partnerObj.successTip = this.$t('successTip',{ tip : this.$t('addPartner') });
@@ -214,7 +240,7 @@
                 this.addPartner.startDate = new Date(this.addPartner.startDate).format('yyyy-MM-dd');
                 this.addPartner.endDate = new Date(this.addPartner.endDate).format('yyyy-MM-dd');
 
-                ajax.post(partnerObj.apiKey, this.addPartner).then(res => {
+                ajax.post(partnerObj.apiKey, Object.assign(otherData,this.addPartner)).then(res => {
                     if (res.success) {
                         // 新增成功后，根据partnerId 找到匹配的合作伙伴数据，并将合作伙伴名称显示在提示信息内容中
                         let partnerName = this.partners.find((item) => {
@@ -230,6 +256,19 @@
                     }
                 });
             },
+            /**
+             * 获取自定义参数的值
+             */
+            getOtherData () {
+                let params = this.addPartner.otherParams;
+                let result = {};
+                for (let i = 0,j = params.length; i < j; i++) {
+                    result[params[i]['key']] = params[i]['value'];
+                }
+                return {
+                    otaParamJson : JSON.stringify(result)
+                };
+            },
             // 改变合作伙伴选择的处理
             handlePartnerChanged (selected) {
                 if (selected) {
@@ -238,6 +277,36 @@
                     }).orgName;
                 }
             },
+            /**
+             * 模态框状态改变
+             * @param{String} status 当前模态框状态
+             */
+            visibleChange (status) {
+                if (status === false) {
+                    for (let i = 0,j = this.addPartner.otherParams.length; i < j; i++) {
+                        let otherParams = this.addPartner.otherParams[i];
+                        delete this.ruleValidate[otherParams['key']];
+                    }
+                    this.addPartner.otherParams = [];
+                }
+            },
+            /**
+             * 校验自定义参数
+             * @param rule
+             * @param value
+             * @param callback
+             */
+            validateOtherParamsData (rule,value,callback) {
+                if (this.addPartner.otherParams[rule._index]['value']) {
+                    if (this.addPartner.otherParams[rule._index]['value'].length > 300) {
+                        callback(this.$t('errorMaxLength',{ field : this.$t(rule._key) ,length : 300 }));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t(rule._key) }));
+                }
+            }
 
         }
     };
