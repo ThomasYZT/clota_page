@@ -182,6 +182,11 @@
             tableCom
         },
         data () {
+            if (couponTypeList.findIndex(item => {
+                return item.value === 'all';
+            }) < 0) {
+                couponTypeList.unshift({ label : 'all', value : 'all' })
+            }
             return {
                 //会员卡使用场景下拉列表数据
                 cardScenarioList : cardScenario,
@@ -190,9 +195,9 @@
                 //查询过滤参数
                 filterParam : {
                     //应用场景
-                    scene : '',
+                    scene : 'all',
                     //卡券类别
-                    couponType : '',
+                    couponType : 'all',
                     //关键字
                     keyword : '',
                 },
