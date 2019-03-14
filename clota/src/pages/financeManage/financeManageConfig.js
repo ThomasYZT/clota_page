@@ -91,8 +91,8 @@ export const paymentHead = [
     },
     {
         title : 'operate', // 操作
-        minWidth : 80,
-        enWidth : 130,
+        minWidth : 120,
+        enWidth : 120,
         field : ''
     },
 ];
