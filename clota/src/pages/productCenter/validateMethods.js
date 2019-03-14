@@ -156,9 +156,9 @@ export const validateProductEffSet = (rule,value,callback) => {
  */
 export const validateOnlyCE = (rule, value, callback) => {
     let reg = /^[0-9a-zA_Z]+$/
-    if (reg.test(value)) {
-        callback();
-    } else {
+    if (value && !reg.test(value)) {
         callback(i18n.t('onlyInputLetterNum'));
+    } else {
+        callback();
     }
 }
