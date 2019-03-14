@@ -193,24 +193,6 @@
                 }).finally(() => {
                     this.loadingMore = false;
                 });
-            },
-            /**
-             * 注册监听页面缩放事件
-             */
-            registerWindowResize () {
-                document.querySelector('.member-manage-home').addEventListener('scroll', this.closeTip);
-            },
-            /**
-             * 解除监听页面缩放事件
-             */
-            unregisterWindowResize () {
-                document.querySelector('.member-manage-home').removeEventListener('scroll', this.closeTip);
-            },
-            /**
-             * 关闭提示
-             */
-            closeTip () {
-                this.addDetailShow = false;
             }
         },
         created () {
@@ -220,12 +202,6 @@
             this.getYesterdayIncreaseMemberCount();
             //获取本月增长数量
             this.getMonthIncreaseMemberCount();
-        },
-        mounted () {
-            this.registerWindowResize();
-        },
-        beforeDestroy () {
-            this.unregisterWindowResize();
         }
     };
 </script>
