@@ -250,13 +250,6 @@
             }
         },
         computed : {
-            //账户可用余额，订单总金额
-            accountInfo () {
-                return {
-                    validatMoney : this.validatMoney,
-                    totalPrice : this.productList.reduce((price,item) => price += item.settlePrice * item.num,0)
-                };
-            },
             ...mapGetters({
                 manageOrgs : 'manageOrgs'
             }),
