@@ -240,72 +240,33 @@
                     this.payFormData = {};
                     if (res.success && res.data) {
                         if (paymentChannel === 'zhilian') {
-                            if (this.payType === 'wx') {//直连微信支付
-                                if (res.data.formContent) {
-                                    try {
-                                        let formContent = JSON.parse(res.data.formContent);
-                                        if (this.isWeixin) {
-                                            this.$wechat.chooseWXPay({
-                                                timestamp : formContent.timeStamp,
-                                                nonceStr : formContent.nonceStr, // 支付签名随机串，不长于 32 位
-                                                package : formContent.packageValue, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-                                                signType : formContent.signTyp, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                                                paySign : formContent.paySign, // 支付签名
-                                                success : () => {
-                                                      this.$router.replace({
-                                                          name : 'wxOrAlidirectPay',
-                                                          query : {
-                                                              wxJsdk : true
-                                                          }
-                                                      });
-                                                },
-                                                fail : () => {
-                                                    this.$router.replace({
-                                                        name : 'wxOrAlidirectPay',
-                                                        query : {
-                                                            wxJsdk : false
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        } else {
-                                            location.href = formContent.mwebUrl;
-                                        }
-                                    } catch (err) {
-                                        this.$vux.toast.text(this.$t('payAbnormal'));
-                                    }
+                            if (this.isWeixin) {
+                                const { href } = this.$router.resolve({
+                                    name : 'wxOrAlidirectPay'
+                                });
+                                const divEle = document.createElement('div');
+                                let userType = '';
+                                divEle.innerHTML = res.data.formContent;
+                                this.$el.appendChild(divEle);
+                                const formEle = this.$el.querySelector('form[name=punchout_form]');
+                                let queryParam = formEle.getAttribute('action').split('?')[1];
+                                Array.prototype.slice.call(formEle.querySelectorAll("input[type=hidden]")).forEach(function (ele) {
+                                    queryParam += '&' + ele.name + "=" + encodeURIComponent(ele.value);
+                                });
+                                if (this.$route.name === 'salesManCreateOrderToPay') {
+                                    userType = 'marketer';
                                 } else {
-                                    this.$vux.toast.text(this.$t('payAbnormal'));
+                                    userType = 'visitor';
                                 }
-                            } else {//直连支付宝支付
-                                if (this.isWeixin) {
-                                    const { href } = this.$router.resolve({
-                                        name : 'wxOrAlidirectPay'
-                                    });
-                                    const divEle = document.createElement('div');
-                                    let userType = '';
-                                    divEle.innerHTML = res.data.formContent;
-                                    this.$el.appendChild(divEle);
-                                    const formEle = this.$el.querySelector('form[name=punchout_form]');
-                                    let queryParam = formEle.getAttribute('action').split('?')[1];
-                                    Array.prototype.slice.call(formEle.querySelectorAll("input[type=hidden]")).forEach(function (ele) {
-                                        queryParam += '&' + ele.name + "=" + encodeURIComponent(ele.value);
-                                    });
-                                    if (this.$route.name === 'salesManCreateOrderToPay') {
-                                        userType = 'marketer';
-                                    } else {
-                                        userType = 'visitor';
+                                location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true&userType=' + userType;
+                            } else {
+                                this.$router.push({
+                                    name : 'wxOrAlidirectPay',
+                                    params : {
+                                        payType : this.payType,
+                                        formContent : res.data.formContent
                                     }
-                                    location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true&userType=' + userType;
-                                } else {
-                                    this.$router.push({
-                                        name : 'wxOrAlidirectPay',
-                                        params : {
-                                            payType : this.payType,
-                                            formContent : res.data.formContent
-                                        }
-                                    });
-                                }
+                                });
                             }
                         } else {
                             this.payFormData = res.data ? res.data : {};
@@ -346,13 +307,27 @@
              * 获取微信支付授权地址
              */
             getWxOpenUrl () {
+                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
                 const { href } = this.$router.resolve({
                     name : 'wxAccountPay',
+                    query : {
+                        bizScene : 'order',
+                        bizType : 'pay_order',
+                        channelType : 'weixin',
+                        txnAmt : this.totalAmount,
+                        orgId : this.marketOrgId,
+                        paymentChannel : 'zhilian',
+                    }
                 });
                 ajax.post('market_generateWxAuthUrl',{
-                    redirectUrl : location.origin + href
+                    redirectUrl : location.origin + href,
+                    orgId : this.marketOrgId,
                 }).then(res => {
-                    console.log(res);
+                    if (res.success && res.data) {
+                        window.location.href = res.data;
+                    } else {
+                        this.$vux.toast.text(this.$t('payAbnormal'));
+                    }
                 });
             }
         },
