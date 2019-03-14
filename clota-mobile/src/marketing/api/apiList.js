@@ -87,4 +87,8 @@ export default {
     'market_autoLogin' : '/market/marketUser/autoLogin',
     //微信直连支付
     'market_getPayPageForMobile' : '/external/pay/getPayPageForMobile',
+    //微信公众号支付
+    'market_getPayPageForOfficialAccountNoLogin' : '/external/pay/getPayPageForOfficialAccountNoLogin',
+    //获取微信授权地址
+    'market_generateWxAuthUrl' : '/external/wxPay/generateWxAuthUrl',
 };
