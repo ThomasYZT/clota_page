@@ -90,5 +90,7 @@ export default {
     //微信公众号支付
     'market_getPayPageForOfficialAccountNoLogin' : '/external/pay/getPayPageForOfficialAccountNoLogin',
     //获取微信授权地址
-    'market_generateWxAuthUrl' : '/external/wxPay/generateWxAuthUrl',
+    'market_generateWxAuthUrl' : '/external/pay/generateWxAuthUrl',
+    //获取微信openId
+    'market_getOpenid' : '/external/pay/getOpenid',
 };

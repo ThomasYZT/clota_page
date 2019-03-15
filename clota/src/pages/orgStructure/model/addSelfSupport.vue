@@ -15,18 +15,18 @@
                 <Input v-model="addChannel.channelName" :placeholder="$t('inputField', {field: ''})" />
             </Form-item>
             <!--自营渠道类型-->
-            <Form-item :label="$t('selfSaleChannelType')" prop="type">
-                <RadioGroup v-model="addChannel.type" >
-                    <Radio label="online" :disabled="addChannel.type === 'offline'"><span>{{$t('online')}}</span></Radio>
-                    <!--<Radio label="offline" style="margin-right: 0;"><span>{{$t('offline')}}</span></Radio>-->
-                </RadioGroup>
-                <!--<Tooltip placement="top" transfer>-->
-                    <!--<i class="iconfont icon-note"></i>-->
-                    <!--<div slot="content">-->
-                        <!--<div class="tip-trade">{{$t('createChannelNotice')}}</div>-->
-                    <!--</div>-->
-                <!--</Tooltip>-->
-            </Form-item>
+            <!--<Form-item :label="$t('selfSaleChannelType')" prop="type">-->
+                <!--&lt;!&ndash;<RadioGroup v-model="addChannel.type" >&ndash;&gt;-->
+                    <!--&lt;!&ndash;<Radio label="online" :disabled="addChannel.type === 'offline'"><span>{{$t('online')}}</span></Radio>&ndash;&gt;-->
+                    <!--&lt;!&ndash;&lt;!&ndash;<Radio label="offline" style="margin-right: 0;"><span>{{$t('offline')}}</span></Radio>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;</RadioGroup>&ndash;&gt;-->
+                <!--&lt;!&ndash;<Tooltip placement="top" transfer>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i class="iconfont icon-note"></i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div slot="content">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="tip-trade">{{$t('createChannelNotice')}}</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</Tooltip>&ndash;&gt;-->
+            <!--</Form-item>-->
             <!--URL-->
             <Form-item label="URL">
                 <Input v-model="addChannel.serverUrl"

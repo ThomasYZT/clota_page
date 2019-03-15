@@ -918,7 +918,7 @@ export default {
     "accountPrivaligeError" : "The account does not have menu permissions, please contact the administrator to open the permissions.",
     "cardScopeSetting" : "Membership card availability setting",
     "deleteAccount" : "Delete account",
-    "errorPwdRule" : "Password must be 6-20 digits, only numbers, lowercase and uppercase letters",
+    "errorPwdRule" : "Password must be 6-20 digits, only numbers and letters",
     "productTypeSetting" : "Product category setting",
     "cardUnopened" : "Unopened card",
     "cardOpened" : "Opened card",
