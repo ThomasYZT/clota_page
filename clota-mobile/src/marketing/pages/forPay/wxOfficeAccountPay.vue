@@ -2,7 +2,12 @@
 
 <template>
     <div class="wx-account-pay">
-
+        <div class="status-wrapper">
+            <div class="status" v-if="isPayAbnormal === false">
+                <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
+                <p class="status-message">{{$t('payAbnormal')}}</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -13,10 +18,12 @@
 	export default {
 		data () {
 			return {
-			    //订单参数
-			    ordreParams : {},
+                //订单参数
+                ordreParams : {},
                 //微信openid
-                wxOpenId : ''
+                wxOpenId : '',
+                //是否支付异常
+                isPayAbnormal : false
             };
 		},
 		methods : {
@@ -32,6 +39,8 @@
                     this.ordreParams['txnAmt'] = toQuryParams['txnAmt'];
                     this.ordreParams['orgId'] = toQuryParams['orgId'];
                     this.getOpenId(toQuryParams.code,toQuryParams.orgId);
+                } else {
+                    this.isPayAbnormal = true;
                 }
             },
             /**
@@ -116,4 +125,16 @@
 </script>
 <style lang="scss" scoped>
 	@import '~@/assets/scss/base';
+    .wx-account-pay{
+        @include block_outline();
+
+        .status-wrapper{
+            width: 100%;
+            height: 280px;
+            position: absolute;
+            top: 40%;
+            margin-top: -150px;
+            text-align: center;
+        }
+    }
 </style>
