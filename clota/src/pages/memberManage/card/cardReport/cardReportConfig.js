@@ -50,23 +50,18 @@ export const cardReportHead = [
         field : 'nouseNum',
     },
     {
-        title : 'expired', //已过期
-        minWidth : 150,
-        field : 'overdueNum',
-    },
-    {
         title : 'validityPeriod', //有效期
-        minWidth : 150,
+        minWidth : 220,
         field : '',
     },
     {
         title : 'effectiveDays', //有效天数
         minWidth : 150,
-        field : '',
+        field : 'effDays',
     },
     {
         title : 'createdDateTime', //创建日期
-        minWidth : 150,
+        minWidth : 220,
         field : 'createdTime',
     },
     {

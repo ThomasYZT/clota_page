@@ -31,27 +31,27 @@ export const exportCouponRecordHead = [
 export const generateLinkRecordHead = [
     {
         title : 'generationTime',
-        field : '',
+        field : 'createdTime',
         minWidth : 150,
     },
     {
         title : 'generationNum',
-        field : '',
+        field : 'optCount',
         minWidth : 150,
     },
     {
         title : 'couponNameV2',
-        field : '',
+        field : 'optCount',
         minWidth : 150,
     },
     {
         title : 'founder',
-        field : '',
+        field : 'nickName',
         minWidth : 150,
     },
     {
         title : 'links',
-        field : '',
+        field : 'couponLink',
         minWidth : 150,
     },
 ];

@@ -155,6 +155,8 @@
                 productTypeList : [],
                 //商品列表数据
                 productList : [],
+                //列表项数据
+                rowData : {},
             };
         },
         computed : {
@@ -190,6 +192,13 @@
             getParams (params) {
                 if (params && params.type) {
                     this.type = params.type;
+                    if (this.type !== 'add' && params.rowData && Object.keys(params.rowData).length > 0) {
+                        this.rowData = params.rowData;
+                    } else {
+                        this.$router.push({
+                            name : 'coupon'
+                        });
+                    }
                 } else {
                     this.$router.push({
                         name : 'coupon'

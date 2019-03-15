@@ -134,6 +134,7 @@
                 for (let param in this.formData) {
                     href += '&' + param + '=' + this.formData[param]
                 }
+                href += '&' + 'couponId' + '=' + this.rowData.id;
                 let aLink = document.createElement('a');
                 aLink.href = href;
                 aLink.click();

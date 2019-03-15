@@ -8,7 +8,9 @@
             <!-- 应用场景 -->
             <div class="tool-wrapper">
                 <span class="label-titile">{{$t('applicationScenario')}}</span>
-                <Select v-model="filterParam.scene" style="width:140px">
+                <Select v-model="filterParam.appScene"
+                        style="width:140px"
+                        @on-change="queryList">
                     <Option v-for="item in cardScenarioList"
                             :value="item.value"
                             :key="item.value">{{ $t(item.label) }}</Option>
@@ -17,7 +19,9 @@
             <!-- 卡券类别 -->
             <div class="tool-wrapper">
                 <span class="label-titile">{{$t('couponType')}}</span>
-                <Select v-model="filterParam.couponType" style="width:140px">
+                <Select v-model="filterParam.couponType"
+                        style="width:140px"
+                        @on-change="queryList">
                     <Option v-for="item in couponTypeList"
                             :value="item.value"
                             :key="item.value">{{ $t(item.label) }}</Option>
@@ -31,14 +35,15 @@
                             type="daterange"
                             split-panels
                             :placeholder="$t('selectField', { msg : '' })"
-                            style="width: 200px"></DatePicker>
+                            style="width: 200px"
+                            @on-change="queryList"></DatePicker>
             </div>
 
             <!-- 关键字 -->
             <div class="tool-wrapper right">
                 <Input v-model.trim="filterParam.keyword"
                        icon="ios-search"
-                       style="width: 300px;"
+                       style="width: 280px;"
                        :placeholder="$t('inputField', {field: $t('优惠券名称') + ' / ' + $t('券码')})"
                        @on-enter="queryList"
                        @on-click="queryList" />
@@ -179,7 +184,7 @@
                         </span>
                     </template>
                 </el-table-column>
-                <!-- 已过期 -->
+                <!-- 有效期 -->
                 <el-table-column
                     slot="column10"
                     show-overflow-tooltip
@@ -188,14 +193,12 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'expired')">
-                            {{ scope.row.overdueNum | contentFilter }}
-                        </span>
+                        <span v-if="scope.row.appScene === 'spread'">{{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}</span>
                     </template>
                 </el-table-column>
                 <!-- 操作栏 -->
                 <el-table-column
-                    slot="column14"
+                    slot="column13"
                     show-overflow-tooltip
                     slot-scope="row"
                     fixed="right"
@@ -245,9 +248,9 @@
                 //查询过滤参数
                 filterParam : {
                     //日期范围
-                    dateTime : [new Date(), new Date().addDays(-7)],
+                    dateTime : [ new Date().addDays(-7), new Date()],
                     //应用场景
-                    scene : 'all',
+                    appScene : 'all',
                     //卡券类别
                     couponType : 'all',
                     //关键字
@@ -271,10 +274,10 @@
              */
             queryList () {
                 let params = defaultsDeep({}, this.filterParam);
-                params.scene = params.scene === 'all' ? '' : params.scene;
+                params.appScene = params.appScene === 'all' ? '' : params.appScene;
                 params.couponType = params.couponType === 'all' ? '' : params.couponType;
-                params.startTime = this.filterParam.dateTime[1].format('yyyy-MM-dd 00:00:00');
-                params.endTime = this.filterParam.dateTime[0].format('yyyy-MM-dd 23:59:59');
+                params.startTime = this.filterParam.dateTime[0].format('yyyy-MM-dd 00:00:00');
+                params.endTime = this.filterParam.dateTime[1].format('yyyy-MM-dd 23:59:59');
                 delete params.dateTime;
                 ajax.post('queryForReport', params).then(res => {
                     if (res.success) {
