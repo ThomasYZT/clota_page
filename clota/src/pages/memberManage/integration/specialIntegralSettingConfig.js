@@ -4,27 +4,27 @@ const columnData = [
     {
         title : '规则名称', // 规则名称
         minWidth : 170,
-        field : 'cardCode'
+        field : 'ruleName'
     },
     {
         title : '开始时间', // 开始时间
         minWidth : 170,
-        field : 'cardCode'
+        field : 'startDate'
     },
     {
         title : '结束时间', // 结束时间
         minWidth : 170,
-        field : 'cardCode'
+        field : 'endDate'
     },
     {
-        title : '生效时间', // 生效时间
+        title : '生效日期', // 生效日期
         minWidth : 170,
-        field : 'cardCode'
+        field : 'effDate'
     },
     {
         title : '规则状态', // 规则状态
-        minWidth : 170,
-        field : 'cardCode'
+        minWidth : 110,
+        field : 'ruleStatus'
     },
     {
         title : 'operate', // 操作

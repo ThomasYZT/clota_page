@@ -26,16 +26,29 @@
                 :page-no-d.sync="pageNo"
                 :page-size-d.sync="pageSize"
                 @query-data="queryRules">
+                <el-table-column
+                    show-overflow-tooltip
+                    slot="column3"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{scope.row.effDateTxt}}
+                    </template>
+                </el-table-column>
                 <!--只有在全部的筛选条件下才显示-->
                 <el-table-column
-                    v-if="localRule === 'all'"
+                    v-if="localRule === ''"
                     slot="column4"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span :class="{ 'active-rule' : true }">{{$t('生效中')}}</span>
+                        <span :class="{ 'active-rule' : true }" v-if="scope.row.ruleStatus === 'valid'">{{$t('生效中')}}</span>
+                        <span v-else-if="scope.row.ruleStatus === 'invalid'">{{$t('未生效')}}</span>
+                        <span v-else-if="scope.row.ruleStatus === 'overdue'">{{$t('已失效')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -64,7 +77,8 @@
         </del-rule-modal>
         <!--新建规则模态框-->
         <create-rule v-model="ruleModalShow"
-                     :rule-data="currentData">
+                     :rule-data="currentData"
+                     @fresh-data="queryRules">
         </create-rule>
     </div>
 </template>
@@ -75,6 +89,7 @@
     import columnData from './specialIntegralSettingConfig';
     import delRuleModal from '@/components/delModal/index.vue';
     import createRule from './specialIntegralChild/createRule';
+    import ajax from '@/api/index.js';
 
     export default {
         components : {
@@ -89,7 +104,7 @@
                 ruleBtnList : [
                     {
                         name : 'all',
-                        value : 'all'
+                        value : ''
                     },
                     {
                         name : '生效中',
@@ -105,9 +120,7 @@
                     }
                 ],
                 //规则数据
-                tableData : [
-                    {}
-                ],
+                tableData : [],
                 //全部规则条数
                 totalCount : 0,
                 //页码
@@ -115,7 +128,7 @@
                 //每页条数
                 pageSize : 10,
                 //当前筛选的规则
-                localRule : 'all',
+                localRule : '',
                 //当前操作的规则
                 currentData : {},
                 //新建模态框是否显示
@@ -127,7 +140,44 @@
              * 查询特殊积分折扣率数据
              */
             queryRules () {
-
+                ajax.post('listSpecialPointRules',{
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize,
+                    ruleStatus : this.localRule
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.tableData = res.data.data.map(item => {
+                            let effDateTxt = '';
+                            if (item.effDate) {
+                                effDateTxt = item.effDate.split(',').map(day => {
+                                    if (day === '0') {
+                                        return this.$t('Sunday');
+                                    } else if (day === '1') {
+                                        return this.$t('Monday');
+                                    } else if (day === '2') {
+                                        return this.$t('Tuesday');
+                                    } else if (day === '3') {
+                                        return this.$t('Wednesday');
+                                    } else if (day === '4') {
+                                        return this.$t('Thursday');
+                                    } else if (day === '5') {
+                                        return this.$t('Friday');
+                                    } else if (day === '6') {
+                                        return this.$t('Saturday');
+                                    }
+                                }).join('、');
+                            }
+                            return {
+                                ...item,
+                                effDateTxt
+                            }
+                        });
+                        this.totalCount = res.data.totalRow;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                });
             },
             /**
              * 暂停规则
@@ -194,7 +244,7 @@
 
                     }
                 });
-            }
+            },
         },
         computed : {
             //表头数据

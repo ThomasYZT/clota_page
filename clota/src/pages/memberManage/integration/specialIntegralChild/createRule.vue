@@ -2,7 +2,7 @@
 
 <template>
     <Modal
-        :title="$t('新建规则')"
+        :title="$t('createdRule')"
         :mask-closable="false"
         :value="value"
         :width="600"
@@ -14,13 +14,14 @@
               :model="formData"
               :rules="ruleValidate"
               :label-width="110">
-            <FormItem :label="$t('规则名称')" prop="name">
+            <FormItem :label="$t('ruleName')" prop="name">
                 <Input v-model.trim="formData.name"
                        :placeholder="$t('inputPlaceholder')"
                        style="width: 280px"/>
             </FormItem>
-            <FormItem :label="$t('开始时间')" prop="startTime">
+            <FormItem :label="$t('startTime')" prop="startTime">
                 <DatePicker type="date"
+                            :options="dateOptions"
                             transfer
                             :editable="false"
                             :placeholder="$t('selectField',{ msg : '' })"
@@ -28,8 +29,9 @@
                             style="width: 280px">
                 </DatePicker>
             </FormItem>
-            <FormItem :label="$t('结束时间')" prop="endTime">
+            <FormItem :label="$t('endTime')" prop="endTime">
                 <DatePicker type="date"
+                            :options="dateOptions"
                             transfer
                             :editable="false"
                             :placeholder="$t('selectField',{ msg : '' })"
@@ -43,17 +45,18 @@
                     {{$t('永久有效')}}
                 </Checkbox>
             </FormItem>
-            <FormItem :label="$t('生效日期')" prop="validTime">
+            <FormItem :label="$t('validDate')" prop="validTime">
                 <CheckboxGroup v-model="formData.validTime">
                     <Checkbox v-for="(item,index) in validDateList"
                               :key="index"
-                              :label="$t(item.name)">
+                              :label="$t(item.value)">
+                        {{$t(item.name)}}
                     </Checkbox>
                 </CheckboxGroup>
             </FormItem>
             <i-row>
                 <i-col span="14">
-                    <FormItem :label="$t('每日生效时间')" prop="validStartTimeForDay">
+                    <FormItem :label="$t('validDateEveryDay')" prop="validStartTimeForDay">
                         <TimePicker type="time"
                                     transfer
                                     :clearable="false"
@@ -80,24 +83,12 @@
                     </FormItem>
                 </i-col>
             </i-row>
-            <FormItem :label="$t('复制规则')" prop="copyRule">
-                <Select v-model="formData.copyRule"
-                        transfer
-                        :placeholder="$t('selectField',{ msg : '' })"
-                        style="width: 280px">
-                    <Option v-for="(item,index) in ruleList"
-                            :key="index"
-                            value="beijing">
-                        {{item.name}}
-                    </Option>
-                </Select>
-            </FormItem>
-            <FormItem :label="$t('是否启用')" prop="enabled">
-                <RadioGroup v-model="formData.enabled">
-                    <Radio label="true">{{$t('立即启用')}}</Radio>
-                    <Radio label="false">{{$t('暂不启用')}}</Radio>
-                </RadioGroup>
-            </FormItem>
+            <!--<FormItem :label="$t('是否启用')" prop="enabled">-->
+                <!--<RadioGroup v-model="formData.enabled">-->
+                    <!--<Radio label="true">{{$t('立即启用')}}</Radio>-->
+                    <!--<Radio label="false">{{$t('暂不启用')}}</Radio>-->
+                <!--</RadioGroup>-->
+            <!--</FormItem>-->
         </Form>
         <div slot="footer">
             <Button type="primary"
@@ -111,6 +102,7 @@
 </template>
 
 <script>
+    import ajax from '@/api/index.js';
     export default {
         props : {
             //模态框是否显示
@@ -134,12 +126,12 @@
                 } else {
                     if (value) {
                         if (this.formData.startTime && value < this.formData.startTime) {
-                            callback(this.$t('sizeErrorS',{ filed1 : this.$t('结束时间'),filed2 : this.$t('开始时间') }));
+                            callback(this.$t('sizeErrorS',{ filed1 : this.$t('endTime'),filed2 : this.$t('startTime') }));
                         } else {
                             callback();
                         }
                     } else {
-                        callback(this.$t('inputField',{ field : this.$t('结束时间') }));
+                        callback(this.$t('inputField',{ field : this.$t('endTime') }));
                     }
                 }
             };
@@ -147,36 +139,36 @@
             const validateStartTime = (rule,value,callback) => {
                 if (value) {
                     if (this.formData.endTime && value > this.formData.endTime) {
-                        callback(this.$t('sizeErrorB',{ filed2 : this.$t('结束时间'),filed1 : this.$t('开始时间') }));
+                        callback(this.$t('sizeErrorB',{ filed2 : this.$t('endTime'),filed1 : this.$t('startTime') }));
                     } else {
                         callback();
                     }
                 } else {
-                    callback(this.$t('inputField',{ field : this.$t('开始时间') }));
+                    callback(this.$t('inputField',{ field : this.$t('startTime') }));
                 }
             };
             //校验每日生效的结束时间
             const validEndTimeForDay = (rule,value,callback) => {
                 if (value) {
                     if (this.formData.validStartTimeForDay && value < this.formData.validStartTimeForDay) {
-                        callback(this.$t('sizeErrorS',{ filed1 : this.$t('结束时间'),filed2 : this.$t('开始时间') }));
+                        callback(this.$t('sizeErrorS',{ filed1 : this.$t('endTime'),filed2 : this.$t('startTime') }));
                     } else {
                         callback();
                     }
                 } else {
-                    callback(this.$t('inputField',{ field : this.$t('结束时间') }));
+                    callback(this.$t('inputField',{ field : this.$t('endTime') }));
                 }
             };
             //校验每日开始时间
             const validStartTimeForDay = (rule,value,callback) => {
                 if (value) {
                     if (this.formData.validEndTimeForDay && value > this.formData.validEndTimeForDay) {
-                        callback(this.$t('sizeErrorB',{ filed2 : this.$t('结束时间'),filed1 : this.$t('开始时间') }));
+                        callback(this.$t('sizeErrorB',{ filed2 : this.$t('endTime'),filed1 : this.$t('startTime') }));
                     } else {
                         callback();
                     }
                 } else {
-                    callback(this.$t('inputField',{ field : this.$t('开始时间') }));
+                    callback(this.$t('inputField',{ field : this.$t('startTime') }));
                 }
             };
             return {
@@ -195,24 +187,22 @@
                     //是否永久有效
                     validForEver : false,
                     //生效日期
-                    validTime : [],
-                    //复制的规则信息
-                    copyRule : '',
+                    validTime : ['0','1','2','3','4','5','6'],
                     //是否立即启用
-                    enabled : 'true'
+                    // enabled : 'true'
                 },
                 //校验规则
                 ruleValidate : {
                     name : [
                         {
                             required : true,
-                            message : this.$t('inputField',{ field : this.$t('规则名称') }),
+                            message : this.$t('inputField',{ field : this.$t('ruleName') }),
                             trigger : 'blur',
                         },
                         {
                             max : 30,
                             type : 'string',
-                            message : this.$t('errorMaxLength',{ field : this.$t('规则名称'),length : 30 }),
+                            message : this.$t('errorMaxLength',{ field : this.$t('ruleName'),length : 30 }),
                             trigger : 'blur',
                         }
                     ],
@@ -246,40 +236,42 @@
                 //周数据列表
                 validDateList : [
                     {
-                        value : '',
-                        name : '周一'
+                        value : '1',
+                        name : this.$t('Monday')
                     },
                     {
-                        value : '',
-                        name : '周二'
+                        value : '2',
+                        name : this.$t('Tuesday')
                     },
                     {
-                        value : '',
-                        name : '周三'
+                        value : '3',
+                        name : this.$t('Wednesday')
                     },
                     {
-                        value : '',
-                        name : '周四'
+                        value : '4',
+                        name : this.$t('Thursday')
                     },
                     {
-                        value : '',
-                        name : '周五'
+                        value : '5',
+                        name : this.$t('Friday')
                     },
                     {
-                        value : '',
-                        name : '周六'
+                        value : '6',
+                        name : this.$t('Saturday')
                     },
                     {
-                        value : '',
-                        name : '周日'
+                        value : '0',
+                        name : this.$t('Sunday')
                     },
                 ],
                 //结束时间是否可修改
                 endTimeAbled : true,
-                //可以复制的规则信息
-                ruleList : [
-                    {}
-                ]
+                //日期组件不可选日期
+                dateOptions : {
+                    disabledDate (date) {
+                        return date && date.valueOf() < Date.now();
+                    }
+                },
             };
         },
         methods : {
@@ -297,6 +289,7 @@
             visibleChange (type) {
                 if (!type) {
                     this.$refs.formValidate.resetFields();
+                    this.formData.validForEver = '';
                 }
             },
             /**
@@ -304,7 +297,9 @@
              */
             save () {
                 this.$refs.formValidate.validate(valid => {
-                    console.log(valid)
+                    if (valid) {
+                        this.addSpecialPointRule();
+                    }
                 });
             },
             /**
@@ -319,11 +314,56 @@
              */
             timeValidChange (validType) {
                 if (validType) {
-                    this.formData.endTime = '';
+                    this.formData.endTime = new Date('9999','11','31');
                     this.endTimeAbled = false;
                 } else {
                     this.endTimeAbled = true;
+                    this.formData.endTime = '';
                 }
+            },
+            /**
+             * 新增特殊会员积分规则
+             */
+            addSpecialPointRule () {
+                ajax.post('addSpecialPointRule',{
+                    ruleName : this.formData.name,
+                    startDate : this.formData.startTime ? new Date(this.formData.startTime).format('yyyy-MM-dd') : '',
+                    endDate : this.formData.endTime ? new Date(this.formData.endTime).format('yyyy-MM-dd') : '',
+                    effDate : this.formData.validTime.join(','),
+                    startTime : this.formData.validStartTimeForDay,
+                    endTime : this.formData.validEndTimeForDay,
+                }).then(res => {
+                    if (res.success) {
+                        this.$emit('fresh-data');
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                    }
+                }).finally(() => {
+                    this.changeValue(false);
+                });
+            },
+            /**
+             * 校验会员规则
+             */
+            checkRuleDate () {
+                ajax.post('checkRuleDate',{
+                    startDate : this.formData.startTime ? new Date(this.formData.startTime).format('yyyy-MM-dd') : '',
+                    endDate : this.formData.endTime ? new Date(this.formData.endTime).format('yyyy-MM-dd') : '',
+                    effDate : this.formData.validTime.join(','),
+                }).then(res => {
+                    if (res.success) {
+                        if (res.data) {
+                            this.addSpecialPointRule();
+                        } else {
+                            this.$Message.error(this.$t(res.code));
+                        }
+                    } else if (res.code === 'M061') {
+                        this.$Message.error(this.$t('M061'));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                    }
+                });
             }
         }
     };
