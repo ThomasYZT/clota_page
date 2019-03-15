@@ -76,38 +76,64 @@
                     if (res.success && res.data) {
                         try {
                             let formContent = JSON.parse(res.data.formContent);
-                            if (this.isWeixin) {
-                                this.$wechat.chooseWXPay({
-                                    timestamp : formContent.timeStamp,
-                                    nonceStr : formContent.nonceStr, // 支付签名随机串，不长于 32 位
-                                    package : formContent.packageValue, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-                                    signType : formContent.signTyp, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                                    paySign : formContent.paySign, // 支付签名
-                                    success : () => {
-                                        this.$router.replace({
-                                            name : 'wxOrAlidirectPay',
-                                            query : {
-                                                wxJsdk : true
-                                            }
-                                        });
-                                    },
-                                    fail : () => {
-                                        this.$router.replace({
-                                            name : 'wxOrAlidirectPay',
-                                            query : {
-                                                wxJsdk : false
-                                            }
-                                        });
-                                    }
-                                });
-                            } else {
-                                location.href = formContent.mwebUrl;
-                            }
+                            this.configWxInfo(formContent);
                         } catch (err) {
                             this.$vux.toast.text(this.$t('payAbnormal'));
                         }
                     }
                 });
+            },
+            /**
+             * 微信浏览器内发起支付
+             * @param{Object} payParams
+             */
+            wxToPay (payParams) {
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId" : payParams.appId, //公众号名称，由商户传入
+                        "timeStamp" : payParams.timeStamp, //时间戳，自1970年以来的秒数
+                        "nonceStr" : payParams.nonceStr, //随机串
+                        "package" : payParams.packageValue,
+                        "signType" : payParams.signTyp, //微信签名方式：
+                        "paySign" : payParams.paySign, //微信签名
+                    },
+                    (res) => {
+                        if (res.err_msg === "get_brand_wcpay_request:ok" ) {
+                            this.$router.replace({
+                                name : 'wxOrAlidirectPay',
+                                query : {
+                                    wxJsdk : true
+                                }
+                            });
+                        } else {
+                            this.$router.replace({
+                                name : 'wxOrAlidirectPay',
+                                query : {
+                                    wxJsdk : false
+                                }
+                            });
+                        }
+                });
+            },
+            /**
+             * 配置微信支付
+             * @param{Object} formContent 支付参数
+             */
+            configWxInfo (formContent) {
+                if (this.isWeixin) {
+                    if (typeof WeixinJSBridge === "undefined") {
+                        if ( document.addEventListener ) {
+                            document.addEventListener('WeixinJSBridgeReady', this.wxToPay.bind(this,formContent), false);
+                        } else if (document.attachEvent) {
+                            document.attachEvent('WeixinJSBridgeReady', this.wxToPay.bind(this,formContent));
+                            document.attachEvent('onWeixinJSBridgeReady', this.wxToPay.bind(this,formContent));
+                        }
+                    } else {
+                        this.wxToPay(formContent);
+                    }
+                } else {
+                    this.$vux.toast.text(this.$t('请在微信浏览器中支付'));
+                }
             }
         },
         beforeRouteEnter (to,from,next) {
@@ -135,6 +161,10 @@
             top: 40%;
             margin-top: -150px;
             text-align: center;
+
+            .status-icon {
+                width: 150px;
+            }
         }
     }
 </style>
