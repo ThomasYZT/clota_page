@@ -122,6 +122,12 @@ export default {
     'getStaffLevelInfo' : '/members/getStaffLevelInfo',
     //设置特殊会员折扣率
     'setSpecialMemberDiscountOfMember' : '/members/setSpecialMemberDiscountOfMember',
+    //设置特殊会员折扣率
+    'addSpecialPointRule' : '/member/memberRule/addRule',
+    //查询特殊会员折扣率
+    'listSpecialPointRules' : '/member/memberRule/listRules',
+    //校验特殊会员折扣率设置是否正确
+    'checkRuleDate' : '/member/memberRule/checkRuleDate',
 
     /***********************************会员卡券***********************************/
     //设置特殊会员折扣率

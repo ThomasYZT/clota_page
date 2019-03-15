@@ -2700,6 +2700,9 @@ export default {
     'coupon.status.wait' : '未领取',
     'coupon.status.occupy' : '已领取',
     'coupon.status.used' : '已使用',
-
-    'M059' : '卡券不足'
+    'M059' : '卡券不足',
+    'createdRule' : '新建规则',
+    'validDate' : '生效日期',
+    'validDateEveryDay' : '每日生效时间',
+    'M061' : '生效时间范围重叠，请修改时间范围',
 };
