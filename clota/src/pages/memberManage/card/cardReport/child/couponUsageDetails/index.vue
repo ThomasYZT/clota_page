@@ -44,15 +44,25 @@
 
         <div class="table-wrapper">
             <!-- 已兑换 -->
-            <redeemedTable v-if="type === 'redeemed'"></redeemedTable>
+            <redeemedTable :couponStatus="couponStatus"
+                           :rowData="rowData"
+                           v-if="type === 'redeemed'"></redeemedTable>
             <!-- 已领取 -->
-            <receivedTable v-else-if="type === 'received'"></receivedTable>
+            <receivedTable :couponStatus="couponStatus"
+                           :rowData="rowData"
+                           v-else-if="type === 'received'"></receivedTable>
             <!-- 已使用 -->
-            <usedTable v-else-if="type === 'used'"></usedTable>
+            <usedTable :couponStatus="couponStatus"
+                       :rowData="rowData"
+                       v-else-if="type === 'used'"></usedTable>
             <!-- 未使用 -->
-            <noUseTable v-else-if="type === 'noUse'"></noUseTable>
+            <noUseTable :couponStatus="couponStatus"
+                        :rowData="rowData"
+                        v-else-if="type === 'noUse'"></noUseTable>
             <!-- 已过期 -->
-            <expiredTable v-else-if="type === 'expired'"></expiredTable>
+            <expiredTable :couponStatus="couponStatus"
+                          :rowData="rowData"
+                          v-else-if="type === 'expired'"></expiredTable>
         </div>
     </div>
 </template>
@@ -65,6 +75,7 @@
     import receivedTable from './components/receivedTable';
     import redeemedTable from './components/redeemedTable';
     import usedTable from './components/usedTable';
+    import ajax from '@/api/index';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -87,8 +98,24 @@
                     }
                 ],
                 //优惠券使用详情类型
-                type : ''
+                type : '',
+                //列表项数据
+                rowData : {}
             };
+        },
+        computed : {
+            //卡券状态
+            couponStatus () {
+                if (this.type === 'received') {
+                    return 'receive';
+                } else if (this.type === 'used') {
+                    return 'used';
+                } else if (this.typ === 'noUse') {
+                    return 'noUse'
+                } else {
+                    return 'expired';
+                }
+            }
         },
         methods : {
             /**
@@ -96,8 +123,9 @@
              * @param params
              */
             getParams (params) {
-                if (params && params.type) {
+                if (params && params.type && params.rowData) {
                     this.type = params.type;
+                    this.rowData = params.rowData;
                 } else {
                     this.$router.push({
                         name : 'cardReport'
@@ -110,7 +138,7 @@
              */
             changeType (type) {
                 this.type = type;
-            }
+            },
         }
     };
 </script>

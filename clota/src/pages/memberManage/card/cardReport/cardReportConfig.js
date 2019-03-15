@@ -2,17 +2,17 @@ export const cardReportHead = [
     {
         title : 'couponName', //卡券名称
         minWidth : 150,
-        field : '',
+        field : 'couponName',
     },
     {
         title : 'applicationScenario', //应用场景
         minWidth : 150,
-        field : '',
+        field : 'appScene',
     },
     {
         title : 'types', //类别
         minWidth : 150,
-        field : '',
+        field : 'couponType',
     },
     {
         title : 'useCondition', //使用条件
@@ -22,37 +22,37 @@ export const cardReportHead = [
     {
         title : 'generationNum', //生成数量
         minWidth : 150,
-        field : '',
+        field : 'quantity',
     },
     {
         title : 'remainingAmount', //剩余数量
         minWidth : 150,
-        field : '',
+        field : 'waitNum',
     },
     {
         title : 'redeemed', //已兑换
         minWidth : 150,
-        field : 'test',
+        field : 'exchangeNum',
     },
     {
         title : 'alreadyReceived', //已领取
         minWidth : 150,
-        field : 'test',
+        field : 'receiveNum',
     },
     {
         title : 'used', //已使用
         minWidth : 150,
-        field : 'test',
+        field : 'usedNum',
     },
     {
         title : 'noUse', //未使用
         minWidth : 150,
-        field : 'test',
+        field : 'nouseNum',
     },
     {
         title : 'expired', //已过期
         minWidth : 150,
-        field : 'test',
+        field : 'overdueNum',
     },
     {
         title : 'validityPeriod', //有效期
@@ -67,7 +67,7 @@ export const cardReportHead = [
     {
         title : 'createdDateTime', //创建日期
         minWidth : 150,
-        field : '',
+        field : 'createdTime',
     },
     {
         title : 'operate', //操作

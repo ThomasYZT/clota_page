@@ -18,7 +18,22 @@
 <script>
     import tableCom from '@/components/tableCom/tableCom';
     import { redeemedTableHead } from '../couponUsageDetailsConfig';
+    import ajax from '@/api/index';
     export default {
+        props : {
+            //卡券状态
+            couponStatus : {
+                type : String,
+                default : '',
+            },
+            //卡券状态
+            rowData : {
+                type : Object,
+                default () {
+                    return {};
+                },
+            }
+        },
         components : {
             tableCom
         },
@@ -38,7 +53,21 @@
         },
         methods : {
             queryList () {
-
+                ajax.post('queryReportDetail', {
+                    couponId : this.rowData.id,
+                    batchId : this.rowData.batchId,
+                    couponStatus : this.couponStatus,
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize,
+                }).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                })
             }
         }
     };

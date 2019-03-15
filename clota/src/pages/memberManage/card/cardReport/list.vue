@@ -23,18 +23,23 @@
                             :key="item.value">{{ $t(item.label) }}</Option>
                 </Select>
             </div>
+
             <!-- 日期范围 -->
             <div class="tool-wrapper">
                 <span class="label-titile">{{$t('time')}}</span>
-                <DatePicker type="daterange" split-panels
-                            placeholder="Select date"
+                <DatePicker v-model="filterParam.dateTime"
+                            type="daterange"
+                            split-panels
+                            :placeholder="$t('selectField', { msg : '' })"
                             style="width: 200px"></DatePicker>
             </div>
+
+            <!-- 关键字 -->
             <div class="tool-wrapper right">
                 <Input v-model.trim="filterParam.keyword"
                        icon="ios-search"
                        style="width: 300px;"
-                       :placeholder="$t('inputField', {field: $t('name') + ' / ' + $t('loginName')})"
+                       :placeholder="$t('inputField', {field: $t('优惠券名称') + ' / ' + $t('券码')})"
                        @on-enter="queryList"
                        @on-click="queryList" />
             </div>
@@ -53,6 +58,42 @@
                        :page-size-d.sync="filterParam.pageSize"
                        :total-count="totalCount"
                        @query-data="queryList">
+                <!-- 应用场景 -->
+                <el-table-column
+                    slot="column1"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{scope.row['appScene'] ? $t('coupon.' + scope.row['appScene']) : '-'}}
+                    </template>
+                </el-table-column>
+                <!-- 类别 -->
+                <el-table-column
+                    slot="column2"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{$t(scope.row['couponType']) | contentFilter}}
+                    </template>
+                </el-table-column>
+                <!-- 使用条件 -->
+                <el-table-column
+                    slot="column3"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        {{getUseCondition(scope.row)}}
+                    </template>
+                </el-table-column>
                 <!-- 生成数量 -->
                 <el-table-column
                     slot="column4"
@@ -63,10 +104,11 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span class="table-btn" @click="toCouponCodeDetail('generationNum', scope.row)">
-                            {{ scope.row.test | contentFilter }}
+                            {{ scope.row.quantity | contentFilter }}
                         </span>
                     </template>
                 </el-table-column>
+
                 <!-- 剩余数量 -->
                 <el-table-column
                     slot="column5"
@@ -77,7 +119,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span class="table-btn" @click="toCouponCodeDetail('remainingAmount', scope.row)">
-                            {{ scope.row.test | contentFilter }}
+                            {{ scope.row.waitNum | contentFilter }}
                         </span>
                     </template>
                 </el-table-column>
@@ -90,8 +132,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail('redeemed')">
-                            {{ scope.row.test | contentFilter }}
+                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'redeemed')">
+                            {{ scope.row.exchangeNum | contentFilter }}
                         </span>
                     </template>
                 </el-table-column>
@@ -104,8 +146,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail('received')">
-                            {{ scope.row.test | contentFilter }}
+                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'received')">
+                            {{ scope.row.receiveNum | contentFilter }}
                         </span>
                     </template>
                 </el-table-column>
@@ -118,8 +160,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail('used')">
-                            {{ scope.row.test | contentFilter }}
+                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'used')">
+                            {{ scope.row.usedNum | contentFilter }}
                         </span>
                     </template>
                 </el-table-column>
@@ -132,8 +174,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail('noUse')">
-                            {{ scope.row.test | contentFilter }}
+                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'noUse')">
+                            {{ scope.row.nouseNum | contentFilter }}
                         </span>
                     </template>
                 </el-table-column>
@@ -146,8 +188,8 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail('expired')">
-                            {{ scope.row.test | contentFilter }}
+                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'expired')">
+                            {{ scope.row.overdueNum | contentFilter }}
                         </span>
                     </template>
                 </el-table-column>
@@ -169,6 +211,10 @@
                 </el-table-column>
             </table-com>
         </div>
+
+
+        <!-- 查看券码模态框 -->
+        <viewCodeModal ref="viewCodeModal"></viewCodeModal>
     </div>
 </template>
 
@@ -177,9 +223,13 @@
     import { cardScenario, couponTypeList } from '@/assets/js/constVariable';
     import { cardReportHead } from './cardReportConfig';
     import tableCom from '@/components/tableCom/tableCom';
+    import viewCodeModal from '../coupon/components/viewCodeModal';
+    import ajax from '@/api/index';
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         components : {
-            tableCom
+            tableCom,
+            viewCodeModal
         },
         data () {
             if (couponTypeList.findIndex(item => {
@@ -194,12 +244,18 @@
                 couponTypeList : couponTypeList,
                 //查询过滤参数
                 filterParam : {
+                    //日期范围
+                    dateTime : [new Date(), new Date().addDays(-7)],
                     //应用场景
                     scene : 'all',
                     //卡券类别
                     couponType : 'all',
                     //关键字
                     keyword : '',
+                    //页码
+                    pageNo : 1,
+                    //每页数据条数
+                    pageSize : 10,
                 },
                 //表头配置
                 columnData : cardReportHead,
@@ -214,11 +270,21 @@
              * 列表查询
              */
             queryList () {
-                this.tableData = [
-                    {
-                        test : "2222"
+                let params = defaultsDeep({}, this.filterParam);
+                params.scene = params.scene === 'all' ? '' : params.scene;
+                params.couponType = params.couponType === 'all' ? '' : params.couponType;
+                params.startTime = this.filterParam.dateTime[1].format('yyyy-MM-dd 00:00:00');
+                params.endTime = this.filterParam.dateTime[0].format('yyyy-MM-dd 23:59:59');
+                delete params.dateTime;
+                ajax.post('queryForReport', params).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
                     }
-                ];
+                });
             },
             /**
              * 导出
@@ -229,12 +295,14 @@
             /**
              * 前往优惠券使用详情页
              * @param type
+             * @param rowData 列表项数据
              */
-            toCouponUsageDetail (type) {
+            toCouponUsageDetail (rowData, type) {
                 this.$router.push({
                     name : 'couponUsageDetails',
                     params : {
                         type : type,
+                        rowData : rowData,
                     }
                 });
             },
@@ -257,8 +325,21 @@
              *  @param rowData 券数据
              */
             showCardDetail (rowData) {
-
-            }
+                this.$refs.viewCodeModal.show(rowData);
+            },
+            /**
+             * 获取卡券使用条件
+             * @param rowData
+             */
+            getUseCondition (rowData) {
+                if (rowData.couponType === 'discount_coupon') {//折扣券
+                    return this.$t('discountCouponUseConditions',{ minCash : rowData.conditionLowerLimtation,maxCash : rowData.conditionUpperLimtation });
+                } else if (rowData.couponType === 'exchange_coupon') {//兑换券
+                    return this.$t('only',{ msg : rowData.remark });
+                } else if (rowData.couponType === 'cash_coupon') {//代金券
+                    return this.$t('overTipCanUse',{ money : rowData.conditionLowerLimtation });
+                }
+            },
         }
     };
 </script>

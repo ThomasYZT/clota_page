@@ -146,6 +146,12 @@ export default {
     'queryCouponsLogs' : 'member/memberCoupon/queryCouponsLogs',
     //会员优惠券-日志详情
     'queryCouponsDetailByStatus' : '/member/memberCoupon/queryCouponsDetailByStatus',
+    //会员优惠券 -报表查询
+    'queryForReport' : '/member/memberCoupon/queryForReport',
+    //会员优惠券-查看卡券可使用数量
+    'countWaitNum' : '/member/memberCoupon/countWaitNum',
+    //查询报表明细
+    'queryReportDetail' : '/member/memberCoupon/queryReportDetail',
 
     /***********************************初始化设置***********************************/
     //基础设置-会员基础设置-查询

@@ -34,7 +34,7 @@
                             <span v-if="scope.row.couponStatus === 'wait'">
                                 {{$t('coupon.status.' + scope.row.couponStatus)}}
                             </span>
-                            <span class="green-label" v-else-if="scope.row.couponStatus === 'wait'">
+                            <span class="green-label" v-else-if="scope.row.couponStatus === 'occupy'">
                                 {{$t('coupon.status.' + scope.row.couponStatus)}}
                             </span>
                             <span class="red-label" v-else-if="scope.row.couponStatus === 'used'">
