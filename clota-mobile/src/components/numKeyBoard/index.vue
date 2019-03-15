@@ -2,19 +2,21 @@
 
 <template>
     <transition name="vux-actionsheet-mask">
-        <template v-if="showKeyBoard">
-            <ul class="num-keyboard" v-transfer-dom v-click-outside="hide">
+        <template >
+            <ul class="num-keyboard" v-transfer-dom v-click-outside="hide" v-show="showKeyBoard">
                 <li class="row"
                     v-for="(item,row) in keyBoardData"
                     :key="row">
                     <ul class="col-list">
                         <template v-for="(list,listIndex) in item">
                             <li class="col gray"
+                                :key="listIndex"
                                 v-if="list.static"
                                 @click="specialClick(list)">
                                 {{list.label}}
                             </li>
                             <li class="col"
+                                :key="listIndex"
                                 v-else
                                 @click="clickBord(list)">
                                 {{list.label}}
@@ -28,15 +30,22 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
     export default {
-        data() {
+        props : {
+            //键盘类型
+            type : {
+                type : String,
+                default : 'number'
+            }
+        },
+        data () {
             return {
                 //键盘是否显示
                 visible : false
-            }
+            };
         },
-        methods: {
+        methods : {
             /**
              * 点击键盘
              * @param data 键盘数据
@@ -49,9 +58,9 @@
              * @param data
              */
             specialClick (data) {
-                if(data.value === 'del'){
+                if (data.value === 'del') {
                     this.$emit('del-word');
-                }else if(data.value === 'cancel'){
+                } else if (data.value === 'cancel') {
                     this.$emit('cancel');
                 }
             },
@@ -71,72 +80,136 @@
         computed : {
             //键盘数据
             keyBoardData () {
-                return [
-                    [
-                        {
-                            label : 1,
-                            value : 1
-                        },
-                        {
-                            label : 2,
-                            value : 2
-                        },
-                        {
-                            label : 3,
-                            value : 3
-                        }
-                    ],
-                    [
-                        {
-                            label : 4,
-                            value : 4
-                        },
-                        {
-                            label : 5,
-                            value : 5
-                        },
-                        {
-                            label : 6 ,
-                            value : 6
-                        }
-                    ],
-                    [
-                        {
-                            label : 7,
-                            value : 7
-                        },
-                        {
-                            label : 8,
-                            value : 8
-                        },
-                        {
-                            label : 9,
-                            value : 9
-                        }
-                    ],
-                    [
-                        {
-                            label : this.$t('cancel'),
-                            value : 'cancel',
-                            static : true
-                        },
-                        {
-                            label : 0,
-                            value : 0
-                        },
-                        {
-                            label : this.$t('delete'),
-                            value : 'del',
-                            static : true
-                        }
-                    ]
-                ];
+                if (this.type === 'number') {
+
+                    return [
+                        [
+                            {
+                                label : 1,
+                                value : 1
+                            },
+                            {
+                                label : 2,
+                                value : 2
+                            },
+                            {
+                                label : 3,
+                                value : 3
+                            }
+                        ],
+                        [
+                            {
+                                label : 4,
+                                value : 4
+                            },
+                            {
+                                label : 5,
+                                value : 5
+                            },
+                            {
+                                label : 6 ,
+                                value : 6
+                            }
+                        ],
+                        [
+                            {
+                                label : 7,
+                                value : 7
+                            },
+                            {
+                                label : 8,
+                                value : 8
+                            },
+                            {
+                                label : 9,
+                                value : 9
+                            }
+                        ],
+                        [
+                            {
+                                label : this.$t('cancel'),
+                                value : 'cancel',
+                                static : true
+                            },
+                            {
+                                label : 0,
+                                value : 0
+                            },
+                            {
+                                label : this.$t('delete'),
+                                value : 'del',
+                                static : true
+                            }
+                        ]
+                    ];
+                } else if (this.type === 'money') {
+                    return [
+                        [
+                            {
+                                label : 1,
+                                value : 1
+                            },
+                            {
+                                label : 2,
+                                value : 2
+                            },
+                            {
+                                label : 3,
+                                value : 3
+                            }
+                        ],
+                        [
+                            {
+                                label : 4,
+                                value : 4
+                            },
+                            {
+                                label : 5,
+                                value : 5
+                            },
+                            {
+                                label : 6 ,
+                                value : 6
+                            }
+                        ],
+                        [
+                            {
+                                label : 7,
+                                value : 7
+                            },
+                            {
+                                label : 8,
+                                value : 8
+                            },
+                            {
+                                label : 9,
+                                value : 9
+                            }
+                        ],
+                        [
+                            {
+                                label : '.',
+                                value : '.',
+                                static : true
+                            },
+                            {
+                                label : 0,
+                                value : 0
+                            },
+                            {
+                                label : this.$t('delete'),
+                                value : 'del',
+                                static : true
+                            }
+                        ]
+                    ];
+                }
             },
             ...mapGetters({
                 showKeyBoard : 'showKeyBoard'
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
