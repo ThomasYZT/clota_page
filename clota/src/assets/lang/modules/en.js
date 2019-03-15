@@ -2706,4 +2706,5 @@ export default {
     'validDate' : '生效日期',
     'validDateEveryDay' : '每日生效时间',
     'M061' : '生效时间范围重叠，请修改时间范围',
+    'memberCardCategory' : '会员卡类别',
 };

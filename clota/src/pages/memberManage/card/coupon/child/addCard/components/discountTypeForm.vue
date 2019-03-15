@@ -13,6 +13,7 @@
                 <Form-item :label="$t('卡券折扣')" prop="nominalValue">
                     <Input v-model.trim="formData.nominalValue"
                            style="width: 280px;"
+                           :disabled="type !== 'add'"
                            :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
             </i-col>
@@ -21,6 +22,7 @@
                 <Form-item :label="$t('minConsumptionAmount')" prop="conditionLowerLimtation">
                     <Input v-model.trim="formData.conditionLowerLimtation"
                            style="width: 280px;"
+                           :disabled="type !== 'add'"
                            :placeholder="$t('inputField', {field: ''})"/>
                     <span class="label-used">{{$t('available')}}</span>
                 </Form-item>
@@ -30,6 +32,7 @@
                 <Form-item :label="$t('maxConsumptionAmount')" prop="conditionUpperLimtation">
                     <Input v-model.trim="formData.conditionUpperLimtation"
                            style="width: 280px;"
+                           :disabled="type !== 'add'"
                            :placeholder="$t('inputField', {field: ''})"/>
                     <span class="label-used">{{$t('available')}}</span>
                 </Form-item>
@@ -41,6 +44,7 @@
                     <Form-item :label="$t('有效期')" prop="effDays">
                         <Input v-model.trim="formData.effDays"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('天')}}</span><!--天-->
                         <Tooltip transfer placement="right">
@@ -61,6 +65,7 @@
                             type="date"
                             transfer
                             :editable="false"
+                            :disabled="type !== 'add'"
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
                             style="width: 280px;"
@@ -75,6 +80,7 @@
                             type="date"
                             :editable="false"
                             transfer
+                            :disabled="type !== 'add'"
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             style="width: 280px;"
@@ -87,6 +93,7 @@
                     <Form-item :label="$t('generationNum')" prop="quantity">
                         <Input v-model.trim="formData.quantity"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}}</span><!--张-->
                     </Form-item>
@@ -96,6 +103,7 @@
                     <Form-item :label="$t('amountSingleDay')" prop="dayGain">
                         <Input v-model.trim="formData.dayGain"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
                     </Form-item>
@@ -105,6 +113,7 @@
                     <Form-item :label="$t('amountLimit')" prop="totalGain">
                         <Input v-model.trim="formData.totalGain"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
                         <Tooltip transfer placement="right">
@@ -120,7 +129,9 @@
             <i-col span="12">
                 <!--能否和会员折扣权益同时使用-->
                 <Form-item :label="$t('isUsedTogether')" prop="isDiscountCoexist">
-                    <RadioGroup v-model="formData.isDiscountCoexist" @on-change="discountTypeChange">
+                    <RadioGroup v-model="formData.isDiscountCoexist"
+                                :disabled="type !== 'add'"
+                                @on-change="discountTypeChange">
                         <Radio label="true">{{$t('useSameTime')}}</Radio><!--可同时使用-->
                         <Radio label="false">{{$t('noUseSameTime')}}</Radio><!--不可同时使用-->
                     </RadioGroup>
@@ -129,7 +140,8 @@
             <i-col span="12" v-if="formData.isDiscountCoexist === 'true'">
                 <!--代金券在折扣前后使用设置-->
                 <Form-item :label="$t('isUsedBeforeOrAfterDiscount')" prop="isEffectBeforeDiscount">
-                    <RadioGroup v-model="formData.isEffectBeforeDiscount">
+                    <RadioGroup v-model="formData.isEffectBeforeDiscount"
+                                :disabled="type !== 'add'">
                         <Radio label="true">{{$t('availableBeforeDiscount')}}</Radio><!--折扣前可用-->
                         <Radio label="false">{{$t('availableAfterDiscount')}}</Radio><!--折扣后可用-->
                     </RadioGroup>
@@ -140,6 +152,7 @@
                 <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                     <treeSelector v-model="formData.conditionChannelId"
                                   nodeKey="label"
+                                  :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'channelName' }"
                                   :data="channelSetList"></treeSelector>
                 </Form-item>
@@ -149,6 +162,7 @@
                 <Form-item label="可用店铺" prop="conditionOrgId">
                     <treeSelector v-model="formData.conditionOrgId"
                                   nodeKey="label"
+                                  :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'orgName' }"
                                   :data="listAmountRange"></treeSelector>
                 </Form-item>
@@ -158,6 +172,7 @@
                 <Form-item :label="$t('availableChannels')" prop="conditionProductId">
                     <treeSelector v-model="formData.conditionProductId"
                                   nodeKey="label"
+                                  :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'typeName' }"
                                   :data="productTypeList"></treeSelector>
                 </Form-item>
@@ -200,6 +215,11 @@
                     return [];
                 }
             },
+            //表单状态
+            type : {
+                type : String,
+                default : '',
+            }
         },
         data () {
             return {

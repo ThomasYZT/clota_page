@@ -15,6 +15,7 @@
                     <Form-item :label="$t('有效期')" prop="effDays">
                         <Input v-model.trim="formData.effDays"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('天')}}</span><!--天-->
                         <Tooltip transfer placement="right">
@@ -39,6 +40,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
                             style="width: 280px;"
+                            :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
                     </Form-item>
@@ -53,6 +55,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             style="width: 280px;"
+                            :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
                     </Form-item>
@@ -62,6 +65,7 @@
                     <Form-item :label="$t('generationNum')" prop="quantity">
                         <Input v-model.trim="formData.quantity"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}}</span><!--张-->
                     </Form-item>
@@ -71,6 +75,7 @@
                     <Form-item :label="$t('amountSingleDay')" prop="dayGain">
                         <Input v-model.trim="formData.dayGain"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
                     </Form-item>
@@ -80,6 +85,7 @@
                     <Form-item :label="$t('amountLimit')" prop="totalGain">
                         <Input v-model.trim="formData.totalGain"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
                         <Tooltip transfer placement="right">
@@ -99,6 +105,7 @@
                             transfer
                             :clearable="true"
                             style="width: 280px;height: 34px;"
+                            :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         <Option v-for="(item,index) in productList"
                                 :key="index"
@@ -113,6 +120,7 @@
                 <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                     <treeSelector v-model="formData.conditionChannelId"
                                   nodeKey="label"
+                                  :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'channelName' }"
                                   :data="channelSetList"></treeSelector>
                 </Form-item>
@@ -122,6 +130,7 @@
                 <Form-item label="可用店铺" prop="conditionOrgId">
                     <treeSelector v-model="formData.conditionOrgId"
                                   nodeKey="label"
+                                  :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'orgName' }"
                                   :data="listAmountRange"></treeSelector>
                 </Form-item>
@@ -163,6 +172,11 @@
                 default () {
                     return [];
                 }
+            },
+            //表单状态
+            type : {
+                type : String,
+                default : '',
             }
         },
         data () {
