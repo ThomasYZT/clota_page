@@ -12,7 +12,8 @@
                @on-cancel="hide"
                :mask-closable="false">
             <div  class="form-wrapper">
-                <Form v-show="step === 1" ref="modalForm"
+                <Form v-show="step === 1"
+                      ref="modalForm"
                       label-position="top"
                       :model="formData"
                       :rules="ruleValidate">
