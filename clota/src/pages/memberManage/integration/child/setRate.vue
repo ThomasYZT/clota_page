@@ -21,7 +21,6 @@
             <div class="table-wrap">
                 <table-com
                     :auto-query-first="false"
-                    v-if="tableCanMount"
                     :page-no-d.sync="pageNo"
                     :page-size-d.sync="pageSize"
                     :ofsetHeight="215"
@@ -167,7 +166,8 @@
                             levelId : this.memberInfo.levelId,
                             productName : data.productName
                         },data),
-                        levelName : this.memberInfo.levelName
+                        levelName : this.memberInfo.levelName,
+                        ruleId : this.ruleId
                     }
                 });
             },
@@ -207,7 +207,10 @@
                     this.memberInfo = params.memberInfo;
                     if (this.$route.name === 'specialIntegralStoreSetting') {
                         this.ruleId = params.ruleId;
+                    } else {
+                        this.ruleId = '1';
                     }
+                    this.queryList();
                 } else {
                     this.$router.back();
                 }
@@ -262,10 +265,6 @@
             },
         },
         computed : {
-            //表格是否需要显示
-            tableCanMount () {
-                return this.memberInfo && !!this.memberInfo.levelId;
-            },
             //传递给模态框的积分折扣率信息
             integraData () {
                 if (this.currentData && Object.keys(this.currentData).length > 0) {

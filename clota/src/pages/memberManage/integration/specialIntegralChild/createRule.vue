@@ -36,7 +36,7 @@
                             :editable="false"
                             :placeholder="$t('selectField',{ msg : '' })"
                             v-model="formData.endTime"
-                            :disabled="!endTimeAbled"
+                            :disabled="formData.validForEver"
                             style="width: 280px">
                 </DatePicker>
                 <Checkbox class="forever-class"
@@ -174,6 +174,7 @@
             return {
                 //表单数据
                 formData : {
+                    id : '',
                     //规则名称
                     name : '',
                     //开始时间
@@ -272,8 +273,6 @@
                         name : this.$t('Sunday')
                     },
                 ],
-                //结束时间是否可修改
-                endTimeAbled : true,
                 //日期组件不可选日期
                 dateOptions : {
                     disabledDate (date) {
@@ -297,7 +296,7 @@
             visibleChange (type) {
                 if (!type) {
                     this.$refs.formValidate.resetFields();
-                    this.formData.validForEver = '';
+                    this.formData.validForEver = false;
                 } else {
                     if (this.ruleData && Object.keys(this.ruleData).length > 0) {
                         this.formData.name = this.ruleData.ruleName;
@@ -305,9 +304,12 @@
                         this.formData.endTime = this.ruleData.endDate;
                         this.formData.validStartTimeForDay = this.ruleData.startTime;
                         this.formData.validEndTimeForDay = this.ruleData.endTime;
+                        this.formData.id = this.ruleData.id;
                         this.formData.validTime = this.ruleData.effDate.split(',');
                         if (this.ruleData.endDate && this.ruleData.endDate.substr(0,4) === '9999') {
                             this.formData.validForEver = true;
+                        } else {
+                            this.formData.validForEver = false;
                         }
                     }
                 }
@@ -335,9 +337,9 @@
             timeValidChange (validType) {
                 if (validType) {
                     this.formData.endTime = new Date('9999','11','31');
-                    this.endTimeAbled = false;
+                    this.formData.validForEver = true;
                 } else {
-                    this.endTimeAbled = true;
+                    this.formData.validForEver = false;
                     this.formData.endTime = '';
                 }
             },
@@ -398,6 +400,7 @@
                     effDate : this.formData.validTime.join(','),
                     startTime : this.formData.validStartTimeForDay,
                     endTime : this.formData.validEndTimeForDay,
+                    oldRuleId : this.formData.id
                 }).then(res => {
                     if (res.success) {
                         this.$emit('fresh-data');

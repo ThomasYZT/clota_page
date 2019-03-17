@@ -238,15 +238,19 @@
 
             //校验输入的是否是金额，且符合金额的格式
             const validateMoney = (rule,value,callback) => {
-                common.validateMoney(value,0,10).then(() => {
+                if (value) {
+                    common.validateMoney(value,0,10).then(() => {
+                        callback();
+                    }).catch(err => {
+                        if (err === 'errorMaxLength') {
+                            callback(this.$t('errorMaxLength',{ field : this.$t(rule._field),length : 10 }));
+                        } else {
+                            callback(this.$t(err,{ field : this.$t(rule._field) }));
+                        }
+                    });
+                } else {
                     callback();
-                }).catch(err => {
-                    if (err === 'errorMaxLength') {
-                        callback(this.$t('errorMaxLength',{ field : this.$t(rule._field),length : 10 }));
-                    } else {
-                        callback(this.$t(err,{ field : this.$t(rule._field) }));
-                    }
-                });
+                }
             };
 
             return {
@@ -364,7 +368,6 @@
                     ],
                     amountInCard : [
                         {
-                            required : true,
                             validator : validateMoney ,
                             trigger : 'blur',
                             _field : 'moneyInCard'
@@ -669,11 +672,11 @@
                 }
             }
 
-            .operate-label{
-                color: $color_err;
-                font-size: $font_size_14px;
-            }
+        }
 
+        .operate-label{
+            color: $color_err;
+            font-size: $font_size_14px;
         }
 
         .modal-body{
