@@ -19,5 +19,7 @@ export default {
 
     /***********************************在线收款***********************************/
     //在线收款记录
-    'queryBillRecordList' : '/bill/queryBillRecordList'
+    'queryBillRecordList' : '/bill/queryBillRecordList',
+    //为收款账户手动充值
+    'manualRecharge' : '/partner/manualRecharge',
 };

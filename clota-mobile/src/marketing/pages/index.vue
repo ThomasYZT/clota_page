@@ -102,6 +102,13 @@
             //         });
             //     }
             // }
+            /**
+             * 获取路由参数
+             * @param{Object} query 路由参数
+             */
+            getParams (query) {
+
+            }
         },
         created () {
             // this.getWxConfig();
@@ -127,6 +134,11 @@
                     this.$store.dispatch('marketGetLocation');
                 }
             }
+        },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.getParams(to.query);
+            });
         }
     };
 </script>

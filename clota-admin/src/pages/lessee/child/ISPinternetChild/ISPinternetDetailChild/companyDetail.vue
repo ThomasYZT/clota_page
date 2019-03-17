@@ -271,6 +271,7 @@
 
         <!--在线收款账户-->
         <online-receipt :receipt-account-info="companyDetail"
+                        :active-node="activeNode"
                         @fresh-org-data="getCompanyDetail">
         </online-receipt>
 

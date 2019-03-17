@@ -14,7 +14,7 @@ let cancelTokenCollection = {};
 //如果是开发环境则打开代理
 if (process.env.NODE_ENV === 'development') {
     // baseUrl = '/clota_dev/'
-    baseUrl = '';
+    baseUrl = '/';
 } else {
     baseUrl = '/';
 }
@@ -181,4 +181,11 @@ export default {
             return err;
         });
     },
+    /**
+     * 获取接口的全路径
+     * @param{String} urlKey 接口对应的键值
+     */
+    getFullUrl (urlKey) {
+        return config.HOST + baseUrl + api[urlKey];
+    }
 };

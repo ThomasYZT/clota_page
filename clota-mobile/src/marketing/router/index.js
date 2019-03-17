@@ -338,6 +338,17 @@ export const marketingRoutes = [
                     hideTabbar : true,
                     notNeedCheck : true
                 }
+            },
+            //微信公众号支付
+            {
+                path : 'tourist/createOrder/wxAccountPay',
+                name : 'wxAccountPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/forPay/wxOfficeAccountPay.vue'),
+                meta : {
+                    title : 'payStatus',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
             }
         ]
     }

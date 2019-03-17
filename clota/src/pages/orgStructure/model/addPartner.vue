@@ -316,7 +316,7 @@
 
     .addPartner {
         /deep/ .ivu-modal-body {
-            padding: 42px 90px 40px 66px;
+            padding: 42px 90px 10px 66px;
         }
         /deep/ .ivu-btn {
             width: 88px;

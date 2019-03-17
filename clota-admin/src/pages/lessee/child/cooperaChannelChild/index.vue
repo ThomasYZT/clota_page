@@ -66,6 +66,7 @@
             <!--在线收款账户-->
             <online-receipt v-if="isAudiitSuccess"
                             :show-pick-up="false"
+                            :active-node="{ id : channelId }"
                             :receipt-account-info="lessDetail"
                             @fresh-org-data="getLesseeDetail">
             </online-receipt>
@@ -175,7 +176,6 @@
     import ajax from '@/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
     import { channelsGroupList } from '@/assets/js/constVariable';
-    import { validator } from 'klwk-ui';
     import onlineReceipt from '../ISPinternetChild/ISPinternetDetailChild/components/onlineReceipt';
     import subDepartment from '../ISPinternetChild/ISPinternetDetailChild/components/subDepartment';
     import employeeTable from '../ISPinternetChild/ISPinternetDetailChild/components/employeeTable';

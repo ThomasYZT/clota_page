@@ -1,7 +1,7 @@
 <!--登录-->
 
 <template>
-    <div class="login">
+    <div class="login" v-if="showPage">
         <div class="login-bg">
             <img src="../../../assets/images/icon-login-bg.png" alt="">
         </div>
@@ -17,7 +17,7 @@
                          class="c-input"
                          text-align="right"
                          label-width="150px"
-                         :placeholder="$t('pleaseInputYourPhoneNumber')" >
+                         :placeholder="$t('pleaseInputMsg')" >
                 </x-input>
                 <x-input :title="$t('loginPass')"
                          ref="password"
@@ -33,7 +33,6 @@
                          v-if="showValidateCode"
                          v-model="formData.code"
                          class="c-input"
-                         type="password"
                          text-align="right"
                          label-width="150px"
                          :placeholder="$t('inputField',{ field : $t('validCode') })">
@@ -95,7 +94,11 @@
                 imgCodeImfo : {
                     code : '',
                     key : ''
-                }
+                },
+                //微信用户id
+                wxOpenId : '',
+                //是否显示页面
+                showPage : false
             };
         },
         methods : {
@@ -207,13 +210,9 @@
                 }).then(res => {
                     if (res.success) {
                         this.$store.commit('marketUpdateCompanyName',res.data ? res.data.companyName : '');
-                        this.$store.commit('marketUpdateOrgId',res.data ? res.data.orgId : '');
-                        this.$store.commit('marketUpdatOrgAddress',res.data ? res.data.orgAddress : '');
                         this.$store.commit('marketUpdateMarketCompanyId',res.data ? res.data.companyId : '');
                     } else if (res.code && res.code !== '300') {
                         this.$store.commit('marketUpdateCompanyName','');
-                        this.$store.commit('marketUpdateOrgId','');
-                        this.$store.commit('marketUpdatOrgAddress','');
                         this.$store.commit('marketUpdateMarketCompanyId','');
                         this.$vux.toast.show({
                             text : this.$t('errorMsg.' + res.code),
@@ -222,7 +221,6 @@
                     } else {
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('marketUpdateOrgId','');
-                        this.$store.commit('marketUpdatOrgAddress','');
                         this.$store.commit('marketUpdateMarketCompanyId','');
                     }
                 }).finally(() => {
@@ -234,6 +232,11 @@
              * @param{Object} params 路由信息
              */
             getParams (params) {
+                if (params && params.code && this.isWeixin) {
+                    this.getOAuth2UserInfo(params.code);
+                } else {
+                    this.showPage = true;
+                }
                 if (params && params.companyCode) {
                     this.$store.commit('updateCompanyCode',params.companyCode);
                     this.queryOrgInfo(params.companyCode);
@@ -259,7 +262,8 @@
                             return {
                                 key : item.id,
                                 value : item.typeName,
-                                orgId : item.orgId
+                                orgId : item.orgId,
+                                orgAddress : item.orgAddress,
                             };
                         }) : [];
                         if (this.userTypeList.length > 0 ) {
@@ -282,6 +286,7 @@
                             this.$store.commit('marketUpdateTypeId',res.data[0]['id']);
                             this.$store.commit('marketUpdateTypeName',res.data[0]['typeName']);
                             this.$store.commit('marketUpdateOrgId',res.data[0]['orgId']);
+                            this.$store.commit('marketUpdatOrgAddress',res.data[0]['orgAddress']);
                             this.loginWithType();
                         } else {
                             this.$vux.toast.show({
@@ -304,6 +309,7 @@
                     this.$store.commit('marketUpdateTypeId',typeId);
                     this.$store.commit('marketUpdateTypeName',orgInfo['value']);
                     this.$store.commit('marketUpdateOrgId',orgInfo['orgId']);
+                    this.$store.commit('marketUpdatOrgAddress',orgInfo['orgAddress']);
                     this.loginWithType();
                 } else {
                     this.$vux.toast.text(this.$t('chooseMarketingTypes'));
@@ -319,17 +325,11 @@
                     typeId : this.marketTypeId,
                     orgId : this.marketOrgId,
                     imgkey : this.imgCodeImfo.key,
-                    imgCode : this.imgCodeImfo.code
+                    imgCode : this.imgCodeImfo.code,
+                    openId : this.wxOpenId
                 }).then(res => {
                     if (res.success) {
-                        this.$store.commit('marketUpdateToken',res.data);
-                        this.$store.dispatch('marketGetUserInfo').then(() => {
-                            this.$router.replace({
-                                name : 'marketingProduct'
-                            });
-                            this.$store.dispatch('marketGetLoginData');
-                        });
-                        sessionStorage.setItem('loginErr',0);
+                        this.dataToLogin(res.data);
                     } else if (res.code && res.code !== '300') {
                         this.$vux.toast.show({
                             text : this.$t('errorMsg.' + res.code),
@@ -358,6 +358,56 @@
                         this.imgCodeImfo.key = '';
                     }
                 });
+            },
+            /**
+             * 获取微信用户信息
+             * @param{String} code 微信回调code
+             */
+            getOAuth2UserInfo (code) {
+                ajax.post('getOAuth2UserInfo',{
+                    code : code,
+                    lang : this.lang,
+                    companyCode : this.companyCode,
+                    source : this.sourceInfo
+                }).then(res => {
+                    if (res.data && res.data.openId) {
+                        this.wxOpenId = res.data.openId;
+                        this.marketAutoLogin();
+                    } else {
+                        this.showPage = true;
+                    }
+                });
+            },
+            /**
+             * 自动登录
+             */
+            marketAutoLogin () {
+                ajax.post('market_autoLogin',{
+                    companyCode : this.companyCode,
+                    openId : this.wxOpenId
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.$store.commit('marketUpdatOrgAddress',res.data['orgAddress']);
+                        this.dataToLogin(res.data.token);
+                    } else {
+                        this.showPage = true;
+                    }
+                });
+            },
+            /**
+             * 获取参数继续登录流程
+             * @param{String} token 登录令牌
+             */
+            dataToLogin (token) {
+                this.$store.commit('marketUpdateToken',token);
+                this.$store.dispatch('marketGetUserInfo').then(() => {
+                    this.$store.dispatch('marketGetLoginData').then(() => {
+                        this.$router.replace({
+                            name : 'marketingProduct'
+                        });
+                        sessionStorage.setItem('loginErr',0);
+                    });
+                });
             }
         },
         computed : {
@@ -367,6 +417,8 @@
                 marketTypeId : 'marketTypeId',
                 companyCode : 'companyCode',
                 marketCompanyId : 'marketCompanyId',
+                sourceInfo : 'sourceInfo',
+                isWeixin : 'isWeixin',
             })
         },
         beforeRouteEnter (to,from,next) {

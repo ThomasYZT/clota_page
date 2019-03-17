@@ -41,7 +41,6 @@
             :page-size-d.sync="queryParams.pageSize"
             :border="true"
             :column-check="role === 'scenic' && cacnDelProduct"
-            :default-sort="{prop: 'updatedTime', order: 'descending'}"
             @sort-change="handleSortChanged"
             @query-data="queryList"
             @selection-change="changeSelection">

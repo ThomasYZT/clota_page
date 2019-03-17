@@ -58,12 +58,23 @@
                 <FormItem :label="$t('smsProvider')" prop="smsProvider">
                     <Select v-model.trim="formData.smsProvider" style="width:280px">
                         <Option v-for="item in smsProviderList"
-                                :value="item.provider"
-                                :key="item.provider">
+                                :value="item.id"
+                                :key="item.id">
                             {{ item.provider }}
                         </Option>
                     </Select>
                 </FormItem>
+                <template v-if="formData.smsProvider === '3' || formData.smsProvider === '4'">
+                    <!--第三方短信服务商账号-->
+                    <FormItem :label="$t('thirdPartSmsAccount')" prop="smsProviderAccount">
+                        <Input v-model.trim="formData.smsProviderAccount" style="width: 280px"/>
+                    </FormItem>
+                    <!--第三方短信服务商密码-->
+                    <FormItem :label="$t('thirdPartSmsPassword')" prop="smsProviderPassword">
+                        <Input v-model.trim="formData.smsProviderPassword"
+                               type="password" style="width: 280px"/>
+                    </FormItem>
+                </template>
                 <!--联系人-->
                 <FormItem :label="$t('person')" prop="person">
                     <Input v-model.trim="formData.person" style="width: 280px"/>
@@ -211,7 +222,11 @@
                     //联系人
                     person : '',
                     //受理客服
-                    service : ''
+                    service : '',
+                    //第3方账号
+                    smsProviderAccount : '',
+                    //第2方密码
+                    smsProviderPassword : ''
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -260,6 +275,22 @@
                     ],
                     address : [
                         { max : 100,message : this.$t('errorMaxLength',{ field : this.$t('address'),length : 100 }),trigger : 'blur' }
+                    ],
+                    smsProviderAccount : [
+                        {
+                            required : true,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('thirdPartSmsAccount') }),
+                            trigger : 'blur'
+                        },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsAccount'),length : 20 }),trigger : 'blur' },
+                    ],
+                    smsProviderPassword : [
+                        {
+                            required : true,
+                            message : this.$t('validateError.pleaseInput', { 'msg' : this.$t('thirdPartSmsPassword') }),
+                            trigger : 'blur'
+                        },
+                        { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },
                     ],
                 },
                 //短信供应商列表
@@ -379,7 +410,7 @@
                     orgName : this.addedNodeDetail.nodeName,
                     loginName : this.formData.controlAccount,
                     email : this.formData.mail,
-                    smsProvider : this.formData.smsProvider,
+                    smsProviderId : this.formData.smsProvider,
                     linkName : this.formData.person,
                     telephone : this.formData.phone,
                     tex : this.formData.fax,
@@ -393,6 +424,8 @@
                     nodeType : 'company',
                     status : status,
                     businessAccountId : this.formData.service,
+                    smsProviderAccount : this.formData.smsProviderAccount,
+                    smsProviderPassword : this.formData.smsProviderPassword,
                 }).then(res => {
                     if (res.status === 200) {
                         this.$emit('fresh-structure-data');

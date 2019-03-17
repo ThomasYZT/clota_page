@@ -192,8 +192,6 @@
                 vm.getParams(to.query);
             });
         },
-        mounted () {
-        },
     };
 </script>
 <style lang="scss" scoped>

@@ -262,13 +262,13 @@
                         if (res.success) {
                             if (formData.type === 'out') {
                                 if (Number(this.outFormData.outNum) > Number(res.data ? res.data : 0)) {
-                                    reject('exceeding', { field : this.$t('adjustableQuantity') });
+                                    reject(this.$t('exceeding', { field : this.$t('adjustableQuantity') }));
                                 } else {
                                     resolve();
                                 }
                             } else {
                                 if (Number(this.inFormData.inNum) > Number(res.data ? res.data : 0)) {
-                                    reject('exceeding', { field : this.$t('sharedQuota') });
+                                    reject(this.$t('exceeding', { field : this.$t('sharedQuota') }));
                                 } else {
                                     resolve();
                                 }

@@ -92,7 +92,7 @@
                 </i-row>
                 <i-row>
                     <i-col span="11">
-                        <!--短息供应商-->
+                        <!--短信供应商-->
                         <FormItem :label="$t('smsProvider')" prop="smsProvider">
                             <Select v-model.trim="formData.smsProvider" style="width:280px">
                                 <Option v-for="item in smsProviderList"

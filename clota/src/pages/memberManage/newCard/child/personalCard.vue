@@ -477,6 +477,7 @@
             },
             //新增/编辑会员接口
             saveAndEditMember (url, params) {
+                let paymentChannel = this.payAccountList.find(item => item.value === this.cardParam.payType);
                 this.loading = true;
                 this.showConfirmModal = false;
                 ajax.post(url, {
@@ -485,7 +486,7 @@
                     qrCode : this.cardParam.qrCode,
                     txnAmt : this.selectedCard.salePrice,
                     txnShortDesc : this.cardParam.payType === 'alipay' ? '开卡' : '',
-                    paymentChannel : this.payAccountList.find(item => item.value === this.cardParam.payType)['payType']
+                    paymentChannel : paymentChannel ? paymentChannel['payType'] : ''
                 }).then(res => {
                     if (res.success) {
                         this.$refs.payResultModal.setStage('success');

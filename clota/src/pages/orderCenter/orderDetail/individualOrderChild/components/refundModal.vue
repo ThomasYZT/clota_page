@@ -8,7 +8,7 @@
            class-name="vertical-center-modal order-refund-ticket"
            width="420">
 
-        <Form :label-width="lang === 'zh-Cn' ? 150 : 219"
+        <Form :label-width="lang === 'zh-CN' ? 150 : 219"
               label-position="right">
             <FormItem :label="$t('ApplyForRefundNum')">
                 {{num}}

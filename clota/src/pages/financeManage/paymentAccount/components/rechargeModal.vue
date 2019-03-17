@@ -144,7 +144,7 @@
                         { validator : validateMethod.validateMoney, trigger : 'blur' },
                     ],
                     payType : [
-                        { required : true, message : this.$t('errorEmpty', { msg : this.$t('payType') }), trigger : 'blur' },
+                        { required : true, message : this.$t('selectField', { msg : this.$t('payType') }), trigger : 'blur' },
                     ]
                 },
                 //模态框标题
@@ -173,7 +173,12 @@
             show ( data ) {
                 this.visible = true;
                 if ( data ) {
-                    this.formData = defaultsDeep(this.formData, data.item );
+                    this.formData = defaultsDeep({
+                        partner : '',
+                        rechargeAmount : '',
+                        payType : '',
+                        remark : '',
+                    }, data.item );
                 }
                 this.controlModal();
             },
@@ -181,6 +186,9 @@
              *  关闭模态框
              */
             hide () {
+                if (this.$refs.formValidate) {
+                    this.$refs.formValidate.resetFields();
+                }
                 this.visible = false;
                 this.payInfo = {};
             },
@@ -305,7 +313,7 @@
              * @param{Boolean} status 模态框状态
              */
             visibleChange (status) {
-                if (status === false) {
+                if (status === false && this.$refs.formValidate) {
                     this.$refs.formValidate.resetFields();
                 }
             },

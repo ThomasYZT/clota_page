@@ -128,6 +128,10 @@ export default {
     'listSpecialPointRules' : '/member/memberRule/listRules',
     //校验特殊会员折扣率设置是否正确
     'checkRuleDate' : '/member/memberRule/checkRuleDate',
+    //修改特殊会员折扣率的启用状态
+    'updateRulesStatus' : '/member/memberRule/updateRulesStatus',
+    //复制特殊会员积分折扣率
+    'copyRule' : '/member/memberRule/copyRule',
 
     /***********************************会员卡券***********************************/
     //设置特殊会员折扣率

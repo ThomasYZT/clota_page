@@ -73,7 +73,7 @@
                     <!--有效期设置-->
                     <div class="ivu-form-item-wrap">
                         <Form-item :label="$t('validityPeriod') + '：'" prop="effTime">
-                            <Select v-model="formData.effTime" style="width:280px">
+                            <Select v-model="formData.effTime" style="width:280px" transfer>
                                 <Option v-for="(item,index) in effTimeListDetail"
                                         :value="item.value"
                                         :label="item.value !== 'forEver' ? (item.label + $t('time.' + formData.effUnit)) : $t(item.label)"

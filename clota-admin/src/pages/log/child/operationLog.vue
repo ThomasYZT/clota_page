@@ -70,7 +70,19 @@
                 },this.filterData)).then(res => {
                     if (res.status === 200) {
                         this.totalCount = Number(res.data.totalRecord);
-                        this.tableData = res.data.list ? res.data.list : [];
+                        this.tableData = res.data.list ? res.data.list.map(item => {
+                            let contents = String(item.contents).replace(/\$t(.*)/,(rs,$1) => {
+                                if ($1.length > 4) {
+                                    return this.$t($1.slice(2,-2));
+                                } else {
+                                    return $1;
+                                }
+                            });
+                            return {
+                                ...item,
+                                contents
+                            };
+                        }) : [];
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
