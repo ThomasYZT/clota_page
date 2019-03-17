@@ -23,6 +23,7 @@
                         <Form-item :label="$t('couponName')" prop="couponName">
                             <Input v-model.trim="formData.couponName"
                                    style="width: 280px;"
+                                   :disabled="type !== 'add'"
                                    :placeholder="$t('inputField', {field: ''})"/>
                         </Form-item>
                     </i-col>
@@ -32,6 +33,7 @@
                             <Select v-model.trim="formData.appScene"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     style="width: 280px;"
+                                    :disabled="type !== 'add'"
                                     @on-change="sceneChange">
                                 <Option v-for="(item,index) in cardScenarioList"
                                         :key="index"
@@ -55,6 +57,7 @@
                             <Select v-model.trim="formData.couponType"
                                     :placeholder="$t('selectField', {msg: ''})"
                                     style="width: 280px;"
+                                    :disabled="type !== 'add'"
                                     @on-change="typeChange">
                                 <Option v-for="(item,index) in couponTypeList"
                                         :key="index"
@@ -68,6 +71,7 @@
             </Form>
             <!-- 代金券表单 -->
             <voucherTypeForm ref="cash_coupon"
+                             :type="type"
                              v-if="formData.couponType === 'cash_coupon'"
                              :scene="formData.appScene"
                              :channelSetList="channelSetList"
@@ -75,6 +79,7 @@
                              :productTypeList="productTypeList"></voucherTypeForm>
             <!-- 兑换券表单 -->
             <redemptionTypeForm ref="exchange_coupon"
+                                :type="type"
                                 v-else-if="formData.couponType === 'exchange_coupon'"
                                 :scene="formData.appScene"
                                 :channelSetList="channelSetList"
@@ -82,6 +87,7 @@
                                 :listAmountRange="listAmountRange"></redemptionTypeForm>
             <!-- 折扣券表单 -->
             <discountTypeForm ref="discount_coupon"
+                              :type="type"
                               v-else-if="formData.couponType === 'discount_coupon'"
                               :scene="formData.appScene"
                               :channelSetList="channelSetList"
@@ -155,6 +161,8 @@
                 productTypeList : [],
                 //商品列表数据
                 productList : [],
+                //列表项数据
+                rowData : {},
             };
         },
         computed : {
@@ -190,6 +198,13 @@
             getParams (params) {
                 if (params && params.type) {
                     this.type = params.type;
+                    if (this.type !== 'add' && params.rowData && Object.keys(params.rowData).length > 0) {
+                        this.rowData = params.rowData;
+                    } else {
+                        this.$router.push({
+                            name : 'coupon'
+                        });
+                    }
                 } else {
                     this.$router.push({
                         name : 'coupon'

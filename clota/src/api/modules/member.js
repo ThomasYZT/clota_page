@@ -149,7 +149,9 @@ export default {
     //生成链接
     'generateLinks' : '/member/memberCoupon/generateLinks',
     //手动推送卡券
-    'manualPullCoupons' : '/memberCoupon/manualPullCoupons',
+    'manualPullCoupons' : '/member/memberCoupon/manualPullCoupons',
+    //手动推送是选择会员级别
+    'queryLevelsByCardType' : '/member/memberLevel/queryLevelsByCardType',
     //导出券码
     'downLoadCoupon' : '/member/memberCoupon/downLoadCoupon',
     //会员优惠券-查看卡券日志

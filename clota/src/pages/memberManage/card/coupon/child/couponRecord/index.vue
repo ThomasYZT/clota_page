@@ -73,7 +73,7 @@
                 //记录类型
                 type : '',
                 //日期范围
-                dateTime : [new Date(), new Date().addDays(-7)],
+                dateTime : [new Date().addDays(-7), new Date()],
             };
         },
         methods : {

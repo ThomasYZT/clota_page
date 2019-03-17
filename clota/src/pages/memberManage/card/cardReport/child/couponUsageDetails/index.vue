@@ -32,11 +32,6 @@
                                 @click="changeType('noUse')"
                                 :class="{'selected' : type === 'noUse'}"
                                 class="tab-btn">{{$t('noUse')}}</Button>
-                        <!-- 已过期 -->
-                        <Button type="default"
-                                @click="changeType('expired')"
-                                :class="{'selected' : type === 'expired'}"
-                                class="tab-btn">{{$t('expired')}}</Button>
                     </ButtonGroup>
                 </div>
             </div>
@@ -59,10 +54,6 @@
             <noUseTable :couponStatus="couponStatus"
                         :rowData="rowData"
                         v-else-if="type === 'noUse'"></noUseTable>
-            <!-- 已过期 -->
-            <expiredTable :couponStatus="couponStatus"
-                          :rowData="rowData"
-                          v-else-if="type === 'expired'"></expiredTable>
         </div>
     </div>
 </template>
@@ -110,7 +101,7 @@
                     return 'receive';
                 } else if (this.type === 'used') {
                     return 'used';
-                } else if (this.typ === 'noUse') {
+                } else if (this.type === 'noUse') {
                     return 'noUse'
                 } else {
                     return 'expired';

@@ -13,6 +13,7 @@
                 <Form-item :label="$t('couponFaceValue')" prop="nominalValue">
                     <Input v-model.trim="formData.nominalValue"
                            style="width: 280px;"
+                           :disabled="type !== 'add'"
                            :placeholder="$t('inputField', {field: ''})"/>
                 </Form-item>
             </i-col>
@@ -21,6 +22,7 @@
                 <Form-item :label="$t('spendOver')" prop="conditionLowerLimtation">
                     <Input v-model.trim="formData.conditionLowerLimtation"
                            style="width: 280px;"
+                           :disabled="type !== 'add'"
                            :placeholder="$t('inputField', {field: ''})"/>
                     <span class="label-used">{{$t('available')}}</span><!--可用-->
                 </Form-item>
@@ -33,6 +35,7 @@
                     <Form-item :label="$t('有效期')" prop="effDays">
                         <Input v-model.trim="formData.effDays"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('天')}}</span><!--天-->
                         <Tooltip transfer placement="right">
@@ -58,6 +61,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
                             style="width: 280px;"
+                            :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
                     </Form-item>
@@ -72,6 +76,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             style="width: 280px;"
+                            :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
                     </Form-item>
@@ -81,6 +86,7 @@
                     <Form-item :label="$t('generationNum')" prop="quantity">
                         <Input v-model.trim="formData.quantity"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}}</span><!--张-->
                     </Form-item>
@@ -90,6 +96,7 @@
                     <Form-item :label="$t('amountSingleDay')" prop="dayGain">
                         <Input v-model.trim="formData.dayGain"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
                     </Form-item>
@@ -99,6 +106,7 @@
                     <Form-item :label="$t('amountLimit')" prop="totalGain">
                         <Input v-model.trim="formData.totalGain"
                                style="width: 280px;"
+                               :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
                         <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
                         <Tooltip transfer placement="right">
@@ -115,7 +123,9 @@
             <i-col span="12">
                 <!--能否和会员折扣权益同时使用-->
                 <Form-item :label="$t('isUsedTogether')" prop="isDiscountCoexist">
-                    <RadioGroup v-model="formData.isDiscountCoexist" @on-change="discountTypeChange">
+                    <RadioGroup v-model="formData.isDiscountCoexist"
+                                :disabled="type !== 'add'"
+                                @on-change="discountTypeChange">
                         <Radio label="true">{{$t('useSameTime')}}</Radio><!--可同时使用-->
                         <Radio label="false">{{$t('noUseSameTime')}}</Radio><!--不可同时使用-->
                     </RadioGroup>
@@ -125,7 +135,8 @@
                 <i-col span="12">
                     <!--代金券在折扣前后使用设置-->
                     <Form-item :label="$t('isUsedBeforeOrAfterDiscount')" prop="isEffectBeforeDiscount">
-                        <RadioGroup v-model="formData.isEffectBeforeDiscount">
+                        <RadioGroup v-model="formData.isEffectBeforeDiscount"
+                                    :disabled="type !== 'add'">
                             <Radio label="true">{{$t('availableBeforeDiscount')}}</Radio><!--折扣前可用-->
                             <Radio label="false">{{$t('availableAfterDiscount')}}</Radio><!--折扣后可用-->
                         </RadioGroup>
@@ -142,6 +153,7 @@
                                   nodeKey="id"
                                   :defaultProps="{ label : 'channelName' }"
                                   :data="channelSetList"
+                                  :disabled="type !== 'add'"
                                   @on-change="resetField('conditionChannelId')"></treeSelector>
                 </Form-item>
             </i-col>
@@ -153,6 +165,7 @@
                                   nodeKey="id"
                                   :defaultProps="{ label : 'orgName' }"
                                   :data="listAmountRange"
+                                  :disabled="type !== 'add'"
                                   @on-change="resetField('conditionOrgId')"></treeSelector>
                 </Form-item>
             </i-col>
@@ -163,6 +176,7 @@
                                   nodeKey="id"
                                   :defaultProps="{ label : 'typeName' }"
                                   :data="productTypeList"
+                                  :disabled="type !== 'add'"
                                   @on-change="resetField('conditionProductId')"></treeSelector>
                 </Form-item>
             </i-col>
@@ -205,6 +219,11 @@
                     return [];
                 }
             },
+            //表单状态
+            type : {
+                type : String,
+                default : '',
+            }
         },
         data () {
             return {
