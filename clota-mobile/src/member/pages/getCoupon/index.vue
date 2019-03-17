@@ -62,11 +62,30 @@
                  @on-confirm="onConfirm">
             <p style="text-align:center;">{{ $t('您还未注册会员，请前往注册') }}</p>
         </confirm>
+        <!--领取错误提示-->
+        <confirm v-model="errTipShow"
+                 v-transfer-dom
+                 :title="$t('notice')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false"
+                 @on-confirm="errTipShow = false">
+            <p style="text-align:center;">{{ $t(errTipMsg) }}</p>
+        </confirm>
+        <!--选择要领取卡券的会员卡-->
+        <choose-member-type v-model="showMemberListModal"
+                             :member-list="memberList"
+                             @choose-type="toGetCouponViaMemberType">
+        </choose-member-type>
     </div>
 </template>
 
 <script>
+    import chooseMemberType from './components/chooseMemberType';
+
     export default {
+        components : {
+            chooseMemberType
+        },
         data () {
             return {
                 //手机号
@@ -76,7 +95,19 @@
                 //当前阶段
                 stage : 'notGet',
                 //提示框是否显示
-                confirmShow : true
+                confirmShow : false,
+                //显示所有的会员卡现在模态框
+                showMemberListModal : false,
+                memberList : [
+                    {
+                        key : '1',
+                        value : '1'
+                    }
+                ],
+                //是否显示错误信息提示模态框
+                errTipShow : false,
+                //错误信息
+                errTipMsg : ''
             };
         },
         methods : {
@@ -91,12 +122,21 @@
              */
             getCoupon () {
                 this.stage = 'getted';
+                this.showMemberListModal = true;
             },
             /**
              * 确认注册
              */
             onConfirm () {
 
+            },
+            /**
+             * 选择的会员
+             * @param{String} member 会员
+             */
+            toGetCouponViaMemberType (member) {
+                this.errTipShow = true;
+                this.errTipMsg = '今日已达到领取上线';
             }
         }
     };

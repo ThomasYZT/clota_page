@@ -15,6 +15,7 @@ export const memberRouterDeal = (to, from, next) => {
         || to.name === 'wxActivateCard' // 微信会员卡激活
         || to.name === 'wxPay' // 微信支付
         || to.name === 'getCardUrl' // 获取卡
+        || to.name === 'touristGetCoupon' // 游客领取卡券
     ) {
         next();
     } else {

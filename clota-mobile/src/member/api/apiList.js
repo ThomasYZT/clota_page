@@ -118,6 +118,8 @@ const apiList = {
     getMemberServiceSettingByCode : '/external/extprivilege/getMemberServiceSettingByCode',
     //查询最低等级的会员卡级
     queryBaseLevelOfGrowth : '/external/memberInfo/queryBaseLevelOfGrowth',
+    //查询会员优惠券信息
+    queryMemberCouponsList : '/external/memberCoupon/queryMemberCouponsList',
 };
 
 export default apiList;
