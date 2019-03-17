@@ -82,6 +82,10 @@
                     requiredCredits : '',
                     //上架数量
                     upNum : '',
+                    //产品类型
+                    goodsType : '',
+                    //优惠券id
+                    couponId : ''
                 },
                 //表单验证规则
                 ruleValidate : {
@@ -120,6 +124,8 @@
                 if (data) {
                     this.detail = data;
                     this.formData.id = this.detail.id;
+                    this.formData.goodsType = this.detail.goodsType;
+                    this.formData.couponId = this.detail.couponId;
                     this.formData.goodsStatus = this.detail.goodsStatus;
                     this.formData.requiredCredits = this.detail.requiredCredits ? this.detail.requiredCredits.toString() : '';
                 }
@@ -151,6 +157,8 @@
                     goodsStatus : 'up',
                     requiredCredits : this.formData.requiredCredits,
                     upNum : this.formData.upNum + this.detail.upNum,
+                    couponId : this.formData.couponId,
+                    goodsType : this.formData.goodsType
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('up') }));

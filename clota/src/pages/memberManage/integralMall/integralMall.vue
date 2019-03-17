@@ -185,11 +185,11 @@
                 selectList : [
                     {
                         name : 'all',
-                        value : 'all'
+                        value : ''
                     },
                     {
                         name : 'goods',
-                        value : 'goods'
+                        value : 'ierp'
                     },
                     {
                         name : 'coupon',
@@ -197,7 +197,7 @@
                     }
                 ],
                 //当前筛选条件
-                localType : 'all'
+                localType : ''
             };
         },
         methods : {
@@ -205,7 +205,9 @@
              * 获取表格数据
              */
             getListData () {
-                ajax.post('queryPagedGoods', this.queryParams).then(res => {
+                ajax.post('queryPagedGoods', Object.assign({
+                    goodsType : this.localType
+                },this.queryParams)).then(res => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
@@ -293,7 +295,6 @@
                     let data = this.chosedData.map((item) => {
                         return item.id;
                     });
-
                     ajax.post('batchPutOnGoods', data,
                         {
                             headers : { "Content-Type" : "application/json;charset-UTF-8" }
@@ -351,6 +352,8 @@
                     goodsStatus : 'down',
                     requiredCredits : rowData.requiredCredits,
                     upNum : 0,
+                    couponId : rowData.couponId,
+                    goodsType : rowData.goodsType,
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('down') }));
@@ -373,6 +376,7 @@
              */
             chooseType (typeInfo) {
                 this.localType = typeInfo.value;
+                this.getListData();
             }
         },
         computed : {
