@@ -23,10 +23,10 @@ export const infoListHead = [
         field : 'gender'
     },
     {
-        title : 'memberTypes',
+        title : 'memberCardType',
         minWidth : 110,
         enMinWidth : 190,
-        field : 'typeName'
+        field : 'cardTypeName'
     },
     {
         title : 'levelSetting',

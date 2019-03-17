@@ -290,6 +290,7 @@
              * @param{String} qrCode 扫码枪扫码结果
              */
             createMember (qrCode) {
+                let paymentChannel = this.payAccountList.find(item => item.value === this.cardParam.payType);
                 ajax.post('batchOpenCards',{
                     entityCardInfo : JSON.stringify(this.tableData),
                     cardTypeId : this.cardInfo.cardTypeId,
@@ -297,7 +298,7 @@
                     channelType : this.cardParam.payType,
                     qrCode : qrCode,
                     txnAmt : this.entityCardTotalPrice,
-                    paymentChannel : this.payAccountList.find(item => item.value === this.cardParam.payType)['payType']
+                    paymentChannel : paymentChannel ? paymentChannel['payType'] : ''
                 }).then(res => {
                     if (res.success) {
                         this.tableData = [];

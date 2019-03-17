@@ -80,5 +80,17 @@ export default {
     //查询支付结果
     'market_queryPayRecordByOutTradeNo' : '/external/pay/queryPayRecordByOutTradeNo',
     //查询消费结果更新业务
-    queryConsumeUpdateBiz : '/external/pay/queryConsumeUpdateBiz',
+    'queryConsumeUpdateBiz' : '/external/pay/queryConsumeUpdateBiz',
+    //获取用户信息
+    'getOAuth2UserInfo' : '/wechat/mp/getOAuth2UserInfo',
+    //获取用户信息
+    'market_autoLogin' : '/market/marketUser/autoLogin',
+    //微信直连支付
+    'market_getPayPageForMobile' : '/external/pay/getPayPageForMobile',
+    //微信公众号支付
+    'market_getPayPageForOfficialAccountNoLogin' : '/external/pay/getPayPageForOfficialAccountNoLogin',
+    //获取微信授权地址
+    'market_generateWxAuthUrl' : '/external/pay/generateWxAuthUrl',
+    //获取微信openId
+    'market_getOpenid' : '/external/pay/getOpenid',
 };

@@ -49,6 +49,18 @@
                 @query-data="queryList"
                 @selection-change="changeSelection">
                 <el-table-column
+                    slot="column1"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status=='valid'" class="status-sign valid"></span>
+                        <span v-else-if="scope.row.status=='invalid'" class="status-sign invalid"></span>
+                        {{scope.row.channelName}}
+                    </template>
+                </el-table-column>
+                <el-table-column
                     slot="column2"
                     slot-scope="row"
                     :label="row.title"
@@ -70,23 +82,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    slot="column5"
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.status=='valid'">
-                            <span class="status-sign valid"></span>{{$t('startingUse')}}
-                        </span>
-                        <span v-if="scope.row.status=='invalid'">
-                            <span class="status-sign invalid"></span>{{$t('hasNotStart')}}
-                        </span>
-                    </template>
-                </el-table-column>
-                <el-table-column
                     v-if="canEditChannel || canChangeChannelStatus || canDeleteChannel"
-                    slot="column7"
+                    slot="column6"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
@@ -94,7 +91,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li v-if="canEditChannel" @click="newSelfSupportBtn('modify', scope.row)">{{$t('modify')}}</li>
+                            <li v-if="canEditChannel && scope.row.type === 'online'" @click="newSelfSupportBtn('modify', scope.row)">{{$t('modify')}}</li>
                             <li :class="{'red-label' : scope.row.status === 'valid'}"
                                 v-if="canChangeChannelStatus"
                                 @click="enable(scope.row)">
@@ -103,39 +100,12 @@
                             <li class="red-label"
                                 v-if="scope.row.type === 'online' && canDeleteChannel"
                                 @click="showDelModal(scope.row)">{{$t('del')}}</li>
-                            <li class="disabled" v-if="scope.row.type === 'offline' && canDeleteChannel">
-                                <Tooltip placement="top"
-                                         :transfer="true">
-                                    <span>{{$t('del')}}</span>
-                                    <div slot="content">
-                                        <div class="tip-trade">{{$t('channelDelNotice')}}</div>
-                                    </div>
-                                </Tooltip>
-                            </li>
                         </ul>
-                        <!--<template v-if="canDeleteChannel">-->
-                            <!--<span class="divide-line"></span>-->
-                            <!--&lt;!&ndash;删除&ndash;&gt;-->
-                            <!--<span :class="['operate-btn', 'red']"-->
-                                  <!--v-if="scope.row.type=='online' && canDeleteChannel"-->
-                                  <!--@click="showDelModal(scope.row)">{{$t('del')}}-->
-                            <!--</span>-->
-                            <!--<Tooltip placement="top-end" :transfer="true" v-if="scope.row.type=='offline'">-->
-                                <!--<span :class="['operate-btn', 'gray']">{{$t('del')}}</span>-->
-                                <!--<div slot="content">-->
-                                    <!--<div class="tip-trade">{{$t('channelDelNotice')}}</div>-->
-                                <!--</div>-->
-                            <!--</Tooltip>-->
-                        <!--</template>-->
                     </template>
                 </el-table-column>
             </table-com>
         </div>
         <add-self-support ref="addSelfSupport" @on-add-success="queryList"></add-self-support>
-        <!--<delete-list ref="delListModal"
-                     @deletions="handleDeletions"
-                     :deleteName="deleteName"
-                     :name="name"></delete-list>-->
         <del-modal ref="delListModal" class="del-min-width">
             <span class="content-text">
                 <i class="iconfont icon-help delete-icon"></i>{{$t('colonSetting',{ key : $t('isDoing')})}}
@@ -220,7 +190,7 @@
                     partnerObj.successTip = this.$t('disabledChannel');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('disabled') }); // 禁用失败
                     partnerObj.status = 'invalid';
-                    partnerObj.msgType = 'warning';
+                    partnerObj.msgType = 'success';
                 } else if (scopeRow.status === 'invalid') {
                     partnerObj.successTip = this.$t('enabledChannel');
                     partnerObj.failTip = this.$t('failureTip', { tip : this.$t('commissioned') }); // 启用失败

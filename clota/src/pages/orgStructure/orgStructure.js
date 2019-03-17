@@ -56,7 +56,7 @@ export const saleChannelHead = [
         field : 'partnerId'
     },
     {
-        title : 'selfSaleChannelName', // 自营渠道编码
+        title : 'selfSaleChannelName', // 自营渠道名称
         minWidth : 150,
         field : 'channelName'
     },
@@ -76,11 +76,6 @@ export const saleChannelHead = [
         title : 'urlServerName', // 合作协议结束日期
         minWidth : 160,
         field : 'serverUrl'
-    },
-    {
-        title : 'status', // 状态
-        width : 120,
-        field : 'status'
     },
     {
         title : 'remark', // 备注

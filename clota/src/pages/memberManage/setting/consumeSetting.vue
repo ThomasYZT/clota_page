@@ -82,7 +82,7 @@
                                        type="text"
                                        :placeholder="$t('inputField', {field: ''})"
                                        class="single-input"/>
-                                {{$tc('effectAfterTime',settingData.scoreEffectiveMode.isNoIntegralTime > 1 ? 2 : 1)}}</span><!--时后生效-->
+                                {{$tc('effectAfterTime',settingData.scoreEffectiveMode.isNoIntegralTime > 1 ? 2 : 1)}}</span>
                             <div class="ivu-form-item-error-tip"
                                  style="left: 153px;"
                                  v-if="error.isNoIntegralTimeError">{{error.isNoIntegralTimeError}}</div>
@@ -145,6 +145,12 @@
                                class="single-input"
                                :placeholder="$t('inputField', {field: ''})"/>
                         {{$t('smsRemindsBeforeDays')}}<!--天短信提醒-->
+                        <Tooltip placement="top" transfer>
+                            <div slot="content" class="tips-content">
+                                {{$t('pointClearRuleTip')}}
+                            </div>
+                            <span class="iconfont icon-note" style="margin-left : 5px;color: #9e9e9e;vertical-align:initial;"></span>
+                        </Tooltip>
                         <div class="ivu-form-item-error-tip"
                              style="left: 155px;"
                              v-if="error.remindError">{{error.remindError}}</div>
@@ -280,12 +286,12 @@
             <div class="content-item">
                 <div class="title">
                     {{$t('newCardMenberFreeScoreSetting')}}
-                    <!--<Tooltip placement="top" transfer>-->
-                        <!--<span class="iconfont icon-note"></span>-->
-                        <!--<div slot="content">-->
-                            <!--<div class="tip-trade">{{$t('新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。')}}</div>-->
-                        <!--</div>-->
-                    <!--</Tooltip>-->
+                    <Tooltip placement="top" transfer>
+                        <span class="iconfont icon-note" style="color: #9e9e9e;vertical-align:initial;"></span>
+                        <div slot="content">
+                            <div class="tip-trade">{{$t('newCardPointDonateSetting')}}</div>
+                        </div>
+                    </Tooltip>
                 </div>
                 <div :class="{'ivu-form-item-error': error.memberDonateIntegerErr, 'main': true}">
                     <i-switch v-model="settingData.openCardSendScore.isSwitch"

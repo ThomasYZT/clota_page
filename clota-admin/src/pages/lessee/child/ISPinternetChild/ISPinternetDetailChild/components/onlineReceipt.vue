@@ -23,7 +23,7 @@
                                         <Select v-model="paymentChannel"
                                                 :disabled="!isEditing"
                                                 @on-change="paymentChannelChange"
-                                                style="width:150px">
+                                                style="width:280px">
                                             <Option v-for="item in paymentChannelList" :value="item.value" :key="item.value">{{ $t(item.label) }}</Option>
                                         </Select>
                                     </FormItem>
@@ -55,6 +55,7 @@
                                 <FormItem :label="$t('colonSetting',{ key : '设置收款账户' })" prop="name">
                                     <Select v-model="formData.accountType"
                                             :disabled="!isEditing || paymentChannel === 'useCorpPayAcc'"
+                                            style="width:280px"
                                             @on-change="accountTypeChange">
                                         <Option v-for="(item,index) in accountListDeal"
                                                 class="options-wrap"
@@ -71,7 +72,8 @@
                             <i-col span="10">
                                 <!--MerchantID-->
                                 <FormItem :label="$t('colonSetting',{ key : 'MerchantID' })" prop="MerchantId">
-                                    <Input v-model.trim="formData.MerchantId" :disabled="!isEditing || formData.accountType !== 'auto'"/>
+                                    <Input v-model.trim="formData.MerchantId" :disabled="!isEditing || formData.accountType !== 'auto'"
+                                           style="width:280px"/>
                                 </FormItem>
                             </i-col>
                         </i-row>
@@ -79,7 +81,8 @@
                             <i-col span="10">
                                 <!--partnerID-->
                                 <FormItem :label="$t('colonSetting',{ key : 'partnerID' })" prop="partnerId">
-                                    <Input v-model.trim="formData.partnerId" :disabled="!isEditing || formData.accountType !== 'auto'"/>
+                                    <Input v-model.trim="formData.partnerId" :disabled="!isEditing || formData.accountType !== 'auto'"
+                                           style="width:280px"/>
                                 </FormItem>
                             </i-col>
                         </i-row>
@@ -111,17 +114,28 @@
                                 <i-row>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : 'appID' })" prop="officialAccountsAppID">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.officialAccountsAppID"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.officialAccountsAppID" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : '商户号' })" prop="merchantNum">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.merchantNum"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.merchantNum" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : 'API密钥' })" prop="secretKey">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.secretKey"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.secretKey" style="width:280px"/>
+                                        </FormItem>
+                                    </i-col>
+                                </i-row>
+                                <i-row>
+                                    <i-col>
+                                        <FormItem :label="$t('colonSetting',{ key : 'API证书' })" prop="wxApiCertificateName">
+                                            <upload-file :extra-data="{ orgId : activeNode.id }"
+                                                         :disabled="!isEditing || useCorpPayAcc"
+                                                         :default-data="{ certificationName : wxoraliFormData.wxApiCertificateName }"
+                                                         @set-upload-file="getCertificate">
+                                            </upload-file>
                                         </FormItem>
                                     </i-col>
                                 </i-row>
@@ -133,17 +147,17 @@
                                 <i-row>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : 'appID' })" prop="appID">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.appID"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.appID" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : '私钥' })" prop="privateKey">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.privateKey"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.privateKey" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                     <i-col span="13">
                                         <FormItem :label="$t('colonSetting',{ key : '公钥' })" prop="publicKey">
-                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.publicKey"/>
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.publicKey" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
                                 </i-row>
@@ -155,7 +169,7 @@
                 <!-- 不开通显示内容 -->
                 <template v-else-if="paymentChannel === 'none' ||
                          (paymentChannel === 'useCorpPayAcc' && parentOrgPaymentChannel.paymentChannel === 'none')">
-                    <div class="tip">未开通在线支付账号</div>
+                    <div class="tip">未开通在线收款账户</div>
                 </template>
             </div>
         </transition>
@@ -165,8 +179,12 @@
 <script>
     import ajax from '@/api/index.js';
     import { paymentChannelList } from '@/assets/js/constVariable';
+    import uploadFile from './uploadFile';
 
     export default {
+        components : {
+            uploadFile
+        },
         props : {
             //是否在景区
             'is-scenic' : {
@@ -185,6 +203,13 @@
                 type : Boolean,
                 default : true
             },
+            //当前节点信息
+            'active-node' : {
+                type : Object,
+                default () {
+                    return {};
+                }
+            }
         },
         data () {
             return {
@@ -209,6 +234,8 @@
                     aliUseStatus : '',
                     officialAccountsAppID : '',
                     publicKey : '',
+                    wxApiCertificateUrl : '',
+                    wxApiCertificateName : '',
                 },
                 //表单数据复制
                 formDataCopy : {},
@@ -310,9 +337,13 @@
                 }
                 if (params.merchantNum) {
                     params.weixinOpenStatus = 'open';
+                } else {
+                    params.weixinOpenStatus = 'close';
                 }
                 if (params.appID) {
                     params.aliOpenStatus = 'open';
+                } else {
+                    params.aliOpenStatus = 'close';
                 }
                 params.paymentChannel = paymentChannel;
                 ajax.post('addPayInfo',params).then(res => {
@@ -338,9 +369,9 @@
                     JSON.parse(this.receiptAccountInfo.orgPaymentChannel.paramData) : {};
                 let orgPaymentChannel = this.receiptAccountInfo.orgPaymentChannel;
                 this.setReceiptAccountInfo({
-                    useCorpPayAcc : this.receiptAccountInfo.useCorpPayAcc === 'true' ? true : false,
+                    useCorpPayAcc : this.receiptAccountInfo.useCorpPayAcc === 'true',
                     paymentChannel : this.receiptAccountInfo.useCorpPayAcc === 'true' ? 'useCorpPayAcc' :
-                        orgPaymentChannel ? orgPaymentChannel.paymentChannel : 'none',
+                        (orgPaymentChannel ? orgPaymentChannel.paymentChannel : 'none'),
                     paymentChannelInfo : this.receiptAccountInfo.useCorpPayAcc === 'true' ?
                         parentOrgPaymentChannelInfo : orgPaymentChannelInfo,
                 });
@@ -405,6 +436,8 @@
                 this.wxoraliFormData.appID = parentOrgPaymentChannel.appID;
                 this.wxoraliFormData.privateKey = parentOrgPaymentChannel.privateKey;
                 this.wxoraliFormData.publicKey = parentOrgPaymentChannel.publicKey;
+                this.wxoraliFormData.wxApiCertificateName = parentOrgPaymentChannel.wxApiCertificateName;
+                this.wxoraliFormData.wxApiCertificateUrl = parentOrgPaymentChannel.wxApiCertificateUrl;
             },
             /**
              * 初始化yinshi账户配置表单数据
@@ -469,7 +502,14 @@
                 } else {
                     this.resetFormData();
                 }
-
+            },
+            /**
+             * 获取上传的微信证书信息
+             * @param{Object} fileInfo 证书信息
+             */
+            getCertificate (fileInfo) {
+                this.wxoraliFormData.wxApiCertificateName = fileInfo ? fileInfo.name : '';
+                this.$refs.wxoraliForm.validateField('wxApiCertificateName');
             }
         },
         computed : {
@@ -605,6 +645,13 @@
             //微信或支付宝账户配置表单校验规则
             wxoraliRuleValidate () {
                 return {
+                    wxApiCertificateName : [
+                        {
+                            required : this.paymentChannel === 'wxorali' && this.weixinRequired,
+                            message : this.$t('请上传微信API证书'),
+                            trigger : 'change',
+                        }
+                    ],
                     officialAccountsAppID : [
                         {
                             required : this.paymentChannel === 'wxorali' && this.weixinRequired,

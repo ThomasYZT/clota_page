@@ -9,7 +9,7 @@
            @on-visible-change="visibleChange"
            width="420">
 
-        <Form :label-width="lang === 'zh-Cn' ? 150 : 250"
+        <Form :label-width="lang === 'zh-CN' ? 150 : 250"
               ref="formRef"
               :model="formData"
               :rules="ruleValidate"

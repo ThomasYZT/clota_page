@@ -133,6 +133,10 @@
                         this.$store.commit('marketUpdateTypeName','');
                         this.$store.commit('marketUpdateCompanyName','');
                         this.$store.commit('updateCompanyCode','');
+                        this.$vux.toast.show({
+                            text : this.$t(res.message),
+                            type : 'cancel'
+                        });
                     }
                 });
             },

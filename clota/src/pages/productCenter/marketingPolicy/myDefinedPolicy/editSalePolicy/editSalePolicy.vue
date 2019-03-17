@@ -24,7 +24,7 @@
                       :specialHoliday="specialHoliday"
                       @queryDatePlanList="queryDatePlanList"></playRule>
             <!-- 产品信息 -->
-            <productInfo ref="productInfo"></productInfo>
+            <productInfo :hasMarket="hasMarket" ref="productInfo"></productInfo>
             <!-- 销售渠道 -->
             <saleChannels ref="saleChannels" @manageQuota="manageQuota"></saleChannels>
             <!-- 全民营销 -->

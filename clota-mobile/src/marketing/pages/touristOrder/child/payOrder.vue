@@ -65,8 +65,13 @@
              */
             recharge () {
                 if (this.isWeixin && this.payType === 'wx') {
-                    //在微信中调用微信支付
-                    this.getPayPageForOfficialAccount();
+                    let paymentChannel = this.payTypeList.find(item => item.key === this.payType)['payType'];
+                    if (paymentChannel === 'zhilian') {
+                        this.getWxOpenUrl();
+                    } else {
+                        //在微信中调用微信支付--银石支付
+                        this.getPayPageForOfficialAccount();
+                    }
                 } else if (this.payType === 'collect') {//到付直接下单
                     this.payFormData.paymentTypeId = this.payType;
                     //根据路由名称判断下单角色
@@ -83,7 +88,7 @@
                         }
                     });
                 } else {
-                    this.getPayPageForMobile();
+                    this.getPayPageForMobile('market_getPayPageForMobileNoLogin');
                 }
             },
             /**
@@ -98,6 +103,7 @@
                         this.payTypeList = [];
                         if (res.data && res.data.length > 0) {
                             for (let i = 0,j = res.data.length; i < j; i++) {
+                                if (res.data[i]['useStatus'] === 'not_enabled') continue;
                                 if (res.data[i]['accountType'] === 'weixin') {
                                     this.payTypeList.unshift({
                                         icon : require('../../../../assets/images/icon-wx-pay.svg'),
@@ -117,7 +123,11 @@
                                 }
                             }
                         }
-                        this.payType = this.payTypeList.length > 0 ? this.payTypeList[0].key : '';
+                        if (this.payTypeList.length > 0) {//选择第一个作为支付渠道
+                            this.payType = this.payTypeList[0].key;
+                        } else if (this.$route.name === 'salesManCreateOrderToPay' && this.supportCollect === 'true') {//支持到付
+                            this.payType = 'collect';
+                        }
                     } else {
                         this.payTypeList = [];
                     }
@@ -152,7 +162,7 @@
              */
             getPayPageForOfficialAccount () {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
-                let paymentChannel = this.payTypeList.find(item => item.key === 'ali')['payType'];
+                let paymentChannel = this.payTypeList.find(item => item.key === this.payType)['payType'];
                 ajax.postWithoutToken('market_getPayPageForOfficialAccount', {
                     bizScene : 'order',
                     bizType : 'pay_order',
@@ -212,11 +222,12 @@
             },
             /**
              * 获取手机网页支付信息
+             * @param{String} urlKey apikey
              */
-            getPayPageForMobile () {
+            getPayPageForMobile (urlKey) {
                 let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
-                let paymentChannel = this.payTypeList.find(item => item.key === 'ali')['payType'];
-                ajax.postWithoutToken('market_getPayPageForMobileNoLogin', {
+                let paymentChannel = this.payTypeList.find(item => item.key === this.payType)['payType'];
+                ajax.postWithoutToken(urlKey, {
                     bizScene : 'order',
                     bizType : 'pay_order',
                     channelType : this.payType === 'wx' ? 'weixin' : 'alipay',
@@ -292,6 +303,33 @@
                     }
                 });
             },
+            /**
+             * 获取微信支付授权地址
+             */
+            getWxOpenUrl () {
+                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
+                const { href } = this.$router.resolve({
+                    name : 'wxAccountPay',
+                    query : {
+                        bizScene : 'order',
+                        bizType : 'pay_order',
+                        channelType : 'weixin',
+                        txnAmt : this.totalAmount,
+                        orgId : this.marketOrgId,
+                        paymentChannel : 'zhilian',
+                    }
+                });
+                ajax.post('market_generateWxAuthUrl',{
+                    redirectUrl : location.origin + href,
+                    orgId : this.marketOrgId,
+                }).then(res => {
+                    if (res.success && res.data) {
+                        window.location.href = res.data;
+                    } else {
+                        this.$vux.toast.text(this.$t('payAbnormal'));
+                    }
+                });
+            }
         },
         created () {
             this.queryAllPayType();

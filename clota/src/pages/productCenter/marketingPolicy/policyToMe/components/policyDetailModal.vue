@@ -261,7 +261,7 @@
                                 {{$t('playDate')}}{{scope.row.befPlayEnd == '0' ? $t('when') : $t('before')+scope.row.befPlayEnd}}{{$t('day')}}
                             </template>
                             <template v-else>
-                                <span>{{$t('cancelAfterVerify')}}</span>
+                                <span>{{$t('memberStatusExpire')}}</span>
                             </template>
                         </template>
                     </el-table-column>

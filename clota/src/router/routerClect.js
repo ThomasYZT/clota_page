@@ -26,12 +26,12 @@ import helperCenter from './modules/helperCenter';
 
 export default {
     ...workbench,
-    ...systemSettingRouter,
+    ...memberManageRouter,
     ...orgStructureRouter,
     ...productCenterRouter,
     ...orderCenter,
     ...universalMarketing,
-    ...memberManageRouter,
+    ...systemSettingRouter,
     ...financeManageRouter,
     ...dataReport,
     ...personalCenterRouter,

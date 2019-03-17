@@ -44,9 +44,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="operate"
-                          @click="handleRecharge(scope.row)">{{$t('modify')}}
-                    </span>
+                    <ul class="operate-list">
+                        <li class="operate" @click="handleRecharge(scope.row)">{{$t('modify')}}</li><!--修改-->
+                        <li class="operate" @click="recharge(scope.row)">{{$t('topUp')}}</li><!--充值-->
+                    </ul>
                 </template>
             </el-table-column>
         </table-com>
@@ -55,18 +56,25 @@
         <modify-limit-modal ref="modifyLimitModal"
                             @updata-list="queryList">
         </modify-limit-modal>
+
+        <rechargeModal ref="rechargeModal" @updateList="queryList"></rechargeModal>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import tableCom from '@/components/tableCom/tableCom.vue';
     import modifyLimitModal from './components/modifyLimitModal.vue';
+    import rechargeModal from './components/rechargeModal';
     import { configVariable } from '@/assets/js/constVariable';
     import { paymentHead } from '../financeManageConfig';
     import ajax from '@/api/index';
     import { mapGetters } from 'vuex';
 
     export default {
-        components : { tableCom, modifyLimitModal },
+        components : {
+            tableCom,
+            modifyLimitModal,
+            rechargeModal
+        },
         props : {},
         data () {
             return {
@@ -96,11 +104,6 @@
                 return this.permissionInfo && this.permissionInfo['modifyReceivableAccount'] === 'allow';
             }
         },
-        created () {
-        },
-        mounted () {
-        },
-        watch : {},
         methods : {
             /**
              * 查询收款账户列表
@@ -130,6 +133,13 @@
                 if (!this.canModifyAccount) return;
                 this.$refs.modifyLimitModal.show({ item : scopeRow });
             },
+            /**
+             * 充值
+             * @param rowData
+             */
+            recharge (rowData) {
+                this.$refs.rechargeModal.show(rowData);
+            }
         }
     };
 </script>

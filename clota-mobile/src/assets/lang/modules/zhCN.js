@@ -467,5 +467,9 @@ export default {
     'payFaieldNotice' : '支付失败，如未退款，请联系工作人员。',
     'iosSettingError' : '请关闭无痕模式，然后刷新页面继续付款。',
     'memberCard' : '会员卡',
-    'myCoupon' : '我的优惠券'
+    'myCoupon' : '我的优惠券',
+    'M037' : '该手机号已被注册',
+    'S014' : '微信公众号配置错误',
+    'mobileNotExist' : '手机号不存在',
+    'mobileNotExistToRegister' : '手机号未注册，请先注册。',
 };

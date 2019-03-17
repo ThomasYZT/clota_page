@@ -61,7 +61,7 @@
                                             <span>{{$t('day')}}</span>
                                         </template>
                                         <template v-else>
-                                            <span>{{$t('cancelAfterVerify')}}</span>
+                                            <span>{{$t('memberStatusExpire')}}</span>
                                         </template>
                                     </template>
                                 </el-table-column>

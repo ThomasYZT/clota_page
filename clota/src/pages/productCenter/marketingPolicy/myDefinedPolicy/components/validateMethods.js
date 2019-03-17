@@ -136,15 +136,7 @@ export const validateNaturalNumber = (rule, value, callback) => {
             if (Number(value) < 0) {
                 callback(i18n.t('smallerError', { field : '', num : '0' }));
             } else {
-                common.validateInteger(value).then(() => {
-                    callback();
-                }).catch(err => {
-                    if (err === 'errorMaxLength') {
-                        callback(i18n.t(err,{ field : '', length : 10 }));
-                    } else {
-                        callback(i18n.t(err,{ field : '' }));
-                    }
-                });
+                callback();
             }
         } else {
             callback(i18n.t('numError', { field : i18n.t(rule.customField ? rule.customField : rule.field) }))

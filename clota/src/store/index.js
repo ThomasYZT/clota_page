@@ -22,7 +22,14 @@ const childDeepClone = (childrenList, data) => {
                 let children = childDeepClone(router.children, data);
                 //配置没有匹配到路由的重定向页面
                 children.push(getFourRoute({ menuName : '404', lightMenu : router.meta._name, _name : router.meta._name }));
-                if (children.length > 1) {
+                //判断是否有自定义重定向路由
+                if (router.redirect) {
+                    children.push({
+                        path : '',
+                        redirect : router.redirect
+                    });
+                    router['children'] = children;
+                } else if (children.length > 1) {
                     //静态路由当中没有保存path为空的重定向路由，所以需要给父路由添加重定向路由
                     //子路由中的菜单路由
                     let childMenu = children.filter(item => item.meta && (item.meta.isMenu || item.meta.isStaticMenu));
@@ -104,7 +111,7 @@ export default new Vuex.Store({
         promisings : 0,
         //右侧操作栏是否显示
         operateLine : false,
-        //组织信息
+        //当前登录节点信息
         manageOrgs : {},
         //当前的皮肤
         skinType : 'blue-theame',

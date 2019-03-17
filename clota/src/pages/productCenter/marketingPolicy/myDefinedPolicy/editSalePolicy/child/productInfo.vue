@@ -79,7 +79,8 @@
                           :quotaData.sync="formData.quotaData"
                           @updateQuotaChannelData="updateQuotaChannelData"></quotaManageModal>
         <!--添加/修改产品-->
-        <edit-product-modal ref="editProduct"></edit-product-modal>
+        <edit-product-modal ref="editProduct"
+                            :hasMarket="hasMarket"></edit-product-modal>
     </div>
 </template>
 
@@ -92,6 +93,13 @@
     import ajax from '@/api/index';
 
     export default {
+        props : {
+            //是否开启全民营销模块
+            hasMarket : {
+                type : String,
+                default : '',
+            }
+        },
         components : {
             tableCom,
             editProductModal,
@@ -99,8 +107,6 @@
         },
         data () {
             return {
-                //产品列表表头
-                productColumn : productColumn,
                 //编辑好的产品列表
                 formData : {
                     quotaData : [],
@@ -124,6 +130,16 @@
                         },
                     ]
                 };
+            },
+            //产品列表表头
+            productColumn () {
+                if (this.hasMarket !== 'true') {
+                    return productColumn.filter(item => {
+                        return item.title !== 'marketQuota';
+                    })
+                } else {
+                    return productColumn;
+                }
             }
         },
         methods : {

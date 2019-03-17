@@ -49,7 +49,7 @@
                                        disabled
                                        placeholder=""/>
                             </template>
-                            <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
+                            <!--<span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>-->
                         </FormItem>
                     </i-col>
                 </i-row>
@@ -251,7 +251,7 @@
                                    v-else
                                    disabled
                                    placeholder=""/>
-                            <span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>
+                            <!--<span class="iconfont icon-note" v-title="$t('chooseParkNotice')"></span>-->
                         </FormItem>
                     </i-col>
                 </i-row>

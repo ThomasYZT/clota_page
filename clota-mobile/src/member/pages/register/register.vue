@@ -122,28 +122,28 @@
 
     export default {
         mixins : [lifeCycleMixins],
-        data() {
+        data () {
             return {
                 //表单数据
                 formData : {
                     //会员卡卡级ID
-                    levelId: '',
+                    levelId : '',
                     // 会员名称
-                    custName: '',
+                    custName : '',
                     // 性别
-                    gender: '',
+                    gender : '',
                     // 手机号
-                    phoneNum: '',
+                    phoneNum : '',
                     // 验证码
-                    code: '',
+                    code : '',
                     // 出生日期
-                    birthDay: '',
+                    birthDay : '',
                     // 证件类型ID
-                    certificationType: '',
+                    certificationType : '',
                     // 证件号码
-                    idCardNumber: '',
+                    idCardNumber : '',
                     // 地址
-                    homeAddr: ''
+                    homeAddr : ''
                 },
                 //选中的性别
                 gender : [],
@@ -156,22 +156,22 @@
                 //性别列表数据
                 sexList : [genderEnum.map(item => ({ name : this.$t(item.name),value : item.desc }))],
                 // 定时器
-                timer: null,
+                timer : null,
                 //倒计时间
-                countDown: null,
+                countDown : null,
                 // 按钮是否禁用
-                isGetCode: false,
+                isGetCode : false,
                 //微信用户信息
                 wxUserInfo : {},
                 //当前时间
-                endDate: new Date().format('yyyy-MM-dd'),
+                endDate : new Date().format('yyyy-MM-dd'),
                 //会员卡卡级列表
                 cardLevelList : [],
                 //选中的卡级
                 cardLevel : [],
-            }
+            };
         },
-        methods: {
+        methods : {
             ...mapActions([
                 'getCardListInfo'
             ]),
@@ -181,41 +181,41 @@
             /**
              * 获取验证码
              */
-            getCode() {
+            getCode () {
                 //先验证是否在60s倒计时内
-                if(!this.isGetCode) {
+                if (!this.isGetCode) {
                     //再验证电话号码是否存在
                     this.phoneValidate(() => {
                         ajax.post('getCode', {
-                            phoneNum: this.formData.phoneNum,
+                            phoneNum : this.formData.phoneNum,
                             type : 'member_register',
                             companyCode : this.companyCode
                         }).then((res) => {
-                           if(!res.success) {
+                           if (!res.success) {
                                this.$vux.toast.show({
-                                   text: this.$t('operateFail',{msg : this.$t('send')}),
+                                   text : this.$t('operateFail',{ msg : this.$t('send') }),
                                    type : 'cancel'
                                });
-                           }else {
+                           } else {
                                this.timimg();
                                this.isGetCode = true;
                                this.$vux.toast.show({
-                                   text: this.$t('operateSuc',{msg : this.$t('send')})
-                               })
+                                   text : this.$t('operateSuc',{ msg : this.$t('send') })
+                               });
                            }
-                        })
+                        });
                     });
                 }
             },
             /**
              * 计时器函数
              */
-            timimg() {
+            timimg () {
                 this.countDown = 60000;
                 this.timer = setInterval(() => {
-                    if(this.countDown !== 0) {
+                    if (this.countDown !== 0) {
                         this.countDown -= 1000;
-                    }else {
+                    } else {
                         this.isGetCode = false;
                         this.countDown = null;
                         clearInterval(this.timer);
@@ -228,7 +228,7 @@
              */
             queryDocument () {
                 ajax.post('queryDocuments', {
-                    orgId: this.wxUserInfo.orgId
+                    orgId : this.wxUserInfo.orgId
                 }).then(res => {
                     if (res.success) {
                         this.idTypeList = res.data ? [res.data.data.map((item) => {
@@ -245,12 +245,12 @@
             /**
              * 注册会员
              */
-            register() {
+            register () {
                 ajax.post('registerMemberCard', Object.assign({
-                    companyCode: this.companyCode,
-                    wxOpenId: this.wxUserInfo.openId
+                    companyCode : this.companyCode,
+                    wxOpenId : this.wxUserInfo.openId
                 }, this.formData)).then((res) => {
-                    if(res.success) {
+                    if (res.success) {
                         //存储token信息
                         localStorage.setItem('token', res.data.token);
                         //存储本地、vuex用户信息
@@ -259,7 +259,7 @@
                         this.$vux.toast.text(this.$t('registSuccess'));
                         //获取会员卡列表
                         this.getCardListInfo().then(() => {
-                            this.$router.push({ name : 'home'});
+                            this.$router.push({ name : 'home' });
                         });
                     } else {
                         this.$vux.toast.text(this.$t(res.code));
@@ -338,17 +338,17 @@
              * 手机号验证 验证手机号不为空 且为 手机号格式
              * @param callback
              */
-            phoneValidate(callback) {
-                if(this.formData.phoneNum === '') {
-                    this.$vux.toast.text(this.$t('pleaseEnterMobile'))
+            phoneValidate (callback) {
+                if (this.formData.phoneNum === '') {
+                    this.$vux.toast.text(this.$t('pleaseEnterMobile'));
                     return;
                 } else {
-                    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
-                    if(!phoneReg.test(this.formData.phoneNum)) {
-                        this.$vux.toast.text(this.$t('pleaseEnterRightMobile'))
+                    let phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                    if (!phoneReg.test(this.formData.phoneNum)) {
+                        this.$vux.toast.text(this.$t('pleaseEnterRightMobile'));
                         return;
-                    }else {
-                        if(callback) {
+                    } else {
+                        if (callback) {
                             callback();
                         }
                     }
@@ -438,7 +438,7 @@
                 return obj;
             },
             queryLevelsOfGrowth () {
-                ajax.post('queryLevelsOfGrowth', {
+                ajax.post('queryBaseLevelOfGrowth', {
                     companyCode : this.companyCode
                 }).then(res => {
                     if (res.success) {
@@ -446,7 +446,7 @@
                             return {
                                 name : item.levelDesc,
                                 value : item.id,
-                            }
+                            };
                         })] : [];
                     } else {
                         this.cardLevelList = [];
@@ -457,14 +457,14 @@
         created () {
             this.queryLevelsOfGrowth();
         },
-        computed :{
+        computed : {
             ...mapGetters({
                 lang : 'lang',
                 companyCode : 'companyCode',
                 sourceInfo : 'sourceInfo',
             })
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -477,6 +477,7 @@
         color: #4A4A4A;
         background: get_url('icon-bg.png');
         background-size: 100% 100%;
+        @include padding_place(30px);
 
         /deep/ .weui-cell__primary{
             padding-right: 10px;
@@ -536,6 +537,11 @@
 
         /deep/ .vux-datetime{
             border-bottom: 0!important;
+        }
+
+        .button{
+            position: sticky;
+            margin-top: 50px;
         }
     }
 </style>

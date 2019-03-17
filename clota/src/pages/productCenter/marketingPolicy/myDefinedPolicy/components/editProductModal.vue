@@ -114,7 +114,7 @@
                                 </Tooltip>
                             </FormItem>
                         </i-col>
-                        <i-col span="12" v-if="formData.isGroup !== 'true'">
+                        <i-col span="12" v-if="formData.isGroup !== 'true' && hasMarket === 'true'">
                             <!--全民营销配额数量-->
                             <FormItem :label="$t('marketQuota')" prop="marketQuota">
                                 <Input v-model.trim="formData.marketQuota"
@@ -206,6 +206,13 @@
     import defaultsDeep from 'lodash/defaultsDeep';
 
     export default {
+        props : {
+            //是否开启全民营销模块
+            hasMarket : {
+                type : String,
+                default : '',
+            }
+        },
         components : {
             tableCom,
             titlePark,

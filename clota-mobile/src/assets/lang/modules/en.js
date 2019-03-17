@@ -467,5 +467,9 @@ export default {
     'payFaieldNotice' : 'payment failed. if there is no refund, please contact the staff.',
     'iosSettingError' : 'please turn off the invisible mode and then refresh the page to continue the payment.',
     'memberCard' : 'membership card',
-    'myCoupon' : '我的优惠券'
+    'myCoupon' : '我的优惠券',
+    'M037' : 'the phone number has been registered',
+    'S014' : 'weChat public number configuration error',
+    'mobileNotExist' : 'phone number does not exist',
+    'mobileNotExistToRegister' : 'the mobile phone number is not registered, please register first.',
 };
