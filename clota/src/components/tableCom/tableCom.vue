@@ -249,7 +249,16 @@
             //表格选择框是否禁用
             'selectable' : {
                 type : Function,
-                default : new Function('return true')
+                default () {
+                    return function () {
+                        return true;
+                    };
+                }
+            },
+            //第一次需要自动查询接口，
+            'auto-query-first' : {
+                type : Boolean,
+                default : true
             }
         },
         data () {
@@ -367,7 +376,9 @@
             },
         },
         created () {
-            this.queryList();
+            if (this.autoQueryFirst) {
+                this.queryList();
+            }
         },
         mounted () {
             this.setTableMaxHeight();

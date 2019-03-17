@@ -8,6 +8,7 @@
         </bread-crumb-head>
         <div v-if="showBreadHead" class="hr"></div>
         <table-com
+            :auto-query-first="false"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"
@@ -67,8 +68,10 @@
     import { columnData } from './integrationConfig';
     import ajax from '@/api/index.js';
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
+    import lifeCycleMixins from '@/mixins/lifeCycleMixins';
 
     export default {
+        mixins : [lifeCycleMixins],
         components : {
             modifyRateModal,
             tableCom,
@@ -87,7 +90,9 @@
                 //每页条数
                 pageSize : 10,
                 //当前操作的
-                currentData : {}
+                currentData : {},
+                //特殊积分折扣率设置
+                ruleId : ''
             };
         },
         methods : {
@@ -114,7 +119,8 @@
                     this.$router.push({
                         name : 'specialIntegralStoreSetting',
                         params : {
-                            memberInfo : data
+                            memberInfo : data,
+                            ruleId : this.ruleId
                         }
                     });
                 } else {
@@ -134,7 +140,8 @@
                 ajax.post('memberDiscountOfMemberList',{
                     pageNo : 1,
                     pageSize : 9999,
-                    isActivity : false
+                    isActivity : false,
+                    ruleId : this.ruleId
                 }).then(res => {
                     if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
@@ -165,7 +172,8 @@
                     discountRate : formData.discountRate,
                     scoreRate : formData.scoreRate,
                     remark : formData.remark,
-                    isActivity : false
+                    isActivity : false,
+                    ruleId : this.ruleId
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
@@ -177,7 +185,16 @@
                     callback();
                 });
             },
-
+            /**
+             * 获取路由参数
+             * @param{Object} params 路由参数
+             */
+            getParams (params) {
+                if (params && params.ruleId && this.$route.name === 'specialIntegralCardLevelSetting') {
+                    this.ruleId = params.ruleId;
+                }
+                this.queryList();
+            }
         },
         computed : {
             //面包屑信息

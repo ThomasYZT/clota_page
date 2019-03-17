@@ -2,7 +2,7 @@
 
 <template>
     <Modal
-        :title="$t('createdRule')"
+        :title="isCopyRule ? $t('复制规则') : $t('createdRule')"
         :mask-closable="false"
         :value="value"
         :width="600"
@@ -231,6 +231,14 @@
                             validator : validStartTimeForDay,
                             trigger : 'change'
                         }
+                    ],
+                    validTime : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{ msg : this.$t('生效日期') }),
+                            trigger : 'change',
+                            type : 'array'
+                        }
                     ]
                 },
                 //周数据列表
@@ -290,6 +298,18 @@
                 if (!type) {
                     this.$refs.formValidate.resetFields();
                     this.formData.validForEver = '';
+                } else {
+                    if (this.ruleData && Object.keys(this.ruleData).length > 0) {
+                        this.formData.name = this.ruleData.ruleName;
+                        this.formData.startTime = this.ruleData.startDate;
+                        this.formData.endTime = this.ruleData.endDate;
+                        this.formData.validStartTimeForDay = this.ruleData.startTime;
+                        this.formData.validEndTimeForDay = this.ruleData.endTime;
+                        this.formData.validTime = this.ruleData.effDate.split(',');
+                        if (this.ruleData.endDate && this.ruleData.endDate.substr(0,4) === '9999') {
+                            this.formData.validForEver = true;
+                        }
+                    }
                 }
             },
             /**
@@ -298,7 +318,7 @@
             save () {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        this.addSpecialPointRule();
+                        this.checkRuleDate();
                     }
                 });
             },
@@ -353,17 +373,47 @@
                     effDate : this.formData.validTime.join(','),
                 }).then(res => {
                     if (res.success) {
-                        if (res.data) {
-                            this.addSpecialPointRule();
+                        if (!res.data) {
+                            if (this.isCopyRule) {
+                                this.copyRule();
+                            } else {
+                                this.addSpecialPointRule();
+                            }
                         } else {
-                            this.$Message.error(this.$t(res.code));
+                            this.$Message.error(this.$t('M061'));
                         }
-                    } else if (res.code === 'M061') {
-                        this.$Message.error(this.$t('M061'));
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }
                 });
+            },
+            /**
+             * 复制规则
+             */
+            copyRule () {
+                ajax.post('copyRule',{
+                    ruleName : this.formData.name,
+                    startDate : this.formData.startTime ? new Date(this.formData.startTime).format('yyyy-MM-dd') : '',
+                    endDate : this.formData.endTime ? new Date(this.formData.endTime).format('yyyy-MM-dd') : '',
+                    effDate : this.formData.validTime.join(','),
+                    startTime : this.formData.validStartTimeForDay,
+                    endTime : this.formData.validEndTimeForDay,
+                }).then(res => {
+                    if (res.success) {
+                        this.$emit('fresh-data');
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
+                    } else {
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
+                    }
+                }).finally(() => {
+                    this.changeValue(false);
+                });
+            }
+        },
+        computed : {
+            //是否是复制规则
+            isCopyRule () {
+                return this.ruleData && Object.keys(this.ruleData).length > 0;
             }
         }
     };

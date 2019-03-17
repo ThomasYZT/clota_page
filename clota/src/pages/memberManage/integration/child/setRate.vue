@@ -20,6 +20,7 @@
             </div>
             <div class="table-wrap">
                 <table-com
+                    :auto-query-first="false"
                     v-if="tableCanMount"
                     :page-no-d.sync="pageNo"
                     :page-size-d.sync="pageSize"
@@ -129,6 +130,8 @@
                 pageSize : 10,
                 //当前操作的行数据
                 currentData : {},
+                //规则id
+                ruleId : ''
             };
         },
         methods : {
@@ -179,7 +182,8 @@
                     levelDiscountId : this.memberInfo.id,
                     levelId : this.memberInfo.levelId,
                     orgName : this.queryParams.keyword,
-                    isActivity : this.isActivity
+                    isActivity : this.isActivity,
+                    ruleId : this.ruleId
                 }).then(res => {
                     if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
@@ -201,6 +205,9 @@
                 if (params.memberInfo && Object.keys(params.memberInfo).length > 0) {
                     this.levelDiscountId = params.memberInfo.levelId;
                     this.memberInfo = params.memberInfo;
+                    if (this.$route.name === 'specialIntegralStoreSetting') {
+                        this.ruleId = params.ruleId;
+                    }
                 } else {
                     this.$router.back();
                 }
@@ -231,6 +238,7 @@
                     isActivity : this.isActivity,
                     startTime : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']).format('yyyy-MM-dd 00:00:00') : '',
                     endTime : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']).format('yyyy-MM-dd 23:59:59') : '' ,
+                    ruleId : this.ruleId
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功

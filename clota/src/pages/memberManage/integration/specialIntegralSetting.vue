@@ -28,13 +28,25 @@
                 @query-data="queryRules">
                 <el-table-column
                     show-overflow-tooltip
+                    slot="column2"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <template v-if="scope.row.endDate && scope.row.endDate.substr(0,4) === '9999'">{{$t('永久')}}</template>
+                        <template v-else>{{scope.row.endDate}}</template>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    show-overflow-tooltip
                     slot="column3"
                     slot-scope="row"
                     :label="row.title"
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        {{scope.row.effDateTxt}}
+                        {{scope.row.effDateTxt | contentFilter}}
                     </template>
                 </el-table-column>
                 <!--只有在全部的筛选条件下才显示-->
@@ -60,8 +72,8 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <li @click="setIntegralByMemberCard(scope.row)">{{$t('按会员卡级别设置积分、折扣率')}}</li>
-                            <li @click="pauseRule(scope.row)" v-if="true">{{$t('暂停')}}</li>
-                            <li @click="startRule(scope.row)" v-else>{{$t('启用')}}</li>
+                            <li @click="pauseRule(scope.row)" v-if="scope.row.ruleStatus === 'valid'">{{$t('暂停')}}</li>
+                            <li @click="startRule(scope.row)" v-else-if="scope.row.ruleStatus === 'invalid'">{{$t('启用')}}</li>
                             <li @click="copyRule(scope.row)">{{$t('复制规则')}}</li>
                             <li class="red-label" @click="deleteRule(scope.row)">{{$t('del')}}</li>
                         </ul>
@@ -170,7 +182,7 @@
                             return {
                                 ...item,
                                 effDateTxt
-                            }
+                            };
                         });
                         this.totalCount = res.data.totalRow;
                     } else {
@@ -181,15 +193,37 @@
             },
             /**
              * 暂停规则
+             * @param{Object} rowData 规则数据
              */
-            pauseRule () {
-                this.queryRules();
+            pauseRule (rowData) {
+                ajax.post('updateRulesStatus',{
+                    id : rowData.id,
+                    ruleStatus : 'invalid'
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(`${rowData.ruleName}已暂停`);
+                        this.queryRules();
+                    } else {
+                        this.$Message.error(`${rowData.ruleName}暂停失败`);
+                    }
+                });
             },
             /**
              * 启用规则
+             * @param{Object} rowData 规则数据
              */
-            startRule () {
-                this.queryRules();
+            startRule (rowData) {
+                ajax.post('updateRulesStatus',{
+                    id : rowData.id,
+                    ruleStatus : 'valid'
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(`${rowData.ruleName}已启用`);
+                        this.queryRules();
+                    } else {
+                        this.$Message.error(`${rowData.ruleName}启用失败`);
+                    }
+                });
             },
             /**
              * 删除规则
@@ -216,7 +250,17 @@
              * @param{Object} ruleData 规则信息
              */
             confirmDelRule (ruleData) {
-                this.queryRules();
+                ajax.post('updateRulesStatus',{
+                    id : ruleData.id,
+                    isDeleted : true
+                }).then(res => {
+                    if (res.success) {
+                        this.$Message.success(`${ruleData.ruleName}已删除`);
+                        this.queryRules();
+                    } else {
+                        this.$Message.error(`${ruleData.ruleName}删除失败`);
+                    }
+                });
             },
             /**
              * 复制规则
@@ -241,7 +285,7 @@
                 this.$router.push({
                     name : 'specialIntegralCardLevelSetting',
                     params : {
-
+                        ruleId : rowData.id
                     }
                 });
             },
