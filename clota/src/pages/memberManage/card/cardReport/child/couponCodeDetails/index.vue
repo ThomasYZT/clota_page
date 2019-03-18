@@ -60,6 +60,20 @@
                        :page-no-d.sync="pageNo"
                        :page-size-d.sync="pageSize"
                        @query-data="queryList">
+                <!-- 已使用 -->
+                <el-table-column
+                    slot="column2"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span :class="{ 'green-info' : scope.row.couponStatus === 'receive' }">
+                            {{ scope.row.couponStatus ? $t('coupon.status.' + scope.row.couponStatus) : '-' }}
+                        </span>
+                    </template>
+                </el-table-column>
             </table-com>
         </div>
     </div>
@@ -256,6 +270,10 @@
         .table-wrapper {
             margin-top: 10px;
             padding: 0 20px;
+        }
+
+        .green-info {
+            color: $color_green;
         }
     }
 </style>
