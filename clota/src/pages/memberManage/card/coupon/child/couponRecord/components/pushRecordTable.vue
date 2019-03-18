@@ -13,26 +13,87 @@
                    :page-no-d.sync="pageNo"
                    :page-size-d.sync="pageSize"
                    @query-data="queryList">
-            <!--<el-table-column-->
-                <!--slot="column2"-->
-                <!--show-overflow-tooltip-->
-                <!--slot-scope="row"-->
-                <!--:label="row.title"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<ul class="operate-list">-->
-                        <!--&lt;!&ndash; 删除 &ndash;&gt;-->
-                        <!--<li @click="delete(scope.row)">{{$t('del')}}</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <!-- 已发放数量 -->
+            <el-table-column
+                slot="column6"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="line-info" @click="showLog('all', scope.row)">
+                        {{scope.row.optCount | contentFilter }}
+                    </span>
+                </template>
+            </el-table-column>
+            <!-- 已使用 -->
+            <el-table-column
+                slot="column7"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="line-info" @click="showLog('used', scope.row)">
+                        {{scope.row.usedNum | contentFilter }}
+                    </span>
+                </template>
+            </el-table-column>
+            <!-- 未使用 -->
+            <el-table-column
+                slot="column8"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="line-info" @click="showLog('noUse', scope.row)">
+                        {{scope.row.waitNum | contentFilter }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column9"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                fixed="right"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <ul class="operate-list">
+                        <!-- 详细 -->
+                        <li @click="detail(scope.row)">{{$t('详情')}}</li>
+                        <!-- 推送卡级 -->
+                        <li>
+                            <Tooltip transfer placement="bottom">
+                                <span @click="queryLevelNames(scope.row)">{{$t('推送卡级记录')}}</span>
+                                <div v-if="scope.row.LevelNames && scope.row.LevelNames.length > 0" slot="content">
+                                    <Timeline>
+                                        <TimelineItem v-for="(item, index) in scope.row.LevelNames" :key="index">
+                                            <p>item.name</p>
+                                        </TimelineItem>
+                                    </Timeline>
+                                </div>
+                            </Tooltip>
+                        </li>
+                    </ul>
+                </template>
+            </el-table-column>
         </table-com>
+
+        <reportModal ref="reportModal"></reportModal>
+        <couponDetailsModal ref="couponDetailsModal"></couponDetailsModal>
     </div>
 </template>
 
 <script>
     import tableCom from '@/components/tableCom/tableCom';
+    import couponDetailsModal from './couponDetailsModal';
+    import reportModal from './reportModal';
     import { pushRecordHead } from '../couponRecordConfig';
     import ajax from '@/api/index';
     export default {
@@ -45,7 +106,9 @@
             }
         },
         components : {
-            tableCom
+            tableCom,
+            reportModal,
+            couponDetailsModal
         },
         data () {
             return {
@@ -66,8 +129,8 @@
             queryList () {
                 ajax.post('queryCouponsLogs', {
                     optType : 'pull',
-                    startTime : this.dateTime[0].format('yyyy-MM-dd'),
-                    endTime : this.dateTime[1].format('yyyy-MM-dd'),
+                    startTime : this.dateTime[0].format('yyyy-MM-dd 00:00:00'),
+                    endTime : this.dateTime[1].format('yyyy-MM-dd 23:59:59'),
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
@@ -77,6 +140,36 @@
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
+                    }
+                })
+            },
+            /**
+             * 详细
+             * @param rowData
+             */
+            detail (rowData) {
+                this.$refs.couponDetailsModal.show(rowData);
+            },
+            /**
+             * 查看详细报表
+             * @param type
+             * @param rowData
+             */
+            showLog (type, rowData) {
+                this.$refs.reportModal.show(type, rowData);
+            },
+            /**
+             * 查询推送级别名字
+             */
+            queryLevelNames (rowData) {
+                ajax.post('queryLevelNames', {
+                    couponId : rowData.couponId,
+                    batchId : rowData.batchId,
+                }).then(res => {
+                    if (res.success) {
+                        rowData.LevelNames = res.data ? res.data : '';
+                    } else {
+                        rowData.LevelNames = '';
                     }
                 })
             }
@@ -93,4 +186,8 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .line-info {
+        color: $color_blue;
+        cursor: pointer;
+    }
 </style>

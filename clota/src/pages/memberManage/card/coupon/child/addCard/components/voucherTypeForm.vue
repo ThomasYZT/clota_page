@@ -353,6 +353,37 @@
              */
             resetField (field) {
                 this.$refs.formValidate.validateField(field);
+            },
+            /**
+             * 初始化数据
+             */
+            initData (rowData) {
+                for (let key in this.formData) {
+                    if (key !== 'conditionChannelId' && key !== 'conditionOrgId' && key !== 'conditionProductId') {
+                        this.formData[key] = String(rowData[key]) ? String(rowData[key]) : '';
+                    }
+                }
+                this.initSelector(rowData);
+
+            },
+            /**
+             * 初始化树形选择器
+             */
+            initSelector (rowData) {
+                setTimeout(() => {
+                    this.formData.conditionChannelId = rowData.conditionChannelId.split(',');
+                    this.formData.conditionChannelId = this.channelSetList.filter(item => {
+                        return this.formData.conditionChannelId.includes(item.id);
+                    });
+                    this.formData.conditionOrgId = rowData.conditionOrgId.split(',');
+                    this.formData.conditionOrgId = this.listAmountRange.filter(item => {
+                        return this.formData.conditionOrgId.includes(item.id);
+                    });
+                    this.formData.conditionProductId = rowData.conditionProductId.split(',');
+                    this.formData.conditionProductId = this.productTypeList.filter(item => {
+                        return this.formData.conditionProductId.includes(item.id);
+                    });
+                }, 500)
             }
         },
         created () {

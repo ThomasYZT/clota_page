@@ -13,20 +13,23 @@
                    :page-no-d.sync="pageNo"
                    :page-size-d.sync="pageSize"
                    @query-data="queryList">
-            <!--<el-table-column-->
-                <!--slot="column2"-->
-                <!--show-overflow-tooltip-->
-                <!--slot-scope="row"-->
-                <!--:label="row.title"-->
-                <!--:width="row.width"-->
-                <!--:min-width="row.minWidth">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<ul class="operate-list">-->
-                        <!--&lt;!&ndash; 删除 &ndash;&gt;-->
-                        <!--<li @click="delete(scope.row)">{{$t('del')}}</li>-->
-                    <!--</ul>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                slot="column2"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <Tooltip transfer placement="bottom">
+                        <span class="line-info">{{scope.row.optCount | contentFilter}}</span>
+                        <div slot="content">
+                            <p>已使用：{{scope.row.usedNum | contentFilter}}</p>
+                            <p>未使用：{{scope.row.waitNum | contentFilter}}</p>
+                        </div>
+                    </Tooltip>
+                </template>
+            </el-table-column>
         </table-com>
     </div>
 </template>
@@ -66,8 +69,8 @@
             queryList () {
                 ajax.post('queryCouponsLogs', {
                     optType : 'link',
-                    startTime : this.dateTime[0].format('yyyy-MM-dd'),
-                    endTime : this.dateTime[1].format('yyyy-MM-dd'),
+                    startTime : this.dateTime[0].format('yyyy-MM-dd 00:00:00'),
+                    endTime : this.dateTime[1].format('yyyy-MM-dd 23:59:59'),
                     pageNo : this.pageNo,
                     pageSize : this.pageSize,
                 }).then(res => {
@@ -93,4 +96,8 @@
 
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .line-info {
+        color: $color_blue;
+        cursor: pointer;
+    }
 </style>

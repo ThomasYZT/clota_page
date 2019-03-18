@@ -119,7 +119,7 @@
                 <!--可用渠道-->
                 <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                     <treeSelector v-model="formData.conditionChannelId"
-                                  nodeKey="label"
+                                  nodeKey="id"
                                   :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'channelName' }"
                                   :data="channelSetList"></treeSelector>
@@ -129,7 +129,7 @@
                 <!--可用店铺-->
                 <Form-item label="可用店铺" prop="conditionOrgId">
                     <treeSelector v-model="formData.conditionOrgId"
-                                  nodeKey="label"
+                                  nodeKey="id"
                                   :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'orgName' }"
                                   :data="listAmountRange"></treeSelector>
@@ -299,6 +299,32 @@
                 });
                 return remark.join(',');
             },
+            /**
+             * 初始化数据
+             */
+            initData (rowData) {
+                for (let key in this.formData) {
+                    if (key !== 'conditionChannelId' && key !== 'conditionOrgId') {
+                        this.formData[key] = String(rowData[key]) ? String(rowData[key]) : '';
+                    }
+                }
+                this.initSelector(rowData);
+            },
+            /**
+             * 初始化树形选择器
+             */
+            initSelector (rowData) {
+                setTimeout(() => {
+                    this.formData.conditionChannelId = rowData.conditionChannelId.split(',');
+                    this.formData.conditionChannelId = this.channelSetList.filter(item => {
+                        return this.formData.conditionChannelId.includes(item.id);
+                    });
+                    this.formData.conditionOrgId = rowData.conditionOrgId.split(',');
+                    this.formData.conditionOrgId = this.listAmountRange.filter(item => {
+                        return this.formData.conditionOrgId.includes(item.id);
+                    });
+                }, 500)
+            }
         }
     };
 </script>

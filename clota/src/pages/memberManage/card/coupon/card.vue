@@ -5,13 +5,13 @@
             <div class="left-tool">
                 <div class="btn-wrap" v-if="canAddMembersCoupon">
                     <!--新增卡券-->
-                    <Button class="function-btn" type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button>
+                    <!--<Button class="function-btn" type="primary" @click="add">+ {{$t('newCardCoupon')}}</Button>-->
                     <!--新增卡券 版本2-->
-                    <Button class="function-btn" type="primary" @click="add2">+ {{$t('newCardCoupon')}}2</Button>
+                    <Button class="function-btn" type="primary" @click="add2">+ {{$t('newCardCoupon')}}</Button>
                     <!--商品管理-->
                     <Button class="function-btn" type="primary" @click="toGoodsManage">{{$t('goodsManage')}}</Button>
-                    <!--商品管理-->
-                    <Button class="function-btn" type="ghost" @click="H5Setting">{{$t('H5Setting')}}</Button>
+                    <!--H5背景设置-->
+                    <!--<Button class="function-btn" type="ghost" @click="H5Setting">{{$t('H5Setting')}}</Button>-->
                 </div>
             </div>
             <div class="right-tool">

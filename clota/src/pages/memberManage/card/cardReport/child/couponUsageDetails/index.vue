@@ -103,6 +103,8 @@
                     return 'used';
                 } else if (this.type === 'noUse') {
                     return 'noUse'
+                } else if (this.type === 'redeemed') {
+                    return 'exchange';
                 } else {
                     return 'expired';
                 }

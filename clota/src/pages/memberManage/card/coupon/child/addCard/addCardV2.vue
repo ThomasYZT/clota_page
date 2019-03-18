@@ -95,7 +95,7 @@
                               :productTypeList="productTypeList"></discountTypeForm>
         </div>
 
-        <div class="content-footer">
+        <div class="content-footer" v-if="type !== 'check'">
             <i-button type="primary"
                       class="ivu-btn-108px"
                       @click="formValidateFunc">{{$t('confirm')}}</i-button>
@@ -103,6 +103,13 @@
                       class="ivu-btn-108px"
                       @click="cancelEdit">
                 {{$t('cancel')}}
+            </i-button>
+        </div>
+        <div class="content-footer" v-else>
+            <i-button type="ghost"
+                      class="ivu-btn-108px"
+                      @click="back">
+                {{$t('back')}}
             </i-button>
         </div>
     </div>
@@ -200,10 +207,7 @@
                     this.type = params.type;
                     if (this.type !== 'add' && params.rowData && Object.keys(params.rowData).length > 0) {
                         this.rowData = params.rowData;
-                    } else {
-                        this.$router.push({
-                            name : 'coupon'
-                        });
+                        this.initData();
                     }
                 } else {
                     this.$router.push({
@@ -261,7 +265,6 @@
              *  新增/编辑优惠券
              */
             updateCoupon (resultFormData) {
-                console.log(resultFormData);
                 ajax.post('updateCoupon', resultFormData).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
@@ -278,7 +281,17 @@
              * 取消编辑
              */
             cancelEdit () {
-
+                this.$router.push({
+                    name : 'coupon'
+                });
+            },
+            /**
+             *  返回列表页
+             */
+            back () {
+                this.$router.push({
+                    name : 'coupon'
+                });
             },
             /**
              * 查询所有可用渠道
@@ -346,6 +359,26 @@
                         this.productList = [];
                     }
                 })
+            },
+            /**
+             * 初始化数据 查看、修改
+             */
+            initData () {
+                for (let key in this.formData) {
+                    this.formData[key] = this.rowData[key] ? this.rowData[key] : '';
+                }
+                this.$nextTick(() => {
+                    this.initForm(this.formData.couponType);
+                })
+            },
+            /**
+             * 初始化表单数据
+             * @param couponType
+             */
+            initForm (couponType) {
+                if (this.$refs[couponType]) {
+                    this.$refs[couponType].initData(this.rowData);
+                }
             }
         },
         created () {

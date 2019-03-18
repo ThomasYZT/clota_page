@@ -35,12 +35,12 @@ export const generateLinkRecordHead = [
         minWidth : 150,
     },
     {
-        title : 'generationNum',
-        field : 'optCount',
+        title : 'couponNameV2',
+        field : 'couponName',
         minWidth : 150,
     },
     {
-        title : 'couponNameV2',
+        title : 'generationNum',
         field : 'optCount',
         minWidth : 150,
     },
@@ -60,17 +60,17 @@ export const generateLinkRecordHead = [
 export const pushRecordHead = [
     {
         title : 'pushTime',
-        field : '',
-        minWidth : 150,
+        field : 'createdTime',
+        minWidth : 200,
     },
     {
         title : 'ruleCreator',
-        field : '',
+        field : 'nickName',
         minWidth : 150,
     },
     {
         title : 'couponNameV2',
-        field : '',
+        field : 'couponName',
         minWidth : 150,
     },
     {
@@ -80,13 +80,13 @@ export const pushRecordHead = [
     },
     {
         title : 'pushType',
-        field : '',
+        field : 'optMark',
         minWidth : 150,
     },
     {
         title : 'invalidTime',
-        field : '',
-        minWidth : 150,
+        field : 'expTime',
+        minWidth : 220,
     },
     {
         title : 'issuedQuantity',
@@ -95,21 +95,34 @@ export const pushRecordHead = [
     },
     {
         title : 'used',
-        field : '',
+        field : 'usedNum',
         minWidth : 150,
     },
     {
         title : 'noUse',
-        field : '',
-        minWidth : 150,
-    },
-    {
-        title : 'expired',
-        field : '',
+        field : 'waitNum',
         minWidth : 150,
     },
     {
         title : 'operate',
+        field : '',
+        minWidth : 200,
+    },
+];
+
+export const reportModalHead = [
+    {
+        title : '姓名',
+        field : '',
+        minWidth : 150,
+    },
+    {
+        title : '电话',
+        field : '',
+        minWidth : 150,
+    },
+    {
+        title : '优惠券状态',
         field : '',
         minWidth : 150,
     },

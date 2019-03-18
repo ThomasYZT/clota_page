@@ -151,7 +151,7 @@
                 <!--可用渠道-->
                 <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                     <treeSelector v-model="formData.conditionChannelId"
-                                  nodeKey="label"
+                                  nodeKey="id"
                                   :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'channelName' }"
                                   :data="channelSetList"></treeSelector>
@@ -161,7 +161,7 @@
                 <!--可用店铺-->
                 <Form-item label="可用店铺" prop="conditionOrgId">
                     <treeSelector v-model="formData.conditionOrgId"
-                                  nodeKey="label"
+                                  nodeKey="id"
                                   :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'orgName' }"
                                   :data="listAmountRange"></treeSelector>
@@ -171,7 +171,7 @@
                 <!--可用产品类别-->
                 <Form-item :label="$t('availableChannels')" prop="conditionProductId">
                     <treeSelector v-model="formData.conditionProductId"
-                                  nodeKey="label"
+                                  nodeKey="id"
                                   :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'typeName' }"
                                   :data="productTypeList"></treeSelector>
@@ -265,7 +265,7 @@
             //表单校验规则
             ruleValidate () {
                 return {
-                    nominalValue : [ //卡券面值
+                    nominalValue : [ //卡券折扣
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('couponFaceValue') }), trigger : 'blur' },
                     ],
                     conditionLowerLimtation : [ //最低消费金额后可用
@@ -350,6 +350,34 @@
              */
             resetField (field) {
                 this.$refs.formValidate.validateField(field);
+            },
+            /**
+             * 初始化数据
+             */
+            initData (rowData) {
+                for (let key in this.formData) {
+                    if (key !== 'conditionChannelId' && key !== 'conditionOrgId' && key !== 'conditionProductId') {
+                        this.formData[key] = String(rowData[key]) ? String(rowData[key]) : '';
+                    }
+                }
+                this.initSelector(rowData);
+
+            },
+            initSelector (rowData) {
+                setTimeout(() => {
+                    this.formData.conditionChannelId = rowData.conditionChannelId.split(',');
+                    this.formData.conditionChannelId = this.channelSetList.filter(item => {
+                        return this.formData.conditionChannelId.includes(item.id);
+                    });
+                    this.formData.conditionOrgId = rowData.conditionOrgId.split(',');
+                    this.formData.conditionOrgId = this.listAmountRange.filter(item => {
+                        return this.formData.conditionOrgId.includes(item.id);
+                    });
+                    this.formData.conditionProductId = rowData.conditionProductId.split(',');
+                    this.formData.conditionProductId = this.productTypeList.filter(item => {
+                        return this.formData.conditionProductId.includes(item.id);
+                    });
+                }, 500);
             }
         }
     };

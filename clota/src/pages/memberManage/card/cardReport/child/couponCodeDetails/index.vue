@@ -34,29 +34,47 @@
             </div>
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('applicationScenario') })}}</span>
-                <span class="info">{{couponInfo.test | contentFilter}}</span>
+                <span class="info">{{couponInfo.appScene ? $t('coupon.' + couponInfo.appScene) : '-'}}</span>
             </div>
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('validityPeriod') })}}</span>
-                <span class="info">{{couponInfo.test | contentFilter}}</span>
+                <span class="info" v-if="couponInfo.appScene === 'spread'">
+                    {{couponInfo.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{couponInfo.expireTime | timeFormat('yyyy-MM-dd')}}
+                </span>
+                <span class="info" v-else>{{couponInfo.effDays | contentFilter}}</span>
             </div>
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('wetherEffective') })}}</span>
-                <span class="info">{{couponInfo.test | contentFilter}}</span>
+                <span class="info">{{couponInfo.status === 'valid' ? '有效' : '无效'  | contentFilter}}</span>
             </div>
         </div>
 
         <div class="table-wrapper">
-            <table-com :column-data="columnData"
+            <table-com v-if="Object.keys(couponInfo).length > 0"
+                       :column-data="columnData"
                        :table-data="tableData"
                        :border="true"
                        :show-pagination="true"
                        :total-count="totalCount"
-                       :ofset-height="230"
+                       :ofset-height="200"
                        :page-no-d.sync="pageNo"
                        :page-size-d.sync="pageSize"
                        @query-data="queryList">
-
+                <!-- 未使用 -->
+                <el-table-column
+                    slot="column0"
+                    show-overflow-tooltip
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'noUse')">
+                            {{ scope.row.conditionGoodNames | contentFilter }} /
+                            {{ scope.row.nominalValue | contentFilter }}
+                        </span>
+                    </template>
+                </el-table-column>
             </table-com>
         </div>
     </div>
@@ -67,6 +85,7 @@
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
     import tableCom from '@/components/tableCom/tableCom';
     import { couponCodeDetailsHead } from './couponCodeDetailsConfig';
+    import ajax from '@/api/index';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -101,6 +120,19 @@
                 pageSize : 10
             };
         },
+
+        computed : {
+            //卡券状态
+            couponStatus () {
+                if (this.type === 'generationNum') {
+                    return '';
+                } else if (this.type === 'remainingAmount') {
+                    return 'wait';
+                } else {
+                    return '';
+                }
+            }
+        },
         methods : {
             /**
              * 获取路由参数
@@ -122,12 +154,27 @@
              */
             changeType (type) {
                 this.type = type;
+                this.queryList();
             },
             /**
              * 列表查询
              */
             queryList () {
-
+                ajax.post('queryReportDetail', {
+                    couponId : this.couponInfo.id,
+                    batchId : this.couponInfo.batchId,
+                    couponStatus : this.couponStatus,
+                    pageNo : this.pageNo,
+                    pageSize : this.pageSize,
+                }).then(res => {
+                    if (res.success) {
+                        this.tableData = res.data ? res.data.data : [];
+                        this.totalCount = res.data ? res.data.totalRow : 0;
+                    } else {
+                        this.tableData = [];
+                        this.totalCount = 0;
+                    }
+                })
             }
         }
     };

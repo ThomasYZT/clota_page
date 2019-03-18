@@ -162,6 +162,10 @@ export default {
     'countWaitNum' : '/member/memberCoupon/countWaitNum',
     //查询报表明细
     'queryReportDetail' : '/member/memberCoupon/queryReportDetail',
+    //查询优惠券明细
+    'findCouponById' : '/member/memberCoupon/findCouponById',
+    //会员优惠券-查询推送级别名字
+    'queryLevelNames' : '/member/memberCoupon/queryLevelNames',
 
     /***********************************初始化设置***********************************/
     //基础设置-会员基础设置-查询

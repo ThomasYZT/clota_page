@@ -174,7 +174,6 @@
 
     .manual-push-modal {
         .form-wrapper {
-            width: 280px;
             margin: 0 auto;
 
             /deep/ .ivu-form-item {
@@ -189,9 +188,13 @@
             }
         }
 
-        .tip {
-            @include center_center();
-            font-size: 14px;
+        .content {
+            position: relative;
+            height: 240px;
+            .tip {
+                @include center_center();
+                font-size: 14px;
+            }
         }
     }
 </style>

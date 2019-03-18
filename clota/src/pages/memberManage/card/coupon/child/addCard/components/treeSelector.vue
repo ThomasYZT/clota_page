@@ -9,7 +9,7 @@
                      show-checkbox
                      :node-key="nodeKey"
                      :props="defaultProps"
-                     :data="data"
+                     :data="treeData"
                      @check-change="handleCheck">
             </el-tree>
         </div>
@@ -55,12 +55,30 @@
                 required : true,
                 type : String,
             },
-
+            //是否禁用
+            disabled : {
+                type : Boolean,
+                default : false,
+            }
         },
         data () {
             return {
                 checkedData : [],
             };
+        },
+        computed : {
+            treeData () {
+                if (this.disabled) {
+                    return this.data.map(item => {
+                        return {
+                            ...item,
+                            disabled : true
+                        };
+                    });
+                } else {
+                    return this.data;
+                }
+            }
         },
         methods : {
             /**
