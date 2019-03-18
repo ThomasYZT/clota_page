@@ -54,7 +54,7 @@
 
             <div slot="footer" class="modal-footer">
                 <!--<a class="ivu-btn-90px" :href="exportData">{{$t('exporting')}}</a>-->
-                <Button type="primary" @click="exportData" >{{$t("导出")}}</Button>
+                <Button type="primary" @click="formValidate" >{{$t("导出")}}</Button>
                 <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
             </div>
         </Modal>
@@ -123,6 +123,9 @@
                 this.rowData = data;
                 this.visible = true;
             },
+            /**
+             *  表单校验
+             */
             formValidate () {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
