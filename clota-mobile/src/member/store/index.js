@@ -216,7 +216,7 @@ export const memberActions = {
                         if (memberCardList.length > 0) {
                             //存储卡列表数据
                             commit('updateCardInfoList', memberCardList);
-                            resolve();
+                            resolve(memberCardList);
                         } else {
                             //会员卡列表数据为空
                             commit('updateCardInfoList', []);

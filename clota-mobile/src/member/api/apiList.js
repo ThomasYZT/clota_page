@@ -120,6 +120,10 @@ const apiList = {
     queryBaseLevelOfGrowth : '/external/memberInfo/queryBaseLevelOfGrowth',
     //查询会员优惠券信息
     queryMemberCouponsList : '/external/memberCoupon/queryMemberCouponsList',
+    //领取优惠券
+    reseiveCoupon : '/external/memberCoupon/reseiveCoupon',
+    //获取卡券规则信息
+    getConditionNames : '/external/memberCoupon/getConditionNames',
 };
 
 export default apiList;

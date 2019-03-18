@@ -472,4 +472,7 @@ export default {
     'S014' : 'weChat public number configuration error',
     'mobileNotExist' : 'phone number does not exist',
     'mobileNotExistToRegister' : 'the mobile phone number is not registered, please register first.',
+    'M062' : '优惠券已被领取',
+    'M063' : '当前优惠券您已领取的足够多了，去领取其它的优惠券吧。',
+    'M064' : '今日优惠券已领完',
 };

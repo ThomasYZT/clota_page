@@ -11,7 +11,19 @@
             @on-click-right="confirm">
         </popup-header>
         <group gutter="0">
-            <radio :options="memberList" v-model="memberSelected">
+            <radio :options="memberList"
+                   v-model="memberSelected"
+                   :disabled="true">
+                <div slot="each-item" slot-scope="scoped" :class="{ 'disabled-cell' : scoped.status === 'frozen' }">
+                    {{scoped.label}} <span class="tips" v-if="scoped.status !== 'frozen'">{{$t('frozen')}}</span>
+                </div>
+            </radio>
+            <radio :options="memberList"
+                   v-model="memberSelected"
+                   :disabled="true">
+                <div slot="each-item" slot-scope="scoped" :class="{ 'disabled-cell' : scoped.status === 'frozen' }">
+                    {{scoped.label}} <span class="tips" v-if="scoped.status !== 'frozen'">{{$t('frozen')}}</span>
+                </div>
             </radio>
         </group>
     </popup>
@@ -66,4 +78,13 @@
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .disabled-cell{
+        color: #C5C5C5;
+
+        .tips{
+            color: $color_err;
+            vertical-align: bottom;
+            font-size: $font_size_11px;
+        }
+    }
 </style>

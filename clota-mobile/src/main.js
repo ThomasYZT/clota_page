@@ -8,6 +8,7 @@ import router from './router/index';
 import store from './store/index';
 //es6垫片（包含了es5）
 import 'core-js/es6';
+import clipboard from 'clipboard';
 
 //引入多语言配置文件
 import i18n from './assets/lang/lang.config';
@@ -20,9 +21,12 @@ import './assets/css/quill.snow.css';
 import './assets/css/quill.core.css';
 import './assets/css/quill.bubble.css';
 
+
 // 按需引用iview, elment-ui 以及其他自定义组件或指令
 import plugin from './assets/js/plugin';
 
+//注册到vue原型上
+Vue.prototype.Clipboard = clipboard;
 Vue.use(plugin);
 Vue.config.productionTip = true;
 //开启手机调试模式

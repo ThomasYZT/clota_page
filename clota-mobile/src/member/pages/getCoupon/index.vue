@@ -26,14 +26,15 @@
                          :placeholder="$t('请输入验证码')" >
                     <div slot="right-full-height"
                          class="validate"
+                         :class="{'time-counting' : isTiming}"
                          @click="getValidCode">
                         {{$t('getValidCode')}}
-                        <!--<countdown-->
-                        <!--v-if="isTiming"-->
-                        <!--v-model="time"-->
-                        <!--:start="isTiming"-->
-                        <!--@on-finish="timeFinish">-->
-                        <!--</countdown>-->
+                        <countdown
+                            v-if="isTiming"
+                            v-model="time"
+                            :start="isTiming"
+                            @on-finish="timeFinish">
+                        </countdown>
                     </div>
                 </x-input>
                 <x-button class="get-btn"
@@ -81,6 +82,9 @@
 
 <script>
     import chooseMemberType from './components/chooseMemberType';
+    import ajax from '@/member/api/index.js';
+    import { validator } from 'klwk-ui';
+    import { mapGetters,mapMutations,mapActions } from 'vuex';
 
     export default {
         components : {
@@ -98,31 +102,84 @@
                 confirmShow : false,
                 //显示所有的会员卡现在模态框
                 showMemberListModal : false,
-                memberList : [
-                    {
-                        key : '1',
-                        value : '1'
-                    }
-                ],
+                //会员卡列表
+                memberList : [],
                 //是否显示错误信息提示模态框
                 errTipShow : false,
                 //错误信息
-                errTipMsg : ''
+                errTipMsg : '',
+                //是否正在计时
+                isTiming : false,
+                //计时时间
+                time : 60,
+                //是否有注册权限
+                hasRegister : false,
+                //注册提示框是否显示
+                registerModalShow : false
             };
         },
         methods : {
+            ...mapMutations([
+                'updateUserInfo',
+                'updateCardInfoList',
+                'updateCardInfo',
+            ]),
+            ...mapActions([
+                'getCardListInfo'
+            ]),
             /**
              * 获取验证码
              */
             getValidCode () {
-
+                if (!this.isTiming) {
+                    this.phoneValidate(this.phone).then(() => {
+                        ajax.post('getCode', {
+                            phoneNum : this.phone,
+                            type : 'member_login',
+                            companyCode : this.companyCode
+                        }).then((res) => {
+                            if (res.success) {
+                                this.code = '';
+                                this.isTiming = true;
+                                this.$vux.toast.show({
+                                    text : this.$t('operateSuc',{ msg : this.$t('send') }),
+                                    type : 'success'
+                                });
+                            } else if (res.message && res.message === 'M049') {//手机没注册
+                                if (this.hasRegister) {//有成长型会员卡就可以去注册
+                                    this.registerModalShow = true;
+                                } else {
+                                    this.$vux.toast.show({
+                                        text : this.$t('mobileNotExist'),
+                                        type : 'cancel',
+                                    });
+                                }
+                            } else if (res.message && (res.message === 'M050' || res.message === 'M051')) {
+                                this.$vux.toast.show({
+                                    text : this.$t(res.message),
+                                    type : 'cancel',
+                                });
+                            } else if (res.code === 'A006') {
+                                this.$vux.toast.show({
+                                    text : this.$t('errorMsg.A006'),
+                                    type : 'cancel',
+                                });
+                            } else {
+                                this.$vux.toast.show({
+                                    text : this.$t('operateFail',{ msg : this.$t('send') }),
+                                    type : 'cancel'
+                                });
+                            }
+                        });
+                    });
+                }
             },
             /**
              * 领取优惠券
              */
             getCoupon () {
-                this.stage = 'getted';
-                this.showMemberListModal = true;
+                // this.stage = 'getted';
+                this.login();
             },
             /**
              * 确认注册
@@ -132,12 +189,149 @@
             },
             /**
              * 选择的会员
-             * @param{String} member 会员
+             * @param{String} cardId 会员id
              */
-            toGetCouponViaMemberType (member) {
-                this.errTipShow = true;
-                this.errTipMsg = '今日已达到领取上线';
+            toGetCouponViaMemberType (cardId) {
+                this.reseiveCoupon('member',cardId);
+            },
+            /**
+             * 计时完成
+             */
+            timeFinish () {
+                this.isTiming = false;
+                this.time = 60;
+            },
+            /**
+             * 校验手机号码是否正确
+             * @param{String} value 手机号码
+             */
+            phoneValidate (value) {
+                return new Promise((resolve,reject) => {
+                    if (value && validator.isMobile(value)) {
+                        resolve();
+                    } else {
+                        this.$vux.toast.text('请输入正确手机号码');
+                        reject();
+                    }
+                });
+            },
+            /**
+             * 校验是否有成长型会员卡
+             */
+            checkCardLevelOfGrowth () {
+                ajax.post('checkCardLevelOfGrowth', {
+                    companyCode : this.companyCode,
+                }).then((res) => {
+                    if (res.success) {
+                        this.hasRegister = !!res.data;
+                    } else {
+                        this.hasRegister = false;
+                    }
+                });
+            },
+            /**
+             * 获取路由参数
+             * @param queryParams
+             */
+            getParams (queryParams) {
+                if (queryParams && queryParams.companyCode) {
+                    this.$store.commit('updateCompanyCode',queryParams.companyCode);
+                }
+                this.checkCardLevelOfGrowth();
+            },
+            login () {
+                ajax.post('login', {
+                    phoneNum : this.phone,
+                    code : this.code,
+                    companyCode : this.companyCode,
+                    openId : ''
+                }).then((res) => {
+                    if (res.success) {
+                        this.dataToLogin(res);
+                    } else if (res.code === '300') {
+                        this.$vux.toast.text(this.$t('operateFail',{ msg : this.$t('login') }));
+                    } else {
+                        this.$vux.toast.text(this.$t(res.code));
+                    }
+                });
+            },
+            /**
+             * 处理登录数据
+             * @param{Object} res 返回的用户信息
+             */
+            dataToLogin (res) {
+                //存储token信息
+                localStorage.setItem('token', res.data.token);
+                //存储本地、vuex用户信息
+                this.updateUserInfo(res.data);
+                //获取用卡列表信息
+                this.getCardList();
+            },
+            /**
+             * 获取会员卡列表
+             */
+            getCardList () {
+                //获取会员卡列表
+                this.getCardListInfo().then(([memberCardList]) => {
+                    this.memberList = memberCardList.map(item => {
+                        return {
+                            ...item,
+                            value : item.orgName + '-' + item.levelDesc,
+                            key : item.id,
+                        };
+                    });
+                    this.showMemberListModal = true;
+                }).catch(err => {
+                    if (err === 'serviceError') {
+                        this.$vux.toast.text(this.$t('companyHasNotMemberService'));
+                    } else {
+                        this.$vux.toast.text(this.$t('userHasNoCard'));
+                    }
+                });
+            },
+            /**
+             * 领取优惠券
+             * @param{String} couponCode 优惠券code
+             * @param{String}cardId 会员卡id
+             */
+            reseiveCoupon (couponCode,cardId) {
+                ajax.post('reseiveCoupon',{
+                    couponCode : couponCode,
+                    memberId : this.userInfo.memberId,
+                    cardId : cardId,
+                }).then(res => {
+                    if (res.success) {
+                        this.$vux.toast.show({
+                            text : this.$t('领取成功'),
+                            type : 'success'
+                        });
+                        this.queryMemberCouponsList();
+                    } else if (res.code === 'M062' || res.code === 'M063' || res.code === 'M064') {
+                        this.errTipMsg = this.$t(res.code);
+                        this.errTipShow = true;
+                    } else if (res.code !== '300') {
+                        this.$vux.toast.text(this.$t(res.code));
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('领取失败'),
+                            type : 'cancel'
+                        });
+                    }
+                    this.couponWord = '';
+                });
             }
+        },
+        computed : {
+            ...mapGetters({
+                lang : 'lang',
+                userInfo : 'userInfo',
+                companyCode : 'companyCode'
+            })
+        },
+        beforeRouteEnter (to,from,next) {
+            next(vm => {
+                vm.getParams(to.query);
+            });
         }
     };
 </script>
@@ -269,6 +463,10 @@
                 font-size: $font_size_12px;
                 color: #EF6D48;
                 padding: 0 10px;
+
+                &.time-counting{
+                    color: #C5C5C5;
+                }
             }
         }
 
