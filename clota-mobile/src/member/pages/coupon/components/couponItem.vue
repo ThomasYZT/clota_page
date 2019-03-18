@@ -6,9 +6,21 @@
         <img v-if="status === 'used'"
              class="used-image"
              src="../../../../assets/images/icon-coupon-used.svg" alt="">
-        <div class="head">
-            <div class="face-value">{{56}}元</div>
-            <div class="use-condition">满200元可用</div>
+        <div class="head"
+             :class="{ 'cash' : data.couponType === 'cash_coupon','discount' : data.couponType === 'discount_coupon','exchange' : data.couponType === 'exchange_coupon' }">
+            <!--代金券-->
+            <template v-if="data.couponType === 'cash_coupon'">
+                <div class="face-value">{{data.nominalValue | contentFilter}}元</div>
+                <div class="use-condition">满{{data.conditionLowerLimtation | contentFilter}}元可用</div>
+            </template>
+            <!--折扣券-->
+            <template v-else-if="data.couponType === 'discount_coupon'">
+                <div class="face-value">{{data.nominalValue * 10 | contentFilter}}折</div>
+            </template>
+            <!--兑换券-->
+            <template v-else-if="data.couponType === 'exchange_coupon'">
+                <div class="face-value">兑</div>
+            </template>
         </div>
         <div class="demo-info">
             <div class="coupon-title">
@@ -18,22 +30,35 @@
             <div class="validate-date">
                 有效期至：{{data.expTime | contentFilter}}
             </div>
-            <div class="use-rule" @click="showUsageDetail" :class="{ 'upload' : showDetail }">
+            <div class="coupon-code">
+                券码：<span :id="'_' + data.id">{{data.couponCode | contentFilter}}</span>
+                <span class="copy-btn"
+                      ref="copyBtn"
+                      data-clipboard-action="copy"
+                      v-if="status === 'avaliable'"
+                      :data-clipboard-target="'#_' + data.id"
+                      @click="copyCode($event)">
+                    {{$t('复制券码')}}
+                </span>
+            </div>
+            <div class="use-rule" @click="getConditionNames" :class="{ 'upload' : showDetail }">
                 <span class="rule-title">使用规则</span>
                 <span class="iconfont icon-arrow" :class="{ 'reverse' : showDetail }"></span>
             </div>
         </div>
         <transition name="fade">
             <ul class="useage-detail" v-if="showDetail">
-                <li class="conditon">1、可用渠道：官网、官微可用渠道：官网、官微可用渠道：官网、官微可用渠道：官网、官微可用渠道：官网、官微可用渠道：官网、官微</li>
-                <li class="conditon">1、可用渠道：官网、官微</li>
-                <li class="conditon">1、可用渠道：官网、官微</li>
+                <li class="conditon">1、可用渠道：{{avaliableChannel | contentFilter}}</li>
+                <li class="conditon">2、可用店铺：{{avaliableStore | contentFilter}}</li>
+                <li class="conditon">3、可用产品类别：{{avaliableProductType | contentFilter}}</li>
             </ul>
         </transition>
     </div>
 </template>
 
 <script>
+    import ajax from '@/member/api/index.js';
+
     export default {
         props : {
             //优惠券状态
@@ -51,15 +76,51 @@
         },
         data () {
             return {
-                showDetail : false
+                showDetail : false,
+                //可用渠道
+                avaliableChannel : '',
+                //可用店铺
+                avaliableStore : '',
+                //可用产品类别
+                avaliableProductType : '',
+                //存储初始化复制按钮事件
+                copyBtn : null
             };
         },
         methods : {
             /**
-             * 显示使用规则
+             * 获取使用规则
              */
-            showUsageDetail () {
-                this.showDetail = !this.showDetail;
+            getConditionNames () {
+                if (!this.showDetail) {
+                    ajax.post('getConditionNames',{
+                        couponId : this.data.couponId
+                    }).then(res => {
+                        if (res.success && res.data) {
+                            this.avaliableChannel = res.data.channelNames;
+                            this.avaliableStore = res.data.orgNames;
+                            this.avaliableProductType = res.data.typeNames;
+                        }
+                        this.showDetail = !this.showDetail;
+                    });
+                } else {
+                    this.showDetail = false;
+                }
+            },
+            /**
+             * 复制券码到剪贴板
+             */
+            copyCode () {
+                this.copyBtn.on('success', () => {
+                   this.$vux.toast.text('券码已复制到剪贴板');
+                });
+                //复制到剪贴板失败
+                this.copyBtn.on('error', () => {
+                    this.$vux.toast.show({
+                        text : '券码已复制到剪贴板',
+                        type : 'cancel'
+                    });
+                });
             }
         },
         computed : {
@@ -76,13 +137,21 @@
                     return '-';
                 }
             }
+        },
+        mounted () {
+            this.$nextTick(() => {
+                let btnEle = this.$el.querySelector('.copy-btn');
+                if (btnEle) {
+                    this.copyBtn = new this.Clipboard(btnEle);
+                }
+            });
         }
     };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     .voucher-detail {
-        min-height: 90px;
+        min-height: 100px;
         border-radius: 2px;
         margin-bottom: 14px;
         position: relative;
@@ -97,7 +166,18 @@
 
         &.available-status{
             .head{
-                background: linear-gradient(to bottom,#ee6723, #eb8f52);
+
+                &.cash{
+                    background: linear-gradient(to bottom,#ee6723, #eb8f52);
+                }
+
+                &.discount{
+                    background: linear-gradient(to bottom,#6c70cc,#9dc6ed);
+                }
+
+                &.exchange{
+                    background: linear-gradient(to bottom,#478aee,#7ac6ed);
+                }
             }
         }
         &.used-status,
@@ -113,7 +193,7 @@
 
         .head{
             position: relative;
-            @include block_outline(87px,90px);
+            @include block_outline(97px,100px);
             border-radius: 2px 0 0 2px;
             display: flex;
             align-items: center;
@@ -160,12 +240,12 @@
 
         .demo-info{
             position: relative;
-            height: 90px;
+            height: 100px;
             float: left;
             background: #ffffff;
             border-radius: 0 2px 2px 0;
             padding: 12px 0;
-            width: calc(100% - 87px);
+            width: calc(100% - 97px);
 
             &:before{
                 content : '';
@@ -212,8 +292,19 @@
                 color: #9b9b9b;
                 margin-top: 3px;
                 font-size: $font_size_11px;
-                margin-bottom: 12px;
                 padding: 0 15px;
+            }
+
+            .coupon-code{
+                font-size: $font_size_11px;
+                color: #9b9b9b;
+                margin-bottom: 6px;
+                padding: 0 15px;
+
+                .copy-btn{
+                    float: right;
+                    color: $color_blue;
+                }
             }
 
             .use-rule{

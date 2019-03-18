@@ -50,7 +50,7 @@
              */
             addCoupon () {
                 this.validateCoupon().then(() => {
-
+                    this.reseiveCoupon();
                 });
             },
             /**
@@ -83,11 +83,38 @@
                         this.couponList = [];
                     }
                 });
+            },
+            /**
+             * 领取优惠券
+             */
+            reseiveCoupon () {
+                ajax.post('reseiveCoupon',{
+                    couponCode : this.couponWord,
+                    memberId : this.userInfo.memberId,
+                    cardId : this.cardInfo.id,
+                }).then(res => {
+                    if (res.success) {
+                        this.$vux.toast.show({
+                            text : this.$t('领取成功'),
+                            type : 'success'
+                        });
+                        this.queryMemberCouponsList();
+                    } else if (res.code !== '300') {
+                        this.$vux.toast.text(this.$t(res.code));
+                    } else {
+                        this.$vux.toast.show({
+                            text : this.$t('领取失败'),
+                            type : 'cancel'
+                        });
+                    }
+                    this.couponWord = '';
+                });
             }
         },
         computed : {
             ...mapGetters([
-                'cardInfo'
+                'cardInfo',
+                'userInfo',
             ])
         },
         created () {

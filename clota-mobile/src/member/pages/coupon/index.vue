@@ -16,8 +16,7 @@
                 v-model="tabSelected"
                 :threshold="100"
                 :aspect-ratio="10"
-                :show-dots="false"
-                @on-index-change="swiperChange">
+                :show-dots="false">
             <swiper-item class="swiper-item-list">
                 <!--可用优惠券-->
                 <avaliable-coupon>
@@ -57,12 +56,6 @@
             };
         },
         methods : {
-            /**
-             * tab栏切换
-             * @param{Number} index tab序号
-             */
-            swiperChange (index) {
-            },
         }
     };
 </script>

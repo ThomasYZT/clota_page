@@ -353,7 +353,7 @@
                     } else {
                         this.hasRegister = false;
                     }
-                })
+                });
             },
             /**
              * 获取微信配置信息
