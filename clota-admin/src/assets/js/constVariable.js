@@ -621,4 +621,19 @@ export const paymentChannelList = [
     }
 ];
 
+export const otaTypeList = [
+    {
+        label : '美团',
+        value : 'meituan',
+    },
+    {
+        label : '飞猪',
+        value : 'feizhu',
+    },
+    {
+        label : '去哪儿',
+        value : 'qunar',
+    }
+];
+
 
