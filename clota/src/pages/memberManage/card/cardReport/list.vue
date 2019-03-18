@@ -194,6 +194,7 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <span v-if="scope.row.appScene === 'spread'">{{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}</span>
+                        <span v-else>-</span>
                     </template>
                 </el-table-column>
                 <!-- 操作栏 -->
@@ -217,7 +218,7 @@
 
 
         <!-- 查看券码模态框 -->
-        <viewCodeModal ref="viewCodeModal"></viewCodeModal>
+        <!--<viewCodeModal ref="viewCodeModal"></viewCodeModal>-->
     </div>
 </template>
 
@@ -328,7 +329,14 @@
              *  @param rowData 券数据
              */
             showCardDetail (rowData) {
-                this.$refs.viewCodeModal.show(rowData);
+                // this.$refs.viewCodeModal.show(rowData);
+                this.$router.push({
+                    name : 'addCardV2',
+                    params : {
+                        type : 'check',
+                        rowData : rowData
+                    }
+                });
             },
             /**
              * 获取卡券使用条件

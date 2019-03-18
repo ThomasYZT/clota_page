@@ -30,7 +30,7 @@
         <div class="head-info">
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('couponType') })}}</span>
-                <span class="info">{{couponInfo.test | contentFilter}}</span>
+                <span class="info">{{$t(couponInfo.couponType) | contentFilter}}</span>
             </div>
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('applicationScenario') })}}</span>
@@ -60,21 +60,6 @@
                        :page-no-d.sync="pageNo"
                        :page-size-d.sync="pageSize"
                        @query-data="queryList">
-                <!-- 未使用 -->
-                <el-table-column
-                    slot="column0"
-                    show-overflow-tooltip
-                    slot-scope="row"
-                    :label="row.title"
-                    :width="row.width"
-                    :min-width="row.minWidth">
-                    <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'noUse')">
-                            {{ scope.row.conditionGoodNames | contentFilter }} /
-                            {{ scope.row.nominalValue | contentFilter }}
-                        </span>
-                    </template>
-                </el-table-column>
             </table-com>
         </div>
     </div>
@@ -108,8 +93,6 @@
                 type : '',
                 //优惠券信息
                 couponInfo : {},
-                //表头数据
-                columnData : couponCodeDetailsHead,
                 //表格数据
                 tableData : [],
                 //表格数据总条数
@@ -120,7 +103,6 @@
                 pageSize : 10
             };
         },
-
         computed : {
             //卡券状态
             couponStatus () {
@@ -130,6 +112,40 @@
                     return 'wait';
                 } else {
                     return '';
+                }
+            },
+            //表头数据
+            columnData () {
+                let baseColoum = Array.from(couponCodeDetailsHead);
+                //代金券 cash_coupon 兑换券 exchange_coupon 折扣券 discount_coupon
+                if (this.couponInfo.couponType === 'cash_coupon') {
+                    baseColoum.unshift({
+                        title : '卡券面值',
+                        minWidth : 150,
+                        field : 'nominalValue',
+                    });
+                    return baseColoum
+                } else if (this.couponInfo.couponType === 'exchange_coupon') {
+                    baseColoum.unshift({
+                        title : '可兑换商品',
+                        minWidth : 150,
+                        field : 'conditionGoodNames',
+                    });
+                    return baseColoum;
+                } else if (this.couponInfo.couponType === 'discount_coupon') {
+                    baseColoum.unshift({
+                        title : '卡券折扣',
+                        minWidth : 150,
+                        field : 'nominalValue',
+                    });
+                    return baseColoum;
+                } else {
+                    baseColoum.unshift({
+                        title : '卡券面值',
+                        minWidth : 150,
+                        field : 'nominalValue',
+                    });
+                    return baseColoum;
                 }
             }
         },

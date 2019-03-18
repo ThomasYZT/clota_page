@@ -8,7 +8,7 @@
                class-name="vertical-center-modal report-modal"
                transfer
                width="600"
-               :title="$t('addGood')"
+               :title="$t('优惠券使用记录')"
                @on-cancel="hide"
                :mask-closable="false">
 
@@ -41,7 +41,18 @@
                                :page-no-d.sync="pageNo"
                                :page-size-d.sync="pageSize"
                                @query-data="queryList">
-
+                        <!-- 优惠券状态 -->
+                        <el-table-column
+                            slot="column2"
+                            show-overflow-tooltip
+                            slot-scope="row"
+                            :label="row.title"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                            <template slot-scope="scope">
+                                {{scope.row['couponStatus'] ? $t('coupon.status.' + scope.row['couponStatus']) : ''}}
+                            </template>
+                        </el-table-column>
                     </table-com>
                 </div>
             </div>
@@ -120,7 +131,7 @@
              * 查询
              */
             queryList () {
-                ajax.post('queryReportDetail', {
+                ajax.post('queryCouponsDetailByStatus', {
                     couponId : this.rowData.couponId,
                     batchId : this.rowData.batchId,
                     couponStatus : this.couponStatus,

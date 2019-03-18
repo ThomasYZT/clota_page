@@ -7,7 +7,7 @@
         <Modal v-model="visible"
                class-name="vertical-center-modal view-code-modal"
                transfer
-               width="700"
+               width="750"
                :title="$t(title)"
                @on-cancel="hide"
                :mask-closable="false">
@@ -142,13 +142,13 @@
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
     /deep/ .ivu-modal-body {
-        height: 300px;
+        height: 400px;
         overflow: auto;
     }
 
     .view-code-modal {
         .table-wrapper {
-            height: 80%;
+
         }
 
         .green-label {

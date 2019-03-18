@@ -16,7 +16,7 @@ export const cardReportHead = [
     },
     {
         title : 'useCondition', //使用条件
-        minWidth : 150,
+        minWidth : 220,
         field : '',
     },
     {

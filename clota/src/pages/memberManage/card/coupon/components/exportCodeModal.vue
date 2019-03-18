@@ -38,7 +38,7 @@
                         </RadioGroup>
                     </FormItem>
                     <!-- 文件密码 -->
-                    <FormItem v-if="formData.isPass === 'true'" :label="$t('文件密码')" prop="password">
+                    <FormItem v-if="formData.isPass === 'true'" :label="$t('文件加密密码')" prop="password">
                         <Input v-model.trim="formData.password"></Input>
                     </FormItem>
                     <!-- 领取人 -->

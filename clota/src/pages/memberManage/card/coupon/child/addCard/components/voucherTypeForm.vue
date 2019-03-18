@@ -188,7 +188,7 @@
 <script>
     import treeSelector from '../components/treeSelector';
     import defaultsDeep from 'lodash/defaultsDeep';
-    import { validateMoney, validateNum } from '../../../../validateMethods';
+    import { validateMoney, validateNum, validateEndTime } from '../../../../validateMethods';
     export default {
         components : {
             treeSelector
@@ -286,6 +286,7 @@
                     ],
                     expireTime : [ //有效结束日期
                         { required : true, type : 'date', message : this.$t('inputField',{ field : this.$t('effectiveEndDate') }), trigger : 'blur' },
+                        { validator : validateEndTime , startTime : this.formData.effectiveTime }
                     ],
                     quantity : [ //生成数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('generationNum') }), trigger : 'blur' },
@@ -338,7 +339,7 @@
                             let resultForm = defaultsDeep({}, this.formData);
                             resultForm.effectiveTime = resultForm.effectiveTime ? resultForm.effectiveTime.format('yyyy-MM-dd') : '';
                             resultForm.expireTime = resultForm.expireTime ? resultForm.expireTime.format('yyyy-MM-dd') : '';
-                            resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => { return item.id }).join(',');
+                            resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => { return item.partnerId }).join(',');
                             resultForm.conditionOrgId = resultForm.conditionOrgId.map(item => { return item.id }).join(',');
                             resultForm.conditionProductId = resultForm.conditionProductId.map(item => { return item.id }).join(',');
                             resolve(resultForm);
@@ -380,7 +381,7 @@
                 setTimeout(() => {
                     this.formData.conditionChannelId = rowData.conditionChannelId.split(',');
                     this.formData.conditionChannelId = this.channelSetList.filter(item => {
-                        return this.formData.conditionChannelId.includes(item.id);
+                        return this.formData.conditionChannelId.includes(item.partnerId);
                     });
                     this.formData.conditionOrgId = rowData.conditionOrgId.split(',');
                     this.formData.conditionOrgId = this.listAmountRange.filter(item => {

@@ -13,6 +13,20 @@
                    :page-no-d.sync="pageNo"
                    :page-size-d.sync="pageSize"
                    @query-data="queryList">
+            <!-- 优惠券类型 -->
+            <el-table-column
+                slot="column3"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span class="line-info" @click="showLog('all', scope.row)">
+                        {{scope.row.couponType ? $t(scope.row.couponType) : '-'}}
+                    </span>
+                </template>
+            </el-table-column>
             <!-- 已发放数量 -->
             <el-table-column
                 slot="column6"
@@ -74,7 +88,7 @@
                                 <div v-if="scope.row.LevelNames && scope.row.LevelNames.length > 0" slot="content">
                                     <Timeline>
                                         <TimelineItem v-for="(item, index) in scope.row.LevelNames" :key="index">
-                                            <p>item.name</p>
+                                            <p>{{item}}</p>
                                         </TimelineItem>
                                     </Timeline>
                                 </div>

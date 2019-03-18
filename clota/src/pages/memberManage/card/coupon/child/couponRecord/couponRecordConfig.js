@@ -1,27 +1,27 @@
 //导出卡券记录表头
 export const exportCouponRecordHead = [
     {
-        title : 'exportTime',
+        title : 'exportTime', //导出时间
         field : 'createdTime',
         minWidth : 150,
     },
     {
-        title : 'exportNum',
+        title : 'exportNum', //导出数量
         field : 'optCount',
         minWidth : 150,
     },
     {
-        title : 'couponNameV2',
+        title : 'couponNameV2', //优惠券名称
         field : 'couponName',
         minWidth : 150,
     },
     {
-        title : 'recipientInformation',
+        title : 'recipientInformation', //领取人信息
         field : 'nickName',
         minWidth : 150,
     },
     {
-        title : 'filePassword',
+        title : 'filePassword', //文件密码
         field : 'password',
         minWidth : 150,
     },
@@ -30,27 +30,27 @@ export const exportCouponRecordHead = [
 //生成链接记录表头
 export const generateLinkRecordHead = [
     {
-        title : 'generationTime',
+        title : 'generationTime', //生成时间
         field : 'createdTime',
         minWidth : 150,
     },
     {
-        title : 'couponNameV2',
+        title : 'couponNameV2', //优惠券名称
         field : 'couponName',
         minWidth : 150,
     },
     {
-        title : 'generationNum',
+        title : 'generationNum', //生成数量
         field : 'optCount',
         minWidth : 150,
     },
     {
-        title : 'founder',
+        title : 'founder', //创建人
         field : 'nickName',
         minWidth : 150,
     },
     {
-        title : 'links',
+        title : 'links', //链接
         field : 'couponLink',
         minWidth : 150,
     },
@@ -113,17 +113,17 @@ export const pushRecordHead = [
 export const reportModalHead = [
     {
         title : '姓名',
-        field : '',
+        field : 'custName',
         minWidth : 150,
     },
     {
         title : '电话',
-        field : '',
+        field : 'phoneNum',
         minWidth : 150,
     },
     {
         title : '优惠券状态',
-        field : '',
+        field : 'couponStatus',
         minWidth : 150,
     },
 ];

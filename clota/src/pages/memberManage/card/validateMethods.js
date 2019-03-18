@@ -110,3 +110,18 @@ export const validateMobile = (rule, value, callback) => {
     }
 };
 
+
+/**
+ * 校验结束时间大于开始时间
+ * @param value
+ * @param rule
+ * @param callback
+ */
+export const validateEndTime = (rule, value, callback) => {
+    if (rule.startTime && value <= rule.startTime) {
+        callback(i18n.t('结束时间不能早于开始时间'));
+    } else {
+        callback();
+    }
+}
+
