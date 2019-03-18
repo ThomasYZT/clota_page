@@ -129,34 +129,8 @@
                 </FormItem>
             </Form>
         </edit-modal>
-        <!--审核通过模态框-->
-        <edit-modal ref="passModal">
-            <Form :model="formData"
-                  class="form-wrap"
-                  key="passForm"
-                  ref="passForm"
-                  :rules="ruleValidate"
-                  label-position="right"
-                  :label-width="150">
-                <FormItem :label="(channelType === 'per' ? $t('cooperaChannelPer') : $t('cooperaChannelOrg')) + '：'">
-                    <span>{{cooperaPerDetail.name}}</span>
-                </FormItem>
-                <FormItem v-if="channelType !== 'per'"
-                          :label="$t('partnerChannelType') + '：'"
-                          prop="partnerChannelType">
-                    <RadioGroup v-model="formData.partnerChannelType">
-                        <Radio v-for="(item, index) in channelsGroupList"
-                               :key="index"
-                               :label="item.value">
-                            {{$t(item.label)}}
-                        </Radio>
-                    </RadioGroup>
-                </FormItem>
-                <!--<FormItem label="登录密码将发送至：" prop="email">-->
-                    <!--<Input v-model.trim="formData.email" style="width: 280px"/>-->
-                <!--</FormItem>-->
-            </Form>
-        </edit-modal>
+
+        <auditModal ref="auditModal" @updateInfo="updateInfo"></auditModal>
 
         <!--重置密码模态框-->
         <edit-modal ref="resetModal">
@@ -172,10 +146,11 @@
     import breadCrumbHead from '@/components/breadCrumbHead/index.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import editModal from '@/components/editModal/index.vue';
+    import auditModal from './components/auditModal';
     import getFiledData from './channelConfig';
     import ajax from '@/api/index.js';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import { channelsGroupList } from '@/assets/js/constVariable';
+    import { channelsGroupList, otaTypeList } from '@/assets/js/constVariable';
     import onlineReceipt from '../ISPinternetChild/ISPinternetDetailChild/components/onlineReceipt';
     import subDepartment from '../ISPinternetChild/ISPinternetDetailChild/components/subDepartment';
     import employeeTable from '../ISPinternetChild/ISPinternetDetailChild/components/employeeTable';
@@ -190,7 +165,8 @@
             onlineReceipt,
             imagePreview,
             subDepartment,
-            employeeTable
+            employeeTable,
+            auditModal
         },
         data () {
             //校验邮箱地址是否正确
@@ -237,6 +213,18 @@
                     partnerChannelType : [
                         { required : true,message : this.$t('selectField',{ msg : this.$t('partnerChannelType') }),trigger : 'blur' },
                     ],
+                    otaType : [
+                        { required : true,message : this.$t('selectField',{ msg : 'OTA参数配置集' }),trigger : 'blur' },
+                    ],
+                    appID : [
+                        { required : true,message : this.$t('selectField',{ msg : 'AppID' }),trigger : 'blur' },
+                    ],
+                    secret : [
+                        { required : true,message : this.$t('selectField',{ msg : 'Secret' }),trigger : 'blur' },
+                    ],
+                    publicKey : [
+                        { required : true,message : this.$t('selectField',{ msg : '公钥'}),trigger : 'blur' },
+                    ],
                 },
                 //表单数据
                 formData : {
@@ -245,7 +233,15 @@
                     //邮件地址
                     //email : '',
                     //合作伙伴渠道类型
-                    partnerChannelType : ''
+                    partnerChannelType : '',
+                    //ota类型
+                    otaType : '',
+                    //appID
+                    appID : '',
+                    //secret
+                    secret : '',
+                    //公钥
+                    publicKey : '',
                 },
                 //合作伙伴总数
                 totalCount : 0,
@@ -264,6 +260,8 @@
                 channelDetailInfo : {},
                 //合作伙伴渠道列表
                 channelsGroupList : channelsGroupList,
+                //ota参数配置集
+                otaTypeList : otaTypeList,
                 //租户详情信息
                 lessDetail : {},
                 //当前操作的数据
@@ -275,28 +273,7 @@
              * 审核通过
              */
             auditPass () {
-                this.$refs.passModal.show({
-                    title : '注册申请审核通过',
-                    confirmBtn : '审核通过',
-                    confirmCallback : () => {
-                        if (this.channelType === 'per') {
-                            this.auditPartner({
-                                auditStatus : 'success'
-                            });
-                        } else {
-                            this.$refs.passForm.validate(valid => {
-                                if (valid) {
-                                    this.auditPartner({
-                                        auditStatus : 'success'
-                                    });
-                                }
-                            });
-                        }
-                    },
-                    cancelCallback : () => {
-                        this.$refs.passForm.resetFields();
-                    }
-                });
+                this.$refs.auditModal.show(this.channelId, this.channelType, this.cooperaPerDetail);
             },
             /**
              * 驳回申请
@@ -509,6 +486,13 @@
                     this.$refs.resetModal.hide();
                 });
             },
+            /**
+             * 更新信息
+             */
+            updateInfo () {
+                this.getPartnerDetail();
+                this.getChannelPartners();
+            }
         },
         computed : {
             //是否显示通过和驳回的按钮
