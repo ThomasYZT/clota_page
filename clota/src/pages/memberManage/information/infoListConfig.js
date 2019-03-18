@@ -24,7 +24,7 @@ export const infoListHead = [
     },
     {
         title : 'memberCardType',
-        minWidth : 110,
+        minWidth : 130,
         enMinWidth : 190,
         field : 'cardTypeName'
     },

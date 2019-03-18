@@ -12,11 +12,11 @@
         </div>
         <div class="demo-info">
             <div class="coupon-title">
-                <span class="title">满200减100代金</span>
-                <span class="label">代金券</span>
+                <span class="title">{{data.couponName | contentFilter}}</span>
+                <span class="label">{{couponName}}</span>
             </div>
             <div class="validate-date">
-                有效期至：2019-01-02
+                有效期至：{{data.expTime | contentFilter}}
             </div>
             <div class="use-rule" @click="showUsageDetail" :class="{ 'upload' : showDetail }">
                 <span class="rule-title">使用规则</span>
@@ -40,6 +40,13 @@
             'status' : {
                 type : String,
                 default : 'used'
+            },
+            //优惠券信息
+            data : {
+                type : Object,
+                default () {
+                    return {};
+                }
             }
         },
         data () {
@@ -53,6 +60,21 @@
              */
             showUsageDetail () {
                 this.showDetail = !this.showDetail;
+            }
+        },
+        computed : {
+            //优惠券名称
+            couponName () {
+                if (this.data) {
+                    switch (this.data.couponType) {
+                        case 'exchange_coupon' : return '兑换券';
+                        case 'discount_coupon' : return '折扣券';
+                        case 'cash_coupon' : return '代金券';
+                        default : return '';
+                    }
+                } else {
+                    return '-';
+                }
             }
         }
     };

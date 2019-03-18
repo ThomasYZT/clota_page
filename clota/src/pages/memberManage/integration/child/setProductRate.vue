@@ -20,7 +20,7 @@
             </div>
             <div class="table-wrap">
                 <table-com
-                    v-if="tableCanMount"
+                    :auto-query-first="false"
                     :ofsetHeight="215"
                     :show-pagination="true"
                     :page-no-d.sync="pageNo"
@@ -128,7 +128,9 @@
                 //上级路由列表
                 // beforeRouterList: ,
                 //会员卡级别名称
-                levelName : ''
+                levelName : '',
+                //规则id
+                ruleId : ''
             };
         },
         methods : {
@@ -151,7 +153,8 @@
                     deptDiscountId : this.memberInfo.id,
                     typeName : this.queryParams.keyword,
                     orgId : this.memberInfo.sourceDeptId,
-                    isActivity : this.isActivity
+                    isActivity : this.isActivity,
+                    ruleId : this.ruleId
                 }).then(res => {
                     if (res.success) {
                         this.tableData = res.data.data ? res.data.data : [];
@@ -173,6 +176,12 @@
                 if (params.memberInfo && Object.keys(params.memberInfo).length > 0) {
                     this.memberInfo = params.memberInfo;
                     this.levelName = params.levelName;
+                    if (this.$route.name === 'specialIntegralProductSetting') {
+                        this.ruleId = params.ruleId;
+                    } else {
+                        this.ruleId = '1';
+                    }
+                    this.queryList();
                 } else {
                     this.$router.back();
                 }
@@ -202,6 +211,7 @@
                     isActivity : this.isActivity,
                     startTime : this.memberInfo['startTime'] ? new Date(this.memberInfo['startTime']).format('yyyy-MM-dd 00:00:00') : '',
                     endTime : this.memberInfo['endTime'] ? new Date(this.memberInfo['endTime']).format('yyyy-MM-dd 23:59:59') : '' ,
+                    ruleId : this.ruleId
                 }).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('settingSuccess')); // 设置成功
@@ -225,10 +235,6 @@
             },
         },
         computed : {
-            //表格是否需要显示
-            tableCanMount () {
-                return this.memberInfo && !!this.memberInfo.levelId;
-            },
             //面包屑路由信息
             beforeRouterList () {
                 if (this.$route.name === 'activitySetProductRate') { //特定活动积分折扣率设置

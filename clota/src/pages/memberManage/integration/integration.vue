@@ -192,6 +192,8 @@
             getParams (params) {
                 if (params && params.ruleId && this.$route.name === 'specialIntegralCardLevelSetting') {
                     this.ruleId = params.ruleId;
+                } else {
+                    this.ruleId = '1';
                 }
                 this.queryList();
             }

@@ -6,28 +6,25 @@
             <x-input class="coupon-word" v-model.trim="couponWord"></x-input>
             <x-button class="add-btn" @click.native="addCoupon">{{$t('添加')}}</x-button>
         </div>
-        <!--优惠券详情-->
-        <coupon-item status="avaliable">
-        </coupon-item>
-        <coupon-item status="avaliable">
-        </coupon-item>
-        <coupon-item status="avaliable">
-        </coupon-item>
-        <coupon-item status="avaliable">
-        </coupon-item>
-        <coupon-item status="avaliable">
-        </coupon-item>
-        <coupon-item status="avaliable">
-        </coupon-item>
-        <coupon-item status="avaliable">
-        </coupon-item>
-        <coupon-item status="avaliable">
-        </coupon-item>
+        <template v-if="couponList.length > 0">
+            <!--优惠券详情-->
+            <coupon-item status="avaliable"
+                         v-for="item in couponList"
+                         :key="item.id"
+                         :data="item">
+            </coupon-item>
+        </template>
+        <!--无数据显示-->
+        <no-data class="page-no-data" v-else>
+        </no-data>
     </div>
 </template>
 
 <script>
     import couponItem from '../components/couponItem';
+    import ajax from '@/member/api/index.js';
+    import { mapGetters } from 'vuex';
+    import noData from '@/components/noData/index.vue';
 
     export default {
         //优惠券状态
@@ -36,12 +33,15 @@
             default : 'used'
         },
         components : {
-            couponItem
+            couponItem,
+            noData
         },
         data () {
             return {
                 //优惠券代码
-                couponWord : ''
+                couponWord : '',
+                //优惠券列表
+                couponList : []
             };
         },
         methods : {
@@ -66,7 +66,32 @@
                         reject();
                     }
                 });
+            },
+            /**
+             * 查询可用优惠券信息
+             */
+            queryMemberCouponsList () {
+                ajax.post('queryMemberCouponsList',{
+                    cardId : this.cardInfo.id,
+                    status : 'noUse',
+                    pageNo : 1,
+                    pageSize : 9999
+                }).then(res => {
+                    if (res.success && res.data && res.data.data) {
+                        this.couponList = res.data.data;
+                    } else {
+                        this.couponList = [];
+                    }
+                });
             }
+        },
+        computed : {
+            ...mapGetters([
+                'cardInfo'
+            ])
+        },
+        created () {
+            this.queryMemberCouponsList();
         }
     };
 </script>
@@ -101,6 +126,10 @@
                     display: none;
                 }
             }
+        }
+
+        .page-no-data{
+            @include block_outline($height : unquote('calc(100% - 61px)'));
         }
     }
 </style>
