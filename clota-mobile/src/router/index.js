@@ -7,7 +7,7 @@ import { marketingRoutes } from '../marketing/router/index';
 Vue.use(Router);
 //生成新路由的方法
 const createRouter = () => new Router({
-    // mode : 'history',
+    mode : 'history',
     base : '/clota/mobile',
     routes : [
         {
