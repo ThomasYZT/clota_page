@@ -3,8 +3,13 @@
 <template>
     <div class="avaliable-coupon">
         <div class="search-area">
-            <x-input class="coupon-word" v-model.trim="couponWord"></x-input>
-            <x-button class="add-btn" @click.native="addCoupon">{{$t('添加')}}</x-button>
+            <x-input class="coupon-word"
+                     v-model.trim="couponWord"
+                     :disabled="cardInfo.status === 'frozen'">
+            </x-input>
+            <x-button class="add-btn"
+                      :disabled="cardInfo.status === 'frozen'"
+                      @click.native="addCoupon" >{{$t('add')}}</x-button>
         </div>
         <template v-if="couponList.length > 0">
             <!--优惠券详情-->
@@ -62,7 +67,7 @@
                     if (this.couponWord) {
                         resolve();
                     } else {
-                        this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('优惠券码') }));
+                        this.$vux.toast.text(this.$t('pleaseInput', { field : this.$t('couponCodeIn') }));
                         reject();
                     }
                 });
@@ -95,7 +100,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$vux.toast.show({
-                            text : this.$t('领取成功'),
+                            text : this.$t('getCardSuccess'),
                             type : 'success'
                         });
                         this.queryMemberCouponsList();
@@ -103,7 +108,7 @@
                         this.$vux.toast.text(this.$t(res.code));
                     } else {
                         this.$vux.toast.show({
-                            text : this.$t('领取失败'),
+                            text : this.$t('getCardFail'),
                             type : 'cancel'
                         });
                     }

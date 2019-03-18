@@ -1,30 +1,26 @@
 <!--选择领取优惠券的会员卡-->
 
 <template>
-    <popup :value="value" v-transfer-dom :hide-on-blur="false" @on-show="popupShow">
+    <popup :value="value" v-transfer-dom :hide-on-blur="false">
         <popup-header
             :left-text="$t('cancel')"
             :right-text="$t('confirm')"
-            :title='$t("请选择领取优惠券的会员卡")'
+            :title='$t("setRightMemberToGetCoupon")'
             :show-bottom-border="false"
             @on-click-left="cancel"
             @on-click-right="confirm">
         </popup-header>
         <group gutter="0">
-            <radio :options="memberList"
-                   v-model="memberSelected"
-                   :disabled="true">
-                <div slot="each-item" slot-scope="scoped" :class="{ 'disabled-cell' : scoped.status === 'frozen' }">
-                    {{scoped.label}} <span class="tips" v-if="scoped.status !== 'frozen'">{{$t('frozen')}}</span>
-                </div>
-            </radio>
-            <radio :options="memberList"
-                   v-model="memberSelected"
-                   :disabled="true">
-                <div slot="each-item" slot-scope="scoped" :class="{ 'disabled-cell' : scoped.status === 'frozen' }">
-                    {{scoped.label}} <span class="tips" v-if="scoped.status !== 'frozen'">{{$t('frozen')}}</span>
-                </div>
-            </radio>
+            <template v-for="item in memberList">
+                <radio :options="[item]"
+                       :key="item.id"
+                       v-model="memberSelected"
+                       :disabled="item.status === 'frozen'">
+                    <div slot="each-item" slot-scope="scoped" :class="{ 'disabled-cell' : item.status === 'frozen' }">
+                        {{scoped.label}} <span class="tips" v-if="item.status === 'frozen'">{{$t('frozen')}}</span>
+                    </div>
+                </radio>
+            </template>
         </group>
     </popup>
 </template>
@@ -62,17 +58,13 @@
              * 确定选择所选会员卡
              */
             confirm () {
-                this.$emit('input',false);
-                this.$emit('choose-type',this.memberSelected);
-            },
-            /**
-             * 上拉选择框显示
-             */
-            popupShow () {
-                if (this.memberList && this.memberList.length > 0) {
-                    this.memberSelected = this.memberList[0]['value'];
+                if (this.memberSelected) {
+                    this.$emit('input',false);
+                    this.$emit('choose-type',this.memberSelected);
+                } else {
+                    this.$vux.toast.text('setRightMemberToGetCoupon');
                 }
-            }
+            },
         }
     };
 </script>

@@ -5,8 +5,8 @@
         <transition name="fade" mode="out-in">
             <!--领取-->
             <div class="coupon-inner" v-if="stage === 'notGet'">
-                <div class="congratuation">{{$t('恭喜你')}}</div>
-                <div class="get-coupon-label">{{$t('获得一张优惠券')}}</div>
+                <div class="congratuation">{{$t('congratulation')}}</div>
+                <div class="get-coupon-label">{{$t('getACoupon')}}</div>
                 <div class="coupon-info">
                     <div class="circle circle-left-top"></div>
                     <div class="circle circle-left-bottom"></div>
@@ -15,15 +15,15 @@
                     <div class="title">
                         {{$t('100元代金券')}}
                     </div>
-                    <div class="fu-title">{{$t('满200可用')}}</div>
+                    <div class="fu-title">{{$t('cashUseItem',{ num : 200 })}}</div>
                 </div>
                 <x-input class="member-phone"
-                         :placeholder="$t('请输入手机号领取')"
+                         :placeholder="$t('inputPhoneToGet')"
                          v-model.trim="phone">
                 </x-input>
                 <x-input class="member-code"
                          v-model.trim="code"
-                         :placeholder="$t('请输入验证码')" >
+                         :placeholder="$t('pleaseInputValidCode')" >
                     <div slot="right-full-height"
                          class="validate"
                          :class="{'time-counting' : isTiming}"
@@ -40,18 +40,18 @@
                 <x-button class="get-btn"
                           :class="{ 'disabled' : !(phone && code) }"
                           @click.native="getCoupon">
-                    {{$t('领取优惠券')}}
+                    {{$t('getCoupon')}}
                 </x-button>
             </div>
             <!--领取完成-->
             <div class="coupon-get-result" v-else-if="stage === 'getted'">
                 <img class="get-suc-img" src="../../../assets/images/icon-getted-coupon.png" alt="">
-                <div class="get-suc-title">{{$t('领取成功！')}}</div>
+                <div class="get-suc-title">{{$t('getCardSuccess')}}</div>
                 <x-button class="look-btn"
                           @click.native="getCoupon">
-                    {{$t('查看我的优惠券')}}
+                    {{$t('watchMyCoupons')}}
                 </x-button>
-                <span class="to-my">{{$t('去会员主页')}}&nbsp;&gt;</span>
+                <span class="to-my">{{$t('toHomePage')}}&nbsp;&gt;</span>
             </div>
         </transition>
         <!--未注册会员提示-->
@@ -61,7 +61,7 @@
                  :confirm-text="$t('register')"
                  :cancel-text="$t('cancel')"
                  @on-confirm="onConfirm">
-            <p style="text-align:center;">{{ $t('您还未注册会员，请前往注册') }}</p>
+            <p style="text-align:center;">{{ $t('registerLeadTip') }}</p>
         </confirm>
         <!--领取错误提示-->
         <confirm v-model="errTipShow"
@@ -210,7 +210,7 @@
                     if (value && validator.isMobile(value)) {
                         resolve();
                     } else {
-                        this.$vux.toast.text('请输入正确手机号码');
+                        this.$vux.toast.text('errFormat',{ field : this.$t('mobile') });
                         reject();
                     }
                 });
@@ -273,11 +273,11 @@
             getCardList () {
                 //获取会员卡列表
                 this.getCardListInfo().then(([memberCardList]) => {
-                    this.memberList = memberCardList.map(item => {
+                    this.memberList = memberCardList.map((item) => {
                         return {
                             ...item,
                             value : item.orgName + '-' + item.levelDesc,
-                            key : item.id,
+                            key : item.id
                         };
                     });
                     this.showMemberListModal = true;
@@ -302,7 +302,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.$vux.toast.show({
-                            text : this.$t('领取成功'),
+                            text : this.$t('getCardSuccess'),
                             type : 'success'
                         });
                         this.queryMemberCouponsList();
@@ -313,7 +313,7 @@
                         this.$vux.toast.text(this.$t(res.code));
                     } else {
                         this.$vux.toast.show({
-                            text : this.$t('领取失败'),
+                            text : this.$t('getCardFail'),
                             type : 'cancel'
                         });
                     }
