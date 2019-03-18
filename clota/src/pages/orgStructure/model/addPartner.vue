@@ -14,7 +14,9 @@
         <Form ref="formValidate" :model="addPartner" :rules="ruleValidate" :label-width="lang === 'zh-CN' ? 120 : 230">
             <Form-item :label="$t('partnerName')" prop="partnerId">
                 <Select v-model="addPartner.partnerId"
+                        transfer
                         filterable
+                        ref="partnerId"
                         :placeholder="$t('selectField',{ msg : '' })"
                         :disabled="type=='modify'"
                         @on-change="handlePartnerChanged">
@@ -28,6 +30,7 @@
 
             <Form-item :label="$t('protocolStartDate')" prop="startDate">
                 <DatePicker v-model="protoDate"
+                            transfer
                             type="daterange"
                             placement="bottom-end"
                             :placeholder="$t('selectField', {msg: ''})"
@@ -39,6 +42,7 @@
 
             <Form-item :label="$t('saleChannelsGroup')" prop="saleGroupId">
                 <Select v-model="addPartner.saleGroupId"
+                        transfer
                         :placeholder="$t('selectField',{ msg : '' })">
                     <Option v-for="item in saleChannels"
                             :value="item.id"
@@ -162,6 +166,7 @@
                 this.visible = false;
                 this.$refs.formValidate.resetFields();
                 this.protoDate = [];
+                this.$refs.partnerId.setQuery(null);
             },
             /**
              * 创建自定义指标表单校验
