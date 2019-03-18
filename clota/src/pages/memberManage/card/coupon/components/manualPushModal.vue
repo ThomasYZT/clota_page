@@ -51,6 +51,7 @@
 <script>
     import treeSelector from '../child/addCard/components/treeSelector';
     import ajax from '@/api/index';
+    import { validateNum } from '../../validateMethods';
     export default {
         components : {
             treeSelector

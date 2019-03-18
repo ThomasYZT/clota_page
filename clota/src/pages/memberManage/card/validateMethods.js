@@ -1,5 +1,6 @@
 import i18n from '@/assets/lang/lang.config';
 import common from '@/assets/js/common.js';
+import { validator } from 'klwk-ui';
 /**
  * 输入内容不合规则
  * @param rule
@@ -94,4 +95,18 @@ export const validateDiscount = (rule, value, callback) => {
         callback()
     }
 }
+
+/**
+ * 校验电话号码
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const validateMobile = (rule, value, callback) => {
+    if (!validator.isMobile(value)) {
+        callback(new Error(i18n.t('errorFormat', { field : i18n.t('phoneNum') })));
+    } else {
+        callback();
+    }
+};
 

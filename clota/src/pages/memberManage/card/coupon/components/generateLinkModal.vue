@@ -59,6 +59,7 @@
 
 <script>
     import ajax from '@/api/index';
+    import { validateNum } from '../../validateMethods';
     export default {
         components : {},
         data () {
@@ -85,9 +86,11 @@
                 return {
                     preUrl : [ //链接地址
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('链接地址') }), trigger : 'blur' },
+                        { type : 'string', max : 30, message : this.$t('errorMaxLength', { field : this.$t('链接地址'), length : 30 }), trigger : 'blur' }, // 不能多于30个字符
                     ],
                     needCount : [ //生成数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('生成数量') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'generationNum' },
                     ],
                 }
             }

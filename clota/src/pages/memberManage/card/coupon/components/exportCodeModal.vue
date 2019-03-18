@@ -65,6 +65,7 @@
     import config from '../../../../../config/index';
     import apiList from '../../../../../api/apiList';
     import ajax from '@/api/index'
+    import { validateNum, validateMobile } from '../../validateMethods';
     export default {
         components : {},
         data () {
@@ -94,6 +95,7 @@
                 return {
                     needCount : [ //导出数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('导出数量') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'exportNum' }
                     ],
                     isPass : [ //导出文件是否加密
                         { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },
@@ -103,9 +105,11 @@
                     ],
                     optUser : [ //领取人
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('领取人') }), trigger : 'blur' },
+                        { type : 'string', max : 10, message : this.$t('errorMaxLength', { field : this.$t('姓名'), length : 10 }), trigger : 'blur' }, // 不能多于30个字符
                     ],
                     phoneNum : [ //领取人电话
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('领取人电话') }), trigger : 'blur' },
+                        { validator : validateMobile, trigger : 'blur' }
                     ],
                 }
             }
