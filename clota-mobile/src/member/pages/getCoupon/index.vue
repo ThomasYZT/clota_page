@@ -3,8 +3,13 @@
 <template>
     <div class="get-coupon">
         <transition name="fade" mode="out-in">
+            <!--卡券不存在或已领完-->
+            <div class="no-data" v-if="!canGetCoupon">
+                <img class="no-data-img" src="../../../assets/images/icon-coupon-no-exist.png" alt="">
+                <span class="coupon-desc">{{$t('卡券不存在或已领完')}}</span>
+            </div>
             <!--领取-->
-            <div class="coupon-inner" v-if="stage === 'notGet'">
+            <div class="coupon-inner"  v-else-if="stage === 'notGet'">
                 <div class="congratuation">{{$t('congratulation')}}</div>
                 <div class="get-coupon-label">{{$t('getACoupon')}}</div>
                 <div class="coupon-info">
@@ -12,10 +17,23 @@
                     <div class="circle circle-left-bottom"></div>
                     <div class="circle circle-right-bottom"></div>
                     <div class="circle circle-right-top"></div>
-                    <div class="title">
-                        {{$t('100元代金券')}}
-                    </div>
-                    <div class="fu-title">{{$t('cashUseItem',{ num : 200 })}}</div>
+                    <!--折扣券-->
+                    <template v-if="couponData.couponType === 'discount_coupon'">
+                        <div class="title">
+                            {{$t('discountNum',{ num : couponData.nominalValue * 10 })}}{{$t('优惠券')}}
+                        </div>
+                    </template>
+                    <!--代金券-->
+                    <template v-else-if="couponData.couponType === 'cash_coupon'">
+                        <div class="title">
+                            {{$t('couponValue',{ num : couponData.nominalValue })}}{{$t('代金券')}}
+                        </div>
+                        <div class="fu-title">{{$t('cashUseItem',{ num : couponData.conditionLowerLimtation })}}</div>
+                    </template>
+                    <!--兑换券-->
+                    <template v-else-if="couponData.couponType === 'exchange_coupon'">
+                        <div class="title">{{$t('兑换券')}}</div>
+                    </template>
                 </div>
                 <x-input class="member-phone"
                          :placeholder="$t('inputPhoneToGet')"
@@ -48,10 +66,10 @@
                 <img class="get-suc-img" src="../../../assets/images/icon-getted-coupon.png" alt="">
                 <div class="get-suc-title">{{$t('getCardSuccess')}}</div>
                 <x-button class="look-btn"
-                          @click.native="getCoupon">
+                          @click.native="toMycoupon">
                     {{$t('watchMyCoupons')}}
                 </x-button>
-                <span class="to-my">{{$t('toHomePage')}}&nbsp;&gt;</span>
+                <span class="to-my" @click="toHomePage">{{$t('toHomePage')}}&nbsp;&gt;</span>
             </div>
         </transition>
         <!--未注册会员提示-->
@@ -115,7 +133,13 @@
                 //是否有注册权限
                 hasRegister : false,
                 //注册提示框是否显示
-                registerModalShow : false
+                registerModalShow : false,
+                //卡券id
+                couponId : '',
+                //批次号
+                batchId : '',
+                //优惠券信息
+                couponData : {}
             };
         },
         methods : {
@@ -192,7 +216,12 @@
              * @param{String} cardId 会员id
              */
             toGetCouponViaMemberType (cardId) {
-                this.reseiveCoupon('member',cardId);
+                let cardInfo = this.memberList.find(item => item.id = cardId);
+                //更新会员卡数据
+                this.updateCardInfo(cardInfo);
+                this.$store.dispatch('getMemberConfigInfo').then(() => {
+                    this.reseiveCoupon(cardId);
+                });
             },
             /**
              * 计时完成
@@ -210,7 +239,7 @@
                     if (value && validator.isMobile(value)) {
                         resolve();
                     } else {
-                        this.$vux.toast.text('errFormat',{ field : this.$t('mobile') });
+                        this.$vux.toast.text(this.$t('errFormat',{ field : this.$t('mobile') }));
                         reject();
                     }
                 });
@@ -231,13 +260,16 @@
             },
             /**
              * 获取路由参数
-             * @param queryParams
+             * @param{Object} queryParams 路由参数
              */
             getParams (queryParams) {
-                if (queryParams && queryParams.companyCode) {
+                if (queryParams && queryParams.companyCode && queryParams.couponId && queryParams.batchId) {
                     this.$store.commit('updateCompanyCode',queryParams.companyCode);
+                    this.couponId = queryParams.couponId;
+                    this.batchId = queryParams.batchId;
+                    this.findCouponById();
+                    this.checkCardLevelOfGrowth();
                 }
-                this.checkCardLevelOfGrowth();
             },
             login () {
                 ajax.post('login', {
@@ -291,21 +323,17 @@
             },
             /**
              * 领取优惠券
-             * @param{String} couponCode 优惠券code
              * @param{String}cardId 会员卡id
              */
-            reseiveCoupon (couponCode,cardId) {
+            reseiveCoupon (cardId) {
                 ajax.post('reseiveCoupon',{
-                    couponCode : couponCode,
+                    couponId : this.couponId,
                     memberId : this.userInfo.memberId,
                     cardId : cardId,
+                    batchId : this.batchId
                 }).then(res => {
                     if (res.success) {
-                        this.$vux.toast.show({
-                            text : this.$t('getCardSuccess'),
-                            type : 'success'
-                        });
-                        this.queryMemberCouponsList();
+                        this.stage = 'getted';
                     } else if (res.code === 'M062' || res.code === 'M063' || res.code === 'M064') {
                         this.errTipMsg = this.$t(res.code);
                         this.errTipShow = true;
@@ -319,6 +347,37 @@
                     }
                     this.couponWord = '';
                 });
+            },
+            /**
+             * 查询卡券信息
+             */
+            findCouponById () {
+                ajax.post('findCouponById',{
+                    couponId : this.couponId
+                }).then(res => {
+                    if (res.success && res.data) {
+                        this.couponData = res.data;
+                    }
+                });
+            },
+            /**
+             * 跳转到会员主页
+             */
+            toHomePage () {
+                this.$router.replace({
+                    name : 'home'
+                });
+            },
+            /**
+             * 跳转到我的卡券页面
+             */
+            toMycoupon () {
+                this.$router.replace({
+                    name : 'home',
+                    params : {
+                        routerName : 'myCoupon'
+                    }
+                });
             }
         },
         computed : {
@@ -326,7 +385,11 @@
                 lang : 'lang',
                 userInfo : 'userInfo',
                 companyCode : 'companyCode'
-            })
+            }),
+            //可以领取到卡券
+            canGetCoupon () {
+                return this.couponId && this.companyCode && this.batchId;
+            }
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
@@ -375,7 +438,26 @@
                 margin-top: 17px;
             }
         }
+
+        .no-data{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            .no-data-img{
+                width: 200px;
+            }
+
+            .coupon-desc{
+                font-size: $font_size_15px;
+                color: $color_999;
+                margin-top: 20px;
+            }
+        }
+
         .coupon-inner,
+        .no-data,
         .coupon-get-result{
             width: calc(100% - 35px);
             min-height: 500px;

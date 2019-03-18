@@ -11,9 +11,9 @@
             @on-click-right="confirm">
         </popup-header>
         <group gutter="0">
-            <template v-for="item in memberList">
+            <template v-for="(item,index) in memberList">
                 <radio :options="[item]"
-                       :key="item.id"
+                       :key="index"
                        v-model="memberSelected"
                        :disabled="item.status === 'frozen'">
                     <div slot="each-item" slot-scope="scoped" :class="{ 'disabled-cell' : item.status === 'frozen' }">
@@ -62,7 +62,7 @@
                     this.$emit('input',false);
                     this.$emit('choose-type',this.memberSelected);
                 } else {
-                    this.$vux.toast.text('setRightMemberToGetCoupon');
+                    this.$vux.toast.text(this.$t('setRightMemberToGetCoupon'));
                 }
             },
         }

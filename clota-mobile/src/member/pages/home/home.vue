@@ -1,3 +1,4 @@
+
 <!--
     会员主页
     作者：杨泽涛
@@ -306,8 +307,24 @@
                         this.isShowCard = false;
                     }
                 });
+            },
+            /**
+             * 获取路由信息
+             * @param params
+             */
+            getParms (params) {
+                if (params && params.routerName) {
+                    this.$router.push({
+                        name : params.routerName
+                    });
+                }
             }
         },
+        beforeRouteEnter(to,from,next) {
+            next(vm => {
+                vm.getParms(to.params);
+            });
+        }
   };
 </script>
 
