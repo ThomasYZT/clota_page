@@ -142,6 +142,7 @@
 <script>
     import treeSelector from './treeSelector';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import { validateMoney, validateNum } from '../../../../validateMethods';
     export default {
         components : {
             treeSelector
@@ -217,6 +218,7 @@
                     //有效期
                     effDays : [
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('effectiveDays') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'effectiveDays' }
                     ],
                     //有效开始日期
                     effectiveTime : [
@@ -229,14 +231,17 @@
                     //生成数量
                     quantity : [
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('generationNum') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'generationNum' }
                     ],
                     //单日可领取数量
                     dayGain : [
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountSingleDay') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'amountSingleDay' }
                     ],
                     //可领取数量上限
                     totalGain : [
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountLimit') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'amountLimit' }
                     ],
                     //商品
                     conditionGoodId : [

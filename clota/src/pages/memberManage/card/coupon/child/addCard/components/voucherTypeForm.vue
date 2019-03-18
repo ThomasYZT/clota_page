@@ -188,6 +188,7 @@
 <script>
     import treeSelector from '../components/treeSelector';
     import defaultsDeep from 'lodash/defaultsDeep';
+    import { validateMoney, validateNum } from '../../../../validateMethods';
     export default {
         components : {
             treeSelector
@@ -270,12 +271,15 @@
                 return {
                     nominalValue : [ //卡券面值
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('couponFaceValue') }), trigger : 'blur' },
+                        { validator : validateMoney, trigger : 'blur', customField : 'couponFaceValue' },
                     ],
                     conditionLowerLimtation : [ //最低消费金额后可用
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('consumption') }), trigger : 'blur' },
+                        { validator : validateMoney, trigger : 'blur', customField : 'money' },
                     ],
-                    effDays : [ //有效期
+                    effDays : [ //有效天数
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('effectiveDays') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'effectiveDays' }
                     ],
                     effectiveTime : [ //有效开始日期
                         { required : true, type : 'date', message : this.$t('inputField',{ field : this.$t('effectiveStartDate') }), trigger : 'blur' },
@@ -285,12 +289,15 @@
                     ],
                     quantity : [ //生成数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('generationNum') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'generationNum' }
                     ],
                     dayGain : [ //单日可领取数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountSingleDay') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'amountSingleDay' }
                     ],
                     totalGain : [ //可领取数量上限
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountLimit') }), trigger : 'blur' },
+                        { validator : validateNum, trigger : 'blur', customField : 'amountLimit' }
                     ],
                     isDiscountCoexist : [ //能否和会员折扣同时使用
                         { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },

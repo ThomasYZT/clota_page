@@ -26,3 +26,72 @@ export const validateCN = (rule, value, callback) => {
     }
 }
 
+/**
+ * 校验钱
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const validateMoney = (rule,value,callback) => {
+    if (value) {
+        common.validateMoney(value).then(() => {
+            callback();
+        }).catch(err => {
+            if (err === 'errorMaxLength') {
+                callback(i18n.t('errorMaxLength',{ field : i18n.t(rule.customField ? rule.customField : rule.field),length : 10 }));
+            } else {
+                callback(i18n.t(err,{ field : i18n.t(rule.customField ? rule.customField : rule.field) }));
+            }
+        });
+    } else {
+        callback();
+    }
+};
+
+/**
+ * 校验是否为正整数
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const validateNum = (rule,value,callback) => {
+    common.validateInteger(value).then(() => {
+        callback();
+    }).catch(err => {
+        if (err === 'fieldTypeError') {
+            callback(i18n.t(err,{ field : i18n.t(rule.customField ? rule.customField : rule.field) }));
+        } else if (err === 'integetError') {
+            callback(i18n.t(err, { field : i18n.t(rule.customField ? rule.customField : rule.field) }));
+        } else {
+            callback();
+        }
+    });
+};
+
+/**
+ * 校验折扣率
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const validateDiscount = (rule, value, callback) => {
+    if (value) {
+        if (isNaN(Number(value))) {
+            callback(i18n.t('onlyInput', { field : i18n.t('number') }))
+        } else {
+            if (String(value).length > 4) {
+                callback(i18n.t('errorMaxLength', { field : i18n.t(rule.customField ? rule.customField : rule.field),
+                    length : 4 }));
+            } else {
+                if (Number(value) <= 0 || Number(value) > 1 ) {
+                    callback(i18n.t('discountError'));
+                } else {
+                    callback();
+                }
+            }
+        }
+    } else {
+        callback()
+    }
+}
+
