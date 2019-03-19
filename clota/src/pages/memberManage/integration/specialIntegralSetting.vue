@@ -64,6 +64,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    fixed="right"
                     slot="column5"
                     slot-scope="row"
                     :label="row.title"
@@ -72,8 +73,8 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <li @click="setIntegralByMemberCard(scope.row)">{{$t('按会员卡级别设置积分、折扣率')}}</li>
-                            <li @click="pauseRule(scope.row)" v-if="scope.row.ruleStatus === 'valid'">{{$t('暂停')}}</li>
-                            <li @click="startRule(scope.row)" v-else-if="scope.row.ruleStatus === 'invalid'">{{$t('启用')}}</li>
+                            <li @click="pauseRule(scope.row)" v-if="scope.row.ruleStatus === 'valid' && localRule !== 'overdue'">{{$t('暂停')}}</li>
+                            <li @click="startRule(scope.row)" v-else-if="scope.row.ruleStatus === 'invalid' && localRule !== 'overdue'">{{$t('启用')}}</li>
                             <li @click="copyRule(scope.row)">{{$t('复制规则')}}</li>
                             <li class="red-label" @click="deleteRule(scope.row)">{{$t('del')}}</li>
                         </ul>

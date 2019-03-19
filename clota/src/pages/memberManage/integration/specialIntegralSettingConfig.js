@@ -8,12 +8,12 @@ const columnData = [
     },
     {
         title : '开始时间', // 开始时间
-        minWidth : 170,
+        minWidth : 190,
         field : 'startDate'
     },
     {
         title : '结束时间', // 结束时间
-        minWidth : 170,
+        minWidth : 190,
         field : 'endDate'
     },
     {
