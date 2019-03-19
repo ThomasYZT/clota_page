@@ -9,7 +9,7 @@ export const columnData = [
     {
         title : 'batchNumber',
         minWidth : 150,
-        field : 'couponName'
+        field : 'batchCode'
     },
     {
         title : 'couponTypeV2',
