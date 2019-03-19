@@ -301,7 +301,7 @@
                                     </template>
                                </el-table-column>
                             </table-com>
-                            <p class="remark">{{$t('defaultRefundFee')}}</p>
+                            <!--<p class="remark">{{$t('defaultRefundFee')}}</p>-->
                         </div>
                     </Form-item>
                 </div>
