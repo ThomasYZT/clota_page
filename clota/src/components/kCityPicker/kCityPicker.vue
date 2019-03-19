@@ -386,17 +386,24 @@
                     }
                 } else {
                     // 先排序再初始化数据
-                    this.provinceInfoList.sort((a, b) => {
-                        let pinyin = commonFunc.getNamePinYin(a.province);
-                        let pinyin1 = commonFunc.getNamePinYin(b.province);
-                        if (a.province.includes('重庆')) pinyin = 'chongqingshi';
-                        if (b.province.includes('重庆')) pinyin1 = 'chongqingshi';
+                    if (this.provinceInfoList.length === 1) {
+                        let pinyin = commonFunc.getNamePinYin(this.provinceInfoList[0]['province']);
+                        if (this.provinceInfoList[0]['province'].includes('重庆')) pinyin = 'chongqingshi';
+                        this.provinceInfoList[0]['fstCh'] = pinyin[0];
+                    } else {
+                        this.provinceInfoList.sort((a, b) => {
+                            let pinyin = commonFunc.getNamePinYin(a.province);
+                            let pinyin1 = commonFunc.getNamePinYin(b.province);
+                            if (a.province.includes('重庆')) pinyin = 'chongqingshi';
+                            if (b.province.includes('重庆')) pinyin1 = 'chongqingshi';
 
-                        a.fstCh = pinyin[0];
-                        b.fstCh = pinyin1[0];
+                            a.fstCh = pinyin[0];
+                            b.fstCh = pinyin1[0];
 
-                        return pinyin > pinyin1 ? 1 : -1;
-                    }).forEach(province => {
+                            return pinyin > pinyin1 ? 1 : -1;
+                        });
+                    }
+                    this.provinceInfoList.forEach(province => {
                         // 整改文案
                         // province.province = province.province.split('省')[0]
                         // province.province = province.province.split('市')[0]
@@ -696,6 +703,7 @@
 
             .p-section {
                 position: relative;
+                min-height: 36px;
             }
 
             .p-key {
