@@ -299,7 +299,7 @@
             getDiscountRemark () {
                 let remark = [];
                 this.productList.forEach(item => {
-                    if (this.formData.conditionGoodId === item.id) {
+                    if (this.formData.conditionGoodId === item.outCode) {
                         remark.push(item.productName);
                     }
                 });

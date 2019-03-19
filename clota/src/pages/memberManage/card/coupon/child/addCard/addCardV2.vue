@@ -260,6 +260,7 @@ return item.value !== 'all';
                     resultSet.forEach(res => {
                         resultFormData = defaultsDeep(resultFormData, res);
                     });
+                    //console.log(resultFormData)
                     this.updateCoupon(resultFormData);
                 }).catch(err => {
                     console.log(err);
