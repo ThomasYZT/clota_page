@@ -166,6 +166,8 @@ export default {
     'findCouponById' : '/member/memberCoupon/findCouponById',
     //会员优惠券-查询推送级别名字
     'queryLevelNames' : '/member/memberCoupon/queryLevelNames',
+    //查询自营渠道
+    'querySelfOwnedChannelForCoupon' : '/selfChannel/querySelfOwnedChannelForCoupon',
 
     /***********************************初始化设置***********************************/
     //基础设置-会员基础设置-查询

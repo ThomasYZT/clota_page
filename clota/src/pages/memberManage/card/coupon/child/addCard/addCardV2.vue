@@ -301,13 +301,9 @@ return item.value !== 'all';
              * 查询所有可用渠道
              */
             queryChannelSet () {
-                ajax.post('querySelfOwnedChannel', {
-                    status : 'valid',
-                    pageNo : 1,
-                    pageSize : 999
-                }).then(res => {
+                ajax.post('querySelfOwnedChannelForCoupon').then(res => {
                     if (res.success) {
-                        this.channelSetList = res.data ? res.data.data : [];
+                        this.channelSetList = res.data ? res.data : [];
                     } else {
                         this.channelSetList = [];
                     }

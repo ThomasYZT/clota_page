@@ -153,7 +153,7 @@
                     <treeSelector v-model="formData.conditionChannelId"
                                   nodeKey="partnerId"
                                   :disabled="type !== 'add'"
-                                  :defaultProps="{ label : 'channelName' }"
+                                  :defaultProps="{ label : 'orgChannelName' }"
                                   :data="channelSetList"></treeSelector>
                 </Form-item>
             </i-col>

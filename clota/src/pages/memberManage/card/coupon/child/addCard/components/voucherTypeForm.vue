@@ -151,7 +151,7 @@
                 <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                     <treeSelector v-model="formData.conditionChannelId"
                                   nodeKey="id"
-                                  :defaultProps="{ label : 'channelName' }"
+                                  :defaultProps="{ label : 'orgChannelName' }"
                                   :data="channelSetList"
                                   :disabled="type !== 'add'"
                                   @on-change="resetField('conditionChannelId')"></treeSelector>
