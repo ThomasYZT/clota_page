@@ -33,6 +33,8 @@
              */
             getParams (toQuryParams) {
                 if (toQuryParams && toQuryParams.code) {
+                    alert(1)
+                    this.isPayAbnormal = false;
                     this.ordreParams['bizScene'] = toQuryParams['bizScene'];
                     this.ordreParams['bizType'] = toQuryParams['bizType'];
                     this.ordreParams['paymentChannel'] = 'zhilian';
@@ -53,6 +55,7 @@
                     code : code,
                     orgId : orgId
                 }).then(res => {
+                    alert(JSON.stringify(res));
                     if (res.data && res.data) {
                         this.wxOpenId = res.data;
                         this.getPayPageForOfficialAccountNoLogin();
