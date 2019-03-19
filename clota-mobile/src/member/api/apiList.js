@@ -124,6 +124,8 @@ const apiList = {
     reseiveCoupon : '/external/memberCoupon/reseiveCoupon',
     //获取卡券规则信息
     getConditionNames : '/external/memberCoupon/getConditionNames',
+    //获取卡券详情
+    findCouponById : '/external/memberCoupon/findCouponById ',
 };
 
 export default apiList;

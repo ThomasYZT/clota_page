@@ -10,16 +10,16 @@
              :class="{ 'cash' : data.couponType === 'cash_coupon','discount' : data.couponType === 'discount_coupon','exchange' : data.couponType === 'exchange_coupon' }">
             <!--代金券-->
             <template v-if="data.couponType === 'cash_coupon'">
-                <div class="face-value">{{data.nominalValue | contentFilter}}元</div>
-                <div class="use-condition">满{{data.conditionLowerLimtation | contentFilter}}元可用</div>
+                <div class="face-value">{{$t('couponValue',{ num : data.nominalValue })}}</div>
+                <div class="use-condition">{{$t('cashUseItem',{ num : data.conditionLowerLimtation })}}</div>
             </template>
             <!--折扣券-->
             <template v-else-if="data.couponType === 'discount_coupon'">
-                <div class="face-value">{{data.nominalValue * 10 | contentFilter}}折</div>
+                <div class="face-value">{{$t('discountNum',{ num : data.nominalValue * 10 })}}</div>
             </template>
             <!--兑换券-->
             <template v-else-if="data.couponType === 'exchange_coupon'">
-                <div class="face-value">兑</div>
+                <div class="face-value">{{$t('exchangeTxt')}}</div>
             </template>
         </div>
         <div class="demo-info">
@@ -28,29 +28,29 @@
                 <span class="label">{{couponName}}</span>
             </div>
             <div class="validate-date">
-                有效期至：{{data.expTime | contentFilter}}
+                {{$t('colonSetting',{ key : $t('validateTime') })}}{{data.expTime | contentFilter}}
             </div>
             <div class="coupon-code">
-                券码：<span :id="'_' + data.id">{{data.couponCode | contentFilter}}</span>
+                {{$t('colonSetting',{ key : this.$t('couponCode') })}}<span :id="'_' + data.id">{{data.couponCode | contentFilter}}</span>
                 <span class="copy-btn"
                       ref="copyBtn"
                       data-clipboard-action="copy"
                       v-if="status === 'avaliable'"
                       :data-clipboard-target="'#_' + data.id"
                       @click="copyCode($event)">
-                    {{$t('复制券码')}}
+                    {{$t('copyCouponCode')}}
                 </span>
             </div>
             <div class="use-rule" @click="getConditionNames" :class="{ 'upload' : showDetail }">
-                <span class="rule-title">使用规则</span>
+                <span class="rule-title">{{$t('useRules')}}</span>
                 <span class="iconfont icon-arrow" :class="{ 'reverse' : showDetail }"></span>
             </div>
         </div>
         <transition name="fade">
             <ul class="useage-detail" v-if="showDetail">
-                <li class="conditon">1、可用渠道：{{avaliableChannel | contentFilter}}</li>
-                <li class="conditon">2、可用店铺：{{avaliableStore | contentFilter}}</li>
-                <li class="conditon">3、可用产品类别：{{avaliableProductType | contentFilter}}</li>
+                <li class="conditon">{{$t('useRulesOne')}}{{avaliableChannel | contentFilter}}</li>
+                <li class="conditon">{{$t('useRuleTwo')}}{{avaliableStore | contentFilter}}</li>
+                <li class="conditon">{{$t('useRuleThree')}}{{avaliableProductType | contentFilter}}</li>
             </ul>
         </transition>
     </div>
@@ -112,12 +112,12 @@
              */
             copyCode () {
                 this.copyBtn.on('success', () => {
-                   this.$vux.toast.text('券码已复制到剪贴板');
+                   this.$vux.toast.text(this.$t('couponHadToClib'));
                 });
                 //复制到剪贴板失败
                 this.copyBtn.on('error', () => {
                     this.$vux.toast.show({
-                        text : '券码已复制到剪贴板',
+                        text : this.$t('couponHadToClib'),
                         type : 'cancel'
                     });
                 });
@@ -128,9 +128,9 @@
             couponName () {
                 if (this.data) {
                     switch (this.data.couponType) {
-                        case 'exchange_coupon' : return '兑换券';
-                        case 'discount_coupon' : return '折扣券';
-                        case 'cash_coupon' : return '代金券';
+                        case 'exchange_coupon' : return this.$t('exchangeCoupon');
+                        case 'discount_coupon' : return this.$t('discountCoupon');
+                        case 'cash_coupon' : return this.$t('cashCoupon');
                         default : return '';
                     }
                 } else {

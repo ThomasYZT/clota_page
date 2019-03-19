@@ -84,7 +84,7 @@
                         <div class="upload-tip">
                             <p>{{$t('colonSetting', { key : $t('explain') })}}{{$t('colonSetting', { key : $t('imgFormat') })}}{{'PNG/JPG/GIF'}}</p>
                             <p>{{$t('colonSetting', { key : $t('pictureSize')})}} {{'400*360px'}}</p>
-                            <p>{{$t('sizeNotExceeding', { field : $t('imgFile'), size : '10M' })}}</p>
+                            <p>{{$t('sizeNotExceeding', { field : $t('imgFile'), size : '' })}}10M</p>
                         </div>
                     </Form-item>
                 </div>

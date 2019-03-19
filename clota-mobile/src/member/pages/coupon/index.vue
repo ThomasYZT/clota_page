@@ -50,7 +50,7 @@
         data () {
             return {
                 //tab列表
-                tapInfo : ['可使用','已使用','已过期'],
+                tapInfo : [this.$t('canUse'),this.$t('used'),this.$t('overDue')],
                 //选择的tab
                 tabSelected : 0
             };

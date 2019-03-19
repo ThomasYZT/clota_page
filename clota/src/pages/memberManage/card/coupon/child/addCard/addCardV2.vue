@@ -157,9 +157,13 @@
                     appScene : 'spread',
                 },
                 //卡券类别列表
-                couponTypeList : couponTypeList.filter((item) => {return item.value !== 'all';}),
+                couponTypeList : couponTypeList.filter((item) => {
+return item.value !== 'all';
+}),
                 //卡券应用场景列表
-                cardScenarioList : cardScenario.filter((item) => {return item.value !== 'all';}),
+                cardScenarioList : cardScenario.filter((item) => {
+return item.value !== 'all';
+}),
                 //可用渠道列表
                 channelSetList : [],
                 //可用店铺列表
@@ -240,8 +244,8 @@
                         } else {
                             reject();
                         }
-                    })
-                })
+                    });
+                });
             },
             /**
              * 校验表单信息
@@ -258,8 +262,8 @@
                     });
                     this.updateCoupon(resultFormData);
                 }).catch(err => {
-                    console.log(err)
-                })
+                    console.log(err);
+                });
             },
             /**
              *  新增/编辑优惠券
@@ -358,7 +362,7 @@
                     } else {
                         this.productList = [];
                     }
-                })
+                });
             },
             /**
              * 初始化数据 查看、修改
@@ -369,7 +373,7 @@
                 }
                 this.$nextTick(() => {
                     this.initForm(this.formData.couponType);
-                })
+                });
             },
             /**
              * 初始化表单数据
