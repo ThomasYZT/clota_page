@@ -18,6 +18,7 @@
                       label-position="top">
                     <FormItem :label="$t('colonSetting', { key : $t('dateSchemeName') })" prop="name">
                         <Input v-model="formData.name"
+                               :disabled="type === 'modify'"
                                :placeholder="$t('inputPlaceholder')" style="width: 200px" />
                     </FormItem>
                 </Form>

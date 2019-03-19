@@ -266,7 +266,7 @@
                         </template>
                     </el-table-column>
                 </table-com>
-                <p class="remark">{{$t('defaultRefundFee')}}</p>
+                <!--<p class="remark">{{$t('defaultRefundFee')}}</p>-->
 
                 <!--改签规则-->
                 <br/>

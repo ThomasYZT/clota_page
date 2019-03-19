@@ -49,7 +49,7 @@
             <p>{{$t('colonSetting', { key : $t('explain') })}}</p>
             <p>{{$t('colonSetting', { key : $t('imgFormat') })}}{{'PNG/JPG/GIF'}};
                 {{$t('colonSetting', { key : $t('pictureSize')})}} {{'1920*600px'}};
-                {{$t('sizeNotExceeding', { field : $t('imgFile'), size : '10M' })}}</p>
+                {{$t('sizeNotExceeding', { field : $t('imgFile'), size : '' })}}10M</p>
         </div>
         <delModal ref="delModal">
             <div :class="$style.delTips">
