@@ -357,19 +357,18 @@
              * @return {boolean}
              */
             selectable : (data) => {
-                //旅行社按销售政策的退改规则，只能勾选 已同步的 未取票或未核销 产品申请退改
-                //景区可勾选所有产品明细申请退票或改签，包括已核销的产品
-                if (this.orderOrgType === 'channel') {
-                    // 未取票、未核销、已同步的能够被勾选
-                    if (data.pickStatus === "false" && data.verifyStatus === "false" && data.syncStatus === 'success' ) {
-                        return false;
+                if (data.returnRule === 'true' || data.alterRule === 'true') {
+                    //旅行社按销售政策的退改规则，只能勾选 已同步的 未取票或未核销 产品申请退改
+                    //景区可勾选所有产品明细申请退票或改签，包括已核销的产品
+                    if (this.orderOrgType === 'channel') {
+                        // 未取票、未核销、已同步的能够被勾选
+                        return !(data.pickStatus === "false" && data.verifyStatus === "false" && data.syncStatus === 'success');
                     } else {
                         return true;
                     }
                 } else {
-                    return true;
+                    return false;
                 }
-
             },
         },
         mounted () {
