@@ -116,23 +116,25 @@
                 </Form-item>
             </i-col>
             <i-col span="12">
-                <!--可用渠道-->
-                <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
-                    <treeSelector v-model="formData.conditionChannelId"
-                                  nodeKey="partnerId"
-                                  :disabled="type !== 'add'"
-                                  :defaultProps="{ label : 'orgChannelName' }"
-                                  :data="channelSetList"></treeSelector>
-                </Form-item>
-            </i-col>
-            <i-col span="12">
                 <!--可用店铺-->
                 <Form-item :label="$t('availableShop')" prop="conditionOrgId">
                     <treeSelector v-model="formData.conditionOrgId"
                                   nodeKey="id"
                                   :disabled="type !== 'add'"
                                   :defaultProps="{ label : 'orgName' }"
-                                  :data="listAmountRange"></treeSelector>
+                                  :data="listAmountRange"
+                                  @on-change="conditionOrgIdChange('conditionOrgId', $event)"></treeSelector>
+                </Form-item>
+            </i-col>
+            <i-col span="12">
+                <!--可用渠道-->
+                <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
+                    <treeSelector v-model="formData.conditionChannelId"
+                                  nodeKey="partnerId"
+                                  :disabled="type !== 'add'"
+                                  :defaultProps="{ label : 'orgChannelName' }"
+                                  :data="channelSetList"
+                                  @on-change="resetField('conditionChannelId')"></treeSelector>
                 </Form-item>
             </i-col>
         </i-row>
@@ -294,6 +296,15 @@
                 this.$refs.formValidate.validateField(field);
             },
             /**
+             * 可用店铺改变
+             * @param field 表单域名
+             */
+            conditionOrgIdChange (field, val) {
+                this.formData.conditionChannelId = [];
+                this.$emit('conditionOrgChange', val);
+                this.resetField(field);
+            },
+            /**
              * 获取兑换券的使用条件
              */
             getDiscountRemark () {
@@ -311,7 +322,11 @@
             initData (rowData) {
                 for (let key in this.formData) {
                     if (key !== 'conditionChannelId' && key !== 'conditionOrgId') {
-                        this.formData[key] = String(rowData[key]) ? String(rowData[key]) : '';
+                        if (key === 'effectiveTime' || key === 'expireTime') {
+                            this.formData[key] = rowData[key] ? new Date(rowData[key]) : '';
+                        } else {
+                            this.formData[key] = String(rowData[key]) ? String(rowData[key]) : '';
+                        }
                     }
                 }
                 this.initSelector(rowData);
@@ -320,14 +335,14 @@
              * 初始化树形选择器
              */
             initSelector (rowData) {
+                let conditionOrgIds = rowData.conditionOrgId.split(',');
+                this.formData.conditionOrgId = this.listAmountRange.filter(item => {
+                    return conditionOrgIds.includes(item.id);
+                });
                 setTimeout(() => {
-                    this.formData.conditionChannelId = rowData.conditionChannelId.split(',');
+                    let conditionChannelIds = rowData.conditionChannelId.split(',');
                     this.formData.conditionChannelId = this.channelSetList.filter(item => {
-                        return this.formData.conditionChannelId.includes(item.partnerId);
-                    });
-                    this.formData.conditionOrgId = rowData.conditionOrgId.split(',');
-                    this.formData.conditionOrgId = this.listAmountRange.filter(item => {
-                        return this.formData.conditionOrgId.includes(item.id);
+                        return conditionChannelIds.includes(item.partnerId);
                     });
                 }, 500)
             }

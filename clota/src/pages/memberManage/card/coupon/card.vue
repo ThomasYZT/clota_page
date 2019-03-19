@@ -72,6 +72,7 @@
             :page-no-d.sync="filterParam.pageNo"
             :page-size-d.sync="filterParam.pageSize"
             :total-count="totalCount"
+            :row-class-name="rowClassName"
             @query-data="queryList">
             <!-- 优惠券类型 -->
             <el-table-column
@@ -273,7 +274,7 @@
                     params : {
                         type : type,
                     }
-                })
+                });
             },
             /**
              *  查看卡券详情
@@ -488,6 +489,19 @@
                     };
                 }
             },
+            /**
+             * 被禁用行样式
+             * @param row
+             * @return {string} 类名
+             * @constructor
+             */
+            rowClassName ({ row }) {
+                if (row.status === "invalid") {
+                    return 'disabled-row';
+                } else {
+                    return '';
+                }
+            }
         },
         computed : {
             ...mapGetters([
@@ -608,6 +622,10 @@
         .yellow-btn {
             color: $color_yellow !important;
         }
+    }
+
+    /deep/ .disabled-row {
+        color: $color_gray;
     }
 
 </style>

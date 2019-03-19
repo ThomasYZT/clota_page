@@ -76,7 +76,8 @@
                              :scene="formData.appScene"
                              :channelSetList="channelSetList"
                              :listAmountRange="listAmountRange"
-                             :productTypeList="productTypeList"></voucherTypeForm>
+                             :productTypeList="productTypeList"
+                             @conditionOrgChange="conditionOrgChange"></voucherTypeForm>
             <!-- 兑换券表单 -->
             <redemptionTypeForm ref="exchange_coupon"
                                 :type="type"
@@ -84,7 +85,8 @@
                                 :scene="formData.appScene"
                                 :channelSetList="channelSetList"
                                 :productList="productList"
-                                :listAmountRange="listAmountRange"></redemptionTypeForm>
+                                :listAmountRange="listAmountRange"
+                                @conditionOrgChange="conditionOrgChange"></redemptionTypeForm>
             <!-- 折扣券表单 -->
             <discountTypeForm ref="discount_coupon"
                               :type="type"
@@ -92,7 +94,8 @@
                               :scene="formData.appScene"
                               :channelSetList="channelSetList"
                               :listAmountRange="listAmountRange"
-                              :productTypeList="productTypeList"></discountTypeForm>
+                              :productTypeList="productTypeList"
+                              @conditionOrgChange="conditionOrgChange"></discountTypeForm>
         </div>
 
         <div class="content-footer" v-if="type !== 'check'">
@@ -209,10 +212,22 @@ return item.value !== 'all';
             getParams (params) {
                 if (params && params.type) {
                     this.type = params.type;
-                    if (this.type !== 'add' && params.rowData && Object.keys(params.rowData).length > 0) {
-                        this.rowData = params.rowData;
-                        this.initData();
-                    }
+                    Promise.all([
+                        this.queryListAmountRange(),
+                        //查询所有产品类别信息
+                        this.queryProductType(),
+                        //查询所有商品数据
+                        this.listProductList(),
+                    ]).then(() => {
+                        if (this.type !== 'add' && params.rowData && Object.keys(params.rowData).length > 0) {
+                            this.rowData = params.rowData;
+                            this.initData();
+                        }
+                    }).catch(() => {
+                        this.$router.push({
+                            name : 'coupon'
+                        });
+                    })
                 } else {
                     this.$router.push({
                         name : 'coupon'
@@ -301,8 +316,10 @@ return item.value !== 'all';
             /**
              * 查询所有可用渠道
              */
-            queryChannelSet () {
-                ajax.post('querySelfOwnedChannelForCoupon').then(res => {
+            queryChannelSet (orgIds) {
+                ajax.post('querySelfOwnedChannelByOrgIds', {
+                    orgIds : orgIds
+                }).then(res => {
                     if (res.success) {
                         this.channelSetList = res.data ? res.data : [];
                     } else {
@@ -316,50 +333,67 @@ return item.value !== 'all';
              * 查询所有可用店铺
              */
             queryListAmountRange () {
-                ajax.post('getSubNode',{
-                    orgType : 'scenic',
-                    includeMe : this.manageOrgs.nodeType === 'scenic'
-                }).then(res => {
-                    if (res.success) {
-                        this.listAmountRange = res.data ? res.data : [];
-                    } else {
+                return new Promise((resolve, reject) => {
+                    ajax.post('getSubNode',{
+                        orgType : 'scenic',
+                        includeMe : this.manageOrgs.nodeType === 'scenic'
+                    }).then(res => {
+                        if (res.success) {
+                            this.listAmountRange = res.data ? res.data : [];
+                            resolve();
+                        } else {
+                            this.listAmountRange = [];
+                            reject();
+                        }
+                    }).catch(() => {
                         this.listAmountRange = [];
-                    }
-                }).catch(() => {
-                    this.listAmountRange = [];
-                });
+                        reject();
+                    });
+                })
             },
             /**
              * 查询所有产品类别信息
              */
             queryProductType () {
-                ajax.post('queryProductType',{
-                    pageNo : 1,
-                    pageSize : 9999,
-                }).then(res => {
-                    if (res.success) {
-                        this.productTypeList = res.data ? res.data.data : [];
-                    } else {
+                return new Promise((resolve, reject) => {
+                    ajax.post('queryProductType',{
+                        pageNo : 1,
+                        pageSize : 9999,
+                    }).then(res => {
+                        if (res.success) {
+                            this.productTypeList = res.data ? res.data.data : [];
+                            resolve();
+                        } else {
+                            this.productTypeList = [];
+                            reject();
+                        }
+                    }).catch(err => {
                         this.productTypeList = [];
-                    }
-                }).catch(err => {
-                    this.productTypeList = [];
-                });
+                        reject();
+                    });
+                })
             },
             /**
              * 查询商品列表数据
              */
             listProductList () {
-                ajax.post('listProductList', {
-                    pageNo : 1,
-                    pageSize : 9999,
-                }).then(res => {
-                    if (res.success) {
-                        this.productList = res.data ? res.data.data : [];
-                    } else {
+                return new Promise((resolve, reject) => {
+                    ajax.post('listProductList', {
+                        pageNo : 1,
+                        pageSize : 9999,
+                    }).then(res => {
+                        if (res.success) {
+                            this.productList = res.data ? res.data.data : [];
+                            resolve();
+                        } else {
+                            this.productList = [];
+                            reject();
+                        }
+                    }).catch(() => {
                         this.productList = [];
-                    }
-                });
+                        reject();
+                    })
+                })
             },
             /**
              * 初始化数据 查看、修改
@@ -380,17 +414,18 @@ return item.value !== 'all';
                 if (this.$refs[couponType]) {
                     this.$refs[couponType].initData(this.rowData);
                 }
-            }
-        },
-        created () {
-            //查询所有可用渠道
-            this.queryChannelSet();
-            //查询所有可用店铺
-            this.queryListAmountRange();
-            //查询所有产品类别信息
-            this.queryProductType();
-            //查询所有商品数据
-            this.listProductList();
+            },
+            /**
+             *  可用店铺所选值变化
+             *  @param val
+             */
+            conditionOrgChange (val) {
+                let orgIds = val.map(item => {
+                    return item.id;
+                }).join(',');
+                //查询所有可用渠道
+                this.queryChannelSet(orgIds);
+            },
         }
     };
 </script>

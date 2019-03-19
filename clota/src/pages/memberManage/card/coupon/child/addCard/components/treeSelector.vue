@@ -4,7 +4,7 @@
 -->
 <template>
     <div class="tree-selector">
-        <div v-if="data && data.length > 0" class="tree-node">
+        <div v-if="treeData && treeData.length > 0" class="tree-node">
             <el-tree ref="elTree"
                      show-checkbox
                      :node-key="nodeKey"
@@ -97,14 +97,22 @@
                 }
                 this.$emit('change', this.checkedData);
             },
+            /**
+             * 重置
+             */
+            reset () {
+                this.checkedData = [];
+            }
         },
         watch : {
             value : {
                 handler (value) {
                     this.$nextTick(() => {
-                        this.$refs.elTree.setCheckedKeys(value.map(item => {
-                            return item[this.nodeKey];
-                        }));
+                        if (this.$refs.elTree) {
+                            this.$refs.elTree.setCheckedKeys(value.map(item => {
+                                return item[this.nodeKey];
+                            }));
+                        }
                     });
                     this.$emit('on-change', value);
                 },

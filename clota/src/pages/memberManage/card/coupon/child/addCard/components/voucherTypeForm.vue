@@ -124,10 +124,11 @@
                 <!--能否和会员折扣权益同时使用-->
                 <Form-item :label="$t('isUsedTogether')" prop="isDiscountCoexist">
                     <RadioGroup v-model="formData.isDiscountCoexist"
-                                :disabled="type !== 'add'"
                                 @on-change="discountTypeChange">
-                        <Radio label="true">{{$t('useSameTime')}}</Radio><!--可同时使用-->
-                        <Radio label="false">{{$t('noUseSameTime')}}</Radio><!--不可同时使用-->
+                        <Radio label="true"
+                               :disabled="type !== 'add'">{{$t('useSameTime')}}</Radio><!--可同时使用-->
+                        <Radio label="false"
+                               :disabled="type !== 'add'">{{$t('noUseSameTime')}}</Radio><!--不可同时使用-->
                     </RadioGroup>
                 </Form-item>
             </i-col>
@@ -147,6 +148,17 @@
                 </i-col>
             </template>
             <i-col span="12">
+                <!--可用店铺-->
+                <Form-item :label="$t('availableShop')" prop="conditionOrgId">
+                    <treeSelector v-model="formData.conditionOrgId"
+                                  nodeKey="id"
+                                  :defaultProps="{ label : 'orgName' }"
+                                  :data="listAmountRange"
+                                  :disabled="type !== 'add'"
+                                  @on-change="conditionOrgIdChange('conditionOrgId', $event)"></treeSelector>
+                </Form-item>
+            </i-col>
+            <i-col span="12">
                 <!--可用渠道-->
                 <Form-item :label="$t('availableChannels')" prop="conditionChannelId">
                     <treeSelector v-model="formData.conditionChannelId"
@@ -155,18 +167,6 @@
                                   :data="channelSetList"
                                   :disabled="type !== 'add'"
                                   @on-change="resetField('conditionChannelId')"></treeSelector>
-                </Form-item>
-            </i-col>
-            <i-col span="12">
-                <!--可用店铺-->
-
-                <Form-item :label="$t('availableShop')" prop="conditionOrgId">
-                    <treeSelector v-model="formData.conditionOrgId"
-                                  nodeKey="id"
-                                  :defaultProps="{ label : 'orgName' }"
-                                  :data="listAmountRange"
-                                  :disabled="type !== 'add'"
-                                  @on-change="resetField('conditionOrgId')"></treeSelector>
                 </Form-item>
             </i-col>
             <i-col span="12">
@@ -363,42 +363,53 @@
                 this.$refs.formValidate.validateField(field);
             },
             /**
+             * 可用店铺改变
+             * @param field 表单域名
+             */
+            conditionOrgIdChange (field, val) {
+                this.formData.conditionChannelId = [];
+                this.$emit('conditionOrgChange', val);
+                this.resetField(field);
+            },
+            /**
              * 初始化数据
              */
             initData (rowData) {
                 for (let key in this.formData) {
                     if (key !== 'conditionChannelId' && key !== 'conditionOrgId' && key !== 'conditionProductId') {
-                        this.formData[key] = String(rowData[key]) ? String(rowData[key]) : '';
+                        if (key === 'effectiveTime' || key === 'expireTime') {
+                            this.formData[key] = rowData[key] ? new Date(rowData[key]) : '';
+                        } else {
+                            this.formData[key] = String(rowData[key]) ? String(rowData[key]) : '';
+                        }
                     }
                 }
                 this.initSelector(rowData);
-
             },
             /**
              * 初始化树形选择器
              */
             initSelector (rowData) {
+                //初始化店铺选择值
+                let conditionOrgIds = rowData.conditionOrgId.split(',');
+                this.formData.conditionOrgId = this.listAmountRange.filter(item => {
+                    return conditionOrgIds.includes(item.id);
+                });
+                //初始化产品类别选择值
+                let conditionProductIds = rowData.conditionProductId.split(',');
+                this.formData.conditionProductId = this.productTypeList.filter(item => {
+                    return conditionProductIds.includes(item.id);
+                });
+                //初始化渠道选择值
                 setTimeout(() => {
-                    this.formData.conditionChannelId = rowData.conditionChannelId.split(',');
+                    let conditionChannelIds = rowData.conditionChannelId.split(',');
                     this.formData.conditionChannelId = this.channelSetList.filter(item => {
-                        return this.formData.conditionChannelId.includes(item.partnerId);
+                        return conditionChannelIds.includes(item.partnerId);
                     });
-                    this.formData.conditionOrgId = rowData.conditionOrgId.split(',');
-                    this.formData.conditionOrgId = this.listAmountRange.filter(item => {
-                        return this.formData.conditionOrgId.includes(item.id);
-                    });
-                    this.formData.conditionProductId = rowData.conditionProductId.split(',');
-                    this.formData.conditionProductId = this.productTypeList.filter(item => {
-                        return this.formData.conditionProductId.includes(item.id);
-                    });
-                }, 500)
+                }, 500);
+
             }
         },
-        created () {
-            // setTimeout(() => {
-            //     this.formData.conditionChannelId = [{label : '111'}, {label : '333'}];
-            // },500);
-        }
     };
 </script>
 
