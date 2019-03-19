@@ -8,7 +8,7 @@
                class-name="vertical-center-modal generate-link-modal"
                transfer
                width="600"
-               :title="$t('生成链接')"
+               :title="$t('generateLink')"
                @on-cancel="hide"
                :mask-closable="false">
             <!-- 步骤1 -->
@@ -19,19 +19,19 @@
                       :label-width="120"
                       label-position="left">
                     <!-- 优惠券名称 -->
-                    <FormItem :label="$t('优惠券名称')">
+                    <FormItem :label="$t('couponNameV2')">
                         <span>{{rowData.couponName | contentFilter}}</span>
                     </FormItem>
                     <!-- 可生成数量 -->
-                    <FormItem :label="$t('可生成数量')">
+                    <FormItem :label="$t('generatedQuantity')">
                         <span>{{rowData.couponName | contentFilter}}</span>
                     </FormItem>
                     <!-- 链接地址 -->
-                    <FormItem :label="$t('链接地址')" prop="preUrl">
+                    <FormItem :label="$t('urLink')" prop="preUrl">
                         <Input v-model.trim="formData.preUrl"></Input>
                     </FormItem>
                     <!-- 生成数量 -->
-                    <FormItem :label="$t('生成数量')" prop="needCount">
+                    <FormItem :label="$t('generationNum')" prop="needCount">
                         <Input v-model.trim="formData.needCount"></Input>
                     </FormItem>
                 </Form>
@@ -45,7 +45,7 @@
             <div v-if="editing"
                  slot="footer"
                  class="modal-footer">
-                <Button type="primary" @click="nextStep()" >{{$t("生成")}}</Button>
+                <Button type="primary" @click="nextStep()" >{{$t("generate")}}</Button>
                 <Button type="ghost" @click="hide" >{{$t("cancel")}}</Button>
             </div>
             <div v-else
@@ -85,11 +85,11 @@
             ruleValidate () {
                 return {
                     preUrl : [ //链接地址
-                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('链接地址') }), trigger : 'blur' },
-                        { type : 'string', max : 30, message : this.$t('errorMaxLength', { field : this.$t('链接地址'), length : 30 }), trigger : 'blur' }, // 不能多于30个字符
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('urLink') }), trigger : 'blur' },
+                        { type : 'string', max : 30, message : this.$t('errorMaxLength', { field : this.$t('urLink'), length : 30 }), trigger : 'blur' }, // 不能多于30个字符
                     ],
                     needCount : [ //生成数量
-                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('生成数量') }), trigger : 'blur' },
+                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('generationNum') }), trigger : 'blur' },
                         { validator : validateNum, trigger : 'blur', customField : 'generationNum' },
                     ],
                 }
@@ -115,7 +115,7 @@
                     if (code) {
                         this.$Message.error(this.$t(code));
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('生成') }));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('generate') }));
                     }
                 });
             },

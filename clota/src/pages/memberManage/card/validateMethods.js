@@ -119,7 +119,7 @@ export const validateMobile = (rule, value, callback) => {
  */
 export const validateEndTime = (rule, value, callback) => {
     if (rule.startTime && value <= rule.startTime) {
-        callback(i18n.t('结束时间不能早于开始时间'));
+        callback(i18n.t('endTimeNotBiggerThenStartTime'));
     } else {
         callback();
     }

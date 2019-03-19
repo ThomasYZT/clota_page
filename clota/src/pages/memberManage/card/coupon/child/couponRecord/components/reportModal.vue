@@ -8,7 +8,7 @@
                class-name="vertical-center-modal report-modal"
                transfer
                width="600"
-               :title="$t('优惠券使用记录')"
+               :title="$t('couponUseRecord')"
                @on-cancel="hide"
                :mask-closable="false">
 
@@ -18,15 +18,15 @@
                         <Button type="default"
                                 @click="changeType('all')"
                                 :class="{'selected' : type === 'all'}"
-                                class="tab-btn">{{$t('全部')}}</Button>
+                                class="tab-btn">{{$t('all')}}</Button>
                         <Button type="default"
                                 @click="changeType('used')"
                                 :class="{'selected' : type === 'used'}"
-                                class="tab-btn">{{$t('已使用')}}</Button>
+                                class="tab-btn">{{$t('used')}}</Button>
                         <Button type="default"
                                 @click="changeType('noUse')"
                                 :class="{'selected' : type === 'noUse'}"
-                                class="tab-btn">{{$t('未使用')}}</Button>
+                                class="tab-btn">{{$t('noUse')}}</Button>
                     </ButtonGroup>
                 </div>
                 <div class="table-wrapper">

@@ -80,11 +80,11 @@
                 <template slot-scope="scope">
                     <ul class="operate-list">
                         <!-- 详细 -->
-                        <li @click="detail(scope.row)">{{$t('详情')}}</li>
+                        <li @click="detail(scope.row)">{{$t('details')}}</li>
                         <!-- 推送卡级 -->
                         <li>
                             <Tooltip transfer placement="bottom">
-                                <span @click="queryLevelNames(scope.row)">{{$t('推送卡级记录')}}</span>
+                                <span @click="queryLevelNames(scope.row)">{{$t('pushRecord')}}</span>
                                 <div v-if="scope.row.LevelNames && scope.row.LevelNames.length > 0" slot="content">
                                     <Timeline>
                                         <TimelineItem v-for="(item, index) in scope.row.LevelNames" :key="index">

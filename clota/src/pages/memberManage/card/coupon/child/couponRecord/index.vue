@@ -10,7 +10,8 @@
 
         <div class="head-toolbox">
             <div class="left-tool">
-                <div class="button-wrapper">
+                <div class="button-wrapper"
+                     :class="{ 'en-button-wrapper' : lang === 'en' }">
                     <ButtonGroup>
                         <Button type="default"
                                 @click="changeType('export')"
@@ -51,6 +52,7 @@
     import generateLinkRecordTable from './components/generateLinkRecordTable';
     import pushRecordTable from './components/pushRecordTable';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins';
+    import { mapGetters } from 'vuex';
     export default {
         mixins : [lifeCycleMixins],
         components : {
@@ -75,6 +77,11 @@
                 //日期范围
                 dateTime : [new Date().addDays(-7), new Date()],
             };
+        },
+        computed : {
+            ...mapGetters([
+                'lang'
+            ])
         },
         methods : {
             /**
@@ -138,6 +145,17 @@
             /deep/ .tab-btn {
                 padding-right: 40px;
                 padding-left: 40px;
+                background-color: #fff;
+                outline: none;
+            }
+        }
+
+        .en-button-wrapper {
+            display: inline-block;
+
+            /deep/ .tab-btn {
+                padding-right: 10px;
+                padding-left: 10px;
                 background-color: #fff;
                 outline: none;
             }

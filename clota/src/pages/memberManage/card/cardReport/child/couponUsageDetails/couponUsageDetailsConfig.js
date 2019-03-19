@@ -1,22 +1,22 @@
 //已兑换表头
 export const redeemedTableHead = [
     {
-        title : '兑换人',
+        title : 'changer',
         minWidth : 150,
         field : 'custName',
     },
     {
-        title : '兑换人手机号',
+        title : 'chargerPhoneNum',
         minWidth : 150,
         field : 'phoneNum',
     },
     {
-        title : '兑换时间',
+        title : 'changeTime', //兑换时间
         minWidth : 150,
         field : '',
     },
     {
-        title : '使用时间',
+        title : 'useTime',
         minWidth : 150,
         field : 'useTime',
     },
@@ -25,22 +25,22 @@ export const redeemedTableHead = [
 //已领取表头
 export const receivedTableHead = [
     {
-        title : '领取人',
+        title : 'recipient',
         minWidth : 150,
         field : 'custName',
     },
     {
-        title : '领取人手机号',
+        title : 'recipientPhoneNum',
         minWidth : 150,
         field : 'phoneNum',
     },
     {
-        title : '领取时间',
+        title : 'recieveTime',
         minWidth : 150,
         field : 'gainTime',
     },
     {
-        title : '使用时间',
+        title : 'useTime',
         minWidth : 150,
         field : 'useTime',
     },
@@ -49,27 +49,27 @@ export const receivedTableHead = [
 //已使用表头
 export const usedTableHead = [
     {
-        title : '领取/兑换人',
+        title : 'recipient&charger',
         minWidth : 150,
         field : 'custName',
     },
     {
-        title : '领取/兑换人手机号',
+        title : 'recipient&chargerPhone',
         minWidth : 150,
         field : 'phoneNum',
     },
     {
-        title : '领取/兑换',
+        title : 'gain&charge',
         minWidth : 150,
         field : '',
     },
     {
-        title : '兑换/领取时间',
+        title : 'charge&gainTime',
         minWidth : 150,
         field : 'gainTime',
     },
     {
-        title : '使用时间',
+        title : 'useTime',
         minWidth : 150,
         field : 'useTime',
     },
@@ -78,27 +78,27 @@ export const usedTableHead = [
 //未使用表头
 export const noUseTableHead = [
     {
-        title : '领取/兑换人',
+        title : 'recipient&charger',
         minWidth : 150,
         field : 'custName',
     },
     {
-        title : '领取/兑换人手机号',
+        title : 'recipient&chargerPhone',
         minWidth : 150,
         field : 'phoneNum',
     },
     {
-        title : '领取/兑换',
+        title : 'gain&charge',
         minWidth : 150,
         field : '',
     },
     {
-        title : '兑换/领取时间',
+        title : 'charge&gainTime',
         minWidth : 150,
         field : 'gainTime',
     },
     {
-        title : '是否使用',
+        title : 'useOrNot',
         minWidth : 150,
         field : 'useTime',
     },
@@ -107,32 +107,28 @@ export const noUseTableHead = [
 //已过期表头
 export const expiredTableHead = [
     {
-        title : '领取/兑换人',
+        title : 'recipient&charger',
         minWidth : 150,
         field : '',
     },
     {
-        title : '领取/兑换人手机号',
+        title : 'recipient&chargerPhone',
         minWidth : 150,
         field : '',
     },
     {
-        title : '领取/兑换',
+        title : 'gain&charge',
         minWidth : 150,
         field : '',
     },
     {
-        title : '兑换/领取时间',
+        title : 'charge&gainTime',
         minWidth : 150,
         field : '',
     },
     {
-        title : '是否使用',
+        title : 'useOrNot',
         minWidth : 150,
         field : '',
     },
 ];
-
-
-
-

@@ -19,7 +19,7 @@
                     <Input class="input-field"
                            v-model.trim="filterParam.keyword"
                            icon="ios-search"
-                           :placeholder="$t('inputField', {field: $t('coupon') + $t('name') + ' / ' + $t('批次号') + ' / ' + $t('券码')})"
+                           :placeholder="$t('inputField', {field: $t('coupon') + $t('name') + ' / ' + $t('batchNumber') + ' / ' + $t('ticketYard')})"
                            @on-enter="queryList"
                            @on-click="queryList" />
                     <!--搜索-->
@@ -33,7 +33,7 @@
             <div class="select-wrap">
                 <span class="label-title">{{$t('applicationScenario')}}</span>
                 <Select v-model="filterParam.appScene"
-                        style="width:200px"
+                        :style="{width : lang === 'en' ? '150px' : '180px'}"
                         @on-change="queryList">
                     <Option v-for="item in cardScenarioList"
                             :value="item.value"
@@ -44,14 +44,15 @@
             <div class="select-wrap">
                 <span class="label-title">{{$t('wetherEffective')}}</span>
                 <Select v-model="filterParam.inTime"
-                        style="width:200px"
+                        :style="{width : lang === 'en' ? '150px' : '180px'}"
                         @on-change="queryList">
                     <Option v-for="item in cardValidList"
                             :value="item.value"
                             :key="item.value">{{ $t(item.label) }}</Option>
                 </Select>
             </div>
-            <div class="tool-box">
+            <div class="tool-box"
+                 :class="{ 'en-tool-box' : lang === 'en' }">
                 <!-- 导出记录 -->
                 <span class="text-btn" @click="toRecord('export')">{{$t('exportRecord')}}</span>
                 <!-- 生成链接记录 -->
@@ -373,10 +374,10 @@
                     status : 'valid',
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip',{ tip : this.$t('启用') }));
+                        this.$Message.success(this.$t('successTip',{ tip : this.$t('commissioned') }));
                         this.queryList();
                     } else {
-                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('启用') }));
+                        this.$Message.error(this.$t('failureTip',{ tip : this.$t('commissioned') }));
                     }
                 });
             },
@@ -490,7 +491,8 @@
         },
         computed : {
             ...mapGetters([
-                'permissionInfo'
+                'permissionInfo',
+                'lang'
             ]),
             //是否可以新增卡券
             canAddMembersCoupon () {
@@ -549,7 +551,6 @@
         }
 
         .filter-head {
-            height: 50px;
             line-height: 50px;
             padding-left: 20px;
             .select-wrap {
@@ -586,6 +587,11 @@
                     }
                 }
             }
+        }
+
+        .en-tool-box {
+            display: block;
+            float: unset !important;
         }
 
         /deep/ .el-table{

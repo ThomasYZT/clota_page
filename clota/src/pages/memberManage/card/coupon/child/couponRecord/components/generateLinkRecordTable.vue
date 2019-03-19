@@ -24,8 +24,8 @@
                     <Tooltip transfer placement="bottom">
                         <span class="line-info">{{scope.row.optCount | contentFilter}}</span>
                         <div slot="content">
-                            <p>已使用：{{scope.row.usedNum | contentFilter}}</p>
-                            <p>未使用：{{scope.row.waitNum | contentFilter}}</p>
+                            <p>{{$t('used')}}：{{scope.row.usedNum | contentFilter}}</p>
+                            <p>{{$t('noUse')}}：{{scope.row.waitNum | contentFilter}}</p>
                         </div>
                     </Tooltip>
                 </template>

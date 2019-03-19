@@ -7,7 +7,7 @@ export const columnData = [
         field : 'couponName'
     },
     {
-        title : '批次号',
+        title : 'batchNumber',
         minWidth : 150,
         field : 'couponName'
     },
@@ -20,6 +20,7 @@ export const columnData = [
     {
         title : 'applicationScenario',
         minWidth : 150,
+        enWidth : 200,
         field : 'discountRate'
     },
     {
@@ -41,25 +42,25 @@ export const columnData = [
     {
         title : 'operate  ',
         minWidth : 400,
-        enWidth : 400,
+        enWidth : 570,
     }
 ];
 
 //代金券详情表头
 export const viewCodeCashCouponHead = [
     {
-        title : '金额',
+        title : 'money',
         minWidth : 150,
         field : 'nominalValue',
         type : 'money'
     },
     {
-        title : '券码',
+        title : 'ticketYard',
         minWidth : 150,
         field : 'couponCode',
     },
     {
-        title : '状态',
+        title : 'status',
         minWidth : 150,
         field : 'status',
     }
@@ -68,17 +69,17 @@ export const viewCodeCashCouponHead = [
 //兑换券详情表头
 export const viewCodeExchangeCouponHead = [
     {
-        title : '商品信息',
+        title : 'goodInfo',
         minWidth : 150,
         field : 'remark',
     },
     {
-        title : '券码',
+        title : 'ticketYard',
         minWidth : 150,
         field : 'couponCode',
     },
     {
-        title : '状态',
+        title : 'status',
         minWidth : 150,
         field : 'status',
     }
@@ -87,17 +88,17 @@ export const viewCodeExchangeCouponHead = [
 //折扣券详情表头
 export const viewCodeDiscountCouponHead = [
     {
-        title : '折扣',
+        title : 'allowance',
         minWidth : 150,
         field : 'nominalValue',
     },
     {
-        title : '券码',
+        title : 'ticketYard',
         minWidth : 150,
         field : 'couponCode',
     },
     {
-        title : '状态',
+        title : 'status',
         minWidth : 150,
         field : 'status',
     }

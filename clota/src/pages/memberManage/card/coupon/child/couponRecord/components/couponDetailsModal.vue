@@ -16,28 +16,28 @@
                 <div class="form-wrapper">
                     <Form label-position="right" :label-width="130">
                         <!-- 卡券名称 -->
-                        <formItem :label="$t('colonSetting', { key : $t('卡券名称') })">
+                        <formItem :label="$t('colonSetting', { key : $t('couponName') })">
                             <span>{{detail.couponName | contentFilter}}</span>
                         </formItem>
                         <!-- 卡券类别 -->
-                        <formItem :label="$t('colonSetting', { key : $t('卡券类别') })">
+                        <formItem :label="$t('colonSetting', { key : $t('couponType') })">
                             <span>{{$t(detail.couponType) | contentFilter}}</span>
                         </formItem>
                         <!-- 有效期 -->
-                        <formItem :label="$t('colonSetting', { key : $t('有效期') })">
+                        <formItem :label="$t('colonSetting', { key : $t('effectiveTime') })">
                             <span v-if="detail.appScene === 'spread'">{{detail.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{detail.expireTime | timeFormat('yyyy-MM-dd')}}</span>
                             <span v-else>{{detail.effDays + $t('day')}}</span>
                         </formItem>
                         <!-- 可用产品类别 -->
-                        <formItem :label="$t('colonSetting', { key : $t('可用产品类别') })">
+                        <formItem :label="$t('colonSetting', { key : $t('availableProductCategories') })">
                             <span>{{detail.conditionProductNames | contentFilter}}</span>
                         </formItem>
                         <!-- 可用渠道 -->
-                        <formItem :label="$t('colonSetting', { key : $t('可用渠道') })">
+                        <formItem :label="$t('colonSetting', { key : $t('availableChannels') })">
                             <span>{{detail.conditionChannelNames | contentFilter}}</span>
                         </formItem>
                         <!-- 可用店铺 -->
-                        <formItem :label="$t('colonSetting', { key : $t('可用店铺') })">
+                        <formItem :label="$t('colonSetting', { key : $t('availableShop') })">
                             <span>{{detail.conditionOrgNames | contentFilter}}</span>
                         </formItem>
                     </Form>

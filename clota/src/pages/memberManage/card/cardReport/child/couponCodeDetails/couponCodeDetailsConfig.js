@@ -1,11 +1,11 @@
 export const couponCodeDetailsHead = [
     {
-        title : '优惠券券码',
+        title : 'couponCode',
         minWidth : 150,
         field : 'couponCode',
     },
     {
-        title : '优惠券状态',
+        title : 'couponStatus',
         minWidth : 150,
         field : 'couponStatus',
     },

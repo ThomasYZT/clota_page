@@ -8,7 +8,7 @@
                class-name="vertical-center-modal obsolete-modal"
                transfer
                width="420"
-               :title="$t('作废')"
+               :title="$t('obsolete')"
                @on-cancel="hide"
                :mask-closable="false">
 
@@ -16,20 +16,20 @@
                 <div class="center-modal">
                     <p class="label-title">
                         <i class="iconfont icon-help"></i>
-                        <span> 是否确定作废本次优惠券？</span>
+                        <span> {{$t('sureToObsolete')}} </span>
                     </p>
-                    <span class="label-title">已兑换、已领取的卡券是否继续有效：</span><br>
+                    <span class="label-title">{{$t('isContinuesEffective')}}</span><br>
                     <RadioGroup v-model="cancelEff">
-                        <Radio label="true">{{$t('继续有效')}}</Radio><!--可同时使用-->
-                        <Radio label="false">{{$t('全部失效')}}</Radio><!--不可同时使用-->
+                        <Radio label="true">{{$t('continuesEffective')}}</Radio><!--可同时使用-->
+                        <Radio label="false">{{$t('allFailed')}}</Radio><!--不可同时使用-->
                     </RadioGroup>
                 </div>
 
-                <p class="tip">如果选择失效则本批次所有未使用的卡券均失效</p>
+                <p class="tip">{{$t('obsoleteTip')}}</p>
             </div>
 
             <div slot="footer" class="modal-footer">
-                <Button type="error" class="ivu-btn-90px" @click="confirm" >{{$t("提交")}}</Button>
+                <Button type="error" class="ivu-btn-90px" @click="confirm" >{{$t("submit")}}</Button>
                 <Button type="ghost" class="ivu-btn-90px" @click="hide" >{{$t("cancel")}}</Button>
             </div>
         </Modal>

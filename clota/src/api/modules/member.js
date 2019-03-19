@@ -269,6 +269,8 @@ export default {
     'deletePayGiftCardRule' : '/member/wxCard/deletePayGiftCardRule',
     //创建微信上的支付即会员规则
     'createPayGiftCardRule' : '/member/wxCard/createPayGiftCardRule',
+    //卡券报表导出
+    'queryForReportForExport' : '/member/memberCoupon/queryForReportForExport',
 
     /***********************************会员统计***********************************/
     //获取会员总量

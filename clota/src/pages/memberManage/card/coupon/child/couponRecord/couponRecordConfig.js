@@ -76,6 +76,7 @@ export const pushRecordHead = [
     {
         title : 'couponTypeV2',
         field : '',
+        enWidth : 200,
         minWidth : 150,
     },
     {
@@ -112,17 +113,17 @@ export const pushRecordHead = [
 
 export const reportModalHead = [
     {
-        title : '姓名',
+        title : 'name',
         field : 'custName',
         minWidth : 150,
     },
     {
-        title : '电话',
+        title : 'telephone',
         field : 'phoneNum',
         minWidth : 150,
     },
     {
-        title : '优惠券状态',
+        title : 'couponStatus',
         field : 'couponStatus',
         minWidth : 150,
     },

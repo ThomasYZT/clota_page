@@ -45,7 +45,7 @@
             </div>
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('wetherEffective') })}}</span>
-                <span class="info">{{couponInfo.status === 'valid' ? '有效' : '无效'  | contentFilter}}</span>
+                <span class="info">{{couponInfo.status === 'valid' ? $t('valid') : $('inValid')  | contentFilter}}</span>
             </div>
         </div>
 
@@ -134,28 +134,28 @@
                 //代金券 cash_coupon 兑换券 exchange_coupon 折扣券 discount_coupon
                 if (this.couponInfo.couponType === 'cash_coupon') {
                     baseColoum.unshift({
-                        title : '卡券面值',
+                        title : 'couponFaceValue', //卡券面值
                         minWidth : 150,
                         field : 'nominalValue',
                     });
                     return baseColoum
                 } else if (this.couponInfo.couponType === 'exchange_coupon') {
                     baseColoum.unshift({
-                        title : '可兑换商品',
+                        title : 'exchangableGood',
                         minWidth : 150,
                         field : 'conditionGoodNames',
                     });
                     return baseColoum;
                 } else if (this.couponInfo.couponType === 'discount_coupon') {
                     baseColoum.unshift({
-                        title : '卡券折扣',
+                        title : 'couponDiscount',
                         minWidth : 150,
                         field : 'nominalValue',
                     });
                     return baseColoum;
                 } else {
                     baseColoum.unshift({
-                        title : '卡券面值',
+                        title : 'couponFaceValue',
                         minWidth : 150,
                         field : 'nominalValue',
                     });

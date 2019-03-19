@@ -8,7 +8,7 @@
                class-name="vertical-center-modal manual-push-modal"
                transfer
                width="450"
-               :title="$t('手动推送')"
+               :title="$t('manualPush')"
                @on-cancel="hide"
                :mask-closable="false">
             <div  class="form-wrapper">
@@ -17,7 +17,7 @@
                       label-position="top"
                       :model="formData"
                       :rules="ruleValidate">
-                    <FormItem :label="$t('选择要推送的会员卡级别:')" prop="levelIds">
+                    <FormItem :label="$t('selectField', { field : $t('membershipCard') })" prop="levelIds">
                         <treeSelector v-model="formData.levelIds"
                                       v-if="step === 1 && visible"
                                       nodeKey="id"
@@ -30,18 +30,18 @@
                 </Form>
 
                 <div v-show="step === 2" class="content">
-                    <span class="tip">是否确定推送？</span>
+                    <span class="tip">{{$t('sureToPush')}}</span>
                 </div>
             </div>
 
             <div slot="footer" class="modal-footer">
                 <template v-if="step === 1">
-                    <Button type="primary" @click="nextStep" >{{$t("下一步")}}</Button>
+                    <Button type="primary" @click="nextStep" >{{$t("nextStep")}}</Button>
                     <Button type="ghost" @click="hide" >{{$t("close")}}</Button>
                 </template>
                 <template v-else>
-                    <Button type="primary" @click="push" >{{$t("推送")}}</Button>
-                    <Button type="ghost" @click="back" >{{$t("返回")}}</Button>
+                    <Button type="primary" @click="push" >{{$t("push")}}</Button>
+                    <Button type="ghost" @click="back" >{{$t("back")}}</Button>
                 </template>
             </div>
         </Modal>
@@ -115,10 +115,10 @@
                     }).join(','),
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('推送') }));
+                        this.$Message.success(this.$t('successTip', { tip : this.$t('push') }));
                         this.hide();
                     } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('推送') }));
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('push') }));
                     }
                 })
             },

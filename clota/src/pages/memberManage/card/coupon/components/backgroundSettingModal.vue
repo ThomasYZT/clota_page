@@ -8,7 +8,7 @@
                class-name="vertical-center-modal view-code-modal"
                transfer
                width="700"
-               :title="$t('H5页面背景设置')"
+               :title="$t('H5BGSet')"
                @on-cancel="hide"
                :mask-closable="false">
 

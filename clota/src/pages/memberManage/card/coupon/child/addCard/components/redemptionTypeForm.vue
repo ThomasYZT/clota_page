@@ -12,17 +12,17 @@
             <template v-if="scene === 'right'">
                 <i-col span="12">
                     <!--有效期-->
-                    <Form-item :label="$t('有效期')" prop="effDays">
+                    <Form-item :label="$t('effectiveTime')" prop="effDays">
                         <Input v-model.trim="formData.effDays"
                                style="width: 280px;"
                                :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">{{$t('天')}}</span><!--天-->
+                        <span class="label-used">{{$t('day')}}</span><!--天-->
                         <Tooltip transfer placement="right">
                             <span class="iconfont icon-note"></span>
                             <div style="width: 200px; word-break: break-all;"
                                  slot="content">
-                                <p>从发放至游客开始计算有效期</p>
+                                <p>{{$t('effdaysComputed')}}</p>
                             </div>
                         </Tooltip>
                     </Form-item>
@@ -77,7 +77,7 @@
                                style="width: 280px;"
                                :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
+                        <span class="label-used">{{$t('paper')}},{{$t('0MeansNoLimit')}}</span><!--张-->
                     </Form-item>
                 </i-col>
                 <i-col span="12">
@@ -87,12 +87,12 @@
                                style="width: 280px;"
                                :disabled="type !== 'add'"
                                :placeholder="$t('inputField', {field: ''})"/>
-                        <span class="label-used">{{$t('paper')}},{{$t('0代表不限制')}}</span><!--张-->
+                        <span class="label-used">{{$t('paper')}},{{$t('0MeansNoLimit')}}</span><!--张-->
                         <Tooltip transfer placement="right">
                             <span class="iconfont icon-note"></span>
                             <div style="width: 200px; word-break: break-all;"
                                  slot="content">
-                                <p>该设置只限制将优惠券生成链接传播时限制领取数量。积分商城、批量导出部分不受该设置限制</p>
+                                <p>{{$t('totalGainTip')}}</p>
                             </div>
                         </Tooltip>
                     </Form-item>
@@ -100,7 +100,7 @@
             </template>
             <i-col span="12">
                 <!--选择商品-->
-                <Form-item :label="$t('选择商品')" prop="goodId">
+                <Form-item :label="$t('selectField', { msg : $t('goods') })" prop="goodId">
                     <Select v-model.trim="formData.conditionGoodId"
                             transfer
                             :clearable="true"
@@ -127,7 +127,7 @@
             </i-col>
             <i-col span="12">
                 <!--可用店铺-->
-                <Form-item label="可用店铺" prop="conditionOrgId">
+                <Form-item :label="$t('availableShop')" prop="conditionOrgId">
                     <treeSelector v-model="formData.conditionOrgId"
                                   nodeKey="id"
                                   :disabled="type !== 'add'"

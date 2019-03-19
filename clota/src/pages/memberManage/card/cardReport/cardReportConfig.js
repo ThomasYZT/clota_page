@@ -2,11 +2,13 @@ export const cardReportHead = [
     {
         title : 'couponName', //卡券名称
         minWidth : 150,
+        enWidth : 220,
         field : 'couponName',
     },
     {
         title : 'applicationScenario', //应用场景
         minWidth : 150,
+        enWidth : 200,
         field : 'appScene',
     },
     {
@@ -22,16 +24,19 @@ export const cardReportHead = [
     {
         title : 'generationNum', //生成数量
         minWidth : 150,
+        enWidth : 200,
         field : 'quantity',
     },
     {
         title : 'remainingAmount', //剩余数量
         minWidth : 150,
+        enWidth : 200,
         field : 'waitNum',
     },
     {
         title : 'redeemed', //已兑换
         minWidth : 150,
+        enWidth : 200,
         field : 'exchangeNum',
     },
     {

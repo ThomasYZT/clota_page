@@ -44,7 +44,7 @@
                 <Input v-model.trim="filterParam.keyword"
                        icon="ios-search"
                        style="width: 280px;"
-                       :placeholder="$t('inputField', {field: $t('优惠券名称') + ' / ' + $t('券码')})"
+                       :placeholder="$t('inputField', {field: $t('couponNameV2') + ' / ' + $t('ticketYard')})"
                        @on-enter="queryList"
                        @on-click="queryList" />
             </div>
@@ -294,7 +294,15 @@
              * 导出
              */
             exportReport () {
-
+                let params = defaultsDeep({}, this.filterParam);
+                params.appScene = params.appScene === 'all' ? '' : params.appScene;
+                params.couponType = params.couponType === 'all' ? '' : params.couponType;
+                params.startTime = this.filterParam.dateTime[0].format('yyyy-MM-dd 00:00:00');
+                params.endTime = this.filterParam.dateTime[1].format('yyyy-MM-dd 23:59:59');
+                delete params.dateTime;
+                let alink = document.createElement('a');
+                alink.href = ajax.export('queryForReportForExport', params);
+                alink.click();
             },
             /**
              * 前往优惠券使用详情页
