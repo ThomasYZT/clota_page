@@ -376,6 +376,17 @@ export const memberRoutes = [
                     hideTabbar : true,
                     notNeedCheck : true
                 }
+            },
+            //微信公众号支付
+            {
+                path : 'wxAccountPay',
+                name : 'wxAccountPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/h5Pay/wxOfficeAccountPay.vue'),
+                meta : {
+                    title : 'payStatus',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                }
             }
         ],
         beforeEnter : memberRouterDeal

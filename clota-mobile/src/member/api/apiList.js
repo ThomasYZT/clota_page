@@ -118,6 +118,12 @@ const apiList = {
     getMemberServiceSettingByCode : '/external/extprivilege/getMemberServiceSettingByCode',
     //查询最低等级的会员卡级
     queryBaseLevelOfGrowth : '/external/memberInfo/queryBaseLevelOfGrowth',
+    //获取微信授权地址
+    generateWxAuthUrl : '/external/pay/generateWxAuthUrl',
+    //获取微信openId
+    getOpenid : '/external/pay/getOpenid',
+    //微信公众号支付
+    getPayPageForOfficialAccountNoLogin : '/external/pay/getPayPageForOfficialAccountNoLogin',
 };
 
 export default apiList;
