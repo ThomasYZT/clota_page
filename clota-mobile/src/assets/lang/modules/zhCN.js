@@ -504,4 +504,7 @@ export default {
     'watchMyCoupons' : '查看我的优惠券',
     'errorMsg.S018' : '当前景区暂未开通全民营销服务',
     'payInWx' : '请在微信浏览器中支付',
+    'couponNoExist' : '卡券不存在或已领完',
+    'discountNumTyppe' : '{num}折优惠券',
+    'couponValueType' : '{num}元代金券',
 };

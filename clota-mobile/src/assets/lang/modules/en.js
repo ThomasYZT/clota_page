@@ -504,4 +504,7 @@ export default {
     'watchMyCoupons' : 'view my coupon',
     'errorMsg.S018' : '当前景区暂未开通全民营销服务',
     'payInWx' : '请在微信浏览器中支付',
+    'couponNoExist' : 'card coupon does not exist or has been received',
+    'discountNumTyppe' : '{num} fold coupon',
+    'couponValueType' : '{num} yuan vouchers',
 };

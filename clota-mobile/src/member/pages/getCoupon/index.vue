@@ -6,7 +6,7 @@
             <!--卡券不存在或已领完-->
             <div class="no-data" v-if="!canGetCoupon">
                 <img class="no-data-img" src="../../../assets/images/icon-coupon-no-exist.png" alt="">
-                <span class="coupon-desc">{{$t('卡券不存在或已领完')}}</span>
+                <span class="coupon-desc">{{$t('couponNoExist')}}</span>
             </div>
             <!--领取-->
             <div class="coupon-inner"  v-else-if="stage === 'notGet'">
@@ -20,19 +20,19 @@
                     <!--折扣券-->
                     <template v-if="couponData.couponType === 'discount_coupon'">
                         <div class="title">
-                            {{$t('discountNum',{ num : couponData.nominalValue * 10 })}}{{$t('优惠券')}}
+                            {{$t('discountNum',{ num : couponData.nominalValue * 10 })}}
                         </div>
                     </template>
                     <!--代金券-->
                     <template v-else-if="couponData.couponType === 'cash_coupon'">
                         <div class="title">
-                            {{$t('couponValue',{ num : couponData.nominalValue })}}{{$t('代金券')}}
+                            {{$t('couponValueType',{ num : couponData.nominalValue })}}
                         </div>
                         <div class="fu-title">{{$t('cashUseItem',{ num : couponData.conditionLowerLimtation })}}</div>
                     </template>
                     <!--兑换券-->
                     <template v-else-if="couponData.couponType === 'exchange_coupon'">
-                        <div class="title">{{$t('兑换券')}}</div>
+                        <div class="title">{{$t('exchangeCoupon')}}</div>
                     </template>
                 </div>
                 <x-input class="member-phone"
