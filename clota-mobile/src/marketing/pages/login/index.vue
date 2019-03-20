@@ -59,6 +59,15 @@
                      :type-list="userTypeList"
                      @choose-type="toLogin">
         </choose-type>
+
+        <!--未设置账户提示框-->
+        <confirm v-model="confirmShow"
+                 v-transfer-dom
+                 :title="$t('notice')"
+                 :confirm-text="$t('confirm')"
+                 :show-cancel-button="false">
+            <p style="text-align:center;">{{ $t('errorMsg.S018') }}</p>
+        </confirm>
     </div>
 </template>
 
@@ -98,7 +107,9 @@
                 //微信用户id
                 wxOpenId : '',
                 //是否显示页面
-                showPage : false
+                showPage : false,
+                //错误提示框是否显示
+                confirmShow : false
             };
         },
         methods : {
@@ -330,6 +341,8 @@
                 }).then(res => {
                     if (res.success) {
                         this.dataToLogin(res.data);
+                    } else if (res.code === 'S018') {
+                        this.confirmShow = true;
                     } else if (res.code && res.code !== '300') {
                         this.$vux.toast.show({
                             text : this.$t('errorMsg.' + res.code),
