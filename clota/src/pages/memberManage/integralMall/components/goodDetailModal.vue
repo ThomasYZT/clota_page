@@ -1,5 +1,5 @@
 <!--
-    会员注册
+    商品上架
     作者：杨泽涛
 -->
 <template>
@@ -81,7 +81,7 @@
                     //商品兑换积分
                     requiredCredits : '',
                     //上架数量
-                    upNum : '',
+                    upNum : 0,
                     //产品类型
                     goodsType : '',
                     //优惠券id
