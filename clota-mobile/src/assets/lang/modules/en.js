@@ -471,4 +471,6 @@ export default {
     'S014' : 'weChat public number configuration error',
     'mobileNotExist' : 'phone number does not exist',
     'mobileNotExistToRegister' : 'the mobile phone number is not registered, please register first.',
+    'errorMsg.S018' : 'the prospect area has not yet opened the national marketing service',
+    'payInWx' : 'please pay in the WeChat browser',
 };

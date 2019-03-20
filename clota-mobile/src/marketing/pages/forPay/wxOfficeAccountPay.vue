@@ -133,7 +133,7 @@
                         this.wxToPay(formContent);
                     }
                 } else {
-                    this.$vux.toast.text(this.$t('请在微信浏览器中支付'));
+                    this.$vux.toast.text(this.$t('payInWx'));
                 }
             }
         },

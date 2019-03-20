@@ -823,4 +823,6 @@ export default {
     "privilege.market-setting" : "全民营销-综合设置",
     "privilege.operateMarketType" : "全民营销-综合设置-营销类别设置-编辑",
     "privilege.market-setting_position" : "全民营销-综合设置-营销地理位置设置",
+    'networkError' : '网络错误，请稍后再试！',
+    "systemErr" : "系统错误",
 };

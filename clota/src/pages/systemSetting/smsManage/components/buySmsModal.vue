@@ -62,6 +62,16 @@
                              :resultLocation="'smsBuyRecord'"
                              @search-success="paySuccess">
         </loop-for-pay-result>
+
+        <!--微信二维码支付-->
+        <wx-qrcode :pay-link="wxSrc"
+                   :transaction-id="transactionId"
+                   v-model="wxPayShow"
+                   @pay-success="wxPaySuccess"
+                   @pay-fail="wxPayFail"
+                   @pay-unknow="wxPayUnknown"
+                   @cancel-success="cancelSuccess">
+        </wx-qrcode>
     </div>
 </template>
 
@@ -71,11 +81,13 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import loopForPayResult from '../../../../components/loopForPayResult/loopForPayResult';
     import { mapGetters } from 'vuex';
+    import wxQrcode from '@/components/weixinPay/index.vue';
 
     export default {
         props : ['row-data'],
         components : {
-            loopForPayResult
+            loopForPayResult,
+            wxQrcode
         },
         data () {
             return {
@@ -104,7 +116,11 @@
                 payModalShow : false,
                 transactionId : '',
                 //平台在线支付账户列表
-                onlineAccountList : []
+                onlineAccountList : [],
+                //微信支付是否显示
+                wxPayShow : false,
+                //微信二维码链接
+                wxSrc : '',
             };
         },
         watch : {
@@ -146,7 +162,6 @@
             buyNow ( params ) {
                 this.$refs.formValidate.validate(valid => {
                     if (valid) {
-                        let newWindow = window.open();
                         ajax.post('orderBuySmsPackage', {
                             smsPackageId : params.id,
                             payType : this.formData.payType,
@@ -159,7 +174,6 @@
                                         partnerId : this.payInfo.partnerId,
                                         payType : this.formData.payType,
                                         payMoney : this.formData.price,
-                                        newWindow : newWindow,
                                     });
                                 } else {
                                     this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
@@ -175,8 +189,8 @@
             /**
              * 支付接口调用
              */
-            payNow ({ bizId, payType, payMoney, merchantId, partnerId, newWindow }) {
-                let paymentChannel = this.onlineAccountList.find(item => item.accountType === payType)['payType'];
+            payNow ({ bizId, payType, payMoney, merchantId, partnerId }) {
+                let payAccountInfo = this.onlineAccountList.find(item => item.accountType === payType);
                 ajax.post('getPayQRCodePageForPc', {
                     merchantId : merchantId,
                     partnerId : partnerId,
@@ -185,20 +199,29 @@
                     bizId : bizId,
                     channelId : payType,
                     txnAmt : payMoney,
-                    paymentChannel : paymentChannel
+                    paymentChannel : payAccountInfo['payType'],
+                    orgId : payAccountInfo['orgId']
                 }).then(res => {
                     if (res.success) {
-                        const { href } = this.$router.resolve({
-                            name : 'smsPay',
-                            params : {
-                                payFormData : res.data
-                            }
-                        });
-                        localStorage.setItem('smsPay', JSON.stringify({ payFormData : res.data }));
-                        newWindow.location.href = location.href.replace(location.hash, href);
-                        this.payModalShow = true;
-                        this.hide();
-                        this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
+                        if (payType === 'weixin' && payAccountInfo['payType'] === 'zhilian') {
+                            this.wxPayShow = true;
+                            this.wxSrc = res.data.formContent;
+                            this.transactionId = res.data.transactionId;
+                            this.hide();
+                        } else {
+                            let newWindow = window.open();
+                            const { href } = this.$router.resolve({
+                                name : 'smsPay',
+                                params : {
+                                    payFormData : res.data
+                                }
+                            });
+                            localStorage.setItem('smsPay', JSON.stringify({ payFormData : res.data }));
+                            newWindow.location.href = location.href.replace(location.hash, href);
+                            this.payModalShow = true;
+                            this.hide();
+                            this.startSearchForPayResult({ transctionId : res.data && res.data.transactionId ? res.data.transactionId : '' });
+                        }
                     } else {
                         this.$Message.error(this.$t('failureTip',{ 'tip' : this.$t('buy') }));
                     }
@@ -241,11 +264,43 @@
                 }).finally(() => {
                     this.visible = true;
                 });
+            },
+            /**
+             * 微信支付完成
+             */
+            wxPaySuccess () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('success');
+                this.$emit('add-success');
+            },
+            /**
+             * 微信支付失败
+             */
+            wxPayFail () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('fail');
+            },
+            /**
+             * 交易结果未知
+             */
+            wxPayUnknown () {
+                this.$refs.noticeModal.show({
+                    title : this.$t('notice'),
+                    showCancel : false
+                });
+            },
+            /**
+             * 交易取消成功
+             */
+            cancelSuccess () {
+                this.payModalShow = true;
+                this.$refs.payResultModal.setStage('cancel');
             }
         },
         computed : {
             ...mapGetters([
-                'lang'
+                'lang',
+                'manageOrgs',
             ])
         }
     };
