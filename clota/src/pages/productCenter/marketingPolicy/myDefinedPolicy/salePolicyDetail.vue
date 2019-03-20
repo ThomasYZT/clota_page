@@ -183,6 +183,7 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column
+                                    v-if="hasMarket === 'true'"
                                     slot="column4"
                                     slot-scope="row"
                                     :label="row.title"
@@ -194,7 +195,7 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column
-                                    slot="column5"
+                                    :slot="hasMarket === 'true' ? 'column5' : 'column4'"
                                     slot-scope="row"
                                     :label="row.title"
                                     :width="row.width"
@@ -417,8 +418,6 @@
                 weekList : ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 //详情数据
                 detail : {},
-                //产品列表表头
-                productColumn : productColumn,
                 //销售渠道表头
                 saleChannelColumn : saleChannelColumn,
                 //全民营销表头
@@ -457,6 +456,16 @@
             //是否可以审核政策
             canAuditPolicy () {
                 return this.permissionInfo && 'auditPolicy' in this.permissionInfo;
+            },
+            //产品列表表头
+            productColumn () {
+                if (this.hasMarket === 'true') {
+                    return productColumn;
+                } else {
+                    return productColumn.filter(item => {
+                        return item.title !== 'marketQuota';
+                    });
+                }
             }
         },
         methods : {
@@ -608,6 +617,9 @@
                     this.checkOrgServiceById();
                 }
             },
+            /**
+             * 查询是否有全民营销模块
+             */
             checkOrgServiceById () {
                 ajax.post('checkOrgServiceById', {
                     serviceId : '20'

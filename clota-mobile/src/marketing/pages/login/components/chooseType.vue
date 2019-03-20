@@ -50,8 +50,12 @@
              * 确定选择所属类别
              */
             confirm () {
-                this.$emit('input',false);
-                this.$emit('choose-type',this.typeChoosed);
+                if (this.typeChoosed) {
+                    this.$emit('input',false);
+                    this.$emit('choose-type',this.typeChoosed);
+                } else {
+                    this.$vux.toast.text(this.$t('chooseMarketingTypes'));
+                }
             }
         }
     };

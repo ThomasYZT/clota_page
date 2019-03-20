@@ -215,7 +215,7 @@ export const memberRoutes = [
                 name : 'myCoupon',
                 component : () => import(/* webpackChunkName: "memberRight" */'../pages/coupon/index.vue'),
                 meta : {
-                    title : '我的优惠券'
+                    title : 'myCoupon'
                 }
             },
             //资金明细
@@ -394,7 +394,7 @@ export const memberRoutes = [
                 name : 'touristGetCoupon',
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/getCoupon/index.vue'),
                 meta : {
-                    title : '领取优惠券',
+                    title : 'getCoupon',
                     hideTabbar : true,
                     notNeedCheck : true
                 }

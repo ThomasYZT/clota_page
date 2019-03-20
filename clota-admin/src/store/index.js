@@ -5,6 +5,7 @@ import defaultsDeep from 'lodash/defaultsDeep';
 import router,{ resetRouter } from '../router/index';
 import routerClect from '../router/activeRoutes';
 import ajax from '@/api/index.js';
+import debounce from 'lodash/debounce';
 import { getFourRoute, getNoSubMenuRoute } from '../router/constRouter';
 
 Vue.use(Vuex);
@@ -132,6 +133,14 @@ export default new Vuex.Store({
         }
     },
     actions : {
+        /**
+         * 显示错误提示信息
+         * @param store
+         * @param msg
+         */
+        showErrToast : debounce((store,msg) => {
+            Vue.prototype.$Message.error(i18n.messages[i18n.locale][msg]);
+        },500),
         //获取用户权限信息
         getUserRight (store, route) {
             return new Promise((resolve, reject) => {
