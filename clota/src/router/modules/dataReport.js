@@ -42,7 +42,7 @@ export default {
                         name : 'cardSaleReport',
                         component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/cardSaleReport/index.vue'),
                         meta : {
-                            menuName : 'memberReport', //lang.config.js 里面的语言键值
+                            menuName : 'cardSaleReport', //lang.config.js 里面的语言键值
                             _name : 'reigao-member-report',
                             rightPath : topMenuName + '.' + 'memberReport',
                         },
