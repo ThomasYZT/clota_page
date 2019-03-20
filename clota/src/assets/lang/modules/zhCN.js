@@ -2763,5 +2763,6 @@ export default {
     'notEncrypted' : '不加密',
     'fileEncryptionPassword' : '文件加密密码',
     'batchNumber' : '批次号',
-    'endTimeNotBiggerThenStartTime' : '结束时间不能早于开始时间'
+    'endTimeNotBiggerThenStartTime' : '结束时间不能早于开始时间',
+    'endConsumeBiggerThanStartConsume' : '最高消费金额要大于最低消费金额',
 };

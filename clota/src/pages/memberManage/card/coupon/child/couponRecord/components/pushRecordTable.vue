@@ -85,13 +85,20 @@
                         <li>
                             <Tooltip transfer placement="bottom">
                                 <span @click="queryLevelNames(scope.row)">{{$t('pushRecord')}}</span>
-                                <div v-if="scope.row.LevelNames && scope.row.LevelNames.length > 0" slot="content">
-                                    <Timeline>
-                                        <TimelineItem v-for="(item, index) in scope.row.LevelNames" :key="index">
-                                            <p>{{item}}</p>
-                                        </TimelineItem>
-                                    </Timeline>
+                                <div v-if="scope.row.LevelNames && scope.row.LevelNames.length > 0"
+                                     slot="content">
+                                    <div v-for="(item, index) in scope.row.LevelNames" :key="index">
+                                        <p>{{item}}</p>
+                                    </div>
                                 </div>
+                                <div v-else-if="!scope.row.query || !scope.row.LevelNames || scope.row.LevelNames.length === 0"
+                                     slot="content">
+                                    <span>推送卡级记录为空，点击刷新</span>
+                                </div>
+                                <div v-else slot="content">
+                                    <span>点击查询推送卡级记录</span>
+                                </div>
+
                             </Tooltip>
                         </li>
                     </ul>
@@ -181,10 +188,11 @@
                     batchId : rowData.batchId,
                 }).then(res => {
                     if (res.success) {
-                        rowData.LevelNames = res.data ? res.data : '';
+                        rowData.LevelNames = res.data ? res.data : [];
                     } else {
-                        rowData.LevelNames = '';
+                        rowData.LevelNames = [];
                     }
+                    rowData.query = true;
                 })
             }
         },

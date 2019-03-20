@@ -13,7 +13,7 @@ export const redeemedTableHead = [
     {
         title : 'changeTime', //兑换时间
         minWidth : 150,
-        field : '',
+        field : 'gainTime',
     },
     {
         title : 'useTime',
@@ -90,7 +90,7 @@ export const noUseTableHead = [
     {
         title : 'gain&charge',
         minWidth : 150,
-        field : '',
+        field : 'couponStatus',
     },
     {
         title : 'charge&gainTime',

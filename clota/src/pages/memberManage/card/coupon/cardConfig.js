@@ -37,11 +37,10 @@ export const columnData = [
         title : 'createdDateTime',
         minWidth : 230,
         field : 'createdTime',
-        type : 'date'
     },
     {
         title : 'operate  ',
-        minWidth : 400,
+        minWidth : 350,
         enWidth : 570,
     }
 ];

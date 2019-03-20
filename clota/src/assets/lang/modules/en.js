@@ -2763,5 +2763,6 @@ export default {
     'notEncrypted' : 'Do not encrypt',
     'fileEncryptionPassword' : 'File encryption password',
     'batchNumber' : 'Batch number',
-    'endTimeNotBiggerThenStartTime' : 'End time cannot be earlier than start time'
+    'endTimeNotBiggerThenStartTime' : 'End time cannot be earlier than start time',
+    'endConsumeBiggerThanStartConsume' : '最高消费金额要大于最低消费金额',
 };

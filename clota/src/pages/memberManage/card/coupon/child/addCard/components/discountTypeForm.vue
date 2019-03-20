@@ -142,7 +142,7 @@
                 <!--代金券在折扣前后使用设置-->
                 <Form-item :label="$t('isUsedBeforeOrAfterDiscount')" prop="isEffectBeforeDiscount">
                     <RadioGroup v-model="formData.isEffectBeforeDiscount"
-                                :disabled="type !== 'add'">
+                                :disabled="type !== 'add'" @on-change="isEffectBeforeDiscountChange">
                         <Radio label="true">{{$t('availableBeforeDiscount')}}</Radio><!--折扣前可用-->
                         <Radio label="false">{{$t('availableAfterDiscount')}}</Radio><!--折扣后可用-->
                     </RadioGroup>
@@ -188,7 +188,7 @@
 <script>
     import treeSelector from './treeSelector';
     import defaultsDeep from 'lodash/defaultsDeep';
-    import { validateMoney, validateNum, validateDiscount, validateEndTime } from '../../../../validateMethods';
+    import { validateMoney, validateNum, validateDiscount, validateEndTime, validateConditionUpperLimtation } from '../../../../validateMethods';
     export default {
         components : {
             treeSelector
@@ -281,6 +281,7 @@
                     conditionUpperLimtation : [ //最高消费金额后可用
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('consumption') }), trigger : 'blur' },
                         { validator : validateMoney, trigger : 'blur', customField : 'money' },
+                        { validator : validateConditionUpperLimtation, trigger : 'blur', conditionLowerLimtation : this.formData.conditionLowerLimtation },
                     ],
                     effDays : [ //有效天数
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('effectiveDays') }), trigger : 'blur' },
@@ -333,6 +334,13 @@
                 if (data === 'false') {
                     this.formData.isEffectBeforeDiscount = '';
                 }
+                this.$refs.formValidate.validateField('isDiscountCoexist');
+            },
+            /**
+             * 代金券在折扣前后使用设置修改
+             */
+            isEffectBeforeDiscountChange () {
+                this.$refs.formValidate.validateField('isEffectBeforeDiscount');
             },
             /**
              * 表单校验

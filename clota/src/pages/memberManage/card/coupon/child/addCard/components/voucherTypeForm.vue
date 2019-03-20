@@ -137,7 +137,8 @@
                     <!--代金券在折扣前后使用设置-->
                     <Form-item :label="$t('isUsedBeforeOrAfterDiscount')" prop="isEffectBeforeDiscount">
                         <RadioGroup v-model="formData.isEffectBeforeDiscount"
-                                    :disabled="type !== 'add'">
+                                    :disabled="type !== 'add'"
+                                    @on-change="isEffectBeforeDiscountChange">
                             <Radio label="true">{{$t('availableBeforeDiscount')}}</Radio><!--折扣前可用-->
                             <Radio label="false">{{$t('availableAfterDiscount')}}</Radio><!--折扣后可用-->
                         </RadioGroup>
@@ -328,6 +329,13 @@
                 if (data === 'false') {
                     this.formData.isEffectBeforeDiscount = '';
                 }
+                this.$refs.formValidate.validateField('isDiscountCoexist');
+            },
+            /**
+             * 代金券在折扣前后使用设置修改
+             */
+            isEffectBeforeDiscountChange () {
+                this.$refs.formValidate.validateField('isEffectBeforeDiscount');
             },
             /**
              * 表单校验

@@ -125,3 +125,21 @@ export const validateEndTime = (rule, value, callback) => {
     }
 }
 
+/**
+ * 校验最高消费金额大于最低消费金额
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const validateConditionUpperLimtation = (rule, value, callback) => {
+    if (value && rule && rule.conditionLowerLimtation) {
+        if (Number(value) < Number(rule.conditionLowerLimtation)) {
+            callback(i18n.t('endConsumeBiggerThanStartConsume'));
+        } else {
+            callback()
+        }
+    } else {
+        callback();
+    }
+}
+

@@ -1,5 +1,5 @@
 <!--
-    会员注册
+    已领取
     作者：杨泽涛
 -->
 <template>
@@ -12,6 +12,26 @@
                :page-no-d.sync="pageNo"
                :page-size-d.sync="pageSize"
                @query-data="queryList">
+        <!-- 使用时间 -->
+        <el-table-column
+            slot="column3"
+            show-overflow-tooltip
+            slot-scope="row"
+            :label="row.title"
+            :width="row.width"
+            :min-width="row.minWidth">
+            <template slot-scope="scope">
+                <!-- 已领取未使用 -->
+                <span v-if="scope.row.couponStatus === 'receive'">
+                    {{$t('noUse')}}
+                </span>
+                <!-- 已使用 -->
+                <span v-else-if="scope.row.couponStatus === 'used'">
+                    {{scope.row.useTime || contentFilter}}
+                </span>
+                <span v-else>-</span>
+            </template>
+        </el-table-column>
     </table-com>
 </template>
 
