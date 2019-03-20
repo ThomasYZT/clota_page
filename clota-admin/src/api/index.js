@@ -38,6 +38,11 @@ instance.interceptors.response.use(function (response) {
     }
     return response;
 }, function (error) {
+    if (error.toString() === 'Error: Network Error') {
+        store.dispatch('showErrToast','networkError');
+    } else {
+        store.dispatch('showErrToast','systemErr');
+    }
     // Do something with response error
     return Promise.reject(error);
 });
