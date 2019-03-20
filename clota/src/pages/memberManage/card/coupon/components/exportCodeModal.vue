@@ -13,7 +13,8 @@
                :mask-closable="false">
 
             <div class="form-wrapper">
-                <Form ref="formValidate"
+                <Form v-if="isformShow"
+                      ref="formValidate"
                       :model="formData"
                       :rules="ruleValidate"
                       :label-width="150"
@@ -24,7 +25,7 @@
                     </FormItem>
                     <!-- 可导出数量 -->
                     <FormItem :label="$t('exportableQuantity')">
-                        <span>{{rowData.couponName | contentFilter}}</span>
+                        <span>{{countWaitNum | contentFilter}}</span>
                     </FormItem>
                     <!-- 导出数量 -->
                     <FormItem :label="$t('exportNum')" prop="needCount">
@@ -65,7 +66,7 @@
     import config from '../../../../../config/index';
     import apiList from '../../../../../api/apiList';
     import ajax from '@/api/index'
-    import { validateNum, validateMobile } from '../../validateMethods';
+    import { validateNum, validateMobile, noBiggerValidate } from '../../validateMethods';
     export default {
         components : {},
         data () {
@@ -86,7 +87,11 @@
                     optUser : '',
                     //领取人电话
                     phoneNum : '',
-                }
+                },
+                //可导出数量
+                countWaitNum : 0,
+                //是否显示表单
+                isformShow : false,
             };
         },
         computed : {
@@ -95,10 +100,14 @@
                 return {
                     needCount : [ //导出数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('exportNum') }), trigger : 'blur' },
-                        { validator : validateNum, trigger : 'blur', customField : 'exportNum' }
+                        { validator : validateNum, trigger : 'blur', customField : 'exportNum' },
+                        { validator : noBiggerValidate, trigger : 'blur',
+                          customField : 'exportNum',
+                          compareFeild : 'exportableQuantity',
+                          compareValue : this.countWaitNum }
                     ],
                     isPass : [ //导出文件是否加密
-                        { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },
+                        { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'change' },
                     ],
                     password : [ //文件密码
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('password') }), trigger : 'blur' },
@@ -121,7 +130,9 @@
              */
             show (data) {
                 this.rowData = data;
-                this.visible = true;
+                this.queryCountWaitNum().then(() => {
+                    this.visible = true;
+                });
             },
             /**
              *  表单校验
@@ -150,8 +161,28 @@
              * 隐藏模态框
              */
             hide () {
+                this.isformShow = false;
+                this.countWaitNum = 0;
                 this.rowData = {};
                 this.visible = false;
+            },
+            /**
+             * 查询可导出数量
+             */
+            queryCountWaitNum () {
+                return new Promise((resolve, reject) => {
+                    ajax.post('countWaitNum', {
+                        couponId : this.rowData.id,
+                    }).then(res => {
+                        if (res.success) {
+                            this.countWaitNum = res.data ? res.data : 0;
+                            this.isformShow = true;
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    })
+                })
             }
         }
     };

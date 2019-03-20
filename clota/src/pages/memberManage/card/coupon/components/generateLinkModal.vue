@@ -13,7 +13,8 @@
                :mask-closable="false">
             <!-- 步骤1 -->
             <div class="step-1" v-if="editing">
-                <Form ref="formValidate"
+                <Form v-if="isFormShow"
+                      ref="formValidate"
                       :model="formData"
                       :rules="ruleValidate"
                       :label-width="120"
@@ -24,12 +25,12 @@
                     </FormItem>
                     <!-- 可生成数量 -->
                     <FormItem :label="$t('generatedQuantity')">
-                        <span>{{rowData.couponName | contentFilter}}</span>
+                        <span>{{countWaitNum | contentFilter}}</span>
                     </FormItem>
-                    <!-- 链接地址 -->
-                    <FormItem :label="$t('urLink')" prop="preUrl">
-                        <Input v-model.trim="formData.preUrl"></Input>
-                    </FormItem>
+                    <!--&lt;!&ndash; 链接地址 &ndash;&gt;-->
+                    <!--<FormItem :label="$t('urLink')" prop="preUrl">-->
+                        <!--<Input v-model.trim="formData.preUrl"></Input>-->
+                    <!--</FormItem>-->
                     <!-- 生成数量 -->
                     <FormItem :label="$t('generationNum')" prop="needCount">
                         <Input v-model.trim="formData.needCount"></Input>
@@ -59,7 +60,7 @@
 
 <script>
     import ajax from '@/api/index';
-    import { validateNum } from '../../validateMethods';
+    import { validateNum, noBiggerValidate } from '../../validateMethods';
     export default {
         components : {},
         data () {
@@ -72,27 +73,36 @@
                 rowData : {},
                 //表单数据
                 formData : {
-                    //链接地址
-                    preUrl : '',
                     //生成数量
                     needCount : '',
                 },
+                //链接地址
                 link : '',
+                //可生成数量
+                countWaitNum : 0,
+                //表单是否显示
+                isFormShow : false,
             };
         },
         computed : {
             //表单校验规则
             ruleValidate () {
                 return {
-                    preUrl : [ //链接地址
-                        { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('urLink') }), trigger : 'blur' },
-                        { type : 'string', max : 30, message : this.$t('errorMaxLength', { field : this.$t('urLink'), length : 30 }), trigger : 'blur' }, // 不能多于30个字符
-                    ],
                     needCount : [ //生成数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('generationNum') }), trigger : 'blur' },
                         { validator : validateNum, trigger : 'blur', customField : 'generationNum' },
+                        { validator : noBiggerValidate, trigger : 'blur',
+                          customField : 'generationNum',
+                          compareFeild : 'generatedQuantity',
+                          compareValue : this.countWaitNum }
                     ],
                 }
+            },
+            /**
+             *  链接
+             */
+            preUrl () {
+                return location.origin + '/clota/mobile/member/getCoupon?';
             }
         },
         methods : {
@@ -102,7 +112,9 @@
              */
             show (data) {
                 this.rowData = data;
-                this.visible = true;
+                this.queryCountWaitNum().then(() => {
+                    this.visible = true;
+                });
             },
             /**
              * 下一步 生成链接
@@ -126,6 +138,7 @@
                 return new Promise((resolve, reject) => {
                     ajax.post('generateLinks', {
                         couponId : this.rowData.id,
+                        preUrl : this.preUrl,
                         ...this.formData
                     }).then(res => {
                         if (res.success) {
@@ -140,10 +153,30 @@
              * 隐藏模态框
              */
             hide () {
+                this.countWaitNum = 0;
+                this.isFormShow = false;
                 this.link = '';
                 this.rowData = {};
                 this.editing = true;
                 this.visible = false;
+            },
+            /**
+             * 查询可生成数量
+             */
+            queryCountWaitNum () {
+                return new Promise((resolve, reject) => {
+                    ajax.post('countWaitNum', {
+                        couponId : this.rowData.id,
+                    }).then(res => {
+                        if (res.success) {
+                            this.countWaitNum = res.data ? res.data : 0;
+                            this.isFormShow = true;
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    })
+                })
             }
         }
     };
@@ -158,7 +191,13 @@
     .generate-link-modal {
         .step-1 {
             width: 70%;
-            margin: 0 auto;
+            margin: 30px auto 0px;
+        }
+
+        .step-2 {
+            width: 70%;
+            margin: 100px auto 0px;
+            word-break: break-all;
         }
     }
 </style>
