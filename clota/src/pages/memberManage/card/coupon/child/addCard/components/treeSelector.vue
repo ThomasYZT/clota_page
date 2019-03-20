@@ -11,6 +11,10 @@
                      :props="defaultProps"
                      :data="treeData"
                      @check-change="handleCheck">
+                <template slot-scope="{ node }">
+                    <span class="label"
+                          v-w-title="node.label">{{node.label}}</span>
+                </template>
             </el-tree>
         </div>
         <div v-else
@@ -140,6 +144,12 @@
         /deep/ .el-tree-node__label {
             color: #585858;
             font-size: 14px;
+        }
+
+        .label {
+            @include overflow_tip();
+            font-size: 13px;
+            color: #585858;
         }
     }
 </style>
