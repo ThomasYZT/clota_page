@@ -90,7 +90,7 @@
             <label>{{$t("payPass")}}：</label>
             <span>
                 {{memberDetail.passwd ? '●●●●●●' :  '' | contentFilter}}
-                <span class="blue-label" @click="setPasswordModalShow = true">{{$t(memberDetail.passwd ? 'modify' : 'setTradePass')}}</span>
+                <span v-if="canModifyMemberInfo" class="blue-label" @click="setPasswordModalShow = true">{{$t(memberDetail.passwd ? 'modify' : 'setTradePass')}}</span>
             </span>
         </div>
         <div class="form-item-wrap">
@@ -243,8 +243,13 @@
         },
         computed : {
             ...mapGetters([
-                'memberConfigInfo'
+                'memberConfigInfo',
+                'permissionInfo',
             ]),
+            //是否可以修改会员信息
+            canModifyMemberInfo () {
+                return this.permissionInfo && this.permissionInfo['modifyMembersInfo'] === 'allow';
+            },
             //是否可以显示会员储值账户信息
             showMemberRecharge () {
                 return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';

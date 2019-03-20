@@ -299,7 +299,6 @@
                     this.formData.validForEver = false;
                 } else {
                     if (this.ruleData && Object.keys(this.ruleData).length > 0) {
-                        this.formData.name = this.ruleData.ruleName;
                         this.formData.startTime = this.ruleData.startDate;
                         this.formData.endTime = this.ruleData.endDate;
                         this.formData.validStartTimeForDay = this.ruleData.startTime;
