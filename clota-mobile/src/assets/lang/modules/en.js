@@ -472,4 +472,5 @@ export default {
     'mobileNotExist' : 'phone number does not exist',
     'mobileNotExistToRegister' : 'the mobile phone number is not registered, please register first.',
     'errorMsg.S018' : '当前景区暂未开通全民营销服务',
+    'payInWx' : '请在微信浏览器中支付',
 };

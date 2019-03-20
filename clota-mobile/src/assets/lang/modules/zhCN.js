@@ -472,4 +472,5 @@ export default {
     'mobileNotExist' : '手机号不存在',
     'mobileNotExistToRegister' : '手机号未注册，请先注册。',
     'errorMsg.S018' : '当前景区暂未开通全民营销服务',
+    'payInWx' : '请在微信浏览器中支付',
 };
