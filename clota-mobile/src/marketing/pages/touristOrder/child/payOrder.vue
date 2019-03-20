@@ -260,13 +260,16 @@
                                 }
                                 location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true&userType=' + userType;
                             } else {
-                                this.$router.push({
-                                    name : 'wxOrAlidirectPay',
-                                    params : {
-                                        payType : this.payType,
-                                        formContent : res.data.formContent
-                                    }
-                                });
+                                alert(res.data.formContent)
+                                //跳转到微信h5支付页面
+                                location.href = res.data.formContent;
+                                // this.$router.push({
+                                //     name : 'wxOrAlidirectPay',
+                                //     params : {
+                                //         payType : this.payType,
+                                //         formContent : res.data.formContent
+                                //     }
+                                // });
                             }
                         } else {
                             this.payFormData = res.data ? res.data : {};
