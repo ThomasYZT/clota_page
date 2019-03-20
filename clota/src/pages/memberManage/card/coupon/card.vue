@@ -149,7 +149,7 @@
                         <!-- 只有权益型的、有操作权限的优惠券才能展示以下操作 -->
                         <template v-else-if="scope.row.appScene === 'right' && canOperateMembersCoupon">
                             <!-- 手动推送 可以无限推送 -->
-                            <li @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
+                            <li :class="{disabled : isObsolote(scope.row) || isRightExpired(scope.row) }" @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
                             <!-- 作废 -->
                             <li v-if="!isObsolote(scope.row)" :class="{disabled : isRightExpired(scope.row) }" @click="obsoloteCoupon(scope.row, 'right')" class="red-label" >{{$t('obsolete')}}</li>
                             <!-- 重启 -->
@@ -321,8 +321,8 @@
              *  @param rowData 券数据
              */
             manualPush (rowData) {
+                if (this.isObsolote(rowData) || this.isRightExpired(rowData)) return false;
                 this.$refs.manualPushModal.show(rowData);
-
             },
             /**
              * 修改券
