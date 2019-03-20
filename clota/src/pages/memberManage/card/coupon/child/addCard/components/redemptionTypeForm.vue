@@ -144,7 +144,7 @@
 <script>
     import treeSelector from './treeSelector';
     import defaultsDeep from 'lodash/defaultsDeep';
-    import { validateMoney, validateNum, validateEndTime } from '../../../../validateMethods';
+    import { validateMoney, validateNum, validateEndTime, noBiggerValidate } from '../../../../validateMethods';
     export default {
         components : {
             treeSelector
@@ -239,12 +239,20 @@
                     //单日可领取数量
                     dayGain : [
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountSingleDay') }), trigger : 'blur' },
-                        { validator : validateNum, trigger : 'blur', customField : 'amountSingleDay' }
+                        { validator : validateNum, trigger : 'blur', customField : 'amountSingleDay' },
+                        { validator : noBiggerValidate, trigger : 'blur',
+                          compareValue : this.formData.totalGain,
+                          customField : 'amountSingleDay',
+                          compareFeild : 'amountLimit'}
                     ],
                     //可领取数量上限
                     totalGain : [
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountLimit') }), trigger : 'blur' },
-                        { validator : validateNum, trigger : 'blur', customField : 'amountLimit' }
+                        { validator : validateNum, trigger : 'blur', customField : 'amountLimit' },
+                        { validator : noBiggerValidate, trigger : 'blur',
+                          compareValue : this.formData.quantity,
+                          customField : 'amountLimit',
+                          compareFeild : 'generationNum'}
                     ],
                     //商品
                     conditionGoodId : [

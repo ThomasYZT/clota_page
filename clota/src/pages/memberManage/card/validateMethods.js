@@ -118,7 +118,7 @@ export const validateMobile = (rule, value, callback) => {
  * @param callback
  */
 export const validateEndTime = (rule, value, callback) => {
-    if (rule.startTime && value <= rule.startTime) {
+    if (rule.startTime && value < rule.startTime) {
         callback(i18n.t('endTimeNotBiggerThenStartTime'));
     } else {
         callback();
@@ -137,6 +137,23 @@ export const validateConditionUpperLimtation = (rule, value, callback) => {
             callback(i18n.t('endConsumeBiggerThanStartConsume'));
         } else {
             callback()
+        }
+    } else {
+        callback();
+    }
+}
+/**
+ * 不大于比较值校验
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const noBiggerValidate = (rule, value, callback) => {
+    if (rule.compareValue) {
+        if (Number(value) > Number(rule.compareValue)) {
+            callback(i18n.t('errorGreaterThan', { small : i18n.t(rule.customField), big : i18n.t(rule.compareFeild) }))
+        } else {
+            callback();
         }
     } else {
         callback();

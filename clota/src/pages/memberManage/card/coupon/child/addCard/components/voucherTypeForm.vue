@@ -189,7 +189,7 @@
 <script>
     import treeSelector from '../components/treeSelector';
     import defaultsDeep from 'lodash/defaultsDeep';
-    import { validateMoney, validateNum, validateEndTime } from '../../../../validateMethods';
+    import { validateMoney, validateNum, validateEndTime, noBiggerValidate } from '../../../../validateMethods';
     export default {
         components : {
             treeSelector
@@ -295,11 +295,19 @@
                     ],
                     dayGain : [ //单日可领取数量
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountSingleDay') }), trigger : 'blur' },
-                        { validator : validateNum, trigger : 'blur', customField : 'amountSingleDay' }
+                        { validator : validateNum, trigger : 'blur', customField : 'amountSingleDay' },
+                        { validator : noBiggerValidate, trigger : 'blur',
+                          compareValue : this.formData.totalGain,
+                          customField : 'amountSingleDay',
+                          compareFeild : 'amountLimit'}
                     ],
                     totalGain : [ //可领取数量上限
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountLimit') }), trigger : 'blur' },
-                        { validator : validateNum, trigger : 'blur', customField : 'amountLimit' }
+                        { validator : validateNum, trigger : 'blur', customField : 'amountLimit' },
+                        { validator : noBiggerValidate, trigger : 'blur',
+                          compareValue : this.formData.quantity,
+                          customField : 'amountLimit',
+                          compareFeild : 'generationNum'}
                     ],
                     isDiscountCoexist : [ //能否和会员折扣同时使用
                         { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },

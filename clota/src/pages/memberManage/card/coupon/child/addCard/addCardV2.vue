@@ -161,12 +161,12 @@
                 },
                 //卡券类别列表
                 couponTypeList : couponTypeList.filter((item) => {
-return item.value !== 'all';
-}),
+                    return item.value !== 'all';
+                }),
                 //卡券应用场景列表
                 cardScenarioList : cardScenario.filter((item) => {
-return item.value !== 'all';
-}),
+                    return item.value !== 'all';
+                }),
                 //可用渠道列表
                 channelSetList : [],
                 //可用店铺列表
