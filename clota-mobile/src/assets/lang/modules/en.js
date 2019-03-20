@@ -507,4 +507,5 @@ export default {
     'couponNoExist' : 'card coupon does not exist or has been received',
     'discountNumTyppe' : '{num} fold coupon',
     'couponValueType' : '{num} yuan vouchers',
+    'M065' : 'It’s late, the coupon has been received!',
 };

@@ -507,4 +507,5 @@ export default {
     'couponNoExist' : '卡券不存在或已领完',
     'discountNumTyppe' : '{num}折优惠券',
     'couponValueType' : '{num}元代金券',
+    'M065' : '来晚了，优惠券已被领完！',
 };

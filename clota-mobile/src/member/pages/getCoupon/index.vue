@@ -334,7 +334,7 @@
                 }).then(res => {
                     if (res.success) {
                         this.stage = 'getted';
-                    } else if (res.code === 'M062' || res.code === 'M063' || res.code === 'M064') {
+                    } else if (res.code === 'M062' || res.code === 'M063' || res.code === 'M064' || res.code === 'M065') {
                         this.errTipMsg = this.$t(res.code);
                         this.errTipShow = true;
                     } else if (res.code !== '300') {
