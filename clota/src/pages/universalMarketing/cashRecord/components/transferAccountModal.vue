@@ -256,6 +256,6 @@
         width: 88px;
     }
     /deep/ .ivu-form-item {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 </style>

@@ -5,7 +5,7 @@
         <Button type="primary"
                 icon="android-add"
                 @click="addRule">
-            {{$t('新建规则')}}
+            {{$t('createdRule')}}
         </Button>
     </div>
 </template>

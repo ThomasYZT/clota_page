@@ -2,18 +2,19 @@
 
 <template>
     <Modal
-        :title="isCopyRule ? $t('复制规则') : $t('createdRule')"
+        :title="isCopyRule ? $t('copyRule') : $t('createdRule')"
         :mask-closable="false"
         :value="value"
-        :width="600"
+        :width="lang === 'zh-CN' ? 600 : 650"
         @input="changeValue"
         @on-visible-change="visibleChange"
         class="create-rule"
         class-name="vertical-center-modal">
         <Form ref="formValidate"
+              :style="{ width : lang == 'zh-CN' ? '400px' : '465px' }"
               :model="formData"
               :rules="ruleValidate"
-              :label-width="110">
+              :label-width="lang === 'zh-CN' ? 110 : 150">
             <FormItem :label="$t('ruleName')" prop="name">
                 <Input v-model.trim="formData.name"
                        :placeholder="$t('inputPlaceholder')"
@@ -42,7 +43,7 @@
                 <Checkbox class="forever-class"
                           v-model="formData.validForEver"
                           @on-change="timeValidChange">
-                    {{$t('永久有效')}}
+                    {{$t('permanentValidity')}}
                 </Checkbox>
             </FormItem>
             <FormItem :label="$t('validDate')" prop="validTime">
@@ -104,6 +105,8 @@
 
 <script>
     import ajax from '@/api/index.js';
+    import { mapGetters } from 'vuex';
+
     export default {
         props : {
             //模态框是否显示
@@ -237,7 +240,7 @@
                     validTime : [
                         {
                             required : true,
-                            message : this.$t('selectField',{ msg : this.$t('生效日期') }),
+                            message : this.$t('selectField',{ msg : this.$t('validDate') }),
                             trigger : 'change',
                             type : 'array'
                         }
@@ -269,8 +272,8 @@
                     this.formData.validForEver = false;
                 } else {
                     if (this.ruleData && Object.keys(this.ruleData).length > 0) {
-                        this.formData.startTime = this.ruleData.startDate;
-                        this.formData.endTime = this.ruleData.endDate;
+                        this.formData.startTime = this.ruleData.startDate.toDate();
+                        this.formData.endTime = this.ruleData.endDate.toDate();
                         this.formData.validStartTimeForDay = this.ruleData.startTime;
                         this.formData.validEndTimeForDay = this.ruleData.endTime;
                         this.formData.id = this.ruleData.id;
@@ -342,6 +345,8 @@
                     startDate : this.formData.startTime ? new Date(this.formData.startTime).format('yyyy-MM-dd') : '',
                     endDate : this.formData.endTime ? new Date(this.formData.endTime).format('yyyy-MM-dd') : '',
                     effDate : this.formData.validTime.join(','),
+                    startTime : this.formData.validStartTimeForDay,
+                    endTime : this.formData.validEndTimeForDay,
                 }).then(res => {
                     if (res.success) {
                         if (!res.data) {
@@ -383,6 +388,9 @@
             }
         },
         computed : {
+            ...mapGetters([
+                'lang'
+            ]),
             //是否是复制规则
             isCopyRule () {
                 return this.ruleData && Object.keys(this.ruleData).length > 0;
