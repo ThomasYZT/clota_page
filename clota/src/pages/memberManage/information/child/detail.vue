@@ -241,8 +241,8 @@
                         <div class="title" v-else-if="showMemberRecharge">{{$t("changStoredValue")}}</div>
                         <div class="title" v-else-if="showMemberPoint">{{$t("changScoreValue")}}</div>
                         <div class="operate">
-                            <div><span @click="showAssetModal" v-if="setting.allowAdjustRechargeAccount === 'true' && showMemberRecharge">{{$t("modifyStorageBalance")}}</span></div>
-                            <div v-if="choosedCard.cardTypeId !== '1' && setting.allowAdjustScoreAccount === 'true' && showMemberPoint">
+                            <div><span @click="showAssetModal" v-if="showMemberRecharge">{{$t("modifyStorageBalance")}}</span></div>
+                            <div v-if="showMemberPoint">
                                 <span @click="showScoreModal">{{$t("modifyIntegralBalance")}}</span>
                             </div>
                         </div>
@@ -487,11 +487,16 @@
             },
             //是否可以显示会员积分信息
             showMemberPoint () {
-                return this.memberConfigInfo && this.memberConfigInfo['memberPoint'] && this.memberConfigInfo['memberPoint'] === 'true';
+                return this.memberConfigInfo && this.memberConfigInfo['memberPoint']
+                    && this.memberConfigInfo['memberPoint'] === 'true'
+                    && this.choosedCard.cardTypeId !== '1'
+                    && this.setting.allowAdjustScoreAccount === 'true';
             },
             //是否可以显示会员储值账户信息
             showMemberRecharge () {
-                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge'] && this.memberConfigInfo['memberRecharge'] === 'true';
+                return this.memberConfigInfo && this.memberConfigInfo['memberRecharge']
+                    && this.memberConfigInfo['memberRecharge'] === 'true'
+                    && this.setting.allowAdjustRechargeAccount === 'true';
             },
             //是否可以显示优惠券信息
             showCoupon () {
