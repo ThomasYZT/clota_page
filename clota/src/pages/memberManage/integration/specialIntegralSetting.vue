@@ -34,7 +34,7 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <template v-if="scope.row.endDate && scope.row.endDate.substr(0,4) === '9999'">{{$t('永久')}}</template>
+                        <template v-if="scope.row.endDate && scope.row.endDate.substr(0,4) === '9999'">{{$t('forever')}}</template>
                         <template v-else>{{scope.row.endDate}}</template>
                     </template>
                 </el-table-column>
@@ -58,9 +58,9 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span :class="{ 'active-rule' : true }" v-if="scope.row.ruleStatus === 'valid'">{{$t('生效中')}}</span>
-                        <span v-else-if="scope.row.ruleStatus === 'invalid'">{{$t('未生效')}}</span>
-                        <span v-else-if="scope.row.ruleStatus === 'overdue'">{{$t('已失效')}}</span>
+                        <span :class="{ 'active-rule' : true }" v-if="scope.row.ruleStatus === 'valid'">{{$t('effecting')}}</span>
+                        <span v-else-if="scope.row.ruleStatus === 'invalid'">{{$t('invalid')}}</span>
+                        <span v-else-if="scope.row.ruleStatus === 'overdue'">{{$t('valided')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -72,10 +72,10 @@
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
                         <ul class="operate-list">
-                            <li @click="setIntegralByMemberCard(scope.row)">{{$t('按会员卡级别设置积分、折扣率')}}</li>
-                            <li @click="pauseRule(scope.row)" v-if="scope.row.ruleStatus === 'valid' && localRule !== 'overdue'">{{$t('暂停')}}</li>
-                            <li @click="startRule(scope.row)" v-else-if="scope.row.ruleStatus === 'invalid' && localRule !== 'overdue'">{{$t('启用')}}</li>
-                            <li @click="copyRule(scope.row)">{{$t('复制规则')}}</li>
+                            <li @click="setIntegralByMemberCard(scope.row)">{{$t('setDiscountByMemberCard')}}</li>
+                            <li @click="pauseRule(scope.row)" v-if="scope.row.ruleStatus === 'valid' && localRule !== 'overdue'">{{$t('pause')}}</li>
+                            <li @click="startRule(scope.row)" v-else-if="scope.row.ruleStatus === 'invalid' && localRule !== 'overdue'">{{$t('commissioned')}}</li>
+                            <li @click="copyRule(scope.row)">{{$t('copyRule')}}</li>
                             <li class="red-label" @click="deleteRule(scope.row)">{{$t('del')}}</li>
                         </ul>
                     </template>
@@ -85,7 +85,7 @@
         <!--删除规则-->
         <del-rule-modal ref="delRule">
             <span class="content-text">
-                <i class="iconfont icon-help delete-icon"></i>{{$t('是否确定删除该规则？')}}
+                <i class="iconfont icon-help delete-icon"></i>{{$t('confirmDeleteRule')}}
             </span>
         </del-rule-modal>
         <!--新建规则模态框-->
@@ -120,15 +120,15 @@
                         value : ''
                     },
                     {
-                        name : '生效中',
+                        name : 'effecting',
                         value : 'valid'
                     },
                     {
-                        name : '未生效',
+                        name : 'invalid',
                         value : 'invalid'
                     },
                     {
-                        name : '已过期',
+                        name : 'expired',
                         value : 'overdue'
                     }
                 ],
@@ -202,10 +202,10 @@
                     ruleStatus : 'invalid'
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(`${rowData.ruleName}已暂停`);
+                        this.$Message.success(this.$t('stautsHasStoped',{ name : rowData.ruleName } ));
                         this.queryRules();
                     } else {
-                        this.$Message.error(`${rowData.ruleName}暂停失败`);
+                        this.$Message.error(this.$t('statusStopedFailed',{ name : rowData.ruleName }));
                     }
                 });
             },
@@ -219,10 +219,10 @@
                     ruleStatus : 'valid'
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(`${rowData.ruleName}已启用`);
+                        this.$Message.success(this.$t('statusEnabled',{ name : rowData.ruleName }));
                         this.queryRules();
                     } else {
-                        this.$Message.error(`${rowData.ruleName}启用失败`);
+                        this.$Message.error(this.$t('statusEnabledFailed',{ name : rowData.ruleName }));
                     }
                 });
             },
@@ -256,10 +256,10 @@
                     isDeleted : true
                 }).then(res => {
                     if (res.success) {
-                        this.$Message.success(`${ruleData.ruleName}已删除`);
+                        this.$Message.success(this.$t('ruleDeleted',{ name : ruleData.ruleName }));
                         this.queryRules();
                     } else {
-                        this.$Message.error(`${ruleData.ruleName}删除失败`);
+                        this.$Message.error(this.$t('ruleDeletedFailed',{ name : ruleData.ruleName }));
                     }
                 });
             },

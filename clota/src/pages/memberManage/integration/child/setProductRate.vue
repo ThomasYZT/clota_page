@@ -255,13 +255,13 @@
                 } else if (this.$route.name === 'specialIntegralProductSetting') { //特殊积分折扣率设置
                     return [
                         {
-                            name : '特殊积分折扣率设置',
+                            name : 'specialIntegralSetting',
                             router : {
                                 name : 'specialIntegralSetting'
                             }
                         },
                         {
-                            name : '会员积分、折扣率设置',
+                            name : 'memberPointDiscountSetting',
                             router : {
                                 name : 'specialIntegralCardLevelSetting'
                             }

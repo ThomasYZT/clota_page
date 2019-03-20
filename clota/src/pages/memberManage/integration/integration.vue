@@ -3,7 +3,7 @@
     <div class="member-integration">
         <bread-crumb-head
             v-if="showBreadHead"
-            :locale-router="$t('会员积分、折扣率设置')"
+            :locale-router="$t('memberPointDiscountSetting')"
             :before-router-list="beforeRouterList">
         </bread-crumb-head>
         <div v-if="showBreadHead" class="hr"></div>
@@ -204,7 +204,7 @@
                 if (this.$route.name === 'specialIntegralCardLevelSetting') {
                     return [
                         {
-                            name : '特殊积分折扣率设置',
+                            name : 'specialIntegralSetting',
                             router : {
                                 name : 'specialIntegralSetting'
                             }
