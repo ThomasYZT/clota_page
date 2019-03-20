@@ -45,6 +45,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
+                                v-if="hasMarket === 'true'"
                                 slot="column4"
                                 slot-scope="row"
                                 :label="row.title"
@@ -56,7 +57,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                slot="column5"
+                                :slot="hasMarket === 'true' ? 'column5' : 'column4'"
                                 slot-scope="row"
                                 :label="row.title"
                                 :width="row.width"

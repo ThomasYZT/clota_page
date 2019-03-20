@@ -501,5 +501,7 @@ export default {
     'toHomePage' : 'go to the homepage',
     'registerLeadTip' : 'you have not registered a member, please go to registration',
     'setRightMemberToGetCoupon' : 'please select the membership card to receive the coupon',
-    'watchMyCoupons' : 'view my coupon'
+    'watchMyCoupons' : 'view my coupon',
+    'errorMsg.S018' : '当前景区暂未开通全民营销服务',
+    'payInWx' : '请在微信浏览器中支付',
 };
