@@ -15,6 +15,7 @@
                            style="width: 280px;"
                            :disabled="type !== 'add'"
                            :placeholder="$t('inputField', {field: ''})"/>
+                    {{$t('yuan')}}
                 </Form-item>
             </i-col>
             <i-col span="12">
