@@ -45,7 +45,7 @@
             </div>
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('wetherEffective') })}}</span>
-                <span class="info">{{couponInfo.status === 'valid' ? $t('valid') : $('inValid')  | contentFilter}}</span>
+                <span class="info">{{couponInfo.status === 'valid' ? $t('valid') : $t('inValid')  | contentFilter}}</span>
             </div>
         </div>
 

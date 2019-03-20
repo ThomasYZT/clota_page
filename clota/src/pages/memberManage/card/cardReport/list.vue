@@ -108,9 +108,12 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponCodeDetail('generationNum', scope.row)">
+                        <span v-if="scope.row['appScene'] !== 'right'"
+                              class="table-btn"
+                              @click="toCouponCodeDetail('generationNum', scope.row)">
                             {{ scope.row.quantity | contentFilter }}
                         </span>
+                        <span v-else>-</span>
                     </template>
                 </el-table-column>
 
@@ -137,9 +140,12 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponUsageDetail(scope.row, 'redeemed')">
+                        <span v-if="scope.row['appScene'] !== 'right'"
+                              class="table-btn"
+                              @click="toCouponUsageDetail(scope.row, 'redeemed')">
                             {{ scope.row.exchangeNum | contentFilter }}
                         </span>
+                        <span v-else>-</span>
                     </template>
                 </el-table-column>
                 <!-- 已领取 -->
