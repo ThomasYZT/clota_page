@@ -91,7 +91,7 @@
                                             <Icon type="android-add"></Icon>&nbsp;&nbsp;{{ $t(item.label) }}
                                         </span>
                                         <span v-if="item.value !== 'add' && item.value !== 'forEver' && item.value !== formData.effTime"
-                                              class="operate-label"
+                                              :class="[$style.operateLabel]"
                                               @click.stop="delTimeItem(index)">{{$t('delete')}}</span>
                                     </div>
                                 </Option>
@@ -153,7 +153,7 @@
                 <FormItem prop="addEffectTimeValue"
                           :label="$t('validityPeriod')"
                           :rules="[{ required : true, validator : validateEffectTime,trigger : 'blur' }]">
-                    <Input v-model.trim="effectFormData.addEffectTimeValue" :style="{ width : lang === 'zh-CN' ? '280px' : '200px' }" />
+                    <Input v-model.trim="effectFormData.addEffectTimeValue" :style="{ width : lang === 'zh-CN' ? '200px' : '200px' }" />
                     {{$t('time.year')}}
                 </FormItem>
             </Form>
@@ -579,7 +579,7 @@
                         this.$refs.editModal.hide();
                         this.getEffTimeList();
                         this.effectFormData.addEffectTimeValue = '';
-                    } else if (res.code === 'M046') {
+                    } else if (res.code === 'M046' || res.code === 'M045') {
                         this.$Message.error('permanentValidityExist');
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
@@ -651,30 +651,6 @@
     @import '~@/assets/scss/base';
     .add-member-modal{
 
-        .time-list-item{
-            @include block_outline($height : 20px);
-            display: flex;
-
-            .time-label{
-                flex: 1;
-
-                &.blue-label{
-                    color: $color_blue;
-                }
-
-                &.add-label{
-                    @include absolute_pos(absolute,0,0,0,0);
-                    height: 34px;
-                    padding: 7px 16px;
-                }
-            }
-
-            .operate-label{
-                color: $color_err;
-                font-size: $font_size_14px;
-            }
-
-        }
 
         .modal-body{
             padding: 15px 30px 0 10px;
@@ -727,5 +703,31 @@
             @include overflow_tip();
         }
     }
-</style>
 
+    .time-list-item{
+        @include block_outline($height : 20px);
+        display: flex;
+
+        .time-label{
+            flex: 1;
+
+            &.blue-label{
+                color: $color_blue;
+            }
+
+            &.add-label{
+                @include absolute_pos(absolute,0,0,0,0);
+                height: 34px;
+                padding: 7px 16px;
+            }
+        }
+
+    }
+</style>
+<style module>
+    .operateLabel{
+        color: #ed3f14;
+        font-size: 14px;
+        float: right;
+    }
+</style>

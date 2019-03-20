@@ -3,7 +3,7 @@
 <template>
     <div class="wx-account-pay">
         <div class="status-wrapper">
-            <div class="status" v-if="isPayAbnormal === false">
+            <div class="status" v-if="isPayAbnormal === true">
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
                 <p class="status-message">{{$t('payAbnormal')}}</p>
             </div>
@@ -33,6 +33,7 @@
              */
             getParams (toQuryParams) {
                 if (toQuryParams && toQuryParams.code) {
+                    this.isPayAbnormal = false;
                     this.ordreParams['bizScene'] = toQuryParams['bizScene'];
                     this.ordreParams['bizType'] = toQuryParams['bizType'];
                     this.ordreParams['paymentChannel'] = 'zhilian';
