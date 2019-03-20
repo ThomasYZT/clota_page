@@ -139,7 +139,8 @@ export default {
 			queryParams : {
 				pageNo : 1,
 				pageSize : 10,
-				keyword : ''
+				keyword : '',
+                goodsType : 'ierp'
 			},
 			//表头配置
 			tableColumn : goodsListHead,
