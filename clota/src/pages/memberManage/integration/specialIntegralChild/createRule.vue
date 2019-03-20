@@ -48,6 +48,7 @@
             <FormItem :label="$t('validDate')" prop="validTime">
                 <CheckboxGroup v-model="formData.validTime">
                     <Checkbox v-for="(item,index) in validDateList"
+                              :disabled="item.disabled"
                               :key="index"
                               :label="$t(item.value)">
                         {{$t(item.name)}}
@@ -242,37 +243,6 @@
                         }
                     ]
                 },
-                //周数据列表
-                validDateList : [
-                    {
-                        value : '1',
-                        name : this.$t('Monday')
-                    },
-                    {
-                        value : '2',
-                        name : this.$t('Tuesday')
-                    },
-                    {
-                        value : '3',
-                        name : this.$t('Wednesday')
-                    },
-                    {
-                        value : '4',
-                        name : this.$t('Thursday')
-                    },
-                    {
-                        value : '5',
-                        name : this.$t('Friday')
-                    },
-                    {
-                        value : '6',
-                        name : this.$t('Saturday')
-                    },
-                    {
-                        value : '0',
-                        name : this.$t('Sunday')
-                    },
-                ],
                 //日期组件不可选日期
                 dateOptions : {
                     disabledDate (date) {
@@ -416,6 +386,82 @@
             //是否是复制规则
             isCopyRule () {
                 return this.ruleData && Object.keys(this.ruleData).length > 0;
+            },
+            //周数据列表
+            validDateList () {
+                //可以选的星期
+                let activeWeek = [];
+                let allDisabled = false;
+                if (this.formData.startTime && this.formData.endTime && this.formData.endTime >= this.formData.startTime) {
+                    let startWeek = this.formData.startTime.getDay();
+                    let diffDate = this.formData.startTime.dateDiff('d',this.formData.endTime );
+                    activeWeek = Array.from(new Array(diffDate + 1),(item,index) => {
+                        return (startWeek + index) % 7;
+                    } );
+                } else if (this.formData.startTime && this.formData.endTime && this.formData.endTime < this.formData.startTime) {//开始日期大于结束日期，生效日期全不可选择
+                    allDisabled = true;
+                }
+                return [
+                    {
+                        value : '1',
+                        name : this.$t('Monday'),
+                        disabled : activeWeek.length > 0 && !activeWeek.includes(1) || allDisabled
+                    },
+                    {
+                        value : '2',
+                        name : this.$t('Tuesday'),
+                        disabled : activeWeek.length > 0 && !activeWeek.includes(2) || allDisabled
+                    },
+                    {
+                        value : '3',
+                        name : this.$t('Wednesday'),
+                        disabled : activeWeek.length > 0 && !activeWeek.includes(3) || allDisabled
+                    },
+                    {
+                        value : '4',
+                        name : this.$t('Thursday'),
+                        disabled : activeWeek.length > 0 && !activeWeek.includes(4) || allDisabled
+                    },
+                    {
+                        value : '5',
+                        name : this.$t('Friday'),
+                        disabled : activeWeek.length > 0 && !activeWeek.includes(5) || allDisabled
+                    },
+                    {
+                        value : '6',
+                        name : this.$t('Saturday'),
+                        disabled : activeWeek.length > 0 && !activeWeek.includes(6) || allDisabled
+                    },
+                    {
+                        value : '0',
+                        name : this.$t('Sunday'),
+                        disabled : activeWeek.length > 0 && !activeWeek.includes(0) || allDisabled
+                    },
+                ];
+            }
+        },
+        watch : {
+            //如果所选的周不可选择，那么就全部取消选择
+            validDateList : {
+                handler (newVal) {
+                    if (this.formData.startTime && this.formData.endTime && this.formData.endTime >= this.formData.startTime) {
+                        for (let i = 0,j = newVal.length; i < j; i++) {
+                            if (newVal[i]['disabled']) {
+                                let index = this.formData.validTime.indexOf(newVal[i]['value']);
+                                if (index !== -1) {
+                                    this.formData.validTime.splice(index,1);
+                                }
+                            } else {
+                                if (this.formData.validTime.indexOf(newVal[i]['value']) === -1) {
+                                    this.formData.validTime.push(newVal[i]['value']);
+                                }
+                            }
+                        }
+                    } else if (this.formData.startTime && this.formData.endTime && this.formData.endTime < this.formData.startTime) {
+                        this.formData.validTime = [];
+                    }
+                },
+                deep : true
             }
         }
     };
