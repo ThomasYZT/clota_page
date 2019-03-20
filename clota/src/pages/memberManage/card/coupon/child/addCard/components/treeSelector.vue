@@ -11,10 +11,8 @@
                      :props="defaultProps"
                      :data="treeData"
                      @check-change="handleCheck">
-                <template slot-scope="{ node }">
-                    <span class="label"
-                          v-w-title="node.label">{{node.label}}</span>
-                </template>
+                <span slot-scope="{ node }" class="label"
+                      v-w-title="node.label">{{node.label}}</span>
             </el-tree>
         </div>
         <div v-else
