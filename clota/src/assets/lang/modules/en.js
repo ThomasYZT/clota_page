@@ -2781,4 +2781,5 @@ export default {
     'statusEnabledFailed' : '{name} enabled failed',
     'ruleDeleted' : '{name} has been deleted',
     'ruleDeletedFailed' : '{name} failed to delete',
+    'M060' : '商品ID重复',
 };
