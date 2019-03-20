@@ -96,7 +96,7 @@
                         accountTypeId : this.accountTypeId,
                         amount : this.rechargeMoney,
                         cardId : this.cardInfo.id
-                    }).then(res => {
+                    },null,false).then(res => {
                         if (res.success) {
                             this.actualMoney = res.data ? res.data.actMoney : '';
                             this.donateMoney = res.data ? res.data.gift : '';
@@ -375,16 +375,6 @@
                     });
                     return encodeURI(location.origin + href);
                 }
-                // if (paymentChannel === 'zhilian') {
-                //
-                // } else {
-                //     let router = this.$router;
-                //     let base = router.options.base;
-                //     let module = this.$router.options.routes.filter((item) => {
-                //         return item.module === 'member';
-                //     })[0].path;
-                //     return encodeURI(location.origin + base + module + '/payStatus');
-                // }
             },
             /**
              * 获取微信支付授权地址
@@ -403,7 +393,7 @@
                 });
                 ajax.post('generateWxAuthUrl',{
                     redirectUrl : location.origin + href,
-                    orgId : this.marketOrgId,
+                    orgId : this.cardInfo.orgId,
                 }).then(res => {
                     if (res.success && res.data) {
                         window.location.href = res.data;
