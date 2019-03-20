@@ -66,6 +66,23 @@
                       :page-size-d.sync="queryParams.pageSize"
                       @selection-change="colomnSelect"
                       @query-data="getListData">
+                <!-- 商品名称 -->
+
+                <el-table-column
+                    slot="column0"
+                    slot-scope="row"
+                    :label="row.title"
+                    :width="row.width"
+                    :min-width="row.minWidth">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.goodsType === 'coupon'" class="inline-btn" @click="viewCouponDetail(scope.row)">
+                            {{scope.row.name | contentFilter}}
+                        </span>
+                        <span v-else>
+                            {{scope.row.name | contentFilter}}
+                        </span>
+                    </template>
+                </el-table-column>
                 <!-- 剩余可上架数量 -->
                 <el-table-column
                     slot="column1"
@@ -138,6 +155,9 @@
 
         <!-- 调整兑换时所需积分 -->
         <adjustCreditsModal ref="adjustCreditsModal" @updateSuccess="getListData"></adjustCreditsModal>
+
+        <!-- 优惠券详情弹窗 -->
+        <couponDetailsModal ref="couponDetailsModal"></couponDetailsModal>
     </div>
 </template>
 
@@ -149,6 +169,7 @@
     import delModal from '@/components/delModal/index';
     import getGoodModal from './components/getGoodModal';
     import goodDetailModal from './components/goodDetailModal';
+    import couponDetailsModal from '../card/coupon/child/couponRecord/components/couponDetailsModal';
     import forEach from 'lodash/forEach';
     import adjustCreditsModal from './components/adjustCreditsModal';
     import { mapGetters } from 'vuex';
@@ -159,7 +180,8 @@
             delModal,
             getGoodModal,
             goodDetailModal,
-            adjustCreditsModal
+            adjustCreditsModal,
+            couponDetailsModal
         },
         data () {
             return {
@@ -215,6 +237,13 @@
                         this.$Message.error(this.$t('dataGetError'));
                     }
                 });
+            },
+            /**
+             *  前往卡券详情页面
+             *  @param rowData 券数据
+             */
+            viewCouponDetail (rowData) {
+                this.$refs.couponDetailsModal.show(rowData);
             },
             /**
              * 前往库存详情页面

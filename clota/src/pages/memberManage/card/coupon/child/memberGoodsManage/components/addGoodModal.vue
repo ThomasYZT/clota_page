@@ -109,7 +109,11 @@
                         this.hide();
                         this.$emit('updateList');
                     } else {
-                        this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        if (res.code) {
+                            this.$Message.success(this.$t(res.code));
+                        } else {
+                            this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
+                        }
                     }
                 });
             }
