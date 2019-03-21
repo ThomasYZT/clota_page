@@ -114,7 +114,7 @@
                 this.$vux.loading.show({
                     text : this.$t('searchIngPayResult')
                 });
-                ajax.post('market_queryPayRecordByOutTradeNo',{
+                ajax.post('queryPayRecordByOutTradeNo',{
                     outTradeNo
                 },null,false).then(res => {
                     this.paySuccess = res.success && res.data && res.data.txnStatus === "success";
