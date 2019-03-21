@@ -66,7 +66,7 @@
                     show-overflow-tooltip
                     slot-scope="row">
                     <template slot-scope="scope">
-                        {{scope.row.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expireTime | timeFormat('yyyy-MM-dd')}}
+                        {{scope.row.effTime | timeFormat('yyyy-MM-dd')}}--{{scope.row.expTime | timeFormat('yyyy-MM-dd')}}
                     </template>
                 </el-table-column>
             </table-com>
