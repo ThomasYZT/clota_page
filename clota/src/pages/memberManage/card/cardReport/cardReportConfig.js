@@ -1,7 +1,7 @@
 export const cardReportHead = [
     {
         title : 'couponName', //卡券名称
-        minWidth : 150,
+        minWidth : 220,
         enWidth : 220,
         field : 'couponName',
     },
