@@ -40,6 +40,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
                             style="width: 280px;"
+                            :readonly="type !== 'add'"
                             :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
@@ -55,6 +56,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             style="width: 280px;"
+                            :readonly="type !== 'add'"
                             :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>

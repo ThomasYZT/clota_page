@@ -276,7 +276,7 @@ export default {
     "chooseShop" : "选择店铺",
     "intergralExchangeCount" : "积分兑换数量",
     "isUsedTogether" : "能否和会员折扣权益同时使用",
-    "isUsedBeforeOrAfterDiscount" : "代金券在折扣前后使用设置",
+    "isUsedBeforeOrAfterDiscount" : "在折扣前后使用设置",
     "availableBeforeDiscount" : "折扣前可用",
     "availableAfterDiscount" : "折扣后可用",
     "availableChannels" : "可用渠道",

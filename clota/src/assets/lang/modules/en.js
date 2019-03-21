@@ -276,7 +276,7 @@ export default {
     "chooseShop" : "Choose a store",
     "intergralExchangeCount" : "Number of points exchange",
     "isUsedTogether" : "Can it be used with member discount rights and interests?",
-    "isUsedBeforeOrAfterDiscount" : "Vouchers are used before and after the discount",
+    "isUsedBeforeOrAfterDiscount" : "Used before and after the discount",
     "availableBeforeDiscount" : "Available before discount",
     "availableAfterDiscount" : "Available after discount",
     "availableChannels" : "Available channels",

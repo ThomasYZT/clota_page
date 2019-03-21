@@ -65,6 +65,7 @@
                             type="date"
                             transfer
                             :editable="false"
+                            :readonly="type !== 'add'"
                             :disabled="type !== 'add'"
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
@@ -80,6 +81,7 @@
                             type="date"
                             :editable="false"
                             transfer
+                            :readonly="type !== 'add'"
                             :disabled="type !== 'add'"
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"

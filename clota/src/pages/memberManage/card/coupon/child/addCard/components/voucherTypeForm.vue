@@ -62,6 +62,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.effectiveTime"
                             style="width: 280px;"
+                            :readonly="type !== 'add'"
                             :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
@@ -77,6 +78,7 @@
                             :options="pickerOptions"
                             v-model.trim="formData.expireTime"
                             style="width: 280px;"
+                            :readonly="type !== 'add'"
                             :disabled="type !== 'add'"
                             :placeholder="$t('selectField', {msg: ''})">
                         </Date-picker>
@@ -135,7 +137,7 @@
             </i-col>
             <template  v-if="formData.isDiscountCoexist === 'true'">
                 <i-col span="12">
-                    <!--代金券在折扣前后使用设置-->
+                    <!--在折扣前后使用设置-->
                     <Form-item :label="$t('isUsedBeforeOrAfterDiscount')" prop="isEffectBeforeDiscount">
                         <RadioGroup v-model="formData.isEffectBeforeDiscount"
                                     @on-change="isEffectBeforeDiscountChange">
