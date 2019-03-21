@@ -39,8 +39,9 @@
             </div>
 
             <!-- 步骤2 -->
-            <div class="step-2" v-else>
+            <div ref="step2" class="step-2" v-else>
                 <span>{{link}}</span>
+                <span class="inline-btn" @click="clipboard">复制</span>
             </div>
 
             <div v-if="editing"
@@ -120,16 +121,21 @@
              * 下一步 生成链接
              */
             nextStep () {
-                this.generateLinks().then(link => {
-                    this.editing = false;
-                    this.link = link;
-                }).catch(code => {
-                    if (code) {
-                        this.$Message.error(this.$t(code));
-                    } else {
-                        this.$Message.error(this.$t('failureTip', { tip : this.$t('generate') }));
+                this.$refs.formValidate.validate(valid => {
+                    if (valid) {
+                        this.generateLinks().then(link => {
+                            this.editing = false;
+                            this.link = link;
+                        }).catch(code => {
+                            if (code) {
+                                this.$Message.error(this.$t(code));
+                            } else {
+                                this.$Message.error(this.$t('failureTip', { tip : this.$t('generate') }));
+                            }
+                        });
                     }
-                });
+
+                })
             },
             /**
              *  生成链接
@@ -153,6 +159,9 @@
              * 隐藏模态框
              */
             hide () {
+                this.formData = {
+                    needCount : '',
+                }
                 this.countWaitNum = 0;
                 this.isFormShow = false;
                 this.link = '';
@@ -177,6 +186,25 @@
                         }
                     })
                 })
+            },
+            /**
+             * 复制到剪贴板
+             */
+            clipboard () {
+                let _input = document.createElement('input');
+                _input.value = this.link
+                _input.setAttribute('type', 'text');
+                _input.setAttribute('readonly', 'readonly');
+                if (document.execCommand('copy')) {
+                    this.$refs.step2.appendChild(_input);
+                    _input.setSelectionRange(0, 9999);
+                    _input.select();
+                    document.execCommand('copy');
+                    this.$Message.success(this.$t('successTip', { tip : this.$t('copy') }));
+                    this.$refs.step2.removeChild(_input);
+                } else {
+                    this.$Message.error(this.$t('failureTip', { tip : this.$t('copy') }));
+                }
             }
         }
     };
@@ -198,6 +226,11 @@
             width: 70%;
             margin: 100px auto 0px;
             word-break: break-all;
+        }
+
+        .inline-btn {
+            color: $color_blue;
+            cursor: pointer;
         }
     }
 </style>
