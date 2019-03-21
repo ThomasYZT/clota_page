@@ -395,7 +395,7 @@
             reloadCoupon (rowData, couponType) {
                 if (couponType === 'spread' && this.isSpreadExpired(rowData)) return false;
                 if (couponType === 'right' && this.isRightExpired(rowData)) return false;
-                ajax.post('updateCoupon', {
+                ajax.post('updateCouponStatus', {
                     id : rowData.id,
                     status : 'valid',
                 }).then(res => {
@@ -422,7 +422,7 @@
              */
             deleteCardFunc () {
                 let params = this.getUpdateCouponParams(this.currentData);
-                ajax.post('updateCoupon',Object.assign({
+                ajax.post('updateCouponStatus',Object.assign({
                     isDeleted : 'true'
                 },params)).then(res => {
                     if (res.success) {

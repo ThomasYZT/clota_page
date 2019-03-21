@@ -64,7 +64,7 @@
              * 确认
              */
             confirm () {
-                ajax.post('updateCoupon', {
+                ajax.post('updateCouponStatus', {
                     id : this.rowData.id,
                     cancelEff : this.cancelEff,
                     status : 'invalid',

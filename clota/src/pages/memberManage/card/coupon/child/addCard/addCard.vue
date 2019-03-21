@@ -921,7 +921,7 @@
              */
             updateCoupon () {
                 let params = this.getAddCouponParams();
-                ajax.post('updateCoupon',params).then(res => {
+                ajax.post('updateCouponStatus',params).then(res => {
                     if (res.success) {
                         if (this.type === 'add') {
                             this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));

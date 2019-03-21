@@ -168,6 +168,8 @@ export default {
     'queryLevelNames' : '/member/memberCoupon/queryLevelNames',
     //查询自营渠道
     'querySelfOwnedChannelForCoupon' : '/selfChannel/querySelfOwnedChannelForCoupon',
+    //更改卡券状态
+    'updateCouponStatus' : '/member/memberCoupon/updateCouponStatus',
 
     /***********************************初始化设置***********************************/
     //基础设置-会员基础设置-查询

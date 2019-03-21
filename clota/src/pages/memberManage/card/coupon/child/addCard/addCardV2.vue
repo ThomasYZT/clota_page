@@ -285,7 +285,7 @@
              *  新增/编辑优惠券
              */
             updateCoupon (resultFormData) {
-                ajax.post('updateCoupon', resultFormData).then(res => {
+                ajax.post('updateCouponStatus', resultFormData).then(res => {
                     if (res.success) {
                         this.$Message.success(this.$t('successTip', { tip : this.$t('add') }));
                         //前往卡券列表页面
