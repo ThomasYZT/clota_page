@@ -384,6 +384,7 @@
                         txnAmt : this.rechargeMoney,
                         memberLevelId : this.cardInfo.levelId,
                         paymentChannel : 'zhilian',
+                        orgId : this.cardInfo.orgId,
                         extData : JSON.stringify({
                             accountBizType : 'recharge',
                             accountTypeId : this.accountTypeId,
