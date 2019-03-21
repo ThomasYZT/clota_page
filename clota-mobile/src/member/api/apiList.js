@@ -122,8 +122,6 @@ const apiList = {
     generateWxAuthUrl : '/external/pay/generateWxAuthUrl',
     //获取微信openId
     getOpenid : '/external/pay/getOpenid',
-    //微信公众号支付
-    getPayPageForOfficialAccountNoLogin : '/external/pay/getPayPageForOfficialAccountNoLogin',
     //查询支付结果
     queryPayRecordByOutTradeNo : '/external/pay/queryPayRecordByOutTradeNo',
 };

@@ -181,13 +181,15 @@
                 }
                 this.validateRechargeMoney(true).then(() => {
                     if (this.payType === 'wx' && this.isWeixin) {
-                        let paymentChannel = this.payAccountInfo.find(item => item.key === this.payType)['payType'];
-                        if (paymentChannel === 'zhilian') {
-                            this.getWxOpenUrl();
-                        } else {
-                            //微信内微信支付专用 --银石支付
-                            this.getPayPageForOfficialAccount();
-                        }
+                        // let paymentChannel = this.payAccountInfo.find(item => item.key === this.payType)['payType'];
+                        // if (paymentChannel === 'zhilian') {
+                        //     this.getWxOpenUrl();
+                        // } else {
+                        //     //微信内微信支付专用 --银石支付
+                        //     this.getPayPageForOfficialAccount();
+                        // }
+                        //微信内微信支付专用
+                        this.getPayPageForOfficialAccount();
                     } else {
                         //微信内支付宝支付、微信外支付宝、微信支付
                         this.getPayPageForMobile();

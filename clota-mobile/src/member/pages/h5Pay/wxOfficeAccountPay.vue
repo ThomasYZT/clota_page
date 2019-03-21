@@ -66,7 +66,7 @@
              * 获取jsapi支付参数
              */
             getPayPageForOfficialAccountNoLogin () {
-                ajax.post('getPayPageForOfficialAccountNoLogin',{
+                ajax.post('getPayPageForOfficialAccount',{
                     bizScene : this.orderParams['bizScene'],
                     bizType : this.orderParams['bizType'],
                     paymentChannel : this.orderParams['paymentChannel'] ,
