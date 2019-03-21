@@ -381,7 +381,7 @@
              */
             getWxOpenUrl () {
                 const { href } = this.$router.resolve({
-                    name : 'wxAccountPay',
+                    name : 'userWxAccountPay',
                     query : {
                         bizScene : 'member',
                         bizType : 'recharge',
