@@ -30,7 +30,8 @@
                         </formItem>
                         <!-- 可用产品类别 -->
                         <formItem :label="$t('colonSetting', { key : $t('availableProductCategories') })">
-                            <span>{{detail.conditionProductNames | contentFilter}}</span>
+                            <span v-if="detail.appScene === 'spread'">{{detail.conditionProductNames | contentFilter}}</span>
+                            <span v-else>{{detail.conditionGoodNames | contentFilter}}</span>
                         </formItem>
                         <!-- 可用渠道 -->
                         <formItem :label="$t('colonSetting', { key : $t('availableChannels') })">

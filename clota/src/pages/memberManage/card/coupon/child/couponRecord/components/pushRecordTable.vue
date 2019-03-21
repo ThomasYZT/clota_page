@@ -90,9 +90,7 @@
                                 <span @click="queryLevelNames(scope.row)">{{$t('pushRecord')}}</span>
                                 <div v-if="scope.row.LevelNames && scope.row.LevelNames.length > 0"
                                      slot="content">
-                                    <div v-for="(item, index) in scope.row.LevelNames" :key="index">
-                                        <p>{{item}}</p>
-                                    </div>
+                                    <p v-for="(item, index) in scope.row.LevelNames" :key="index" style="min-width: 100px;">{{item}}</p>
                                 </div>
                                 <div v-else-if="!scope.row.query || !scope.row.LevelNames || scope.row.LevelNames.length === 0"
                                      slot="content">

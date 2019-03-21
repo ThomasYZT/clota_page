@@ -524,6 +524,8 @@
                 if (row.status === "invalid") {
                     return 'disabled-row';
                 } else {
+                    if (row.appScene === 'spread' && this.isSpreadExpired(row)) return 'disabled-row';
+                    if (row.appScene === 'right' && this.isRightExpired(row)) return 'disabled-row';
                     return '';
                 }
             }
