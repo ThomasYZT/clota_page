@@ -148,22 +148,31 @@
              * 导出
              */
             exportData () {
-                let href = config['HOST'] + apiList['downLoadCoupon'] + '?token=' + ajax.getToken();
-                for (let param in this.formData) {
-                    href += '&' + param + '=' + this.formData[param]
-                }
-                href += '&' + 'couponId' + '=' + this.rowData.id;
-                let aLink = document.createElement('a');
-                aLink.href = href;
-                aLink.click();
+                this.queryCountWaitNum().then(() => {
+                    if (this.formData.needCount <= this.countWaitNum) {
+                        let href = config['HOST'] + apiList['downLoadCoupon'] + '?token=' + ajax.getToken();
+                        for (let param in this.formData) {
+                            href += '&' + param + '=' + this.formData[param]
+                        }
+                        href += '&' + 'couponId' + '=' + this.rowData.id;
+                        let aLink = document.createElement('a');
+                        aLink.href = href;
+                        let evt = document.createEvent("MouseEvents");
+                        evt.initEvent("click",true,true);
+                        aLink.dispatchEvent(evt);
+                    } else {
+                        this.$Message.error(this.$t('M059'));
+                    }
+                });
             },
             /**
              * 隐藏模态框
              */
             hide () {
-                this.isformShow = false;
+                this.$refs.formValidate.resetFields();
                 this.countWaitNum = 0;
                 this.rowData = {};
+                this.isformShow = false;
                 this.visible = false;
             },
             /**
