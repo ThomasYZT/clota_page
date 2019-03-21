@@ -120,6 +120,15 @@
                                        :activity-product-data="activityProductData">
                 </special-activity-info>
             </template>
+
+            <div class="general-discount-title">{{$t('特殊积分折扣率')}}</div>
+            <template v-for="(item,index) in specialDiscountInfo">
+                <special-integer-info :key="index"
+                                       :activity-card-data="item.discountRateVo.memberVos"
+                                       :activity-store-data="item.discountRateVo.storeVos"
+                                       :activity-product-data="item.discountRateVo.productMap">
+                </special-integer-info>
+            </template>
         </div>
 
     </div>
@@ -134,6 +143,7 @@
     import { mapGetters } from 'vuex';
     import specialActivityInfo from './specialActivityInfo';
     import noData from '@/components/noDataTip/noData-tip.vue';
+    import specialIntegerInfo from './specialIntegerInfo';
 
     export default {
         mixins : [lifeCycleMixins],
@@ -141,7 +151,8 @@
             breadCrumbHead,
             tableCom,
             specialActivityInfo,
-            noData
+            noData,
+            specialIntegerInfo
         },
         computed : {
             ...mapGetters({
@@ -261,7 +272,9 @@
                     },
                 ],
                 //会员信息
-                memberInfo : {}
+                memberInfo : {},
+                //特殊积分折扣率信息
+                specialDiscountInfo : []
             };
         },
         methods : {
@@ -271,28 +284,27 @@
                 ajax.post('listMemberCardRate', {
                     cardId : params.id,
                 }).then(res => {
-                    if (res.success) {
-                        if (res.data) {
-                            let commonDiscountInfo = res.data ? res.data.common : {};
-                            let activityDiscountInfo = res.data ? res.data.activity : {};
-                            this.memberInfo = commonDiscountInfo.levelModel;
-                            this.cardData = commonDiscountInfo.memberVos;
-                            this.activityCardData = activityDiscountInfo.memberVos;
-                            this.storeData = commonDiscountInfo.storeVos;
-                            this.activityStoreData = activityDiscountInfo.storeVos;
-                            for (let key in commonDiscountInfo.productMap) {
-                                if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
-                                    commonDiscountInfo.productMap[key].forEach( item => {
-                                        this.productData.push(item);
-                                    });
-                                }
+                    if (res.success && res.data) {
+                        let commonDiscountInfo = res.data ? res.data.common : {};
+                        let activityDiscountInfo = res.data ? res.data.activity : {};
+                        this.memberInfo = commonDiscountInfo.levelModel;
+                        this.cardData = commonDiscountInfo.memberVos;
+                        this.activityCardData = activityDiscountInfo.memberVos;
+                        this.storeData = commonDiscountInfo.storeVos;
+                        this.activityStoreData = activityDiscountInfo.storeVos;
+                        this.specialDiscountInfo = res.data.activity;
+                        for (let key in commonDiscountInfo.productMap) {
+                            if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
+                                commonDiscountInfo.productMap[key].forEach( item => {
+                                    this.productData.push(item);
+                                });
                             }
-                            for (let key in commonDiscountInfo.productMap) {
-                                if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
-                                    activityDiscountInfo.productMap[key].forEach( item => {
-                                        this.activityProductData.push(item);
-                                    });
-                                }
+                        }
+                        for (let key in commonDiscountInfo.productMap) {
+                            if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
+                                activityDiscountInfo.productMap[key].forEach( item => {
+                                    this.activityProductData.push(item);
+                                });
                             }
                         }
                     } else {
