@@ -21,7 +21,9 @@
                 //微信openid
                 wxOpenId : '',
                 //是否支付异常
-                isPayAbnormal : false
+                isPayAbnormal : false,
+                //支付参数
+                orderParams : {}
             };
 		},
 		methods : {
@@ -32,11 +34,11 @@
             getParams (toQuryParams) {
                 if (toQuryParams && toQuryParams.code) {
                     this.isPayAbnormal = false;
-                    this.ordreParams['bizScene'] = toQuryParams['bizScene'];
-                    this.ordreParams['bizType'] = toQuryParams['bizType'];
-                    this.ordreParams['paymentChannel'] = 'zhilian';
-                    this.ordreParams['txnAmt'] = toQuryParams['txnAmt'];
-                    this.ordreParams['orgId'] = toQuryParams['orgId'];
+                    this.orderParams['bizScene'] = toQuryParams['bizScene'];
+                    this.orderParams['bizType'] = toQuryParams['bizType'];
+                    this.orderParams['paymentChannel'] = 'zhilian';
+                    this.orderParams['txnAmt'] = toQuryParams['txnAmt'];
+                    this.orderParams['orgId'] = toQuryParams['orgId'];
                     this.getOpenId(toQuryParams.code,toQuryParams.orgId);
                 } else {
                     this.isPayAbnormal = true;
@@ -65,12 +67,12 @@
              */
             getPayPageForOfficialAccountNoLogin () {
                 ajax.post('getPayPageForOfficialAccountNoLogin',{
-                    bizScene : this.ordreParams['bizScene'],
-                    bizType : this.ordreParams['bizType'],
-                    paymentChannel : this.ordreParams['paymentChannel'] ,
-                    txnAmt : this.ordreParams['txnAmt'],
+                    bizScene : this.orderParams['bizScene'],
+                    bizType : this.orderParams['bizType'],
+                    paymentChannel : this.orderParams['paymentChannel'] ,
+                    txnAmt : this.orderParams['txnAmt'],
                     payerRealId : this.wxOpenId,
-                    orgId : this.ordreParams['orgId'],
+                    orgId : this.orderParams['orgId'],
                 }).then(res => {
                     if (res.success && res.data) {
                         try {
