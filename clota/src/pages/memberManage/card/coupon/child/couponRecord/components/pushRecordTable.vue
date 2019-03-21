@@ -191,11 +191,14 @@
                     batchId : rowData.batchId,
                 }).then(res => {
                     if (res.success) {
-                        rowData.LevelNames = res.data ? res.data : [];
+                        this.$set(rowData, 'LevelNames', res.data);
+                        // rowData.LevelNames = res.data ? res.data : [];
                     } else {
-                        rowData.LevelNames = [];
+                        this.$set(rowData, 'LevelNames', []);
+                        // rowData.LevelNames = [];
                     }
-                    rowData.query = true;
+                    this.$set(rowData, 'query', true);
+                    // rowData.query = true;
                 })
             }
         },
