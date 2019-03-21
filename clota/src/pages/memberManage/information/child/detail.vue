@@ -314,13 +314,14 @@
         <!--密码确认框-->
         <edit-modal ref="editModal">
             <Form ref="formData" :model="formData">
+                <input type="hidden">
                 <!--请输入登录密码-->
                 <FormItem prop="password" :label="$t('inputField', { field : $t('loginPassword') })" :rules="[  {
                             required : true,
                             message : $t('inputField',{ field : $t('password') }),
                             trigger : 'blur'
                         }]">
-                    <Input v-model.trim="formData.password" type="password" style="width: 280px"/>
+                    <Input v-model.trim="formData.password" autofocus type="password" style="width: 280px"/>
                 </FormItem>
             </Form>
         </edit-modal>
