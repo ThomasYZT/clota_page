@@ -121,12 +121,30 @@
                 </special-activity-info>
             </template>
 
-            <div class="general-discount-title">{{$t('特殊积分折扣率')}}</div>
+            <div class="general-discount-title" v-if="specialDiscountInfo.length > 0">{{$t('specialDiscountRate')}}</div>
             <template v-for="(item,index) in specialDiscountInfo">
-                <special-integer-info :key="index"
-                                       :activity-card-data="item.discountRateVo.memberVos"
-                                       :activity-store-data="item.discountRateVo.storeVos"
-                                       :activity-product-data="item.discountRateVo.productMap">
+                <ul class="discount-title" :key="'ul' + index">
+                    <li class="desc-info">
+                        <span class="key">{{$t('colonSetting',{ key : $t('ruleName') })}}</span>
+                        <span class="value">{{item.ruleName | contentFilter}}</span>
+                    </li>
+                    <li class="desc-info">
+                        <span class="key">{{$t('colonSetting',{ key : $t('startAndEndTime') })}}</span>
+                        <span class="value">{{item.startDate | timeFormat('yyyy-MM-dd') | contentFilter}} ~ {{item.endDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
+                    </li>
+                    <li class="desc-info">
+                        <span class="key">{{$t('colonSetting',{ key : $t('validDate') })}}</span>
+                        <span class="value">{{item.effDateTxt | contentFilter}}</span>
+                    </li>
+                    <li class="desc-info">
+                        <span class="key">{{$t('colonSetting',{ key : $t('validDateEveryDay') })}}</span>
+                        <span class="value">{{item.startTime | contentFilter}} ~ {{item.endTime | contentFilter}}</span>
+                    </li>
+                </ul>
+                <special-integer-info :key="'div' + index"
+                                       :special-discount-info="item.discountRateVo.memberVos"
+                                       :special-discount-store-data="item.discountRateVo.storeVos"
+                                       :activity-product-map="item.discountRateVo.productMap">
                 </special-integer-info>
             </template>
         </div>
@@ -292,7 +310,29 @@
                         this.activityCardData = activityDiscountInfo.memberVos;
                         this.storeData = commonDiscountInfo.storeVos;
                         this.activityStoreData = activityDiscountInfo.storeVos;
-                        this.specialDiscountInfo = res.data.activity;
+                        this.specialDiscountInfo = res.data.activity.map(item => {
+                            let effDateTxt = item.effDate.split(',').map(day => {
+                                if (day === '0') {
+                                    return this.$t('Sunday');
+                                } else if (day === '1') {
+                                    return this.$t('Monday');
+                                } else if (day === '2') {
+                                    return this.$t('Tuesday');
+                                } else if (day === '3') {
+                                    return this.$t('Wednesday');
+                                } else if (day === '4') {
+                                    return this.$t('Thursday');
+                                } else if (day === '5') {
+                                    return this.$t('Friday');
+                                } else if (day === '6') {
+                                    return this.$t('Saturday');
+                                }
+                            }).join('、');
+                            return {
+                                ...item,
+                                effDateTxt
+                            };
+                        });
                         for (let key in commonDiscountInfo.productMap) {
                             if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
                                 commonDiscountInfo.productMap[key].forEach( item => {
@@ -300,8 +340,8 @@
                                 });
                             }
                         }
-                        for (let key in commonDiscountInfo.productMap) {
-                            if ( commonDiscountInfo.productMap[key] && commonDiscountInfo.productMap[key].length > 0) {
+                        for (let key in activityDiscountInfo.productMap) {
+                            if ( activityDiscountInfo.productMap[key] && activityDiscountInfo.productMap[key].length > 0) {
                                 activityDiscountInfo.productMap[key].forEach( item => {
                                     this.activityProductData.push(item);
                                 });
@@ -421,6 +461,12 @@
             @include block_outline(500px,200px);
         }
 
+        .discount-title{
+            padding: 0 10px;
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 20px;
+        }
     }
 </style>
 

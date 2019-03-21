@@ -2784,4 +2784,6 @@ export default {
     'M060' : '商品ID重复',
     'receive' : '领取',
     'checkCardCoupon' : '查看卡券信息',
+    'startAndEndTime' : '开始结束时间',
+    'specialDiscountRate' : '特殊积分折扣率',
 };

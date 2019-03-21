@@ -4,11 +4,11 @@
     <div class="rights-wrap">
         <div class="table-wrap"
              :class="{'width-500' : lang === 'zh-CN' , 'width-660' : lang === 'en'}"
-             v-if="activityCardData && activityCardData.length > 0">
+             v-if="specialDiscountInfo && specialDiscountInfo.length > 0">
             <div class="title-normal">{{$t('enjoyCouponByMemberLevel')}}</div><!--按会员级别享受积分、折扣率信息-->
             <table-com
                 :column-data="cardColumnData"
-                :table-data="activityCardData"
+                :table-data="specialDiscountInfo"
                 :border="false"
                 :auto-height="true"
                 :table-com-min-height="250">
@@ -29,11 +29,11 @@
         </div>
 
         <div class="table-wrap width-660"
-             v-if="activityStoreData && activityStoreData.length > 0">
+             v-if="specialDiscountStoreData && specialDiscountStoreData.length > 0">
             <div class="title-normal">{{$t('enjoyCouponByShop')}}</div><!--按店铺享受积分、折扣率信息-->
             <table-com
                 :column-data="storeColumnData"
-                :table-data="activityStoreData"
+                :table-data="specialDiscountStoreData"
                 :border="false"
                 :auto-height="true"
                 :table-com-min-height="250">
@@ -89,24 +89,24 @@
         },
         props : {
             //按会员类型的积分折扣率设置信息
-            'activity-card-data' : {
+            'special-discount-info' : {
                 type : Array,
                 default () {
                     return [];
                 }
             },
             //按店铺的积分折扣率设置信息
-            'activity-store-data' : {
+            'special-discount-store-data' : {
                 type : Array,
                 default () {
                     return [];
                 }
             },
             //按店铺的积分折扣率设置信息
-            'activity-product-data' : {
-                type : Array,
-                default () {
-                    return [];
+            'activity-product-map' : {
+                type : Object,
+                default  () {
+                    return {};
                 }
             }
         },
@@ -174,9 +174,25 @@
             ...mapGetters({
                 lang : 'lang'
             }),
+            //按产品享受积分折扣率有对象转数组
+            activityProductData () {
+                let result = [];
+                for (let key in this.activityProductMap) {
+                    if ( this.activityProductMap[key] && this.activityProductMap[key].length > 0) {
+                        this.activityProductMap[key].forEach( item => {
+                            result.push(item);
+                        });
+                    }
+                }
+                return result;
+            }
         }
     };
 </script>
 <style lang="scss" scoped>
     @import '~@/assets/scss/base';
+    .rights-wrap{
+        border-bottom: 1px dashed #E1E1E1;
+        margin-bottom: 20px;
+    }
 </style>
