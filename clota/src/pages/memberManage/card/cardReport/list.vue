@@ -36,6 +36,7 @@
                             split-panels
                             :placeholder="$t('selectField', { msg : '' })"
                             style="width: 200px"
+                            :clearable="false"
                             @on-change="queryList"></DatePicker>
             </div>
 

@@ -33,6 +33,7 @@
                 <DatePicker v-model="dateTime"
                             type="daterange"
                             split-panels
+                            :clearable="false"
                             :placeholder="$t('selectField', { msg : '' })"
                             style="width: 200px"></DatePicker>
             </div>
