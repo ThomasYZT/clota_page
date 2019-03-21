@@ -102,7 +102,7 @@
             </template>
             <i-col span="12">
                 <!--选择商品-->
-                <Form-item :label="$t('selectField', { msg : $t('goods') })" prop="goodId">
+                <Form-item :label="$t('selectField', { msg : $t('goods') })" prop="conditionGoodId">
                     <Select v-model.trim="formData.conditionGoodId"
                             transfer
                             :clearable="true"
@@ -257,7 +257,7 @@
                           compareFeild : 'generationNum'}
                     ],
                     //商品
-                    goodId : [
+                    conditionGoodId : [
                         { required : true, message : this.$t('selectField',{ msg : this.$t('good') }), trigger : 'blur' },
                     ],
                     //可用渠道
