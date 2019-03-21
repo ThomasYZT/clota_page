@@ -21,15 +21,14 @@
             :width="row.width"
             :min-width="row.minWidth">
             <template slot-scope="scope">
-                <!-- 已领取未使用 -->
-                <span v-if="scope.row.couponStatus === 'receive'">
-                    {{$t('noUse')}}
-                </span>
                 <!-- 已使用 -->
-                <span v-else-if="scope.row.couponStatus === 'used'">
+                <span v-if="scope.row.couponStatus === 'used'">
                     {{scope.row.useTime || contentFilter}}
                 </span>
-                <span v-else>-</span>
+                <!-- 未使用 -->
+                <span v-else>
+                    {{$t('noUse')}}
+                </span>
             </template>
         </el-table-column>
     </table-com>

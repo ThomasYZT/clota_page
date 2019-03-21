@@ -108,12 +108,10 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span v-if="scope.row['appScene'] !== 'right'"
-                              class="table-btn"
+                        <span class="table-btn"
                               @click="toCouponCodeDetail('generationNum', scope.row)">
                             {{ scope.row.quantity | contentFilter }}
                         </span>
-                        <span v-else>-</span>
                     </template>
                 </el-table-column>
 
@@ -126,9 +124,12 @@
                     :width="row.width"
                     :min-width="row.minWidth">
                     <template slot-scope="scope">
-                        <span class="table-btn" @click="toCouponCodeDetail('remainingAmount', scope.row)">
+                        <span v-if="scope.row['appScene'] !== 'right'"
+                              class="table-btn"
+                              @click="toCouponCodeDetail('remainingAmount', scope.row)">
                             {{ scope.row.waitNum | contentFilter }}
                         </span>
+                        <span v-else>-</span>
                     </template>
                 </el-table-column>
                 <!-- 已兑换 -->

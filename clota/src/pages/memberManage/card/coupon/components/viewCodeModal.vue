@@ -31,16 +31,19 @@
                         :width="row.width"
                         :min-width="row.minWidth">
                         <template slot-scope="scope">
-                            <span v-if="scope.row.couponStatus === 'wait' || scope.row.couponStatus === 'occupy'">
+                            <!-- receive-已领取/已兑换 -->
+                            <span class="green-label" v-if="scope.row.couponStatus === 'receive'">
+                                <template v-if="scope.row.gainWay === 'link' || scope.row.gainWay === 'download'">
+                                    {{$t('alreadyReceived')}}
+                                </template>
+                                <template v-else>
+                                    {{$t('redeemed')}}
+                                </template>
+                            </span>
+                            <!-- wait-未发放 occupy-已发放/未领取 used-已使用 -->
+                            <span v-else>
                                 {{$t('coupon.status.' + scope.row.couponStatus)}}
                             </span>
-                            <span class="green-label" v-else-if="scope.row.couponStatus === 'receive'">
-                                {{$t('coupon.status.' + scope.row.couponStatus)}}
-                            </span>
-                            <span class="red-label" v-else-if="scope.row.couponStatus === 'used'">
-                                {{$t('coupon.status.' + scope.row.couponStatus)}}
-                            </span>
-                            <span v-else>-</span>
                         </template>
                     </el-table-column>
                 </tableCom>

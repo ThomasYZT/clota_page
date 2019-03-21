@@ -22,7 +22,10 @@
                 :width="row.width"
                 :min-width="row.minWidth">
                 <template slot-scope="scope">
-                    <span class="line-info" @click="showLog('all', scope.row)">
+                    <!--<span class="line-info" @click="showLog('all', scope.row)">-->
+                        <!--{{scope.row.couponType ? $t(scope.row.couponType) : '-'}}-->
+                    <!--</span>-->
+                    <span>
                         {{scope.row.couponType ? $t(scope.row.couponType) : '-'}}
                     </span>
                 </template>

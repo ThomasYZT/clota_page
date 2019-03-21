@@ -12,6 +12,38 @@
                :page-no-d.sync="pageNo"
                :page-size-d.sync="pageSize"
                @query-data="queryList">
+        <!-- 兑换/使用 -->
+        <el-table-column
+            slot="column2"
+            show-overflow-tooltip
+            slot-scope="row"
+            :label="row.title"
+            :width="row.width"
+            :min-width="row.minWidth">
+            <template slot-scope="scope">
+                <!-- 兑换已使用 -->
+                <span v-if="scope.row.gainWay === 'ierp'">
+                    {{$t('exchange')}}
+                </span>
+                <!-- 领取已使用 -->
+                <span v-else-if="scope.row.gainWay === 'link' || scope.row.gainWay === 'download'">
+                    {{$t('receive')}}
+                </span>
+                <span v-else>-</span>
+            </template>
+        </el-table-column>
+        <!-- 是否使用 -->
+        <el-table-column
+            slot="column4"
+            show-overflow-tooltip
+            slot-scope="row"
+            :label="row.title"
+            :width="row.width"
+            :min-width="row.minWidth">
+            <template slot-scope="scope">
+                <span>{{isExpired(scope.row)}}{{$t('noUse')}}</span>
+            </template>
+        </el-table-column>
     </table-com>
 </template>
 
@@ -68,6 +100,18 @@
                         this.totalCount = 0;
                     }
                 })
+            },
+            /**
+             * 判断卡券是否过期
+             * @param rowData
+             */
+            isExpired (rowData) {
+                let nowTime = new Date();
+                if (nowTime >= new Date(rowData.effTime) && nowTime <= new Date(rowData.expTime)) {
+                    return this.$t('notExpired');
+                } else {
+                    return this.$t('expired')
+                }
             }
         }
     };
