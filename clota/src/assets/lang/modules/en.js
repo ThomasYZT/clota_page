@@ -2650,5 +2650,6 @@ export default {
     'accountStopFailed' : '{accountName} receiving account deactivation failed',
     'accountStartFailed' : '{accountName} receiving account activation failed',
     'pointClearRuleTip' : 'Points clearing rules: Points will expire month by month, and the expiration date is the end of each natural month. For example, the points earned by the cardholder from July 1st to July 31st, 2018 will expire on July 31, 2020; and so on, the points generated in April, May, June, 2018, It will expire at the end of April, the end of May, the end of June, and the end of June.',
-    'newCardPointDonateSetting' : 'Whether the newly registered member will give points when the registration is successful, and the number of points awarded if given.'
+    'newCardPointDonateSetting' : 'Whether the newly registered member will give points when the registration is successful, and the number of points awarded if given.',
+    'changePassSucTips' : 'Change the password successfully, and jump to the login page after 3 seconds.'
 };

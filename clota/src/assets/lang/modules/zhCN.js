@@ -2650,5 +2650,6 @@ export default {
     'accountStopFailed' : '{accountName}收款账户停用失败',
     'accountStartFailed' : '{accountName}收款账户启用失败',
     'pointClearRuleTip' : '积分清除规则：积分将逐月过期，过期日为每个自然月月底。如：持卡人在2018年7月1日至7月31日获得的积分将在2020年7月31日过期；以此类推，2018 年4月、5月、6月……产生的积分，将在2020 年4 月月底、5月月底、6月月底……过期。',
-    'newCardPointDonateSetting' : '新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。'
+    'newCardPointDonateSetting' : '新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。',
+    'changePassSucTips' : '修改密码成功，3秒后跳转到登录页面。'
 };
