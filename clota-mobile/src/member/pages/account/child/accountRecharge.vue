@@ -181,15 +181,13 @@
                 }
                 this.validateRechargeMoney(true).then(() => {
                     if (this.payType === 'wx' && this.isWeixin) {
-                        // let paymentChannel = this.payAccountInfo.find(item => item.key === this.payType)['payType'];
-                        // if (paymentChannel === 'zhilian') {
-                        //     this.getWxOpenUrl();
-                        // } else {
-                        //     //微信内微信支付专用 --银石支付
-                        //     this.getPayPageForOfficialAccount();
-                        // }
-                        //微信内微信支付专用
-                        this.getPayPageForOfficialAccount();
+                        let paymentChannel = this.payAccountInfo.find(item => item.key === this.payType)['payType'];
+                        if (paymentChannel === 'zhilian') {
+                            this.getWxOpenUrl();
+                        } else {
+                            //微信内微信支付专用 --银石支付
+                            this.getPayPageForOfficialAccount();
+                        }
                     } else {
                         //微信内支付宝支付、微信外支付宝、微信支付
                         this.getPayPageForMobile();
@@ -346,12 +344,6 @@
                         this.payFormData.remark = '';
                         this.payFormData.amount = this.payFormData.txnAmt;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        // this.$router.push({
-                        //     name : 'h5Pay',
-                        //     query : {
-                        //         payFormData : encodeURI(this.payFormData)
-                        //     }
-                        // });
                         location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
                             return item.module === 'member';
                         })[0].path + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
@@ -385,12 +377,24 @@
                 const { href } = this.$router.resolve({
                     name : 'userWxAccountPay',
                     query : {
+                        bizId : this.cardInfo.id,
                         bizScene : 'member',
                         bizType : 'recharge',
                         channelType : 'weixin',
                         txnAmt : this.rechargeMoney,
-                        orgId : this.cardInfo.orgId,
+                        memberLevelId : this.cardInfo.levelId,
                         paymentChannel : 'zhilian',
+                        extData : JSON.stringify({
+                            accountBizType : 'recharge',
+                            accountTypeId : this.accountTypeId,
+                            amount : this.rechargeMoney,
+                            paymentType : 'weixin',
+                            orgId : this.cardInfo.orgId,
+                            cardId : this.cardInfo.id,
+                            memberId : this.cardInfo.memberId,
+                            operUserId : this.cardInfo.orgId
+                        }),
+                        redirectUrl : this.getRedirectUrl(),
                     }
                 });
                 ajax.post('generateWxAuthUrl',{

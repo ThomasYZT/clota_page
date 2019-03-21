@@ -312,7 +312,6 @@
              * 获取微信支付授权地址
              */
             getWxOpenUrl () {
-                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
                 const { href } = this.$router.resolve({
                     name : 'wxAccountPay',
                     query : {

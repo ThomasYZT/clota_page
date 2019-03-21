@@ -36,9 +36,12 @@
                     this.isPayAbnormal = false;
                     this.orderParams['bizScene'] = toQuryParams['bizScene'];
                     this.orderParams['bizType'] = toQuryParams['bizType'];
+                    this.orderParams['bizId'] = toQuryParams['bizId'];
                     this.orderParams['paymentChannel'] = 'zhilian';
                     this.orderParams['txnAmt'] = toQuryParams['txnAmt'];
-                    this.orderParams['orgId'] = toQuryParams['orgId'];
+                    this.orderParams['extData'] = toQuryParams['extData'];
+                    this.orderParams['memberLevelId'] = toQuryParams['memberLevelId'];
+                    this.orderParams['redirectUrl'] = toQuryParams['redirectUrl'];
                     this.getOpenId(toQuryParams.code,toQuryParams.orgId);
                 } else {
                     this.isPayAbnormal = true;
@@ -56,7 +59,7 @@
                 }).then(res => {
                     if (res.data && res.data) {
                         this.wxOpenId = res.data;
-                        this.getPayPageForOfficialAccountNoLogin();
+                        this.getPayPageForOfficialAccount();
                     } else {
                         this.isPayAbnormal = true;
                     }
@@ -65,14 +68,18 @@
             /**
              * 获取jsapi支付参数
              */
-            getPayPageForOfficialAccountNoLogin () {
+            getPayPageForOfficialAccount () {
                 ajax.post('getPayPageForOfficialAccount',{
                     bizScene : this.orderParams['bizScene'],
                     bizType : this.orderParams['bizType'],
-                    paymentChannel : this.orderParams['paymentChannel'] ,
+                    bizId : this.orderParams['bizId'],
+                    paymentChannel : this.orderParams['paymentChannel'],
+                    channelId : 'weixin',
                     txnAmt : this.orderParams['txnAmt'],
+                    memberLevelId : this.orderParams['memberLevelId'],
+                    redirectUrl : this.orderParams['redirectUrl'],
                     payerRealId : this.wxOpenId,
-                    orgId : this.orderParams['orgId'],
+                    extData : this.orderParams['extData'],
                 }).then(res => {
                     if (res.success && res.data) {
                         try {
