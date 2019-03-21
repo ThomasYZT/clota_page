@@ -111,7 +111,7 @@
         .content {
             .form-wrapper {
                 width: 350px;
-                margin-left: 150px;
+                margin-left: 130px;
                 display: inline-block;
 
                 /deep/ .ivu-form-item {
