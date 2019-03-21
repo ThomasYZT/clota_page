@@ -2782,4 +2782,5 @@ export default {
     'ruleDeleted' : '{name}已删除',
     'ruleDeletedFailed' : '{name}删除失败',
     'M060' : '商品ID重复',
+    'receive' : '领取',
 };
