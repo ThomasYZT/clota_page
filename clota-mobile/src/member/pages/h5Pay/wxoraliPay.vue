@@ -100,6 +100,9 @@
                         window.location.href = 'https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms);
                     } else if (toRoute && toRoute.query.out_trade_no) {//处理支付结果
                         this.queryPayRecordByOutTradeNo(toRoute.query.out_trade_no);
+                    } else if (toRoute && toRoute.query.transactionId) {//处理支付结果查询
+                        this.transactionId = toRoute.query.transactionId;
+                        this.queryConsumeUpdateBiz();
                     }
                 }
             },
