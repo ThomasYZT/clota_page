@@ -357,15 +357,6 @@ export const memberRoutes = [
                     title : 'scenicCode'
                 }
             },
-            //跳转入园二维码
-            {
-                path : 'wxPay',
-                name : 'wxPay',
-                component : () => import(/* webpackChunkName: "integralMall" */'../pages/wxPay/wxPay.vue'),
-                meta : {
-                    title : 'wxPay'
-                }
-            },
             //直连支付
             {
                 path : 'directPay',
