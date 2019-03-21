@@ -7,7 +7,7 @@
         <div class="breadcrumb-box">
             <!--新增卡券 : 修改卡券信息-->
             <bread-crumb-head
-                :locale-router="type === 'add' ? 'newCardCoupon' : 'modifyCardInfo'"
+                :locale-router="type === 'add' ? 'newCardCoupon' : 'checkCardCoupon'"
                 :before-router-list="beforeRouterList">
             </bread-crumb-head>
         </div>

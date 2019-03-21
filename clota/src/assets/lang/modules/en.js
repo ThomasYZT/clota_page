@@ -2783,4 +2783,5 @@ export default {
     'ruleDeletedFailed' : '{name} failed to delete',
     'M060' : '商品ID重复',
     'receive' : '领取',
+    'checkCardCoupon' : '查看卡券信息',
 };
