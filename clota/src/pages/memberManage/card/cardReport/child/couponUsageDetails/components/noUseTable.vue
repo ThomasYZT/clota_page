@@ -26,7 +26,9 @@
                     {{$t('exchange')}}
                 </span>
                 <!-- 领取已使用 -->
-                <span v-else-if="scope.row.gainWay === 'link' || scope.row.gainWay === 'download'">
+                <span v-else-if="scope.row.gainWay === 'link' ||
+                                 scope.row.gainWay === 'download' ||
+                                 scope.row.gainWay === 'pull'">
                     {{$t('receive')}}
                 </span>
                 <span v-else>-</span>
