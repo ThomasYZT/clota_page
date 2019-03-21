@@ -2697,7 +2697,7 @@ export default {
     'number' : '数字',
     'coupon.spread' : '传播型',
     'coupon.right' : '权益型',
-    'coupon.status.wait' : '未领取',
+    'coupon.status.wait' : '未发放',
     'coupon.status.occupy' : '未领取',
     'coupon.status.receive' : '已领取',
     'coupon.status.used' : '已使用',
