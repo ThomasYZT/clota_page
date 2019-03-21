@@ -7,6 +7,7 @@
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
                 <p class="status-message">{{$t('payAbnormal')}}</p>
             </div>
+            <x-button  v-if="isPayAbnormal === true" class="button" @click.native="toAccount">{{$t('backToAccount')}}</x-button>
         </div>
     </div>
 </template>
@@ -142,7 +143,15 @@
                 } else {
                     this.$vux.toast.text(this.$t('payInWx'));
                 }
-            }
+            },
+            /**
+             * 跳转到我的账户页面
+             */
+            toAccount () {
+                this.$router.push({
+                    name : 'account'
+                });
+            },
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {
@@ -177,6 +186,10 @@
             .status-message {
                 margin-top: 20px;
                 font-size: 18px;
+            }
+
+            .button{
+                margin-top: 50px;
             }
         }
     }

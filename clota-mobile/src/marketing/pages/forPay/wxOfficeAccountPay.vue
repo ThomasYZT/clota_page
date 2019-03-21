@@ -7,6 +7,7 @@
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
                 <p class="status-message">{{$t('payAbnormal')}}</p>
             </div>
+            <x-button class="button" @click.native="toOrderPage" v-if="isPayAbnormal === true">{{$t('continueToReserve')}}</x-button>
         </div>
     </div>
 </template>
@@ -135,6 +136,12 @@
                 } else {
                     this.$vux.toast.text(this.$t('payInWx'));
                 }
+            },
+            /**
+             * 返回到下单页面
+             */
+            toOrderPage () {
+                this.$router.back();
             }
         },
         beforeRouteEnter (to,from,next) {
@@ -170,6 +177,10 @@
             .status-message {
                 margin-top: 20px;
                 font-size: 18px;
+            }
+
+            .button{
+                margin-top: 50px;
             }
         }
     }
