@@ -86,8 +86,13 @@
                         }
                     }
                 } else {
-                    //跳转到支付页面
-                    if (params && params.formContent && params.payType) {
+                    if ((toRoute && toRoute.query && toRoute.query.transactionId && toRoute.query.out_trade_no)
+                        || (toRoute && toRoute.query && toRoute.query.transactionId && !toRoute.query.fromzl) ) {//处理支付结果查询
+                        this.transactionId = toRoute.query.transactionId;
+                        this.timer = setInterval(() => {
+                            this.queryConsumeUpdateBiz();
+                        },1000);
+                    } else if (params && params.formContent && params.payType) {//跳转到支付页面
                         const divEle = document.createElement('div');
                         divEle.innerHTML = params.formContent;
                         document.body.appendChild(divEle);
@@ -100,11 +105,6 @@
                         window.location.href = 'https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms);
                     } else if (toRoute && toRoute.query.out_trade_no) {//处理支付结果
                         this.queryPayRecordByOutTradeNo(toRoute.query.out_trade_no);
-                    } else if (toRoute && toRoute.query.transactionId) {//处理支付结果查询
-                        this.transactionId = toRoute.query.transactionId;
-                        this.timer = setInterval(() => {
-                            this.queryConsumeUpdateBiz();
-                        },1000);
                     }
                 }
             },
