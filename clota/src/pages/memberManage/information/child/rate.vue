@@ -125,10 +125,6 @@
             <template v-for="(item,index) in specialDiscountInfo">
                 <ul class="discount-title" :key="'ul' + index">
                     <li class="desc-info">
-                        <span class="key">{{$t('colonSetting',{ key : $t('ruleName') })}}</span>
-                        <span class="value">{{item.ruleName | contentFilter}}</span>
-                    </li>
-                    <li class="desc-info">
                         <span class="key">{{$t('colonSetting',{ key : $t('startAndEndTime') })}}</span>
                         <span class="value">{{item.startDate | timeFormat('yyyy-MM-dd') | contentFilter}} ~ {{item.endDate | timeFormat('yyyy-MM-dd') | contentFilter}}</span>
                     </li>
