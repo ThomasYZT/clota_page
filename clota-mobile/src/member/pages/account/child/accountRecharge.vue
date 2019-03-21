@@ -275,8 +275,19 @@
                                 });
                                 location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true';
                             } else {
-                                //跳转到微信h5支付页面
-                                location.href = res.data.formContent;
+                                if (this.payType === 'wx') {
+                                    //跳转到微信h5支付页面
+                                    location.href = res.data.formContent;
+                                } else {
+                                    //支付宝直连支付
+                                    this.$router.push({
+                                        name : 'wOraDirectPay',
+                                        params : {
+                                            payType : this.payType,
+                                            formContent : res.data.formContent
+                                        }
+                                    });
+                                }
                             }
                         } else {
                             //设置支付表单信息
