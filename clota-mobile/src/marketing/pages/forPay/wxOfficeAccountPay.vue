@@ -166,6 +166,11 @@
             .status-icon {
                 width: 150px;
             }
+
+            .status-message {
+                margin-top: 20px;
+                font-size: 18px;
+            }
         }
     }
 </style>

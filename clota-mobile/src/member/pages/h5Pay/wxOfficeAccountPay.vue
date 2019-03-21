@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import ajax from '@/marketing/api/index.js';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
 
 	export default {
@@ -165,6 +165,11 @@
 
             .status-icon {
                 width: 150px;
+            }
+
+            .status-message {
+                margin-top: 20px;
+                font-size: 18px;
             }
         }
     }

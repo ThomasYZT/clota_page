@@ -41,7 +41,7 @@
 
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import ajax from '@/marketing/api/index';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
     import { querystring } from 'vux';
 
