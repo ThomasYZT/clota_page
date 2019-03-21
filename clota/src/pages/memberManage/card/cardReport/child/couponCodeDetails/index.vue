@@ -41,7 +41,7 @@
                 <span class="info" v-if="couponInfo.appScene === 'spread'">
                     {{couponInfo.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{couponInfo.expireTime | timeFormat('yyyy-MM-dd')}}
                 </span>
-                <span class="info" v-else>{{couponInfo.effDays | contentFilter}}</span>
+                <span class="info" v-else>{{couponInfo.effDays | contentFilter}}{{$t('day')}}</span>
             </div>
             <div class="info-item">
                 <span class="label-title">{{$t('colonSetting', { key : $t('wetherEffective') })}}</span>

@@ -23,7 +23,7 @@
             <template slot-scope="scope">
                 <!-- 已使用 -->
                 <span v-if="scope.row.couponStatus === 'used'">
-                    {{scope.row.useTime || contentFilter}}
+                    {{scope.row.useTime | contentFilter}}
                 </span>
                 <!-- 未使用 -->
                 <span v-else>
