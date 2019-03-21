@@ -2770,7 +2770,7 @@ export default {
     'forever' : '永久',
     'effecting' : '生效中',
     'invalid' : '未生效',
-    'valided' : '已失效',
+    'valided' : '已过期',
     'setDiscountByMemberCard' : '按会员卡级别设置积分、折扣率',
     'pause' : '暂停',
     'confirmDeleteRule' : '是否确定删除该规则？',
