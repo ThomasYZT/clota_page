@@ -17,7 +17,7 @@ export const exportCouponRecordHead = [
     },
     {
         title : 'recipientInformation', //领取人信息
-        field : 'nickName',
+        field : 'optUser',
         minWidth : 150,
     },
     {

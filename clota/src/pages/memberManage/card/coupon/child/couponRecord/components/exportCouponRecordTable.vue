@@ -30,20 +30,14 @@
             </template>
         </el-table-column>
         <el-table-column
-            slot="column1"
+            slot="column3"
             show-overflow-tooltip
             slot-scope="row"
             :label="row.title"
             :width="row.width"
             :min-width="row.minWidth">
             <template slot-scope="scope">
-                <Tooltip transfer placement="bottom">
-                    <span class="line-info">{{scope.row.optCount | contentFilter}}</span>
-                    <div slot="content">
-                        <p>{{$t('used')}}：{{scope.row.usedNum | contentFilter}}</p>
-                        <p>{{$t('noUse')}}：{{scope.row.waitNum | contentFilter}}</p>
-                    </div>
-                </Tooltip>
+                <span>{{scope.row.optUser | contentFilter}} | {{scope.row.phoneNum | contentFilter}}</span>
             </template>
         </el-table-column>
     </table-com>

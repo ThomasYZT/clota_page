@@ -257,7 +257,7 @@
                           compareFeild : 'generationNum'}
                     ],
                     //商品
-                    conditionGoodId : [
+                    goodId : [
                         { required : true, message : this.$t('selectField',{ msg : this.$t('good') }), trigger : 'blur' },
                     ],
                     //可用渠道
