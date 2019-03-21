@@ -4,7 +4,7 @@
     <div class="account">
         <div class="create-account">
             <Button type="primary" @click="addAccount">
-                <span>+ {{$t('addAccount')}}</span>
+                {{$t('addAccount')}}
             </Button>
         </div>
         <table-com
