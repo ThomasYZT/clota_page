@@ -158,7 +158,7 @@
                         let aLink = document.createElement('a');
                         aLink.href = href;
                         let evt = document.createEvent("MouseEvents");
-                        evt.initEvent("click",true,true);
+                        evt.initEvent("click",false,true);
                         aLink.dispatchEvent(evt);
                     } else {
                         this.$Message.error(this.$t('M059'));

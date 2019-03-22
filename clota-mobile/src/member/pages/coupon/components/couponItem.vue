@@ -15,7 +15,7 @@
             </template>
             <!--折扣券-->
             <template v-else-if="data.couponType === 'discount_coupon'">
-                <div class="face-value">{{$t('discountNum',{ num : data.nominalValue * 10 })}}</div>
+                <div class="face-value">{{$t('discountNum',{ num : discountNum })}}</div>
             </template>
             <!--兑换券-->
             <template v-else-if="data.couponType === 'exchange_coupon'">
@@ -133,6 +133,14 @@
                         case 'cash_coupon' : return this.$t('cashCoupon');
                         default : return '';
                     }
+                } else {
+                    return '-';
+                }
+            },
+            //折扣率
+            discountNum () {
+                if (this.data) {
+                    return Number.parseInt(this.data.nominalValue * 10,10);
                 } else {
                     return '-';
                 }
