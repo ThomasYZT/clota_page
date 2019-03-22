@@ -73,8 +73,12 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <li @click="setIntegralByMemberCard(scope.row)">{{$t('setDiscountByMemberCard')}}</li>
-                            <li @click="pauseRule(scope.row)" v-if="scope.row.ruleStatus === 'valid' && localRule !== 'overdue'">{{$t('pause')}}</li>
-                            <li @click="startRule(scope.row)" v-else-if="scope.row.ruleStatus === 'invalid' && localRule !== 'overdue'">{{$t('commissioned')}}</li>
+                            <li @click="pauseRule(scope.row)"
+                                :class="{ disabled : !scope.row.canChangeStatus }"
+                                v-if="scope.row.ruleStatus === 'valid' && localRule !== 'overdue'">{{$t('pause')}}</li>
+                            <li @click="startRule(scope.row)"
+                                :class="{ disabled : !scope.row.canChangeStatus }"
+                                v-else-if="scope.row.ruleStatus === 'invalid' && localRule !== 'overdue'">{{$t('commissioned')}}</li>
                             <li @click="copyRule(scope.row)">{{$t('copyRule')}}</li>
                             <li class="red-label" @click="deleteRule(scope.row)">{{$t('del')}}</li>
                         </ul>
@@ -182,6 +186,7 @@
                             }
                             return {
                                 ...item,
+                                canChangeStatus : new Date().format('yyyy-MM-dd') >= item.startDate && new Date().format('yyyy-MM-dd') <= item.endDate,
                                 effDateTxt
                             };
                         });
@@ -197,6 +202,7 @@
              * @param{Object} rowData 规则数据
              */
             pauseRule (rowData) {
+                if (!rowData.canChangeStatus) return;
                 ajax.post('updateRulesStatus',{
                     id : rowData.id,
                     ruleStatus : 'invalid'
@@ -214,6 +220,7 @@
              * @param{Object} rowData 规则数据
              */
             startRule (rowData) {
+                if (!rowData.canChangeStatus) return;
                 ajax.post('updateRulesStatus',{
                     id : rowData.id,
                     ruleStatus : 'valid'
