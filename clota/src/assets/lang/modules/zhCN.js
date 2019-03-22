@@ -1736,7 +1736,7 @@ export default {
     "score_add" : "积分发放",
     "score_reduce" : "积分消耗",
     "exchange_goods_reduce" : "积分兑换商品",
-    "unconfiguredAccount" : "你还未配置在线收款账户请联系客服",
+    "unconfiguredAccount" : "你还未配置在线收款账户，请联系客服",
     "collectionAccountInformation" : "收款账户信息",
     "collectionAccountType" : "收款账户类型",
     "stopUsing" : "停用",
@@ -2786,4 +2786,9 @@ export default {
     'checkCardCoupon' : '查看卡券信息',
     'startAndEndTime' : '开始结束时间',
     'specialDiscountRate' : '特殊活动积分折扣率',
+    'changePassSucTips' : '修改密码成功，3秒后跳转到登录页面。',
+    "payType.manual" : "收款方充值",
+    "msgServiceAccount" : "第三方短信服务商账号",
+    "msgServicePassword" : "第三方短信服务商密码",
+    "O006" : "机构名称已存在",
 };

@@ -203,13 +203,23 @@
                     userType = 'visitor';
                 }
                 if (paymentChannel === 'zhilian') {
-                    const { href } = this.$router.resolve({
-                        name : 'wxOrAlidirectPay',
-                        query : {
-                            userType
-                        }
-                    });
-                    return encodeURI(location.origin + href);
+                    if (this.isWeixin) {
+                        const { href } = this.$router.resolve({
+                            name : 'wxOrAlidirectPay',
+                            query : {
+                                userType
+                            }
+                        });
+                        return encodeURI(location.origin + href);
+                    } else {
+                        const { href } = this.$router.resolve({
+                            name : 'wxOrAlidirectPay',
+                            query : {
+                                userType
+                            }
+                        });
+                        return encodeURI(location.origin + href);
+                    }
                 } else {
                     const { href } = this.$router.resolve({
                         name : 'marketingCreateOrderPayResult',
@@ -260,16 +270,19 @@
                                 }
                                 location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true&userType=' + userType;
                             } else {
-                                alert(res.data.formContent)
-                                //跳转到微信h5支付页面
-                                location.href = res.data.formContent;
-                                // this.$router.push({
-                                //     name : 'wxOrAlidirectPay',
-                                //     params : {
-                                //         payType : this.payType,
-                                //         formContent : res.data.formContent
-                                //     }
-                                // });
+                                if (this.payType === 'wx') {
+                                    //跳转到微信h5支付页面
+                                    location.href = res.data.formContent;
+                                } else {
+                                    //支付宝直连支付
+                                    this.$router.push({
+                                        name : 'wxOrAlidirectPay',
+                                        params : {
+                                            payType : this.payType,
+                                            formContent : res.data.formContent
+                                        }
+                                    });
+                                }
                             }
                         } else {
                             this.payFormData = res.data ? res.data : {};
@@ -310,7 +323,6 @@
              * 获取微信支付授权地址
              */
             getWxOpenUrl () {
-                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
                 const { href } = this.$router.resolve({
                     name : 'wxAccountPay',
                     query : {

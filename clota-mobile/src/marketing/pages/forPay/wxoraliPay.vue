@@ -97,8 +97,13 @@
                         }
                     }
                 } else {
-                    //跳转到支付页面
-                    if (params && params.formContent && params.payType) {
+                    if ((toRoute && toRoute.query && toRoute.query.transactionId && toRoute.query.out_trade_no)
+                        || (toRoute && toRoute.query && toRoute.query.transactionId && !toRoute.query.fromzl) ) {//处理支付结果查询
+                        this.transactionId = toRoute.query.transactionId;
+                        this.timer = setInterval(() => {
+                            this.queryConsumeUpdateBiz();
+                        },1000);
+                    } else if (params && params.formContent && params.payType) {//跳转到支付页面
                         const divEle = document.createElement('div');
                         divEle.innerHTML = params.formContent;
                         document.body.appendChild(divEle);
@@ -110,28 +115,25 @@
                         delete urlParms.fromzl;
                         delete urlParms.userType;
                         window.location.href = 'https://openapi.alipay.com/gateway.do?' + querystring.stringify(urlParms);
-                    } else if (toRoute && toRoute.query.out_trade_no) {//处理支付结果
-                        this.fromUser = toRoute.query.userType;
-                        this.queryPayRecordByOutTradeNo(toRoute.query.out_trade_no);
                     }
                 }
             },
-            /**
-             * 查询支付结果
-             * @param{String} outTradeNo 订单编号
-             */
-            queryPayRecordByOutTradeNo (outTradeNo) {
-                this.$vux.loading.show({
-                    text : this.$t('searchIngPayResult')
-                });
-                ajax.post('market_queryPayRecordByOutTradeNo',{
-                    outTradeNo
-                },null,false).then(res => {
-                    this.paySuccess = res.success && res.data && res.data.txnStatus === "success";
-                }).finally(() => {
-                    this.$vux.loading.hide();
-                });
-            },
+            // /**
+            //  * 查询支付结果
+            //  * @param{String} outTradeNo 订单编号
+            //  */
+            // queryPayRecordByOutTradeNo (outTradeNo) {
+            //     this.$vux.loading.show({
+            //         text : this.$t('searchIngPayResult')
+            //     });
+            //     ajax.post('market_queryPayRecordByOutTradeNo',{
+            //         outTradeNo
+            //     },null,false).then(res => {
+            //         this.paySuccess = res.success && res.data && res.data.txnStatus === "success";
+            //     }).finally(() => {
+            //         this.$vux.loading.hide();
+            //     });
+            // },
             /**
              * 跳转到下单页面
              */
@@ -192,7 +194,7 @@
              */
             confirmRefundResult () {
                 this.toOrderPage();
-            }
+            },
         },
         computed : {
             ...mapGetters({

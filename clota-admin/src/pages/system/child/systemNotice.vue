@@ -3,8 +3,8 @@
 <template>
     <div class="notice">
         <div class="create-notice">
-            <Button type="primary">
-                <span @click="addNotice">+ {{$t('publishNotice')}}</span>
+            <Button type="primary" @click="addNotice">
+                + {{$t('publishNotice')}}
             </Button>
         </div>
         <table-com

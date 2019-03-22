@@ -25,28 +25,28 @@
                     </template>
                 </group>
             </div>
-            <template>
-                <!--<headNav v-if="showTopBanner"></headNav>-->
-                <transition name="fade">
-                    <router-view :key="hashKey" >
-
-                    </router-view>
-                </transition>
-            </template>
-            <!--<template v-if="pageShow">-->
+            <!--<template>-->
                 <!--&lt;!&ndash;<headNav v-if="showTopBanner"></headNav>&ndash;&gt;-->
                 <!--<transition name="fade">-->
                     <!--<router-view :key="hashKey" >-->
+
                     <!--</router-view>-->
                 <!--</transition>-->
             <!--</template>-->
-            <!--<template v-else>-->
-                <!--<div class="invlid-url">-->
-                    <!--<img src="./assets/images/icon-invalid-url.png" alt="">-->
-                <!--</div>-->
-            <!--</template>-->
+            <template v-if="pageShow">
+                <!--<headNav v-if="showTopBanner"></headNav>-->
+                <transition name="fade">
+                    <router-view :key="hashKey">
+                    </router-view>
+                </transition>
+            </template>
+            <template v-else>
+                <div class="invlid-url">
+                    <img src="./assets/images/icon-invalid-url.png" alt="">
+                </div>
+            </template>
         </drawer>
-        <drag>
+        <drag v-if="pageShow">
             <div class="lang-change" @click="changeLang">
                 <span class="iconfont icon-switch"></span>
             </div>

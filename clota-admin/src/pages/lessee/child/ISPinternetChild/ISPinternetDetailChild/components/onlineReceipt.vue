@@ -127,6 +127,11 @@
                                             <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.secretKey" style="width:280px"/>
                                         </FormItem>
                                     </i-col>
+                                    <i-col span="13">
+                                        <FormItem :label="$t('colonSetting',{ key : 'AppSecret' })" prop="appSecret">
+                                            <Input :disabled="!isEditing || useCorpPayAcc" v-model.trim="wxoraliFormData.appSecret" style="width:280px"/>
+                                        </FormItem>
+                                    </i-col>
                                 </i-row>
                                 <i-row>
                                     <i-col>
@@ -236,6 +241,8 @@
                     publicKey : '',
                     wxApiCertificateUrl : '',
                     wxApiCertificateName : '',
+                    //微信公众号秘钥
+                    appSecret : ''
                 },
                 //表单数据复制
                 formDataCopy : {},
@@ -399,6 +406,8 @@
                     aliUseStatus : '',
                     officialAccountsAppID : '',
                     publicKey : '',
+                    //微信公众号秘钥
+                    appSecret : ''
                 };
                 if (this.$refs.formValidate) {
                     this.$refs.formValidate.resetFields();
@@ -433,6 +442,7 @@
                 this.wxoraliFormData.officialAccountsAppID = parentOrgPaymentChannel.officialAccountsAppID;
                 this.wxoraliFormData.merchantNum = parentOrgPaymentChannel.merchantNum;
                 this.wxoraliFormData.secretKey = parentOrgPaymentChannel.secretKey;
+                this.wxoraliFormData.appSecret = parentOrgPaymentChannel.appSecret;
                 this.wxoraliFormData.appID = parentOrgPaymentChannel.appID;
                 this.wxoraliFormData.privateKey = parentOrgPaymentChannel.privateKey;
                 this.wxoraliFormData.publicKey = parentOrgPaymentChannel.publicKey;
@@ -675,6 +685,14 @@
                             trigger : 'blur',
                         },
                         { max : 4000,trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('API密钥'),length : 4000 }) }
+                    ],
+                    appSecret : [
+                        {
+                            required : this.paymentChannel === 'wxorali' && this.weixinRequired,
+                            message : this.$t('inputField',{ field : this.$t('AppSecret') }),
+                            trigger : 'blur',
+                        },
+                        { max : 4000,trigger : 'blur', message : this.$t('errorMaxLength', { field : this.$t('AppSecret'),length : 4000 }) }
                     ],
                     appID : [
                         {

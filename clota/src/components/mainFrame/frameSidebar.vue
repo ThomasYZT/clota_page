@@ -91,7 +91,9 @@
                 this.openedNames = [];
                 this.openedNamesRecord = [];
                 this.$nextTick(() => {
-                    this.$refs.menu.updateOpened();
+                    if (this.$refs.menu) {
+                        this.$refs.menu.updateOpened();
+                    }
                 });
             }
         },

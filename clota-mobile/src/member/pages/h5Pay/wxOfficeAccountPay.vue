@@ -7,24 +7,24 @@
                 <img class="status-icon" src="../../../assets/images/pay-failure.svg" alt="">
                 <p class="status-message">{{$t('payAbnormal')}}</p>
             </div>
-            <x-button class="button" @click.native="toOrderPage" v-if="isPayAbnormal === true">{{$t('continueToReserve')}}</x-button>
+            <x-button  v-if="isPayAbnormal === true" class="button" @click.native="toAccount">{{$t('backToAccount')}}</x-button>
         </div>
     </div>
 </template>
 
 <script>
-    import ajax from '@/marketing/api/index.js';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
 
 	export default {
 		data () {
 			return {
-                //订单参数
-                ordreParams : {},
                 //微信openid
                 wxOpenId : '',
                 //是否支付异常
-                isPayAbnormal : false
+                isPayAbnormal : false,
+                //支付参数
+                orderParams : {}
             };
 		},
 		methods : {
@@ -35,11 +35,14 @@
             getParams (toQuryParams) {
                 if (toQuryParams && toQuryParams.code) {
                     this.isPayAbnormal = false;
-                    this.ordreParams['bizScene'] = toQuryParams['bizScene'];
-                    this.ordreParams['bizType'] = toQuryParams['bizType'];
-                    this.ordreParams['paymentChannel'] = 'zhilian';
-                    this.ordreParams['txnAmt'] = toQuryParams['txnAmt'];
-                    this.ordreParams['orgId'] = toQuryParams['orgId'];
+                    this.orderParams['bizScene'] = toQuryParams['bizScene'];
+                    this.orderParams['bizType'] = toQuryParams['bizType'];
+                    this.orderParams['bizId'] = toQuryParams['bizId'];
+                    this.orderParams['paymentChannel'] = 'zhilian';
+                    this.orderParams['txnAmt'] = toQuryParams['txnAmt'];
+                    this.orderParams['extData'] = toQuryParams['extData'];
+                    this.orderParams['memberLevelId'] = toQuryParams['memberLevelId'];
+                    this.orderParams['redirectUrl'] = toQuryParams['redirectUrl'];
                     this.getOpenId(toQuryParams.code,toQuryParams.orgId);
                 } else {
                     this.isPayAbnormal = true;
@@ -51,29 +54,33 @@
              * @param{String} orgId 机构id
              */
             getOpenId (code,orgId) {
-                ajax.post('market_getOpenid',{
+                ajax.post('getOpenid',{
                     code : code,
                     orgId : orgId
                 }).then(res => {
                     if (res.data && res.data) {
                         this.wxOpenId = res.data;
-                        this.getPayPageForOfficialAccountNoLogin();
+                        this.getPayPageForOfficialAccount();
+                    } else {
+                        this.isPayAbnormal = true;
                     }
                 });
             },
             /**
              * 获取jsapi支付参数
              */
-            getPayPageForOfficialAccountNoLogin () {
-                let createOrderParams = localStorage.getItem('create-order-detail') ? JSON.parse(localStorage.getItem('create-order-detail')) : {};
-                ajax.post('market_getPayPageForOfficialAccountNoLogin',{
-                    bizScene : this.ordreParams['bizScene'],
-                    bizType : this.ordreParams['bizType'],
-                    paymentChannel : this.ordreParams['paymentChannel'] ,
-                    txnAmt : this.ordreParams['txnAmt'],
+            getPayPageForOfficialAccount () {
+                ajax.post('getPayPageForOfficialAccount',{
+                    bizScene : this.orderParams['bizScene'],
+                    bizType : this.orderParams['bizType'],
+                    bizId : this.orderParams['bizId'],
+                    paymentChannel : this.orderParams['paymentChannel'],
+                    channelId : 'weixin',
+                    txnAmt : this.orderParams['txnAmt'],
+                    memberLevelId : this.orderParams['memberLevelId'],
+                    redirectUrl : this.orderParams['redirectUrl'],
                     payerRealId : this.wxOpenId,
-                    orgId : this.ordreParams['orgId'],
-                    ...createOrderParams
+                    extData : this.orderParams['extData'],
                 }).then(res => {
                     if (res.success && res.data) {
                         try {
@@ -102,14 +109,14 @@
                     (res) => {
                         if (res.err_msg === "get_brand_wcpay_request:ok" ) {
                             this.$router.replace({
-                                name : 'wxOrAlidirectPay',
+                                name : 'wOraDirectPay',
                                 query : {
                                     wxJsdk : true
                                 }
                             });
                         } else {
                             this.$router.replace({
-                                name : 'wxOrAlidirectPay',
+                                name : 'wOraDirectPay',
                                 query : {
                                     wxJsdk : false
                                 }
@@ -138,11 +145,13 @@
                 }
             },
             /**
-             * 返回到下单页面
+             * 跳转到我的账户页面
              */
-            toOrderPage () {
-                this.$router.back();
-            }
+            toAccount () {
+                this.$router.push({
+                    name : 'account'
+                });
+            },
         },
         beforeRouteEnter (to,from,next) {
             next(vm => {

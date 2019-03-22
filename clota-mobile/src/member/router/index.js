@@ -368,15 +368,6 @@ export const memberRoutes = [
                     title : 'scenicCode'
                 }
             },
-            //跳转入园二维码
-            {
-                path : 'wxPay',
-                name : 'wxPay',
-                component : () => import(/* webpackChunkName: "integralMall" */'../pages/wxPay/wxPay.vue'),
-                meta : {
-                    title : 'wxPay'
-                }
-            },
             //直连支付
             {
                 path : 'directPay',
@@ -395,6 +386,17 @@ export const memberRoutes = [
                 component : () => import(/* webpackChunkName: "marketing" */ '../pages/getCoupon/index.vue'),
                 meta : {
                     title : 'getCoupon',
+                    hideTabbar : true,
+                    notNeedCheck : true
+                },
+            },
+            //微信公众号支付
+            {
+                path : 'user/wxAccountPay',
+                name : 'userWxAccountPay',
+                component : () => import(/* webpackChunkName: "marketing" */ '../pages/h5Pay/wxOfficeAccountPay.vue'),
+                meta : {
+                    title : 'payStatus',
                     hideTabbar : true,
                     notNeedCheck : true
                 }

@@ -126,6 +126,12 @@ const apiList = {
     getConditionNames : '/external/memberCoupon/getConditionNames',
     //获取卡券详情
     findCouponById : '/external/memberCoupon/findCouponById ',
+    //获取微信授权地址
+    generateWxAuthUrl : '/external/pay/generateWxAuthUrl',
+    //获取微信openId
+    getOpenid : '/external/pay/getOpenid',
+    //查询支付结果
+    queryPayRecordByOutTradeNo : '/external/pay/queryPayRecordByOutTradeNo',
 };
 
 export default apiList;

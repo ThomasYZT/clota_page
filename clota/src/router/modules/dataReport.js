@@ -24,6 +24,7 @@ export default {
             //数据中心--会员报表
             memberReport : {
                 path : '/dataReport/memberReport',
+                name : 'memberReport',
                 component : () => import(/* webpackChunkName: "dataReport" */ '../../pages/dataReport/memberReport/index.vue'),
                 meta : {
                     menuName : 'memberReport', //lang.config.js 里面的语言键值

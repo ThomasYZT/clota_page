@@ -24,7 +24,7 @@
                     <radio
                         v-model="payType"
                         title=""
-                        :options="commonList"
+                        :options="payAccountInfo"
                         @on-change="rechageTypechange">
                     </radio>
                 </group>
@@ -33,7 +33,7 @@
         </div>
         <div class="btn-area">
             <x-button @click.native="recharge"
-                      :disabled="commonList.length < 1 || cardInfo.status === 'frozen'">
+                      :disabled="payAccountInfo.length < 1 || cardInfo.status === 'frozen'">
                 {{$t('recharge')}}
             </x-button>
         </div>
@@ -51,7 +51,7 @@
         data () {
             return {
                 //可选中支付方式
-                commonList : [],
+                payAccountInfo : [],
                 //支付方式
                 payType : '',
                 //实际到账金额
@@ -78,6 +78,7 @@
             ...mapGetters([
                 'userInfo',
                 'cardInfo',
+                'isWeixin',
                 'lang'
             ]),
             //是否设置交易密码
@@ -95,7 +96,7 @@
                         accountTypeId : this.accountTypeId,
                         amount : this.rechargeMoney,
                         cardId : this.cardInfo.id
-                    }).then(res => {
+                    },null,false).then(res => {
                         if (res.success) {
                             this.actualMoney = res.data ? res.data.actMoney : '';
                             this.donateMoney = res.data ? res.data.gift : '';
@@ -133,7 +134,7 @@
              * @param {*} data
              */
             rechageTypechange (data) {
-                this.chosedAccount = this.commonList.find(item => {
+                this.chosedAccount = this.payAccountInfo.find(item => {
                     return item.key === data;
                 });
             },
@@ -179,9 +180,14 @@
                     return;
                 }
                 this.validateRechargeMoney(true).then(() => {
-                    if (this.payType === 'wx' && this.isWeixin()) {
-                        //微信内微信支付专用
-                        this.getPayPageForOfficialAccount();
+                    if (this.payType === 'wx' && this.isWeixin) {
+                        let paymentChannel = this.payAccountInfo.find(item => item.key === this.payType)['payType'];
+                        if (paymentChannel === 'zhilian') {
+                            this.getWxOpenUrl();
+                        } else {
+                            //微信内微信支付专用 --银石支付
+                            this.getPayPageForOfficialAccount();
+                        }
                     } else {
                         //微信内支付宝支付、微信外支付宝、微信支付
                         this.getPayPageForMobile();
@@ -195,12 +201,12 @@
                 ajax.post('queryOnlinePayAccount',{
                     orgId : this.cardInfo.orgId
                 }).then(res => {
-                    this.commonList = [];
+                    this.payAccountInfo = [];
                     if (res.success && res.data) {
                         for (let i = 0,j = res.data.length; i < j; i++) {
                             if (res.data[i]['useStatus'] === 'not_enabled') continue;
                             if (res.data[i]['accountType'] === 'weixin') {
-                                this.commonList.unshift({
+                                this.payAccountInfo.unshift({
                                     icon : require('../../../../assets/images/icon-wx-pay.svg'),
                                     key : 'wx',
                                     value : this.$t('wxPay'),
@@ -208,7 +214,7 @@
                                     payType : res.data[i].paymentChannel === 'wxorali' ? 'zhilian' : 'yinshi'
                                 });
                             } else {
-                                this.commonList.push({
+                                this.payAccountInfo.push({
                                     icon : require('../../../../assets/images/icon-ali-pay.svg'),
                                     key : 'ali',
                                     value : this.$t('aliPay'),
@@ -217,32 +223,20 @@
                                 });
                             }
                         }
-                        this.chosedAccount = this.commonList.length > 0 ? this.commonList[0] : {};
-                        this.payType = this.commonList.length > 0 ? this.commonList[0].key : '';
+                        this.chosedAccount = this.payAccountInfo.length > 0 ? this.payAccountInfo[0] : {};
+                        this.payType = this.payAccountInfo.length > 0 ? this.payAccountInfo[0].key : '';
                     } else {
-                        this.commonList = [];
+                        this.payAccountInfo = [];
                         this.chosedAccount = {};
                         this.payType = '';
                     }
                 });
             },
             /**
-             * 判断是否在微信浏览器
-             */
-            isWeixin () {
-                let ua = navigator.userAgent.toLowerCase();
-                let isWeixin = ua.indexOf('micromessenger') != -1;
-                if (isWeixin) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            /**
              * 获取手机网页支付信息
              */
             getPayPageForMobile () {
-                let paymentChannel = this.commonList.find(item => item.key === this.payType )['payType'];
+                let paymentChannel = this.payAccountInfo.find(item => item.key === this.payType )['payType'];
                 ajax.post('getPayPageForMobile', {
                     bizScene : 'member',
                     bizType : 'recharge',
@@ -281,13 +275,19 @@
                                 });
                                 location.href = location.origin + href + '?' + queryParam + '&transactionId=' + res.data.transactionId + '&fromzl=true';
                             } else {
-                                this.$router.push({
-                                    name : 'wOraDirectPay',
-                                    params : {
-                                        payType : this.payType,
-                                        formContent : res.data.formContent
-                                    }
-                                });
+                                if (this.payType === 'wx') {
+                                    //跳转到微信h5支付页面
+                                    location.href = res.data.formContent;
+                                } else {
+                                    //支付宝直连支付
+                                    this.$router.push({
+                                        name : 'wOraDirectPay',
+                                        params : {
+                                            payType : this.payType,
+                                            formContent : res.data.formContent
+                                        }
+                                    });
+                                }
                             }
                         } else {
                             //设置支付表单信息
@@ -355,12 +355,6 @@
                         this.payFormData.remark = '';
                         this.payFormData.amount = this.payFormData.txnAmt;
                         localStorage.setItem('payFormData', JSON.stringify(this.payFormData));
-                        // this.$router.push({
-                        //     name : 'h5Pay',
-                        //     query : {
-                        //         payFormData : encodeURI(this.payFormData)
-                        //     }
-                        // });
                         location.href = location.origin + this.$router.options.base + this.$router.options.routes.filter((item) => {
                             return item.module === 'member';
                         })[0].path + '/h5Pay?payFormData=' + encodeURI(this.payFormData);
@@ -386,16 +380,45 @@
                     });
                     return encodeURI(location.origin + href);
                 }
-                // if (paymentChannel === 'zhilian') {
-                //
-                // } else {
-                //     let router = this.$router;
-                //     let base = router.options.base;
-                //     let module = this.$router.options.routes.filter((item) => {
-                //         return item.module === 'member';
-                //     })[0].path;
-                //     return encodeURI(location.origin + base + module + '/payStatus');
-                // }
+            },
+            /**
+             * 获取微信支付授权地址
+             */
+            getWxOpenUrl () {
+                const { href } = this.$router.resolve({
+                    name : 'userWxAccountPay',
+                    query : {
+                        bizId : this.cardInfo.id,
+                        bizScene : 'member',
+                        bizType : 'recharge',
+                        channelType : 'weixin',
+                        txnAmt : this.rechargeMoney,
+                        memberLevelId : this.cardInfo.levelId,
+                        paymentChannel : 'zhilian',
+                        orgId : this.cardInfo.orgId,
+                        extData : JSON.stringify({
+                            accountBizType : 'recharge',
+                            accountTypeId : this.accountTypeId,
+                            amount : this.rechargeMoney,
+                            paymentType : 'weixin',
+                            orgId : this.cardInfo.orgId,
+                            cardId : this.cardInfo.id,
+                            memberId : this.cardInfo.memberId,
+                            operUserId : this.cardInfo.orgId
+                        }),
+                        redirectUrl : this.getRedirectUrl(),
+                    }
+                });
+                ajax.post('generateWxAuthUrl',{
+                    redirectUrl : location.origin + href,
+                    orgId : this.cardInfo.orgId,
+                }).then(res => {
+                    if (res.success && res.data) {
+                        window.location.href = res.data;
+                    } else {
+                        this.$vux.toast.text(this.$t('payAbnormal'));
+                    }
+                });
             }
         },
         mounted () {

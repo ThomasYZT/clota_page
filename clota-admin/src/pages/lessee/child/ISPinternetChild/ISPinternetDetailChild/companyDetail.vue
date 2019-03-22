@@ -72,7 +72,7 @@
         </i-row>
             <i-row>
                 <i-col span="12">
-                    <FormItem label="短信供应商：" :label-width="180">
+                    <FormItem label="短信供应商：" :label-width="180" prop="smsProviderId">
                         <Select v-model.trim="formDataCopy.smsProviderId"
                                 v-if="type === 'edit'"
                                 @on-change="smsChange">
@@ -763,6 +763,13 @@
                           message : this.$t('inputField',{ field : this.$t('thirdPartSmsPassword') }),
                           trigger : 'blur' },
                         { max : 20,message : this.$t('errorMaxLength',{ field : this.$t('thirdPartSmsPassword'),length : 20 }),trigger : 'blur' },
+                    ],
+                    smsProviderId : [
+                        {
+                            required : true,
+                            message : this.$t('selectField',{ field : this.$t('smsProvider') }),
+                            trigger : 'change'
+                        }
                     ]
                 };
             },

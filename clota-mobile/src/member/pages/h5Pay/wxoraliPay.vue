@@ -41,7 +41,7 @@
 
 <script>
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
-    import ajax from '@/marketing/api/index';
+    import ajax from '@/member/api/index.js';
     import { mapGetters } from 'vuex';
     import { querystring } from 'vux';
 
@@ -78,10 +78,21 @@
                         this.timer = setInterval(() => {
                             this.queryConsumeUpdateBiz();
                         },1000);
+                    } else if (toRoute && toRoute.query && 'wxJsdk' in toRoute.query) { //在微信里面使用微信公众号支付
+                        if (toRoute.query['wxJsdk'] === true) {
+                            this.paySuccess = true;
+                        } else {
+                            this.paySuccess = false;
+                        }
                     }
                 } else {
-                    //跳转到支付页面
-                    if (params && params.formContent && params.payType) {
+                    if ((toRoute && toRoute.query && toRoute.query.transactionId && toRoute.query.out_trade_no)
+                        || (toRoute && toRoute.query && toRoute.query.transactionId && !toRoute.query.fromzl) ) {//处理支付结果查询
+                        this.transactionId = toRoute.query.transactionId;
+                        this.timer = setInterval(() => {
+                            this.queryConsumeUpdateBiz();
+                        },1000);
+                    } else if (params && params.formContent && params.payType) {//跳转到支付页面
                         const divEle = document.createElement('div');
                         divEle.innerHTML = params.formContent;
                         document.body.appendChild(divEle);
@@ -105,7 +116,7 @@
                 this.$vux.loading.show({
                     text : this.$t('searchIngPayResult')
                 });
-                ajax.post('market_queryPayRecordByOutTradeNo',{
+                ajax.post('queryPayRecordByOutTradeNo',{
                     outTradeNo
                 },null,false).then(res => {
                     this.paySuccess = res.success && res.data && res.data.txnStatus === "success";
@@ -114,7 +125,7 @@
                 });
             },
             /**
-             * 跳转到下单页面
+             * 跳转到我的账户页面
              */
             toAccount () {
                 this.$router.push({

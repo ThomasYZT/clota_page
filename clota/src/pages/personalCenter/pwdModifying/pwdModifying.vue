@@ -153,9 +153,11 @@
                     newPassword : MD5(params.newPassword).toString()
                 }).then((res) =>{
                     if ( res.success ) {
-                        this.$Message.success(this.$t('successTip',{ 'tip' : this.$t('modify') }));
+                        this.$Message.success(this.$t('changePassSucTips'));
                         this.$refs.formValidate.resetFields();
-                        common.loginOut();
+                        setTimeout(() => {
+                            common.loginOut();
+                        },3000);
                     } else if (res.code === 'A011') {
                         this.$Message.error(this.$t('oldPasswordError'));
                     } else {

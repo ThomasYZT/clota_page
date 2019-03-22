@@ -2786,4 +2786,9 @@ export default {
     'checkCardCoupon' : 'View card information',
     'startAndEndTime' : 'Start time and end time',
     'specialDiscountRate' : 'Special event credit discount rate',
+    'changePassSucTips' : 'Change the password successfully, and jump to the login page after 3 seconds.',
+    "payType.manual" : "Payee recharge",
+    "msgServiceAccount" : "Sms account",
+    "msgServicePassword" : "Sms password",
+    "O006" : "Institution name already exists",
 };

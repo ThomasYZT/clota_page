@@ -9,7 +9,6 @@
                 <Button :type="status === 'used' ? 'primary' : 'ghost'" @click="changeStatus('used')">{{$t("used")}}</Button>
                 <Button :type="status === 'overdue' ? 'primary' : 'ghost'" @click="changeStatus('overdue')">{{$t("expired")}}</Button>
             </ButtonGroup>
-            <span v-if="type && type === 'view' && tableData.totalRow > 5" class="more" @click="showCouponModal">{{$t("check") + $t("more")}}</span>
         </div>
 
         <div class="table-wrap">
@@ -125,11 +124,6 @@
                 } else if (rowData.couponType === 'cash_coupon') {//代金券
                     return this.$t('overTipCanUse',{ money : rowData.conditionLowerLimtation });
                 }
-            },
-
-            //显示更多
-            showCouponModal () {
-                this.$emit('view-more');
             },
 
             //切换优惠券状态查询

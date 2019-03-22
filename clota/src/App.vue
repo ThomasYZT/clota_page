@@ -9,7 +9,7 @@
                 </router-view>
             </transition>
         </main-frame>
-        <test-component v-transfer-dom>
+        <test-component v-transfer-dom v-if="debuggerOpen">
         </test-component>
     </div>
 </template>
@@ -28,7 +28,9 @@
         data () {
             return {
                 //路由页面是否显示
-                isRouterActive : true
+                isRouterActive : true,
+                //开启调试
+                debuggerOpen : DEBUGGER
             };
         },
         methods : {
