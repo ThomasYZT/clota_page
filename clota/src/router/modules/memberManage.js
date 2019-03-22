@@ -545,9 +545,9 @@ export default {
                 name : 'addCardV2',
                 component : () => import(/* webpackChunkName: "memberManage" */ '../../pages/memberManage/card/coupon/child/addCard/addCardV2.vue'),
                 meta : {
-                    menuName : 'card', //lang.config.js 里面的语言键值
+                    menuName : 'addCardV2', //lang.config.js 里面的语言键值
                     _name : 'addMembersCoupon',
-                    rightPath : topMenuName + '.' + 'card',
+                    rightPath : topMenuName + '.' + 'coupon',
                 },
             },
             fund : {

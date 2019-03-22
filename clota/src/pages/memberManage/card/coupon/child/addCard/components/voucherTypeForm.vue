@@ -303,7 +303,7 @@
                         { validator : noBiggerValidate, trigger : 'blur',
                           compareValue : this.formData.totalGain,
                           customField : 'amountSingleDay',
-                          compareFeild : 'amountLimit'}
+                          compareFeild : 'amountLimit' }
                     ],
                     totalGain : [ //可领取数量上限
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountLimit') }), trigger : 'blur' },
@@ -311,7 +311,7 @@
                         { validator : noBiggerValidate, trigger : 'blur',
                           compareValue : this.formData.quantity,
                           customField : 'amountLimit',
-                          compareFeild : 'generationNum'}
+                          compareFeild : 'generationNum' }
                     ],
                     isDiscountCoexist : [ //能否和会员折扣同时使用
                         { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },
@@ -328,7 +328,7 @@
                     conditionProductId : [ //可用产品类别
                         { required : true, type : 'array', min : 1, message : this.$t('selectField',{ msg : this.$t('productType') }), trigger : 'blur' },
                     ],
-                }
+                };
             }
         },
         methods : {
@@ -359,15 +359,15 @@
                             let resultForm = defaultsDeep({}, this.formData);
                             resultForm.effectiveTime = resultForm.effectiveTime ? resultForm.effectiveTime.format('yyyy-MM-dd') : '';
                             resultForm.expireTime = resultForm.expireTime ? resultForm.expireTime.format('yyyy-MM-dd') : '';
-                            resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => { return item.partnerId }).join(',');
-                            resultForm.conditionOrgId = resultForm.conditionOrgId.map(item => { return item.id }).join(',');
-                            resultForm.conditionProductId = resultForm.conditionProductId.map(item => { return item.id }).join(',');
+                            resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => item.partnerId ).join(',');
+                            resultForm.conditionOrgId = resultForm.conditionOrgId.map(item => item.id ).join(',');
+                            resultForm.conditionProductId = resultForm.conditionProductId.map(item => item.id ).join(',');
                             resolve(resultForm);
                         } else {
                             reject('err');
                         }
-                    })
-                })
+                    });
+                });
             },
             /**
              * 复原表单状态
