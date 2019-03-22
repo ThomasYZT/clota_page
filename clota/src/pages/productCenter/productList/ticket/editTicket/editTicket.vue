@@ -123,6 +123,8 @@
                     acceptIdType : ['identity','passport'],
                     //产品有效性设置
                     productEffSet : 'since_the_play',
+                    //产品类型
+                    productType : 'ticket'
                 },
                 //可游玩景区列表数据
                 productPlayRuleVo : [],
@@ -357,7 +359,9 @@
                 let commonData = {};
                 commonData.id = String(data.id);
                 commonData.saleId = String(data.saleId);
-                this.formData = defaultsDeep({}, commonData, baseInfoForm, ticketInfoForm, effectForm, playRuleForm);
+                this.formData = defaultsDeep({
+                    productType : data.productType
+                }, commonData, baseInfoForm, ticketInfoForm, effectForm, playRuleForm);
                 this.$refs.baseInfo.initData(baseInfoForm);
                 this.$refs.ticketInfo.initData(ticketInfoForm);
                 this.$refs.buyLimit.initData(buyLimitForm);
