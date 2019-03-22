@@ -97,6 +97,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             favicon: path.resolve('./static/favicon.ico'),
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
             chunksSortMode: 'dependency',
+            publicPath : process.env.npm_config_public_path ? process.env.npm_config_public_path : '/'
             // dll: (function () {
             //   let dlls = ['vueFamily','plugins'];
             //   let res = {};

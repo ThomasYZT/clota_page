@@ -103,6 +103,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             //   }
             //   return res
             // })()
+            publicPath : process.env.npm_config_public_path ? process.env.npm_config_public_path : '/'
         }),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),

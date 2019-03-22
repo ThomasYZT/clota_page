@@ -15,8 +15,8 @@
     <meta content="telephone=no" name="format-detection">
     <title>clota平台</title>
     <!--判断IE10及以下提示更新浏览器-->
-    <script src="./static/browerUpdate/getBrowerVersion.js"></script>
-    <script src="./static/html2canvas.js"></script>
+    <script src="<%=htmlWebpackPlugin.options.publicPath %>/static/browerUpdate/getBrowerVersion.js"></script>
+    <script src="<%=htmlWebpackPlugin.options.publicPath %>/static/html2canvas.js"></script>
 </head>
 <style>
     html,
@@ -235,7 +235,7 @@
 <body>
 <script src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js "></script>
 <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=RX7BZ-4ZBKR-XGHWI-WOFNG-CTENJ-ZIFNQ"></script>
-<object id="rd" data="./static/comRD800.dll" WIDTH="0" HEIGHT="0"
+<object id="rd" data="<%=htmlWebpackPlugin.options.publicPath %>/static/comRD800.dll" WIDTH="0" HEIGHT="0"
         TYPE="application/x-itst-activex"
         classid="clsid:638B238E-EB84-4933-B3C8-854B86140668"></object>
 <div id="app">
