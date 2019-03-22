@@ -154,7 +154,7 @@
                         for (let param in this.formData) {
                             href += '&' + param + '=' + this.formData[param]
                         }
-                        href += '&' + 'couponId' + '=' + this.rowData.id;
+                        href += '&' + 'couponId' + '=' + this.rowData.id + '&time=' + new Date().valueOf();
                         let aLink = document.createElement('a');
                         aLink.href = href;
                         let evt = document.createEvent("MouseEvents");
