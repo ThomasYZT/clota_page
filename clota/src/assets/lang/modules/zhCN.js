@@ -2653,4 +2653,7 @@ export default {
     'newCardPointDonateSetting' : '新注册的会员在注册成功时是否要赠送积分，以及如果赠送的话赠送的积分数。',
     'changePassSucTips' : '修改密码成功，3秒后跳转到登录页面。',
     "payType.manual" : "收款方充值",
+    "msgServiceAccount" : "第三方短信服务商账号",
+    "msgServicePassword" : "第三方短信服务商密码",
+    "O006" : "机构名称已存在",
 };

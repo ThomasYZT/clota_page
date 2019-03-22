@@ -41,15 +41,29 @@
                     <Input v-model.trim="formData.mail" :placeholder="$t('emailtip')" style="width: 280px"/>
                 </FormItem>
                 <!--短信服务商-->
-                <!--<FormItem :label="$t('smsProvider')" prop="smsProvider">-->
-                    <!--<Select v-model.trim="formData.smsProvider" style="width:280px">-->
-                        <!--<Option v-for="item in smsProviderList"-->
-                                <!--:value="item.id"-->
-                                <!--:key="item.id">-->
-                            <!--{{ item.provider }}-->
-                        <!--</Option>-->
-                    <!--</Select>-->
-                <!--</FormItem>-->
+                <FormItem :label="$t('smsProvider')" prop="smsProvider">
+                    <Select v-model.trim="formData.smsProvider" style="width:280px" @on-change="smsProviderChange">
+                        <Option v-for="item in smsProviderList"
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.provider }}
+                        </Option>
+                    </Select>
+                </FormItem>
+                <!--第三方短信服务商账号-->
+                <FormItem :label="$t('msgServiceAccount')"
+                          v-if="formData.smsProvider && formData.smsProvider !== '5'"
+                          prop="smsProviderAccount"
+                          :rules="smsProviderAccountRules">
+                    <Input v-model.trim="formData.smsProviderAccount" style="width: 280px"/>
+                </FormItem>
+                <!--第三方短信服务商密码-->
+                <FormItem :label="$t('msgServicePassword')"
+                          v-if="formData.smsProvider && formData.smsProvider !== '5'"
+                          prop="smsProviderAccount"
+                          :rules="smsProviderPasswordRules">
+                    <Input v-model.trim="formData.smsProviderPassword" type="password" style="width: 280px"/>
+                </FormItem>
                 <!--联系人-->
                 <FormItem :label="$t('person')" prop="person">
                     <Input v-model.trim="formData.person" style="width: 280px"/>
@@ -231,7 +245,11 @@
                     //联系人
                     person : '',
                     //启用状态
-                    status : 'open'
+                    status : 'open',
+                    //第三方短信账号
+                    smsProviderAccount : '',
+                    //第三方短信密码
+                    smsProviderPassword : '',
                 },
                 //表单校验规则
                 ruleValidate : {
@@ -423,7 +441,9 @@
                     parentEconomicId : this.formData.fianceSuperior,
                     parentManageId : this.formData.manageSuperior,
                     nodeType : 'company',
-                    status : this.formData.status
+                    status : this.formData.status,
+                    smsProviderAccount : this.formData.smsProviderAccount,
+                    smsProviderPassword : this.formData.smsProviderPassword
                 }).then(res => {
                     if (res.success) {
                         this.$emit('fresh-structure-data');
@@ -440,6 +460,8 @@
                         } else {
                             this.$Message.success(this.$t('successTip',{ tip : this.$t('add') }));
                         }
+                    } else if (res.code === 'O006') {
+                        this.$Message.error(this.$t(res.code));
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }
@@ -461,6 +483,15 @@
              */
             changeCity (data ) {
                 this.formData.place = data;
+            },
+            /**
+             * 短信供应商修改
+             */
+            smsProviderChange () {
+                if (this.formData.smsProvider === '5') {
+                    this.formData.smsProviderAccount = '';
+                    this.formData.smsProviderPassword = '';
+                }
             }
         },
         computed : {
@@ -491,6 +522,36 @@
                         areaid : '',
                     };
                 }
+            },
+            //第三方账号校验规则
+            smsProviderAccountRules () {
+                return [
+                    {
+                        required : true,
+                        message : this.$t('inputField', { 'field' : this.$t('msgServiceAccount') }),
+                        trigger : 'blur'
+                    },
+                    {
+                        max : 20,
+                        message : this.$t('errorMaxLength',{ field : this.$t('msgServiceAccount'),length : 20 }),
+                        trigger : 'blur'
+                    },
+                ];
+            },
+            //短信供应商密码
+            smsProviderPasswordRules () {
+                return [
+                    {
+                        required : true,
+                        message : this.$t('inputField', { 'field' : this.$t('msgServicePassword') }),
+                        trigger : 'blur'
+                    },
+                    {
+                        max : 20,
+                        message : this.$t('errorMaxLength',{ field : this.$t('msgServicePassword'),length : 20 }),
+                        trigger : 'blur'
+                    },
+                ];
             }
         }
     };

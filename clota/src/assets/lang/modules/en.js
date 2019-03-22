@@ -2653,4 +2653,7 @@ export default {
     'newCardPointDonateSetting' : 'Whether the newly registered member will give points when the registration is successful, and the number of points awarded if given.',
     'changePassSucTips' : 'Change the password successfully, and jump to the login page after 3 seconds.',
     "payType.manual" : "Payee recharge",
+    "msgServiceAccount" : "Sms account",
+    "msgServicePassword" : "Sms password",
+    "O006" : "Institution name already exists",
 };
