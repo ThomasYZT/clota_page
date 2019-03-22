@@ -580,7 +580,7 @@
                         this.getEffTimeList();
                         this.effectFormData.addEffectTimeValue = '';
                     } else if (res.code === 'M046' || res.code === 'M045') {
-                        this.$Message.error('permanentValidityExist');
+                        this.$Message.error(this.$t('permanentValidityExist'));
                     } else {
                         this.$Message.error(this.$t('failureTip',{ tip : this.$t('add') }));
                     }

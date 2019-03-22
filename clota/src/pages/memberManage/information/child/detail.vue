@@ -128,7 +128,6 @@
                         <more-card type="view"
                             :status="status"
                             :table-data="couponData"
-                            @view-more="showCouponModal"
                             @change-status="changeStatus">
                         </more-card>
                     </div>
@@ -290,11 +289,6 @@
                          <!--:store="allStore">-->
         <!--</use-range-modal>-->
 
-        <!--优惠券信息--查看更多modal-->
-        <view-more-coupon-modal :status="status"
-                                :table-data="couponData"
-                                ref="viewMoreCoupon">
-        </view-more-coupon-modal>
 
         <!--会员储值账户余额修改modal-->
         <modify-balance-modal ref="modifyBalance"
@@ -342,7 +336,6 @@
     import modifyScoreModal from '../components/modifyScoreModal.vue';
     // 会员3期暂时去掉
     // import useRangeModal from '../components/useRangeModal.vue';
-    import viewMoreCouponModal from '../components/viewMoreCouponModal.vue';
     import moreCard from '../components/moreCard.vue';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import lifeCycleMixins from '@/mixins/lifeCycleMixins.js';
@@ -366,7 +359,6 @@
             modifyScoreModal,
             // 会员3期暂时去掉
             // useRangeModal,
-            viewMoreCouponModal,
             moreCard,
             tableCom,
             memberCardBaseInfo,
@@ -662,12 +654,6 @@
                 if (val) {
                     this.status = val;
                     this.listCouponsByStatus( this.memberBaseDetail );
-                }
-            },
-            //点击查看更多显示卡劵所有列表弹窗
-            showCouponModal () {
-                if (this.$refs.viewMoreCoupon) {
-                    this.$refs.viewMoreCoupon.show();
                 }
             },
 
