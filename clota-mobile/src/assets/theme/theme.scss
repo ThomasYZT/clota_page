@@ -159,7 +159,10 @@ div.cell {
     align-items: center;
 }
 .weui-toast__content{
-    width: max-content!important;
+    //width: max-content!important;
+}
+.weui-toast_text {
+    max-width: 80%;
 }
 .weui-check__label{
     height: 50px!important;

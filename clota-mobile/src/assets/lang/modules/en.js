@@ -472,7 +472,7 @@ export default {
     'S014' : 'weChat public number configuration error',
     'mobileNotExist' : 'phone number does not exist',
     'mobileNotExistToRegister' : 'the mobile phone number is not registered, please register first.',
-    'M062' : 'coupon has been received',
+    'M062' : 'the coupon does not exist or has been received',
     'M063' : 'you have received enough current coupons to collect other coupons.',
     'M064' : 'today\'s coupon has been received',
     'used' : 'used',

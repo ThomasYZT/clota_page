@@ -4,8 +4,10 @@
 -->
 <template>
     <div class="good-card" @click="toDetail">
-        <div class="img-wrapper">
+        <div class="img-wrapper" v-if="info.goodsType === 'ierp'">
             <div :style="{backgroundImage:'url('+info.pics+')'}"></div>
+        </div>
+        <div class="coupon-wrap" v-else-if="info.goodsType === 'coupon'">
         </div>
 
         <div class="content-wrapper">
@@ -23,7 +25,7 @@
           info : {
               type : Object,
               default () {
-                  return {}
+                  return {};
               }
           }
         },
@@ -41,7 +43,7 @@
                     params : {
                         goodsId : this.info.id
                     }
-                })
+                });
             }
         }
     };
@@ -58,6 +60,13 @@
         background: #fff;
         &:nth-child(even) {
             margin-left: 10px;
+        }
+
+        .coupon-wrap{
+            height: 166px;
+            width: 100%;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
 
         .img-wrapper {
