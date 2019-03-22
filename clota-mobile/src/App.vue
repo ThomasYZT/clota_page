@@ -25,28 +25,16 @@
                     </template>
                 </group>
             </div>
-            <!--<template>-->
-                <!--&lt;!&ndash;<headNav v-if="showTopBanner"></headNav>&ndash;&gt;-->
-                <!--<transition name="fade">-->
-                    <!--<router-view :key="hashKey" >-->
-
-                    <!--</router-view>-->
-                <!--</transition>-->
-            <!--</template>-->
-            <template v-if="pageShow">
-                <!--<headNav v-if="showTopBanner"></headNav>-->
+            <template>
                 <transition name="fade">
-                    <router-view :key="hashKey">
+                    <router-view :key="hashKey" >
+
                     </router-view>
                 </transition>
             </template>
-            <template v-else>
-                <div class="invlid-url">
-                    <img src="./assets/images/icon-invalid-url.png" alt="">
-                </div>
-            </template>
         </drawer>
-        <drag v-if="pageShow">
+        <!--多语言切换-->
+        <drag>
             <div class="lang-change" @click="changeLang">
                 <span class="iconfont icon-switch"></span>
             </div>
@@ -101,8 +89,6 @@
                 confirmShow : false,
                 //当前选择的语言类型
                 langType : '',
-                //页面是否显示
-                pageShow : true,
                 //是否显示顶部返回首页的图标
                 //showTopBanner: true
             };
@@ -146,7 +132,6 @@
              */
             getWxConfig () {
                 if (this.isWeixin) {
-                    this.pageShow = true;
                     ajax.post('getWxConfig',{
                         url : window.location.origin,
                         companyCode : this.companyCode,
@@ -174,8 +159,6 @@
                             });
                         }
                     });
-                } else {
-                    this.pageShow = false;
                 }
             },
             /**
@@ -269,18 +252,6 @@
             height: 40px;
             bottom : 50px;
             right: 0;
-        }
-
-        .invlid-url{
-            position: fixed;
-            width: 100%;
-            height: 100%;
-
-            img{
-                width: 100%;
-                height: 100%;
-                display: block;
-            }
         }
 
         .lang-change{
