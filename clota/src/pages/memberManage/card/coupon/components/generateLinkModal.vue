@@ -18,7 +18,7 @@
                       :model="formData"
                       :rules="ruleValidate"
                       :label-width="120"
-                      label-position="left">
+                      label-position="right">
                     <!-- 优惠券名称 -->
                     <FormItem :label="$t('couponNameV2')">
                         <span>{{rowData.couponName | contentFilter}}</span>
@@ -27,21 +27,22 @@
                     <FormItem :label="$t('generatedQuantity')">
                         <span>{{countWaitNum | contentFilter}}</span>
                     </FormItem>
-                    <!--&lt;!&ndash; 链接地址 &ndash;&gt;-->
-                    <!--<FormItem :label="$t('urLink')" prop="preUrl">-->
-                        <!--<Input v-model.trim="formData.preUrl"></Input>-->
-                    <!--</FormItem>-->
+                    <!-- 链接地址 -->
+                    <FormItem :label="$t('urLink')" prop="preUrl">
+                        <Input v-model.trim="formData.preUrl"/>
+                    </FormItem>
                     <!-- 生成数量 -->
                     <FormItem :label="$t('generationNum')" prop="needCount">
-                        <Input v-model.trim="formData.needCount"></Input>
+                        <Input v-model.trim="formData.needCount"/>
                     </FormItem>
                 </Form>
             </div>
 
             <!-- 步骤2 -->
             <div ref="step2" class="step-2" v-else>
-                <span>{{link}}</span>
-                <span class="inline-btn" @click="clipboard">复制</span>
+                <Input :value="link" style="width: 410px" readonly>
+                    <span slot="append" @click="clipboard">{{$t('copy')}}</span>
+                </Input>
             </div>
 
             <div v-if="editing"
@@ -62,6 +63,8 @@
 <script>
     import ajax from '@/api/index';
     import { validateNum, noBiggerValidate } from '../../validateMethods';
+    import { validator } from 'klwk-ui';
+
     export default {
         components : {},
         data () {
@@ -76,6 +79,8 @@
                 formData : {
                     //生成数量
                     needCount : '',
+                    //链接地址
+                    preUrl : ''
                 },
                 //链接地址
                 link : '',
@@ -97,14 +102,15 @@
                           compareFeild : 'generatedQuantity',
                           compareValue : this.countWaitNum }
                     ],
-                }
+                    preUrl : [
+                        {
+                            required : true,
+                            trigger : 'blur',
+                            validator : this.validateHttp
+                        }
+                    ]
+                };
             },
-            /**
-             *  链接
-             */
-            preUrl () {
-                return location.origin + '/clota/mobile/member/getCoupon?';
-            }
         },
         methods : {
             /**
@@ -135,7 +141,7 @@
                         });
                     }
 
-                })
+                });
             },
             /**
              *  生成链接
@@ -143,9 +149,9 @@
             generateLinks () {
                 return new Promise((resolve, reject) => {
                     ajax.post('generateLinks', {
+                        ...this.formData,
                         couponId : this.rowData.id,
-                        preUrl : this.preUrl,
-                        ...this.formData
+                        preUrl : this.formData.preUrl + '?'
                     }).then(res => {
                         if (res.success) {
                             res.data ? resolve(res.data) : reject();
@@ -161,7 +167,7 @@
             hide () {
                 this.formData = {
                     needCount : '',
-                }
+                };
                 this.countWaitNum = 0;
                 this.isFormShow = false;
                 this.link = '';
@@ -184,15 +190,15 @@
                         } else {
                             reject();
                         }
-                    })
-                })
+                    });
+                });
             },
             /**
              * 复制到剪贴板
              */
             clipboard () {
                 let _input = document.createElement('input');
-                _input.value = this.link
+                _input.value = this.link;
                 _input.setAttribute('type', 'text');
                 _input.setAttribute('readonly', 'readonly');
                 if (document.execCommand('copy')) {
@@ -204,6 +210,23 @@
                     this.$refs.step2.removeChild(_input);
                 } else {
                     this.$Message.error(this.$t('failureTip', { tip : this.$t('copy') }));
+                }
+            },
+            /**
+             * 校验链接地址
+             * @param{Array} rule 校验规则
+             * @param{String} value 校验值
+             * @param{Function} callback 回调地址
+             */
+            validateHttp (rule,value,callback) {
+                if (value) {
+                    if (validator.isUrl(value)) {
+                        callback();
+                    } else {
+                        callback(this.$t('errorFormat',{ field : this.$t('urLink') }));
+                    }
+                } else {
+                    callback(this.$t('inputField',{ field : this.$t('urLink') }));
                 }
             }
         }
@@ -224,7 +247,7 @@
 
         .step-2 {
             width: 70%;
-            margin: 100px auto 0px;
+            margin: 125px auto 0px;
             word-break: break-all;
         }
 
@@ -232,5 +255,9 @@
             color: $color_blue;
             cursor: pointer;
         }
+    }
+
+    /deep/ .ivu-input-group-append{
+        cursor: pointer;
     }
 </style>
