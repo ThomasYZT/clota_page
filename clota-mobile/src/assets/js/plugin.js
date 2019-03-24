@@ -132,15 +132,16 @@ plugin.install = function (Vue, options) {
             },
             //内容过滤器，如果内容为空或null，返回-
             contentFilter (content) {
-                if (content === '' || content === null || content === undefined) {
+                let contentVal = String(content).trim();
+                if (contentVal === '' || contentVal === null || typeof contentVal === 'undefined') {
                     return '-';
                 } else {
-                    return content;
+                    return contentVal;
                 }
             },
             //货比格式化
             moneyFilter (content,places = 2,symbol = '',defaultValue = '-') {
-                if (content === '' || content === null || content === undefined) {
+                if (content === '' || content === null || typeof content === 'undefined') {
                     return defaultValue;
                 } else {
                     return content === 0 ? '0.00' : Number(content).formatMoney(places,symbol);

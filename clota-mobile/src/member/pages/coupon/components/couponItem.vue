@@ -50,7 +50,10 @@
             <ul class="useage-detail" v-if="showDetail">
                 <li class="conditon">{{$t('useRulesOne')}}{{avaliableChannel | contentFilter}}</li>
                 <li class="conditon">{{$t('useRuleTwo')}}{{avaliableStore | contentFilter}}</li>
-                <li class="conditon">{{$t('useRuleThree')}}{{avaliableProductType | contentFilter}}</li>
+                <li v-if="data.couponType === 'exchange_coupon'"
+                    class="conditon">{{$t('canUseGoods')}}{{goodNames | contentFilter}}</li>
+                <li v-else
+                    class="conditon">{{$t('useRuleThree')}}{{avaliableProductType | contentFilter}}</li>
             </ul>
         </transition>
     </div>
@@ -84,7 +87,9 @@
                 //可用产品类别
                 avaliableProductType : '',
                 //存储初始化复制按钮事件
-                copyBtn : null
+                copyBtn : null,
+                //可用商品
+                goodNames : ''
             };
         },
         methods : {
@@ -100,6 +105,12 @@
                             this.avaliableChannel = res.data.channelNames;
                             this.avaliableStore = res.data.orgNames;
                             this.avaliableProductType = res.data.typeNames;
+                            this.goodNames = res.data.goodNames;
+                        } else {
+                            this.avaliableChannel = '';
+                            this.avaliableStore = '';
+                            this.avaliableProductType = '';
+                            this.goodNames = '';
                         }
                         this.showDetail = !this.showDetail;
                     });

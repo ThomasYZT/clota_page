@@ -511,4 +511,5 @@ export default {
     'startAndEndDate' : 'start time and end time',
     'validateDate' : 'effective date',
     'validateTimeEveryDay' : 'daily effective time',
+    'canUseGoods' : '3, available goods:',
 };

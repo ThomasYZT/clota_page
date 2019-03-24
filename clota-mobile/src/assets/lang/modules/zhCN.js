@@ -511,4 +511,5 @@ export default {
     'startAndEndDate' : '开始结束时间',
     'validateDate' : '生效日期',
     'validateTimeEveryDay' : '每日生效时间',
+    'canUseGoods' : '3、可用商品：',
 };

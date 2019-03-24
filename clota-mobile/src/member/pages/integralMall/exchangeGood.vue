@@ -112,7 +112,7 @@
                             });
                         } else {
                             let text;
-                            if (res.code === 'M023' || res.code === 'M022') {
+                            if (res.code === 'M023' || res.code === 'M022' || res.code === 'M062' || res.code === 'M063' || res.code === 'M064') {
                                 text = res.code;
                             } else {
                                 text = 'exchangeFailure';
