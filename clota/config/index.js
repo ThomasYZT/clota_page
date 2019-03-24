@@ -49,7 +49,7 @@ module.exports = {
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/',
+        assetsPublicPath: process.env.npm_config_public_path ? process.env.npm_config_public_path : '/',
 
         // Use Eslint Loader?
         // If true, your code will be linted during bundling and

@@ -2,9 +2,17 @@
 
 <template>
     <div class="member-wrap">
-        <router-view>
-
-        </router-view>
+        <template v-if="isWeixin">
+            <transition name="fade">
+                <router-view>
+                </router-view>
+            </transition>
+        </template>
+        <template v-else>
+            <div class="invlid-url">
+                <img src="../../assets/images/icon-invalid-url.png" alt="">
+            </div>
+        </template>
         <!--tab菜单栏-->
         <tabbar v-if="isTabbarShow && cardInfo.cardTypeId !== '1' && hasPointMenu"
                 v-model="actived" >
@@ -75,6 +83,7 @@
             ...mapGetters({
                 cardInfo : 'cardInfo',
                 memberConfigInfo : 'memberConfigInfo',
+                isWeixin : 'isWeixin',
             }),
             //是否有积分服务
             hasPointMenu () {
@@ -88,5 +97,17 @@
     .member-wrap{
         @include block_outline();
         overflow: auto;
+
+        .invlid-url{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+
+            img{
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
     }
 </style>
