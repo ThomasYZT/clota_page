@@ -41,11 +41,13 @@
           <template v-if="hasPointMenu">
               <!-- 会员积分权益折扣说明 -->
               <h3 class="category">{{$t('memberVos')}}</h3>
-              <template v-if="commonMemberVos && commonMemberVos.length > 0">
-                  <illustration-board v-for="(item, index) in commonMemberVos"
+              <template v-if="commonInfo.memberVos && commonInfo.memberVos.length > 0">
+                  <illustration-board v-for="item in commonInfo.memberVos"
                                       :key="item.id"
                                       :info="item"
                                       class="ill-item1">
+                      <template slot="scoreRate">{{item.scoreRate | contentFilter}}</template>
+                      <template slot="discountRate">{{item.discountRate | contentFilter}}</template>
                   </illustration-board>
               </template>
               <div class="no-data-area" v-else>
@@ -54,11 +56,14 @@
               </div>
 
               <h3 class="category">{{$t('storeVos')}}</h3>
-              <template v-if="commonStoreVos && commonStoreVos.length > 0">
-                  <illustration-board v-for="(item, index) in commonStoreVos"
+              <template v-if="commonInfo.storeVos && commonInfo.storeVos.length > 0">
+                  <illustration-board v-for="item in commonInfo.storeVos"
                                       :key="item.index"
                                       :info="item"
                                       class="ill-item2">
+                      <template slot="name">{{item.orgName | contentFilter}}</template>
+                      <template slot="scoreRate">{{item.deptScoreRate | contentFilter}}</template>
+                      <template slot="discountRate">{{item.deptDiscountRate | contentFilter}}</template>
                   </illustration-board>
               </template>
               <div class="no-data-area" v-else>
@@ -67,12 +72,17 @@
               </div>
 
               <h3 class="category">{{$t('productMap')}}</h3>
-              <template v-if="commonProductArr && commonProductArr.length > 0">
-                  <illustration-board v-for="(item, index) in commonProductArr"
-                                      :key="item.id"
-                                      :info="item"
-                                      class="ill-item3">
-                  </illustration-board>
+              <template v-if="commonInfo.productMap && Object.keys(commonInfo.productMap).length > 0">
+                  <template v-for="product in commonInfo.productMap">
+                      <illustration-board v-for="item in product"
+                                          :key="item.id"
+                                          :info="item"
+                                          class="ill-item3">
+                          <template slot="name">{{item.orgName | contentFilter}} - {{item.typeName | contentFilter}}</template>
+                          <template slot="scoreRate">{{item.prodScoreRate | contentFilter}}</template>
+                          <template slot="discountRate">{{item.prodDiscountRate | contentFilter}}</template>
+                      </illustration-board>
+                  </template>
               </template>
               <div class="no-data-area" v-else>
                   <no-data>
@@ -84,41 +94,66 @@
               </div>
 
               <!-- 特定活动会员积分权益折扣说明 -->
-              <h3 class="category">{{$t('memberVos')}}</h3>
-              <template v-if="activityMemberVos && activityMemberVos.length > 0">
-                  <illustration-board v-for="(item, index) in activityMemberVos"
-                                      :key="item.id"
-                                      :info="item"
-                                      class="ill-item1">
-                  </illustration-board>
-              </template>
-              <div class="no-data-area" v-else>
-                  <no-data>
-                  </no-data>
-              </div>
-              <h3 class="category">{{$t('storeVos')}}</h3>
-              <template v-if="activityStoreVos && activityStoreVos.length > 0">
-                  <illustration-board v-for="(item, index) in activityStoreVos"
-                                      :key="item.index"
-                                      :info="item"
-                                      class="ill-item2">
-                  </illustration-board>
-              </template>
-              <div class="no-data-area" v-else>
-                  <no-data>
-                  </no-data>
-              </div>
-              <h3 class="category">{{$t('productMap')}}</h3>
-              <template v-if="activityProductArr && activityProductArr.length > 0">
-                  <illustration-board v-for="(item, index) in activityProductArr"
-                                      :key="item.id"
-                                      :info="item"
-                                      class="ill-item3">
-                  </illustration-board>
-              </template>
-              <div class="no-data-area" v-else>
-                  <no-data>
-                  </no-data>
+              <div v-for="(info,index) in activityInfo" :key="info.id" class="special-wrap">
+
+                  <ul class="special-discount-desc" :key="'ul' + index">
+                      <li class="desc-li">
+                          <span class="key">{{$t('colonSetting',{ key : $t('startAndEndDate') })}}</span><span class="value">{{info.startDate | contentFilter}} - {{info.endDate | contentFilter}}</span>
+                      </li>
+                      <li class="desc-li">
+                          <span class="key">{{$t('colonSetting',{ key : $t('validateDate') })}}</span><span class="value">{{info.effDateTxt | contentFilter}}</span>
+                      </li>
+                      <li class="desc-li">
+                          <span class="key">{{$t('colonSetting',{ key : $t('validateTimeEveryDay') })}}</span><span class="value">{{info.startTime | contentFilter}} - {{info.endTime | contentFilter}}</span>
+                      </li>
+                  </ul>
+
+                  <h3 class="category">{{$t('memberVos')}}</h3>
+                  <template v-if="info.discountRateVo.memberVos && info.discountRateVo.memberVos.length > 0">
+                      <illustration-board v-for="item in info.discountRateVo.memberVos"
+                                          :key="item.id"
+                                          :info="item"
+                                          class="ill-item1">
+                          <template slot="scoreRate">{{item.scoreRate}}</template>
+                          <template slot="discountRate">{{item.discountRate}}</template>
+                      </illustration-board>
+                  </template>
+                  <div class="no-data-area" v-else :key="'noData1' + index">
+                      <no-data>
+                      </no-data>
+                  </div>
+                  <h3 class="category" :key="'k1' + index">{{$t('storeVos')}}</h3>
+                  <template v-if="info.discountRateVo.storeVos && info.discountRateVo.storeVos.length > 0">
+                      <illustration-board v-for="item in info.discountRateVo.storeVos"
+                                          :key="item.index"
+                                          :info="item"
+                                          class="ill-item2">
+                          <template slot="name">{{item.orgName | contentFilter}}</template>
+                          <template slot="scoreRate">{{item.deptScoreRate | contentFilter}}</template>
+                          <template slot="discountRate">{{item.deptDiscountRate | contentFilter}}</template>
+                      </illustration-board>
+                  </template>
+                  <div class="no-data-area" v-else :key="'noData2' + index">
+                      <no-data>
+                      </no-data>
+                  </div>
+                  <h3 class="category" :key="'k2' + index">{{$t('productMap')}}</h3>
+                  <template v-if="info.discountRateVo.productMap && Object.keys(info.discountRateVo.productMap).length > 0">
+                      <template v-for="product in info.discountRateVo.productMap">
+                          <illustration-board v-for="item in product"
+                                              :key="item.id"
+                                              :info="item"
+                                              class="ill-item3">
+                              <template slot="name">{{item.orgName | contentFilter}} - {{item.typeName | contentFilter}}</template>
+                              <template slot="scoreRate">{{item.prodScoreRate | contentFilter}}</template>
+                              <template slot="discountRate">{{item.prodDiscountRate | contentFilter}}</template>
+                          </illustration-board>
+                      </template>
+                  </template>
+                  <div class="no-data-area" v-else :key="'noData3' + index">
+                      <no-data>
+                      </no-data>
+                  </div>
               </div>
           </template>
       </div>
@@ -137,19 +172,6 @@
         },
         data () {
             return {
-                //按会员级别分类数据
-                commonMemberVos : [],
-                //按产品类别分类数据
-                commonProductArr : [],
-                //按店铺分类数据
-                commonStoreVos : [],
-                //特定活动会员权益 按会员级别分类数据
-                activityMemberVos : [],
-                //特定活动会员权益 按产品类别分类数据
-                activityProductArr : [],
-                //特定活动会员权益 按店铺分类数据
-                activityStoreVos : [],
-                query : null,
                 //是否显示页面
                 isShow : false,
                 //会员等级信息
@@ -206,7 +228,7 @@
                 //普通积分信息
                 commonInfo : {},
                 //特定活动积分信息
-                activityInfo : {},
+                activityInfo : [],
 
             };
         },
@@ -230,67 +252,34 @@
              * 获取页面数据
              */
             getData () {
-                ajax.post('listMemberCardRate', {
+                ajax.post('listMemberCardRuleRate', {
                     cardId : this.cardInfo.id,
                 }).then((res) => {
-                    //console.log(res.data)
-                    if (res.success) {
-                        this.commonInfo = res.data && res.data.common ? res.data.common : {};
-                        this.activityInfo = res.data && res.data.activity ? res.data.activity : {};
-                        //普通会员权益信息设置
-                        this.commonMemberVos = this.commonInfo.memberVos ? this.commonInfo.memberVos : []
-                        let commonProductMap = this.commonInfo.productMap ? this.commonInfo.productMap : [];
-                        this.commonStoreVos = this.commonInfo.storeVos ? this.commonInfo.storeVos : [];
-                        //特定活动会员权益信息设置
-                        this.activityMemberVos = this.activityInfo.memberVos ? this.activityInfo.memberVos : []
-                        let activityProductMap = this.activityInfo.productMap ? this.activityInfo.productMap : [];
-                        this.activityStoreVos = this.activityInfo.storeVos ? this.activityInfo.storeVos : [];
-
+                    if (res.success && res.data) {
+                        this.commonInfo = res.data.common;
+                        this.activityInfo = res.data.activity.map(item => {
+                            let effDateTxt = '';
+                            if (item.effDate) {
+                                //每日生效时间计算
+                                effDateTxt = this.effDateTranslate(item.effDate);
+                            }
+                            return {
+                                ...item,
+                                startDate : item.startDate.substring(0,10),
+                                endDate : item.endDate.substring(0,10),
+                                effDateTxt
+                            };
+                        });
                         //普通会员权益 -- 会员权益信息数据组装
                         this.packageMemberInfo();
-
-                        //普通和特定会员权益信息数据组装
-                        this.packageData(this.commonMemberVos, commonProductMap, this.commonStoreVos, this.commonProductArr);
-                        this.packageData(this.activityMemberVos, activityProductMap, this.activityStoreVos, this.activityProductArr);
                         //显示页面
                         this.isShow = true;
                     } else {
-                        this.commonMemberVos = [];
-                        this.commonProductArr = [];
-                        this.commonStoreVos = [];
-                        this.activityMemberVos = [];
-                        this.activityProductArr = [];
-                        this.activityStoreVos = [];
                         this.$vux.toast.text(res.message);
                         //显示页面
                         this.isShow = true;
                     }
                 });
-            },
-            /**
-             * 组装数据
-             */
-            packageData (memberVos,productMap,storeVos, commonProductArr) {
-                memberVos.forEach((item) => {
-                    item.name = this.query.name;
-                    item.scoreRate = item.scoreRate;
-                    item.discountRate = item.discountRate;
-                });
-
-                storeVos.forEach((item) => {
-                    item.name = item.orgName;
-                    item.scoreRate = item.deptScoreRate;
-                    item.discountRate = item.deptDiscountRate;
-                });
-
-                for (let item in productMap) {
-                    productMap[item].forEach((item) => {
-                        item.name = item.typeName;
-                        item.scoreRate = item.prodScoreRate;
-                        item.discountRate = item.prodDiscountRate;
-                        commonProductArr = commonProductArr.concat(item);
-                    });
-                }
             },
             /**
              * 会员权益数据组装
@@ -331,10 +320,32 @@
                     }
                 }
                 this.isMemberRightNoData = isNoData;
+            },
+            /**
+             * 每日生效时间转换
+             * @param{String} effDate 生效时间数字符号
+             */
+            effDateTranslate (effDate) {
+                return effDate.split(',').map(day => {
+                    if (day === '0') {
+                        return this.$t('sunday');
+                    } else if (day === '1') {
+                        return this.$t('monday');
+                    } else if (day === '2') {
+                        return this.$t('tuesday');
+                    } else if (day === '3') {
+                        return this.$t('wednesday');
+                    } else if (day === '4') {
+                        return this.$t('thursday');
+                    } else if (day === '5') {
+                        return this.$t('friday');
+                    } else if (day === '6') {
+                        return this.$t('saturday');
+                    }
+                }).join('、');
             }
         },
         created () {
-            this.query = this.$route.query;
             this.getData();
         }
     };
@@ -411,6 +422,26 @@
                 background-size: 100% 100%;
             }
 
+        }
+
+        .special-discount-desc{
+            padding: 14px 25px;
+            text-align: left;
+
+            .desc-li{
+                line-height: 20px;
+                margin-top: 9px;
+                font-size: 12px;
+
+                .key {
+                    color: #8E9091;
+                    padding-right: 10px;
+                }
+            }
+        }
+
+        .special-wrap:not(:nth-last-of-type(1)){
+            border-bottom: 1px dashed #e1e1e1 ;
         }
     }
 </style>

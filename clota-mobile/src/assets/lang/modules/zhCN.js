@@ -473,8 +473,8 @@ export default {
     'mobileNotExist' : '手机号不存在',
     'mobileNotExistToRegister' : '手机号未注册，请先注册。',
     'M062' : '优惠券不存在，或已被领取',
-    'M063' : '当前优惠券您已领取的足够多了，去领取其它的优惠券吧。',
-    'M064' : '今日优惠券已领完',
+    'M063' : '领取已达上限',
+    'M064' : '今日领取已达上限',
     'used' : '已使用',
     'canUse' : '可使用',
     'overDue' : '已过期',
@@ -508,4 +508,7 @@ export default {
     'discountNumTyppe' : '{num}折优惠券',
     'couponValueType' : '{num}元代金券',
     'M065' : '来晚了，优惠券已被领完！',
+    'startAndEndDate' : '开始结束时间',
+    'validateDate' : '生效日期',
+    'validateTimeEveryDay' : '每日生效时间',
 };

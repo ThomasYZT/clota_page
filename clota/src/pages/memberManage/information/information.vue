@@ -301,6 +301,17 @@
                         value : 'all'
                     }
                 ],result);
+            },
+            //会员信息下载链接
+            memberInfoDownLoadUrl () {
+                return ajax.export('downLoadMemberInfo',{
+                    keyWord : this.queryParams.keyWord,
+                    levelId : this.queryParams.levelId === 'null' ? "" : this.queryParams.levelId,
+                    channelId : this.queryParams.channelId === 'null' ? "" : this.queryParams.channelId,
+                    vipStatus : this.queryParams.vipStatus === 'null' ? "" : this.queryParams.vipStatus,
+                    cardStatus : this.queryParams.cardStatus === 'null' ? "" : this.queryParams.cardStatus,
+                    cardTypeId : this.queryParams.cardTypeId === 'all' ? "" : this.queryParams.cardTypeId,
+                });
             }
         },
         methods : {

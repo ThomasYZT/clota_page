@@ -80,7 +80,6 @@ export const memberRoutes = [
     {
         module : 'member',
         path : '/member',
-        name : 'mobileLogin',
         component : () => import(/* webpackChunkName: "login" */ '../pages/index.vue'),
         children : [
             //会员登录

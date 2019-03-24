@@ -95,6 +95,8 @@ export default {
     'getIncreaseMemberCountDetail' : '/member/getIncreaseMemberCountDetail',
     //撤销交易
     'revocation' : '/pay/revocation',
+    //下载会员信息
+    'downLoadMemberInfo' : '/member/downLoadMemberInfo',
 
 
     /***********************************会员积分***********************************/

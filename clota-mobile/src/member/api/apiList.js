@@ -132,6 +132,8 @@ const apiList = {
     getOpenid : '/external/pay/getOpenid',
     //查询支付结果
     queryPayRecordByOutTradeNo : '/external/pay/queryPayRecordByOutTradeNo',
+    //特定时间会员权益
+    listMemberCardRuleRate : '/external/memberInfo/listMemberCardRuleRate',
 };
 
 export default apiList;

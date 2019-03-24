@@ -139,7 +139,9 @@
                 //批次号
                 batchId : '',
                 //优惠券信息
-                couponData : {}
+                couponData : {},
+                //卡券信息是否存在
+                couponExist : true
             };
         },
         methods : {
@@ -352,11 +354,14 @@
              * 查询卡券信息
              */
             findCouponById () {
+                this.couponExist = true;
                 ajax.post('findCouponById',{
                     couponId : this.couponId
                 }).then(res => {
                     if (res.success && res.data) {
                         this.couponData = res.data;
+                    } else {
+                        this.couponExist = false;
                     }
                 });
             },
@@ -388,7 +393,7 @@
             }),
             //可以领取到卡券
             canGetCoupon () {
-                return this.couponId && this.companyCode && this.batchId;
+                return this.couponId && this.companyCode && this.batchId && this.couponExist;
             }
         },
         beforeRouteEnter (to,from,next) {

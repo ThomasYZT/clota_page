@@ -4,28 +4,37 @@
 -->
 <template>
   <div class="illustration-board">
-      <h5 class="title">{{info.name}}</h5>
-      <p class="item"><span class="item-title">{{$t('scoreRate')}} {{$t('colon')}} </span>1 {{$t('colon')}} {{info.scoreRate}} {{$t('bracketSetting', { content : $t('score') + $t('colon') + $t('RMB') })}}</p>
-      <p class="item"><span class="item-title">{{$t('discountRate')}} {{$t('colon')}} </span>{{info.discountRate}}</p>
-
+      <h5 class="title">
+          <slot name="name">{{info.name}}</slot>
+      </h5>
+      <p class="item">
+          <span class="item-title">{{$t('scoreRate')}} {{$t('colon')}} </span>
+          1 {{$t('colon')}} <slot name="scoreRate">{{info.scoreRate}}</slot>
+          {{$t('bracketSetting', { content : $t('score') + $t('colon') + $t('RMB') })}}
+      </p>
+      <p class="item">
+          <span class="item-title">{{$t('discountRate')}} {{$t('colon')}} </span><slot name="discountRate">{{info.discountRate}}</slot>
+      </p>
   </div>
 </template>
 
 <script>
 
   export default {
-      props: {
-        info:  {
-            type: Object,
-            default: ''
+      props : {
+        info : {
+            type : Object,
+            default () {
+                return {};
+            }
         }
       },
-    components: {},
-    data() {
-      return {}
+    components : {},
+    data () {
+      return {};
     },
-    methods: {}
-  }
+    methods : {}
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -63,7 +72,6 @@
             /*border-bottom: 1px dashed #E8E8E8;*/
         /*}*/
     }
-
 
 
 </style>
