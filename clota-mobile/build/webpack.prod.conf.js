@@ -17,7 +17,6 @@ const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 const env = process.env.NODE_ENV === 'testing'
     ? require('../config/test.env')
     : require('../config/prod.env')
-var argv = require('yargs').argv;
 
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -38,7 +37,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
         new webpack.DefinePlugin({
             'process.env': env,
-            HTTP_ENV: JSON.stringify(argv.env ? argv.env.http_env : ''),
+            HTTP_ENV: JSON.stringify(process.env.http_env ? process.env.http_env : ''),
         }),
         // new UglifyJsPlugin({
         //   uglifyOptions: {
