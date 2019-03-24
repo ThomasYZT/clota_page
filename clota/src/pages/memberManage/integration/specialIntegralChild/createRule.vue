@@ -270,6 +270,7 @@
                 if (!type) {
                     this.$refs.formValidate.resetFields();
                     this.formData.validForEver = false;
+                    this.formData.validTime = ['0','1','2','3','4','5','6'];
                 } else {
                     if (this.ruleData && Object.keys(this.ruleData).length > 0) {
                         this.formData.startTime = this.ruleData.startDate.toDate();

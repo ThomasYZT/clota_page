@@ -1,6 +1,7 @@
 <template>
     <!--会员数据概览-->
-    <div class="member-data-show">
+    <div class="member-data-show"
+         @mouseout="addDetailShow = false">
 
         <div class="data-header">
             <div class="title">{{$t("memberDataOverview")}}</div><!--会员数据概览-->
@@ -10,7 +11,9 @@
             <div class="total">
                 <span class="img"><img src="@/assets/images/crown.svg"/></span>
                 <span class="total-label">{{$t("totalMembers")}}</span>
-                <span>{{memberSumCount | contentFilter}}</span>
+                <span class="label-value">{{memberCardCount | contentFilter}}</span>
+                <span class="total-label" style="margin-left: 15px;">{{$t("totalMemberCount")}}</span>
+                <span class="label-value">{{memberCountSum | contentFilter}}</span>
             </div>
 
             <div class="detail">
@@ -67,7 +70,7 @@
     export default {
         props : {
             //会员总数
-            'member-sum-count' : {
+            'member-card-count' : {
                 type : [String,Number],
                 default : ''
             }
@@ -91,7 +94,9 @@
                 //新增会员详情
                 addMemberDetailInfo : [],
                 //是否在加载中
-                loadingMore : false
+                loadingMore : false,
+                //会员总数
+                memberCountSum : ''
             };
         },
         methods : {
@@ -193,6 +198,18 @@
                 }).finally(() => {
                     this.loadingMore = false;
                 });
+            },
+            /**
+             * 会员总数
+             */
+            countMembers () {
+                ajax.post('countMembers').then(res => {
+                    if (res.success) {
+                        this.memberCountSum = res.data;
+                    } else {
+                        this.memberCountSum = '';
+                    }
+                });
             }
         },
         created () {
@@ -202,6 +219,8 @@
             this.getYesterdayIncreaseMemberCount();
             //获取本月增长数量
             this.getMonthIncreaseMemberCount();
+            //获取会员总数
+            this.countMembers();
         }
     };
 </script>
@@ -247,8 +266,12 @@
                     display: inline-block;
                 }
                 .total-label{
-                    margin-right: 15px;
+                    margin-right: 5px;
                     font-size: $font_size_18px;
+                }
+
+                .label-value{
+                    vertical-align: middle;
                 }
             }
 

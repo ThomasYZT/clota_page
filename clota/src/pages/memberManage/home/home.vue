@@ -6,7 +6,7 @@
 
             <!--会员数据概览-->
             <div class="data-show-left">
-                <data-total :member-sum-count="memberSumCount">
+                <data-total :member-card-count="memberSumCount">
                 </data-total>
             </div>
 

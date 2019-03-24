@@ -97,6 +97,8 @@ export default {
     'revocation' : '/pay/revocation',
     //下载会员信息
     'downLoadMemberInfo' : '/member/downLoadMemberInfo',
+    //会员统计
+    'countMembers' : '/member/report/countMembers',
 
 
     /***********************************会员积分***********************************/

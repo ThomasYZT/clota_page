@@ -359,10 +359,10 @@
                 }).then(res => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
-                        this.total = res.data.totalRow || 0;
+                        this.exportMemberCount = this.total = res.data.totalRow || 0;
                     } else {
                         this.tableData = [];
-                        this.total = 0;
+                        this.exportMemberCount = this.total = 0;
                     }
                 });
             },
@@ -479,6 +479,7 @@
              */
             confirmExportMemberInfo () {
                 let aEle = this.$el.querySelector('.member-info-export-link');
+                aEle.setAttribute('href',this.memberInfoDownLoadUrl);
                 aEle.click();
                 this.$refs.noticeModal.hide();
             }

@@ -2791,4 +2791,5 @@ export default {
     "msgServiceAccount" : "第三方短信服务商账号",
     "msgServicePassword" : "第三方短信服务商密码",
     "O006" : "机构名称已存在",
+    "totalMemberCount" : "会员总数",
 };
