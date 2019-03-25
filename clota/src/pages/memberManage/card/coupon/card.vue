@@ -144,16 +144,16 @@
                             <!-- 作废 -->
                             <li v-if="!isObsolote(scope.row)" :class="{disabled : isSpreadExpired(scope.row) }" @click="obsoloteCoupon(scope.row, 'spread')" class="red-label" >{{$t('obsolete')}}</li>
                             <!-- 重启 -->
-                            <li v-else class="yellow-btn" :class="{disabled : isSpreadExpired(scope.row) }" @click="reloadCoupon(scope.row, 'spread')">{{$t('restart')}}</li>
+                            <li v-else :class="{disabled : isSpreadExpired(scope.row) , 'yellow-btn' : !isSpreadExpired(scope.row) }" @click="reloadCoupon(scope.row, 'spread')">{{$t('restart')}}</li>
                         </template>
                         <!-- 只有权益型的、有操作权限的优惠券才能展示以下操作 -->
                         <template v-else-if="scope.row.appScene === 'right' && canOperateMembersCoupon">
                             <!-- 手动推送 可以无限推送 -->
-                            <li :class="{disabled : isObsolote(scope.row) || isRightExpired(scope.row) }" @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
+                            <li :class="{disabled : isObsolote(scope.row) }" @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
                             <!-- 作废 -->
-                            <li v-if="isObsolote(scope.row)" :class="{disabled : isRightExpired(scope.row) }" @click="obsoloteCoupon(scope.row, 'right')" class="red-label" >{{$t('obsolete')}}</li>
+                            <li v-if="!isObsolote(scope.row)" @click="obsoloteCoupon(scope.row, 'right')" class="red-label" >{{$t('obsolete')}}</li>
                             <!-- 重启 -->
-                            <li v-else class="yellow-btn" :class="{disabled : isRightExpired(scope.row) }" @click="reloadCoupon(scope.row, 'right')">{{$t('restart')}}</li>
+                            <li v-else class="yellow-btn" @click="reloadCoupon(scope.row, 'right')">{{$t('restart')}}</li>
                         </template>
                     </ul>
                 </template>
@@ -321,7 +321,7 @@
              *  @param rowData 券数据
              */
             manualPush (rowData) {
-                if (this.isObsolote(rowData) || this.isRightExpired(rowData)) return false;
+                if (this.isObsolote(rowData)) return false;
                 this.$refs.manualPushModal.show(rowData);
             },
             /**
@@ -342,7 +342,7 @@
              */
             isObsolote (rowData) {
                 //判断是否作废
-                return rowData.status === 'valid';
+                return rowData.status !== 'valid';
             },
             /**
              * 判断传播型优惠券是否过期
@@ -361,29 +361,12 @@
                 }
             },
             /**
-             * 判断权益型优惠券是否过期
-             * @param rowData 券数据
-             */
-            isRightExpired (rowData) {
-                if (rowData.createdTime && rowData.effDays) {
-                    if (new Date() >= new Date(rowData.createdTime) &&
-                        new Date() <= new Date(new Date(rowData.createdTime).getTime() + rowData.effDays * 24 * 60 * 60 * 1000 - 1)) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            },
-            /**
              * 作废券
              * @param rowData 券数据
              * @param couponType 卡券类型
              */
             obsoloteCoupon ( rowData, couponType ) {
                 if (couponType === 'spread' && this.isSpreadExpired(rowData)) return false;
-                if (couponType === 'right' && this.isRightExpired(rowData)) return false;
                 this.$refs.obsoleteModal.show(rowData);
             },
 
@@ -394,7 +377,6 @@
              */
             reloadCoupon (rowData, couponType) {
                 if (couponType === 'spread' && this.isSpreadExpired(rowData)) return false;
-                if (couponType === 'right' && this.isRightExpired(rowData)) return false;
                 ajax.post('updateCouponStatus', {
                     id : rowData.id,
                     status : 'valid',
@@ -525,7 +507,6 @@
                     return 'disabled-row';
                 } else {
                     if (row.appScene === 'spread' && this.isSpreadExpired(row)) return 'disabled-row';
-                    // if (row.appScene === 'right' && this.isRightExpired(row)) return 'disabled-row';
                     return '';
                 }
             }
