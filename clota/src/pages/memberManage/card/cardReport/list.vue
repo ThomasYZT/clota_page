@@ -55,7 +55,7 @@
         <Button class="ivu-btn-108px single-btn" type="primary" @click="exportReport">{{$t('exporting')}}</Button>
 
         <div class="table-wrapper">
-            <table-com :ofset-height="160"
+            <table-com :ofset-height="150"
                        :column-data="columnData"
                        :table-data="tableData"
                        :border="true"

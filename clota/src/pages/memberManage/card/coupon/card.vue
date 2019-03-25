@@ -64,7 +64,7 @@
 
         <!--表格-->
         <table-com
-            :ofset-height="110"
+            :ofset-height="166"
             :column-data="columnData"
             :table-data="tableData"
             :border="true"

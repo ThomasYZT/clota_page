@@ -2792,4 +2792,5 @@ export default {
     "msgServicePassword" : "第三方短信服务商密码",
     "O006" : "机构名称已存在",
     "totalMemberCount" : "会员总数",
+    "copyToClipBoard" : "{field}已复制到剪贴板",
 };

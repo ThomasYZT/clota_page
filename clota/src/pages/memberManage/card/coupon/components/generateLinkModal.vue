@@ -206,7 +206,7 @@
                     _input.setSelectionRange(0, 9999);
                     _input.select();
                     document.execCommand('copy');
-                    this.$Message.success(this.$t('successTip', { tip : this.$t('copy') }));
+                    this.$Message.success(this.$t('copyToClipBoard',{ field : this.$t('urLink') }));
                     this.$refs.step2.removeChild(_input);
                 } else {
                     this.$Message.error(this.$t('failureTip', { tip : this.$t('copy') }));

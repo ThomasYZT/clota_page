@@ -2792,4 +2792,5 @@ export default {
     "msgServicePassword" : "Sms password",
     "O006" : "Institution name already exists",
     "totalMemberCount" : "Total number",
+    "copyToClipBoard" : "{field} has been copied to the clipboard",
 };
