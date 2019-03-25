@@ -21,47 +21,52 @@
                 </no-data>
             </div>
             <div class="channel-area">
-                <div class="title">{{$t('memberChannelChoose')}}</div>
-                <table-com
-                    key="tableCom"
-                    ref="tableCom"
-                    :column-data="columns"
-                    :table-data="tableData"
-                    :border="true"
-                    :page-no-d.sync="pageNo"
-                    :show-pagination="true"
-                    :page-size-d.sync="pageSize"
-                    :total-count="totalCount"
-                    :auto-height="true"
-                    :table-com-min-height="280"
-                    @query-data="queryList"
-                    @selection-change="channelChange">
-                    <el-table-column
-                        slot="column0"
-                        slot-scope="row"
-                        :selectable="selectable"
-                        :label="row.title"
-                        type="selection"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                    </el-table-column>
-                </table-com>
-                <div class="title">{{$t('memberAreaChoose')}}</div>
-                <el-tree :data="companyData"
-                         node-key="id"
-                         ref="tree"
-                         :default-expand-all="true"
-                         show-checkbox
-                         :check-strictly="true"
-                         :props="defaultProps"
-                         :expand-on-click-node="false"
-                         v-if="companyData.length > 0"
-                         @check="treeChecked"
-                         :render-content="renderContent">
-                </el-tree>
-                <div class="tree-area" v-else>
-                    <no-data >
-                    </no-data>
+                <div class="wrap-area">
+                    <div class="title">{{$t('memberAreaChoose')}}</div>
+                    <el-tree :data="companyData"
+                             node-key="id"
+                             ref="tree"
+                             :highlight-current="true"
+                             :default-expand-all="true"
+                             show-checkbox
+                             :check-strictly="true"
+                             :props="defaultProps"
+                             :expand-on-click-node="false"
+                             v-if="companyData.length > 0"
+                             @check="treeChecked"
+                             :render-content="renderContent">
+                    </el-tree>
+                    <div class="tree-area" v-else>
+                        <no-data >
+                        </no-data>
+                    </div>
+                </div>
+                <div class="wrap-area" v-show="choosedScenic && Object.keys(choosedScenic).length > 0">
+                    <div class="title">{{choosedScenic.orgName}} - {{$t('memberChannelChoose')}}</div>
+                    <table-com
+                        key="tableCom"
+                        ref="tableCom"
+                        :column-data="columns"
+                        :table-data="tableData"
+                        :border="true"
+                        :page-no-d.sync="pageNo"
+                        :show-pagination="true"
+                        :page-size-d.sync="pageSize"
+                        :total-count="totalCount"
+                        :auto-height="true"
+                        :table-com-min-height="280"
+                        @query-data="queryList"
+                        @select="channelChange">
+                        <el-table-column
+                            slot="column0"
+                            slot-scope="row"
+                            :selectable="selectable"
+                            :label="row.title"
+                            type="selection"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                        </el-table-column>
+                    </table-com>
                 </div>
             </div>
         </div>
@@ -110,7 +115,9 @@
                 //选择的会员卡信息
                 chosedMemCard : '',
                 //会员卡级别对应的可用渠道和可用景区
-                cardCategoryChosedInfo : {}
+                cardCategoryChosedInfo : {},
+                //选择的景区信息
+                choosedScenic : {}
             };
         },
         methods : {
@@ -120,17 +127,17 @@
             queryList () {
                 ajax.post('querySelfOwnedChannel',{
                     pageNo : this.pageNo,
-                    pageSize : this.pageSize
+                    pageSize : this.pageSize,
+                    orgId : this.choosedScenic.id
                 }).then(res => {
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data.totalRow;
+                        this.setChoosedChannels();
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                }).finally(() => {
-                    this.getOrgTree();
                 });
             },
             /**
@@ -141,14 +148,18 @@
                     showScene : 'manage',
                     manageType : 'manage',
                 }).then(res =>{
-                   if (res.success) {
+                    this.choosedScenic = {};
+                    if (res.success) {
                        this.treeData = res.data ? res.data : {};
+                       if (this.treeData.length > 0) {
+                           this.choosedScenic = this.treeData[0];
+                           this.queryList();
+                       }
                    } else {
                        this.treeData = {};
                    }
                 }).finally(() => {
                     this.queryCardRangeList();
-                    // this.findBasicSet();
                 });
             },
             /**
@@ -164,13 +175,17 @@
                 return h('div', {
                     style : {
                         display : 'inline-block',
-                        width : '100%'
+                        width : '100%',
+                        height : '24px'
                     },
                     class : {
                         'title-wrap' : true,
+                        [this.$style.activeNode] : data.id === this.choosedScenic.id
                     },
                     on : {
                         click : () => {
+                            this.choosedScenic = data;
+                            this.queryList();
                         }
                     }
                 }, [
@@ -217,62 +232,28 @@
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('card-range-saved') }));
                     }
                 });
-                // ajax.post('basicSet',{
-                //     channelIds : this.channelSelected.map(item => item.partnerId).join(','),
-                //     parkIds : companyIds.join(','),
-                // }).then(res => {
-                //    if (res.success) {
-                //        this.$Message.success('保存成功');
-                //        this.findBasicSet();
-                //    } else {
-                //        this.$Message.error('保存失败');
-                //    }
-                // });
             },
             /**
              * 选中的自营渠道修改
              * @param data
              */
-            channelChange (data) {
+            channelChange ({ row }) {
                 if (this.cardCategoryChosedInfo[this.chosedMemCard]) {
-                    this.cardCategoryChosedInfo[this.chosedMemCard]['channel'] = data.map(item => item.partnerId);
+                    let index = this.cardCategoryChosedInfo[this.chosedMemCard]['channel'].indexOf(row.partnerId);
+                    if (index !== -1) {
+                        this.cardCategoryChosedInfo[this.chosedMemCard]['channel'].splice(index,1);
+                    } else {
+                        this.cardCategoryChosedInfo[this.chosedMemCard]['channel'].push(row.partnerId);
+                    }
                 }
-                // this.channelSelected = data;
             },
             /**
              * 取消保存，重置状态
              */
             resetFieldFunc () {
-                this.queryList();
+                this.getMemberLevelsInType();
+                this.getOrgTree();
             },
-            /**
-             * 获取会员卡可用范围设置
-             */
-            // findBasicSet () {
-            //     ajax.post('findBasicSet').then(res => {
-            //        if (res.success) {
-            //            if (res.data) {
-            //                if (res.data.channelIds) {
-            //                    let channelSelected = res.data.channelIds.split(',');
-            //                    this.$nextTick(() => {
-            //                        for (let i = 0,j = this.tableData.length; i < j; i++) {
-            //                            if (channelSelected.includes(this.tableData[i].partnerId)) {
-            //                                this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
-            //                            }
-            //                        }
-            //                    });
-            //                }
-            //                if (res.data.parkIds) {
-            //                    this.$nextTick(() => {
-            //                        this.$refs.tree.setCheckedKeys(res.data.parkIds.split(','));
-            //                    });
-            //                }
-            //            }
-            //        } else {
-            //            this.channelSelected = [];
-            //        }
-            //     });
-            // },
             /**
              * 获取所有会员类别和类别下的所有级别数据
              */
@@ -298,7 +279,10 @@
              * 判断会员卡可用渠道是否可以选择
              */
             selectable () {
-                return !!this.chosedMemCard;
+                if (this.cardCategoryChosedInfo[this.chosedMemCard]) {
+                    return this.cardCategoryChosedInfo[this.chosedMemCard]['scenic'].includes(this.choosedScenic.id);
+                }
+                return false;
             },
             /**
              * 会员卡级别选择状态改变
@@ -319,16 +303,11 @@
                     });
                 } else {
                     this.$nextTick(() => {
-                        let channelsData = this.cardCategoryChosedInfo[rowDataid]['channel'];
-                        for (let i = 0,j = this.tableData.length; i < j; i++) {
-                            if (channelsData.includes(this.tableData[i]['partnerId'])) {
-                                this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
-                            } else {
-                                this.$refs.tableCom.toggleRowSelection(this.tableData[i],false);
-                            }
+                        if (this.$refs.tree) {
+                            this.$refs.tree.setCheckedKeys(this.cardCategoryChosedInfo[rowDataid]['scenic']);
                         }
-                        this.$refs.tree.setCheckedKeys(this.cardCategoryChosedInfo[rowDataid]['scenic']);
                     });
+                    this.setChoosedChannels();
                 }
             },
             /**
@@ -340,6 +319,12 @@
                 if (this.cardCategoryChosedInfo[this.chosedMemCard]) {
                     this.cardCategoryChosedInfo[this.chosedMemCard]['scenic'] = checkedNodes.map(item => item.id);
                 }
+                //景区取消选择，那么渠道也要取消选择
+                if (!checkedNodes.includes(data)) {
+                    this.cardCategoryChosedInfo[this.chosedMemCard]['channel'] = [];
+                    this.setChoosedChannels();
+                }
+                this.queryList();
             },
             /**
              * 查询会员卡使用范围设置
@@ -360,11 +345,26 @@
                     }
                     this.cardTypeChosedChange(this.chosedMemCard);
                 });
+            },
+            /**
+             * 设置选中的渠道
+             */
+            setChoosedChannels () {
+                this.$nextTick(() => {
+                    let channels = this.cardCategoryChosedInfo[this.chosedMemCard] ? this.cardCategoryChosedInfo[this.chosedMemCard]['channel'] : [];
+                    for (let i = 0,j = this.tableData.length; i < j; i++) {
+                        if (channels.includes(this.tableData[i]['partnerId'])) {
+                            this.$refs.tableCom.toggleRowSelection(this.tableData[i],true);
+                        } else {
+                            this.$refs.tableCom.toggleRowSelection(this.tableData[i],false);
+                        }
+                    }
+                });
             }
         },
         created () {
             this.getMemberLevelsInType();
-            // this.findBasicSet();
+            this.getOrgTree();
         },
         computed : {
             //组织树数组格式数据
@@ -433,6 +433,12 @@
                 float: left;
                 padding-left: 30px;
                 overflow: auto;
+
+                .wrap-area{
+                    width: 50%;
+                    height: 100%;
+                    float: left;
+                }
             }
 
             .title{
@@ -476,5 +482,10 @@
             position: relative;
             @include block_outline(500px,200px);
         }
+    }
+</style>
+<style module>
+    .activeNode {
+        color: #2F70DF;
     }
 </style>
