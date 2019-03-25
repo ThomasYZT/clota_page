@@ -151,7 +151,7 @@
                             <!-- 手动推送 可以无限推送 -->
                             <li :class="{disabled : isObsolote(scope.row) || isRightExpired(scope.row) }" @click="manualPush(scope.row)">{{$t('manualPush')}}</li>
                             <!-- 作废 -->
-                            <li v-if="!isObsolote(scope.row)" :class="{disabled : isRightExpired(scope.row) }" @click="obsoloteCoupon(scope.row, 'right')" class="red-label" >{{$t('obsolete')}}</li>
+                            <li v-if="isObsolote(scope.row)" :class="{disabled : isRightExpired(scope.row) }" @click="obsoloteCoupon(scope.row, 'right')" class="red-label" >{{$t('obsolete')}}</li>
                             <!-- 重启 -->
                             <li v-else class="yellow-btn" :class="{disabled : isRightExpired(scope.row) }" @click="reloadCoupon(scope.row, 'right')">{{$t('restart')}}</li>
                         </template>
@@ -342,7 +342,7 @@
              */
             isObsolote (rowData) {
                 //判断是否作废
-                return rowData.status === 'valid' ? false : true;
+                return rowData.status === 'valid';
             },
             /**
              * 判断传播型优惠券是否过期
@@ -373,7 +373,7 @@
                         return true;
                     }
                 } else {
-                    return true;
+                    return false;
                 }
             },
             /**
@@ -525,7 +525,7 @@
                     return 'disabled-row';
                 } else {
                     if (row.appScene === 'spread' && this.isSpreadExpired(row)) return 'disabled-row';
-                    if (row.appScene === 'right' && this.isRightExpired(row)) return 'disabled-row';
+                    // if (row.appScene === 'right' && this.isRightExpired(row)) return 'disabled-row';
                     return '';
                 }
             }
