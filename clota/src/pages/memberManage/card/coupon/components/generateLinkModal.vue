@@ -40,8 +40,11 @@
 
             <!-- 步骤2 -->
             <div ref="step2" class="step-2" v-else>
-                <Input :value="link" style="width: 410px" readonly>
-                    <span slot="append" @click="clipboard">{{$t('copy')}}</span>
+                <Input :value="link" style="width: 410px" readonly id="_coupon-copy-target-btn">
+                    <span slot="append"
+                          id="_coupon_copy-btn"
+                          data-clipboard-action="copy"
+                          :data-clipboard-target="'#_coupon-copy-target-btn .ivu-input'">{{$t('copy')}}</span>
                 </Input>
             </div>
 
@@ -132,6 +135,7 @@
                         this.generateLinks().then(link => {
                             this.editing = false;
                             this.link = link;
+                            this.setClipboardAction();
                         }).catch(code => {
                             if (code) {
                                 this.$Message.error(this.$t(code));
@@ -194,25 +198,6 @@
                 });
             },
             /**
-             * 复制到剪贴板
-             */
-            clipboard () {
-                let _input = document.createElement('input');
-                _input.value = this.link;
-                _input.setAttribute('type', 'text');
-                _input.setAttribute('readonly', 'readonly');
-                if (document.execCommand('copy')) {
-                    this.$refs.step2.appendChild(_input);
-                    _input.setSelectionRange(0, 9999);
-                    _input.select();
-                    document.execCommand('copy');
-                    this.$Message.success(this.$t('copyToClipBoard',{ field : this.$t('urLink') }));
-                    this.$refs.step2.removeChild(_input);
-                } else {
-                    this.$Message.error(this.$t('failureTip', { tip : this.$t('copy') }));
-                }
-            },
-            /**
              * 校验链接地址
              * @param{Array} rule 校验规则
              * @param{String} value 校验值
@@ -228,8 +213,28 @@
                 } else {
                     callback(this.$t('inputField',{ field : this.$t('urLink') }));
                 }
+            },
+            /**
+             * 设置复制到剪贴板功能
+             */
+            setClipboardAction () {
+                this.$nextTick(() => {
+                    let btnEle = document.querySelector('#_coupon_copy-btn');
+                    let copyBtn = null;
+                    if (btnEle) {
+                        copyBtn = new this.Clipboard(btnEle);
+                        //复制到剪贴板成功
+                        copyBtn.on('success', () => {
+                            this.$Message.success(this.$t('copyToClipBoard',{ field : this.$t('urLink') }));
+                        });
+                        //复制到剪贴板失败
+                        copyBtn.on('error', () => {
+                            this.$Message.error(this.$t('failureTip', { tip : this.$t('copy') }));
+                        });
+                    }
+                });
             }
-        }
+        },
     };
 </script>
 
