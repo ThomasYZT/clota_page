@@ -24,6 +24,13 @@
                 </el-dropdown-menu>
             </el-dropdown>
 
+            <span class="copy-btn"
+                  :data-clipboard-target="'#_partner-copy-btn'"
+                  data-clipboard-action="copy">
+                {{$t('invalidRegister')}}
+                <span id="_partner-copy-btn">{{registerLink}}</span>
+            </span>
+
             <Input class="input-field"
                    v-model.trim="filterParam.keyword"
                    icon="ios-search"
@@ -214,7 +221,7 @@
                 //协议期未过期删除失败的合作伙伴
                 noExpireErrorPartner : [],
                 //尾款未结清删除失败的合作伙伴
-                noSettleErrorPartner : []
+                noSettleErrorPartner : [],
             };
         },
         methods : {
@@ -436,9 +443,31 @@
                     },]);
                 }
                 return result;
+            },
+            //注册合作伙伴地址链接
+            registerLink () {
+                const { href } = this.$router.resolve({
+                    name : 'register'
+                });
+                return location.origin + href;
             }
         },
-        created () {
+        mounted () {
+            this.$nextTick(() => {
+                let btnEle = this.$el.querySelector('.copy-btn');
+                let copyBtn = null;
+                if (btnEle) {
+                    copyBtn = new this.Clipboard(btnEle);
+                    //复制到剪贴板成功
+                    copyBtn.on('success', () => {
+                        this.$Message.success(this.$t('copyToClipBoard',{ field : this.$t('urLink') }));
+                    });
+                    //复制到剪贴板失败
+                    copyBtn.on('error', () => {
+                        this.$Message.error(this.$t('failureTip', { tip : this.$t('copy') }));
+                    });
+                }
+            });
         },
     };
 </script>
@@ -462,6 +491,25 @@
             /deep/ .ivu-btn-ghost {
                 border-color: $color_blue;
                 color: $color_blue;
+            }
+
+            .copy-btn{
+                color: $color_blue;
+                float: left;
+                cursor: pointer;
+                margin-left: 10px;
+                display: inline-block;
+                line-height: 30px;
+                height: 30px;
+
+                #_partner-copy-btn{
+                    position: absolute;
+                    z-index: -1;
+                }
+            }
+
+            /deep/ .el-dropdown{
+                float: left;
             }
         }
 

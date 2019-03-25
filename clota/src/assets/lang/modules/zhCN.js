@@ -2793,4 +2793,5 @@ export default {
     "O006" : "机构名称已存在",
     "totalMemberCount" : "会员总数",
     "copyToClipBoard" : "{field}已复制到剪贴板",
+    "invalidRegister" : "邀请注册",
 };

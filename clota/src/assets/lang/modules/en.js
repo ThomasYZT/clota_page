@@ -2793,4 +2793,5 @@ export default {
     "O006" : "Institution name already exists",
     "totalMemberCount" : "Total number",
     "copyToClipBoard" : "{field} has been copied to the clipboard",
+    "invalidRegister" : "Invitation registration",
 };

@@ -21,6 +21,7 @@ import Viewer from 'v-viewer';
 import { locale } from 'iview';
 import iviewEn from '@/assets/lang/modules/iview-en-US.js';
 import iviewZh from 'iview/dist/locale/zh-CN';
+import clipboard from 'clipboard';
 
 import eleLocale from 'element-ui/lib/locale';
 import eleEnLang from 'element-ui/lib/locale/lang/en';
@@ -31,6 +32,8 @@ import plugin from './assets/js/plugin';
 // eleLocale.use(eleEnLang);
 import common from './assets/js/common';
 
+//注册到vue原型上
+Vue.prototype.Clipboard = clipboard;
 Vue.use(plugin);
 Vue.config.productionTip = true;
 Vue.use(Viewer, {
