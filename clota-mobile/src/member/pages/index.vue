@@ -2,17 +2,20 @@
 
 <template>
     <div class="member-wrap">
-        <template v-if="isWeixin">
-            <transition name="fade">
-                <router-view>
-                </router-view>
-            </transition>
-        </template>
-        <template v-else>
-            <div class="invlid-url">
-                <img src="../../assets/images/icon-invalid-url.png" alt="">
-            </div>
-        </template>
+        <router-view>
+
+        </router-view>
+        <!--<template v-if="isWeixin">-->
+            <!--<transition name="fade">-->
+                <!--<router-view>-->
+                <!--</router-view>-->
+            <!--</transition>-->
+        <!--</template>-->
+        <!--<template v-else>-->
+            <!--<div class="invlid-url">-->
+                <!--<img src="../../assets/images/icon-invalid-url.png" alt="">-->
+            <!--</div>-->
+        <!--</template>-->
         <!--tab菜单栏-->
         <tabbar v-if="isTabbarShow && cardInfo.cardTypeId !== '1' && hasPointMenu"
                 v-model="actived" >

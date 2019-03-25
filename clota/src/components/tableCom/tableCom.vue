@@ -17,6 +17,7 @@
                   @header-click="headerClick"
                   @sort-change="handleSortChanged"
                   @row-click="classDetailLink"
+                  @select="handlerChangeChoosed"
                   @selection-change="handleSelectionChange">
                    <el-table-column
                         v-if="columnCheck"
@@ -374,6 +375,23 @@
             headerClick (column, event) {
                 this.$emit('headerClick', column, event);
             },
+            /**
+             * 手动勾选数据行的checkbox时触发
+             * @param selection
+             * @param row
+             */
+            handlerChangeChoosed (selection, row) {
+                this.$emit('select',{
+                    selection,
+                    row
+                });
+            },
+            /**
+             * 从新布局表格
+             */
+            doLayout () {
+                this.$refs.multipleTable.doLayout();
+            }
         },
         created () {
             if (this.autoQueryFirst) {
