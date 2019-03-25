@@ -123,7 +123,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             },
             /**
              * 删除商品
@@ -151,7 +151,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('del') }));
                     }
-                })
+                });
             }
         }
     };

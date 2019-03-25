@@ -40,7 +40,7 @@
 
 <script>
     import ajax from '@/api/index.js';
-    import { mapGetters } from  'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : {

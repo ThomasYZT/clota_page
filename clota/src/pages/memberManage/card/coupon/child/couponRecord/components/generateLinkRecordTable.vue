@@ -43,7 +43,7 @@
             dateTime : {
                 type : Array,
                 default () {
-                    return [new Date(), new Date().addDays(-7)]
+                    return [new Date(), new Date().addDays(-7)];
                 }
             }
         },
@@ -87,7 +87,7 @@
         watch : {
             dateTime : {
                 handler (newVal) {
-                    this.queryList()
+                    this.queryList();
                 },
             }
         }

@@ -21,47 +21,51 @@
                 </no-data>
             </div>
             <div class="channel-area">
-                <div class="title">{{$t('memberChannelChoose')}}</div>
-                <table-com
-                    key="tableCom"
-                    ref="tableCom"
-                    :column-data="columns"
-                    :table-data="tableData"
-                    :border="true"
-                    :page-no-d.sync="pageNo"
-                    :show-pagination="true"
-                    :page-size-d.sync="pageSize"
-                    :total-count="totalCount"
-                    :auto-height="true"
-                    :table-com-min-height="280"
-                    @query-data="queryList"
-                    @selection-change="channelChange">
-                    <el-table-column
-                        slot="column0"
-                        slot-scope="row"
-                        :selectable="selectable"
-                        :label="row.title"
-                        type="selection"
-                        :width="row.width"
-                        :min-width="row.minWidth">
-                    </el-table-column>
-                </table-com>
-                <div class="title">{{$t('memberAreaChoose')}}</div>
-                <el-tree :data="companyData"
-                         node-key="id"
-                         ref="tree"
-                         :default-expand-all="true"
-                         show-checkbox
-                         :check-strictly="true"
-                         :props="defaultProps"
-                         :expand-on-click-node="false"
-                         v-if="companyData.length > 0"
-                         @check="treeChecked"
-                         :render-content="renderContent">
-                </el-tree>
-                <div class="tree-area" v-else>
-                    <no-data >
-                    </no-data>
+                <div class="wrap-area">
+                    <div class="title">{{$t('memberAreaChoose')}}</div>
+                    <el-tree :data="companyData"
+                             node-key="id"
+                             ref="tree"
+                             :default-expand-all="true"
+                             show-checkbox
+                             :check-strictly="true"
+                             :props="defaultProps"
+                             :expand-on-click-node="false"
+                             v-if="companyData.length > 0"
+                             @check="treeChecked"
+                             :render-content="renderContent">
+                    </el-tree>
+                    <div class="tree-area" v-else>
+                        <no-data >
+                        </no-data>
+                    </div>
+                </div>
+                <div class="wrap-area" v-if="choosedScenic && Object.keys(choosedScenic).length > 0">
+                    <div class="title">{{choosedScenic.orgName}} - {{$t('memberChannelChoose')}}</div>
+                    <table-com
+                        key="tableCom"
+                        ref="tableCom"
+                        :column-data="columns"
+                        :table-data="tableData"
+                        :border="true"
+                        :page-no-d.sync="pageNo"
+                        :show-pagination="true"
+                        :page-size-d.sync="pageSize"
+                        :total-count="totalCount"
+                        :auto-height="true"
+                        :table-com-min-height="280"
+                        @query-data="queryList"
+                        @selection-change="channelChange">
+                        <el-table-column
+                            slot="column0"
+                            slot-scope="row"
+                            :selectable="selectable"
+                            :label="row.title"
+                            type="selection"
+                            :width="row.width"
+                            :min-width="row.minWidth">
+                        </el-table-column>
+                    </table-com>
                 </div>
             </div>
         </div>
@@ -164,13 +168,17 @@
                 return h('div', {
                     style : {
                         display : 'inline-block',
-                        width : '100%'
+                        width : '100%',
+                        height : '24px'
                     },
                     class : {
                         'title-wrap' : true,
+                        [this.$style.choosedNode] : data.id === this.choosedScenic.id
                     },
                     on : {
                         click : () => {
+                            this.choosedScenic = data;
+                            this.queryList(data.id);
                         }
                     }
                 }, [

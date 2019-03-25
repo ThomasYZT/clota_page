@@ -75,7 +75,7 @@
             };
             //校验密码是否符合规则
             const validatePass = (rule,value,callback) => {
-                let reg =/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+                let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
                 if (!reg.test(value)) {
                     callback(new Error( this.$t('errorPwdRule') ));
                 } else {

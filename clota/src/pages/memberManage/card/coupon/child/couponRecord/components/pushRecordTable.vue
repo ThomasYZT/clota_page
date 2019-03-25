@@ -123,7 +123,7 @@
             dateTime : {
                 type : Array,
                 default () {
-                    return [new Date(), new Date().addDays(-7)]
+                    return [new Date(), new Date().addDays(-7)];
                 }
             }
         },
@@ -163,7 +163,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             },
             /**
              * 详细
@@ -197,7 +197,7 @@
                     }
                     this.$set(rowData, 'query', true);
                     // rowData.query = true;
-                })
+                });
             }
         },
         watch : {

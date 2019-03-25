@@ -100,7 +100,7 @@
                         { validator : this.validateMethods.emoji, trigger : 'blur' },
                         { max : 50, message : this.$t('errorMaxLength', { field : this.$t('remark'), length : 50 }), trigger : 'blur' },
                     ],
-                }
+                };
             }
         },
         methods : {

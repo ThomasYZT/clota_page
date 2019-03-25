@@ -102,7 +102,7 @@
                 } else if (this.type === 'used') {
                     return 'used';
                 } else if (this.type === 'noUse') {
-                    return 'noUse'
+                    return 'noUse';
                 } else if (this.type === 'redeemed') {
                     return 'exchange';
                 } else {

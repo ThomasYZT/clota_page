@@ -13,7 +13,7 @@ export const emoji = (rule, value, callback) => {
     } else {
         callback();
     }
-}
+};
 
 /**
  * 只能输入中文和英文
@@ -21,11 +21,11 @@ export const emoji = (rule, value, callback) => {
 export const validateCN = (rule, value, callback) => {
     let reg = /^[0-9a-zA-Z]*$/g;
     if (reg.test(value)) {
-        callback ()
+        callback ();
     } else {
         callback(new Error(i18n.t('onlyInput', { field : i18n.t('letter') + i18n.t('number') })));
     }
-}
+};
 
 /**
  * 校验钱
@@ -78,7 +78,7 @@ export const validateNum = (rule,value,callback) => {
 export const validateDiscount = (rule, value, callback) => {
     if (value) {
         if (isNaN(Number(value))) {
-            callback(i18n.t('onlyInput', { field : i18n.t('number') }))
+            callback(i18n.t('onlyInput', { field : i18n.t('number') }));
         } else {
             if (String(value).length > 4) {
                 callback(i18n.t('errorMaxLength', { field : i18n.t(rule.customField ? rule.customField : rule.field),
@@ -92,9 +92,9 @@ export const validateDiscount = (rule, value, callback) => {
             }
         }
     } else {
-        callback()
+        callback();
     }
-}
+};
 
 /**
  * 校验电话号码
@@ -123,7 +123,7 @@ export const validateEndTime = (rule, value, callback) => {
     } else {
         callback();
     }
-}
+};
 
 /**
  * 校验最高消费金额大于最低消费金额
@@ -136,12 +136,12 @@ export const validateConditionUpperLimtation = (rule, value, callback) => {
         if (Number(value) < Number(rule.conditionLowerLimtation)) {
             callback(i18n.t('endConsumeBiggerThanStartConsume'));
         } else {
-            callback()
+            callback();
         }
     } else {
         callback();
     }
-}
+};
 /**
  * 不大于比较值校验
  * @param rule
@@ -151,12 +151,12 @@ export const validateConditionUpperLimtation = (rule, value, callback) => {
 export const noBiggerValidate = (rule, value, callback) => {
     if (rule.compareValue) {
         if (Number(value) > Number(rule.compareValue)) {
-            callback(i18n.t('errorGreaterThan', { small : i18n.t(rule.customField), big : i18n.t(rule.compareFeild) }))
+            callback(i18n.t('errorGreaterThan', { small : i18n.t(rule.customField), big : i18n.t(rule.compareFeild) }));
         } else {
             callback();
         }
     } else {
         callback();
     }
-}
+};
 

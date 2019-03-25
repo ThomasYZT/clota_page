@@ -139,12 +139,12 @@ export const validateNaturalNumber = (rule, value, callback) => {
                 callback();
             }
         } else {
-            callback(i18n.t('numError', { field : i18n.t(rule.customField ? rule.customField : rule.field) }))
+            callback(i18n.t('numError', { field : i18n.t(rule.customField ? rule.customField : rule.field) }));
         }
     } else {
         callback();
     }
-}
+};
 /**
  * 校验产品配额数量
  * @param rule
@@ -171,7 +171,7 @@ export const validateDateRange = (rule, value, callback) => {
     } else {
         callback(i18n.t("selectField", { feild : i18n.t('date') }));
     }
-}
+};
 
 //校验分账金额
 export const validateItemRule = (rule, value, callback) => {

@@ -138,7 +138,7 @@
                         minWidth : 150,
                         field : 'nominalValue',
                     });
-                    return baseColoum
+                    return baseColoum;
                 } else if (this.couponInfo.couponType === 'exchange_coupon') {
                     baseColoum.unshift({
                         title : 'exchangableGood',
@@ -204,7 +204,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             }
         }
     };

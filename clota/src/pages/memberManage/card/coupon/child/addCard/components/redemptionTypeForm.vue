@@ -245,7 +245,7 @@
                         { validator : noBiggerValidate, trigger : 'blur',
                           compareValue : this.formData.totalGain,
                           customField : 'amountSingleDay',
-                          compareFeild : 'amountLimit'}
+                          compareFeild : 'amountLimit' }
                     ],
                     //可领取数量上限
                     totalGain : [
@@ -254,7 +254,7 @@
                         { validator : noBiggerValidate, trigger : 'blur',
                           compareValue : this.formData.quantity,
                           customField : 'amountLimit',
-                          compareFeild : 'generationNum'}
+                          compareFeild : 'generationNum' }
                     ],
                     //商品
                     conditionGoodId : [
@@ -268,7 +268,7 @@
                     conditionOrgId : [
                         { required : true, type : 'array', min : 1, message : this.$t('selectField',{ msg : this.$t('shop') }), trigger : 'blur' },
                     ],
-                }
+                };
             }
         },
         methods : {
@@ -282,15 +282,19 @@
                             let resultForm = defaultsDeep({}, this.formData);
                             resultForm.effectiveTime = resultForm.effectiveTime ? resultForm.effectiveTime.format('yyyy-MM-dd') : '';
                             resultForm.expireTime = resultForm.expireTime ? resultForm.expireTime.format('yyyy-MM-dd') : '';
-                            resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => { return item.partnerId }).join(',');
-                            resultForm.conditionOrgId = resultForm.conditionOrgId.map(item => { return item.id }).join(',');
+                            resultForm.conditionChannelId = resultForm.conditionChannelId.map(item => {
+ return item.partnerId;
+}).join(',');
+                            resultForm.conditionOrgId = resultForm.conditionOrgId.map(item => {
+ return item.id;
+}).join(',');
                             resultForm.remark = this.getDiscountRemark();
                             resolve(resultForm);
                         } else {
                             reject();
                         }
-                    })
-                })
+                    });
+                });
             },
             /**
              * 复原表单状态
@@ -354,7 +358,7 @@
                     this.formData.conditionChannelId = this.channelSetList.filter(item => {
                         return conditionChannelIds.includes(item.partnerId);
                     });
-                }, 500)
+                }, 500);
             }
         }
     };

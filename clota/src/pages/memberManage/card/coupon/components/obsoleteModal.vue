@@ -38,7 +38,7 @@
 
 <script>
     import ajax from '@/api/index';
-    import defaultsDeep from 'lodash/defaultsDeep'
+    import defaultsDeep from 'lodash/defaultsDeep';
     export default {
         components : {},
         data () {

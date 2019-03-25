@@ -80,7 +80,7 @@
                     levelIds : [
                         { required : true, type : 'array', min : 1, message : this.$t('selectField',{ msg : this.$t('memberCardCategory') }), trigger : 'blur' },
                     ]
-                }
+                };
             }
         },
         methods : {
@@ -120,7 +120,7 @@
                     } else {
                         this.$Message.error(this.$t('failureTip', { tip : this.$t('push') }));
                     }
-                })
+                });
             },
             /**
              *  返回
@@ -148,13 +148,13 @@
                     }).then(res => {
                         if (res.success) {
                             this.typeList = res.data ? res.data : [];
-                            resolve()
+                            resolve();
                         } else {
                             this.typeList = [];
                             reject();
                         }
                     });
-                })
+                });
             },
             /**
              * 重置校验

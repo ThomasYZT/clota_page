@@ -546,7 +546,7 @@
                         });
                         if (coverIndex > 0) {
                             this.orgImages.splice(0, 0, this.orgImages[coverIndex]);
-                            this.orgImages.splice(coverIndex+1, 1);
+                            this.orgImages.splice(coverIndex + 1, 1);
 
                         }
                     } else {

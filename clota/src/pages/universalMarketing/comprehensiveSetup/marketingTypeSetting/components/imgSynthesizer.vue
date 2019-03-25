@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+    import 'vue-draggable-resizable/dist/VueDraggableResizable.css';
     import vueQRcode from './vueQRcode';
     export default {
         props : {

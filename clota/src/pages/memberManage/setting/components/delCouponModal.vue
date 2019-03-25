@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import delModal from  '@/components/delModal/index.vue';
+    import delModal from '@/components/delModal/index.vue';
 
     export default {
         components : {

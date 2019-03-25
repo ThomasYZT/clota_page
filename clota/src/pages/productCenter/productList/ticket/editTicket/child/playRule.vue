@@ -213,7 +213,7 @@
                         forEach(this.productPlayRuleVo, item => {
                             if (this.formData.productEffSet === 'since_the_play' && (item.effDay == '' || item.effDay == 0)) {
                                 this.$Message.warning(this.$t('inputField', { feild : this.$t('AvailableNumberOfDays') }));
-                                reject('AvailableNumberOfDays')
+                                reject('AvailableNumberOfDays');
                                 return false;
                             }
                         });

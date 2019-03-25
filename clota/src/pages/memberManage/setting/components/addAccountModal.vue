@@ -159,7 +159,7 @@
     import defaultsDeep from 'lodash/defaultsDeep';
     import tableCom from '@/components/tableCom/tableCom.vue';
     import selectTree from '@/components/selectTree/index.vue';
-    import { mapGetters } from  'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         props : ['length','table-data','send-data'],

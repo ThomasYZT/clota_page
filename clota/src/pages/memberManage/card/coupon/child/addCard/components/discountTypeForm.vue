@@ -309,7 +309,7 @@
                         { validator : noBiggerValidate, trigger : 'blur',
                           compareValue : this.formData.totalGain,
                           customField : 'amountSingleDay',
-                          compareFeild : 'amountLimit'}
+                          compareFeild : 'amountLimit' }
                     ],
                     totalGain : [ //可领取数量上限
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountLimit') }), trigger : 'blur' },
@@ -317,7 +317,7 @@
                         { validator : noBiggerValidate, trigger : 'blur',
                           compareValue : this.formData.quantity,
                           customField : 'amountLimit',
-                          compareFeild : 'generationNum'}
+                          compareFeild : 'generationNum' }
                     ],
                     isDiscountCoexist : [ //能否和会员折扣同时使用
                         { required : true, type : 'string', message : this.$t('selectField',{ msg : '' }), trigger : 'blur' },

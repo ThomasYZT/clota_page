@@ -227,7 +227,7 @@
                         this.$router.push({
                             name : 'coupon'
                         });
-                    })
+                    });
                 } else {
                     this.$router.push({
                         name : 'coupon'
@@ -349,7 +349,7 @@
                         this.listAmountRange = [];
                         reject();
                     });
-                })
+                });
             },
             /**
              * 查询所有产品类别信息
@@ -371,7 +371,7 @@
                         this.productTypeList = [];
                         reject();
                     });
-                })
+                });
             },
             /**
              * 查询商品列表数据
@@ -392,8 +392,8 @@
                     }).catch(() => {
                         this.productList = [];
                         reject();
-                    })
-                })
+                    });
+                });
             },
             /**
              * 初始化数据 查看、修改

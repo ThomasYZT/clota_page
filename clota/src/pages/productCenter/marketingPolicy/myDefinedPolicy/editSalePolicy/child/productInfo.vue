@@ -137,7 +137,7 @@
                 if (this.hasMarket !== 'true') {
                     return productColumn.filter(item => {
                         return item.title !== 'marketQuota';
-                    })
+                    });
                 } else {
                     return productColumn;
                 }

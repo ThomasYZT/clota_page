@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import ImgUploader from '../../../../register/components/ImgUploader'
+    import ImgUploader from '../../../../register/components/ImgUploader';
     export default {
         components : {
             ImgUploader

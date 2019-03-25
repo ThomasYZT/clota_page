@@ -136,7 +136,7 @@
                         this.tableData = [];
                         this.totalCount = [];
                     }
-                })
+                });
             }
         }
     };

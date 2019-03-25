@@ -337,7 +337,7 @@
             productColumn () {
                 if (this.manageOrgs.nodeType === 'partner') {
                     return productColumn.filter((item) => {
-                        return item.field === 'productName' || item.field === 'settlePrice'
+                        return item.field === 'productName' || item.field === 'settlePrice';
                     });
                 } else {
                     return productColumn;

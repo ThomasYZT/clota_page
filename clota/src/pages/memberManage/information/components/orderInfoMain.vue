@@ -68,7 +68,7 @@
             infoData : {
                 type : Object,
                 default () {
-                    return  {};
+                    return {};
                 }
             }
         },

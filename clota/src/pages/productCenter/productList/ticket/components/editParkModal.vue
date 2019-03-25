@@ -958,7 +958,7 @@
                                         playType : "optional",//默认可玩
                                         sumTimes : 0,
                                         dayTimes : 0,
-                                    }
+                                    };
                                 }));
                             } else {
                                 //入园检票处表格数据
@@ -974,7 +974,7 @@
                                         checkId : item.partnerId,
                                         checkType : "garden",
                                         status : 'valid',
-                                    }
+                                    };
                                 }));
                             }
                         }

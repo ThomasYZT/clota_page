@@ -247,7 +247,7 @@
             if (couponTypeList.findIndex(item => {
                 return item.value === 'all';
             }) < 0) {
-                couponTypeList.unshift({ label : 'all', value : 'all' })
+                couponTypeList.unshift({ label : 'all', value : 'all' });
             }
             return {
                 //会员卡使用场景下拉列表数据

@@ -65,7 +65,7 @@
 <script>
     import config from '../../../../../config/index';
     import apiList from '../../../../../api/apiList';
-    import ajax from '@/api/index'
+    import ajax from '@/api/index';
     import { validateNum, validateMobile, noBiggerValidate } from '../../validateMethods';
     export default {
         components : {},
@@ -120,7 +120,7 @@
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('recipientPhone') }), trigger : 'blur' },
                         { validator : validateMobile, trigger : 'blur' }
                     ],
-                }
+                };
             }
         },
         methods : {
@@ -152,7 +152,7 @@
                     if (this.formData.needCount <= this.countWaitNum) {
                         let href = config['HOST'] + apiList['downLoadCoupon'] + '?token=' + ajax.getToken();
                         for (let param in this.formData) {
-                            href += '&' + param + '=' + this.formData[param]
+                            href += '&' + param + '=' + this.formData[param];
                         }
                         href += '&' + 'couponId' + '=' + this.rowData.id + '&time=' + new Date().valueOf();
                         let aLink = document.createElement('a');
@@ -190,8 +190,8 @@
                         } else {
                             reject();
                         }
-                    })
-                })
+                    });
+                });
             }
         }
     };

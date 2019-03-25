@@ -101,7 +101,7 @@
                         this.tableData = [];
                         this.totalCount = 0;
                     }
-                })
+                });
             },
             /**
              * 判断卡券是否过期
@@ -112,7 +112,7 @@
                 if (nowTime >= new Date(rowData.effTime) && nowTime <= new Date(rowData.expTime)) {
                     return this.$t('notExpired');
                 } else {
-                    return this.$t('expired')
+                    return this.$t('expired');
                 }
             }
         }
