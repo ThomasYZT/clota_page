@@ -112,7 +112,7 @@ const apiList = {
     checkCardLevelOfGrowth : '/external/memberInfo/checkCardLevelOfGrowth',
     //查询公司下成长型卡级
     queryLevelsOfGrowth : '/external/memberInfo/queryLevelsOfGrowth',
-    //查询会员配置
+    //查询公众号配置信息
     queryMemberWxMpSet : '/wechat/mp/queryMemberWxMpSet',
     //根据companyCode获取微信配置信息
     getMemberServiceSettingByCode : '/external/extprivilege/getMemberServiceSettingByCode',

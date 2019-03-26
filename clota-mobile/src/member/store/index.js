@@ -206,6 +206,7 @@ export const memberActions = {
     //获取会员卡列表
     getCardListInfo ({ commit, dispatch }) {
         const ajax = require('../api/index').default;
+        dispatch('queryMemberWxMpSet');
         return Promise.all([
             new Promise((resolve, reject) => {
                 ajax.post('queryMemberCardList', {
@@ -233,24 +234,28 @@ export const memberActions = {
                 });
             }),
             dispatch('getMemberConfigInfo'),
-            new Promise((resolve, reject) => {
-                ajax.post('queryMemberWxMpSet', {
-                    source : this.getters.sourceInfo
-                }).then(res => {
-                    if (res.success) {
-                        if (res.data) {
-                            commit('updateWxMpSet', res.data);
-                            resolve();
-                        } else {
-                            reject();
-                        }
+        ]);
+    },
+    //查询公众号配置信息
+    queryMemberWxMpSet ({ commit }) {
+        const ajax = require('../api/index').default;
+        return new Promise((resolve, reject) => {
+            ajax.post('queryMemberWxMpSet', {
+                source : this.getters.sourceInfo
+            }).then(res => {
+                if (res.success) {
+                    if (res.data) {
+                        commit('updateWxMpSet', res.data);
+                        resolve();
                     } else {
                         reject();
                     }
-                }).catch(() => {
+                } else {
                     reject();
-                });
-            })
-        ]);
-    },
+                }
+            }).catch(() => {
+                reject();
+            });
+        });
+    }
 };
