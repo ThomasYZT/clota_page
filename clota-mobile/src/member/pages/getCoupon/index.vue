@@ -73,7 +73,7 @@
             </div>
         </transition>
         <!--未注册会员提示-->
-        <confirm v-model="confirmShow"
+        <confirm v-model="registerModalShow"
                  v-transfer-dom
                  :title="$t('notice')"
                  :confirm-text="$t('register')"
@@ -116,8 +116,6 @@
                 code : '',
                 //当前阶段
                 stage : 'notGet',
-                //提示框是否显示
-                confirmShow : false,
                 //显示所有的会员卡现在模态框
                 showMemberListModal : false,
                 //会员卡列表
@@ -171,7 +169,7 @@
                                     text : this.$t('operateSuc',{ msg : this.$t('send') }),
                                     type : 'success'
                                 });
-                            } else if (res.message && res.message === 'M049') {//手机没注册
+                            } else if ((res.code && res.code === 'M049') || (res.message && res.message === 'M049') ) {//手机没注册
                                 if (this.hasRegister) {//有成长型会员卡就可以去注册
                                     this.registerModalShow = true;
                                 } else {
@@ -180,12 +178,13 @@
                                         type : 'cancel',
                                     });
                                 }
-                            } else if (res.message && (res.message === 'M050' || res.message === 'M051')) {
+                            } else if ((res.code && (res.code === 'M050' || res.code === 'M051'))
+                                || (res.message && (res.message === 'M050' || res.message === 'M051'))) {
                                 this.$vux.toast.show({
                                     text : this.$t(res.message),
                                     type : 'cancel',
                                 });
-                            } else if (res.code === 'A006') {
+                            } else if (res.code === 'A006' || res.message === 'A006') {
                                 this.$vux.toast.show({
                                     text : this.$t('errorMsg.A006'),
                                     type : 'cancel',
@@ -211,7 +210,9 @@
              * 确认注册
              */
             onConfirm () {
-
+                this.$router.push({
+                    name : 'mobileRegister'
+                });
             },
             /**
              * 选择的会员
@@ -254,7 +255,7 @@
                     companyCode : this.companyCode,
                 }).then((res) => {
                     if (res.success) {
-                        this.hasRegister = !!res.data;
+                        this.hasRegister = res.data;
                     } else {
                         this.hasRegister = false;
                     }
