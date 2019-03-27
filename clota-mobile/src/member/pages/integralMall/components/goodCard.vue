@@ -60,6 +60,16 @@
                     }
                 });
             }
+        },
+        computed : {
+            //折扣率
+            discountNum () {
+                if (this.info) {
+                    return Number.parseInt(this.info.nominalValue * 10,10);
+                } else {
+                    return '-';
+                }
+            }
         }
     };
 </script>
@@ -88,7 +98,6 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            float: left;
             overflow: hidden;
             text-align: center;
 

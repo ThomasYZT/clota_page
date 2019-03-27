@@ -5,7 +5,23 @@
 <template>
     <div class="good-detail">
         <div class="img-board">
-            <div class="zoom-img" :style="{backgroundImage:'url('+detail.pics+')'}"></div>
+            <div v-if="detail.goodsType === 'ierp'" class="zoom-img" :style="{backgroundImage:'url('+detail.pics+')'}"></div>
+            <div class="coupon-info" v-else-if="detail.goodsType === 'coupon'"
+                 :class="{ 'cash' : detail.couponType === 'cash_coupon','discount' : detail.couponType === 'discount_coupon','exchange' : detail.couponType === 'exchange_coupon' }">
+                <!--代金券-->
+                <template v-if="detail.couponType === 'cash_coupon'">
+                    <div class="face-value">{{$t('couponValue',{ num : detail.nominalValue })}}</div>
+                    <div class="use-condition">{{$t('cashUseItem',{ num : detail.conditionLowerLimtation })}}</div>
+                </template>
+                <!--折扣券-->
+                <template v-else-if="detail.couponType === 'discount_coupon'">
+                    <div class="face-value">{{$t('discountNum',{ num : discountNum })}}</div>
+                </template>
+                <!--兑换券-->
+                <template v-else-if="detail.couponType === 'exchange_coupon'">
+                    <div class="face-value">{{$t('exchangeTxt')}}</div>
+                </template>
+            </div>
         </div>
 
         <div class="info-board">
@@ -16,16 +32,30 @@
 
         <div class="good-more-info">
             <div class="tab">
-                <div class="tab-label" @click="tabClick(1)"><p>{{$t('goodInfo')}}</p></div>
-                <!--<div class="tab-label" @click="tabClick(2)"><p>{{$t('specificationParameter')}}</p></div>-->
+                <div class="tab-label" ><p>{{$t('goodInfo')}}</p></div>
             </div>
-            <div class="tab-pane" v-if='tabIndex === 1'>
+            <!--商品-->
+            <div class="tab-pane" v-if="detail.goodsType === 'ierp'">
                 <div class="decs-item">
                     <div class="desc-title">{{$t('goodDesc')}} : </div>
                     <div class="desc-content">{{detail.goodsDesc}}</div>
                 </div>
             </div>
-            <!--<div class="tab-pane" v-else-if="tabIndex === 2"></div>-->
+            <!--卡券-->
+            <div class="tab-pane" v-else-if="detail.goodsType === 'coupon'">
+                <div class="decs-item">
+                    <div class="coupon-title">{{$t('explainWithColon')}}</div>
+                    <ul class="scope-wrap">
+                        <li class="usage-item"> <span class="key">{{$t('useRulesOne')}}</span><span class="value">{{detail.conditionChannelNames | contentFilter}}</span></li>
+                        <li class="usage-item"> <span class="key">{{$t('useRuleTwo')}}</span><span class="value">{{detail.conditionOrgNames | contentFilter}}</span></li>
+                        <li class="usage-item" v-if="detail.couponType === 'exchange_coupon'">
+                            <span class="key">{{$t('canUseGoods')}}</span><span class="value">{{detail.conditionGoodNames | contentFilter}}</span>
+                        </li>
+                        <li class="usage-item" v-else> <span class="key">{{$t('useRuleThree')}}</span><span class="value">{{detail.conditionProductNames | contentFilter}}</span></li>
+                        <li class="usage-item"> <span class="key">{{$t('couponValidateDate')}}</span><span class="value">{{detail.effectiveTime | contentFilter}} - {{detail.expireTime | contentFilter}}</span></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
 
@@ -44,8 +74,6 @@
             return {
                 //商品详情数据--接口获取
                 detail : {},
-                //tab索引
-                tabIndex : 1
             };
         },
         methods : {
@@ -78,13 +106,6 @@
                 })
             },
             /**
-             * tab栏切换
-             * @param index
-             */
-            tabClick (index) {
-                this.tabIndex = index;
-            },
-            /**
              * 前往兑换商品界面
              */
             toExchangeGood () {
@@ -100,7 +121,15 @@
         computed : {
             ...mapGetters({
                 cardInfo : 'cardInfo'
-            })
+            }),
+            //折扣率
+            discountNum () {
+                if (this.detail) {
+                    return Number.parseInt(this.detail.nominalValue * 10,10);
+                } else {
+                    return '-';
+                }
+            }
         }
     };
 </script>
@@ -130,8 +159,45 @@
                 background-repeat: no-repeat;
                 background-size:cover;
             }
-        }
 
+            .coupon-info{
+                width: 100%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                float: left;
+                overflow: hidden;
+                text-align: center;
+
+                &.cash{
+                    background: linear-gradient(to bottom,#ee6723, #eb8f52);
+                }
+
+                &.discount{
+                    background: linear-gradient(to bottom,#6c70cc,#9dc6ed);
+                }
+
+                &.exchange{
+                    background: linear-gradient(to bottom,#478aee,#7ac6ed);
+                }
+
+                .face-value{
+                    height: 48px;
+                    line-height: 48px;
+                    color: #ffffff;
+                    font-size: 30px;
+                }
+                .use-condition{
+                    height: 24px;
+                    line-height: 24px;
+                    color: #ffffff;
+                    font-size: $font_size_14px;
+                }
+            }
+        }
 
         .info-board {
             position: relative;
@@ -214,18 +280,29 @@
 
                 .decs-item {
                     width: 100%;
-                    display: flex;
                     margin-bottom: 12.5px;
 
-                    .desc-title {
-                        flex: 1 0;
-                        flex-basis: 20%;
-                        white-space: nowrap;
+                    .desc-content {
+                        margin-top: 5px;
+                        font-size: 12px;
+                        line-height: 16px;
                     }
 
-                    .desc-content {
-                        flex: 1 0;
-                        flex-basis: 80%;
+                    .desc-title,
+                    .coupon-title{
+                        line-height: 15px;
+                        font-size: 12px;
+                    }
+
+                    .scope-wrap{
+                        font-size: 12px;
+                        margin-top: 5px;
+                        color: #666;
+                        line-height: 13px;
+
+                        .usage-item{
+                            line-height: 16px;
+                        }
                     }
                 }
             }
