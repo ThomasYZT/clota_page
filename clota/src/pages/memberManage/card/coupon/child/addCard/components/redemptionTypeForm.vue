@@ -258,7 +258,7 @@
                     ],
                     //商品
                     conditionGoodId : [
-                        { required : true, message : this.$t('selectField',{ msg : this.$t('good') }), trigger : 'blur' },
+                        { required : true, message : this.$t('selectField',{ msg : this.$t('goods') }), trigger : 'change' },
                     ],
                     //可用渠道
                     conditionChannelId : [
