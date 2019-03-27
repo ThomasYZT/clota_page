@@ -512,4 +512,6 @@ export default {
     'validateDate' : '生效日期',
     'validateTimeEveryDay' : '每日生效时间',
     'canUseGoods' : '3、可用商品：',
+    'couponValidateDate' : '4、有效期：',
+    'explainWithColon' : '说明:',
 };

@@ -512,4 +512,6 @@ export default {
     'validateDate' : 'effective date',
     'validateTimeEveryDay' : 'daily effective time',
     'canUseGoods' : '3, available goods:',
+    'couponValidateDate' : '4, Validity period:',
+    'explainWithColon' : 'Description:',
 };

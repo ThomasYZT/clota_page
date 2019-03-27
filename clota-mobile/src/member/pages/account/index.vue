@@ -436,10 +436,12 @@
             margin: 0 4.5px;
 
             .vux-icon-dot{
-                background: $color_eee;
+                background: #fff;
+                border: 1px solid #c5c5c5;
 
                 &.active{
                     background: #2C78EE;
+                    border: 1px solid #2C78EE;
                 }
             }
         }

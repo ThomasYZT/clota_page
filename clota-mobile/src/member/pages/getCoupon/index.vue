@@ -60,6 +60,16 @@
                           @click.native="getCoupon">
                     {{$t('getCoupon')}}
                 </x-button>
+                <ul class="scope-wrap">
+                    <li class="usage-item"> <span class="key">{{$t('explainWithColon')}}</span></li>
+                    <li class="usage-item"> <span class="key">{{$t('useRulesOne')}}</span><span class="value">{{couponData.conditionChannelNames | contentFilter}}</span></li>
+                    <li class="usage-item"> <span class="key">{{$t('useRuleTwo')}}</span><span class="value">{{couponData.conditionOrgNames | contentFilter}}</span></li>
+                    <li class="usage-item" v-if="couponData.couponType === 'exchange_coupon'">
+                        <span class="key">{{$t('canUseGoods')}}</span><span class="value">{{couponData.conditionGoodNames | contentFilter}}</span>
+                    </li>
+                    <li class="usage-item" v-else> <span class="key">{{$t('useRuleThree')}}</span><span class="value">{{couponData.conditionProductNames | contentFilter}}</span></li>
+                    <li class="usage-item"> <span class="key">{{$t('couponValidateDate')}}</span><span class="value">{{couponData.effectiveTime | contentFilter}} - {{couponData.expireTime | contentFilter}}</span></li>
+                </ul>
             </div>
             <!--领取完成-->
             <div class="coupon-get-result" v-else-if="stage === 'getted'">
@@ -219,7 +229,7 @@
              * @param{String} cardId 会员id
              */
             toGetCouponViaMemberType (cardId) {
-                let cardInfo = this.memberList.find(item => item.id = cardId);
+                let cardInfo = this.memberList.find(item => item.id === cardId);
                 //更新会员卡数据
                 this.updateCardInfo(cardInfo);
                 this.$store.dispatch('getMemberConfigInfo').then(() => {
@@ -315,7 +325,11 @@
                             key : item.id
                         };
                     });
-                    this.showMemberListModal = true;
+                    if (this.memberList.length === 1) {
+                        this.toGetCouponViaMemberType(this.memberList[0]['id']);
+                    } else {
+                        this.showMemberListModal = true;
+                    }
                 }).catch(err => {
                     if (err === 'serviceError') {
                         this.$vux.toast.text(this.$t('companyHasNotMemberService'));
@@ -361,6 +375,12 @@
                 }).then(res => {
                     if (res.success && res.data) {
                         this.couponData = res.data;
+                        if (this.couponData.effectiveTime) {
+                            this.couponData.effectiveTime = this.couponData.effectiveTime.substr(0,10);
+                        }
+                        if (this.couponData.expireTime) {
+                            this.couponData.expireTime = this.couponData.expireTime.substr(0,10);
+                        }
                     } else {
                         this.couponExist = false;
                     }
@@ -485,12 +505,12 @@
                 font-size: $font_size_15px;
                 color: $color_999;
                 text-align: center;
-                margin-bottom: 25px;
+                margin-bottom: 15px;
             }
 
             .coupon-info{
                 position: relative;
-                @include block_outline($height : 126px);
+                @include block_outline($height : 116px);
                 background-image: linear-gradient(-180deg, #EF6C47 0%, #EC9052 100%);
                 display: flex;
                 align-items: center;
@@ -527,6 +547,16 @@
                     color: $color_fff;
                     font-size: $font_size_15px;
                     margin-top: 5px;
+                }
+            }
+
+            .scope-wrap{
+                font-size: 11px;
+                margin-top: 10px;
+                color: #333;
+
+                .usage-item{
+                    line-height: 16px;
                 }
             }
         }
