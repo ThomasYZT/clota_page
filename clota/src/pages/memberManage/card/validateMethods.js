@@ -126,6 +126,28 @@ export const validateEndTime = (rule, value, callback) => {
 };
 
 /**
+ * 校验是否为大于等于0的自然数
+ * @param rule
+ * @param value
+ * @param callback
+ */
+export const validateNaturalNumber = (rule, value, callback) => {
+    if (value) {
+        if ( validator.isNumber(value)) {
+            if (Number(value) < 0) {
+                callback(i18n.t('smallerError', { field : '', num : '0' }));
+            } else {
+                callback();
+            }
+        } else {
+            callback(i18n.t('numError', { field : i18n.t(rule.customField ? rule.customField : rule.field) }));
+        }
+    } else {
+        callback();
+    }
+};
+
+/**
  * 校验最高消费金额大于最低消费金额
  * @param rule
  * @param value
