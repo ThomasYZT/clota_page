@@ -243,9 +243,9 @@
                         { required : true, type : 'string', message : this.$t('inputField',{ field : this.$t('amountSingleDay') }), trigger : 'blur' },
                         { validator : validateNaturalNumber, trigger : 'blur', customField : 'amountSingleDay' },
                         { validator : noBiggerValidate, trigger : 'blur',
-                          compareValue : this.formData.totalGain,
+                          compareValue : this.formData.quantity,
                           customField : 'amountSingleDay',
-                          compareFeild : 'amountLimit' }
+                          compareFeild : 'generationNum' }
                     ],
                     //可领取数量上限
                     totalGain : [
