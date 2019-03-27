@@ -41,7 +41,6 @@
                                 <template v-else>
                                     <Input v-model.trim="formData.corpusAmount" :placeholder="$t('inputField', {field: ''})"/>
                                 </template>
-                                {{$t(accountInfo.unit) | contentFilter}}
                             </Radio>
                             <Radio label="sub">
                                 <span  class="adjust-type" :style="{width : lang === 'zh-CN' ? 'auto' : '52px'}">
