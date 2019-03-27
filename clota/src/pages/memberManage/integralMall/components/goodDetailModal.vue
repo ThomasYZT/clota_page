@@ -182,7 +182,7 @@
     @import '~@/assets/scss/base';
 
     /deep/ .ivu-form-item {
-        margin-bottom: 8px;
+        margin-bottom: 15px;
     }
 
     /deep/ .ivu-modal-body{
