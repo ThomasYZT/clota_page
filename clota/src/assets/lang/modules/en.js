@@ -2795,4 +2795,5 @@ export default {
     "copyToClipBoard" : "{field} has been copied to the clipboard",
     "invalidRegister" : "Invitation registration",
     "copyLink" : "Copy link",
+    'availableGoods' : '可用商品',
 };

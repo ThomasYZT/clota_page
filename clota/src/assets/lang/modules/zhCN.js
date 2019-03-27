@@ -2795,4 +2795,5 @@ export default {
     "copyToClipBoard" : "{field}已复制到剪贴板",
     "invalidRegister" : "邀请注册",
     "copyLink" : "复制链接",
+    'availableGoods' : '可用商品',
 };
