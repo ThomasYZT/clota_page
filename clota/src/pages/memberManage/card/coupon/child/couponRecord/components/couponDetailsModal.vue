@@ -28,9 +28,9 @@
                             <span v-if="detail.appScene === 'spread'">{{detail.effectiveTime | timeFormat('yyyy-MM-dd')}}--{{detail.expireTime | timeFormat('yyyy-MM-dd')}}</span>
                             <span v-else>{{detail.effDays + $t('day')}}</span>
                         </formItem>
-                        <!-- 可用产品类别 -->
-                        <formItem :label="$t('colonSetting', { key : $t('availableProductCategories') })">
-                            <span v-if="detail.appScene === 'spread'">{{detail.conditionProductNames | contentFilter}}</span>
+                        <!-- 可用产品类别/可用商品 -->
+                        <formItem :label="$t('colonSetting', { key : $t( detail.couponType !== 'exchange_coupon' ? 'availableProductCategories' : 'availableGoods') })">
+                            <span v-if="detail.couponType !== 'exchange_coupon'">{{detail.conditionProductNames | contentFilter}}</span>
                             <span v-else>{{detail.conditionGoodNames | contentFilter}}</span>
                         </formItem>
                         <!-- 可用渠道 -->

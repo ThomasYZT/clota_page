@@ -2794,4 +2794,5 @@ export default {
     "totalMemberCount" : "Total number",
     "copyToClipBoard" : "{field} has been copied to the clipboard",
     "invalidRegister" : "Invitation registration",
+    'availableGoods' : '可用商品',
 };
