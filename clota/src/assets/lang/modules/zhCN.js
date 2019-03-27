@@ -2794,4 +2794,5 @@ export default {
     "totalMemberCount" : "会员总数",
     "copyToClipBoard" : "{field}已复制到剪贴板",
     "invalidRegister" : "邀请注册",
+    "copyLink" : "复制链接",
 };

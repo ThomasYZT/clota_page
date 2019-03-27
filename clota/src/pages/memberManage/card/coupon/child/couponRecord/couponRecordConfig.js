@@ -54,6 +54,11 @@ export const generateLinkRecordHead = [
         field : 'couponLink',
         minWidth : 150,
     },
+    {
+        title : 'operate', //操作
+        field : '',
+        width : 100,
+    },
 ];
 
 //会员权益推送记录表头

@@ -30,6 +30,32 @@
                     </Tooltip>
                 </template>
             </el-table-column>
+            <el-table-column
+                slot="column4"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <span :id="'_card_row_data' + scope.row.id">{{scope.row.couponLink}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                slot="column5"
+                show-overflow-tooltip
+                slot-scope="row"
+                :label="row.title"
+                :width="row.width"
+                :min-width="row.minWidth">
+                <template slot-scope="scope">
+                    <ul class="operate-list">
+                        <li data-clipboard-action="copy"
+                            class="coupon-copy-btn"
+                            :data-clipboard-target="'#_card_row_data' + scope.row.id">{{$t('copyLink')}}</li>
+                    </ul>
+                </template>
+            </el-table-column>
         </table-com>
     </div>
 </template>
@@ -62,7 +88,8 @@
                 //页码
                 pageNo : 1,
                 //每页记录数
-                pageSize : 10
+                pageSize : 10,
+                copyBtn : []
             };
         },
         methods : {
@@ -77,16 +104,40 @@
                     if (res.success) {
                         this.tableData = res.data ? res.data.data : [];
                         this.totalCount = res.data ? res.data.totalRow : 0;
+                        this.setClipboardAction();
                     } else {
                         this.tableData = [];
                         this.totalCount = 0;
                     }
                 });
-            }
+            },
+            /**
+             * 设置复制到剪贴板功能
+             */
+            setClipboardAction () {
+                this.$nextTick(() => {
+                    let btnEle = this.$el.querySelectorAll('.coupon-copy-btn');
+                    if (btnEle && btnEle.length > 0) {
+                        for (let i = 0,j = btnEle.length; i < j; i++) {
+                            if (!this.copyBtn[i]) {
+                                this.copyBtn[i] = new this.Clipboard(btnEle[i]);
+                                //复制到剪贴板成功
+                                this.copyBtn[i].on('success', () => {
+                                    this.$Message.success(this.$t('copyToClipBoard',{ field : this.$t('urLink') }));
+                                });
+                                //复制到剪贴板失败
+                                this.copyBtn[i].on('error', () => {
+                                    this.$Message.error(this.$t('failureTip', { tip : this.$t('copy') }));
+                                });
+                            }
+                        }
+                    }
+                });
+            },
         },
         watch : {
             dateTime : {
-                handler (newVal) {
+                handler () {
                     this.queryList();
                 },
             }

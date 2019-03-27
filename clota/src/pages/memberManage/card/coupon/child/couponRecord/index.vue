@@ -6,7 +6,8 @@
     <div class="coupon-record">
         <!-- 面包屑导航 -->
         <breadCrumbHead :locale-router="'operateRecord'"
-                        :before-router-list="beforeRouterList"></breadCrumbHead>
+                        :before-router-list="beforeRouterList">
+        </breadCrumbHead>
 
         <div class="head-toolbox">
             <div class="left-tool">
