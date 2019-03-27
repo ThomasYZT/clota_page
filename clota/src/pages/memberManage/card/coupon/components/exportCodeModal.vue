@@ -149,7 +149,7 @@
              */
             exportData () {
                 this.queryCountWaitNum().then(() => {
-                    if (this.formData.needCount <= this.countWaitNum) {
+                    if (Number(this.formData.needCount) <= Number(this.countWaitNum)) {
                         let href = config['HOST'] + apiList['downLoadCoupon'] + '?token=' + ajax.getToken();
                         for (let param in this.formData) {
                             href += '&' + param + '=' + this.formData[param];
@@ -164,7 +164,9 @@
                     } else {
                         this.$Message.error(this.$t('M059'));
                     }
-                });
+                }).catch(() => {
+                    this.$Message.error(this.$t('failureTip', { tip : 'exporting' }))
+                })
             },
             /**
              * 隐藏模态框
@@ -191,7 +193,9 @@
                         } else {
                             reject();
                         }
-                    });
+                    }).catch(() => {
+                        reject();
+                    })
                 });
             }
         }
