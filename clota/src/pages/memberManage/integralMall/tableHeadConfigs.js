@@ -2,8 +2,8 @@
 export const integralHead = [
     {
         title : 'goodsName', //商品名称
-        minWidth : 120,
-        enMinWidth : 140,
+        minWidth : 150,
+        enMinWidth : 150,
         field : 'name'
     },
     {

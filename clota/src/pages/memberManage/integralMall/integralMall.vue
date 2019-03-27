@@ -130,8 +130,12 @@
                     <template slot-scope="scope">
                         <ul class="operate-list">
                             <!--<li class="blue-label" @click="stockDetail(scope.row)">{{$t('details')}}</li>-->
-                            <li class="blue-label" @click="putOnGoods(scope.row)">{{$t('up')}}</li>
-                            <li :class="{ disabled : scope.row.goodsStatus === 'down' }" class="blue-label" @click="down(scope.row)">{{$t('down')}}</li>
+                            <li class="blue-label"
+                                :class="{ disabled : (scope.row.stockNum - scope.row.upNum - scope.row.undrawNum) <= 0 }"
+                                @click="putOnGoods(scope.row)">{{$t('up')}}</li>
+                            <li :class="{ disabled : scope.row.goodsStatus === 'down'}"
+                                class="blue-label"
+                                @click="down(scope.row)">{{$t('down')}}</li>
                         </ul>
                     </template>
                 </el-table-column>
@@ -263,6 +267,9 @@
              *  上架商品
              */
             up () {
+                if ((scope.row.stockNum - scope.row.upNum - scope.row.undrawNum) <= 0) {
+                    return;
+                }
                 this.delModalType = 'up';
                 this.$refs.delModal.show({
                     title : this.$t('notice'),
