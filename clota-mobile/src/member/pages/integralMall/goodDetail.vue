@@ -60,7 +60,7 @@
                 } else {
                     this.$router.push({
                         name : 'integralMall'
-                    })
+                    });
                 }
             },
             /**

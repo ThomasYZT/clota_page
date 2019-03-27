@@ -7,7 +7,22 @@
         <div class="img-wrapper" v-if="info.goodsType === 'ierp'">
             <div :style="{backgroundImage:'url('+info.pics+')'}"></div>
         </div>
-        <div class="coupon-wrap" v-else-if="info.goodsType === 'coupon'">
+        <div class="coupon-wrap"
+             v-else-if="info.goodsType === 'coupon'"
+             :class="{ 'cash' : info.couponType === 'cash_coupon','discount' : info.couponType === 'discount_coupon','exchange' : info.couponType === 'exchange_coupon' }">
+            <!--代金券-->
+            <template v-if="info.couponType === 'cash_coupon'">
+                <div class="face-value">{{$t('couponValue',{ num : info.nominalValue })}}</div>
+                <div class="use-condition">{{$t('cashUseItem',{ num : info.conditionLowerLimtation })}}</div>
+            </template>
+            <!--折扣券-->
+            <template v-else-if="info.couponType === 'discount_coupon'">
+                <div class="face-value">{{$t('discountNum',{ num : discountNum })}}</div>
+            </template>
+            <!--兑换券-->
+            <template v-else-if="info.couponType === 'exchange_coupon'">
+                <div class="face-value">{{$t('exchangeTxt')}}</div>
+            </template>
         </div>
 
         <div class="content-wrapper">
@@ -67,6 +82,40 @@
             width: 100%;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
+            position: relative;
+            @include block_outline(100%,166px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            float: left;
+            overflow: hidden;
+            text-align: center;
+
+            &.cash{
+                background: linear-gradient(to bottom,#ee6723, #eb8f52);
+            }
+
+            &.discount{
+                background: linear-gradient(to bottom,#6c70cc,#9dc6ed);
+            }
+
+            &.exchange{
+                background: linear-gradient(to bottom,#478aee,#7ac6ed);
+            }
+
+            .face-value{
+                height: 28px;
+                line-height: 28px;
+                color: #ffffff;
+                font-size: $font_size_20px;
+            }
+            .use-condition{
+                height: 14px;
+                line-height: 14px;
+                color: #ffffff;
+                font-size: $font_size_10px;
+            }
         }
 
         .img-wrapper {
