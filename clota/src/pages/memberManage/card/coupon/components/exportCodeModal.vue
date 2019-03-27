@@ -160,6 +160,7 @@
                         let evt = document.createEvent("MouseEvents");
                         evt.initEvent("click",false,true);
                         aLink.dispatchEvent(evt);
+                        this.hide();
                     } else {
                         this.$Message.error(this.$t('M059'));
                     }
