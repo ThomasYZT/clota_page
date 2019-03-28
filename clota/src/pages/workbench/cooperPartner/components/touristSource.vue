@@ -1,0 +1,129 @@
+<!--
+内容：游客来源
+作者：djc
+日期：
+-->
+
+<template>
+    <div class="tourist-source">
+        <div class="header-box">
+            <span class="title">{{$t('touristSource')}}</span>
+            <DatePicker type="date"
+                        v-model.trim="date"
+                        :editable="false"
+                        :clearable="false"
+                        :placeholder="$t('selectField',{msg: ''})"
+                        placement="bottom-end"
+                        class="date-picker"
+                        @on-change="getTradeRatio">
+            </DatePicker>
+        </div>
+        <template v-if="pieChartData.data.length > 0">
+            <div class="chart-area">
+                <pie :pie-data="pieChartData"></pie>
+            </div>
+        </template>
+        <template v-else>
+            <div class="no-data-wrapper">
+                <noDataTip></noDataTip>
+            </div>
+        </template>
+    </div>
+</template>
+<script>
+    import ajax from '@/api/index.js';
+    import pie from '../../components/pie.vue';
+    import forEach from 'lodash/forEach';
+    import noDataTip from '../../../../components/noDataTip/noData-tip';
+
+    export default {
+        components : {
+            pie,
+            noDataTip
+        },
+        props : {},
+        data () {
+            return {
+                //日期
+                date : new Date(),
+                //游客来源柱状图表数据
+                pieChartData : {
+                    data : [],
+                    legend : []
+                },
+            };
+        },
+        created () {
+            this.getTradeRatio();
+        },
+        watch : {},
+        methods : {
+            /**
+             * 查询游客来源柱状图表数据
+             */
+            getTradeRatio () {
+                this.pieChartData = {
+                    data : [],
+                    legend : []
+                };
+                ajax.post('workbench-getOrderVisitorAreaRatio',{
+                    date : this.date.format('yyyy-MM-dd'),
+                }).then(res => {
+                    if (res.success) {
+                        forEach(res.data, (value, key) => {
+                            this.pieChartData.data.push({
+                                name : key,
+                                value : value
+                            });
+                        });
+                    } else {
+                        this.pieChartData = {
+                            data : [],
+                        };
+                    }
+                });
+            },
+        }
+    };
+</script>
+
+<style lang="scss" scoped>
+    @import '~@/assets/scss/base';
+
+    .tourist-source {
+        width: 410px;
+        float: right;
+        height: 100%;
+        background: $color_fff;
+        border: 1px solid $color_DFE2E5;
+        border-radius: 4px;
+
+        .header-box {
+            @include block_outline($height: 45px);
+            border-bottom: 1px solid $color_E1E1E1;
+            line-height: 45px;
+            padding: 0 20px;
+
+            .title {
+                font-size: $font_size_18px;
+                color: $color_353B5E;
+            }
+
+            .date-picker {
+                width: 130px;
+                float: right;
+                margin-top: 7px;
+            }
+
+            .chart-area {
+                height: calc(100% - 45px);
+            }
+        }
+
+        .no-data-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+    }
+</style>

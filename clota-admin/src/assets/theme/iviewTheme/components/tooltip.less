@@ -1,0 +1,110 @@
+
+@import "~iview/src/styles/components/tooltip";
+.ivu-tooltip-inner{
+    white-space: normal;
+    max-width: 400px;
+    background: rgba(0,0,0,0.75);
+}
+.ivu-steps-clota{
+    margin-left: 200px;
+    width: calc(100% - 200px);
+
+    .time{
+        position: absolute;
+        left: -160px;
+        top : 0;
+        font-size: 14px;
+        color: #333333;
+        letter-spacing: 0;
+        text-align: center;
+    }
+
+    .ivu-steps-main{
+        overflow: visible;
+    }
+
+    .ivu-steps-head{
+        margin-right: 20px;
+    }
+
+    .ivu-steps-title{
+        font-size: 14px!important;
+        color: #333333!important;
+        font-weight: normal!important;
+        width: calc(100% - 53px);
+        word-break: break-all;
+    }
+
+    .ivu-steps-item{
+        min-height: 60px;
+    }
+
+    .operater{
+        display: inline-block;
+        font-size: 12px;
+        margin-left: 53px;
+        color: #999999;
+        letter-spacing: 0;
+        width: calc(100% - 53px);
+        text-align: left;
+    }
+
+    .blue-status {
+        .ivu-icon-clota{
+            background: rgba(0,102,187,0.10);
+            &::after{
+                background: #0066BB;
+            }
+        }
+
+    }
+
+    .red-status {
+        .ivu-icon-clota{
+            background: rgba(241,58,48,0.10);
+            &::after{
+                background: #F13A30;
+            }
+        }
+
+        .time,
+        .ivu-steps-title{
+            color: #F13A30!important;
+        }
+    }
+
+    .green-status{
+
+        .ivu-icon-clota{
+            background: rgba(36,182,132,0.10);
+            &::after{
+                background: #24B684;
+            }
+        }
+
+        .time,
+        .ivu-steps-title{
+            color: #24B684!important;
+        }
+    }
+}
+.ivu-steps-clota .ivu-steps-head-inner{
+    width: 22px!important;
+    height: 22px!important;
+
+    .ivu-icon-clota{
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::after{
+            content: '';
+            width: 10px;
+            height: 10px;
+            display: block;
+            border-radius: 5px;
+        }
+    }
+
+}

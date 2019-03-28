@@ -1,0 +1,32 @@
+@import "~iview/src/styles/components/button";
+
+.ivu-btn.ivu-btn-min {
+    padding-left: 26px;
+    padding-right: 26px;
+    min-width: 108px;
+}
+
+.ivu-btn.ivu-btn-90px {
+    padding-left:30px;
+    padding-right:30px;
+}
+
+.ivu-btn.ivu-default-tap {
+    padding-left: 30px;
+    padding-right: 30px;
+    min-width: 78px;
+    color: #999999;
+}
+
+.ivu-btn.ivu-active-tap {
+    background: #F2F7FA !important;
+    color: #333333 !important;
+    padding-left: 30px;
+    padding-right: 30px;
+    outline: 0!important;
+    .ivu-btn.ivu-default-tap();
+}
+
+.ivu-btn.ivu-btn-error:not[disabled='disabled'] {
+    background: #EB6751;
+}

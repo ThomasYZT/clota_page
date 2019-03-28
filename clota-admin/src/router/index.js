@@ -1,0 +1,86 @@
+/**
+ * 静态路由列表
+ * meta信息解释
+ * noFrame表示不需要mainFrame的外壳
+ */
+import Vue from 'vue';
+import Router from 'vue-router';
+import store from '../store/index';
+
+Vue.use(Router);
+
+//生成新路由的方法
+const createRouter = () => new Router({
+    routes : [
+        //登录
+        {
+            path : '/login',
+            name : 'login',
+            component : () => import(/* webpackChunkName: "login" */ '../pages/login/index.vue'),
+            meta : {
+                noFrame : true
+            }
+        },
+        //个人中心
+        {
+            path : '/person',
+            name : 'person',
+            component : () => import(/* webpackChunkName: "login" */ '../pages/personalCenter/index.vue'),
+        },
+        {
+            path : '',
+            //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
+            //如果是没有获取到用户信息，那么就直接跳转到登录页面
+            redirect : to => {
+                if (Object.keys(store.getters.userInfo).length > 0) {
+                    if (store.getters.routerInfo.length > 0) {
+                        return {
+                            path : store.getters.routerInfo[0].path
+                        };
+                    }
+                } else {
+                    return {
+                        name : 'login'
+                    };
+                }
+            }
+        },
+        {
+            path : '/',
+            //判断路由信息为空的时候，是否获取了权限信息，如果获取了，则跳转到第一个有权限的路由，如果没有权限信息，则跳转到一个没有权限的页面
+            //如果是没有获取到用户信息，那么就直接跳转到登录页面
+            redirect : to => {
+                if (Object.keys(store.getters.userInfo).length > 0) {
+                    if (store.getters.routerInfo.length > 0) {
+                        return {
+                            path : store.getters.routerInfo[0].path
+                        };
+                    }
+                } else {
+                    return {
+                        name : 'login'
+                    };
+                }
+            }
+        },
+    ],
+    scrollBehaviorHandler (to,from,savedPosition) {
+        return {
+            x : 0,
+            y : 0
+        };
+    }
+});
+
+const router = createRouter();
+
+//更具新的路由，重置路由
+export function resetRouter (routes) {
+    const newRouter = createRouter();
+    // the relevant part
+    router.matcher = newRouter.matcher;
+    router.addRoutes(routes);
+}
+
+
+export default router;

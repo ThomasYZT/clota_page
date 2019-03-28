@@ -1,0 +1,110 @@
+@form-prefix-cls: ~"@{css-prefix}form";
+@form-item-prefix-cls: ~"@{form-prefix-cls}-item";
+
+.@{form-prefix-cls} {
+    .@{form-item-prefix-cls}-label {
+        text-align: right;
+        vertical-align: middle;
+        float: left;
+        //font-size: @font-size-small;
+        //color: @text-color;
+        font-size: 14px;
+        color: #585858;
+        line-height: 1;
+        box-sizing: border-box;
+        min-width: inherit;
+        padding: 10px 10px 10px 12px;
+        &-after {
+            margin-left: 0;
+            left: 4px;
+            top: 12px;
+        }
+    }
+    &-label-left .@{form-item-prefix-cls}-label {
+        text-align: left;
+    }
+    &-label-top .@{form-item-prefix-cls}-label {
+        float: none;
+        display: inline-block;
+        padding: 0 0 10px 0;
+    }
+    &-inline{
+        .@{form-item-prefix-cls} {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: top;
+        }
+    }
+}
+
+.@{form-item-prefix-cls} {
+    margin-bottom: 18px;
+    vertical-align: top;
+    .clearfix();
+    &-content {
+        position: relative;
+        line-height: 32px;
+        //font-size: @font-size-small;
+        font-size: 14px;
+        //width: 280px;
+        /*解决360浏览器表单未对齐*/
+        .ivu-btn,
+        .ivu-input-wrapper,
+        .ivu-input,
+        .ivu-select,
+        .ivu-date-picker{
+            vertical-align: top;
+        }
+    }
+    & & {
+        margin-bottom: 0;
+    }
+    & & &-content {
+        margin-left: 0!important;
+    }
+
+    &-error-tip{
+        font-size: 12px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        line-height: 1;
+        padding-top: 4px;
+        color: @error-color;
+        white-space: nowrap;
+    }
+
+    &-required {
+        .@{form-item-prefix-cls}-label{
+            position: relative;
+        }
+        .@{form-item-prefix-cls}-label:before {
+            content: '*';
+            display: inline-block;
+            margin-right: 2px;
+            line-height: 1;
+            font-family: SimSun;
+            font-size: @font-size-small;
+            color: @error-color;
+        }
+    }
+    &-error {
+        // todo
+    }
+}
+
+
+.ivu-form-item-label{
+    color: #333333!important;
+}
+
+//.ivu-form-item{
+//    width: 100%;
+//    overflow: hidden;
+//    text-overflow: ellipsis;
+//    white-space: nowrap;
+//}
+
+//.ivu-form-item-content{
+//    line-height: 1;
+//}

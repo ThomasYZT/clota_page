@@ -1,0 +1,257 @@
+/**
+    一切数据完全根据设计稿要求设计，如有变更、修改、疑问请参考设计稿
+ */
+
+/**
+    x-input所有输入框去掉上边框
+    高度统一 50.5px
+    字体大小统一 15px
+ */
+div.c-input {
+    position: relative;
+    &:before {
+        border: none !important;
+    }
+    height: 50.5px;
+    font-size: 15px;
+
+    &:after{
+        content: " ";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        border-bottom: 1px solid #D9D9D9;
+        color: #D9D9D9;
+        -webkit-transform-origin: 0 100%;
+        transform-origin: 0 100%;
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+    }
+}
+
+.weui-input {
+    letter-spacing: 1px !important;
+}
+
+/**
+    x-input 获取验证码输入框
+    code-button 预设了x-input中slot="right"的元素的样式
+ */
+div.verify-input{
+    position: relative;
+
+    .code-button {
+        padding: 0 5px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-left: 16.5px;
+        height: 50.5px;
+        line-height: 50.5px;
+        color: #046FDB;
+        font-size: 12.5px;
+        text-align: center;
+        border-left: 1px solid #E8E8E8;
+        border-bottom: 1px solid #F5F5F5;
+        background-color: #fff;
+    }
+
+    div.active {
+        color: gray !important;
+    }
+}
+
+/**
+    项目中所有提交按钮的统一样式，即提交了api的按钮
+ */
+button.button {
+    margin-top: 150px;
+    max-width: calc(100% - 55px);
+    background-color: #0073EB;
+    color: #FFF;
+}
+
+/**
+    统一cell组件的高度为60px
+    字体大小为14px
+    设置最后一个cell的底部浅色框
+ */
+div.cell {
+    height: 60px;
+    font-size: 14px;
+    &:last-child {
+        &:after {
+            content: " ";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            height: 0.026667rem;
+            border-top: 0.026667rem solid #D9D9D9;
+            color: #D9D9D9;
+            transform-origin: 0 0;
+            transform: scaleY(0.5);
+            left: 0.4rem;
+        }
+    }
+    i.icon {
+        font-size: 19px;
+        margin-right: 16.25px;
+    }
+    .arrow-wrap {
+        text-align: right;
+        .info {
+            color: #353B48;
+            margin-right: 10px;
+        }
+    }
+}
+.weui-label{
+    width: auto!important;
+    padding-right: 10px;
+}
+.vux-cell-value{
+    color: #353B48!important;
+}
+
+.weui-cell_access .weui-cell__ft:after{
+    border-width : 2px 2px 0 0!important;
+    width: 9px!important;
+    height: 9px!important;
+    margin-top : -4.5px!important;
+    border-color: rgba(179,189,194,0.70) !important;
+}
+.vux-x-input-placeholder-right{
+    //padding-right: 15px;
+}
+
+.vux-popup-header-left{
+    font-size: 15px!important;
+    color: #666666!important;
+}
+
+.vux-popup-header-right{
+    font-size: 15px!important;
+    color: #046FDB!important;
+}
+.vux-popup-header {
+    background: #F5F6F8!important;
+}
+.scroller-item{
+    color: #8395A7!important;
+}
+.scroller-item-selected{
+    color: #000000!important;
+}
+.scroller-component{
+    background: #fff;
+}
+
+.weui-toast{
+    top: 50%!important;
+    transform: translateX(-50%) translateY(-50%)!important;
+    width: auto!important;
+    padding: 0 10px;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.weui-toast__content{
+    //width: max-content!important;
+}
+.weui-toast_text {
+    max-width: 80%;
+}
+.weui-check__label{
+    height: 50px!important;
+    font-size: 16px!important;
+    color: #353B48!important;
+}
+.weui-cells_radio .weui-check:checked + .weui-icon-checked:before,
+.weui-dialog__btn_primary,
+.vux-check-icon > .weui-icon-success:before, .vux-check-icon > .weui-icon-success-circle:before{
+    color: #0073EB!important;
+}
+
+
+/**
+    tabbarItem
+ */
+.weui-tabbar__label {
+    font-size: 10px !important;
+}
+
+.weui-tabbar__item {
+    i {
+        &:before {
+            color : #B9B9B9 !important;
+        }
+    }
+}
+
+.weui-tabbar__item.weui-bar__item_on {
+    i {
+        &:before {
+            color: #0073EB !important;
+        }
+    }
+}
+
+
+.scroller-component {
+    .scroller-content {
+        z-index: 10 !important;
+    }
+}
+
+
+.weui-dialog{
+    border-radius: 7px!important;
+}
+
+.weui-dialog .weui-dialog__hd{
+    font-size: 18px!important;
+    color: #353B48!important;
+}
+
+.weui-dialog__ft .weui-dialog__btn_default{
+    font-size: 18px!important;
+    color: #000000!important;
+}
+
+.vux-number-selector-sub {
+    padding: 3px 8px !important;
+}
+.weui-btn_default[disabled='disabled']{
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.2)!important;
+    background: #fff!important;
+}
+
+.popover-demo-content{
+    padding: 3px;
+}
+.vux-x-input-right-full {
+    margin-left: 0!important;
+    padding-left: 15px;
+}
+
+.vux-checklist-icon-checked:before{
+    font-size: 17px!important;
+    color: #2F70DF!important;
+}
+.dp-header .dp-item.dp-right{
+    color: #2F70DF!important;
+}
+.vux-popup-dialog{
+    overflow: hidden!important;
+}
+.vux-tab-selected{
+    color: #046FDB!important;
+}
+.vux-tab-ink-bar{
+    background: #046FDB!important;
+    height: 2px!important;
+}

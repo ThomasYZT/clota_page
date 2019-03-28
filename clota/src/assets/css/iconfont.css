@@ -1,0 +1,17 @@
+
+/*@import '//at.alicdn.com/t/font_772944_l8eqwm2u4qi.css';*/
+/*@import '//at.alicdn.com/t/font_772944_zfj3qjyzsog.css';*/
+@import '//at.alicdn.com/t/font_772944_yss5jgzjfd.css';
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 15px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
+}
+
+body {
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Hiragino Sans GB,Microsoft Yahei,Microsoft Jhenghei,sans-serif !important;
+}

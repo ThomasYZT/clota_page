@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+/**
+  颜色配置
+ */
+$color_000: #000000 !default;
+$color_333: #333333 !default;
+$color_666: #666666 !default;
+$color_999: #999999 !default;
+$color_eee: #EEEEEE !default;
+$color_F0F0F0: #F0F0F0;
+$color_696969: #696969;
+$color_3F3F3F: #3F3F3F;
+$color_303133: #303133;
+$color_606266: #606266;
+$color_fff: #ffffff !default;
+$color_lang_color: rgba(125, 169, 219, 1);
+$color_blue: #2F70DF;
+$color_6666FF: #6666FF;
+$color_green: #22BB5F;
+$color_red: #EB6751;
+$color_yellow: #F7981C;
+$color_F7981C_080: rgba(247, 152, 28, 0.80);
+$color_669ad5: #669ad5;
+$color_transparent: transparent;
+$color_F5F7FA: #F5F7FA;
+$color_gray: #C5C5C5;
+$color_BBC5D5: #BBC5D5;
+$color_585858: #585858;
+$color_E1E1E1: #E1E1E1;
+$color_A8ACB4: #A8ACB4;
+$color_fafa: #fafafa;
+$color_000_085: rgba(0, 0, 0, 0.85);
+$color_F5F7FA_050: rgba(245,247,250,0.50);
+$color_22BB5F: #22BB5F;
+$color_F4F6F8: #F4F6F8;
+$color_DFE2E5: #DFE2E5;
+$color_353B5E: #353B5E;
+$color_7F8FA4: #7F8FA4;
+$color_E9E9E9: #E9E9E9;
+$color_D8D8D8: #D8D8D8;
+$color_CED0DA: #CED0DA;
+$color_C0CDDF: #C0CDDF;
+$color_6c6c6c: #6c6c6c;
+$color_E8F7FF: #E8F7FF;
+$color_0082D5: #0082D5;
+$color_DFDFDF: #DFDFDF;
+$color_3A444A: #3A444A;
+$color_err: #ed3f14;
+$color_F7981C_010: rgba(247,152,28,0.10);
+$color_22BB5F_010: rgba(34,187,95,0.10);
+$color_EB6751_010: rgba(235,103,81,0.10);
+$color_EB6751_005: rgba(235,103,81,0.05);
+$color_979797_020: rgba(151,151,151,0.20);
+/**
+  字体大小配置
+ */
+$font_size_11px: 11px !default;
+$font_size_12px: 12px !default;
+$font_size_13px: 13px !default;
+$font_size_14px: 14px !default;
+$font_size_15px: 15px !default;
+$font_size_16px: 16px !default;
+$font_size_17px: 17px !default;
+$font_size_18px: 18px !default;
+$font_size_20px: 20px !default;
+$font_size_22px: 22px !default;
+$font_size_24px: 24px !default;
+$font_size_28px: 28px !default;
+
+/**
+  位置大小配置
+ */
+$window_min_width: 1280px;
+$window_min_height: 600px;
+$content_min_width: 1000px;
+
+/**
+  图片文件夹根路径
+ */
+$img_base_url: './assets/images/' !default;
+

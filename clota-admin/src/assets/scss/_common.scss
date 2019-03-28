@@ -1,0 +1,33 @@
+@charset "UTF-8";
+@import 'variable';
+@import "mixins";
+.operate-info {
+    @include table_operate();
+
+    .normal {
+        color: $color_blue;
+    }
+
+    .yellow-label{
+        color : $color_yellow
+    }
+
+    .red-label{
+        color: $color_err;
+    }
+
+    .disabled{
+        cursor: not-allowed!important;
+        color: $color_999!important;
+    }
+}
+
+.text-overflow-tip{
+    @include overflow_tip();
+}
+.el-tooltip__popper{
+    max-width: 50%!important;
+}
+body{
+    overflow: auto;
+}

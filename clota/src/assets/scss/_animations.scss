@@ -1,0 +1,28 @@
+
+@keyframes kanan {
+    0% {
+        transform:translateX(20px);
+    }
+
+    50%{
+        transform:translateX(-20px);
+    }
+
+    100%{
+        transform:translateX(20px);
+        z-index:200;
+    }
+}
+
+@keyframes kiri {
+    0% {
+       transform:translateX(-20px);
+        z-index:200;
+    }
+    50%{
+        transform:translateX(20px);
+    }
+    100%{
+        transform:translateX(-20px);
+    }
+}

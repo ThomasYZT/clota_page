@@ -1,0 +1,32 @@
+
+
+/* 自定义样式（修改element）
+-------------------------- */
+@import "./common/var";
+/* 如下，为按需引入的组件样式
+-------------------------- */
+@import "~element-ui/packages/theme-chalk/src/base.scss";
+@import "~element-ui/packages/theme-chalk/src/table.scss";
+@import "~element-ui/packages/theme-chalk/src/table-column.scss";
+@import "~element-ui/packages/theme-chalk/src/pagination.scss";
+@import "~element-ui/packages/theme-chalk/src/dropdown.scss";
+@import "~element-ui/packages/theme-chalk/src/upload.scss";
+@import "~element-ui/packages/theme-chalk/src/collapse.scss";
+@import "~element-ui/packages/theme-chalk/src/collapse-item.scss";
+@import "~element-ui/packages/theme-chalk/src/loading.scss";
+@import "~element-ui/packages/theme-chalk/src/date-picker.scss";
+
+
+/* 自定义样式（修改element）
+-------------------------- */
+@import "./table";
+@import "./tree";
+@import "./pagination";
+@import "./dropdown";
+
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background: #598de5!important;
+    border-color: #598de5!important;
+}
+

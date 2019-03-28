@@ -1,0 +1,72 @@
+@import "~element-ui/packages/theme-chalk/src/mixins/mixins";
+//@import "common/var";
+
+@include b(table) {
+
+    th {
+        > .cell {
+            font-weight: normal;
+        }
+    }
+
+    .cell {
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 22px;
+
+        .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+            background: #f2f6fc!important;
+            border-color: #dcdfe6!important;
+        }
+    }
+
+    // 拥有多级表头
+    @include m((group, border)) {
+        // 表格右部伪 border
+        &::after {
+            width: 0;
+        }
+    }
+
+    // table--border
+    @include m(border) {
+        border-left: none;
+
+        th, td {
+            //border-right: none;
+
+            &:first-child .cell {
+                padding-left: 20px;
+            }
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+        th {
+            &:nth-last-child(2) {
+                border-right: none;
+            }
+        }
+    }
+
+    @include e(body) {
+        tr.hover-row {
+            &, &.el-table__row--striped {
+                &, &.current-row {
+                    > td {
+                        background-color: $--table-current-row-background;  //
+                    }
+                }
+            }
+        }
+
+    }
+
+    @include m(enable-row-hover) {
+        .el-table__body tr:hover > td {
+            background-color: $--table-row-hover-background;
+        }
+    }
+
+}
